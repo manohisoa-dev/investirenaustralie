@@ -193,6 +193,7 @@ return [
         // Register Debug Bar Service Provider
         Barryvdh\Debugbar\ServiceProvider::class,
         
+        Nvd\Crud\Providers\NvdCrudServiceProvider::class,
 
     ],
 
