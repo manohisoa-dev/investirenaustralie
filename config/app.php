@@ -189,6 +189,9 @@ return [
         
         //
         Collective\Html\HtmlServiceProvider::class,
+
+        // Register Debug Bar Service Provider
+        Barryvdh\Debugbar\ServiceProvider::class,
         
 
     ],
@@ -245,6 +248,7 @@ return [
         'Pusher' => Pusher\Pusher::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
     ],
 
 ];
