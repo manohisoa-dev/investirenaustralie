@@ -300,6 +300,8 @@
 <script src="{{asset('js/multirange.js')}}"></script>
 <script src="{{asset('js/head.js')}}"></script>
 
+<script src="{{asset('js/front.js')}}"></script>
+
 <!-- Slider Range -->
 <script type='text/javascript'>
     $(document).ready(function () {

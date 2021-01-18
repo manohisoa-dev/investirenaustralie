@@ -28,7 +28,7 @@
                 @foreach($item->childs as $child)
                 <section class="property-contents common" id="page-{{$child->id}}">
                     <header class="section-header home-section-header">
-                       <h4 class="wow slideInRight">{{$child->title}}</h4>
+                       <h4 class="wow slideInRight" style="border-bottom: solid 3px #AE4435;padding-bottom: 10px;">{{$child->title}}</h4>
                     </header>
                     <div class="row">
                         <div class="property-single-metax">{!!$child->content!!}</div>
@@ -107,5 +107,14 @@
             </div>
        @endif
    </div><!-- /row -->
+</div>
+
+<!-- Modal page -->
+<div class="modal fade" id="secThreeModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      
+    </div>
+  </div>
 </div>
 @endsection
