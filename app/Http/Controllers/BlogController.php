@@ -39,7 +39,51 @@ class BlogController extends Controller
      * @param  App\Models\Blog  $blog
      * @return Illuminate\Http\Response
      */
-    public function index(Request $request, Blog $blog)
+
+    public function index(Request $request, String $slug)
+    {
+        $blogs = Blog::where('slug','=', $slug)
+            ->withCount('comments')
+            ->get();
+
+        if(sizeof($blogs) != 0){
+            foreach ($blogs as $key => $blog) {
+                if($blog->status != 'published'){
+                    abort(404);
+                }
+                
+                $blog->view_count++;
+                $blog->save();
+                
+                $products = Product::orderBy('created_at','desc')
+                    ->ofStatus('published')
+                    ->take($this->recentSize)
+                    ->get();
+                
+                $categories = Category::orderBy('created_at', 'desc')
+                    ->has('products')
+                    ->withCount('products')
+                    ->take($this->recentSize)
+                    ->get();
+                
+                $page = Page::where('path', '=', '/blogs*')
+                    ->first();
+                
+                if($page){$pubs = $page->pubs;}else{$pubs = [];}
+
+                return view('blog.index')
+                    ->with('item', $blog)
+                    ->with('pubs', $pubs)
+                    ->with('products', $products)
+                    ->with('categories', $categories);
+            }
+        }else{
+            abort(404);
+        }
+        
+    }
+
+    public function index2(Request $request, Blog $blog)
     {
         if($blog->status != 'published'){
             abort(404);

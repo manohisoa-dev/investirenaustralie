@@ -27,7 +27,6 @@
                     </div>
                 </div>
             </header>
-
             <!-- breadcrumb     -->
             <div class="row">
                 <div class="col-md-12">
@@ -47,7 +46,6 @@
                     </ol>
                 </div>
             </div>
-            
             <div class="row">
                 <div class="col-md-12">
                     <div class="property-sorting">        

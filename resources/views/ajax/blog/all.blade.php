@@ -6,9 +6,10 @@
                 <img data-action="zoom" src="{{$item->imageUrl()}}" alt="{{$item->title}}">
             </a>                                         
             <time class="updated btn btn-warning">{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $item->created_at)->format('d F')}}</time>            
-        </figure>                                     
+        </figure>
+
         <div class="post-contents clearfix">
-            <h4 class="entry-title"><a href="{{route('blog.index',$item)}}">{{$item->title}}</a></h4> 
+            <h4 class="entry-title"><a href="{{route('blog.index',$item->slug)}}">{{$item->title}}</a></h4>
             <footer class="post-footer post-meta clearfix"> 
                 <span class="author">Posté par <a href="#">{{$item->author->name}}</a></span> 
                 <span>Comment <a href="#"> {{$item->comments_count}}</a> </span> 

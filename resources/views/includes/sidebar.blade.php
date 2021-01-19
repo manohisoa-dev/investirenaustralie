@@ -9,7 +9,6 @@
         </div>
     </section>
     @endforeach
-    
     <section class="widget recent-properties clearfix">
         <h5 class="title">@lang('app.recent.product')</h5>
         @foreach($products as $product)
@@ -18,7 +17,7 @@
                 <img src="{{$product->imageUrl(false)}}" alt="{{$product->title}}">
             </a>
             <div class="property-contents">
-                <h6 class="entry-title"> <a href="{{route('product.index',['product'=>$product])}}">{{$product->title}}</a></h6>
+                <h6 class="entry-title"> <a href="{{route('product.index',['product'=>$product->slug])}}">{{$product->title}}</a></h6>
                 <span class="btn btn-price">{{$product->price}}</span>
                 <div class="property-meta clearfix">
                     <span><i class="fa fa-arrows-alt"></i> @lang('app.num.area', ['num'=>number_format($product->area, 0)])</span>

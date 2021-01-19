@@ -8,7 +8,7 @@
     <div class="property-contents clearfix">
         <header class="property-header clearfix">
             <div class="pull-left">
-                <h6 class="entry-title"><a href="{{route('product.index',['product'=>$item])}}">{{$item->title}}</a></h6>
+                <h6 class="entry-title"><a href="{{route('product.index',['product'=>$item->slug])}}">{{$item->title}}</a></h6>
                 <span class="property-location"><i class="fa fa-map-marker"></i> {{$item->location?$item->location->toString():''}}</span>
             </div>
         </header>

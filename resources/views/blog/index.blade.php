@@ -18,10 +18,10 @@
                     <span>Commentaire<a href="#" style="font-size: inherit; background-color: rgb(255, 255, 255);">{{count($item->comments)}}</a></span>
                 </div>      
                 @if(Auth::check()&&Auth::user()->isAdmin())
-                <a href="{{route('admin.blog.update',$item)}}" class="more pull-right"><i class="fa fa-pencil"></i> @lang('app.btn.edit')</a> 
+                <a href="{{route('admin.blog.update',$item)}}" class="more pull-right"><i class="fa fa-pencil"></i> @lang('app.btn.edit')</a>
                 @endif                   
                 <div class="contents clearfix"> 
-                    <p>{{$item->content}}</p>                                                          
+                    {{ $item->content }}
                 </div>                       
             </article>  
 

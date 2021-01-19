@@ -3074,7 +3074,8 @@ padding: 10px;
 .title-underline {
     border: solid 2px #AE4535;
     float: right;
-    width: 64%;
+    margin-right: 3em;
+    width: 50%;
 }
 
 .btn-sec-three {
@@ -3179,9 +3180,9 @@ p {
 }
 
 .title-underline-2 {
-    border: solid 2px #555658;
+    border: solid 2px #FFFFFF;
     float: right;
-    width: 40%;
-    margin-right: 6.5em;
+    width: 30%;
+    margin-right: 8.5em;
     margin-top: 0.3em;
 }

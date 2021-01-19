@@ -38,7 +38,7 @@ Route::get('apls', 'IndexController@apl')->name('apls');
 
 // Blog
 Route::get('blogs/{filter?}', 'BlogController@all')->name('blog.all');
-Route::get('blog/{blog}', 'BlogController@index')->name('blog.index');
+Route::get('blog/{slug}', 'BlogController@index')->name('blog.index');
 
 // Comment
 Route::get('comments/{blog}', 'CommentController@index');
@@ -48,7 +48,7 @@ Route::post('comments/{comment}/{action}', 'CommentController@update');
 // Shop and Product
 Route::post('shop/{category?}', 'SearchController@index')->name('search');
 Route::get('shop/{category?}', 'ShopController@index')->name('shop.index');// List product by Category OR no
-Route::get('product/{product}', 'ProductController@index')->name('product.index');// View Product
+Route::get('product/{slug}', 'ProductController@index')->name('product.index');// View Product
 
 // Baintree
 Route::post('braintree/webhook', 'WebhookController@handleWebhook');

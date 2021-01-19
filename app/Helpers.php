@@ -172,7 +172,10 @@ if( ! function_exists('generateSlug') )
 {
     function generateSlug($text)
     {
-        return str_replace(' ', '-', strtolower($text));
+    	$textToLower = strtolower($text);
+    	$remSpecialChar = preg_replace('/[^ \w-]/', ' ', $textToLower);
+        $remDoubleSpace = preg_replace('/\s{2,}/', ' ', $remSpecialChar);
+        return str_replace(' ', '-', $remDoubleSpace);
     }
 }
 

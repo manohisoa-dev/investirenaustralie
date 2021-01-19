@@ -25,7 +25,80 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, Product $product)
+        
+    public function index(Request $request, String $slug)
+    {
+        $products = Product::where('slug','=', $slug)
+            ->get();
+
+        if(sizeof($products) != 0){
+            foreach ($products as $key => $product) {
+
+                if($product->status != 'published'){
+                    abort(404);
+                }
+                
+                $product->view_count++;
+                $product->save();
+                
+                $products = Product::orderBy('created_at','desc')
+                    ->ofStatus('published')
+                    ->take($this->recentSize)
+                    ->get();
+                
+                $categories = Category::orderBy('created_at', 'desc')
+                    ->has('products')
+                    ->withCount('products')
+                    ->take($this->recentSize)
+                    ->get();
+                
+                $page = Page::where('path', '=', '/products*')
+                    ->first();
+                
+                if($page){$pubs = $page->pubs;}else{$pubs = [];}
+                
+                $apls = User::ofRole('apl')->isActive()->get();
+                
+                $data = [
+                      'id' => $product->id,
+                      'lat' => $product->location?$product->location->latitude:0,
+                      'lng' => $product->location?$product->location->longitude:0,
+                      'title' => $product->title,
+                      'area' => $product->area,
+                      'type' => 'product',
+                    ];
+                
+                $product->load('images');
+                
+                $types = Type::orderBy('title', 'asc')
+                    ->where('object_type', 'type')
+                    ->get();
+                
+                $locationTypes = Type::orderBy('title', 'asc')
+                    ->where('object_type', 'location')
+                    ->get();
+                
+                $states = State::orderBy('content', 'asc')
+                    ->get();
+                
+                return view('product.index')
+                    ->with('item', $product)
+                    ->with('location', $product->location)
+                    ->with('pubs', $pubs)
+                    ->with('products', $products)
+                    ->with('apls', $apls)
+                    ->with('data', json_encode($data))
+                    ->with('states', $states)
+                    ->with('locationTypes', $locationTypes)
+                    ->with('types', $types)
+                    ->with('categories', $categories);
+            }
+        }else{
+            abort(404);
+        }
+    }
+
+    public function index2(Request $request, Product $product)
     {
         if($product->status != 'published'){
             abort(404);
