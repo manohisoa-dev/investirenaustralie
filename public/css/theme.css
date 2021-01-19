@@ -548,6 +548,7 @@ img.zoom-img {
 }
 #site-nav .nav > li > a {
   padding: 10px 0;
+  font-size: 1.8rem;
 }
 #site-nav li {
   position: relative;
