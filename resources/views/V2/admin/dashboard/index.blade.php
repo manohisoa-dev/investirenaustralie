@@ -1,5 +1,7 @@
 @extends('V2.admin.layouts.app')
 
+@section('title', 'Tableau de bord')
+
 @section('content')
     <div class="row">
         <div class="col-lg-3">

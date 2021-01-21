@@ -1,3 +1,4 @@
+{{--    PROFILE BLOCK --}}
 <li class="nav-header">
     <div class="dropdown profile-element">
         <img alt="image" class="rounded-circle" src="{{Auth::user()->imageUrl()}}" width="50"/>
@@ -17,212 +18,140 @@
         IEA
     </div>
 </li>
+
+{{--    MENU LIST   --}}
 <li class="active">
-    <a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboards</span> <span class="fa arrow"></span></a>
-    <ul class="nav nav-second-level">
-        <li class="active"><a href="index.html">Dashboard v.1</a></li>
-        <li><a href="dashboard_2.html">Dashboard v.2</a></li>
-        <li><a href="dashboard_3.html">Dashboard v.3</a></li>
-        <li><a href="dashboard_4_1.html">Dashboard v.4</a></li>
-        <li><a href="dashboard_5.html">Dashboard v.5 </a></li>
+    <a href="layouts.html"><i class="fa fa-tachometer"></i> <span class="nav-label">Tableau de bord</span></a>
+</li>
+<li>
+    <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Statistiques</span><span class="fa arrow"></span></a>
+    <ul class="nav nav-second-level collapse">
+        <li><a href="graph_flot.html">Produits</a></li>
+        <li><a href="graph_morris.html">Utilisateurs</a></li>
+        <li><a href="graph_rickshaw.html">Membres</a></li>
+        <li><a href="graph_chartjs.html">Agence Francophone Australienne</a></li>
+        <li><a href="graph_chartist.html">Agence Partenaire Locale</a></li>
+        <li><a href="c3.html">Vendeur</a></li>
+        <li><a href="graph_peity.html">Carts</a></li>
     </ul>
 </li>
 <li>
-    <a href="layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">Layouts</span></a>
-</li>
-<li>
-    <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Graphs</span><span class="fa arrow"></span></a>
+    <a href="mailbox.html"><i class="fa fa-users"></i> <span class="nav-label">Parties prenantes </span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
-        <li><a href="graph_flot.html">Flot Charts</a></li>
-        <li><a href="graph_morris.html">Morris.js') }} Charts</a></li>
-        <li><a href="graph_rickshaw.html">Rickshaw Charts</a></li>
-        <li><a href="graph_chartjs.html">Chart.js') }}</a></li>
-        <li><a href="graph_chartist.html">Chartist</a></li>
-        <li><a href="c3.html">c3 charts</a></li>
-        <li><a href="graph_peity.html">Peity Charts</a></li>
-        <li><a href="graph_sparkline.html">Sparkline Charts</a></li>
+        <li><a href="mailbox.html">Tous</a></li>
+        <li><a href="mail_detail.html">Admin</a></li>
+        <li><a href="mail_compose.html">Vendeurs</a></li>
+        <li><a href="email_template.html">AFA</a></li>
+        <li><a href="email_template.html">APL</a></li>
+        <li><a href="email_template.html">Membres</a></li>
     </ul>
 </li>
 <li>
-    <a href="mailbox.html"><i class="fa fa-envelope"></i> <span class="nav-label">Mailbox </span><span class="label label-warning float-right">16/24</span></a>
+    <a href="mailbox.html"><i class="fa fa-product-hunt"></i> <span class="nav-label">Produits </span><span class="label label-warning float-right">16/24</span></a>
     <ul class="nav nav-second-level collapse">
-        <li><a href="mailbox.html">Inbox</a></li>
-        <li><a href="mail_detail.html">Email view</a></li>
-        <li><a href="mail_compose.html">Compose email</a></li>
-        <li><a href="email_template.html">Email templates</a></li>
+        <li><a href="mailbox.html">Liste des produits</a></li>
+        <li><a href="mail_detail.html">Produits en attente</a></li>
+        <li><a href="mail_compose.html">Produits publiés</a></li>
+        <li><a href="email_template.html">Produits commandés</a></li>
+        <li><a href="email_template.html">Produits vendus</a></li>
+        <li><a href="email_template.html">Produits archivés</a></li>
+        <li><a href="email_template.html">Produits aux corbeilles</a></li>
     </ul>
 </li>
 <li>
-    <a href="metrics.html"><i class="fa fa-pie-chart"></i> <span class="nav-label">Metrics</span>  </a>
-</li>
-<li>
-    <a href="widgets.html"><i class="fa fa-flask"></i> <span class="nav-label">Widgets</span></a>
-</li>
-<li>
-    <a href="#"><i class="fa fa-edit"></i> <span class="nav-label">Forms</span><span class="fa arrow"></span></a>
+    <a href="mailbox.html"><i class="fa fa-shopping-cart"></i> <span class="nav-label">Ventes </span><span class="label label-warning float-right">16/24</span></a>
     <ul class="nav nav-second-level collapse">
-        <li><a href="form_basic.html">Basic form</a></li>
-        <li><a href="form_advanced.html">Advanced Plugins</a></li>
-        <li><a href="form_wizard.html">Wizard</a></li>
-        <li><a href="form_file_upload.html">File Upload</a></li>
-        <li><a href="form_editors.html">Text Editor</a></li>
-        <li><a href="form_autocomplete.html">Autocomplete</a></li>
-        <li><a href="form_markdown.html">Markdown</a></li>
+        <li><a href="mailbox.html">Toutes les ventes</a></li>
+        <li><a href="mail_detail.html">Ventes en attente</a></li>
+        <li><a href="mail_compose.html">Ventes en cours</a></li>
+        <li><a href="email_template.html">Ventes: APL non payé</a></li>
+        <li><a href="email_template.html">Ventes: APL payé</a></li>
+        <li><a href="email_template.html">Ventes: AFA non payé</a></li>
+        <li><a href="email_template.html">Ventes: AFA payé</a></li>
+        <li><a href="email_template.html">Ventes effectué</a></li>
     </ul>
 </li>
 <li>
-    <a href="#"><i class="fa fa-desktop"></i> <span class="nav-label">App Views</span>  <span class="float-right label label-primary">SPECIAL</span></a>
+    <a href="#"><i class="fa fa-newspaper-o"></i> <span class="nav-label">Blogs</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
-        <li><a href="contacts.html">Contacts</a></li>
-        <li><a href="profile.html">Profile</a></li>
-        <li><a href="profile_2.html">Profile v.2</a></li>
-        <li><a href="contacts_2.html">Contacts v.2</a></li>
-        <li><a href="projects.html">Projects</a></li>
-        <li><a href="project_detail.html">Project detail</a></li>
-        <li><a href="activity_stream.html">Activity stream</a></li>
-        <li><a href="teams_board.html">Teams board</a></li>
-        <li><a href="social_feed.html">Social feed</a></li>
-        <li><a href="clients.html">Clients</a></li>
-        <li><a href="full_height.html">Outlook view</a></li>
-        <li><a href="vote_list.html">Vote list</a></li>
-        <li><a href="file_manager.html">File manager</a></li>
-        <li><a href="calendar.html">Calendar</a></li>
-        <li><a href="issue_tracker.html">Issue tracker</a></li>
-        <li><a href="blog.html">Blog</a></li>
-        <li><a href="article.html">Article</a></li>
-        <li><a href="faq.html">FAQ</a></li>
-        <li><a href="timeline.html">Timeline</a></li>
-        <li><a href="pin_board.html">Pin board</a></li>
+        <li><a href="form_basic.html">Ajouter un article</a></li>
+        <li><a href="form_advanced.html">Liste des blogs</a></li>
+        <li><a href="form_wizard.html">Articles publiés</a></li>
+        <li><a href="form_file_upload.html">Articles en attente</a></li>
+        <li><a href="form_editors.html">Articles archivés</a></li>
+        <li><a href="form_autocomplete.html">Articles aux corbeilles</a></li>
     </ul>
 </li>
 <li>
-    <a href="#"><i class="fa fa-files-o"></i> <span class="nav-label">Other Pages</span><span class="fa arrow"></span></a>
+    <a href="#"><i class="fa fa-list-ul"></i> <span class="nav-label">Catégories</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
-        <li><a href="search_results.html">Search results</a></li>
-        <li><a href="lockscreen.html">Lockscreen</a></li>
-        <li><a href="invoice.html">Invoice</a></li>
-        <li><a href="login.html">Login</a></li>
-        <li><a href="login_two_columns.html">Login v.2</a></li>
-        <li><a href="forgot_password.html">Forget password</a></li>
-        <li><a href="register.html">Register</a></li>
-        <li><a href="404.html">404 Page</a></li>
-        <li><a href="500.html">500 Page</a></li>
-        <li><a href="empty_page.html">Empty page</a></li>
+        <li><a href="contacts.html">Liste des catégories</a></li>
+        <li><a href="profile.html">Ajouter une catégorie</a></li>
     </ul>
 </li>
 <li>
-    <a href="#"><i class="fa fa-globe"></i> <span class="nav-label">Miscellaneous</span><span class="label label-info float-right">NEW</span></a>
+    <a href="#"><i class="fa fa-money"></i> <span class="nav-label">Publicités</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
-        <li><a href="toast_notifications.html">Notification</a></li>
-        <li><a href="nestable_list.html">Nestable list</a></li>
-        <li><a href="agile_board.html">Agile board</a></li>
-        <li><a href="timeline_2.html">Timeline v.2</a></li>
-        <li><a href="diff.html">Diff</a></li>
-        <li><a href="pdf_viewer.html">PDF viewer</a></li>
-        <li><a href="i18support.html">i18 support</a></li>
-        <li><a href="sweetalert.html">Sweet alert</a></li>
-        <li><a href="idle_timer.html">Idle timer</a></li>
-        <li><a href="truncate.html">Truncate</a></li>
-        <li><a href="password_meter.html">Password meter</a></li>
-        <li><a href="spinners.html">Spinners</a></li>
-        <li><a href="spinners_usage.html">Spinners usage</a></li>
-        <li><a href="tinycon.html">Live favicon</a></li>
-        <li><a href="google_maps.html">Google maps</a></li>
-        <li><a href="datamaps.html">Datamaps</a></li>
-        <li><a href="social_buttons.html">Social buttons</a></li>
-        <li><a href="code_editor.html">Code editor</a></li>
-        <li><a href="modal_window.html">Modal window</a></li>
-        <li><a href="clipboard.html">Clipboard</a></li>
-        <li><a href="text_spinners.html">Text spinners</a></li>
-        <li><a href="forum_main.html">Forum view</a></li>
-        <li><a href="validation.html">Validation</a></li>
-        <li><a href="tree_view.html">Tree view</a></li>
-        <li><a href="loading_buttons.html">Loading buttons</a></li>
-        <li><a href="chat_view.html">Chat view</a></li>
-        <li><a href="masonry.html">Masonry</a></li>
-        <li><a href="tour.html">Tour</a></li>
+        <li><a href="search_results.html">Liste des publicités</a></li>
+        <li><a href="lockscreen.html">Ajouter une publicité</a></li>
     </ul>
 </li>
 <li>
-    <a href="#"><i class="fa fa-flask"></i> <span class="nav-label">UI Elements</span><span class="fa arrow"></span></a>
+    <a href="#"><i class="fa fa-file"></i> <span class="nav-label">Pages</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
-        <li><a href="typography.html">Typography</a></li>
-        <li><a href="icons.html">Icons</a></li>
-        <li><a href="draggable_panels.html">Draggable Panels</a></li> <li><a href="resizeable_panels.html">Resizeable Panels</a></li>
-        <li><a href="buttons.html">Buttons</a></li>
-        <li><a href="video.html">Video</a></li>
-        <li><a href="tabs_panels.html">Panels</a></li>
-        <li><a href="tabs.html">Tabs</a></li>
-        <li><a href="notifications.html">Notifications & Tooltips</a></li>
-        <li><a href="helper_classes.html">Helper css classes</a></li>
-        <li><a href="badges_labels.html">Badges, Labels, Progress</a></li>
+        <li><a href="toast_notifications.html">Ajouter une page</a></li>
+        <li><a href="nestable_list.html">Liste des pages</a></li>
     </ul>
 </li>
-
 <li>
-    <a href="grid_options.html"><i class="fa fa-laptop"></i> <span class="nav-label">Grid options</span></a>
+    <a href="#"><i class="fa fa-envelope"></i> <span class="nav-label">Liste des mails</span><span class="fa arrow"></span></a>
+    <ul class="nav nav-second-level collapse">
+        <li><a href="typography.html">Liste des mails</a></li>
+        <li><a href="icons.html">Boite de reception</a></li>
+        <li><a href="icons.html">Boite d'envoie</a></li>
+        <li><a href="buttons.html">Brouillon</a></li>
+        <li><a href="video.html">Spam</a></li>
+        <li><a href="tabs_panels.html">Messages enregistrees</a></li>
+    </ul>
 </li>
 <li>
-    <a href="#"><i class="fa fa-table"></i> <span class="nav-label">Tables</span><span class="fa arrow"></span></a>
+    <a href="#"><i class="fa fa-th-list"></i> <span class="nav-label">Liste des mots interdits</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
-        <li><a href="table_basic.html">Static Tables</a></li>
-        <li><a href="table_data_tables.html">Data Tables</a></li>
-        <li><a href="table_foo_table.html">Foo Tables</a></li>
+        <li><a href="toast_notifications.html">Liste des mots interdits</a></li>
+        <li><a href="nestable_list.html">Ajouter un mot interdit</a></li>
+    </ul>
+</li>
+<li>
+    <a href="#"><i class="fa fa-bars"></i> <span class="nav-label">Liste des codes postaux</span><span class="fa arrow"></span></a>
+    <ul class="nav nav-second-level collapse">
+        <li><a href="toast_notifications.html">Liste des codes postaux</a></li>
+        <li><a href="nestable_list.html">Ajouter un code postal</a></li>
+    </ul>
+</li>
+<li>
+    <a href="#"><i class="fa fa-th-list"></i> <span class="nav-label">Liste des etats</span><span class="fa arrow"></span></a>
+    <ul class="nav nav-second-level collapse">
+        <li><a href="toast_notifications.html">Liste des etats</a></li>
+        <li><a href="nestable_list.html">Ajouter un Etat</a></li>
+    </ul>
+</li>
+<li>
+    <a href="#"><i class="fa fa-bars"></i> <span class="nav-label">Liste des plans</span><span class="fa arrow"></span></a>
+    <ul class="nav nav-second-level collapse">
+        <li><a href="toast_notifications.html">Liste des plans</a></li>
+        <li><a href="nestable_list.html">Ajouter un plan</a></li>
+    </ul>
+</li>
+<li>
+    <a href="#"><i class="fa fa-wrench"></i> <span class="nav-label">Configurations</span><span class="fa arrow"></span></a>
+    <ul class="nav nav-second-level collapse">
+        <li><a href="table_basic.html">Information du site</a></li>
+        <li><a href="table_data_tables.html">Ecran de connexion</a></li>
+        <li><a href="table_foo_table.html">Réseaux sociaux</a></li>
+        <li><a href="table_foo_table.html">Paiement</a></li>
 
     </ul>
-</li>
-<li>
-    <a href="#"><i class="fa fa-shopping-cart"></i> <span class="nav-label">E-commerce</span><span class="fa arrow"></span></a>
-    <ul class="nav nav-second-level collapse">
-        <li><a href="ecommerce_products_grid.html">Products grid</a></li>
-        <li><a href="ecommerce_product_list.html">Products list</a></li>
-        <li><a href="ecommerce_product.html">Product edit</a></li>
-        <li><a href="ecommerce_product_detail.html">Product detail</a></li>
-        <li><a href="ecommerce-cart.html">Cart</a></li>
-        <li><a href="ecommerce-orders.html">Orders</a></li>
-        <li><a href="ecommerce_payments.html">Credit Card form</a></li>
-    </ul>
-</li>
-<li>
-    <a href="#"><i class="fa fa-picture-o"></i> <span class="nav-label">Gallery</span><span class="fa arrow"></span></a>
-    <ul class="nav nav-second-level collapse">
-        <li><a href="basic_gallery.html">Lightbox Gallery</a></li>
-        <li><a href="slick_carousel.html">Slick Carousel</a></li>
-        <li><a href="carousel.html">Bootstrap Carousel</a></li>
-
-    </ul>
-</li>
-<li>
-    <a href="#"><i class="fa fa-sitemap"></i> <span class="nav-label">Menu Levels </span><span class="fa arrow"></span></a>
-    <ul class="nav nav-second-level collapse">
-        <li>
-            <a href="#" id="damian">Third Level <span class="fa arrow"></span></a>
-            <ul class="nav nav-third-level">
-                <li>
-                    <a href="#">Third Level Item</a>
-                </li>
-                <li>
-                    <a href="#">Third Level Item</a>
-                </li>
-                <li>
-                    <a href="#">Third Level Item</a>
-                </li>
-
-            </ul>
-        </li>
-        <li><a href="#">Second Level Item</a></li>
-        <li>
-            <a href="#">Second Level Item</a></li>
-        <li>
-            <a href="#">Second Level Item</a></li>
-    </ul>
-</li>
-<li>
-    <a href="css_animation.html"><i class="fa fa-magic"></i> <span class="nav-label">CSS Animations </span><span class="label label-info float-right">62</span></a>
-</li>
-<li class="landing_link">
-    <a target="_blank" href="landing.html"><i class="fa fa-star"></i> <span class="nav-label">Landing Page</span> <span class="label label-warning float-right">NEW</span></a>
 </li>
 <li class="special_link">
-    <a href="package.html"><i class="fa fa-database"></i> <span class="nav-label">Package</span></a>
+    <a href="package.html"><i class="fa fa-sign-out"></i> <span class="nav-label">Déconnexion</span></a>
 </li>
