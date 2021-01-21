@@ -20,7 +20,7 @@
 </li>
 
 {{--    MENU LIST   --}}
-<li class="active">
+<li class="{{Request::is('*/admin') ? 'active' : ''}}">
     <a href="layouts.html"><i class="fa fa-tachometer" title="Tableau de bord"></i> <span class="nav-label">Tableau de bord</span></a>
 </li>
 <li>
@@ -83,7 +83,7 @@
     </ul>
 </li>
 <li>
-    <a href="#"><i class="fa fa-list-ul" Catégories></i> <span class="nav-label">Catégories</span><span class="fa arrow"></span></a>
+    <a href="#"><i class="fa fa-list-ul" title="Catégories"></i> <span class="nav-label">Catégories</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
         <li><a href="contacts.html">Liste des catégories</a></li>
         <li><a href="profile.html">Ajouter une catégorie</a></li>
@@ -153,5 +153,5 @@
     </ul>
 </li>
 <li class="special_link">
-    <a href="package.html"><i class="fa fa-sign-out" title="Déconnexion"></i> <span class="nav-label">Déconnexion</span></a>
+    <a href="{{ route('logout') }}"><i class="fa fa-sign-out" title="Déconnexion"></i> <span class="nav-label">Déconnexion</span></a>
 </li>
