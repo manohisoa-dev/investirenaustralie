@@ -59,7 +59,7 @@
 <div class="container">
   <header class="section-header text-center">
      <div class="container">
-       <h4 class="pull-left">Derniers Produits </h4>
+       <h4 class="pull-left">@lang('app.dernierprod') </h4>
      </div>
   </header>
    <div class="row">
@@ -86,7 +86,7 @@
 <div class="container">
  <header class="section-header text-center">
      <div class="container">
-       <h4 class="pull-left">Derniers Articles</h4>
+       <h4 class="pull-left">@lang('app.dernierart')</h4>
      </div>
  </header>
    <div class="row">

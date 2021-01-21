@@ -41,7 +41,7 @@
         <h5 class="title">@lang('app.recent.category')</h5>
         <ul class="clearfix">
             @foreach($categories as $category)
-            <li><a href="{{route('shop.index',$category)}}">{{$category->title}} </a><span class="pull-right">{{$category->products_count}}</span></li>
+            <li><a href="{{route('shop.index',$category)}}">{{ trans('app.txt.'.$category->title) }} </a><span class="pull-right">{{$category->products_count}}</span></li>
             @endforeach
         </ul>
     </section>

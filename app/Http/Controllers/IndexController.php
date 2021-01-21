@@ -12,6 +12,8 @@ use App\Models\Category;
 use App\Models\Blog;
 use App\Models\Type;
 use App\Models\State;
+use Session;
+use View;
 
 class IndexController extends Controller
 {
@@ -43,11 +45,11 @@ class IndexController extends Controller
         
         $states = State::orderBy('content', 'asc')
             ->get();
-        
+
         return $this->render($request, 1)
-            ->with('states',$states)
-            ->with('locationTypes',$locationTypes)
-            ->with('types',$types);
+        ->with('states',$states)
+        ->with('locationTypes',$locationTypes)
+        ->with('types',$types);
     }
 
     /**
@@ -144,5 +146,12 @@ class IndexController extends Controller
         $page = Page::findOrFail($id);
         $ctrl = new PageController();
         return $ctrl->index($request, $page);
+    }
+
+    public function homestepmodal(Request $request,$val)
+    {
+        return View::make("includes.homestepmodal")
+        ->with("val", $val)
+        ->render();
     }
 }

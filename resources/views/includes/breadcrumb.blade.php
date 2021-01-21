@@ -1,10 +1,10 @@
 <div id="breadcrumb" class="main-slider-wrapper clearfix content corps">
     <div id="site-banner" class="text-center clearfix">
         <div class="container">
-            <h1 class="title wow slideInLeft">{{$slot}}</h1>
+            <h1 class="title wow slideInLeft">{{ trans('app.txt.'.str_replace(' ','_',strtolower($slot))) }}</h1>
             <ol class="breadcrumb wow slideInRight">
                 <li><a href="{{route('home')}}">@lang('app.home')</a></li>
-                <li class="active">{{$slot}}</li>
+                <li class="active">{{ trans('app.txt.'.str_replace(' ','_',strtolower($slot))) }}</li>
             </ol>
         </div>
     </div>

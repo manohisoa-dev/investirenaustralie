@@ -28,11 +28,11 @@
                     <!-- Left and right controls -->
                     <a class="left carousel-control" href="#myCarousel" data-slide="prev">
                       <span class="glyphicon glyphicon-chevron-left"></span>
-                      <span class="sr-only">Previous</span>
+                      <span class="sr-only">@lang('app.btn.prev')</span>
                     </a>
                     <a class="right carousel-control" href="#myCarousel" data-slide="next">
                       <span class="glyphicon glyphicon-chevron-right"></span>
-                      <span class="sr-only">Next</span>
+                      <span class="sr-only">@lang('app.btn.next')</span>
                     </a>
                 </div>
                 @else
@@ -44,12 +44,12 @@
                 @endif
                 
                 <section class="property-meta-wrapper common">
-                    @include('includes.alerts')
+                    <!-- @include('includes.alerts') -->
                     <div class="row">
                         <div class="col-sm-12">
                             <form action="{{route('shop.order', ['product'=>$item])}}" method="post">
                                 {{csrf_field()}}
-                                <button type="submit" class="btn btn-success col-sm-9"><i class="fa fa-shopping-cart"></i> @lang('member.add_to_cart')</button>
+                                <button type="submit" class="btn btn-success col-sm-9"><i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')</button>
                             </form>
                             <a href="{{route('label.store', ['product'=>$item,'type'=>'starred'])}}" class="btn btn-primary col-sm-3"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>
                         </div>
@@ -62,21 +62,21 @@
                         <ul class="clearfix">
                             <li>{{$item->created_at->diffForHumans()}}</li>
                             <li><span>@lang('app.reference'):</span> {{$item->reference}}</li>
-                            <li><span>@lang('app.price'):</span>{{$item->price}}</li>
+                            <li><span>@lang('app.txt.price'):</span>{{$item->price}}</li>
                             @if($location)
-                            <li><span>@lang('app.product_location'):</span> {{$location?$location->formatted:'Localisation inconnue'}}</li>
+                            <li><span>@lang('app.txt.product_location'):</span> {{$location?$location->formatted:'Localisation inconnue'}}</li>
                             @endif
                             
-                            <li><span>@lang('app.area'):</span> {{$item->area}}</li>
-                            <li><span>@lang('app.carport_spaces'):</span> {{$item->carport_spaces}}</li>
-                            <li><span>@lang('app.garage_spaces'):</span> {{$item->garage_spaces}}</li>
-                            <li><span>@lang('app.off_street_spaces'):</span> {{$item->off_street_spaces}}</li>
-                            <li><span>@lang('app.bathrooms'):</span> {{$item->bathrooms}}</li>
-                            <li><span>@lang('app.bedrooms'):</span> {{$item->bedrooms}}</li>
-                            <li><span>@lang('app.ensuite'):</span> {{$item->ensuite}}</li>
-                            <li><span>@lang('app.land_area'):</span> {{$item->land_area}}</li>
-                            <li><span>@lang('app.floor_area'):</span> {{$item->floor_area}}</li>
-                            <li><span>@lang('app.number_of_floors'):</span> {{$item->number_of_floors}}</li>
+                            <li><span>@lang('app.txt.area'):</span> {{$item->area}}</li>
+                            <li><span>@lang('app.txt.carport_spaces'):</span> {{$item->carport_spaces}}</li>
+                            <li><span>@lang('app.txt.garage_spaces'):</span> {{$item->garage_spaces}}</li>
+                            <li><span>@lang('app.txt.off_street_spaces'):</span> {{$item->off_street_spaces}}</li>
+                            <li><span>@lang('app.txt.bathrooms'):</span> {{$item->bathrooms}}</li>
+                            <li><span>@lang('app.txt.bedrooms'):</span> {{$item->bedrooms}}</li>
+                            <li><span>@lang('app.txt.ensuite'):</span> {{$item->ensuite}}</li>
+                            <li><span>@lang('app.txt.land_area'):</span> {{$item->land_area}}</li>
+                            <li><span>@lang('app.txt.floor_area'):</span> {{$item->floor_area}}</li>
+                            <li><span>@lang('app.txt.number_of_floors'):</span> {{$item->number_of_floors}}</li>
                         </ul>
                     </div>
                 </section>
@@ -87,7 +87,7 @@
                 </section>
                 
                 <section class="property-nearby-places common">
-                    <h4 class="entry-title">@lang('app.product_location')</h4>
+                    <h4 class="entry-title">@lang('app.txt.product_location')</h4>
                     <div id="map"></div>
                 </section>
             </div>
@@ -101,7 +101,7 @@
         <section id="property-listing">
             <header class="section-header text-center">
                 <div class="container">
-                    <h2 class="pull-left">@lang('app.latest_product')</h2>
+                    <h2 class="pull-left">@lang('app.txt.latest_product')</h2>
                 </div>
             </header>
 

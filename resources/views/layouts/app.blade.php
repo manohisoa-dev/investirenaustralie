@@ -110,7 +110,7 @@
                         @if(!Auth::check())
                         <div class="currency-in-header">
                             <i class="fa fa-sign-in"></i>
-                            <label for="currency-dropdown"> S'inscrire: </label>
+                            <label for="currency-dropdown"> @lang('app.sinscrire'): </label>
                             <select id="currency-dropdown" onChange="location.href=''+this.options[this.selectedIndex].value;">
                                 <option value="#">@lang('app.as')</option>
                                 <option value="{{route('register', ['role'=>'member'])}}">@lang('app.member')</option>
@@ -192,7 +192,7 @@
             <div class="col-md-3 col-sm-4">
                 <form method="get" class="navbar-form form-search searchMenu" role="search" action="{{route('shop.index')}}">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search" name="q" value="{{isset($q)?$q:''}}">
+                        <input type="text" class="form-control" placeholder="@lang('app.input.recherche')" name="q" value="{{isset($q)?$q:''}}">
                         <div class="input-group-btn">
                             <button class="btn search-btn" type="submit"><i class="fa fa-search"></i></button>
                         </div>

@@ -16,7 +16,7 @@
                                        data-search-title="{{$search->title}}" >@lang('app.btn.save')</a>
                             @else
                                 @if($category&&$category->id>0) 
-                                    {{$category->title}} 
+                                    {{ trans('app.txt.'.$category->title) }} 
                                 @else 
                                     @lang('app.all_product') 
                                 @endif
@@ -38,7 +38,7 @@
                         @else
                           @if($category&&$category->id>0)
                             <li class="breadcrumb-item"><a href="{{route('shop.index')}}">@lang('app.all_product')</a></li>
-                            <li class="breadcrumb-item active">{{$category->title}}</li>
+                            <li class="breadcrumb-item active">{{ trans('app.txt.'.$category->title) }}</li>
                           @else
                             <li class="breadcrumb-item active">@lang('app.all_product')</li>
                           @endif
@@ -66,7 +66,7 @@
                                 </select>
                             </div>
                             <div  class="pull-right">
-                                <p class="layout-view"> Vue:<i class="fa fa-th-large selected" data-layout="6"></i> <i class="fa fa-list-ul" data-layout="12"></i> </p> 
+                                <p class="layout-view"> @lang('app.form.vue'):<i class="fa fa-th-large selected" data-layout="6"></i> <i class="fa fa-list-ul" data-layout="12"></i> </p> 
                             </div>
                         </form>
                     </div>           
@@ -95,7 +95,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-          <h4 class="modal-title" id="title">Enregister la recherche</h4>
+          <h4 class="modal-title" id="title">@lang('app.txt.enregistrer_recherche')</h4>
       </div>
       <div class="modal-body">
           <form id="form-save-search" action="{{route('search.edit')}}" method="post">
@@ -148,7 +148,7 @@
             {
                 if(data.html == ""){
                     norecord = true;
-                    $('.ajax-load').html("@lang('app.no_more_data')");
+                    $('.ajax-load').html("@lang('app.txt.no_more_data')");
                     return;
                 }
                 $('.ajax-load').hide();

@@ -38,7 +38,7 @@
                                     </select>
                                 </div>
                                 <div  class="pull-right">
-                                    <p class="layout-view"> Vue:<i class="fa fa-th-large selected" data-layout="6"></i> <i class="fa fa-list-ul" data-layout="12"></i> </p> 
+                                    <p class="layout-view"> @lang('app.form.vue'):<i class="fa fa-th-large selected" data-layout="6"></i> <i class="fa fa-list-ul" data-layout="12"></i> </p> 
                                 </div>
                             </form>
                         </div>           
@@ -93,7 +93,7 @@ function loadMoreData(page){
     {
         if(data.html == ""){
             norecord = true;
-            $('.ajax-load').html("@lang('app.no_more_data')");
+            $('.ajax-load').html("@lang('app.txt.no_more_data')");
             return;
         }
         $('.ajax-load').hide();

@@ -13,6 +13,8 @@
 use Intervention\Image\ImageManagerStatic as InterventionImage;
 use Illuminate\Support\Facades\Storage;
 
+Route::get('home/modal/step/{val}','IndexController@homestepmodal')->name('homestepmodal');
+
 Route::get('mail/basic','MailController@basic_email');
 Route::get('mail/html','MailController@html_email');
 Route::get('mail/attachment','MailController@attachment_email');

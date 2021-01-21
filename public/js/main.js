@@ -62,6 +62,8 @@ $(document).ready(function () {
      $('#property-geo1').slider();// this selector has updated 
     $('#min-baths').slider();
     $('#min-bed').slider();
+    $('#min-toillet').slider();
+    $('#min-park').slider();
 
     var RGBChange = function () {
         $('#RGB').css('background', '#FDC600')

@@ -11,9 +11,9 @@
         <div class="post-contents clearfix">
             <h4 class="entry-title"><a href="{{route('blog.index',$item->slug)}}">{{$item->title}}</a></h4>
             <footer class="post-footer post-meta clearfix"> 
-                <span class="author">Posté par <a href="#">{{$item->author->name}}</a></span> 
-                <span>Comment <a href="#"> {{$item->comments_count}}</a> </span> 
-                <a href="{{route('blog.index',$item)}}" class="more">@lang('app.read_more') <i class="fa fa-angle-double-right"></i></a> 
+                <span class="author">@lang('app.txt.postepar') <a href="#">{{$item->author->name}}</a></span> 
+                <span>@lang('app.txt.commentaire') <a href="#"> {{$item->comments_count}}</a> </span> 
+                <a href="{{route('blog.index',$item)}}" class="more">@lang('app.txt.lecture') <i class="fa fa-angle-double-right"></i></a> 
             </footer>
         </div>                                     
     </article>
