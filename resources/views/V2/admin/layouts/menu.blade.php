@@ -21,10 +21,10 @@
 
 {{--    MENU LIST   --}}
 <li class="active">
-    <a href="layouts.html"><i class="fa fa-tachometer"></i> <span class="nav-label">Tableau de bord</span></a>
+    <a href="layouts.html"><i class="fa fa-tachometer" title="Tableau de bord"></i> <span class="nav-label">Tableau de bord</span></a>
 </li>
 <li>
-    <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Statistiques</span><span class="fa arrow"></span></a>
+    <a href="#"><i class="fa fa-bar-chart-o" title="Statistiques"></i> <span class="nav-label">Statistiques</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
         <li><a href="graph_flot.html">Produits</a></li>
         <li><a href="graph_morris.html">Utilisateurs</a></li>
@@ -36,7 +36,7 @@
     </ul>
 </li>
 <li>
-    <a href="mailbox.html"><i class="fa fa-users"></i> <span class="nav-label">Parties prenantes </span><span class="fa arrow"></span></a>
+    <a href="mailbox.html"><i class="fa fa-users" title="Parties prenantes"></i> <span class="nav-label">Parties prenantes </span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
         <li><a href="mailbox.html">Tous</a></li>
         <li><a href="mail_detail.html">Admin</a></li>
@@ -47,7 +47,7 @@
     </ul>
 </li>
 <li>
-    <a href="mailbox.html"><i class="fa fa-product-hunt"></i> <span class="nav-label">Produits </span><span class="label label-warning float-right">16/24</span></a>
+    <a href="mailbox.html"><i class="fa fa-product-hunt" title="Produits"></i> <span class="nav-label">Produits </span><span class="label label-warning float-right">16/24</span></a>
     <ul class="nav nav-second-level collapse">
         <li><a href="mailbox.html">Liste des produits</a></li>
         <li><a href="mail_detail.html">Produits en attente</a></li>
@@ -59,7 +59,7 @@
     </ul>
 </li>
 <li>
-    <a href="mailbox.html"><i class="fa fa-shopping-cart"></i> <span class="nav-label">Ventes </span><span class="label label-warning float-right">16/24</span></a>
+    <a href="mailbox.html"><i class="fa fa-shopping-cart" title="Ventes"></i> <span class="nav-label">Ventes </span><span class="label label-warning float-right">16/24</span></a>
     <ul class="nav nav-second-level collapse">
         <li><a href="mailbox.html">Toutes les ventes</a></li>
         <li><a href="mail_detail.html">Ventes en attente</a></li>
@@ -72,7 +72,7 @@
     </ul>
 </li>
 <li>
-    <a href="#"><i class="fa fa-newspaper-o"></i> <span class="nav-label">Blogs</span><span class="fa arrow"></span></a>
+    <a href="#"><i class="fa fa-newspaper-o" title="Blogs"></i> <span class="nav-label">Blogs</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
         <li><a href="form_basic.html">Ajouter un article</a></li>
         <li><a href="form_advanced.html">Liste des blogs</a></li>
@@ -83,28 +83,28 @@
     </ul>
 </li>
 <li>
-    <a href="#"><i class="fa fa-list-ul"></i> <span class="nav-label">Catégories</span><span class="fa arrow"></span></a>
+    <a href="#"><i class="fa fa-list-ul" Catégories></i> <span class="nav-label">Catégories</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
         <li><a href="contacts.html">Liste des catégories</a></li>
         <li><a href="profile.html">Ajouter une catégorie</a></li>
     </ul>
 </li>
 <li>
-    <a href="#"><i class="fa fa-money"></i> <span class="nav-label">Publicités</span><span class="fa arrow"></span></a>
+    <a href="#"><i class="fa fa-money" title="Publicités"></i> <span class="nav-label">Publicités</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
         <li><a href="search_results.html">Liste des publicités</a></li>
         <li><a href="lockscreen.html">Ajouter une publicité</a></li>
     </ul>
 </li>
 <li>
-    <a href="#"><i class="fa fa-file"></i> <span class="nav-label">Pages</span><span class="fa arrow"></span></a>
+    <a href="#"><i class="fa fa-file" title="Pages"></i> <span class="nav-label">Pages</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
         <li><a href="toast_notifications.html">Ajouter une page</a></li>
         <li><a href="nestable_list.html">Liste des pages</a></li>
     </ul>
 </li>
 <li>
-    <a href="#"><i class="fa fa-envelope"></i> <span class="nav-label">Liste des mails</span><span class="fa arrow"></span></a>
+    <a href="#"><i class="fa fa-envelope" title="Liste des mails"></i> <span class="nav-label">Liste des mails</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
         <li><a href="typography.html">Liste des mails</a></li>
         <li><a href="icons.html">Boite de reception</a></li>
@@ -115,35 +115,35 @@
     </ul>
 </li>
 <li>
-    <a href="#"><i class="fa fa-th-list"></i> <span class="nav-label">Liste des mots interdits</span><span class="fa arrow"></span></a>
+    <a href="#"><i class="fa fa-th-list" title="Liste des mots interdits"></i> <span class="nav-label">Liste des mots interdits</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
         <li><a href="toast_notifications.html">Liste des mots interdits</a></li>
         <li><a href="nestable_list.html">Ajouter un mot interdit</a></li>
     </ul>
 </li>
 <li>
-    <a href="#"><i class="fa fa-bars"></i> <span class="nav-label">Liste des codes postaux</span><span class="fa arrow"></span></a>
+    <a href="#"><i class="fa fa-bars" title="Liste des codes postaux"></i> <span class="nav-label">Liste des codes postaux</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
         <li><a href="toast_notifications.html">Liste des codes postaux</a></li>
         <li><a href="nestable_list.html">Ajouter un code postal</a></li>
     </ul>
 </li>
 <li>
-    <a href="#"><i class="fa fa-th-list"></i> <span class="nav-label">Liste des etats</span><span class="fa arrow"></span></a>
+    <a href="#"><i class="fa fa-th-list" title="Liste des etats"></i> <span class="nav-label">Liste des etats</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
         <li><a href="toast_notifications.html">Liste des etats</a></li>
         <li><a href="nestable_list.html">Ajouter un Etat</a></li>
     </ul>
 </li>
 <li>
-    <a href="#"><i class="fa fa-bars"></i> <span class="nav-label">Liste des plans</span><span class="fa arrow"></span></a>
+    <a href="#"><i class="fa fa-bars" title="Liste des plans"></i> <span class="nav-label">Liste des plans</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
         <li><a href="toast_notifications.html">Liste des plans</a></li>
         <li><a href="nestable_list.html">Ajouter un plan</a></li>
     </ul>
 </li>
 <li>
-    <a href="#"><i class="fa fa-wrench"></i> <span class="nav-label">Configurations</span><span class="fa arrow"></span></a>
+    <a href="#"><i class="fa fa-wrench" title="Configurations"></i> <span class="nav-label">Configurations</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
         <li><a href="table_basic.html">Information du site</a></li>
         <li><a href="table_data_tables.html">Ecran de connexion</a></li>
@@ -153,5 +153,5 @@
     </ul>
 </li>
 <li class="special_link">
-    <a href="package.html"><i class="fa fa-sign-out"></i> <span class="nav-label">Déconnexion</span></a>
+    <a href="package.html"><i class="fa fa-sign-out" title="Déconnexion"></i> <span class="nav-label">Déconnexion</span></a>
 </li>
