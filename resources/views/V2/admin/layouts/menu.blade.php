@@ -21,7 +21,7 @@
 
 {{--    MENU LIST   --}}
 <li class="{{Request::is('*/admin') ? 'active' : ''}}">
-    <a href="layouts.html"><i class="fa fa-tachometer" title="Tableau de bord"></i> <span class="nav-label">Tableau de bord</span></a>
+    <a href="{{url('V2/admin')}}"><i class="fa fa-tachometer" title="Tableau de bord"></i> <span class="nav-label">Tableau de bord</span></a>
 </li>
 <li>
     <a href="#"><i class="fa fa-bar-chart-o" title="Statistiques"></i> <span class="nav-label">Statistiques</span><span class="fa arrow"></span></a>
@@ -145,7 +145,7 @@
 <li>
     <a href="#"><i class="fa fa-wrench" title="Configurations"></i> <span class="nav-label">Configurations</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
-        <li><a href="table_basic.html">Information du site</a></li>
+        <li><a href="{{route('admin.config.site')}}">Information du site</a></li>
         <li><a href="table_data_tables.html">Ecran de connexion</a></li>
         <li><a href="table_foo_table.html">Réseaux sociaux</a></li>
         <li><a href="table_foo_table.html">Paiement</a></li>

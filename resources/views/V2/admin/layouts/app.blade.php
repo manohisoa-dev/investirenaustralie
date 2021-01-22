@@ -42,6 +42,8 @@
     <div id="page-wrapper" class="gray-bg dashbard-1">
         @include('v2.admin.layouts.head')
 
+        @yield('breadcrumb')
+
         <div class="wrapper wrapper-content">
             @yield('content')
         </div>

@@ -12,16 +12,19 @@
 */
 use Intervention\Image\ImageManagerStatic as InterventionImage;
 use Illuminate\Support\Facades\Storage;
-
+/* ---------- ROUTE V2 ------------------*/
 Route::prefix('V2')->namespace('V2')->group(function(){
     Route::prefix('admin')->middleware(["auth","role:admin"])->group(function(){
         Route::get('/', 'AdminController@dashboard')->name('admin.dashboard');
+        Route::get('/config/site', 'ConfigController@site')->name('admin.config.site');
     });
     Route::prefix('profile')->group(function(){
         Route::get('/', 'ProfileController@index')->name('profile');
     });
 });
 
+
+/* ---------- ROUTE V1 ------------------*/
 Route::prefix('admin')->middleware(["auth","role:admin"])->group(function(){
 
     // User Controller Groups
