@@ -17,6 +17,9 @@ Route::prefix('V2')->namespace('V2')->group(function(){
     Route::prefix('admin')->middleware(["auth","role:admin"])->group(function(){
         Route::get('/', 'AdminController@dashboard')->name('admin.dashboard');
     });
+    Route::prefix('profile')->group(function(){
+        Route::get('/', 'ProfileController@index')->name('profile');
+    });
 });
 
 Route::prefix('admin')->middleware(["auth","role:admin"])->group(function(){
