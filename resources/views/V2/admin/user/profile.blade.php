@@ -6,7 +6,7 @@
 			<h2>Profil de l'admin</h2>
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item">
-					<a href="{{ route('V2.admin') }}">Acceuil</a>
+					<a href="">Acceuil</a>
 				</li>
 				<li class="breadcrumb-item active">
 					<strong>Profile</strong>
