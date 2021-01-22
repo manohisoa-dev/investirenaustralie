@@ -1,5 +1,9 @@
 @extends('V2.admin.layouts.app')
 
+@section('custum-css')
+    l,knsls
+@endsection
+
 @section('title', 'Tableau de bord')
 
 @section('content')
