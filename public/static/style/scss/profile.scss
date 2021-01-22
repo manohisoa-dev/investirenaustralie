@@ -1,0 +1,20 @@
+/* Profile BG
+--------------------*/
+.profile-bg-section {
+	height: 300px;
+}
+
+/* Profile Aisde
+--------------------*/
+.profile-aside {
+	margin-top: -120px;
+}
+
+.media-comment {
+	background: $px-gray;
+	padding: 20px;
+	border-radius: 5px;
+	+ .media-comment {
+		margin-top: 20px;
+	}
+}

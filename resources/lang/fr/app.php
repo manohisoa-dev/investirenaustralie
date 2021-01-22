@@ -222,8 +222,8 @@ return [
     'list_apl'  => 'Listes des Agences Partenaires Locales',
 
     'immobilier'        => 'Immobilier',
-    'residentiel'       => 'residentiel',
-    'foncier'           => 'foncier',
+    'residentiel'       => 'Residentiel',
+    'foncier'           => 'Foncier',
     'business'          => 'Business',
     'industrial'        => 'Industriel',
     'commercial'        => 'Commercial',
