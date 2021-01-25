@@ -1,61 +1,22 @@
-@extends('layouts.app')
+@extends('V2.layouts.app')
 
 @section('content')
 
-@include('includes.slider')
+@component('V2.includes.breadcrumb2', ['cat'=>$category->slug])
+    @lang('all_products')
+@endcomponent
 
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-md-7">
-            <header class="section-header text-center">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h3 class="pull-left">
-                            @if(isset($q)&&$q)
-                                @lang('app.search_result', ['q'=>$q])
-                                <a class="btn btn-default btn-save-search" 
-                                       data-search-id="{{$search->id}}" 
-                                       data-search-title="{{$search->title}}" >@lang('app.btn.save')</a>
-                            @else
-                                @if($category&&$category->id>0) 
-                                    {{ trans('app.txt.'.$category->title) }} 
-                                @else 
-                                    @lang('app.all_product') 
-                                @endif
-                            @endif
-                        </h3>
-                        <br><p id="success-message" style="color:green;"></p>
-                        <br><p id="error-message" style="color:red;"></p>
-                    </div>
-                </div>
-            </header>
-            <!-- breadcrumb     -->
-            <div class="row">
-                <div class="col-md-12">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{route('home')}}">@lang('app.home')</a></li>
-                        @if(isset($q)&&$q)
-                        <li class="breadcrumb-item"><a href="{{route('shop.index')}}">@lang('app.all_product')</a></li>
-                        <li class="breadcrumb-item active">@lang('app.search_result', ['q'=>$q])</li>
-                        @else
-                          @if($category&&$category->id>0)
-                            <li class="breadcrumb-item"><a href="{{route('shop.index')}}">@lang('app.all_product')</a></li>
-                            <li class="breadcrumb-item active">{{ trans('app.txt.'.$category->title) }}</li>
-                          @else
-                            <li class="breadcrumb-item active">@lang('app.all_product')</li>
-                          @endif
-                      @endif
-                    </ol>
-                </div>
-            </div>
-            <div class="row">
+<!-- Section -->
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
                 <div class="col-md-12">
                     <div class="property-sorting">        
                         <form id="filter-form" method="get" action="">
                             <div  class="pull-left">
                                 <label for="orderBy"> @lang('app.form.filterBy'):   </label>  
                                 <select name="orderBy" id="orderBy" onchange="document.getElementById('filter-form').submit();"> 
-                                    <option value="price" {{$orderBy=='price'?'selected':''}}>@lang('app.price')</option> 
                                     <option value="created_at" {{$orderBy=='created_at'?'selected':''}}>@lang('app.pub_date')</option>  
                                     <option value="view_count" {{$orderBy=='view_count'?'selected':''}}>@lang('app.most_view')</option>
                                 </select>
@@ -73,22 +34,34 @@
                         </form>
                     </div>           
                 </div>
+                <!-- Section -->
+                <section class="section">
+                    <div class="container">
+                        <div class="row">
+                            <div id="infinite-scroll" class="product-data"> 
+                                @include('V2.ajax.product.all',['items'=>$items])
+                            </div>
+                            <div class="row">
+                                <div class="ajax-load text-center" style="display:none">
+                                    <p><img src="{{asset('images/loader.gif')}}">@lang('app.load_more_product')</p>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- End Section -->
             </div>
 
-            <div id="infinite-scroll" class="product-data"> 
-                @include('ajax.product.all',['items'=>$items])
-            </div>
-            <div class="row">
-                <div class="ajax-load text-center" style="display:none">
-                    <p><img src="{{asset('images/loader.gif')}}">@lang('app.load_more_product')</p>
-                </div>  
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-5">
-            @include('includes.sidebar')
+            <!-- Sidebar -->
+                @include('V2.includes.sidebar')
+            <!-- fin sidebar -->
+
         </div>
     </div>
-</div>
+</section>
+<!-- End Section -->
+
+
 
 
 @if(isset($q)&&$q)

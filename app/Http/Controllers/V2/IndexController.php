@@ -81,7 +81,7 @@ class IndexController extends Controller
             ];
         }
         
-    	return view('index.apl')
+    	return view('V2.index.apl')
             ->with('items', $apls)
             ->with(['data' => json_encode($data)]);
     }

@@ -91,7 +91,7 @@ class ShopController extends Controller
         $states = State::orderBy('content', 'asc')
             ->get();
         
-        return view('shop.index')
+        return view('V2.shop.index')
             ->with('items', $items)
             ->with('search', $search)
             ->with('q', $q)

@@ -4,10 +4,11 @@
     <div class="container">
         <div class="row justify-content-center p-50px-t">
             <div class="col-lg-8 text-center">
-                <h2 class="white-color h1 m-20px-b">{{ trans('app.txt.'.str_replace(' ','_',strtolower($slot))) }}</h2>
+                <h2 class="white-color h1 m-20px-b">{{ trans('app.txt.'.str_replace(' ','_',strtolower($cat))) }}</h2>
                 <ol class="breadcrumb white justify-content-center">
                     <li><a href="{{ route('v2.home') }}">@lang('app.home')</a></li>
                     <li class="active">{{ trans('app.txt.'.str_replace(' ','_',strtolower($slot))) }}</li>
+                    <li class="active">{{ trans('app.txt.'.str_replace(' ','_',strtolower($cat))) }}</li>
                 </ol>
             </div>
         </div>

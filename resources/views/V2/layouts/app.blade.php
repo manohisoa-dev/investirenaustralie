@@ -120,7 +120,7 @@
                 <div class="row">
                     <div class="col-lg-3 col-sm-12 m-15px-tb mr-auto">
                         <div class="m-20px-b">
-                            <img src="static/img/logo.svg" title="" alt="">
+                            <img src="{{ asset('static/img/logo.svg') }}" title="" alt="">
                         </div>
                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod.</p>
                     </div>
@@ -222,6 +222,13 @@
     <!-- custom js -->
     <script src="{{ asset('static/js/custom.js') }}"></script>
     <!-- end -->
+    <!-- cookie js -->
+    <script src="{{ asset('static/plugin/cookie/herbyCookie.min.js') }}"></script>
+    <!-- end -->
+    <!-- carousel js -->
+    <script src="{{ asset('static/plugin/owl-carousel/js/owl.carousel.min.js') }}"></script>
+    <!-- end -->
+    
 </body>
 <!-- end body -->
 

@@ -4,7 +4,7 @@
         <div class="row" id="txtHint">
     @endif
     <div class="col-md-6 layout-item-wrap">
-        @include('product.single', ['item'=>$item])
+        @include('V2.product.single', ['item'=>$item])
     </div>
     @php $i++; @endphp
     @if($i%2 === 0)

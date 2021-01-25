@@ -1,124 +1,154 @@
-@extends('layouts.app')
+@extends('V2.layouts.app')
 
 @section('content')
-<div id="property-single" style="margin-top: 160px;">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-md-7">
-                @if(count($item->images))
-                <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                    <!-- Indicators -->
-                    <ol class="carousel-indicators">
-                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                      <li data-target="#myCarousel" data-slide-to="1"></li>
-                      <li data-target="#myCarousel" data-slide-to="2"></li>
-                    </ol>
-                    <!-- Wrapper for slides -->
-                    <div class="carousel-inner">
-                      <div class="item active">
-                        <img src="{{asset('images/Surfers_Paradise.jpg')}}" alt="..." style="width:100%;">
+<!-- Main -->
+<main>
+    @component('V2.includes.breadcrumb')
+        @lang('Products')
+    @endcomponent
+    <!-- Section -->
+    <section class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                  @if(count($item->images))
+                  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                      <!-- Indicators -->
+                      <ol class="carousel-indicators">
+                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#myCarousel" data-slide-to="1"></li>
+                        <li data-target="#myCarousel" data-slide-to="2"></li>
+                      </ol>
+                      <!-- Wrapper for slides -->
+                      <div class="carousel-inner">
+                        <div class="item active">
+                          <img src="{{asset('images/Surfers_Paradise.jpg')}}" alt="..." style="width:100%;">
+                        </div>
+                        <div class="item">
+                          <img src="{{asset('images/caroussel-image-1.jpg')}}" alt="..." style="width:100%;">
+                        </div>
+                        <div class="item">
+                          <img src="{{asset('images/caroussel-image-2.jpg')}}" alt="..." style="width:100%;">
+                        </div>
                       </div>
-                      <div class="item">
-                        <img src="{{asset('images/caroussel-image-1.jpg')}}" alt="..." style="width:100%;">
-                      </div>
-                      <div class="item">
-                        <img src="{{asset('images/caroussel-image-2.jpg')}}" alt="..." style="width:100%;">
-                      </div>
-                    </div>
-                    <!-- Left and right controls -->
-                    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-                      <span class="glyphicon glyphicon-chevron-left"></span>
-                      <span class="sr-only">@lang('app.btn.prev')</span>
-                    </a>
-                    <a class="right carousel-control" href="#myCarousel" data-slide="next">
-                      <span class="glyphicon glyphicon-chevron-right"></span>
-                      <span class="sr-only">@lang('app.btn.next')</span>
-                    </a>
-                </div>
-                @else
-                <section class="property-meta-wrapper common">
-                    <figure class="feature-image"> 
-                        <img data-action="zoom" src="{{$item->imageUrl()}}" alt="{{$item->title}}" style="width:100%;"> 
-                    </figure>                     
-                </section>  
-                @endif
-                
-                <section class="property-meta-wrapper common">
+                      <!-- Left and right controls -->
+                      <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                        <span class="sr-only">@lang('app.btn.prev')</span>
+                      </a>
+                      <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                        <span class="sr-only">@lang('app.btn.next')</span>
+                      </a>
+                  </div>
+                  @else
+                  <figure class="figure"><img src="{{$item->imageUrl()}}" alt="{{$item->title}}" class="img-fluid shadow rounded">
+                      <figcaption class="m-15px-t dark-color"><h4>{{$item->title}}</h4></figcaption>
+                  </figure> 
+                  @endif
+
+                  <section class="property-meta-wrapper common">
                     <!-- @include('includes.alerts') -->
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-9">
                             <form action="{{route('shop.order', ['product'=>$item])}}" method="post">
                                 {{csrf_field()}}
-                                <button type="submit" class="btn btn-success col-sm-9"><i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')</button>
+                                <button type="submit" class="m-btn m-btn-theme2nd flex-shrink-0 col-md-12"><i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')</button>
                             </form>
-                            <a href="{{route('label.store', ['product'=>$item,'type'=>'starred'])}}" class="btn btn-primary col-sm-3"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>
+                        </div>
+                        <div class="col-sm-3">
+                          <a href="{{route('label.store', ['product'=>$item,'type'=>'starred'])}}" class="m-btn btn-warning dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>
                         </div>
                     </div>
-                </section>
-                
-                <section class="property-meta-wrapper common">
-                    <h3 class="entry-title">@lang('app.detail')</h3>
-                    <div class="property-single-meta">
-                        <ul class="clearfix">
-                            <li>{{$item->created_at->diffForHumans()}}</li>
-                            <li><span>@lang('app.reference'):</span> {{$item->reference}}</li>
-                            <li><span>@lang('app.txt.price'):</span>{{$item->price}}</li>
-                            @if($location)
-                            <li><span>@lang('app.txt.product_location'):</span> {{$location?$location->formatted:'Localisation inconnue'}}</li>
-                            @endif
-                            
-                            <li><span>@lang('app.txt.area'):</span> {{$item->area}}</li>
-                            <li><span>@lang('app.txt.carport_spaces'):</span> {{$item->carport_spaces}}</li>
-                            <li><span>@lang('app.txt.garage_spaces'):</span> {{$item->garage_spaces}}</li>
-                            <li><span>@lang('app.txt.off_street_spaces'):</span> {{$item->off_street_spaces}}</li>
-                            <li><span>@lang('app.txt.bathrooms'):</span> {{$item->bathrooms}}</li>
-                            <li><span>@lang('app.txt.bedrooms'):</span> {{$item->bedrooms}}</li>
-                            <li><span>@lang('app.txt.ensuite'):</span> {{$item->ensuite}}</li>
-                            <li><span>@lang('app.txt.land_area'):</span> {{$item->land_area}}</li>
-                            <li><span>@lang('app.txt.floor_area'):</span> {{$item->floor_area}}</li>
-                            <li><span>@lang('app.txt.number_of_floors'):</span> {{$item->number_of_floors}}</li>
-                        </ul>
-                    </div>
-                </section>
-                
-                <section class="property-contents common">
-                    <h3 class="entry-title">@lang('app.description')</h3>
-                    <p>{{$item->content}}</p>
-                </section>
-                
-                <section class="property-nearby-places common">
-                    <h4 class="entry-title">@lang('app.txt.product_location')</h4>
-                    <div id="map"></div>
-                </section>
-            </div>
-            <div class="col-lg-4 col-md-5">
-                @include('includes.sidebar')
+                  </section>
+                  
+                    
+                  <div class="p-25px-tb m-35px-tb border-top-1 border-bottom-1 border-color-gray">
+                      <div class="d-flex justify-content-between align-items-center">
+                          <div>
+                              <h5 class="m-0px">@lang('app.detail')</h5>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="media gray-bg p-20px">
+                      <div class="avatar-80 border-radius-50">
+                          <img src="static/img/500x500.jpg" title="" alt="">
+                      </div>
+                      <div class="media-body p-20px-l">
+                          <h5 class="m-10px-b">{{$item->created_at->diffForHumans()}}</h5>
+                          <p class="m-0px"><span>@lang('app.reference'):</span> {{$item->reference}}</p>
+                          <p class="m-0px"><span>@lang('app.txt.price'):</span>{{$item->price}}</p>
+                          @if($location)
+                            <p class="m-0px"><span>@lang('app.txt.product_location'):</span> {{$location?$location->formatted:'Localisation inconnue'}}</p>
+                          @endif
+                          <p class="m-0px"><span>@lang('app.txt.area'):</span> {{$item->area}}</p>
+                          <p class="m-0px"><span>@lang('app.txt.carport_spaces'):</span> {{$item->carport_spaces}}</p>
+                          <p class="m-0px"><span>@lang('app.txt.garage_spaces'):</span> {{$item->garage_spaces}}</p>
+                          <p class="m-0px"><span>@lang('app.txt.off_street_spaces'):</span> {{$item->off_street_spaces}}</p>
+                          <p class="m-0px"><span>@lang('app.txt.bathrooms'):</span> {{$item->bathrooms}}</p>
+                          <p class="m-0px"><span>@lang('app.txt.bedrooms'):</span> {{$item->bedrooms}}</p>
+                          <p class="m-0px"><span>@lang('app.txt.ensuite'):</span> {{$item->ensuite}}</p>
+                          <p class="m-0px"><span>@lang('app.txt.land_area'):</span> {{$item->land_area}}</p>
+                          <p class="m-0px"><span>@lang('app.txt.floor_area'):</span> {{$item->floor_area}}</p>
+                          <p class="m-0px"><span>@lang('app.txt.number_of_floors'):</span> {{$item->number_of_floors}}</p>
+                      </div>
+                  </div>
+                  <div class="comments-area m-40px-t m-50px-b">
+                      <div class="border-bottom-1 border-color-gray p-10px-b m-25px-b">
+                          <h4 class="m-0px">@lang('app.description')</h4>
+                      </div>
+                      <ul class="comment-list">
+                          <li class="comment">
+                            <p>{{$item->content}}</p>
+                          </li>
+                      </ul>
+                  </div>
+                  <div class="card gray-bg">
+                      <div class="card-body">
+                          <h4 class="m-30px-b">@lang('app.txt.product_location')</h4>
+                          <!-- <div id="map"></div> -->
+                          <div class="p-15px white-bg box-shadow">
+                            <div class="embed-responsive embed-responsive-21by9">
+                                <iframe class="embed-responsive-item" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3151.840107317064!2d144.955925!3d-37.817214!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb6899234e561db11!2sEnvato!5e0!3m2!1sen!2sin!4v1520156366883" allowfullscreen=""></iframe>
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+
+                <!-- Sidebar -->
+                    @include('V2.includes.sidebar')
+                <!-- fin sidebar -->
+
             </div>
         </div>
-    </div>
+    </section>
 
-    <div id="blog-listing" class="grid-style">
-        <section id="property-listing">
-            <header class="section-header text-center">
-                <div class="container">
-                    <h2 class="pull-left">@lang('app.txt.latest_product')</h2>
-                </div>
-            </header>
-
-            <div class="container section-layout">
-                <div class="row">
-                    <!-- start section products -->
-                    @foreach($products as $product)
-                    <div class="col-lg-4 col-sm-6 layout-item-wrap">
-                        @include('product.single', ['item'=>$product])
-                    </div>
-                    @endforeach
-                    <!-- end section products -->
+    <!-- Section -->
+    <section class="section gray-bg">
+        <div class="container">
+            <div class="row justify-content-center sm-m-20px-b m-40px-b">
+                <div class="col-lg-8 text-center">
+                    <label class="border-bottom-2 text-uppercase font-w-600 theme-color border-color-theme2nd">@lang('app.txt.product')</label>
+                    <h3 class="h1 m-0px">@lang('app.txt.latest_product')</h3>
                 </div>
             </div>
-        </section>
-    </div>
-</div>
+            <div class="row">
+                <!-- start section products -->
+                @foreach($products as $product)
+                <!-- <div class="col-lg-10 col-sm-12 layout-item-wrap"> -->
+                    @include('V2.product.single', ['item'=>$product])
+                <!-- </div> -->
+                @endforeach
+                <!-- end section products -->
+            </div>
+        </div>
+    </section>          
+    <!-- End Section -->
+    
+</main>
+
 @endsection
     
 @section('script')
