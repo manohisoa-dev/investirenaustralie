@@ -1,91 +1,66 @@
-@extends('layouts.admin')
+@extends('V2.admin.layouts.app')
 
-@section('content')
-<div id="main-content" class="main-content container-fluid">
-    <div id="page-content" class="page-content tab-content overflow-y">
-        <div id="TabTop1" class="tab-pane padding-bottom30 active fade in">
-            @include('includes.alerts')
-            <div class="page-header">
-                <h3>Profil administrateur</h3>
-            </div>
-            <div class="row-fluid">
-                <div class="grider">
-                    <form class="form-horizontal" method="post" action="{{$action}}" enctype="multipart/form-data" data-upload-template-id="template-upload-1" data-download-template-id="template-download-1">
-                        {{ csrf_field() }}
-                        <div class="widget widget-simple">
-                            <div class="widget-header">
-                                <h4>@lang('app.form.login')</h4>
-                            </div>
-                            <div class="widget-content">
-                                <div class="widget-body">
-                                    <div class="control-group">
-                                        <input class="input-block-level" value="{{$item->name}}" placeholder="@lang('app.form.login')" disabled>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="widget widget-simple">
-                            <div class="widget-header">
-                                <h4>@lang('app.form.email')</h4>
-                            </div>
-                            <div class="widget-content">
-                                <div class="widget-body">
-                                    <div class="control-group">
-                                        <input name="email" class="input-block-level" value="{{$item->email}}" placeholder="@lang('app.form.email')">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="widget widget-simple">
-                            <div class="widget-header">
-                                <h4>@lang('app.form.language')</h4>
-                            </div>
-                            <div class="widget-content">
-                                <div class="widget-body">
-                                    <div class="control-group">
-                                        <select name="language" class="form-control" id="language">
-                                            <option value="fr" {{$item->language=='fr'?'selected':''}}>Français</option>
-                                            <option value="en" {{$item->language=='en'?'selected':''}}>English</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="widget widget-simple">
-                            <div class="widget-header">
-                                <h4>@lang('app.form.first_name')</h4>
-                            </div>
-                            <div class="widget-content">
-                                <div class="widget-body">
-                                    <div class="control-group">
-                                        <input class="input-block-level" value="{{old('first_name', $item->meta('first_name', ''))}}" name="first_name" placeholder="@lang('app.form.first_name')">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="widget widget-simple">
-                            <div class="widget-header">
-                                <h4>@lang('app.form.last_name')</h4>
-                            </div>
-                            <div class="widget-content">
-                                <div class="widget-body">
-                                    <div class="control-group">
-                                        <input class="input-block-level" value="{{old('last_name', $item->meta('last_name', ''))}}" name="last_name" placeholder="@lang('app.form.last_name')">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-actions no-margin-bootom">
-                            <button type="submit" class="btn btn-green">Sauvegarder</button>
-                            <button class="btn cancel" type="reset">Annuler</button>
-                            <a href="javascript:history.back()" class="btn btn-green pull-right" type="submit">Allez au precedent</a>
-                        </div> 
+@section('breadcrumb')
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2>@lang('app.login_info')</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{{url('V2/admin')}}">Acceuil</a>
+                </li>
+				<li class="breadcrumb-item">
+					<a>Profile</a>
+				</li>
+                <li class="breadcrumb-item active">
+                    <strong>Modification</strong>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
 
-                    </form>
-                </div>
-            </div>
         </div>
     </div>
-</div>
 @endsection
 
+@section('content')
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="ibox ">
+			<div class="ibox-title">
+				<h5>Modifier Profile</h5>
+			</div>
+			<div class="ibox-content">
+				@include('includes.alerts')
+				<form class="form-horizontal" method="post" action="{{$action}}" enctype="multipart/form-data" data-upload-template-id="template-upload-1" data-download-template-id="template-download-1">
+					{{ csrf_field() }}
+					<div class="form-group">
+						<label>@lang('app.form.login')</label> 
+						<input type="text" value="{{$item->name}}" placeholder="@lang('app.form.login')" class="form-control" disabled>
+					</div>
+					<div class="form-group">
+						<label>@lang('app.form.email')</label> 
+						<input type="email" value="{{$item->email}}" placeholder="@lang('app.form.email')" name="email" class="form-control">
+					</div>
+					<div class="form-group">
+						<label>@lang('app.form.language')</label> 
+						<select name="language" class="form-control" id="language">
+							<option value="fr" {{$item->language=='fr'?'selected':''}}>Français</option>
+							<option value="en" {{$item->language=='en'?'selected':''}}>English</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label>@lang('app.form.first_name')</label> 
+						<input type="text" value="{{old('first_name', $item->meta('first_name', ''))}}" placeholder="@lang('app.form.first_name')" name="first_name" class="form-control">
+					</div>
+					<div class="form-group">
+						<label>@lang('app.form.last_name')</label> 
+						<input type="text" value="{{old('last_name', $item->meta('last_name', ''))}}" placeholder="@lang('app.form.last_name')" name="last_name" class="form-control">
+					</div>
+					<div class="hr-line-dashed"></div>
+					<button type="submit" class="btn btn-danger">Sauvegarder</button>
+					<a class="btn btn-default" href="{{route('profile')}}">Annuler</a>
+					<a href="javascript:history.back()" class="btn btn-primary pull-right" type="submit">Allez au precedent</a>
+				</form>
+			</div>
+		</div>
+	</div>
+@endsection

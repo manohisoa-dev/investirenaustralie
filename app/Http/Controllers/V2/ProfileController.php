@@ -51,7 +51,7 @@ class ProfileController extends Controller
         $action = route('profile.edit');
         
         if(Auth::user()->isAdmin()){
-            $view = view('admin.user.edit.update');
+            $view = view('V2.admin.user.edit.update');
         }else{
             $view = view('backend.user.edit.update');
         }
@@ -85,7 +85,6 @@ class ProfileController extends Controller
         
         // Get post datas
         $datas = $request->all();
-        
         // Validate type Only
         if($role=='member'){
             $validator = Validator::make($datas, ['type' => 'required|max:100',]);
@@ -97,7 +96,7 @@ class ProfileController extends Controller
         
         $default = [
             'name'     => 'required|unique:users,name|max:100',
-            'email'    => 'required|unique:users,email|max:100',
+            'email'    => 'required|unique:users,email,'.$user->id.'|max:100',
             'language' => 'required|max:100',
             'image'    => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
@@ -124,7 +123,7 @@ class ProfileController extends Controller
                 $rules = [
                     'orga_name'         => 'required|max:100',
                     'orga_presentation' => 'required|max:100',
-                    'orga_email'        => 'required|email|max:100',
+                    'orga_email'        => 'required|unique:users,email,'.$user->id.'|max:100',
                     'orga_phone'        => 'required|max:100',
                     'orga_website'      => 'required|url|max:100',
                     
@@ -143,14 +142,14 @@ class ProfileController extends Controller
                 $rules = [
                     'orga_name'         => 'required|max:100',
                     'orga_presentation' => 'required|max:100',
-                    'orga_email'        => 'required|email|max:100',
+                    'orga_email'        => 'required|unique:users,email,'.$user->id.'|max:100',
                     'orga_phone'        => 'required|max:100',
                     'orga_website'      => 'required|url|max:100',
                     
                     'orga_operation_range' => 'required|max:100',
 
                     'contact_name'  => 'required|max:100',
-                    'contact_email' => 'required|email|max:100',
+                    'contact_email' => 'required|unique:users,email,'.$user->id.'|max:100',
                     'contact_phone' => 'required|max:100',
 
                     'bank_iban' => 'max:100',
@@ -161,7 +160,7 @@ class ProfileController extends Controller
                 $rules = [
                     'orga_name'         => 'required|max:100',
                     'orga_presentation' => 'required|max:100',
-                    'orga_email'        => 'required|email|max:100',
+                    'orga_email'        => 'required|unique:users,email,'.$user->id.'|max:100',
                     'orga_phone'        => 'required|max:100',
                     'orga_website'      => 'required|url|max:100',
 
@@ -176,7 +175,7 @@ class ProfileController extends Controller
                 break;
             case 'admin':
                 $rules = [
-                    'email'    => 'required|unique:users,email|max:100',
+                    'email'    => 'required|unique:users,email,'.$user->id.'|max:100',
                     'language'   => 'required|max:100',
                     'first_name' => 'required|max:100',
                     'last_name'  => 'required|max:100',
@@ -289,7 +288,7 @@ class ProfileController extends Controller
     public function avatar()
     {
         if(Auth::user()->isAdmin()){
-            $view = view('admin.user.edit.avatar');
+            $view = view('V2.admin.user.edit.avatar');
         }else{
             $view = view('backend.user.edit.avatar');
         }

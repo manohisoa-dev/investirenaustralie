@@ -16,10 +16,11 @@ use Illuminate\Support\Facades\Storage;
 Route::prefix('V2')->namespace('V2')->group(function(){
     Route::prefix('admin')->middleware(["auth","role:admin"])->group(function(){
         Route::get('/', 'AdminController@dashboard')->name('admin.dashboard');
+        Route::get('profile', 'ProfileController@index')->name('profile');
+        Route::get('upadate', 'ProfileController@profile')->name('profile.upadate');
+        Route::post('edit', 'ProfileController@editProfile')->name('profile.edit');
+        Route::get('avatar', 'ProfileController@avatar')->name('avatar.edit');
         Route::get('/config/site', 'ConfigController@site')->name('admin.config.site');
-    });
-    Route::prefix('profile')->group(function(){
-        Route::get('/', 'ProfileController@index')->name('profile');
     });
 });
 

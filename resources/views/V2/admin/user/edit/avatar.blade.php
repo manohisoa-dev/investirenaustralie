@@ -1,34 +1,36 @@
-@extends('layouts.admin')
+@extends('V2.admin.layouts.app')
+@section('breadcrumb')
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2>@lang('app.login_info')</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{{url('V2/admin')}}">Acceuil</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    <strong>Profile</strong>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
 
-@section('content')
-<div id="main-content" class="main-content container-fluid">
-    <form class="form-horizontal" role="form" method="post" action="{{route('avatar.edit')}}" 
-          enctype="multipart/form-data">
-        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-        @include('includes.alerts')
-        <fieldset>
-            <legend>Modification Image</legend>
-            <div class="col-sm-12">
-                <div class="col-sm-4">
-                    <section class="widget">
-                        <img src="{{$item->imageUrl()}}" alt="{{$item->name}}" width="100%">
-                    </section>
-                </div>
-                <div class="col-sm-8">
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <input type="file" class="form-control" id="image" name="image" >
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-12">
-                            <button type="submit" class="btn btn-primary">Sauvegarder</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </fieldset>
-    </form>
-</div>
+        </div>
+    </div>
 @endsection
 
+@section('content')
+	<div class="wrapper wrapper-content animated fadeInRight">
+	<form class="form-horizontal" role="form" method="post" action="{{route('avatar.edit')}}" enctype="multipart/form-data">
+		<div class="row m-b-lg m-t-lg">
+			<div class="col-md-4">
+				<div class="profile-image">
+					<img src="{{$item->imageUrl()}}" alt="{{$item->name}}" class="rounded-circle circle-border m-b-md" alt="profile">
+				</div>
+			</div>
+			<div class="col-md-8">
+			
+			</div>
+		</div>
+	</form>
+	</div>
+@endsection
