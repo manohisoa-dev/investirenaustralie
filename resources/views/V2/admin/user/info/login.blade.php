@@ -1,26 +1,37 @@
-<div class="widget widget-simple">
-    <div class="widget-content">
-        <div class="widget-body">
-            <fieldset>
-                <legend>@lang('app.login_info')</legend>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="col-sm-3">
-                            <section class="widget">
-                                <img src="{{$item->imageUrl(false)}}" alt="{{$item->name}}"  width="100%">
-                            </section>
-                        </div>
-                        <div class="col-sm-9">
-                            <p><strong>@lang('app.form.login')</strong>: {{$item->name}}</p>
-                            <p><strong>@lang('app.form.email')</strong>: {{$item->email}}</p>
-                            <p><strong>@lang('app.form.language')</strong>: {{$item->language=='en'?'English':'Français'}}</p>
-                            <p><strong>@lang('app.user.ontrial')</strong>: {{$item->onTrial()?'oui':'non'}}</p>
-                            <p><strong>@lang('app.user.trial_end_at')</strong>: {{$item->trial_ends_at}}</p>
-                        </div>
-                    </div>
-                </div>
-            </fieldset>
-        </div>
-    </div>
+<div class="ibox ">
+	<div class="ibox-title">
+		<h5>@lang('app.login_info')</h5>
+	</div>
+	<div class="ibox-content">
+		<div class="row">
+			<div class="col-md-4">
+				<img src="{{$item->imageUrl(false)}}" alt="{{$item->name}}"  width="100%">
+			</div>
+			<div class="col-md-8">
+				<table class='table table-borderless'>
+					<tr>
+						<th width="35%">@lang('app.form.login')</th>
+						<td>{{$item->name}}</td>
+					</tr>
+					<tr>
+						<th width="35%">@lang('app.form.email')</th>
+						<td>{{$item->email}}</td>
+					</tr>
+					<tr>
+						<th width="35%">@lang('app.form.language')</th>
+						<td>{{$item->language=='en'?'English':'Français'}}</td>
+					</tr>
+					<tr>
+						<th width="35%">@lang('app.user.ontrial')</th>
+						<td>{{$item->onTrial()?'oui':'non'}}</td>
+					</tr>
+					<tr>
+						<th width="35%">@lang('app.user.trial_end_at')</th>
+						<td>{{$item->trial_ends_at}}</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
 </div>
 <!-- // Widget -->

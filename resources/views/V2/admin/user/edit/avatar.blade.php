@@ -1,36 +1,33 @@
 @extends('V2.admin.layouts.app')
 @section('breadcrumb')
-    <div class="row wrapper border-bottom white-bg page-heading">
-        <div class="col-lg-10">
-            <h2>@lang('app.login_info')</h2>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="{{url('V2/admin')}}">Acceuil</a>
-                </li>
-                <li class="breadcrumb-item active">
-                    <strong>Profile</strong>
-                </li>
-            </ol>
-        </div>
-        <div class="col-lg-2">
-
-        </div>
-    </div>
+   @include('V2.layouts.breadcrumbs')
 @endsection
 
 @section('content')
 	<div class="wrapper wrapper-content animated fadeInRight">
-	<form class="form-horizontal" role="form" method="post" action="{{route('avatar.edit')}}" enctype="multipart/form-data">
-		<div class="row m-b-lg m-t-lg">
-			<div class="col-md-4">
-				<div class="profile-image">
-					<img src="{{$item->imageUrl()}}" alt="{{$item->name}}" class="rounded-circle circle-border m-b-md" alt="profile">
-				</div>
+		<div class="ibox ">
+			<div class="ibox-title">
+				<h5>Modification Image</h5>
 			</div>
-			<div class="col-md-8">
-			
+			<div class="ibox-content">
+				<form class="form-horizontal" role="form" method="post" action="{{route('admin.avatar.edit')}}" enctype="multipart/form-data">
+					<div class="row">
+						<div class="col-md-4">
+							<img src="{{$item->imageUrl()}}" alt="{{$item->name}}" width="100%">
+						</div>
+						<div class="col-md-8">
+							@include('includes.alerts')
+							<div class="form-group">
+								<label>@lang('app.avatar')</label> 
+								<input type="file" class="form-control" id="image" name="image" >
+							</div>
+							<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+							<div class="hr-line-dashed"></div>
+							<button type="submit" class="btn btn-danger">Sauvegarder</button>
+						</div>
+					</div>
+				</form>
 			</div>
 		</div>
-	</form>
 	</div>
 @endsection

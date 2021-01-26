@@ -1,22 +1,7 @@
 @extends('V2.admin.layouts.app')
-@section('title', 'Configuration site')
-@section('breadcrumb')
-    <div class="row wrapper border-bottom white-bg page-heading">
-        <div class="col-lg-10">
-            <h2>@lang('app.login_info')</h2>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="{{url('V2/admin')}}">Acceuil</a>
-                </li>
-                <li class="breadcrumb-item active">
-                    <strong>Profile</strong>
-                </li>
-            </ol>
-        </div>
-        <div class="col-lg-2">
 
-        </div>
-    </div>
+@section('breadcrumb')
+    @include('V2.layouts.breadcrumbs')
 @endsection
 
 @section('content')
@@ -66,10 +51,10 @@
 						</tr>
 					</tbody>
 				</table>
-				<a href="{{route('profile.upadate')}}" class="btn btn-default"><i class="fa fa-pencil"></i> Modifier profile</a>
-				<a href="{{route('avatar.edit')}}"  class="btn btn-default"><i class="fa fa-pencil"></i> Modifier Avatar</a>
-				<a href="{{route('password.edit')}}"  class="btn btn-default"><i class="fa fa-pencil"></i> Modifier Mot de passe</a>
-				<a href="{{route('location.edit')}}" class="btn btn-default"><i class="fa fa-pencil"></i> Modifier Localisation</a>
+				<a href="{{route('admin.profile.upadate')}}" class="btn btn-default"><i class="fa fa-pencil"></i> Modifier profile</a>
+				<a href="{{route('admin.avatar')}}"  class="btn btn-default"><i class="fa fa-pencil"></i> Modifier Avatar</a>
+				<a href="{{route('admin.password')}}"  class="btn btn-default"><i class="fa fa-pencil"></i> Modifier Mot de passe</a>
+				<a href="{{route('admin.location')}}" class="btn btn-default"><i class="fa fa-pencil"></i> Modifier Localisation</a>
 			</div>
 		</div>
 	</div>
