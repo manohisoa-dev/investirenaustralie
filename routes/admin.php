@@ -20,7 +20,19 @@ Route::prefix('V2')->namespace('V2')->as('v2.')->group(function(){
         Route::get('upadate', 'ProfileController@profile')->name('profile.upadate');
         Route::post('edit', 'ProfileController@editProfile')->name('profile.edit');
         Route::get('avatar', 'ProfileController@avatar')->name('avatar.edit');
-        Route::get('/config/site', 'ConfigController@site')->name('admin.config.site');
+    });
+
+    // Config Controller
+    Route::prefix('config')->group(function () {
+        Route::get('site', 'ConfigController@site')->name('config.site');
+        Route::post('site', 'ConfigController@site')->name('config.site.update');
+        Route::get('login', 'ConfigController@login')->name('config.login');
+        Route::post('login', 'ConfigController@login')->name('config.login.update');
+        Route::get('social', 'ConfigController@social')->name('config.social');
+        Route::post('social', 'ConfigController@social')->name('config.social.update');
+        Route::get('payment', 'ConfigController@payment')->name('config.payment');
+        Route::post('payment', 'ConfigController@payment')->name('config.payment.update');
+        Route::get('fontawesome', 'ConfigController@fontawesome')->name('config.fontawesome');
     });
 });
 
