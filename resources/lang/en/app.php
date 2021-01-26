@@ -282,6 +282,15 @@ return [
     'purchase' => 'Purchase',
     'purchases'=> 'Purchases',
     'empty_cart'  => 'Empty cart',
+    
+    //add par Rado
+    'avatar' => 'Avatar',
+    'title.password' => 'Update password',
+    'last.password' => 'Last password',
+    'new.password' => 'New password',
+    'confirm.password' => 'Confirm password',
+    'location' => 'Upadate location',
+    'password' => 'Password',
 
 
 ];

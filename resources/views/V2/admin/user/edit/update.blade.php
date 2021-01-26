@@ -1,25 +1,7 @@
 @extends('V2.admin.layouts.app')
 
 @section('breadcrumb')
-    <div class="row wrapper border-bottom white-bg page-heading">
-        <div class="col-lg-10">
-            <h2>@lang('app.login_info')</h2>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="{{url('V2/admin')}}">Acceuil</a>
-                </li>
-				<li class="breadcrumb-item">
-					<a>Profile</a>
-				</li>
-                <li class="breadcrumb-item active">
-                    <strong>Modification</strong>
-                </li>
-            </ol>
-        </div>
-        <div class="col-lg-2">
-
-        </div>
-    </div>
+    @include('V2.layouts.breadcrumbs')
 @endsection
 
 @section('content')
@@ -57,7 +39,7 @@
 					</div>
 					<div class="hr-line-dashed"></div>
 					<button type="submit" class="btn btn-danger">Sauvegarder</button>
-					<a class="btn btn-default" href="{{route('profile')}}">Annuler</a>
+					<a class="btn btn-default" href="{{route('admin.profile')}}">Annuler</a>
 					<a href="javascript:history.back()" class="btn btn-primary pull-right" type="submit">Allez au precedent</a>
 				</form>
 			</div>

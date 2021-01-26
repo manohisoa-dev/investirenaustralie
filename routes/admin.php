@@ -16,10 +16,19 @@ use Illuminate\Support\Facades\Storage;
 Route::prefix('V2')->namespace('V2')->as('v2.')->group(function(){
     Route::prefix('admin')->middleware(["auth","role:admin"])->group(function(){
         Route::get('/', 'AdminController@dashboard')->name('admin.dashboard');
-        Route::get('profile', 'ProfileController@index')->name('profile');
-        Route::get('upadate', 'ProfileController@profile')->name('profile.upadate');
-        Route::post('edit', 'ProfileController@editProfile')->name('profile.edit');
-        Route::get('avatar', 'ProfileController@avatar')->name('avatar.edit');
+        //profil
+        Route::get('profile', 'ProfileController@index')->name('admin.profile');
+        Route::get('edit', 'ProfileController@profile')->name('admin.profile.upadate');
+        Route::post('info', 'ProfileController@editProfile')->name('admin.profile.info');
+        Route::get('avatar', 'ProfileController@avatar')->name('admin.avatar');
+        Route::post('edit', 'ProfileController@updateAvatar')->name('admin.avatar.edit');
+        Route::get('password', 'ProfileController@password')->name('admin.password');
+        Route::post('update', 'ProfileController@updatePassword')->name('admin.password.edit');
+        Route::get('location', 'ProfileController@location')->name('admin.location');
+        Route::post('upadate', 'ProfileController@updateLocation')->name('admin.location.edit');
+        //user
+        Route::get('users/{filter?}', 'UserController@all')->name('admin.user.list.V2');
+        Route::get('show/{user}', 'UserController@show')->name('admin.user.show.V2');
     });
 
     // Config Controller

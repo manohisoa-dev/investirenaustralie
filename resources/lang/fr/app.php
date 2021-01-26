@@ -667,6 +667,15 @@ return [
 
     'dernierprod'           =>'Derniers Produits',
     'dernierart'           =>'Derniers Articles',
+    
+    //add par Rado
+    'avatar' => 'Avatar',
+    'title.password' => 'Modifiez mot de passe',
+    'last.password' => 'Ancien mot de passe',
+    'new.password' => 'Nouveau mot de passe',
+    'confirm.password' => 'Confirmer nouveau mot de passe',
+    'location' => 'Modification Localisation',
+    'password' => 'Mot de passe',
 
 ];
 

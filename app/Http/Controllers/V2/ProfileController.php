@@ -48,7 +48,7 @@ class ProfileController extends Controller
      */
     public function profile()
     {
-        $action = route('profile.edit');
+        $action = route('admin.profile.info');
         
         if(Auth::user()->isAdmin()){
             $view = view('V2.admin.user.edit.update');
@@ -58,7 +58,7 @@ class ProfileController extends Controller
         $breadcrumbs = [
             [
                 'active' => false,
-                'route'  => route('profile'),
+                'route'  => route('admin.profile'),
                 'label'  => __('app.profile'),
             ],
             [
@@ -231,7 +231,7 @@ class ProfileController extends Controller
     public function password()
     {
         if(Auth::user()->isAdmin()){
-            $view = view('admin.user.edit.password');
+            $view = view('V2.admin.user.edit.password');
         }else{
             $view = view('backend.user.edit.password');
         }
@@ -239,7 +239,7 @@ class ProfileController extends Controller
         $breadcrumbs = [
             [
                 'active'=>false,
-                'route'=>route('profile'),
+                'route'=>route('admin.profile'),
                 'label'=>__('app.profile'),
             ],
             [
@@ -296,7 +296,7 @@ class ProfileController extends Controller
         $breadcrumbs = [
             [
                 'active'=>false,
-                'route'=>route('profile'),
+                'route'=>route('admin.profile'),
                 'label'=>__('app.profile'),
             ],
             [
@@ -350,7 +350,7 @@ class ProfileController extends Controller
     public function location()
     {
         if(Auth::user()->isAdmin()){
-            $view = view('admin.user.edit.location');
+            $view = view('V2.admin.user.edit.location');
         }else{
             $view = view('backend.user.edit.location');
         }
@@ -358,7 +358,7 @@ class ProfileController extends Controller
         $breadcrumbs = [
             [
                 'active'=>false,
-                'route'=>route('profile'),
+                'route'=>route('admin.profile'),
                 'label'=>__('app.profile'),
             ],
             [
