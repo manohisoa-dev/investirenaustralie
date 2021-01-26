@@ -27,8 +27,8 @@ Route::prefix('V2')->namespace('V2')->as('v2.')->group(function(){
         Route::get('location', 'ProfileController@location')->name('admin.location');
         Route::post('upadate', 'ProfileController@updateLocation')->name('admin.location.edit');
         //user
-        Route::get('users/{filter?}', 'UserController@all')->name('admin.user.list.V2');
-        Route::get('show/{user}', 'UserController@show')->name('admin.user.show.V2');
+        Route::get('users/{filter?}', 'UserController@all')->name('admin.user.list');
+        Route::get('show/{user}', 'UserController@show')->name('admin.user.show');
     });
 
     // Config Controller

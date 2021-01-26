@@ -46,15 +46,15 @@
 								<strong>@lang('app.form.language')</strong>
 							</td>
 							<td>
-								{{$item->language == 'fr' ? 'Français' : 'Anglais'}}
+								{{$item->language == 'fr' ? 'Franï¿½ais' : 'Anglais'}}
 							</td>
 						</tr>
 					</tbody>
 				</table>
-				<a href="{{route('admin.profile.upadate')}}" class="btn btn-default"><i class="fa fa-pencil"></i> Modifier profile</a>
-				<a href="{{route('admin.avatar')}}"  class="btn btn-default"><i class="fa fa-pencil"></i> Modifier Avatar</a>
-				<a href="{{route('admin.password')}}"  class="btn btn-default"><i class="fa fa-pencil"></i> Modifier Mot de passe</a>
-				<a href="{{route('admin.location')}}" class="btn btn-default"><i class="fa fa-pencil"></i> Modifier Localisation</a>
+				<a href="{{route('v2.admin.profile.upadate')}}" class="btn btn-default"><i class="fa fa-pencil"></i> Modifier profile</a>
+				<a href="{{route('v2.admin.avatar')}}"  class="btn btn-default"><i class="fa fa-pencil"></i> Modifier Avatar</a>
+				<a href="{{route('v2.admin.password')}}"  class="btn btn-default"><i class="fa fa-pencil"></i> Modifier Mot de passe</a>
+				<a href="{{route('v2.admin.location')}}" class="btn btn-default"><i class="fa fa-pencil"></i> Modifier Localisation</a>
 			</div>
 		</div>
 	</div>

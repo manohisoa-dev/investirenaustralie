@@ -7,10 +7,10 @@
             <span class="text-muted text-xs block">{{ucfirst(Auth::user()->role)}}<b class="caret"></b></span>
         </a>
         <ul class="dropdown-menu animated fadeInRight m-t-xs">
-            <li><a class="dropdown-item" href="{{route('admin.profile')}}">Profile</a></li>
-            <li><a class="dropdown-item" href="{{route('admin.avatar')}}">Avatar</a></li>
-            <li><a class="dropdown-item" href="{{route('admin.password')}}">Mot de passe</a></li>
-			<li><a class="dropdown-item" href="{{route('admin.location')}}">Localisation</a></li>
+            <li><a class="dropdown-item" href="{{route('v2.admin.profile')}}">Profile</a></li>
+            <li><a class="dropdown-item" href="{{route('v2.admin.avatar')}}">Avatar</a></li>
+            <li><a class="dropdown-item" href="{{route('v2.admin.password')}}">Mot de passe</a></li>
+			<li><a class="dropdown-item" href="{{route('v2.admin.location')}}">Localisation</a></li>
             <li class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="{{ route('logout') }}">{{__('app.logout')}}</a></li>
         </ul>
@@ -43,22 +43,22 @@
 	</a>
     <ul class="nav nav-second-level collapse">
 		<li class="{{ (request()->is('V2/admin/users')) ? 'active' : '' }}">
-			<a href="{{ route('admin.user.list.V2') }}">Tous</a>
+			<a href="{{ route('v2.admin.user.list') }}">Tous</a>
 		</li>
         <li class="{{ (request()->is('V2/admin/users/admin')) ? 'active' : '' }}">
-			<a href="{{route('admin.user.list.V2', ['filter'=>'admin'])}}">Admin</a>
+			<a href="{{route('v2.admin.user.list', ['filter'=>'admin'])}}">Admin</a>
 		</li>
         <li class="{{ (request()->is('V2/admin/users/seller')) ? 'active' : '' }}">
-			<a href="{{route('admin.user.list.V2', ['filter'=>'seller'])}}">Vendeurs</a>
+			<a href="{{route('v2.admin.user.list', ['filter'=>'seller'])}}">Vendeurs</a>
 		</li>
         <li class="{{ (request()->is('V2/admin/users/afa')) ? 'active' : '' }}">
-			<a href="{{route('admin.user.list.V2', ['filter'=>'afa'])}}">AFA</a>
+			<a href="{{route('v2.admin.user.list', ['filter'=>'afa'])}}">AFA</a>
 		</li>
         <li class="{{ (request()->is('V2/admin/users/apl')) ? 'active' : '' }}">
-			<a href="{{route('admin.user.list.V2', ['filter'=>'apl'])}}">APL</a>
+			<a href="{{route('v2.admin.user.list', ['filter'=>'apl'])}}">APL</a>
 		</li>
         <li class="{{ (request()->is('V2/admin/users/member')) ? 'active' : '' }}">
-			<a href="{{route('admin.user.list.V2', ['filter'=>'member'])}}">Membres</a>
+			<a href="{{route('v2.admin.user.list', ['filter'=>'member'])}}">Membres</a>
 		</li>
     </ul>
 </li>
