@@ -17,8 +17,8 @@ return [
     'trial_end'    => 'Vous devez mettre a jour votre inscription. Choisissez un plan.',
     
     'num.area' => ':num m2',
-    'num.bed' =>  ':num chambres',
-    'num.bath' =>  ':num douches',
+    'num.bed' =>  ':num Chs',
+    'num.bath' =>  ':num Sdb', 
     'yes' =>  'oui',
     'no' =>  'non',
     
@@ -529,6 +529,11 @@ return [
     'txt.no_more_data'  => "Pas plus de donnee trouvee",
     'txt.load_more_product'  => "Chargement de plus de produit",
     'txt.load_more_blog'  => "Chargement de plus de blog",
+    'txt.all_products'      =>'Tous les produits',
+    'txt.industriel'      =>'Industriel',
+    'txt.commercial'      =>'Commercial',
+    'txt.residentiel'      =>'Residentiel',
+    'txt.foncier'      =>'Foncier',
     
     
     'childs' => 'Fils',
@@ -656,6 +661,9 @@ return [
     'txt.enregistrer_recherche'      =>'Enregister la recherche',
     'txt.nos_services'      =>'Nos services',
     'txt.blogs'      =>'Blogs',
+    'txt.listes_des_agences_partenaires_locales' =>  'Listes des Agences partenaires Locales',
+    'txt.products'      =>'Produits',
+    'txt.product'      =>'produits',
 
     'dernierprod'           =>'Derniers Produits',
     'dernierart'           =>'Derniers Articles',

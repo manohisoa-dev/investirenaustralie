@@ -1,21 +1,28 @@
-@extends('layouts.app')
+@extends('V2.layouts.app')
 
 @section('content')
-<div class="content corps" style="margin-top: 160px;">
-    <div class="container">
-        <div class="row">
-            @include('includes.alerts')
-            <fieldset>
-                <legend>@lang('app.select_apl')</legend>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div id="map" style="height: 400px;"></div>
-                    </div>
-                </div>
-            </fieldset>
+
+@component('V2.includes.breadcrumb')
+    @lang('app.list_apl')
+@endcomponent
+
+<section class="section gray-bg">
+  <div class="container">
+      <div class="row justify-content-center">
+        <div>
+          <h2 class="font-15 m-10px-b">@lang('app.select_apl')</h2>
         </div>
-    </div>
-</div>
+
+          <div class="col-12 m-30px-t">
+              <div class="p-15px white-bg box-shadow">
+                  <div class="embed-responsive embed-responsive-21by9">
+                      <iframe class="embed-responsive-item" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3151.840107317064!2d144.955925!3d-37.817214!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb6899234e561db11!2sEnvato!5e0!3m2!1sen!2sin!4v1520156366883" allowfullscreen=""></iframe>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
 
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">

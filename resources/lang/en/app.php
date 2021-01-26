@@ -223,6 +223,13 @@ return [
     'txt.detail'  => "Detail",
     'txt.nos_services'      =>'Our services',
     'txt.blogs'      =>'Blogs',
+    'txt.products'      =>'Products',
+    'txt.product'      =>'Product',
+    'txt.all_products'      =>'All products',
+    'txt.industriel'      =>'Industrial',
+    'txt.commercial'      =>'Commercial',
+    'txt.residentiel'      =>'Residential',
+    'txt.foncier'      =>'Land',
 
     'dernierprod'           =>'Last Products',
     'dernierart'           =>'Last Articles',
@@ -230,10 +237,11 @@ return [
     'list_apl'  => 'Lists of Local Partner Agencies',
     'recent.product'  => 'Recent products',
     'recent.category' => 'Recent categories',
+    'txt.listes_des_agences_partenaires_locales' =>  'Lists of Local Partner Agencies',
 
     'num.area' => ':num m2',
-    'num.bed' =>  ':num bedrooms',
-    'num.bath' =>  ':num showers',
+    'num.bed' =>  ':num Chs',
+    'num.bath' =>  ':num Bth',
     'yes' =>  'yes',
     'no' =>  'no',
 
@@ -283,6 +291,7 @@ return [
     'confirm.password' => 'Confirm password',
     'location' => 'Upadate location',
     'password' => 'Password',
+
 
 ];
 

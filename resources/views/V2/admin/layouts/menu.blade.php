@@ -161,7 +161,7 @@
 <li>
     <a href="#"><i class="fa fa-wrench" title="Configurations"></i> <span class="nav-label">Configurations</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
-        <li><a href="{{route('admin.config.site')}}">Information du site</a></li>
+        <li><a href="{{route('v2.admin.config.site')}}">Information du site</a></li>
         <li><a href="table_data_tables.html">Ecran de connexion</a></li>
         <li><a href="table_foo_table.html">Réseaux sociaux</a></li>
         <li><a href="table_foo_table.html">Paiement</a></li>
