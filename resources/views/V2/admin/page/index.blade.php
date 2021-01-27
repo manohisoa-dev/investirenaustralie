@@ -43,8 +43,8 @@
                                                     {!!\Nvd\Crud\Html::sortableTh('language','v2.page.index','Language')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('parent_id','v2.page.index','Parent Id')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('author_id','v2.page.index','Author Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.page.index','Created At')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.page.index','Updated At')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.page.index','Créer le')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.page.index','Mise à jour le')!!}
                                             <th></th>
                     </tr>
                     <tr class="search-row">

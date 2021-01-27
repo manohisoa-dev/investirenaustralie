@@ -8,7 +8,7 @@
                 <th scope="col">Description<span class="column-sorter"></span></th>
                 <th scope="col">Liens<span class="column-sorter"></span></th>
                 <th scope="col">Pages<span class="column-sorter"></span></th>
-                <th scope="col">Date de publication <span class="column-sorter"></span></th>
+                <th scope="col">Créer le <span class="column-sorter"></span></th>
                 <th scope="col">Auteur <span class="column-sorter"></span></th>
                 <th scope="col">Actions </th>
             </tr>

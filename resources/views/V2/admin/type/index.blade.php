@@ -40,8 +40,8 @@
                                                     {!!\Nvd\Crud\Html::sortableTh('content','v2.type.index','Content')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('object_type','v2.type.index','Object Type')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('author_id','v2.type.index','Author Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.type.index','Created At')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.type.index','Updated At')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.type.index','Créer le')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.type.index','Mise à jour le')!!}
                                             <th></th>
                     </tr>
                     <tr class="search-row">

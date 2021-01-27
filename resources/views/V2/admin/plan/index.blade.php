@@ -41,8 +41,8 @@
                                                     {!!\Nvd\Crud\Html::sortableTh('description','v2.plan.index','Description')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('type','v2.plan.index','Type')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('role','v2.plan.index','Role')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.plan.index','Created At')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.plan.index','Updated At')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.plan.index','Créer le')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.plan.index','Mise à jour le')!!}
                                             <th></th>
                     </tr>
                     <tr class="search-row">

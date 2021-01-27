@@ -7,7 +7,7 @@
                 <th scope="col">Statut <span class="column-sorter"></span></th>
                 <th scope="col">Auteur <span class="column-sorter"></span></th>
                 <th scope="col">Reponses <span class="column-sorter"></span></th>
-                <th scope="col">Date de publication <span class="column-sorter"></span></th>
+                <th scope="col">Créer le <span class="column-sorter"></span></th>
                 <th scope="col">Actions</th>
             </tr>
         </thead>

@@ -39,8 +39,8 @@
                                                     {!!\Nvd\Crud\Html::sortableTh('content','v2.country.index','Content')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('prefixPhone','v2.country.index','PrefixPhone')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('placeholder','v2.country.index','Placeholder')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.country.index','Created At')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.country.index','Updated At')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.country.index','Créer le')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.country.index','Mise à jour le')!!}
                                             <th></th>
                     </tr>
                     <tr class="search-row">

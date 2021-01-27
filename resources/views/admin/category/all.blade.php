@@ -31,7 +31,7 @@
                             <tr>
                                 <th scope="col">ID <span class="column-sorter"></span></th>
                                 <th scope="col">Titre <span class="column-sorter"></span></th>
-                                <th scope="col">Date de publication <span class="column-sorter"></span></th>
+                                <th scope="col">Créer le <span class="column-sorter"></span></th>
                                 <th scope="col">Produits/SubProduits<span class="column-sorter"></span></th>
                                 <th scope="col">Blogs<span class="column-sorter"></span></th>
                                 <th scope="col">Auteur<span class="column-sorter"></span></th>

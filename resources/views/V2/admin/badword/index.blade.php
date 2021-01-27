@@ -36,8 +36,8 @@
                     <tr class="header-row">
                                                     {!!\Nvd\Crud\Html::sortableTh('id','v2.badword.index','Id')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('content','v2.badword.index','Content')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.badword.index','Created At')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.badword.index','Updated At')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.badword.index','Créer le')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.badword.index','Mise à jour le')!!}
                                             <th></th>
                     </tr>
                     <tr class="search-row">

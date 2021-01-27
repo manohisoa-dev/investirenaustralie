@@ -32,7 +32,7 @@
                             <th scope="col">ID <span class="column-sorter"></span></th>
                             <th scope="col">Nom<span class="column-sorter"></span></th>
                             <th scope="col">Type<span class="column-sorter"></span></th>
-                            <th scope="col">Date de publication <span class="column-sorter"></span></th>
+                            <th scope="col">Créer le <span class="column-sorter"></span></th>
                         </tr>
                     </thead>
                     <tbody>

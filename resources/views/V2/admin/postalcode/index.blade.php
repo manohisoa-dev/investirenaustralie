@@ -36,8 +36,8 @@
                     <tr class="header-row">
                                                     {!!\Nvd\Crud\Html::sortableTh('id','v2.postalcode.index','Id')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('content','v2.postalcode.index','Content')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.postalcode.index','Created At')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.postalcode.index','Updated At')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.postalcode.index','Créer le')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.postalcode.index','Mise à jour le')!!}
                                             <th></th>
                     </tr>
                     <tr class="search-row">
