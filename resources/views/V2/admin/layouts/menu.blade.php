@@ -62,10 +62,10 @@
 		</li>
     </ul>
 </li>
-<li>
+<li class="{{Request::is('*/product/*') || Request::is('*/product') ? 'active' : ''}}">
     <a href="mailbox.html"><i class="fa fa-product-hunt" title="Produits"></i> <span class="nav-label">Produits </span><span class="label label-warning float-right">16/24</span></a>
     <ul class="nav nav-second-level collapse">
-        <li><a href="mailbox.html">Liste des produits</a></li>
+        <li><a href="{{route('v2.product.index')}}">Liste des produits</a></li>
         <li><a href="mail_detail.html">Produits en attente</a></li>
         <li><a href="mail_compose.html">Produits publiés</a></li>
         <li><a href="email_template.html">Produits commandés</a></li>
