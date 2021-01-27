@@ -6,24 +6,27 @@
 @extends('<?=config('crud.layout')?>')
 
 @section('breadcrumb')
-<div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-    <h2><?= $gen->titlePlural() ?></h2>
-    <ol class="breadcrumb">
-        <li>
-            <a href="{{ route('<?= $gen->generateRouteAction('index') ?>') }}"><?= $gen->titlePlural() ?></a>
-        </li>
-        <li class="active">
-            <strong>Listes</strong>
-        </li>
-    </ol>
-</div>
-<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-    <div class="title-action">
-        <a href="{{ route('<?= $gen->generateRouteAction('create') ?>') }}" type="button" class="btn btn-primary btn-block">
-            <i class="fa fa-plus"></i> Ajouter un nouveau <?=$gen->titleSingular()?>
-        </a>
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
+        <h2><?= $gen->titlePlural() ?></h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{{ route('<?= $gen->generateRouteAction('index') ?>') }}"><?= $gen->titlePlural() ?></a>
+            </li>
+            <li class="breadcrumb-item active">
+                <strong>Listes</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <div class="title-action">
+            <a href="{{ route('<?= $gen->generateRouteAction('create') ?>') }}" type="button" class="btn btn-primary btn-block">
+                <i class="fa fa-plus"></i> Ajouter un nouveau <?=$gen->titleSingular()?>
+            </a>
+        </div>
     </div>
 </div>
+
 @endsection
 
 @section('content')

@@ -3,13 +3,13 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Countries</h2>
+        <h2>States</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Countries</a>
+                <a href="#">States</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.country.index') }}">Listes</a>
+                <a href="{{ route('v2.state.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Détail</strong>
@@ -28,37 +28,29 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Détail Country : {{$country->code}}</h5>
+                <h5>Détail State : {{$state->content}}</h5>
             </div>
             <div class="ibox-content">
                 <ul class="list-group">
                                         <li class="list-group-item">
                         <h4>Id</h4>
-                        <h5>{{$country->id}}</h5>
-                    </li>
-                                        <li class="list-group-item">
-                        <h4>Code</h4>
-                        <h5>{{$country->code}}</h5>
+                        <h5>{{$state->id}}</h5>
                     </li>
                                         <li class="list-group-item">
                         <h4>Content</h4>
-                        <h5>{{$country->content}}</h5>
+                        <h5>{{$state->content}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>PrefixPhone</h4>
-                        <h5>{{$country->prefixPhone}}</h5>
-                    </li>
-                                        <li class="list-group-item">
-                        <h4>Placeholder</h4>
-                        <h5>{{$country->placeholder}}</h5>
+                        <h4>Country</h4>
+                        <h5>{{$state->country}}</h5>
                     </li>
                                         <li class="list-group-item">
                         <h4>Created At</h4>
-                        <h5>{{$country->created_at}}</h5>
+                        <h5>{{$state->created_at}}</h5>
                     </li>
                                         <li class="list-group-item">
                         <h4>Updated At</h4>
-                        <h5>{{$country->updated_at}}</h5>
+                        <h5>{{$state->updated_at}}</h5>
                     </li>
                                     </ul>
             </div>

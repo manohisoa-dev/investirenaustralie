@@ -25,6 +25,7 @@ Route::prefix('V2')->namespace('V2')->as('v2.')->group(function(){
         Route::get('show/{user}', 'UserController@show')->name('admin.user.show');
 
         Route::resource('country','CountryController');
+        Route::resource('state','StateController');
     });
 
     // Config Controller
