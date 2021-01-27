@@ -11,7 +11,7 @@
                 <a href="#">Products</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.product.index') }}">Listes</a>
+                <a href="{{ route('v2.admin.product.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Edition</strong>
@@ -32,7 +32,7 @@
                 <h5>Mise à jour Product : {{$product->reference}}</h5>
             </div>
             <div class="ibox-content">
-                <form action="{{ route('v2.product.index')}}/{{$product->id}}" method="post">
+                <form action="{{ route('v2.admin.product.index')}}/{{$product->id}}" method="post">
 
                     {{ csrf_field() }}
 

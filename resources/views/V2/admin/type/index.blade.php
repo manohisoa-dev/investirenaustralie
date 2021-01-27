@@ -8,7 +8,7 @@
         <h2>Types</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.type.index') }}">Types</a>
+                <a href="{{ route('v2.admin.type.index') }}">Types</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Listes</strong>
@@ -36,14 +36,14 @@
                 <table class="table table-striped grid-view-tbl">
                 <thead>
                     <tr class="header-row">
-                                                    {!!\Nvd\Crud\Html::sortableTh('id','v2.type.index','Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('slug','v2.type.index','Slug')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('title','v2.type.index','Title')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('content','v2.type.index','Content')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('object_type','v2.type.index','Object Type')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('author_id','v2.type.index','Author Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.type.index','Créer le')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.type.index','Mise à jour le')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('id','v2.admin.type.index','Id')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('slug','v2.admin.type.index','Slug')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('title','v2.admin.type.index','Title')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('content','v2.admin.type.index','Content')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('object_type','v2.admin.type.index','Object Type')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('author_id','v2.admin.type.index','Author Id')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.admin.type.index','Créer le')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.admin.type.index','Mise à jour le')!!}
                                             <th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
@@ -73,7 +73,7 @@
                                           data-name="slug"
                                           data-value="{{ $record->slug }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.type.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.type.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->slug }}</span>
                                                                     </td>
                                                                 <td>
@@ -82,7 +82,7 @@
                                           data-name="title"
                                           data-value="{{ $record->title }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.type.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.type.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->title }}</span>
                                                                     </td>
                                                                 <td>
@@ -91,7 +91,7 @@
                                           data-name="content"
                                           data-value="{{ $record->content }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.type.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.type.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->content }}</span>
                                                                     </td>
                                                                 <td>
@@ -100,7 +100,7 @@
                                           data-name="object_type"
                                           data-value="{{ $record->object_type }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.type.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.type.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->object_type }}</span>
                                                                     </td>
                                                                 <td>
@@ -109,7 +109,7 @@
                                           data-name="author_id"
                                           data-value="{{ $record->author_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.type.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.type.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->author_id }}</span>
                                                                     </td>
                                                                 <td>
@@ -118,7 +118,7 @@
                                                                 <td>
                                                                             {{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}
                                                                     </td>
-                                                                @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('v2.type.index'), 'record' => $record ] )
+                                                                @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('v2.admin.type.index'), 'record' => $record ] )
                             </tr>
                         @empty
                             @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 9])

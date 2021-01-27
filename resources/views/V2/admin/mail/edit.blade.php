@@ -11,7 +11,7 @@
                 <a href="#">Mails</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.mail.index') }}">Listes</a>
+                <a href="{{ route('v2.admin.mail.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Edition</strong>
@@ -32,7 +32,7 @@
                 <h5>Mise à jour Mail : {{$mail->subject}}</h5>
             </div>
             <div class="ibox-content">
-                <form action="{{ route('v2.mail.index')}}/{{$mail->id}}" method="post">
+                <form action="{{ route('v2.admin.mail.index')}}/{{$mail->id}}" method="post">
 
                     {{ csrf_field() }}
 

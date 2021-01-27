@@ -11,7 +11,7 @@
                 <a href="#">Plans</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.plan.index') }}">Listes</a>
+                <a href="{{ route('v2.admin.plan.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Détail</strong>

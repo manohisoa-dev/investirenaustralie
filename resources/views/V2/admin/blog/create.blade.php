@@ -11,7 +11,7 @@
                 <a href="#">Blogs</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.blog.index') }}">Listes</a>
+                <a href="{{ route('v2.admin.blog.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Ajout</strong>
@@ -32,7 +32,7 @@
                 <h5>Ajouter un nouveau Blog</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-validation form-padding" action="{{ route('v2.blog.store') }}" method="post">
+                <form class="form-validation form-padding" action="{{ route('v2.admin.blog.store') }}" method="post">
 
                     {{ csrf_field() }}
                                                         
@@ -40,11 +40,11 @@
                                             
                     {!! \Nvd\Crud\Form::input('title','text')->show() !!}
                                             
-                    {!! \Nvd\Crud\Form::textarea('content','text')->show() !!}
+                    {!! \Nvd\Crud\Form::input('content','text')->show() !!}
                                             
-                    {!! \Nvd\Crud\Form::textarea('meta_tag','text')->show() !!}
+                    {!! \Nvd\Crud\Form::input('meta_tag','text')->show() !!}
                                             
-                    {!! \Nvd\Crud\Form::textarea('meta_description','text')->show() !!}
+                    {!! \Nvd\Crud\Form::input('meta_description','text')->show() !!}
                                             
                     {!! \Nvd\Crud\Form::input('view_count','text')->show() !!}
                                             
@@ -66,16 +66,4 @@
     </div>
 </div>
 
-@endsection
-
-@section('custom-script')
-    <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
-
-    <script>
-        $(document).ready(function(){
-            CKEDITOR.replace( 'content' );
-            CKEDITOR.replace( 'meta_tag' );
-            CKEDITOR.replace( 'meta_description' );
-        });
-    </script>
 @endsection

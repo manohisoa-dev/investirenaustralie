@@ -11,7 +11,7 @@
                 <a href="#">Pubs</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.pub.index') }}">Listes</a>
+                <a href="{{ route('v2.admin.pub.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Edition</strong>
@@ -32,7 +32,7 @@
                 <h5>Mise à jour Pub : {{$pub->title}}</h5>
             </div>
             <div class="ibox-content">
-                <form action="{{ route('v2.pub.index')}}/{{$pub->id}}" method="post">
+                <form action="{{ route('v2.admin.pub.index')}}/{{$pub->id}}" method="post">
 
                     {{ csrf_field() }}
 

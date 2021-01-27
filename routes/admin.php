@@ -14,20 +14,19 @@ use Intervention\Image\ImageManagerStatic as InterventionImage;
 use Illuminate\Support\Facades\Storage;
 /* ---------- ROUTE V2 ------------------*/
 Route::prefix('V2')->namespace('V2')->as('v2.')->group(function(){
-    Route::prefix('admin')->namespace('admin')->middleware(["auth","role:admin"])->group(function(){
-        Route::get('/', 'AdminController@dashboard')->name('admin.dashboard');
+    Route::prefix('admin')->namespace('admin')->as('admin.')->middleware(["auth","role:admin"])->group(function(){
+        Route::get('/', 'AdminController@dashboard')->name('dashboard');
         //profil
-        Route::get('profile', 'ProfileController@index')->name('admin.profile');
-        Route::post('info', 'ProfileController@editProfile')->name('admin.profile.info');
-        Route::post('update', 'ProfileController@updateLocation')->name('admin.location.edit');
+        Route::get('profile', 'ProfileController@index')->name('profile');
+        Route::post('info', 'ProfileController@editProfile')->name('profile.info');
+        Route::post('update', 'ProfileController@updateLocation')->name('location.edit');
         //user
-        Route::get('users/{filter?}', 'UserController@all')->name('admin.user.list');
-        Route::get('show/{user}', 'UserController@show')->name('admin.user.show');
+        Route::get('users/{filter?}', 'UserController@all')->name('user.list');
+        Route::get('show/{user}', 'UserController@show')->name('user.show');
 
         Route::resource('country','CountryController');
         Route::resource('state','StateController');
         Route::resource('category','CategoryController');
-        Route::resource('blog','BlogController');
         Route::resource('pub','PubController');
         Route::resource('badword','BadwordController');
         Route::resource('postalcode','PostalcodeController');
@@ -35,8 +34,8 @@ Route::prefix('V2')->namespace('V2')->as('v2.')->group(function(){
         Route::resource('type','TypeController');
         Route::resource('page','PageController');
         Route::resource('mail','MailController');
-        Route::resource('blog','BlogController');
         Route::resource('product','ProductController');
+        Route::resource('blog','BlogController');
     });
 
     // Config Controller

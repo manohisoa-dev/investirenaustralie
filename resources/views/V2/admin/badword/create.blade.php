@@ -11,7 +11,7 @@
                 <a href="#">Badwords</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.badword.index') }}">Listes</a>
+                <a href="{{ route('v2.admin.badword.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Ajout</strong>
@@ -32,7 +32,7 @@
                 <h5>Ajouter un nouveau Badword</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-validation form-padding" action="{{ route('v2.badword.store') }}" method="post">
+                <form class="form-validation form-padding" action="{{ route('v2.admin.badword.store') }}" method="post">
 
                     {{ csrf_field() }}
                                                         

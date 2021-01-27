@@ -42,7 +42,7 @@ class TypeController extends Controller
 
         # notification
         Notify::success('Type a été créer avec succès');
-        return redirect(route('v2.type.index'));
+        return redirect(route('v2.admin.type.index'));
     }
 
     /**
@@ -89,7 +89,7 @@ class TypeController extends Controller
 
         # notification
         Notify::success('Type a été mise à jour avec succès');
-        return redirect(route('v2.type.index'));
+        return redirect(route('v2.admin.type.index'));
     }
 
     /**
@@ -103,7 +103,7 @@ class TypeController extends Controller
 
         # notification
         Notify::success('Type a été supprimer avec succès');
-        return redirect(route('v2.type.index'));
+        return redirect(route('v2.admin.type.index'));
     }
 
     protected function view($view, $data = [])

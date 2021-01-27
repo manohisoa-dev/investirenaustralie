@@ -42,7 +42,7 @@ class BadwordController extends Controller
 
         # notification
         Notify::success('Badword a été créer avec succès');
-        return redirect(route('v2.badword.index'));
+        return redirect(route('v2.admin.badword.index'));
     }
 
     /**
@@ -89,7 +89,7 @@ class BadwordController extends Controller
 
         # notification
         Notify::success('Badword a été mise à jour avec succès');
-        return redirect(route('v2.badword.index'));
+        return redirect(route('v2.admin.badword.index'));
     }
 
     /**
@@ -103,7 +103,7 @@ class BadwordController extends Controller
 
         # notification
         Notify::success('Badword a été supprimer avec succès');
-        return redirect(route('v2.badword.index'));
+        return redirect(route('v2.admin.badword.index'));
     }
 
     protected function view($view, $data = [])

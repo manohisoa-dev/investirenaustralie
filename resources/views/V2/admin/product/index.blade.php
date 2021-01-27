@@ -8,7 +8,7 @@
         <h2>Products</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.product.index') }}">Products</a>
+                <a href="{{ route('v2.admin.product.index') }}">Products</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Listes</strong>
@@ -17,7 +17,7 @@
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ route('v2.product.create') }}" type="button" class="btn btn-primary btn-block">
+            <a href="{{ route('v2.admin.product.create') }}" type="button" class="btn btn-primary btn-block">
                 <i class="fa fa-plus"></i> Ajouter un nouveau Product            </a>
         </div>
     </div>
@@ -36,45 +36,45 @@
                 <table class="table table-striped grid-view-tbl">
                 <thead>
                     <tr class="header-row">
-                                                    {!!\Nvd\Crud\Html::sortableTh('id','v2.product.index','Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('reference','v2.product.index','Reference')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('slug','v2.product.index','Slug')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('title','v2.product.index','Title')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('content','v2.product.index','Content')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('quantity','v2.product.index','Quantity')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('is_new','v2.product.index','Is New')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('view_count','v2.product.index','View Count')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('area','v2.product.index','Area')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('carport_spaces','v2.product.index','Carport Spaces')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('garage_spaces','v2.product.index','Garage Spaces')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('off_street_spaces','v2.product.index','Off Street Spaces')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('bathrooms','v2.product.index','Bathrooms')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('bedrooms','v2.product.index','Bedrooms')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('ensuite','v2.product.index','Ensuite')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('land_area','v2.product.index','Land Area')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('floor_area','v2.product.index','Floor Area')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('number_of_floors','v2.product.index','Number Of Floors')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('new_construction','v2.product.index','New Construction')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('year_built','v2.product.index','Year Built')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('display_address','v2.product.index','Display Address')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('price','v2.product.index','Price')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('currency','v2.product.index','Currency')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('tma','v2.product.index','Tma')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('commision','v2.product.index','Commision')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('commision_edited','v2.product.index','Commision Edited')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('status','v2.product.index','Status')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('type_id','v2.product.index','Type Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('location_type_id','v2.product.index','Location Type Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('category_id','v2.product.index','Category Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('buyer_id','v2.product.index','Buyer Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('seller_id','v2.product.index','Seller Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('author_id','v2.product.index','Author Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('postalCode','v2.product.index','PostalCode')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('state_id','v2.product.index','State Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('location_id','v2.product.index','Location Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('image_id','v2.product.index','Image Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.product.index','Créer le')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.product.index','Mise à jour le')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('id','v2.admin.product.index','Id')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('reference','v2.admin.product.index','Reference')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('slug','v2.admin.product.index','Slug')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('title','v2.admin.product.index','Title')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('content','v2.admin.product.index','Content')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('quantity','v2.admin.product.index','Quantity')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('is_new','v2.admin.product.index','Is New')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('view_count','v2.admin.product.index','View Count')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('area','v2.admin.product.index','Area')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('carport_spaces','v2.admin.product.index','Carport Spaces')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('garage_spaces','v2.admin.product.index','Garage Spaces')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('off_street_spaces','v2.admin.product.index','Off Street Spaces')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('bathrooms','v2.admin.product.index','Bathrooms')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('bedrooms','v2.admin.product.index','Bedrooms')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('ensuite','v2.admin.product.index','Ensuite')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('land_area','v2.admin.product.index','Land Area')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('floor_area','v2.admin.product.index','Floor Area')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('number_of_floors','v2.admin.product.index','Number Of Floors')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('new_construction','v2.admin.product.index','New Construction')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('year_built','v2.admin.product.index','Year Built')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('display_address','v2.admin.product.index','Display Address')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('price','v2.admin.product.index','Price')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('currency','v2.admin.product.index','Currency')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('tma','v2.admin.product.index','Tma')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('commision','v2.admin.product.index','Commision')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('commision_edited','v2.admin.product.index','Commision Edited')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('status','v2.admin.product.index','Status')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('type_id','v2.admin.product.index','Type Id')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('location_type_id','v2.admin.product.index','Location Type Id')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('category_id','v2.admin.product.index','Category Id')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('buyer_id','v2.admin.product.index','Buyer Id')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('seller_id','v2.admin.product.index','Seller Id')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('author_id','v2.admin.product.index','Author Id')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('postalCode','v2.admin.product.index','PostalCode')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('state_id','v2.admin.product.index','State Id')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('location_id','v2.admin.product.index','Location Id')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('image_id','v2.admin.product.index','Image Id')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.admin.product.index','Créer le')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.admin.product.index','Mise à jour le')!!}
                                             <th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
@@ -135,7 +135,7 @@
                                           data-name="reference"
                                           data-value="{{ $record->reference }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->reference }}</span>
                                                                     </td>
                                                                 <td>
@@ -144,7 +144,7 @@
                                           data-name="slug"
                                           data-value="{{ $record->slug }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->slug }}</span>
                                                                     </td>
                                                                 <td>
@@ -153,7 +153,7 @@
                                           data-name="title"
                                           data-value="{{ $record->title }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->title }}</span>
                                                                     </td>
                                                                 <td>
@@ -162,7 +162,7 @@
                                           data-name="content"
                                           data-value="{{ $record->content }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ str_limit(strip_tags($record->content), "100", "...") }}</span>
                                                                     </td>
                                                                 <td>
@@ -171,7 +171,7 @@
                                           data-name="quantity"
                                           data-value="{{ $record->quantity }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->quantity }}</span>
                                                                     </td>
                                                                 <td>
@@ -180,7 +180,7 @@
                                           data-name="is_new"
                                           data-value="{{ $record->is_new }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->is_new }}</span>
                                                                     </td>
                                                                 <td>
@@ -189,7 +189,7 @@
                                           data-name="view_count"
                                           data-value="{{ $record->view_count }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->view_count }}</span>
                                                                     </td>
                                                                 <td>
@@ -198,7 +198,7 @@
                                           data-name="area"
                                           data-value="{{ $record->area }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->area }}</span>
                                                                     </td>
                                                                 <td>
@@ -207,7 +207,7 @@
                                           data-name="carport_spaces"
                                           data-value="{{ $record->carport_spaces }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->carport_spaces }}</span>
                                                                     </td>
                                                                 <td>
@@ -216,7 +216,7 @@
                                           data-name="garage_spaces"
                                           data-value="{{ $record->garage_spaces }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->garage_spaces }}</span>
                                                                     </td>
                                                                 <td>
@@ -225,7 +225,7 @@
                                           data-name="off_street_spaces"
                                           data-value="{{ $record->off_street_spaces }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->off_street_spaces }}</span>
                                                                     </td>
                                                                 <td>
@@ -234,7 +234,7 @@
                                           data-name="bathrooms"
                                           data-value="{{ $record->bathrooms }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->bathrooms }}</span>
                                                                     </td>
                                                                 <td>
@@ -243,7 +243,7 @@
                                           data-name="bedrooms"
                                           data-value="{{ $record->bedrooms }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->bedrooms }}</span>
                                                                     </td>
                                                                 <td>
@@ -252,7 +252,7 @@
                                           data-name="ensuite"
                                           data-value="{{ $record->ensuite }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->ensuite }}</span>
                                                                     </td>
                                                                 <td>
@@ -261,7 +261,7 @@
                                           data-name="land_area"
                                           data-value="{{ $record->land_area }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->land_area }}</span>
                                                                     </td>
                                                                 <td>
@@ -270,7 +270,7 @@
                                           data-name="floor_area"
                                           data-value="{{ $record->floor_area }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->floor_area }}</span>
                                                                     </td>
                                                                 <td>
@@ -279,7 +279,7 @@
                                           data-name="number_of_floors"
                                           data-value="{{ $record->number_of_floors }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->number_of_floors }}</span>
                                                                     </td>
                                                                 <td>
@@ -288,7 +288,7 @@
                                           data-name="new_construction"
                                           data-value="{{ $record->new_construction }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->new_construction }}</span>
                                                                     </td>
                                                                 <td>
@@ -297,7 +297,7 @@
                                           data-name="year_built"
                                           data-value="{{ $record->year_built }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->year_built }}</span>
                                                                     </td>
                                                                 <td>
@@ -306,7 +306,7 @@
                                           data-name="display_address"
                                           data-value="{{ $record->display_address }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->display_address }}</span>
                                                                     </td>
                                                                 <td>
@@ -315,7 +315,7 @@
                                           data-name="price"
                                           data-value="{{ $record->price }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->price }}</span>
                                                                     </td>
                                                                 <td>
@@ -324,7 +324,7 @@
                                           data-name="currency"
                                           data-value="{{ $record->currency }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->currency }}</span>
                                                                     </td>
                                                                 <td>
@@ -333,7 +333,7 @@
                                           data-name="tma"
                                           data-value="{{ $record->tma }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->tma }}</span>
                                                                     </td>
                                                                 <td>
@@ -342,7 +342,7 @@
                                           data-name="commision"
                                           data-value="{{ $record->commision }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->commision }}</span>
                                                                     </td>
                                                                 <td>
@@ -351,7 +351,7 @@
                                           data-name="commision_edited"
                                           data-value="{{ $record->commision_edited }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->commision_edited }}</span>
                                                                     </td>
                                                                 <td>
@@ -360,7 +360,7 @@
                                           data-name="status"
                                           data-value="{{ $record->status }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->status }}</span>
                                                                     </td>
                                                                 <td>
@@ -369,7 +369,7 @@
                                           data-name="type_id"
                                           data-value="{{ $record->type_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->type_id }}</span>
                                                                     </td>
                                                                 <td>
@@ -378,7 +378,7 @@
                                           data-name="location_type_id"
                                           data-value="{{ $record->location_type_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->location_type_id }}</span>
                                                                     </td>
                                                                 <td>
@@ -387,7 +387,7 @@
                                           data-name="category_id"
                                           data-value="{{ $record->category_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->category_id }}</span>
                                                                     </td>
                                                                 <td>
@@ -396,7 +396,7 @@
                                           data-name="buyer_id"
                                           data-value="{{ $record->buyer_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->buyer_id }}</span>
                                                                     </td>
                                                                 <td>
@@ -405,7 +405,7 @@
                                           data-name="seller_id"
                                           data-value="{{ $record->seller_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->seller_id }}</span>
                                                                     </td>
                                                                 <td>
@@ -414,7 +414,7 @@
                                           data-name="author_id"
                                           data-value="{{ $record->author_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->author_id }}</span>
                                                                     </td>
                                                                 <td>
@@ -423,7 +423,7 @@
                                           data-name="postalCode"
                                           data-value="{{ $record->postalCode }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->postalCode }}</span>
                                                                     </td>
                                                                 <td>
@@ -432,7 +432,7 @@
                                           data-name="state_id"
                                           data-value="{{ $record->state_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->state_id }}</span>
                                                                     </td>
                                                                 <td>
@@ -441,7 +441,7 @@
                                           data-name="location_id"
                                           data-value="{{ $record->location_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->location_id }}</span>
                                                                     </td>
                                                                 <td>
@@ -450,7 +450,7 @@
                                           data-name="image_id"
                                           data-value="{{ $record->image_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->image_id }}</span>
                                                                     </td>
                                                                 <td>
@@ -459,7 +459,7 @@
                                                                 <td>
                                                                             {{ $record->updated_at ? $record->updated_at->diffForHumans() : '' }}
                                                                     </td>
-                                                                @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('v2.product.index'), 'record' => $record ] )
+                                                                @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('v2.admin.product.index'), 'record' => $record ] )
                             </tr>
                         @empty
                             @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 40])

@@ -11,7 +11,7 @@
                 <a href="#">Mails</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.mail.index') }}">Listes</a>
+                <a href="{{ route('v2.admin.mail.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Détail</strong>

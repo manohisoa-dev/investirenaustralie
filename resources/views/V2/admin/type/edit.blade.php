@@ -11,7 +11,7 @@
                 <a href="#">Types</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.type.index') }}">Listes</a>
+                <a href="{{ route('v2.admin.type.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Edition</strong>
@@ -32,7 +32,7 @@
                 <h5>Mise à jour Type : {{$type->slug}}</h5>
             </div>
             <div class="ibox-content">
-                <form action="{{ route('v2.type.index')}}/{{$type->id}}" method="post">
+                <form action="{{ route('v2.admin.type.index')}}/{{$type->id}}" method="post">
 
                     {{ csrf_field() }}
 

@@ -11,7 +11,7 @@
                 <a href="#">Pubs</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.pub.index') }}">Listes</a>
+                <a href="{{ route('v2.admin.pub.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Détail</strong>

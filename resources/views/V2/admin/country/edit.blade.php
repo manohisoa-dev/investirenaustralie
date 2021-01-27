@@ -11,7 +11,7 @@
                 <a href="#">Countries</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.country.index') }}">Listes</a>
+                <a href="{{ route('v2.admin.country.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Edition</strong>
@@ -32,7 +32,7 @@
                 <h5>Mise à jour Country : {{$country->code}}</h5>
             </div>
             <div class="ibox-content">
-                <form action="{{ route('v2.country.index')}}/{{$country->id}}" method="post">
+                <form action="{{ route('v2.admin.country.index')}}/{{$country->id}}" method="post">
 
                     {{ csrf_field() }}
 

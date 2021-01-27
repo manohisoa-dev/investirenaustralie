@@ -8,7 +8,7 @@
         <h2>Countries</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.country.index') }}">Countries</a>
+                <a href="{{ route('v2.admin.country.index') }}">Countries</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Listes</strong>
@@ -17,7 +17,7 @@
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ route('v2.country.create') }}" type="button" class="btn btn-primary btn-block">
+            <a href="{{ route('v2.admin.country.create') }}" type="button" class="btn btn-primary btn-block">
                 <i class="fa fa-plus"></i> Ajouter un nouveau Country            </a>
         </div>
     </div>
@@ -36,13 +36,13 @@
                 <table class="table table-striped grid-view-tbl">
                 <thead>
                     <tr class="header-row">
-                                                    {!!\Nvd\Crud\Html::sortableTh('id','v2.country.index','Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('code','v2.country.index','Code')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('content','v2.country.index','Content')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('prefixPhone','v2.country.index','PrefixPhone')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('placeholder','v2.country.index','Placeholder')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.country.index','Créer le')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.country.index','Mise à jour le')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('id','v2.admin.country.index','Id')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('code','v2.admin.country.index','Code')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('content','v2.admin.country.index','Content')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('prefixPhone','v2.admin.country.index','PrefixPhone')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('placeholder','v2.admin.country.index','Placeholder')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.admin.country.index','Créer le')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.admin.country.index','Mise à jour le')!!}
                                             <th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
@@ -71,7 +71,7 @@
                                           data-name="code"
                                           data-value="{{ $record->code }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.country.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.country.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->code }}</span>
                                                                     </td>
                                                                 <td>
@@ -80,7 +80,7 @@
                                           data-name="content"
                                           data-value="{{ $record->content }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.country.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.country.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->content }}</span>
                                                                     </td>
                                                                 <td>
@@ -89,7 +89,7 @@
                                           data-name="prefixPhone"
                                           data-value="{{ $record->prefixPhone }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.country.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.country.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->prefixPhone }}</span>
                                                                     </td>
                                                                 <td>
@@ -98,7 +98,7 @@
                                           data-name="placeholder"
                                           data-value="{{ $record->placeholder }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.country.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('v2.admin.country.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->placeholder }}</span>
                                                                     </td>
                                                                 <td>
@@ -107,7 +107,7 @@
                                                                 <td>
                                                                             {{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}
                                                                     </td>
-                                                                @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('v2.country.index'), 'record' => $record ] )
+                                                                @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('v2.admin.country.index'), 'record' => $record ] )
                             </tr>
                         @empty
                             @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 8])

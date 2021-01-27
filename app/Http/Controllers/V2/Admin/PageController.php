@@ -42,7 +42,7 @@ class PageController extends Controller
 
         # notification
         Notify::success('Page a été créer avec succès');
-        return redirect(route('v2.page.index'));
+        return redirect(route('v2.admin.page.index'));
     }
 
     /**
@@ -89,7 +89,7 @@ class PageController extends Controller
 
         # notification
         Notify::success('Page a été mise à jour avec succès');
-        return redirect(route('v2.page.index'));
+        return redirect(route('v2.admin.page.index'));
     }
 
     /**
@@ -103,7 +103,7 @@ class PageController extends Controller
 
         # notification
         Notify::success('Page a été supprimer avec succès');
-        return redirect(route('v2.page.index'));
+        return redirect(route('v2.admin.page.index'));
     }
 
     protected function view($view, $data = [])

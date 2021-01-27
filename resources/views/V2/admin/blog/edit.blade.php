@@ -11,7 +11,7 @@
                 <a href="#">Blogs</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.blog.index') }}">Listes</a>
+                <a href="{{ route('v2.admin.blog.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Edition</strong>
@@ -32,7 +32,7 @@
                 <h5>Mise à jour Blog : {{$blog->slug}}</h5>
             </div>
             <div class="ibox-content">
-                <form action="{{ route('v2.blog.index')}}/{{$blog->id}}" method="post">
+                <form action="{{ route('v2.admin.blog.index')}}/{{$blog->id}}" method="post">
 
                     {{ csrf_field() }}
 
@@ -42,11 +42,11 @@
                                                                         
                             {!! \Nvd\Crud\Form::input('title','text')->model($blog)->show() !!}
                                                                         
-                            {!! \Nvd\Crud\Form::textarea('content','text')->model($blog)->show() !!}
+                            {!! \Nvd\Crud\Form::input('content','text')->model($blog)->show() !!}
                                                                         
-                            {!! \Nvd\Crud\Form::textarea('meta_tag','text')->model($blog)->show() !!}
+                            {!! \Nvd\Crud\Form::input('meta_tag','text')->model($blog)->show() !!}
                                                                         
-                            {!! \Nvd\Crud\Form::textarea('meta_description','text')->model($blog)->show() !!}
+                            {!! \Nvd\Crud\Form::input('meta_description','text')->model($blog)->show() !!}
                                                                         
                             {!! \Nvd\Crud\Form::input('view_count','text')->model($blog)->show() !!}
                                                                         
@@ -67,16 +67,4 @@
         </div>
     </div>
 </div>
-@endsection
-
-@section('custom-script')
-    <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
-
-    <script>
-        $(document).ready(function(){
-            CKEDITOR.replace( 'content' );
-            CKEDITOR.replace( 'meta_tag' );
-            CKEDITOR.replace( 'meta_description' );
-        });
-    </script>
 @endsection

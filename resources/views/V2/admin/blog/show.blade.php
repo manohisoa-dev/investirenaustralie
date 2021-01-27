@@ -11,7 +11,7 @@
                 <a href="#">Blogs</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.blog.index') }}">Listes</a>
+                <a href="{{ route('v2.admin.blog.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Détail</strong>
@@ -48,7 +48,7 @@
                     </li>
                                         <li class="list-group-item">
                         <h4>Content</h4>
-                        <h5>{!! $blog->content !!}</h5>
+                        <h5>{{$blog->content}}</h5>
                     </li>
                                         <li class="list-group-item">
                         <h4>Meta Tag</h4>
@@ -84,11 +84,11 @@
                     </li>
                                         <li class="list-group-item">
                         <h4>Created At</h4>
-                        <h5>{{$blog->created_at ? $blog->created_at->diffForHumans() : ''}}</h5>
+                        <h5>{{$blog->created_at}}</h5>
                     </li>
                                         <li class="list-group-item">
                         <h4>Updated At</h4>
-                        <h5>{{$blog->updated_at ? $blog->updated_at->diffForHumans() : ''}}</h5>
+                        <h5>{{$blog->updated_at}}</h5>
                     </li>
                                     </ul>
             </div>

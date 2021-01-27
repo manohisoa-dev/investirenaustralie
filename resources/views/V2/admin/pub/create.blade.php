@@ -11,7 +11,7 @@
                 <a href="#">Pubs</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.pub.index') }}">Listes</a>
+                <a href="{{ route('v2.admin.pub.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Ajout</strong>
@@ -32,7 +32,7 @@
                 <h5>Ajouter un nouveau Pub</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-validation form-padding" action="{{ route('v2.pub.store') }}" method="post">
+                <form class="form-validation form-padding" action="{{ route('v2.admin.pub.store') }}" method="post">
 
                     {{ csrf_field() }}
                                                         

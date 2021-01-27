@@ -11,7 +11,7 @@
                 <a href="#">Products</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.product.index') }}">Listes</a>
+                <a href="{{ route('v2.admin.product.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Ajout</strong>
@@ -32,7 +32,7 @@
                 <h5>Ajouter un nouveau Product</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-validation form-padding" action="{{ route('v2.product.store') }}" method="post">
+                <form class="form-validation form-padding" action="{{ route('v2.admin.product.store') }}" method="post">
 
                     {{ csrf_field() }}
                                                         

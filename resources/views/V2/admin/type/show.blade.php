@@ -11,7 +11,7 @@
                 <a href="#">Types</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.type.index') }}">Listes</a>
+                <a href="{{ route('v2.admin.type.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Détail</strong>
