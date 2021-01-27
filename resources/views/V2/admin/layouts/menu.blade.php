@@ -8,9 +8,9 @@
         </a>
         <ul class="dropdown-menu animated fadeInRight m-t-xs">
             <li><a class="dropdown-item" href="{{route('v2.admin.profile')}}">Profile</a></li>
-            <li><a class="dropdown-item" href="{{route('v2.admin.avatar')}}">Avatar</a></li>
-            <li><a class="dropdown-item" href="{{route('v2.admin.password')}}">Mot de passe</a></li>
-			<li><a class="dropdown-item" href="{{route('v2.admin.location')}}">Localisation</a></li>
+            <li><a class="dropdown-item" href="#">Avatar</a></li>
+            <li><a class="dropdown-item" href="#">Mot de passe</a></li>
+			<li><a class="dropdown-item" href="#">Localisation</a></li>
             <li class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="{{ route('logout') }}">{{__('app.logout')}}</a></li>
         </ul>
