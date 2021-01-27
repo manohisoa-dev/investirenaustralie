@@ -1,20 +1,20 @@
 <?php
-namespace App\Http\Controllers\V2;
+namespace App\Http\Controllers\V2\Admin;
 
-use App\State;
+use App\Postalcode;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Jleon\LaravelPnotify\Notify;
 
-class StateController extends Controller
+class PostalcodeController extends Controller
 {
-    public $viewDir = "V2.state";
+    public $viewDir = "V2.admin.postalcode";
 
     public function index()
     {
-        $records = State::findRequested();
+        $records = Postalcode::findRequested();
         return $this->view( "index", ['records' => $records] );
     }
 
@@ -36,13 +36,13 @@ class StateController extends Controller
      */
     public function store( Request $request )
     {
-        $this->validate($request, State::validationRules());
+        $this->validate($request, Postalcode::validationRules());
 
-        State::create($request->all());
+        Postalcode::create($request->all());
 
         # notification
-        Notify::success('State a été créer avec succès');
-        return redirect(route('v2.state.index'));
+        Notify::success('Postalcode a été créer avec succès');
+        return redirect(route('v2.postalcode.index'));
     }
 
     /**
@@ -50,9 +50,9 @@ class StateController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function show(Request $request, State $state)
+    public function show(Request $request, Postalcode $postalcode)
     {
-        return $this->view("show",['state' => $state]);
+        return $this->view("show",['postalcode' => $postalcode]);
     }
 
     /**
@@ -60,9 +60,9 @@ class StateController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function edit(Request $request, State $state)
+    public function edit(Request $request, Postalcode $postalcode)
     {
-        return $this->view( "edit", ['state' => $state] );
+        return $this->view( "edit", ['postalcode' => $postalcode] );
     }
 
     /**
@@ -71,25 +71,25 @@ class StateController extends Controller
      * @param    \Illuminate\Http\Request  $request
      * @return  \Illuminate\Http\Response
      */
-    public function update(Request $request, State $state)
+    public function update(Request $request, Postalcode $postalcode)
     {
         if( $request->isXmlHttpRequest() )
         {
             $data = [$request->name  => $request->value];
-            $validator = \Validator::make( $data, State::validationRules( $request->name ) );
+            $validator = \Validator::make( $data, Postalcode::validationRules( $request->name ) );
             if($validator->fails())
                 return response($validator->errors()->first( $request->name),403);
-            $state->update($data);
+            $postalcode->update($data);
             return "Record updated";
         }
 
-        $this->validate($request, State::validationRules());
+        $this->validate($request, Postalcode::validationRules());
 
-        $state->update($request->all());
+        $postalcode->update($request->all());
 
         # notification
-        Notify::success('State a été mise à jour avec succès');
-        return redirect(route('v2.state.index'));
+        Notify::success('Postalcode a été mise à jour avec succès');
+        return redirect(route('v2.postalcode.index'));
     }
 
     /**
@@ -97,13 +97,13 @@ class StateController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function destroy(Request $request, State $state)
+    public function destroy(Request $request, Postalcode $postalcode)
     {
-        $state->delete();
+        $postalcode->delete();
 
         # notification
-        Notify::success('State a été supprimer avec succès');
-        return redirect(route('v2.state.index'));
+        Notify::success('Postalcode a été supprimer avec succès');
+        return redirect(route('v2.postalcode.index'));
     }
 
     protected function view($view, $data = [])

@@ -1,20 +1,20 @@
 <?php
-namespace App\Http\Controllers\V2;
+namespace App\Http\Controllers\V2\Admin;
 
-use App\Type;
+use App\Badword;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Jleon\LaravelPnotify\Notify;
 
-class TypeController extends Controller
+class BadwordController extends Controller
 {
-    public $viewDir = "V2.type";
+    public $viewDir = "V2.admin.badword";
 
     public function index()
     {
-        $records = Type::findRequested();
+        $records = Badword::findRequested();
         return $this->view( "index", ['records' => $records] );
     }
 
@@ -36,13 +36,13 @@ class TypeController extends Controller
      */
     public function store( Request $request )
     {
-        $this->validate($request, Type::validationRules());
+        $this->validate($request, Badword::validationRules());
 
-        Type::create($request->all());
+        Badword::create($request->all());
 
         # notification
-        Notify::success('Type a été créer avec succès');
-        return redirect(route('v2.type.index'));
+        Notify::success('Badword a été créer avec succès');
+        return redirect(route('v2.badword.index'));
     }
 
     /**
@@ -50,9 +50,9 @@ class TypeController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function show(Request $request, Type $type)
+    public function show(Request $request, Badword $badword)
     {
-        return $this->view("show",['type' => $type]);
+        return $this->view("show",['badword' => $badword]);
     }
 
     /**
@@ -60,9 +60,9 @@ class TypeController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function edit(Request $request, Type $type)
+    public function edit(Request $request, Badword $badword)
     {
-        return $this->view( "edit", ['type' => $type] );
+        return $this->view( "edit", ['badword' => $badword] );
     }
 
     /**
@@ -71,25 +71,25 @@ class TypeController extends Controller
      * @param    \Illuminate\Http\Request  $request
      * @return  \Illuminate\Http\Response
      */
-    public function update(Request $request, Type $type)
+    public function update(Request $request, Badword $badword)
     {
         if( $request->isXmlHttpRequest() )
         {
             $data = [$request->name  => $request->value];
-            $validator = \Validator::make( $data, Type::validationRules( $request->name ) );
+            $validator = \Validator::make( $data, Badword::validationRules( $request->name ) );
             if($validator->fails())
                 return response($validator->errors()->first( $request->name),403);
-            $type->update($data);
+            $badword->update($data);
             return "Record updated";
         }
 
-        $this->validate($request, Type::validationRules());
+        $this->validate($request, Badword::validationRules());
 
-        $type->update($request->all());
+        $badword->update($request->all());
 
         # notification
-        Notify::success('Type a été mise à jour avec succès');
-        return redirect(route('v2.type.index'));
+        Notify::success('Badword a été mise à jour avec succès');
+        return redirect(route('v2.badword.index'));
     }
 
     /**
@@ -97,13 +97,13 @@ class TypeController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Type $type)
+    public function destroy(Request $request, Badword $badword)
     {
-        $type->delete();
+        $badword->delete();
 
         # notification
-        Notify::success('Type a été supprimer avec succès');
-        return redirect(route('v2.type.index'));
+        Notify::success('Badword a été supprimer avec succès');
+        return redirect(route('v2.badword.index'));
     }
 
     protected function view($view, $data = [])

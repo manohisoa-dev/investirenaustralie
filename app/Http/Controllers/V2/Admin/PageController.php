@@ -1,20 +1,20 @@
 <?php
-namespace App\Http\Controllers\V2;
+namespace App\Http\Controllers\V2\Admin;
 
-use App\Plan;
+use App\Page;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Jleon\LaravelPnotify\Notify;
 
-class PlanController extends Controller
+class PageController extends Controller
 {
-    public $viewDir = "V2.plan";
+    public $viewDir = "V2.admin.page";
 
     public function index()
     {
-        $records = Plan::findRequested();
+        $records = Page::findRequested();
         return $this->view( "index", ['records' => $records] );
     }
 
@@ -36,13 +36,13 @@ class PlanController extends Controller
      */
     public function store( Request $request )
     {
-        $this->validate($request, Plan::validationRules());
+        $this->validate($request, Page::validationRules());
 
-        Plan::create($request->all());
+        Page::create($request->all());
 
         # notification
-        Notify::success('Plan a été créer avec succès');
-        return redirect(route('v2.plan.index'));
+        Notify::success('Page a été créer avec succès');
+        return redirect(route('v2.page.index'));
     }
 
     /**
@@ -50,9 +50,9 @@ class PlanController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function show(Request $request, Plan $plan)
+    public function show(Request $request, Page $page)
     {
-        return $this->view("show",['plan' => $plan]);
+        return $this->view("show",['page' => $page]);
     }
 
     /**
@@ -60,9 +60,9 @@ class PlanController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function edit(Request $request, Plan $plan)
+    public function edit(Request $request, Page $page)
     {
-        return $this->view( "edit", ['plan' => $plan] );
+        return $this->view( "edit", ['page' => $page] );
     }
 
     /**
@@ -71,25 +71,25 @@ class PlanController extends Controller
      * @param    \Illuminate\Http\Request  $request
      * @return  \Illuminate\Http\Response
      */
-    public function update(Request $request, Plan $plan)
+    public function update(Request $request, Page $page)
     {
         if( $request->isXmlHttpRequest() )
         {
             $data = [$request->name  => $request->value];
-            $validator = \Validator::make( $data, Plan::validationRules( $request->name ) );
+            $validator = \Validator::make( $data, Page::validationRules( $request->name ) );
             if($validator->fails())
                 return response($validator->errors()->first( $request->name),403);
-            $plan->update($data);
+            $page->update($data);
             return "Record updated";
         }
 
-        $this->validate($request, Plan::validationRules());
+        $this->validate($request, Page::validationRules());
 
-        $plan->update($request->all());
+        $page->update($request->all());
 
         # notification
-        Notify::success('Plan a été mise à jour avec succès');
-        return redirect(route('v2.plan.index'));
+        Notify::success('Page a été mise à jour avec succès');
+        return redirect(route('v2.page.index'));
     }
 
     /**
@@ -97,13 +97,13 @@ class PlanController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Plan $plan)
+    public function destroy(Request $request, Page $page)
     {
-        $plan->delete();
+        $page->delete();
 
         # notification
-        Notify::success('Plan a été supprimer avec succès');
-        return redirect(route('v2.plan.index'));
+        Notify::success('Page a été supprimer avec succès');
+        return redirect(route('v2.page.index'));
     }
 
     protected function view($view, $data = [])

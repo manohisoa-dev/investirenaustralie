@@ -14,7 +14,7 @@ use Intervention\Image\ImageManagerStatic as InterventionImage;
 use Illuminate\Support\Facades\Storage;
 /* ---------- ROUTE V2 ------------------*/
 Route::prefix('V2')->namespace('V2')->as('v2.')->group(function(){
-    Route::prefix('admin')->middleware(["auth","role:admin"])->group(function(){
+    Route::prefix('admin')->namespace('admin')->middleware(["auth","role:admin"])->group(function(){
         Route::get('/', 'AdminController@dashboard')->name('admin.dashboard');
         //profil
         Route::get('profile', 'ProfileController@index')->name('admin.profile');
@@ -33,6 +33,7 @@ Route::prefix('V2')->namespace('V2')->as('v2.')->group(function(){
         Route::resource('postalcode','PostalcodeController');
         Route::resource('plan','PlanController');
         Route::resource('type','TypeController');
+        Route::resource('page','PageController');
     });
 
     // Config Controller

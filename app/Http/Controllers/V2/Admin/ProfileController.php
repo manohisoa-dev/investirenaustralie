@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\V2;
+namespace App\Http\Controllers\V2\Admin;
 
 use Illuminate\Http\Request;
 use Session;
@@ -10,6 +10,7 @@ use Validator;
 use App\Models\Cart;
 use App\Models\Image;
 use App\Models\Localisation;
+use App\Http\Controllers\Controller;
 
 class ProfileController extends Controller {
     /**

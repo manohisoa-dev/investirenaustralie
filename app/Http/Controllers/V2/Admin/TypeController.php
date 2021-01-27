@@ -1,20 +1,20 @@
 <?php
-namespace App\Http\Controllers\V2;
+namespace App\Http\Controllers\V2\Admin;
 
-use App\Country;
+use App\Type;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Jleon\LaravelPnotify\Notify;
 
-class CountryController extends Controller
+class TypeController extends Controller
 {
-    public $viewDir = "V2.country";
+    public $viewDir = "V2.admin.type";
 
     public function index()
     {
-        $records = Country::findRequested();
+        $records = Type::findRequested();
         return $this->view( "index", ['records' => $records] );
     }
 
@@ -36,13 +36,13 @@ class CountryController extends Controller
      */
     public function store( Request $request )
     {
-        $this->validate($request, Country::validationRules());
+        $this->validate($request, Type::validationRules());
 
-        Country::create($request->all());
+        Type::create($request->all());
 
         # notification
-        Notify::success('Country a été créer avec succès');
-        return redirect(route('v2.country.index'));
+        Notify::success('Type a été créer avec succès');
+        return redirect(route('v2.type.index'));
     }
 
     /**
@@ -50,9 +50,9 @@ class CountryController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function show(Request $request, Country $country)
+    public function show(Request $request, Type $type)
     {
-        return $this->view("show",['country' => $country]);
+        return $this->view("show",['type' => $type]);
     }
 
     /**
@@ -60,9 +60,9 @@ class CountryController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function edit(Request $request, Country $country)
+    public function edit(Request $request, Type $type)
     {
-        return $this->view( "edit", ['country' => $country] );
+        return $this->view( "edit", ['type' => $type] );
     }
 
     /**
@@ -71,25 +71,25 @@ class CountryController extends Controller
      * @param    \Illuminate\Http\Request  $request
      * @return  \Illuminate\Http\Response
      */
-    public function update(Request $request, Country $country)
+    public function update(Request $request, Type $type)
     {
         if( $request->isXmlHttpRequest() )
         {
             $data = [$request->name  => $request->value];
-            $validator = \Validator::make( $data, Country::validationRules( $request->name ) );
+            $validator = \Validator::make( $data, Type::validationRules( $request->name ) );
             if($validator->fails())
                 return response($validator->errors()->first( $request->name),403);
-            $country->update($data);
+            $type->update($data);
             return "Record updated";
         }
 
-        $this->validate($request, Country::validationRules());
+        $this->validate($request, Type::validationRules());
 
-        $country->update($request->all());
+        $type->update($request->all());
 
         # notification
-        Notify::success('Country a été mise à jour avec succès');
-        return redirect(route('v2.country.index'));
+        Notify::success('Type a été mise à jour avec succès');
+        return redirect(route('v2.type.index'));
     }
 
     /**
@@ -97,13 +97,13 @@ class CountryController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Country $country)
+    public function destroy(Request $request, Type $type)
     {
-        $country->delete();
+        $type->delete();
 
         # notification
-        Notify::success('Country a été supprimer avec succès');
-        return redirect(route('v2.country.index'));
+        Notify::success('Type a été supprimer avec succès');
+        return redirect(route('v2.type.index'));
     }
 
     protected function view($view, $data = [])

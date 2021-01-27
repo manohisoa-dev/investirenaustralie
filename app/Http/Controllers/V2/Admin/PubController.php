@@ -1,20 +1,20 @@
 <?php
-namespace App\Http\Controllers\V2;
+namespace App\Http\Controllers\V2\Admin;
 
-use App\Category;
+use App\Pub;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Jleon\LaravelPnotify\Notify;
 
-class CategoryController extends Controller
+class PubController extends Controller
 {
-    public $viewDir = "V2.category";
+    public $viewDir = "V2.admin.pub";
 
     public function index()
     {
-        $records = Category::findRequested();
+        $records = Pub::findRequested();
         return $this->view( "index", ['records' => $records] );
     }
 
@@ -36,13 +36,13 @@ class CategoryController extends Controller
      */
     public function store( Request $request )
     {
-        $this->validate($request, Category::validationRules());
+        $this->validate($request, Pub::validationRules());
 
-        Category::create($request->all());
+        Pub::create($request->all());
 
         # notification
-        Notify::success('Category a été créer avec succès');
-        return redirect(route('v2.category.index'));
+        Notify::success('Pub a été créer avec succès');
+        return redirect(route('v2.pub.index'));
     }
 
     /**
@@ -50,9 +50,9 @@ class CategoryController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function show(Request $request, Category $category)
+    public function show(Request $request, Pub $pub)
     {
-        return $this->view("show",['category' => $category]);
+        return $this->view("show",['pub' => $pub]);
     }
 
     /**
@@ -60,9 +60,9 @@ class CategoryController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function edit(Request $request, Category $category)
+    public function edit(Request $request, Pub $pub)
     {
-        return $this->view( "edit", ['category' => $category] );
+        return $this->view( "edit", ['pub' => $pub] );
     }
 
     /**
@@ -71,25 +71,25 @@ class CategoryController extends Controller
      * @param    \Illuminate\Http\Request  $request
      * @return  \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Pub $pub)
     {
         if( $request->isXmlHttpRequest() )
         {
             $data = [$request->name  => $request->value];
-            $validator = \Validator::make( $data, Category::validationRules( $request->name ) );
+            $validator = \Validator::make( $data, Pub::validationRules( $request->name ) );
             if($validator->fails())
                 return response($validator->errors()->first( $request->name),403);
-            $category->update($data);
+            $pub->update($data);
             return "Record updated";
         }
 
-        $this->validate($request, Category::validationRules());
+        $this->validate($request, Pub::validationRules());
 
-        $category->update($request->all());
+        $pub->update($request->all());
 
         # notification
-        Notify::success('Category a été mise à jour avec succès');
-        return redirect(route('v2.category.index'));
+        Notify::success('Pub a été mise à jour avec succès');
+        return redirect(route('v2.pub.index'));
     }
 
     /**
@@ -97,13 +97,13 @@ class CategoryController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Category $category)
+    public function destroy(Request $request, Pub $pub)
     {
-        $category->delete();
+        $pub->delete();
 
         # notification
-        Notify::success('Category a été supprimer avec succès');
-        return redirect(route('v2.category.index'));
+        Notify::success('Pub a été supprimer avec succès');
+        return redirect(route('v2.pub.index'));
     }
 
     protected function view($view, $data = [])
