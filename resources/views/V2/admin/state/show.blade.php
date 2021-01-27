@@ -46,11 +46,11 @@
                     </li>
                                         <li class="list-group-item">
                         <h4>Created At</h4>
-                        <h5>{{$state->created_at}}</h5>
+                        <h5>{{$state->created_at->diffForHumans()}}</h5>
                     </li>
                                         <li class="list-group-item">
                         <h4>Updated At</h4>
-                        <h5>{{$state->updated_at}}</h5>
+                        <h5>{{$state->updated_at->diffForHumans()}}</h5>
                     </li>
                                     </ul>
             </div>

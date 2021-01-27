@@ -67,10 +67,10 @@
                                           >{{ $record->content }}</span>
                                                                     </td>
                                                                 <td>
-                                                                            {{ $record->created_at }}
+                                                                            {{ $record->created_at->diffForHumans() }}
                                                                     </td>
                                                                 <td>
-                                                                            {{ $record->updated_at }}
+                                                                            {{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}
                                                                     </td>
                                                                 @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('v2.badword.index'), 'record' => $record ] )
                             </tr>
