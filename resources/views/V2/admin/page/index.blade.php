@@ -1,5 +1,7 @@
 @extends('V2.admin.layouts.app')
 
+@section('title', 'Pages - Listes ')
+
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
@@ -20,7 +22,6 @@
         </div>
     </div>
 </div>
-
 @endsection
 
 @section('content')
@@ -87,7 +88,7 @@
                                           data-value="{{ $record->content }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
                                           data-url="{{ route('v2.page.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->content }}</span>
+                                          >{{ str_limit(strip_tags($record->content), "100", "...") }}</span>
                                                                     </td>
                                                                 <td>
                                                                         <span class="editable"
@@ -144,7 +145,7 @@
                                           >{{ $record->author_id }}</span>
                                                                     </td>
                                                                 <td>
-                                                                            {{ $record->created_at->diffForHumans() }}
+                                                                            {{ $record->created_at ? $record->created_at->diffForHumans() : ''}}
                                                                     </td>
                                                                 <td>
                                                                             {{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}

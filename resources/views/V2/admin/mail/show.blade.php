@@ -1,17 +1,17 @@
 @extends('V2.admin.layouts.app')
 
-@section('title', 'Types - Détail ')
+@section('title', 'Mails - Détail ')
 
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Types</h2>
+        <h2>Mails</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Types</a>
+                <a href="#">Mails</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.type.index') }}">Listes</a>
+                <a href="{{ route('v2.mail.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Détail</strong>
@@ -30,41 +30,41 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Détail Type : {{$type->slug}}</h5>
+                <h5>Détail Mail : {{$mail->subject}}</h5>
             </div>
             <div class="ibox-content">
                 <ul class="list-group">
                                         <li class="list-group-item">
                         <h4>Id</h4>
-                        <h5>{{$type->id}}</h5>
+                        <h5>{{$mail->id}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Slug</h4>
-                        <h5>{{$type->slug}}</h5>
-                    </li>
-                                        <li class="list-group-item">
-                        <h4>Title</h4>
-                        <h5>{{$type->title}}</h5>
+                        <h4>Subject</h4>
+                        <h5>{{$mail->subject}}</h5>
                     </li>
                                         <li class="list-group-item">
                         <h4>Content</h4>
-                        <h5>{{$type->content}}</h5>
+                        <h5>{{$mail->content}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Object Type</h4>
-                        <h5>{{$type->object_type}}</h5>
+                        <h4>Copied From</h4>
+                        <h5>{{$mail->copied_from}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Author Id</h4>
-                        <h5>{{$type->author_id}}</h5>
+                        <h4>Status</h4>
+                        <h5>{{$mail->status}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Créer le</h4>
-                        <h5>{{$type->created_at->diffForHumans()}}</h5>
+                        <h4>Sender Id</h4>
+                        <h5>{{$mail->sender_id}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Mise à jour le</h4>
-                        <h5>{{$type->updated_at->diffForHumans()}}</h5>
+                        <h4>Created At</h4>
+                        <h5>{{$mail->created_at}}</h5>
+                    </li>
+                                        <li class="list-group-item">
+                        <h4>Updated At</h4>
+                        <h5>{{$mail->updated_at}}</h5>
                     </li>
                                     </ul>
             </div>

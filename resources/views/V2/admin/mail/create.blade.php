@@ -1,17 +1,17 @@
 @extends('V2.admin.layouts.app')
 
-@section('title', 'Postalcodes - Ajout ')
+@section('title', 'Mails - Ajout ')
 
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Postalcodes</h2>
+        <h2>Mails</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Postalcodes</a>
+                <a href="#">Mails</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.postalcode.index') }}">Listes</a>
+                <a href="{{ route('v2.mail.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Ajout</strong>
@@ -29,14 +29,22 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Ajouter un nouveau Postalcode</h5>
+                <h5>Ajouter un nouveau Mail</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-validation form-padding" action="{{ route('v2.postalcode.store') }}" method="post">
+                <form class="form-validation form-padding" action="{{ route('v2.mail.store') }}" method="post">
 
                     {{ csrf_field() }}
                                                         
-                    {!! \Nvd\Crud\Form::input('content','text')->show() !!}
+                    {!! \Nvd\Crud\Form::textarea( 'subject' )->show() !!}
+                                            
+                    {!! \Nvd\Crud\Form::textarea( 'content' )->show() !!}
+                                            
+                    {!! \Nvd\Crud\Form::input('copied_from','text')->show() !!}
+                                            
+                    {!! \Nvd\Crud\Form::input('status','text')->show() !!}
+                                            
+                    {!! \Nvd\Crud\Form::input('sender_id','text')->show() !!}
                                                                                     
                     <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Créer</button>
 

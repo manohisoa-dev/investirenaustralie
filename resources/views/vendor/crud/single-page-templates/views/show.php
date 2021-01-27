@@ -4,6 +4,8 @@
 ?>
 @extends('<?=config('crud.layout')?>')
 
+@section('title', '<?= $gen->titlePlural() ?> - Détail ')
+
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">

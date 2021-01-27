@@ -87,11 +87,11 @@
         <li><a href="email_template.html">Ventes effectué</a></li>
     </ul>
 </li>
-<li>
+<li class="{{Request::is('*/blog/*') || Request::is('*/blog') ? 'active' : ''}}">
     <a href="#"><i class="fa fa-newspaper-o" title="Blogs"></i> <span class="nav-label">Blogs</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
-        <li><a href="form_basic.html">Ajouter un article</a></li>
-        <li><a href="form_advanced.html">Liste des blogs</a></li>
+        <li><a href="{{route('v2.blog.create')}}">Ajouter un article</a></li>
+        <li><a href="{{route('v2.blog.index')}}">Liste des blogs</a></li>
         <li><a href="form_wizard.html">Articles publiés</a></li>
         <li><a href="form_file_upload.html">Articles en attente</a></li>
         <li><a href="form_editors.html">Articles archivés</a></li>
@@ -102,14 +102,14 @@
     <a href="#"><i class="fa fa-list-ul" title="Catégories"></i> <span class="nav-label">Catégories</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
         <li><a href="{{route('v2.category.index')}}">Liste des catégories</a></li>
-        <li><a href="{{route('v2.category.index')}}">Ajouter une catégorie</a></li>
+        <li><a href="{{route('v2.category.create')}}">Ajouter une catégorie</a></li>
     </ul>
 </li>
 <li class="{{Request::is('*/pub/*') || Request::is('*/pub') ? 'active' : ''}}">
     <a href="#"><i class="fa fa-money" title="Publicités"></i> <span class="nav-label">Publicités</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
         <li><a href="{{route('v2.pub.index')}}">Liste des publicités</a></li>
-        <li><a href="{{route('v2.pub.index')}}">Ajouter une publicité</a></li>
+        <li><a href="{{route('v2.pub.create')}}">Ajouter une publicité</a></li>
     </ul>
 </li>
 <li class="{{Request::is('*/page/*') || Request::is('*/page') ? 'active' : ''}}">
@@ -119,10 +119,10 @@
         <li><a href="{{route('v2.page.index')}}">Liste des pages</a></li>
     </ul>
 </li>
-<li>
+<li class="{{Request::is('*/mail/*') || Request::is('*/mail') ? 'active' : ''}}">
     <a href="#"><i class="fa fa-envelope" title="Liste des mails"></i> <span class="nav-label">Liste des mails</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
-        <li><a href="typography.html">Liste des mails</a></li>
+        <li><a href="{{route('v2.mail.index')}}">Liste des mails</a></li>
         <li><a href="icons.html">Boite de reception</a></li>
         <li><a href="icons.html">Boite d'envoie</a></li>
         <li><a href="buttons.html">Brouillon</a></li>

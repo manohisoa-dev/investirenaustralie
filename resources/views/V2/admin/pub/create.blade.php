@@ -1,5 +1,7 @@
 @extends('V2.admin.layouts.app')
 
+@section('title', 'Pubs - Ajout ')
+
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">

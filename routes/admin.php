@@ -34,6 +34,8 @@ Route::prefix('V2')->namespace('V2')->as('v2.')->group(function(){
         Route::resource('plan','PlanController');
         Route::resource('type','TypeController');
         Route::resource('page','PageController');
+        Route::resource('mail','MailController');
+        Route::resource('blog','BlogController');
     });
 
     // Config Controller
