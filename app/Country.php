@@ -1,32 +1,27 @@
 <?php
-/* @var $gen \Nvd\Crud\Commands\Crud */
-/* @var $fields [] */
-?>
-<?='<?php'?>
-
-namespace App{!! $gen->getModelDir() !!};
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 
-class <?=$gen->modelClassName()?> extends Model {
+class Country extends Model {
 
-@if( !empty($gen->translatableFields))
-    use \Dimsav\Translatable\Translatable;
-    public $translatedAttributes =  ['{!! implode("','",$gen->translatableFields) !!}'];
-@endif
 
     public $guarded = ["id","created_at","updated_at"];
 
     public static function findRequested()
     {
-        $query = <?=$gen->modelClassName()?>::query();
+        $query = Country::query();
 
         // search results based on user input
-        @foreach ( $fields as $field )
-\Request::input('{{$field->name}}') and $query->where({!! \Nvd\Crud\Db::getConditionStr($field) !!});
-        @endforeach
-
+        \Request::input('id') and $query->where('id',\Request::input('id'));
+        \Request::input('code') and $query->where('code','like','%'.\Request::input('code').'%');
+        \Request::input('content') and $query->where('content','like','%'.\Request::input('content').'%');
+        \Request::input('prefixPhone') and $query->where('prefixPhone','like','%'.\Request::input('prefixPhone').'%');
+        \Request::input('placeholder') and $query->where('placeholder','like','%'.\Request::input('placeholder').'%');
+        \Request::input('created_at') and $query->where('created_at',\Request::input('created_at'));
+        \Request::input('updated_at') and $query->where('updated_at',\Request::input('updated_at'));
+        
         // sort results
         \Request::input("sort") and $query->orderBy(\Request::input("sort"),\Request::input("sortType","asc"));
 
@@ -37,11 +32,10 @@ class <?=$gen->modelClassName()?> extends Model {
     public static function validationRules( $attributes = null )
     {
         $rules = [
-@foreach ( $fields as $field )
-@if( $rule = \Nvd\Crud\Db::getValidationRule( $field ) )
-            {!! $rule !!}
-@endif
-@endforeach
+            'code' => 'string|max:191',
+            'content' => 'string|max:191',
+            'prefixPhone' => 'string|max:191',
+            'placeholder' => 'string|max:191',
         ];
 
         // no list is provided
@@ -61,9 +55,3 @@ class <?=$gen->modelClassName()?> extends Model {
 
 }
 
-@if( !empty($gen->translatableFields))
-class <?=$gen->modelTranslationClassName()?> extends Model {
-    public $timestamps = false;
-    protected $fillable = ['{!! implode("','",$gen->translatableFields) !!}'];
-}
-@endif

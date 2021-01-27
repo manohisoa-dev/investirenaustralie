@@ -2,35 +2,48 @@
 /* @var $gen \Nvd\Crud\Commands\Crud */
 /* @var $fields [] */
 ?>
-<div class="panel-group col-md-6 col-sm-12" id="accordion" style="padding-left: 0">
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                    <i class="fa fa-plus"></i>
-                    Add a New <?=$gen->titleSingular()?>
-                </a>
-            </h4>
-        </div>
-        <div id="collapseOne" class="panel-collapse collapse">
-            <div class="panel-body">
+@extends('<?=config('crud.layout')?>')
 
-                <form action="/<?=$gen->route()?>" method="post">
+@section('breadcrumb')
+<h2><?= $gen->titlePlural() ?></h2>
+<ol class="breadcrumb">
+    <li>
+        <a href="#"><?= $gen->titlePlural() ?></a>
+    </li>
+    <li>
+        <a href="{{ route('<?= $gen->generateRouteAction('index') ?>') }}">Listes</a>
+    </li>
+    <li class="active">
+        <strong>Ajout</strong>
+    </li>
+</ol>
+@endsection
+
+@section('content')
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Ajouter un nouveau <?=$gen->titleSingular()?></h5>
+            </div>
+            <div class="ibox-content">
+                <form class="form-validation form-padding" action="{{ route('<?=  $gen->generateRouteAction('store') ?>') }}" method="post">
 
                     {{ csrf_field() }}
-<?php foreach ( $fields as $field )  { ?>
-<?php if( $str = \Nvd\Crud\Db::getFormInputMarkup($field) ) { ?>
+            <?php foreach ( $fields as $field )  { ?>
+                <?php if( $str = \Nvd\Crud\Db::getFormInputMarkup($field) ) { ?>
 
                     <?=$str?>
 
-<?php } ?>
-<?php } ?>
+                <?php } ?>
+            <?php } ?>
 
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Créer</button>
 
                 </form>
-
             </div>
         </div>
     </div>
 </div>
+
+@endsection

@@ -5,25 +5,47 @@
 
 @extends('<?=config('crud.layout')?>')
 
+@section('breadcrumb')
+<h2><?= $gen->titlePlural() ?></h2>
+<ol class="breadcrumb">
+    <li>
+        <a href="#"><?= $gen->titlePlural() ?></a>
+    </li>
+    <li>
+        <a href="{{ route('<?= $gen->generateRouteAction('index') ?>') }}">Listes</a>
+    </li>
+    <li class="active">
+        <strong>Edition</strong>
+    </li>
+</ol>
+@endsection
+
 @section('content')
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Mise à jour <?=$gen->titleSingular()?> : {{$<?=$gen->modelVariableName()?>-><?=array_values($fields)[1]->name?>}}</h5>
+            </div>
+            <div class="ibox-content">
+                <form action="{{ route('<?=$gen->generateRouteAction('index')?>')}}/{{$<?=$gen->modelVariableName()?>->id}}" method="post">
 
-    <h2>Update <?=$gen->titleSingular()?>: {{$<?=$gen->modelVariableName()?>-><?=array_values($fields)[1]->name?>}}</h2>
+                    {{ csrf_field() }}
 
-    <form action="/<?=$gen->route()?>/{{$<?=$gen->modelVariableName()?>->id}}" method="post">
+                    {{ method_field("PUT") }}
+                        <?php foreach ( $fields as $field )  { ?>
+                        <?php if( $str = \Nvd\Crud\Db::getFormInputMarkup( $field, $gen->modelVariableName() ) ) { ?>
 
-        {{ csrf_field() }}
+                            <?=$str?>
 
-        {{ method_field("PUT") }}
-<?php foreach ( $fields as $field )  { ?>
-<?php if( $str = \Nvd\Crud\Db::getFormInputMarkup( $field, $gen->modelVariableName() ) ) { ?>
+                        <?php } ?>
+                        <?php } ?>
 
-        <?=$str?>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Enregistrer</button>
 
-<?php } ?>
-<?php } ?>
-
-        <button type="submit" class="btn btn-default">Submit</button>
-
-    </form>
-
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
