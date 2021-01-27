@@ -98,18 +98,18 @@
         <li><a href="form_autocomplete.html">Articles aux corbeilles</a></li>
     </ul>
 </li>
-<li>
+<li class="{{Request::is('*/category/*') || Request::is('*/category') ? 'active' : ''}}">
     <a href="#"><i class="fa fa-list-ul" title="Catégories"></i> <span class="nav-label">Catégories</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
-        <li><a href="contacts.html">Liste des catégories</a></li>
-        <li><a href="profile.html">Ajouter une catégorie</a></li>
+        <li><a href="{{route('v2.category.index')}}">Liste des catégories</a></li>
+        <li><a href="{{route('v2.category.index')}}">Ajouter une catégorie</a></li>
     </ul>
 </li>
-<li>
+<li class="{{Request::is('*/pub/*') || Request::is('*/pub') ? 'active' : ''}}">
     <a href="#"><i class="fa fa-money" title="Publicités"></i> <span class="nav-label">Publicités</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
-        <li><a href="search_results.html">Liste des publicités</a></li>
-        <li><a href="lockscreen.html">Ajouter une publicité</a></li>
+        <li><a href="{{route('v2.pub.index')}}">Liste des publicités</a></li>
+        <li><a href="{{route('v2.pub.index')}}">Ajouter une publicité</a></li>
     </ul>
 </li>
 <li>
@@ -130,32 +130,32 @@
         <li><a href="tabs_panels.html">Messages enregistrees</a></li>
     </ul>
 </li>
-<li>
+<li class="{{Request::is('*/badword/*') || Request::is('*/badword') ? 'active' : ''}}">
     <a href="#"><i class="fa fa-th-list" title="Liste des mots interdits"></i> <span class="nav-label">Liste des mots interdits</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
-        <li><a href="toast_notifications.html">Liste des mots interdits</a></li>
-        <li><a href="nestable_list.html">Ajouter un mot interdit</a></li>
+        <li><a href="{{route('v2.badword.index')}}">Liste des mots interdits</a></li>
+        <li><a href="{{route('v2.badword.create')}}">Ajouter un mot interdit</a></li>
     </ul>
 </li>
-<li>
+<li class="{{Request::is('*/postalcode/*') || Request::is('*/postalcode') ? 'active' : ''}}">
     <a href="#"><i class="fa fa-bars" title="Liste des codes postaux"></i> <span class="nav-label">Liste des codes postaux</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
-        <li><a href="toast_notifications.html">Liste des codes postaux</a></li>
-        <li><a href="nestable_list.html">Ajouter un code postal</a></li>
+        <li><a href="{{route('v2.postalcode.index')}}">Liste des codes postaux</a></li>
+        <li><a href="{{route('v2.postalcode.create')}}">Ajouter un code postal</a></li>
     </ul>
 </li>
-<li>
+<li class="{{Request::is('*/state/*') || Request::is('*/state') ? 'active' : ''}}">
     <a href="#"><i class="fa fa-th-list" title="Liste des etats"></i> <span class="nav-label">Liste des etats</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
-        <li><a href="toast_notifications.html">Liste des etats</a></li>
-        <li><a href="nestable_list.html">Ajouter un Etat</a></li>
+        <li><a href="{{route('v2.state.index')}}">Liste des etats</a></li>
+        <li><a href="{{route('v2.state.create')}}">Ajouter un Etat</a></li>
     </ul>
 </li>
-<li>
+<li class="{{Request::is('*/plan/*') || Request::is('*/plan') ? 'active' : ''}}">
     <a href="#"><i class="fa fa-bars" title="Liste des plans"></i> <span class="nav-label">Liste des plans</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
-        <li><a href="toast_notifications.html">Liste des plans</a></li>
-        <li><a href="nestable_list.html">Ajouter un plan</a></li>
+        <li><a href="{{route('v2.plan.index')}}">Liste des plans</a></li>
+        <li><a href="{{route('v2.plan.create')}}">Ajouter un plan</a></li>
     </ul>
 </li>
 <li class="{{Request::is('*/config/*') ? 'active' : ''}}">
