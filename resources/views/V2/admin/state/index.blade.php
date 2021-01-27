@@ -41,7 +41,7 @@
                                                     {!!\Nvd\Crud\Html::sortableTh('country','v2.state.index','Country')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('created_at','v2.state.index','Créer le')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.state.index','Mise à jour le')!!}
-                                            <th></th>
+                                            <th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">
@@ -80,7 +80,7 @@
                                           >{{ $record->country }}</span>
                                                                     </td>
                                                                 <td>
-                                                                            {{ $record->created_at->diffForHumans() }}
+                                                                            {{ $record->created_at ? $record->created_at->diffForHumans() : '' }}
                                                                     </td>
                                                                 <td>
                                                                             {{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}

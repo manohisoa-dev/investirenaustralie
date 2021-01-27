@@ -45,7 +45,7 @@
                         <?php foreach ( $fields as $field )  { ?>
                             {!!\Nvd\Crud\Html::sortableTh('<?=$field->name?>','<?= $gen->generateRouteAction('index') ?>','<?=ucwords(str_replace('_',' ',$field->name))?>')!!}
                         <?php } ?>
-                    <th></th>
+                        <th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">

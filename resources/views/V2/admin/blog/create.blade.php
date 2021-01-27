@@ -40,11 +40,11 @@
                                             
                     {!! \Nvd\Crud\Form::input('title','text')->show() !!}
                                             
-                    {!! \Nvd\Crud\Form::input('content','text')->show() !!}
+                    {!! \Nvd\Crud\Form::textarea('content','text')->show() !!}
                                             
-                    {!! \Nvd\Crud\Form::input('meta_tag','text')->show() !!}
+                    {!! \Nvd\Crud\Form::textarea('meta_tag','text')->show() !!}
                                             
-                    {!! \Nvd\Crud\Form::input('meta_description','text')->show() !!}
+                    {!! \Nvd\Crud\Form::textarea('meta_description','text')->show() !!}
                                             
                     {!! \Nvd\Crud\Form::input('view_count','text')->show() !!}
                                             
@@ -66,4 +66,16 @@
     </div>
 </div>
 
+@endsection
+
+@section('custom-script')
+    <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            CKEDITOR.replace( 'content' );
+            CKEDITOR.replace( 'meta_tag' );
+            CKEDITOR.replace( 'meta_description' );
+        });
+    </script>
 @endsection

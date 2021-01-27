@@ -48,9 +48,9 @@
                                                     {!!\Nvd\Crud\Html::sortableTh('post_type','v2.blog.index','Post Type')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('image_id','v2.blog.index','Image Id')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('author_id','v2.blog.index','Author Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.blog.index','Created At')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.blog.index','Updated At')!!}
-                                            <th></th>
+                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.blog.index','Créer le')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.blog.index','Mise à jour le')!!}
+                                            <th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">
@@ -179,7 +179,7 @@
                                           >{{ $record->author_id }}</span>
                                                                     </td>
                                                                 <td>
-                                                                            {{ $record->created_at->diffForHumans() }}
+                                                                            {{ $record->created_at ? $record->created_at->diffForHumans() : '' }}
                                                                     </td>
                                                                 <td>
                                                                             {{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}

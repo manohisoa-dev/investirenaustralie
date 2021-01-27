@@ -72,7 +72,7 @@
                     </li>
                                         <li class="list-group-item">
                         <h4>Créer le</h4>
-                        <h5>{{$page->created_at->diffForHumans()}}</h5>
+                        <h5>{{$page->created_at ? $page->created_at->diffForHumans() : ''}}</h5>
                     </li>
                                         <li class="list-group-item">
                         <h4>Mise à jour le</h4>

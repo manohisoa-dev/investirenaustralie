@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Config;
 
 use App\Notifications\NewMail;
+use App\Http\Controllers\Controller;
 
 class ConfigController extends Controller
 {

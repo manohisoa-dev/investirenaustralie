@@ -13,6 +13,7 @@ use App\Models\Mail;
 use App\Models\MailUser;
 
 use App\Notifications\NewMail;
+use App\Http\Controllers\Controller;
 
 class AdminController extends Controller
 {

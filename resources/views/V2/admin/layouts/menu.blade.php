@@ -115,8 +115,8 @@
 <li class="{{Request::is('*/page/*') || Request::is('*/page') ? 'active' : ''}}">
     <a href="#"><i class="fa fa-file" title="Pages"></i> <span class="nav-label">Pages</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
-        <li><a href="{{route('v2.page.create')}}">Ajouter une page</a></li>
         <li><a href="{{route('v2.page.index')}}">Liste des pages</a></li>
+        <li><a href="{{route('v2.page.create')}}">Ajouter une page</a></li>
     </ul>
 </li>
 <li class="{{Request::is('*/mail/*') || Request::is('*/mail') ? 'active' : ''}}">

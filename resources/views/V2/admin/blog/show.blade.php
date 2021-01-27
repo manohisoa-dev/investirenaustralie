@@ -48,7 +48,7 @@
                     </li>
                                         <li class="list-group-item">
                         <h4>Content</h4>
-                        <h5>{{$blog->content}}</h5>
+                        <h5>{!! $blog->content !!}</h5>
                     </li>
                                         <li class="list-group-item">
                         <h4>Meta Tag</h4>
@@ -84,7 +84,7 @@
                     </li>
                                         <li class="list-group-item">
                         <h4>Created At</h4>
-                        <h5>{{$blog->created_at->diffForHumans()}}</h5>
+                        <h5>{{$blog->created_at ? $blog->created_at->diffForHumans() : ''}}</h5>
                     </li>
                                         <li class="list-group-item">
                         <h4>Updated At</h4>

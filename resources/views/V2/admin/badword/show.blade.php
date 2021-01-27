@@ -30,7 +30,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Détail Badword : {{$badword->content}}</h5>
+                <h5>Détail Badword : {{str_limit(strip_tags($badword->content), "100", "...")}}</h5>
             </div>
             <div class="ibox-content">
                 <ul class="list-group">
@@ -40,15 +40,15 @@
                     </li>
                                         <li class="list-group-item">
                         <h4>Content</h4>
-                        <h5>{{$badword->content}}</h5>
+                        <h5>{{str_limit(strip_tags($badword->content), "100", "...")}}</h5>
                     </li>
                                         <li class="list-group-item">
                         <h4>Créer le</h4>
-                        <h5>{{$badword->created_at->diffForHumans()}}</h5>
+                        <h5>{{$badword->created_at ? $badword->created_at->diffForHumans() : ''}}</h5>
                     </li>
                                         <li class="list-group-item">
                         <h4>Mise à jour le</h4>
-                        <h5>{{$badword->updated_at->diffForHumans()}}</h5>
+                        <h5>{{$badword->updated_at ? $badword->updated_at->diffForHumans() : ''}}</h5>
                     </li>
                                     </ul>
             </div>

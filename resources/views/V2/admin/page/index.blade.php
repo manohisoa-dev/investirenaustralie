@@ -46,7 +46,7 @@
                                                     {!!\Nvd\Crud\Html::sortableTh('author_id','v2.page.index','Author Id')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('created_at','v2.page.index','Créer le')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.page.index','Mise à jour le')!!}
-                                            <th></th>
+                                            <th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">

@@ -41,9 +41,9 @@
                                                     {!!\Nvd\Crud\Html::sortableTh('copied_from','v2.mail.index','Copied From')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('status','v2.mail.index','Status')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('sender_id','v2.mail.index','Sender Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.mail.index','Created At')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.mail.index','Updated At')!!}
-                                            <th></th>
+                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.mail.index','Créer le')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.mail.index','Mise à jour le')!!}
+                                            <th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">
@@ -112,7 +112,7 @@
                                           >{{ $record->sender_id }}</span>
                                                                     </td>
                                                                 <td>
-                                                                            {{ $record->created_at->diffForHumans() }}
+                                                                            {{ $record->created_at ? $record->created_at->diffForHumans() : '' }}
                                                                     </td>
                                                                 <td>
                                                                             {{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}

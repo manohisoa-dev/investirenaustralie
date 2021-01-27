@@ -44,11 +44,11 @@
                     </li>
                                         <li class="list-group-item">
                         <h4>Créer le</h4>
-                        <h5>{{$postalcode->created_at->diffForHumans()}}</h5>
+                        <h5>{{$postalcode->created_at ? $postalcode->created_at->diffForHumans() : ''}}</h5>
                     </li>
                                         <li class="list-group-item">
                         <h4>Mise à jour le</h4>
-                        <h5>{{$postalcode->updated_at->diffForHumans()}}</h5>
+                        <h5>{{$postalcode->updated_at ? $postalcode->updated_at->diffForHumans() : ''}}</h5>
                     </li>
                                     </ul>
             </div>

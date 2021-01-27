@@ -40,7 +40,7 @@
                                                     {!!\Nvd\Crud\Html::sortableTh('content','v2.badword.index','Content')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('created_at','v2.badword.index','Créer le')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.badword.index','Mise à jour le')!!}
-                                            <th></th>
+                                            <th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">
@@ -66,10 +66,10 @@
                                           data-value="{{ $record->content }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
                                           data-url="{{ route('v2.badword.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->content }}</span>
+                                          >{{ str_limit(strip_tags($record->content), "100", "...") }}</span>
                                                                     </td>
                                                                 <td>
-                                                                            {{ $record->created_at->diffForHumans() }}
+                                                                            {{ $record->created_at ? $record->created_at->diffForHumans() : '' }}
                                                                     </td>
                                                                 <td>
                                                                             {{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}

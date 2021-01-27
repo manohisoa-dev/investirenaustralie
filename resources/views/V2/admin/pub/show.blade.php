@@ -60,11 +60,11 @@
                     </li>
                                         <li class="list-group-item">
                         <h4>Créer le</h4>
-                        <h5>{{$pub->created_at->diffForHumans()}}</h5>
+                        <h5>{{$pub->created_at ? $pub->created_at->diffForHumans() : ''}}</h5>
                     </li>
                                         <li class="list-group-item">
                         <h4>Mise à jour le</h4>
-                        <h5>{{$pub->updated_at->diffForHumans()}}</h5>
+                        <h5>{{$pub->updated_at ? $pub->updated_at->diffForHumans() : ''}}</h5>
                     </li>
                                     </ul>
             </div>

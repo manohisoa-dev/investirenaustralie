@@ -45,7 +45,7 @@
                                                     {!!\Nvd\Crud\Html::sortableTh('role','v2.plan.index','Role')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('created_at','v2.plan.index','Créer le')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.plan.index','Mise à jour le')!!}
-                                            <th></th>
+                                            <th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">
@@ -124,7 +124,7 @@
                                           >{{ $record->role }}</span>
                                                                     </td>
                                                                 <td>
-                                                                            {{ $record->created_at->diffForHumans() }}
+                                                                            {{ $record->created_at ? $record->created_at->diffForHumans() : '' }}
                                                                     </td>
                                                                 <td>
                                                                             {{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}

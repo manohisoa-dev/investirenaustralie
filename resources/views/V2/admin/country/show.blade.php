@@ -56,11 +56,11 @@
                     </li>
                                         <li class="list-group-item">
                         <h4>Créer le</h4>
-                        <h5>{{$country->created_at->diffForHumans()}}</h5>
+                        <h5>{{$country->created_at ? $country->created_at->diffForHumans() : ''}}</h5>
                     </li>
                                         <li class="list-group-item">
                         <h4>Mise à jour le</h4>
-                        <h5>{{$country->updated_at->diffForHumans()}}</h5>
+                        <h5>{{$country->updated_at ? $country->updated_at->diffForHumans() : ''}}</h5>
                     </li>
                                     </ul>
             </div>

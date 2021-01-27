@@ -73,9 +73,9 @@
                                                     {!!\Nvd\Crud\Html::sortableTh('state_id','v2.product.index','State Id')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('location_id','v2.product.index','Location Id')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('image_id','v2.product.index','Image Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.product.index','Created At')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.product.index','Updated At')!!}
-                                            <th></th>
+                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.product.index','Créer le')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.product.index','Mise à jour le')!!}
+                                            <th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">

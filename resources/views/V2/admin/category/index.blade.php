@@ -38,12 +38,12 @@
                     <tr class="header-row">
                                                     {!!\Nvd\Crud\Html::sortableTh('id','v2.category.index','Id')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('slug','v2.category.index','Slug')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('title','v2.category.index','Title')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('title','v2.category.index','Titre')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('content','v2.category.index','Content')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('author_id','v2.category.index','Author Id')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('author_id','v2.category.index','Auteur')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('created_at','v2.category.index','Créer le')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.category.index','Mise à jour le')!!}
-                                            <th></th>
+                                            <th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">
@@ -99,10 +99,10 @@
                                           data-value="{{ $record->author_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
                                           data-url="{{ route('v2.category.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->author_id }}</span>
+                                          >{{ $record->author->name }}</span>
                                                                     </td>
                                                                 <td>
-                                                                            {{ $record->created_at->diffForHumans() }}
+                                                                            {{ $record->created_at ? $record->created_at->diffForHumans() : '' }}
                                                                     </td>
                                                                 <td>
                                                                             {{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}
