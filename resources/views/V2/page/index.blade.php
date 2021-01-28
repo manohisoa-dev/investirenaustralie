@@ -206,7 +206,7 @@
                 <div class="col-lg-5 m-15px-tb">
                     <h2 class="h1 m-25px-b">@lang('app.home.youtube.title')</p>
                     <div class="btn-bar p-15px-t">
-                        <a class="m-btn m-btn-radius m-btn-theme" href="#">@lang('app.btn.view_more')</a>
+                        <a class="m-btn m-btn-theme2nd m-btn-theme" href="#">@lang('app.btn.view_more')</a>
                     </div>
                 </div>
                 <div class="col-lg-6 m-15px-tb">
@@ -231,7 +231,7 @@
 
             <div class="owl-carousel owl-no-overflow" data-items="3" data-nav-dots="true" data-md-items="2" data-sm-items="2" data-xs-items="1" data-xx-items="1" data-space="30" data-center="true" data-stage="50">
                 @foreach($recentProducts as $product)
-                    @include('V2.product.single', ['item'=>$product])
+                    @include('V2.product.single', ['item'=>$product, 'page_id'=>$item->id])
                 @endforeach
             </div>
         </div>

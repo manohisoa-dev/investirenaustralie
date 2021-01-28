@@ -52,22 +52,21 @@
                             </ul>
                         </div>
                         <div class="col-md-7 d-none d-md-block">
-                            <ul class="nav justify-content-md-start justify-content-center links-white">
+                            <ul class="nav justify-content-end links-white">
                                 @if(!Auth::check())
-                                <li class="small m-10px-l"><i class="fas fa-mouse-pointer"></i> <a href="{{route('login')}}">@lang('app.connexion')</a> 
+                                <li class="small m-10px-l"><i class="fas fa-mouse-pointer"></i> <a href="{{route('v2.login')}}">@lang('app.connexion')</a> 
                                 </li>
                                 <li class="small m-10px-l"><i class="fas fa-sign-in-alt"></i> @lang('app.sinscrire') : 
                                     <select id="currency-dropdown" onChange="location.href=''+this.options[this.selectedIndex].value;">
-                                        <option value="#">@lang('app.as')</option>
-                                        <option value="{{route('register', ['role'=>'member'])}}">@lang('app.member')</option>
-                                        <option value="{{route('register', ['role'=>'seller'])}}">@lang('app.seller')</option>
-                                        <option value="{{route('register', ['role'=>'afa'])}}">@lang('app.afa')</option>
-                                        <option value="{{route('register', ['role'=>'apl'])}}">@lang('app.apl')</option>
+                                        <option value="#" selected="true" disabled="disabled">@lang('app.as')</option>
+                                        <option value="{{route('v2.register', ['role'=>'member'])}}">@lang('app.member')</option>
+                                        <option value="{{route('v2.register', ['role'=>'seller'])}}">@lang('app.seller')</option>
+                                        <option value="{{route('v2.register', ['role'=>'afa'])}}">@lang('app.afa')</option>
+                                        <option value="{{route('v2.register', ['role'=>'apl'])}}">@lang('app.apl')</option>
                                     </select>
                                 </li>
                                 @else
-                                <li class="small m-10px-l"><i class="fas fa-sign-in"></i> @lang('app.sinscrire') : 
-                                    <i class="fa fa-user"></i><a href="{{url(Auth::user()->role)}}">{{Auth::user()->name}}</a>
+                                <li class="small m-10px-l"><i class="fas fa-user"></i> <a href="{{url(Auth::user()->role)}}">{{Auth::user()->name}} </a>
                                 </li>
                                 @endif
                                 <li class="small m-10px-l"><i class="fas fa-globe"></i> @lang('app.language') : 
@@ -80,7 +79,7 @@
                                     @php $socialConfig = \App\Models\Config::social(); @endphp
                                     @foreach(\App\Models\Config::socialRules() as $key => $value)
                                         @if($metaConfig = $socialConfig->get_meta($key))
-                                            <a href="{{$metaConfig->value}}"><i class="{{'fa fa-'.$key}}">f</i></a>
+                                            <a href="{{$metaConfig->value}}"><i class="{{'fab fa-'.$key}}"></i></a>
                                         @endif
                                     @endforeach
                                 </li>
@@ -183,7 +182,7 @@
 
                     <div class="col-6 col-md-4 col-lg-2 m-15px-tb">
                         <h6 class="white-color">
-                            @lang('app.rapid_link')
+                            {{ Illuminate\Support\Str::upper(trans('app.rapid_link')) }}
                         </h6>
                         <ul class="list-unstyled links-white footer-link-1">
                         <li><a href="{{route('v2.home')}}">@lang('app.home')</a></li>
