@@ -4,11 +4,17 @@
 ?>
 <?='<?php'?>
 
-namespace App;
+namespace App{!! $gen->getModelDir() !!};
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Config;
 
 class <?=$gen->modelClassName()?> extends Model {
+
+@if( !empty($gen->translatableFields))
+    use \Dimsav\Translatable\Translatable;
+    public $translatedAttributes =  ['{!! implode("','",$gen->translatableFields) !!}'];
+@endif
 
     public $guarded = ["id","created_at","updated_at"];
 
@@ -25,7 +31,7 @@ class <?=$gen->modelClassName()?> extends Model {
         \Request::input("sort") and $query->orderBy(\Request::input("sort"),\Request::input("sortType","asc"));
 
         // paginate results
-        return $query->paginate(15);
+        return $query->paginate(Config::get('constants.perpage.admin'));
     }
 
     public static function validationRules( $attributes = null )
@@ -54,3 +60,10 @@ class <?=$gen->modelClassName()?> extends Model {
     }
 
 }
+
+@if( !empty($gen->translatableFields))
+class <?=$gen->modelTranslationClassName()?> extends Model {
+    public $timestamps = false;
+    protected $fillable = ['{!! implode("','",$gen->translatableFields) !!}'];
+}
+@endif

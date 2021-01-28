@@ -22,9 +22,9 @@ $config = [
 
 ];
 
-    /*
-     * Layout template used when generating views
-     * */
-    $config['layout'] = $config['templates'].'.common.app';
+/*
+ * Layout template used when generating views
+ * */
+$config['layout'] = 'V2.admin.layouts.app';
 
 return $config;

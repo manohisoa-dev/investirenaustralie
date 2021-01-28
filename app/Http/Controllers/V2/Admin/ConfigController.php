@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\V2;
+namespace App\Http\Controllers\V2\Admin;
 
 use Illuminate\Http\Request;
 
@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Config;
 
 use App\Notifications\NewMail;
+use App\Http\Controllers\Controller;
 
 class ConfigController extends Controller
 {

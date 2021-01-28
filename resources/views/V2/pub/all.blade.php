@@ -24,7 +24,7 @@
                             <ul class="data inline">
                                 <li><strong>By:</strong> <a href="javascript:void(0);"> Administrateur</a></li>
                                 <li class="divider-vertical"></li>
-                                <li><strong>{{ $item->updated_at }}</strong>, 09:27 AM</li>
+                                <li><strong>{{ $item->updated_at->diffForHumans() }}</strong>, 09:27 AM</li>
                                 <li class="divider-vertical"></li>
                                 <li><a href="{{ route($item->link) }}"> Accéder à la page </a></li>
                             </ul>
