@@ -14,6 +14,7 @@ use App\Models\Localisation;
 use App\Models\Country;
 use App\Models\State;
 use App\Http\Controllers\Controller;
+use Jleon\LaravelPnotify\Notify;
 
 class ProfileController extends Controller {
     /**
@@ -172,11 +173,13 @@ class ProfileController extends Controller {
         }
         catch (\Exception $exception) {
             logger()->error($exception);
+            //Notify::success('Unable to edit your profile');
             return back()->with('info', 'Unable to edit your profile.');
         }
 
         // Success
-        return back()->with('success', "Votre profile a été bien modifié.");
+        Notify::success('Votre profile a été bien modifié.');
+        return back();
 
     }
 
