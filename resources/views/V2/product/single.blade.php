@@ -4,8 +4,10 @@
             <img src="{{$item->imageUrl()}}" alt="{{$item->title}}">
         </div>
         <div class="p-5px-t p-20px-b text-center">
-            <small><i class="fa fa-map-marker"></i> {{$item->location?$item->location->toString():''}}</small>
+            <small><i class="fa fa-map-marker"></i> {{$item->location? substr(strip_tags($item->location->toString()), 0, 25):''}}</small>
+            
             <h6 class="m-10px-b font-w-600"><a class="dark-color" href="{{route('v2.product.index',['product'=>$item->slug])}}">{{$item->title}}</a></h6>
+
         </div>
         <div class="font-small p-5px-t p-20px-b text-center border-top-1 border-color-dark-gray">
             <a class="m-15px-r body-color font-w-500" href="#"><i class="fa fa-arrows-alt"></i> @lang('app.num.area', ['num'=>number_format($item->area, 0)])</a>

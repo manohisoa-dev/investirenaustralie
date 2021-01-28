@@ -236,21 +236,27 @@ Route::prefix('seller')->middleware(["auth","role:seller"])->group(function(){
 
 
 // Route FrontOffice V2
+/* ---------- ROUTE V2 ------------------*/
+Route::prefix('V2')->namespace('V2')->as('v2.')->group(function(){
+    // Static pages
+    Route::get('/', 'IndexController@index')->name('home');
+    Route::get('services', 'IndexController@services_v2')->name('services');
+    Route::get('terms', 'IndexController@terms_v2')->name('terms');
+    Route::get('help', 'IndexController@help_v2')->name('help');
+    Route::get('publicities', 'IndexController@publicities_v2')->name('publicities');
+    Route::get('confidentialities', 'IndexController@confidentialities_v2')->name('confidentialities');
+    Route::get('apls', 'IndexController@apl')->name('apls');
 
-// Static pages
-Route::get('/V2', 'V2\IndexController@index')->name('v2.home');
-Route::get('V2/services', 'V2\IndexController@services')->name('v2.services');
-Route::get('V2/terms', 'V2\IndexController@terms')->name('v2.terms');
-Route::get('V2/help', 'V2\IndexController@help')->name('v2.help');
-Route::get('V2/publicities', 'V2\IndexController@publicities')->name('v2.publicities');
-Route::get('V2/confidentialities', 'V2\IndexController@confidentialities')->name('v2.confidentialities');
-Route::get('V2/apls', 'V2\IndexController@apl')->name('v2.apls');
+    // Shop and Product
+    Route::post('shop/{category?}', 'SearchController@index')->name('search');
+    Route::get('shop/{category?}', 'ShopController@index')->name('shop.index');// List product by Category OR no
+    Route::get('product/{slug}', 'ProductController@index')->name('product.index');// View Product
 
-// Shop and Product
-Route::post('V2/shop/{category?}', 'V2\SearchController@index')->name('v2.search');
-Route::get('V2/shop/{category?}', 'V2\ShopController@index')->name('v2.shop.index');// List product by Category OR no
-Route::get('V2/product/{slug}', 'V2\ProductController@index')->name('v2.product.index');// View Product
+    /// Blog
+    Route::get('blogs/{filter?}', 'BlogController@all')->name('blog.all');
+    Route::get('blog/{slug}', 'BlogController@index')->name('blog.index');
 
-/// Blog
-Route::get('V2/blogs/{filter?}', 'V2\BlogController@all')->name('v2.blog.all');
-Route::get('V2/blog/{slug}', 'V2\BlogController@index')->name('v2.blog.index');
+    // Contact Page
+    Route::get('contact','MailController@contact');
+    Route::post('contact','MailController@contact')->name('contact');
+});

@@ -6,7 +6,7 @@ return [
     'app_name'            => 'Investir en Australie',
     
     'footer_description'  => 'Investir en Australie est un e-marketplace.',
-    'copyright'           => '© Copyright :year : ":app" - Tout droit reserve',
+    'copyright'           => '© Copyright :year : ":app" - Tout droit réservé',
     
     'last_update'         => 'Derniere Modification, :date',
     'contact_user'        => 'Contacter: :name (:email)',
@@ -244,8 +244,8 @@ return [
     'profile'       => 'Profile',
     'dashboard'     => 'Dashboard',
     
-    'publicities'   => 'Publicites',
-    'Publicite'     => 'Publicite',
+    'publicities'   => 'Publicités',
+    'Publicite'     => 'Publicité',
     
     'messages'      => 'Messages',
     'message'       => 'Message',
@@ -534,6 +534,25 @@ return [
     'txt.commercial'      =>'Commercial',
     'txt.residentiel'      =>'Residentiel',
     'txt.foncier'      =>'Foncier',
+    'txt.slogan'        =>"Les meilleurs opportunités d'investir en Australie.",
+    'txt.missionvision'        =>"Mission & Vision",
+    'txt.mission.title'        =>"Notre Mission",
+    'txt.mission.content'        =>"Le projet ''IEA'' s'est fixé pour mission:</br>
+                                    - D'aider au développement des relations entre la communauté francophone internationale (plus de 250 millions de locuteurs français à travers le monde) et l'Australie en favorisant l'investissement dans l'île-continent par le biais d'une plateforme d'échange abondante, variée, fiable et conviviale;</br>
+                                    - De faciliter et sécuriser les transactions d'investissement en offrant aux investisseurs francophones l'assistance juridique, financière et technique de professionnels australiens francophones.",
+    'txt.vision.title'        =>"Notre Vision",
+    'txt.vision.content'        =>"Dans l'accomplissement de sa mission le projet ''Investir en Australie'' se fixe pour objectifs:</br>
+                                    - D'offrit un service à la clientèle qui soit son meilleur avantage concurrentiel;</br>
+                                    - D'être à terme, pour l'ensemble de la communauté francophone, le site de référence en matière d'investissement en Australie.",
+    'txt.contact'               =>"Contact",
+    'txt.contact_us'               =>"Nous contacter",
+    'txt.noinfo'               =>"Aucune information trouvée",
+    'txt.followus'               =>"Nous Suivre",
+    'txt.terme'               =>"Termes et Conditions",
+    'txt.confidentialite'               =>"Confidentialité",
+    'txt.help'               =>"Aides",
+    'txt.publicite'               =>"Publicités",
+    'txt.service'               =>"Services",
     
     
     'childs' => 'Fils',
@@ -555,6 +574,7 @@ return [
     'btn.remove'         => 'Effacer',
     'btn.delete'         => 'Supprimer',
     'btn.view'           => 'Voir',
+    'btn.view_more'      => 'Voir plus',
     'btn.more'           => 'Plus',
     'btn.reset'          => 'Annuler',
     'btn.archive'        => 'Archiver',
@@ -621,6 +641,25 @@ return [
     'home.step4.modal.content'         =>"Après confirmation de la disponibilité du bien, de son retrait du marché et de sa réservation à votre nom, le dossier est transféré à l'AFA qui se chargera de l'accomplissement des formalités de transfert de propriété.Les délais de remise des clés dépendront selon que le bien est déjà construit et disponible, en cours de construction ou acheté sur plans.''Investir En Australie'' vous suit et vous aide tout au long de la procédure en vous mettant en contact avec des professionnels francophones australiens en tant que de besoin.",
     'home.prod'            => 'Derniers Produits',
     'home.art'              => 'Derniers Articles',
+    'home.title'            => 'Le meilleur portail "E-marketplace" des francophones.',
+    'home.abstract'            => 'Le site "Investir en Australie" dénommé "IEA", est un portail "e-marketplace" consacré aux transactions sur produits immobiliers, fonciers, industriels, commerciaux et aux services financiers, et où se rencontrent vendeurs australiens et acheteurs potentiels francophones du monde.',
+    'home.step1.title'            => "Etape 1",
+    'home.step1.large.title'            => "Parmi tous les produits affichés sur le site. séléctionnez celui ou ceux qui vous interessent",
+    'home.step1.content'            =>"Sans nécessité d'être inscrit comme Membre, vous pouvez parcourir l'ensemble des produits affichés sur le site. Pour vous aider à rechercher les biens qui correspondent à vos attentes: vous sélectionnez dans la barre de menus l'objet de votre choix : immobilier ou business; en fonction de votre choix précédent vous disposez d'un panneau qui vous propose différents critères de recherche.Le site affiche alors le résultat de la recherche correspondant à vos critères dans la situation géographique sélectionnée. 
+        L'inscription en qualité de Membre n'est nécessaire que si vous souhaitez enregistrer vos critères de recherche, un produit particulier dans vos ''Favoris'';partager un produit avec des amis, contacter une ''Agence Partenaire Locale'' près de chez vous ou une ''Agence Francophone Australienne'' dans la zone du bien recherché, ou enfin lancer une procédure d'achat.",
+    'home.step2.title'          =>"Etape 2",
+    'home.step2.large.title'            => "Obtenez de l'agence les informations que vous souhaitez sur le ou les biens séléctionnés",
+    'home.step2.content'         =>"Lorsqu'un bien vous intéresse, vous pouvez, après vous être inscrit comme Membre du site: en cliquant ''Liste des Agences Partenaires Locales'', vous rapprocher de l'APL près de chez vous qui pourra vous informer et vous conseiller; en cliquant ''Contacter l'Agence Francophone Australienne'', interroger l'AFA à proximité du bien sur lequel vous souhaitez obtenir des renseignements.",
+    'home.step3.title'          =>"Etape 3",
+    'home.step3.large.title'            => 'Après avoir fait votre choix, faites connaitre votre décision d\'achat au site "Investir En Australie"',
+    'home.step3.content'         =>"Une fois que vous aurez obtenu les informations sur un produit particulier, si vous faites le choix d'acquérir ce bien il vous sera demandé de cliquer sur le bouton ''Je voudrais acheter ce produit''. Cela déclenche la procédure d'achat.",
+    'home.step4.title'          =>"Etape 4",
+    'home.step4.large.title'            => "L'agence francophone se charge des formalités juridiques de transfert de propriété.",
+    'home.step4.content'         =>"Après confirmation de la disponibilité du bien, de son retrait du marché et de sa réservation à votre nom, le dossier est transféré à l'AFA qui se chargera de l'accomplissement des formalités de transfert de propriété.Les délais de remise des clés dépendront selon que le bien est déjà construit et disponible, en cours de construction ou acheté sur plans.''Investir En Australie'' vous suit et vous aide tout au long de la procédure en vous mettant en contact avec des professionnels francophones australiens en tant que de besoin.",
+    'home.youtube.title'        =>"Notre chaîne Youtube",
+
+
+
     'admin.language.fr'          =>'Français',
     'admin.language.en'          =>'Anglais',
 

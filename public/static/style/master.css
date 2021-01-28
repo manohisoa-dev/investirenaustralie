@@ -4373,6 +4373,7 @@ mark {
   background: #15db95;
 }
 .tab-style-3 .nav a:before {
+  display: none;
   width: 20px;
   background: #ffffff;
   border-radius: 50%;

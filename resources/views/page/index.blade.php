@@ -12,6 +12,8 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-md-7">
+
+
                 @if(!empty($item->content))
                 <section class="property-contents common">
                     <header class="section-header home-section-header">
@@ -69,7 +71,7 @@
            <div class="col-lg-12">
            @endif
            <div class="col-lg-4 col-sm-6 layout-item-wrap mix a0">
-                @include('product.single', ['item'=>$product])
+                @include('V2.product.single', ['item'=>$product])
            </div>
            @php $i++; @endphp
            @if($i%3 === 0)

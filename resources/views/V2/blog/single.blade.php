@@ -7,7 +7,7 @@
      <div class="property-contents clearfix">
          <header class="property-header clearfix">
              <div class="pull-left">
-                 <h5 class="entry-title"><a href="{{route('blog.index',$item->slug)}}">{{$item->title}}</a></h5>
+                 <h5 class="entry-title"><a href="{{route('v2.blog.index',$item->slug)}}">{{$item->title}}</a></h5>
                  <div class="contents clearfix">
                       {{$item->excerpt()}}
                 </div>
@@ -17,7 +17,7 @@
             <footer class="post-footer post-meta clearfix"> 
                 <span class="author">@lang('app.txt.postepar') <a href="#">{{$item->author->name}}</a></span> 
                 <span>@lang('app.txt.commentaire') <a href="#"> {{count($item->comments)}}</a> </span><br>
-                <a href="{{route('blog.index',$item)}}" class="more pull-right">@lang('app.txt.lecture') <i class="fa fa-angle-double-right"></i></a> 
+                <a href="{{route('v2.blog.index',$item->slug)}}" class="more pull-right">@lang('app.txt.lecture') <i class="fa fa-angle-double-right"></i></a> 
             </footer>
          </div>       
      </div>
