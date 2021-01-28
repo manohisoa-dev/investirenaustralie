@@ -195,6 +195,8 @@ return [
         
         Nvd\Crud\Providers\NvdCrudServiceProvider::class,
 
+        Jleon\LaravelPnotify\Notify::class,
+
     ],
 
     /*
