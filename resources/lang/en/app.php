@@ -120,6 +120,23 @@ return [
     'home.step4.modal.content'            =>'After confirmation of the availability of the property, its withdrawal from the market and its reservation in your name, the file is transferred to the AFA which will take care of the completion of the formalities of transfer of ownership. depending on whether the property is already built and available, under construction or purchased on plans. "Investir En Australie" follows you and helps you throughout the procedure by putting you in contact with French-speaking Australian professionals as a of need.',
     'home.prod'              => 'Latest Products',
     'home.art'              => 'Last articles',
+    'home.title'            => 'The best "E-marketplace" portal for French speakers.',
+    'home.abstract'            => 'The "Investing in Australia" site called "IEA" is an "e-marketplace" portal dedicated to transactions in real estate, land, industrial, commercial and financial services, and where Australian sellers and French-speaking potential buyers from around the world meet.',
+    'home.step1.title'            => "Step 1",
+    'home.step1.large.title'            => "Among all the products displayed on the site. select the one or those that interest you",
+    'home.step1.content'            =>'Without having to be registered as a Member, you can browse all the products displayed on the site. To help you search for properties that meet your expectations: you select the object of your choice in the menu bar: real estate or business; depending on your previous choice, you have a panel that offers you different search criteria. The site then displays the search result corresponding to your criteria in the selected geographical location.
+        Registration as a Member is only necessary if you wish to save your search criteria, a particular product in your "Favorites"; share a product with friends, contact a "Local Partner Agency" near at your home or a "Francophone Australian Agency" in the area of ​​the property sought, or finally launch a purchase procedure.',
+    'home.step2.title'            => "Step 2",
+    'home.step2.large.title'            => "Obtain from the agency the information you want on the selected property (s)",
+    'home.step2.content'            =>'When a property interests you, you can, after registering as a Member of the site: by clicking "List of Local Partner Agencies", get in touch with the APL near you who can inform and advise you; by clicking "Contact the Agence Francophone Australienne", ask the AFA near the property on which you wish to obtain information.',
+    'home.step3.title'            => "Step 3",
+    'home.step3.content'            =>'Once you have obtained the information on a particular product, if you choose to purchase this property, you will be asked to click on the "I would like to buy this product" button. This triggers the purchase process.',
+    'home.step3.large.title'            => 'The French-speaking agency takes care of the legal formalities of transfer of property.',
+    'home.step4.title'            => "Step 4",
+    'home.step4.content'            =>'After confirmation of the availability of the property, its withdrawal from the market and its reservation in your name, the file is transferred to the AFA which will take care of the completion of the formalities of transfer of ownership. depending on whether the property is already built and available, under construction or purchased on plans. "Investir En Australie" follows you and helps you throughout the procedure by putting you in contact with French-speaking Australian professionals as a of need.',
+    'home.step4.large.title'            => "Among all the products displayed on the site. select the one or those that interest you",
+    'home.youtube.title'        =>"Our Youtube channel",
+    
     'admin.language.fr'          =>'French',
     'admin.language.en'          =>'English',
 
@@ -167,6 +184,7 @@ return [
     'btn.remove'         => 'Remove',
     'btn.delete'         => 'Delete',
     'btn.view'           => 'View',
+    'btn.view_more'      => 'See more',
     'btn.more'           => 'More',
     'btn.reset'          => 'Reset',
     'btn.archive'        => 'Archive',
@@ -230,6 +248,16 @@ return [
     'txt.commercial'      =>'Commercial',
     'txt.residentiel'      =>'Residential',
     'txt.foncier'      =>'Land',
+    'txt.slogan'        =>"The best opportunities to invest in Australia.",
+    'txt.missionvision'        =>"Mission & Vision",
+    'txt.mission.title'        =>"Our Mission",
+    'txt.mission.content'        =>"The mission of the '' IEA '' project is: </br>
+                                    - To help develop relations between the international Francophone community (more than 250 million French speakers around the world) and Australia by promoting investment in the island-continent through a platform of abundant, varied, reliable and friendly exchange; </br>
+                                    - To facilitate and secure investment transactions by offering French-speaking investors legal, financial and technical assistance from French-speaking Australian professionals.",
+    'txt.vision.title'        =>"Our Vision",
+    'txt.vision.content'        =>"In carrying out its mission, the '' Invest in Australia '' project sets itself the following objectives: </br>
+                                    - Provided customer service that is its best competitive advantage; </br>
+                                    - To eventually be the benchmark site for investment in Australia for the entire French-speaking community.",
 
     'dernierprod'           =>'Last Products',
     'dernierart'           =>'Last Articles',

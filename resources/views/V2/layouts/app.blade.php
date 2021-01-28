@@ -45,8 +45,8 @@
                 <div class="navbar navbar-default navbar-expand-lg main-navbar">
                     <div class="navbar-brand">
                         <a href="{{ route('v2.home') }}" title="Mombo" class="logo">
-                            <img src="{{ asset('static/img/logo-light.svg') }}" class="light-logo" alt="Mombo" title="">
-                            <img src="{{ asset('static/img/logo.svg') }}" class="dark-logo" alt="Mombo" title="">
+                            <img src="{{asset('images/logo_white.png')}}" class="light-logo" alt="Mombo" title="">
+                            <img src="{{asset('images/logo.png')}}" class="dark-logo" alt="Mombo" title="">
                         </a>
                     </div>
                     <div class="navbar-collapse justify-content-end collapse" id="navbar-collapse-toggle">
@@ -113,22 +113,24 @@
     
     @yield('content')
 
-    <!-- Footer-->
-    <footer class="white-bg footer">
+    <footer class="dark-bg footer border-top-1 border-color-dark-gray">
         <div class="footer-top">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-3 col-sm-12 m-15px-tb mr-auto">
-                        <div class="m-20px-b">
-                            <img src="{{ asset('static/img/logo.svg') }}" title="" alt="">
+                    <div class="col-12 col-md-4 col-lg-4 m-15px-tb">
+                        <div class="m-10px-b">
+                            <img src="{{ asset('images/logo.png') }}" title="" alt="">
                         </div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod.</p>
+                        <p class="font-1">@lang('app.txt.slogan')</p>
+                        <div class="social-icon si-30 theme radius nav">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        </div>
                     </div>
-                    <div class="col-lg-3 col-sm-6 m-15px-tb">
-                        <h6>
-                            Useful
+                    <div class="col-6 col-md-4 col-lg-2 m-15px-tb">
+                        <h6 class="white-color">
+                            Products
                         </h6>
-                        <ul class="list-unstyled links-dark footer-link-1">
+                        <ul class="list-unstyled links-white footer-link-1">
                             <li>
                                 <a href="#">Web Design</a>
                             </li>
@@ -146,52 +148,74 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="col-lg-3 col-sm-6 m-15px-tb">
-                        <h6>
-                            About Us
+                    <div class="col-6 col-md-4 col-lg-2 m-15px-tb">
+                        <h6 class="white-color">
+                            Services
                         </h6>
-                        <ul class="list-unstyled links-dark footer-link-1">
+                        <ul class="list-unstyled links-white footer-link-1">
                             <li>
-                                <a href="#">Support Center</a>
+                                <a href="#">Changelog</a>
                             </li>
                             <li>
                                 <a href="#">Customer Support</a>
                             </li>
                             <li>
-                                <a href="#">About Us</a>
+                                <a href="#">Documentation</a>
                             </li>
                             <li>
-                                <a href="#">Copyright</a>
+                                <a href="#">Pagebuilder</a>
                             </li>
                             <li>
                                 <a href="#">Popular Campaign</a>
                             </li>
                         </ul>
                     </div>
-                    <div class="col-lg-3 col-sm-6 m-15px-tb">
-                        <h6>
-                            Information
+                    <div class="col-6 col-md-4 offset-md-4 col-lg-2 offset-lg-0 m-15px-tb">
+                        <h6 class="white-color">
+                            Contact
                         </h6>
-                        <address>
-                            <p class="m-5px-b">301 The Greenhouse London,<br> E2 8DY UK</p>
-                            <p class="m-5px-b"><a class="theme2nd-color border-bottom-1 border-color-theme2nd" href="mailto:support@domain.com">support@domain.com</a></p>
-                            <p class="m-5px-b"><a class="theme2nd-color border-bottom-1 border-color-theme2nd" href="tel:820-885-3321">820-885-3321</a></p>
-                        </address>
-                        <div class="social-icon si-30 theme radius nav">
-                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#"><i class="fab fa-twitter"></i></a>
-                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="#"><i class="fab fa-instagram"></i></a>
-                        </div>
+                        <ul class="list-unstyled links-white footer-link-1">
+                            <li>
+                                <a href="#">Page Builder</a>
+                            </li>
+                            <li>
+                                <a href="#">UI Kit</a>
+                            </li>
+                            <li>
+                                <a href="#">Styleguide</a>
+                            </li>
+                            <li>
+                                <a href="#">Documentation</a>
+                            </li>
+                            <li>
+                                <a href="#">Changelog</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-6 col-md-4 col-lg-2 m-15px-tb">
+                        <h6 class="white-color">
+                            Legal
+                        </h6>
+                        <ul class="list-unstyled links-white footer-link-1">
+                            <li>
+                                <a href="#">Documentation</a>
+                            </li>
+                            <li>
+                                <a href="#">Changelog</a>
+                            </li>
+                            <li>
+                                <a href="#">Pagebuilder</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="footer-bottom footer-border-dark">
+        <div class="footer-bottom footer-border-light">
             <div class="container">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-right">
-                        <ul class="nav justify-content-center justify-content-md-start m-5px-tb links-dark font-small footer-link-1">
+                        <ul class="nav justify-content-center justify-content-md-start m-5px-tb links-white footer-link-1">
                             <li><a href="#">Privace &amp; Policy</a></li>
                             <li><a href="#">Faq's</a></li>
                             <li><a href="#">Get a Quote</a></li>
@@ -204,7 +228,7 @@
             </div>
         </div>
     </footer>
-    <!-- footer End -->
+    <!-- End footer -->
     <!-- jquery -->
     <script src="{{ asset('static/js/jquery-3.2.1.min.js') }}"></script>
     <script src="{{ asset('static/js/jquery-migrate-3.0.0.min.js') }}"></script>
