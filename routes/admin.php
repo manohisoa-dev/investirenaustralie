@@ -18,8 +18,9 @@ Route::prefix('V2')->namespace('V2')->as('v2.')->group(function(){
         Route::get('/', 'AdminController@dashboard')->name('admin.dashboard');
         //profil
         Route::get('profile', 'ProfileController@index')->name('admin.profile');
-        Route::post('info', 'ProfileController@editProfile')->name('admin.profile.info');
+        Route::post('info', 'ProfileController@editProfile')->name('admin.profile.info');        
         Route::post('update', 'ProfileController@updateLocation')->name('admin.location.edit');
+        Route::post('password', 'ProfileController@updatePassword')->name('admin.password');
         //user
         Route::get('users/{filter?}', 'UserController@all')->name('admin.user.list');
         Route::get('show/{user}', 'UserController@show')->name('admin.user.show');
