@@ -240,11 +240,11 @@ Route::prefix('seller')->middleware(["auth","role:seller"])->group(function(){
 Route::prefix('V2')->namespace('V2')->as('v2.')->group(function(){
     // Static pages
     Route::get('/', 'IndexController@index')->name('home');
-    Route::get('services', 'IndexController@services')->name('services');
-    Route::get('terms', 'IndexController@terms')->name('terms');
-    Route::get('help', 'IndexController@help')->name('help');
-    Route::get('publicities', 'IndexController@publicities')->name('publicities');
-    Route::get('confidentialities', 'IndexController@confidentialities')->name('confidentialities');
+    Route::get('services', 'IndexController@services_v2')->name('services');
+    Route::get('terms', 'IndexController@terms_v2')->name('terms');
+    Route::get('help', 'IndexController@help_v2')->name('help');
+    Route::get('publicities', 'IndexController@publicities_v2')->name('publicities');
+    Route::get('confidentialities', 'IndexController@confidentialities_v2')->name('confidentialities');
     Route::get('apls', 'IndexController@apl')->name('apls');
 
     // Shop and Product
@@ -255,4 +255,8 @@ Route::prefix('V2')->namespace('V2')->as('v2.')->group(function(){
     /// Blog
     Route::get('blogs/{filter?}', 'BlogController@all')->name('blog.all');
     Route::get('blog/{slug}', 'BlogController@index')->name('blog.index');
+
+    // Contact Page
+    Route::get('contact','MailController@contact');
+    Route::post('contact','MailController@contact')->name('contact');
 });

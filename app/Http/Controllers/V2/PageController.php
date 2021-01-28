@@ -53,6 +53,7 @@ class PageController extends Controller
             ->with('recentProducts', $recentProducts)
             ->with('categories', $categories);
     }
+    
 
     /**
      * Show a page

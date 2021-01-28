@@ -169,7 +169,7 @@
                                     <div class="ef-1 icon-80 theme-bg border-radius-50 theme2nd-color d-inline-block m-20px-b hr-rotate-after"> 
                                         <i class="white-color fa fa-podcast"></i>
                                     </div>
-                                    <h5 class="h6 m-10px-b">@lang('app.txt.mission.title')</h5>
+                                    <h5 class="h3 m-10px-b">@lang('app.txt.mission.title')</h5>
                                     <p class="m-0px text-left">@lang('app.txt.mission.content')</p>
                                 </div>
                             </div>
@@ -178,7 +178,7 @@
                                     <div class="ef-1 icon-80 theme-bg border-radius-50 theme2nd-color d-inline-block m-20px-b hr-rotate-after">
                                         <i class="white-color fa fa-eye"></i>
                                     </div>
-                                    <h5 class="h6 m-10px-b">@lang('app.txt.vision.title')</h5>
+                                    <h5 class="h3 m-10px-b">@lang('app.txt.vision.title')</h5>
                                     <p class="m-0px text-left p-50px-tb">@lang('app.txt.vision.content')</p>
                                 </div>
                             </div>
@@ -233,6 +233,35 @@
                 @foreach($recentProducts as $product)
                     @include('V2.product.single', ['item'=>$product])
                 @endforeach
+            </div>
+        </div>
+    </section>
+    <!-- End Section -->
+    <!-- Section -->
+    <section id="blog" class="section white-bg">
+        <div class="container">
+            <div class="row justify-content-center sm-m-20px-b m-40px-b">
+                <div class="col-lg-8 text-center">
+                    <label class="border-bottom-2 font-w-600 theme-color border-color-theme2nd">Our Blog</label>
+                    <h3 class="h1 m-0px">@lang('app.dernierart')</h3>
+                </div>
+            </div>
+            <div class="row">
+               @foreach($blogs as $blog)
+                    <div class="col-lg-4 m-15px-tb">
+                        <div class="hover-top transition blog-grid-overlay" style="background-image: url({{$blog->imageUrl()}}); ">
+                            <div class="blog-gird-info">
+                                <a class="overlay-link" href="{{route('v2.blog.index',$blog->slug)}}"></a>
+                                <div class="b-meta">
+                                    <span class="date">{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $blog->created_at)->format('d F')}}, {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $blog->created_at)->year }}</span>
+                                    <p class="meta">@lang('app.txt.postepar') : {{$blog->author->name}} – {{$blog->created_at->diffForHumans()}}</label> </p>
+                                </div>
+                                <h5 style="height: 100px;">{{$blog->title}}</h5>
+                                <!-- <p>{{ substr(strip_tags($blog->excerpt()),0,0) }} ...</p> -->
+                            </div>
+                        </div>
+                    </div>
+               @endforeach
             </div>
         </div>
     </section>

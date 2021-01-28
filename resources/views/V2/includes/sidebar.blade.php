@@ -33,8 +33,8 @@
             <div class="social-icon si-30 theme2nd radius nav justify-content-center p-10px-t" style="padding-bottom: 7px;padding-top: 5px;">
                 <a href="#"><i class="fa fa-arrows-alt"></i></a> @lang('app.num.area', ['num'=>number_format($product->area, 0)])
                 <a href="#"><i class="fa fa-bed"></i></a> @lang('app.num.bed', ['num'=>$product->bedrooms])
-                <a href="#"><i class="fa fa-bathtub"></i></a> @lang('app.num.bath', ['num'=>$product->bathrooms])
-                <a href="#"><i class="fa fa-cab"></i></a> {{$product->garage_spaces?__('app.yes'):__('app.no')}}
+                <a href="#"><i class="fa fa-bath"></i></a> @lang('app.num.bath', ['num'=>$product->bathrooms])
+                <a href="#"><i class="fa fa-car"></i></a> {{$product->garage_spaces?__('app.yes'):__('app.no')}}
             </div>
             @endforeach
         </div>

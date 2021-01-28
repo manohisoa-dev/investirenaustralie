@@ -97,6 +97,44 @@ class IndexController extends Controller
     }
 
     /**
+     * Show the service's page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function services_v2(Request $request)
+    {
+        $id_page = 3;
+        $page = Page::findOrFail($id_page);
+        $blogs = Blog::ofStatus('published')
+            ->orderBy('created_at', 'desc')
+            ->take(6)->get();
+        
+        $page->load(['childs', 'childs.pubs', 'pubs']);
+        
+        $products = Product::orderBy('created_at','desc')
+            ->ofStatus('published')
+            ->take($this->recentSize)
+            ->get();
+        
+        $categories = Category::orderBy('created_at', 'desc')
+            ->has('products')
+            ->withCount('products')
+            ->take($this->recentSize)
+            ->get();
+        
+        $page->load(['childs', 'childs.pubs', 'pubs']);
+        
+        if($page){$pubs = $page->pubs;}else{$pubs = [];}
+
+        return view('v2.index.service')
+            ->with('item', $page)
+            ->with('pubs', $page->pubs)
+            ->with('products', $products)
+            ->with('categories', $categories);
+    }
+
+
+    /**
      * Show the publicity's page.
      *
      * @return \Illuminate\Http\Response
@@ -107,13 +145,89 @@ class IndexController extends Controller
     }
 
     /**
+     * Show the publicity's page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function publicities_v2(Request $request)
+    {
+        $id_page = 5;
+        $page = Page::findOrFail($id_page);
+        $blogs = Blog::ofStatus('published')
+            ->orderBy('created_at', 'desc')
+            ->take(6)->get();
+        
+        $page->load(['childs', 'childs.pubs', 'pubs']);
+        
+        $products = Product::orderBy('created_at','desc')
+            ->ofStatus('published')
+            ->take($this->recentSize)
+            ->get();
+        
+        $categories = Category::orderBy('created_at', 'desc')
+            ->has('products')
+            ->withCount('products')
+            ->take($this->recentSize)
+            ->get();
+        
+        $page->load(['childs', 'childs.pubs', 'pubs']);
+        
+        if($page){$pubs = $page->pubs;}else{$pubs = [];}
+
+        return view('v2.index.publicite')
+            ->with('item', $page)
+            ->with('pubs', $page->pubs)
+            ->with('products', $products)
+            ->with('categories', $categories);
+    }
+
+    /**
      * Show the term and condition page.
      *
      * @return \Illuminate\Http\Response
      */
     public function terms(Request $request)
-    {
+    {                
+
         return $this->render($request, 6);
+
+    }
+
+    /**
+     * Show the term and condition page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function terms_v2(Request $request)
+    {      
+        $id_page = 6;
+        $page = Page::findOrFail($id_page);
+        $blogs = Blog::ofStatus('published')
+            ->orderBy('created_at', 'desc')
+            ->take(6)->get();
+        
+        $page->load(['childs', 'childs.pubs', 'pubs']);
+        
+        $products = Product::orderBy('created_at','desc')
+            ->ofStatus('published')
+            ->take($this->recentSize)
+            ->get();
+        
+        $categories = Category::orderBy('created_at', 'desc')
+            ->has('products')
+            ->withCount('products')
+            ->take($this->recentSize)
+            ->get();
+        
+        $page->load(['childs', 'childs.pubs', 'pubs']);
+        
+        if($page){$pubs = $page->pubs;}else{$pubs = [];}
+
+        return view('v2.index.term')
+            ->with('item', $page)
+            ->with('pubs', $page->pubs)
+            ->with('products', $products)
+            ->with('categories', $categories);
     }
 
     /**
@@ -127,6 +241,43 @@ class IndexController extends Controller
     }
 
     /**
+     * Show the guide's page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function help_v2(Request $request)
+    {
+        $id_page = 8;
+        $page = Page::findOrFail($id_page);
+        $blogs = Blog::ofStatus('published')
+            ->orderBy('created_at', 'desc')
+            ->take(6)->get();
+        
+        $page->load(['childs', 'childs.pubs', 'pubs']);
+        
+        $products = Product::orderBy('created_at','desc')
+            ->ofStatus('published')
+            ->take($this->recentSize)
+            ->get();
+        
+        $categories = Category::orderBy('created_at', 'desc')
+            ->has('products')
+            ->withCount('products')
+            ->take($this->recentSize)
+            ->get();
+        
+        $page->load(['childs', 'childs.pubs', 'pubs']);
+        
+        if($page){$pubs = $page->pubs;}else{$pubs = [];}
+
+        return view('v2.index.help')
+            ->with('item', $page)
+            ->with('pubs', $page->pubs)
+            ->with('products', $products)
+            ->with('categories', $categories);
+    }
+
+    /**
      * Show the confidentiality's page.
      *
      * @return \Illuminate\Http\Response
@@ -134,6 +285,43 @@ class IndexController extends Controller
     public function confidentialities(Request $request)
     {
         return $this->render($request, 7);
+    }
+
+    /**
+     * Show the confidentiality's page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function confidentialities_v2(Request $request)
+    {
+        $id_page = 7;
+        $page = Page::findOrFail($id_page);
+        $blogs = Blog::ofStatus('published')
+            ->orderBy('created_at', 'desc')
+            ->take(6)->get();
+        
+        $page->load(['childs', 'childs.pubs', 'pubs']);
+        
+        $products = Product::orderBy('created_at','desc')
+            ->ofStatus('published')
+            ->take($this->recentSize)
+            ->get();
+        
+        $categories = Category::orderBy('created_at', 'desc')
+            ->has('products')
+            ->withCount('products')
+            ->take($this->recentSize)
+            ->get();
+        
+        $page->load(['childs', 'childs.pubs', 'pubs']);
+        
+        if($page){$pubs = $page->pubs;}else{$pubs = [];}
+
+        return view('v2.index.confidentialite')
+            ->with('item', $page)
+            ->with('pubs', $page->pubs)
+            ->with('products', $products)
+            ->with('categories', $categories);
     }
 
     /**

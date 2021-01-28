@@ -31,6 +31,7 @@
 @yield('style-stripe')
 </head>
 <!-- Body Start -->
+@php $socialConfig = \App\Models\Config::social(); @endphp
 
 <body data-spy="scroll" data-target="#navbar-collapse-toggle" data-offset="98">
     <!-- Preload -->
@@ -41,11 +42,58 @@
     <!-- Header -->
     <header class="header-nav header-white">
         <div class="fixed-header-bar">
+            <div class="header-top dark-bg">
+                <div class="container">
+                    <div class="row align-items-center p-10px-tb">
+                        <div class="col-md-5 ht-info">
+                            <ul class="nav justify-content-md-start justify-content-center links-white">
+                                <li class="small"><a href="#"><i class="fas fa-mobile-alt"></i> @lang('app.contact_us_phone', ['phone'=>option('site.admin_phone', '+61 33 333 33')])</a></li>
+                                <li class="small m-10px-l"><a href="mailto:info@admin.com"><i class="fas fa-envelope"></i> info@admin.com</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-7 d-none d-md-block">
+                            <ul class="nav justify-content-md-start justify-content-center links-white">
+                                @if(!Auth::check())
+                                <li class="small m-10px-l"><i class="fas fa-mouse-pointer"></i> <a href="{{route('login')}}">@lang('app.connexion')</a> 
+                                </li>
+                                <li class="small m-10px-l"><i class="fas fa-sign-in-alt"></i> @lang('app.sinscrire') : 
+                                    <select id="currency-dropdown" onChange="location.href=''+this.options[this.selectedIndex].value;">
+                                        <option value="#">@lang('app.as')</option>
+                                        <option value="{{route('register', ['role'=>'member'])}}">@lang('app.member')</option>
+                                        <option value="{{route('register', ['role'=>'seller'])}}">@lang('app.seller')</option>
+                                        <option value="{{route('register', ['role'=>'afa'])}}">@lang('app.afa')</option>
+                                        <option value="{{route('register', ['role'=>'apl'])}}">@lang('app.apl')</option>
+                                    </select>
+                                </li>
+                                @else
+                                <li class="small m-10px-l"><i class="fas fa-sign-in"></i> @lang('app.sinscrire') : 
+                                    <i class="fa fa-user"></i><a href="{{url(Auth::user()->role)}}">{{Auth::user()->name}}</a>
+                                </li>
+                                @endif
+                                <li class="small m-10px-l"><i class="fas fa-globe"></i> @lang('app.language') : 
+                                    <select name="currency" id="language-dropdown" onChange="location.href=''+this.options[this.selectedIndex].value;">
+                                        <option value="{{route('localization', ['locale'=>'fr'])}}" @if(App::isLocale('fr')) selected @endif>Fr</option>
+                                        <option value="{{route('localization', ['locale'=>'en'])}}" @if(App::isLocale('en')) selected @endif>Eng</option>
+                                    </select>
+                                </li>
+                                <li class="small m-10px-l">
+                                    @php $socialConfig = \App\Models\Config::social(); @endphp
+                                    @foreach(\App\Models\Config::socialRules() as $key => $value)
+                                        @if($metaConfig = $socialConfig->get_meta($key))
+                                            <a href="{{$metaConfig->value}}"><i class="{{'fa fa-'.$key}}">f</i></a>
+                                        @endif
+                                    @endforeach
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="container container-large">
                 <div class="navbar navbar-default navbar-expand-lg main-navbar">
                     <div class="navbar-brand">
                         <a href="{{ route('v2.home') }}" title="Mombo" class="logo">
-                            <img src="{{asset('images/logo_white.png')}}" class="light-logo" alt="Mombo" title="">
+                            <img src="{{asset('images/logo.png')}}" class="light-logo" alt="Mombo" title="">
                             <img src="{{asset('images/logo.png')}}" class="dark-logo" alt="Mombo" title="">
                         </a>
                     </div>
@@ -119,93 +167,45 @@
                 <div class="row">
                     <div class="col-12 col-md-4 col-lg-4 m-15px-tb">
                         <div class="m-10px-b">
-                            <img src="{{ asset('images/logo.png') }}" title="" alt="">
+                            <a class="footer-logo" href="{{route('home')}}">
+                                <img src="{{ asset('images/logo.png') }}" title="Logo IEA" alt="Logo IEA">
+                            </a>
                         </div>
                         <p class="font-1">@lang('app.txt.slogan')</p>
                         <div class="social-icon si-30 theme radius nav">
-                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            @foreach(\App\Models\Config::socialRules() as $key => $value)
+                                @if($metaConfig = $socialConfig->get_meta($key))
+                                <a href="{{$metaConfig->value}}"><i class="fab fa-{{$key}}"></i></a>
+                                @endif
+                            @endforeach
                         </div>
                     </div>
+
                     <div class="col-6 col-md-4 col-lg-2 m-15px-tb">
                         <h6 class="white-color">
-                            Products
+                            @lang('app.rapid_link')
                         </h6>
                         <ul class="list-unstyled links-white footer-link-1">
-                            <li>
-                                <a href="#">Web Design</a>
-                            </li>
-                            <li>
-                                <a href="#">Development</a>
-                            </li>
-                            <li>
-                                <a href="#">Wordpress</a>
-                            </li>
-                            <li>
-                                <a href="#">Online Marketing</a>
-                            </li>
-                            <li>
-                                <a href="#">SEO Marketing</a>
-                            </li>
+                        <li><a href="{{route('v2.home')}}">@lang('app.home')</a></li>
+                        <li><a href="{{route('v2.shop.index')}}">@lang('app.immobilier')</a></li>
+                        <li><a href="{{route('v2.shop.index')}}">@lang('app.business')</a></li>
+                        <li><a href="{{route('v2.services')}}">@lang('app.services')</a></li>
+                        <li><a href="{{route('v2.blog.all')}}">@lang('app.blog')</a></li>
+                        <li><a href="{{route('v2.contact')}}">@lang('app.contact')</a></li>
+                        @if(Auth::check())
+                        <li><a href="{{route('profile')}}">@lang('app.account')</a></li>
+                        @endif
                         </ul>
                     </div>
-                    <div class="col-6 col-md-4 col-lg-2 m-15px-tb">
+                    <div class="col-6 col-md-4 col-lg-2 m-35px-tb">
                         <h6 class="white-color">
-                            Services
+                            
                         </h6>
                         <ul class="list-unstyled links-white footer-link-1">
-                            <li>
-                                <a href="#">Changelog</a>
-                            </li>
-                            <li>
-                                <a href="#">Customer Support</a>
-                            </li>
-                            <li>
-                                <a href="#">Documentation</a>
-                            </li>
-                            <li>
-                                <a href="#">Pagebuilder</a>
-                            </li>
-                            <li>
-                                <a href="#">Popular Campaign</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-6 col-md-4 offset-md-4 col-lg-2 offset-lg-0 m-15px-tb">
-                        <h6 class="white-color">
-                            Contact
-                        </h6>
-                        <ul class="list-unstyled links-white footer-link-1">
-                            <li>
-                                <a href="#">Page Builder</a>
-                            </li>
-                            <li>
-                                <a href="#">UI Kit</a>
-                            </li>
-                            <li>
-                                <a href="#">Styleguide</a>
-                            </li>
-                            <li>
-                                <a href="#">Documentation</a>
-                            </li>
-                            <li>
-                                <a href="#">Changelog</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-6 col-md-4 col-lg-2 m-15px-tb">
-                        <h6 class="white-color">
-                            Legal
-                        </h6>
-                        <ul class="list-unstyled links-white footer-link-1">
-                            <li>
-                                <a href="#">Documentation</a>
-                            </li>
-                            <li>
-                                <a href="#">Changelog</a>
-                            </li>
-                            <li>
-                                <a href="#">Pagebuilder</a>
-                            </li>
+                            <li><a href="{{route('v2.terms')}}">@lang('app.terms')</a></li>
+                            <li><a href="{{route('v2.confidentialities')}}">@lang('app.confidential')</a></li>
+                            <li><a href="{{route('v2.help')}}">@lang('app.user_guide')</a></li>
+                            <li><a href="{{route('v2.publicities')}}">@lang('app.pubs')</a></li>
                         </ul>
                     </div>
                 </div>
@@ -216,13 +216,11 @@
                 <div class="row">
                     <div class="col-md-6 text-center text-md-right">
                         <ul class="nav justify-content-center justify-content-md-start m-5px-tb links-white footer-link-1">
-                            <li><a href="#">Privace &amp; Policy</a></li>
-                            <li><a href="#">Faq's</a></li>
-                            <li><a href="#">Get a Quote</a></li>
+                            <li><a href="#">@lang('app.footer_description')</a></li>
                         </ul>
                     </div>
                     <div class="col-md-6 text-center text-md-right">
-                        <p class="m-0px">© 2019 copyright all right reserved</p>
+                        <p class="m-0px">{!!trans('app.copyright', ['year'=>date('Y'), 'app'=>trans('app.app_name')])!!}</p>
                     </div>
                 </div>
             </div>

@@ -258,6 +258,15 @@ return [
     'txt.vision.content'        =>"In carrying out its mission, the '' Invest in Australia '' project sets itself the following objectives: </br>
                                     - Provided customer service that is its best competitive advantage; </br>
                                     - To eventually be the benchmark site for investment in Australia for the entire French-speaking community.",
+    'txt.contact'               =>"Contact",
+    'txt.contact_us'               =>"Contact Us",
+    'txt.noinfo'               =>"Information not found",
+    'txt.followus'               =>"Follow Us",
+    'txt.terme'               =>"Terms and Conditions",
+    'txt.confidentialite'               =>"Confidentiality",
+    'txt.help'               =>"Help",
+    'txt.publicite'               =>"Advertising",
+    'txt.service'               =>"Services",
 
     'dernierprod'           =>'Last Products',
     'dernierart'           =>'Last Articles',
@@ -284,6 +293,8 @@ return [
     'form.asc'      => 'Ascending',
     'form.desc'      => 'Descending',
     'form.vue'      => 'View',
+    'form.login.contact'      => "Contact",
+    'form.login.address'      => "Adresse",
     'pub_date'      => 'Publication date',
     'most_view'      => 'More view',
     'price'  => 'Price',

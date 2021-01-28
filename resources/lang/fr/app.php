@@ -6,7 +6,7 @@ return [
     'app_name'            => 'Investir en Australie',
     
     'footer_description'  => 'Investir en Australie est un e-marketplace.',
-    'copyright'           => '© Copyright :year : ":app" - Tout droit reserve',
+    'copyright'           => '© Copyright :year : ":app" - Tout droit réservé',
     
     'last_update'         => 'Derniere Modification, :date',
     'contact_user'        => 'Contacter: :name (:email)',
@@ -244,8 +244,8 @@ return [
     'profile'       => 'Profile',
     'dashboard'     => 'Dashboard',
     
-    'publicities'   => 'Publicites',
-    'Publicite'     => 'Publicite',
+    'publicities'   => 'Publicités',
+    'Publicite'     => 'Publicité',
     
     'messages'      => 'Messages',
     'message'       => 'Message',
@@ -544,6 +544,15 @@ return [
     'txt.vision.content'        =>"Dans l'accomplissement de sa mission le projet ''Investir en Australie'' se fixe pour objectifs:</br>
                                     - D'offrit un service à la clientèle qui soit son meilleur avantage concurrentiel;</br>
                                     - D'être à terme, pour l'ensemble de la communauté francophone, le site de référence en matière d'investissement en Australie.",
+    'txt.contact'               =>"Contact",
+    'txt.contact_us'               =>"Nous contacter",
+    'txt.noinfo'               =>"Aucune information trouvée",
+    'txt.followus'               =>"Nous Suivre",
+    'txt.terme'               =>"Termes et Conditions",
+    'txt.confidentialite'               =>"Confidentialité",
+    'txt.help'               =>"Aides",
+    'txt.publicite'               =>"Publicités",
+    'txt.service'               =>"Services",
     
     
     'childs' => 'Fils',
