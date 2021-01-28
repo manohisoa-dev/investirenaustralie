@@ -19,6 +19,10 @@
 
     <!-- Gritter -->
     <link href="{{ asset('administrator/V2/js/plugins/gritter/jquery.gritter.css') }}" rel="stylesheet">
+	
+	<!-- select2 -->
+    <link href="{{ asset('administrator/V2/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('administrator/V2/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
 
     <link href="{{ asset('administrator/V2/css/animate.css') }}" rel="stylesheet">
     <link href="{{ asset('administrator/V2/css/style.css') }}" rel="stylesheet">
@@ -547,11 +551,16 @@
 <script src="{{ asset('administrator/V2/js/demo/sparkline-demo.js') }}"></script>
 
 <!-- ChartJS-->
-<script src="{{ asset('administrator/V2/js/plugins/chart/Chart.min.js') }}"></script>
+<script src="{{ asset('administrator/V2/js/plugins/chartJs/Chart.min.js') }}"></script>
 
 <!-- Toastr -->
 <script src="{{ asset('administrator/V2/js/plugins/toastr/toastr.min.js') }}"></script>
 
+<!-- jquery select2-->
+<script src="{{ asset('administrator/V2/js/plugins/select2/select2.full.min.js') }}"></script>
+
+<!-- jquery validate-->
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
 <script>
     $(document).ready(function() {
@@ -574,7 +583,48 @@
         toast.css("top", window.pageYOffset + 20);
 
     });
+	
+	
 </script>
+
+@if (Session::has('notifier.notice'))
+    <?php
+    $notif = json_decode(Session::get('notifier.notice'));
+
+    $title = $notif->title;
+    $text = isset($notif->text) && $notif->text != '' ? $notif->text : '';
+    $type = $notif->type;
+    ?>
+
+
+    <script>
+        toastr.options = {
+            "icon" : false,
+            "closeButton": true,
+            "debug": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "onclick": null,
+            "showDuration": "400",
+            "hideDuration": "1000",
+            "timeOut": "7000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+        if("{{$type}}" == 'success'){
+            toastr.success("{{$text}}" , "{{$title}}")
+        }
+        if("{{$type}}" == 'warning'){
+            toastr.warning("{{$text}}" , "{{$title}}")
+        }
+        if("{{$type}}" == 'error'){
+            toastr.error("{{$text}}" , "{{$title}}")
+        }
+    </script>
+@endif
 
 @yield('custom-script')
 </body>

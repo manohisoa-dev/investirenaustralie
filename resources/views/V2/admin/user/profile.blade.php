@@ -100,7 +100,7 @@
 				</div>
 			</div>
 			<div class="ibox-content">
-				<form role="form">
+				<form role="form" action="{{route('v2.admin.password')}}" method="post" id="passwordForm">
 					<div class="row">
 						<div class="col-sm-4">
 							<div class="form-group">
@@ -120,10 +120,11 @@
 								<input name="password_confirmation" type="password" class="form-control" id="password_confirmation">
 							</div>
 						</div>
+						<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 					</div>
 					<div class="hr-line-dashed"></div>
 					<div>
-						<button class="btn btn-primary pull-right" type="submit">
+						<button class="btn btn-primary pull-right save-password" type="submit">
 							<strong><i class="fa fa-check"></i> Sauvegarder</strong>
 						</button>
 						<div style="clear:both"></div>
@@ -144,7 +145,7 @@
 			</div>
 			<form role="form" action="{{route('v2.admin.location.edit')}}" method="post">
 			<div class="ibox-content">
-				<div id="map"></div>
+				<!--<div id="map"></div>-->
 				<div class="hr-line-dashed"></div>
 				<div class="row">
 					<div class="col-sm-3">
@@ -160,11 +161,21 @@
 					<div class="col-sm-3">
 						<div class="form-group">
 							<label>@lang('app.country')</label> 
-							<input type="text" name="country" class="form-control" id="country" placeholder="country" value="{{old('country')?old('country'):$location?$location->country:''}}">
+							<select class="form-control" name="country" id="country">
+								<option value="0">@lang('app.select_country')</option>
+								@foreach($countries as $country)
+									<option value="{{$country->id}}" {{ ( $country->content == $location->country) ? 'selected' : '' }}> {{$country->content}}</option>
+								@endforeach
+							</select>
 						</div>
 						<div class="form-group">
 							<label>@lang('app.area_level_1')</label> 
-							<input type="text" name="area_level_1" class="form-control" id="area_level_1" placeholder="state" value="{{old('state')?old('state'):$location?$location->state:''}}">
+							<select class="form-control" name="area_level_1" id="area_level_1">
+								<option value="0">@lang('app.select_country')</option>
+								@foreach($states as $states)
+									<option value="{{$states->id}}" {{ ( $country->states == $location->state) ? 'selected' : '' }}> {{$states->content}}</option>
+								@endforeach
+							</select>
 						</div>
 					</div>
 					<div class="col-sm-3">
@@ -201,9 +212,38 @@
 		<!-- localisation -->
 	</div>
 @endsection
-@section('script')
-<script>
-    var _map;
+@section('custom-script')
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#passwordForm').validate({
+			rules: {
+				old_password: {
+					required: true
+				},
+				password: {
+					required: true
+				},
+				password_confirmation: {
+					required: true
+				}
+			},
+			messages: {
+				old_password: {
+					required: "@lang('app.last.password')"
+				},
+				password: {
+					required: "@lang('app.new.password')')"
+				},
+				password_confirmation: {
+					required: "@lang('app.confirm.password')"
+				}
+			}
+		});
+		$("#country").select2();
+		$("#area_level_1").select2();
+	});
+	<?php /*?>
+	var _map;
     var _geocoder;
     var _marker;
     var _lat = {{$location?floatval($location->latitude):-25.647467468105795}};
@@ -305,7 +345,8 @@
             }
         });
     }
+	<?php */?>
 </script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtRuDbjjrHacZ6EqZySofNueLBLkrNxwI&callback=initMap"></script>
+<?php /*?><script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzqATs_wp3WXAVlt9iPVS9GcRFPGcIZZw&callback=initMap" type="text/javascript"></script><?php */?>
 @endsection
 

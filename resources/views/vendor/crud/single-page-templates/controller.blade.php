@@ -3,17 +3,18 @@
 ?>
 <?='<?php'?>
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers{!! $gen->getBaseRoute() !!};
 
-use App\{{$gen->modelClassName()}};
+use App{!! $gen->getModelDir() !!}\{{$gen->modelClassName()}};
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Jleon\LaravelPnotify\Notify;
 
 class {{$gen->controllerClassName()}} extends Controller
 {
-    public $viewDir = "{{$gen->viewsDirName()}}";
+    public $viewDir = "{{strtolower($gen->baseRoute) ? $gen->baseRoute . ".":""}}{{$gen->viewsDirName()}}";
 
     public function index()
     {
@@ -43,7 +44,9 @@ class {{$gen->controllerClassName()}} extends Controller
 
         {{$gen->modelClassName()}}::create($request->all());
 
-        return redirect('/{{$gen->route()}}');
+        # notification
+        Notify::success('{{$gen->titleSingular()}} a été créer avec succès');
+        return redirect(route('{{$gen->generateRouteAction('index')}}'));
     }
 
     /**
@@ -88,7 +91,9 @@ class {{$gen->controllerClassName()}} extends Controller
 
         ${{$gen->modelVariableName()}}->update($request->all());
 
-        return redirect('/{{$gen->route()}}');
+        # notification
+        Notify::success('{{$gen->titleSingular()}} a été mise à jour avec succès');
+        return redirect(route('{{$gen->generateRouteAction('index')}}'));
     }
 
     /**
@@ -99,7 +104,10 @@ class {{$gen->controllerClassName()}} extends Controller
     public function destroy(Request $request, {{$gen->modelClassName()}} ${{$gen->modelVariableName()}})
     {
         ${{$gen->modelVariableName()}}->delete();
-        return redirect('/{{$gen->route()}}');
+
+        # notification
+        Notify::success('{{$gen->titleSingular()}} a été supprimer avec succès');
+        return redirect(route('{{$gen->generateRouteAction('index')}}'));
     }
 
     protected function view($view, $data = [])

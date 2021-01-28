@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\V2;
+namespace App\Http\Controllers\V2\Admin;
 
 use Illuminate\Http\Request;
 
@@ -13,6 +13,7 @@ use App\Models\Mail;
 use App\Models\MailUser;
 
 use App\Notifications\NewMail;
+use App\Http\Controllers\Controller;
 
 class AdminController extends Controller
 {

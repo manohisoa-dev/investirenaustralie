@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\V2;
+namespace App\Http\Controllers\V2\Admin;
 
 use Illuminate\Http\Request;
 use Session;
@@ -10,6 +10,12 @@ use Validator;
 use App\Models\Cart;
 use App\Models\Image;
 use App\Models\Localisation;
+<<<<<<< HEAD:app/Http/Controllers/V2/ProfileController.php
+use App\Models\Country;
+use App\Models\State;
+=======
+use App\Http\Controllers\Controller;
+>>>>>>> 957cd62c77e87649015c0222355fecdf34dec303:app/Http/Controllers/V2/Admin/ProfileController.php
 
 class ProfileController extends Controller {
     /**
@@ -27,14 +33,20 @@ class ProfileController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
+        //var_dump(Auth::user()->location);
         if (Auth::user()->isAdmin()) {
             $view = view('V2.admin.user.profile');
         } else {
             $view = view('backend.user.profile');
         }
 
-        return $view->with('title', __('app.profile'))->with('item', Auth::user())->with('location',
-            Auth::user()->location)->with('breadcrumbs', __('app.profile'));
+        return 
+        $view->with('title', __('app.profile'))
+        ->with('item', Auth::user())
+        ->with('location',Auth::user()->location)
+        ->with('countries', Country::all())
+        ->with('states', State::all())
+        ->with('breadcrumbs', __('app.profile'));
     }
 
     /**
@@ -136,7 +148,7 @@ class ProfileController extends Controller {
         }
 
         // Store image file
-        $datas['image_id'] = 0;
+        //$datas['image_id'] = 0;
         if ($file = $request->file('image')) {
             $image = Image::storeAndSave($file);
             $datas['image_id'] = $image->id;
@@ -175,23 +187,6 @@ class ProfileController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function password() {
-        if (Auth::user()->isAdmin()) {
-            $view = view('V2.admin.user.edit.password');
-        } else {
-            $view = view('backend.user.edit.password');
-        }
-
-        $breadcrumbs = [['active' => false, 'route' => route('admin.profile'), 'label' =>
-            __('app.profile'), ], ['active' => true, 'label' => __('app.password'), ], ];
-        return $view->with('title', __('app.password'))->with('breadcrumbs', $breadcrumbs);
-    }
-
-    /**
-     * Show form to edit current user password
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function updatePassword(Request $request) {
         // Validate request
         $validator = Validator::make($request->all(), ['old_password' =>
@@ -209,72 +204,6 @@ class ProfileController extends Controller {
 
         // Success
         return back()->with('success', "Votre mot de passe a été bien modifié.");
-    }
-
-    /**
-     * Show form to edit current user avatar
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function avatar() {
-        if (Auth::user()->isAdmin()) {
-            $view = view('V2.admin.user.edit.avatar');
-        } else {
-            $view = view('backend.user.edit.avatar');
-        }
-
-        $breadcrumbs = [['active' => false, 'route' => route('admin.profile'), 'label' =>
-            __('app.profile'), ], ['active' => true, 'label' => __('app.avatar'), ], ];
-        return $view->with('title', __('app.avatar'))->with('item', Auth::user())->with('breadcrumbs',
-            $breadcrumbs);
-    }
-
-    /**
-     * Show form to edit current user avatar
-     *
-     * @param  Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function updateAvatar(Request $request) {
-        // Validate request
-        $validator = Validator::make($request->all(), ['image' =>
-            'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048', ]);
-
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
-
-        $user = Auth::user();
-        try {
-            $file = $request->file('image');
-            $image = Image::storeAndSave($file);
-            $user->image_id = $image->id;
-            $user->save();
-        }
-        catch (\Exception $e) {
-            return back()->with('success', $e->getMessage());
-        }
-
-        // Success
-        return back()->with('success', "Votre photo a été bien modifiée.");
-    }
-
-    /**
-     * Show form to edit current user location
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function location() {
-        if (Auth::user()->isAdmin()) {
-            $view = view('V2.admin.user.edit.location');
-        } else {
-            $view = view('backend.user.edit.location');
-        }
-
-        $breadcrumbs = [['active' => false, 'route' => route('admin.profile'), 'label' =>
-            __('app.profile'), ], ['active' => true, 'label' => __('app.location'), ], ];
-        return $view->with('title', __('app.location'))->with('item', Auth::user()->with
-            ('location'))->with('location', Auth::user()->location)->with('breadcrumbs', $breadcrumbs);
     }
 
     /**
@@ -308,7 +237,6 @@ class ProfileController extends Controller {
             if ($location = Localisation::create($datas)) {
                 $user->location_id = $location->id > 0 ? $location->id : 0;
             }
-
         try {
             $user->save();
         }

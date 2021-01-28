@@ -144,7 +144,7 @@ return [
     'form.asc'      => 'Croissant',
     'form.desc'      => 'Décroissant',
     'form.vue'      => 'Vue',
-    'pub_date'      => 'Date de publication',
+    'pub_date'      => 'Créer le',
     'most_view'      => 'Plus de vue',
     
     'list.product'      => 'Liste de produit',
