@@ -172,8 +172,9 @@
 							<label>@lang('app.area_level_1')</label> 
 							<select class="form-control" name="area_level_1" id="area_level_1">
 								<option value="0">@lang('app.select_country')</option>
-								@foreach($states as $states)
-									<option value="{{$states->id}}" {{ ( $country->states == $location->state) ? 'selected' : '' }}> {{$states->content}}</option>
+								<!-- \App\State::all{}-->
+								@foreach(\App\State::all() as $state)
+									<option value="{{$state->id}}" {{ ( $country->states == $location->state) ? 'selected' : '' }}> {{$state->content}}</option>
 								@endforeach
 							</select>
 						</div>
@@ -232,7 +233,7 @@
 					required: "@lang('app.last.password')"
 				},
 				password: {
-					required: "@lang('app.new.password')')"
+					required: "@lang('app.new.password')"
 				},
 				password_confirmation: {
 					required: "@lang('app.confirm.password')"
