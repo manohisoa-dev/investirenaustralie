@@ -71,14 +71,15 @@
                                 </li>
                                 @endif
                                 <li class="small m-10px-l"><i class="fas fa-globe"></i> @lang('app.language') : 
-                                    <!-- <li class="mm-in px-dropdown">
-                                        <a href="#home">@lang('app.business')</a>
-                                        <i class="fa fa-angle-down px-nav-toggle"></i>
-                                        <ul class="px-dropdown-menu mm-dorp-in">
-                                            <li><a href="{{route('v2.shop.index', \App\Models\Category::find(3))}}">@lang('app.industrial')</a></li>
-                                            <li><a href="{{route('v2.shop.index', \App\Models\Category::find(4))}}">@lang('app.commercial')</a></li>
-                                        </ul>
-                                    </li> -->
+                                    <!-- <div class="dropdown pull-right">
+                                      <a href="#" class="small font-weight-bold dropdown-toggle" type="button" data-toggle="dropdown">
+                                          @lang('app.form.login.not_registered')</a>
+                                          <ul class="dropdown-menu form-control-label" id="language-dropdown" onChange="location.href=''+this.options[this.selectedIndex].value;">
+                                            <li><a href="{{route('localization', ['locale'=>'fr'])}}">Fr</a></li>
+                                            <li><a href="{{route('localization', ['locale'=>'en'])}}">En</a></li>
+                                          </ul>
+                                    </div>
+ -->
                                     <select name="currency" id="language-dropdown" onChange="location.href=''+this.options[this.selectedIndex].value;" class="white-bg-alt border-color-dark-gray border-radius-0 white-color">
                                         <option style="background-image:url({{ asset('images/ico/fr.png') }});" value="{{route('localization', ['locale'=>'fr'])}}" @if(App::isLocale('fr')) selected @endif > Fr</option>
                                         <option style="background-image:url({{ asset('images/ico/en.png') }});" value="{{route('localization', ['locale'=>'en'])}}" @if(App::isLocale('en')) selected @endif > Eng</option>
