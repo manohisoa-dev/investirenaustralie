@@ -39,7 +39,41 @@
             </div>
             <div class="ibox-content">
 				<div class="row">
-                
+                	<div class="col-md-6">
+						<img src="{{$product->imageUrl()}}" class="img-responsive" style="width:100%" />
+					</div>
+					<div class="col-md-6">
+						<dl class="row mb-0">
+							<div class="col-sm-4 text-sm">
+								<dt>Statuts:</dt>
+							</div>
+							<div class="col-sm-8 text-sm-left">
+								<dd class="mb-1">
+									@if($product->status=='published')
+									<span class="label label-success">@lang('app.'.$product->status)</span>
+									@else
+									<span class="label label-warning">@lang('app.'.$product->status)</span>
+									@endif
+								</dd>
+							</div>
+						</dl>
+						<dl class="row mb-0">
+							<div class="col-sm-4 text-sm">
+								<dt>@lang('app.reference'):</dt>
+							</div>
+							<div class="col-sm-8 text-sm-left">
+								<dd class="mb-1">{{$product->reference}}</dd>
+							</div>
+						</dl>
+						<dl class="row mb-0">
+							<div class="col-sm-4 text-sm">
+								<dt>@lang('app.reference'):</dt>
+							</div>
+							<div class="col-sm-8 text-sm-left">
+								<dd class="mb-1">{{$product->reference}}</dd>
+							</div>
+						</dl>
+					</div>
 				</div>       
 			</div>
         </div>

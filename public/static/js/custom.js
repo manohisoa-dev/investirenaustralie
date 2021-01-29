@@ -380,8 +380,8 @@
       loadScript(plugin_track + 'cookie/herbyCookie.js', function() {
         $(document).herbyCookie({
             btnText: "Accept",
-            policyText: "Privacy policy",
-            text: "We use cookies to ensure you get the best experience on our website, if you continue to browse you'll be acconsent with our",
+            policyText: "Politique de confidentialité",
+            text: "Nous utilisons des cookies pour vous garantir la meilleure expérience sur notre site Web.Si vous continuez à naviguer, vous serez d'accord avec notre",
             scroll: false,
             expireDays: 30,
             link: "#"
