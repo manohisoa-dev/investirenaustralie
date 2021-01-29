@@ -64,7 +64,7 @@
                                 {{ $record->id }}
                             </td>
 							<td>
-								<img src="{{setImage($record->image_id)}}" class="img-responsive" style="height:80px" />
+								<img src="{{$record->imageUrl()}}" class="img-responsive" style="height:80px" />
                             </td>
 							<td>
 								<a href="#">
@@ -100,7 +100,7 @@
                                     data-pk="{{ $record->{$record->getKeyName()} }}"
                                     data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
-                                    {{ separateur_millier($record->price) }}
+                                    {{ $record->price }}
                                 </span>
                             </td>
 							<td>
@@ -131,7 +131,7 @@
                                     data-pk="{{ $record->{$record->getKeyName()} }}"
                                     data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
-                                    {{ setNomUser($record->seller_id) }}
+                                    {{ $record->seller_id }}
                                 </span>
                             </td>
 							<td>
@@ -143,7 +143,7 @@
                                     data-pk="{{ $record->{$record->getKeyName()} }}"
                                     data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
-                                    {{ setNomUser($record->author_id) }}
+                                    {{ $record->author_id }}
                                 </span>
                             </td>
                             @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('v2.admin.product.index'), 'record' => $record ] )
