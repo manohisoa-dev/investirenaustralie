@@ -8,7 +8,7 @@
         <h2>States</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.admin.state.index') }}">States</a>
+                <a href="{{ route('V2.admin.state.index') }}">States</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Listes</strong>
@@ -17,8 +17,8 @@
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ route('v2.admin.state.create') }}" type="button" class="btn btn-primary btn-block">
-                <i class="fa fa-plus"></i> Ajouter un nouveau State            </a>
+            <a href="{{ route('V2.admin.state.create') }}" type="button" class="btn btn-primary btn-block">
+                <i class="fa fa-plus"></i> Ajouter un nouveau Etat            </a>
         </div>
     </div>
 </div>
@@ -36,11 +36,11 @@
                 <table class="table table-striped grid-view-tbl">
                 <thead>
                     <tr class="header-row">
-                                                    {!!\Nvd\Crud\Html::sortableTh('id','v2.admin.state.index','Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('content','v2.admin.state.index','Content')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('country','v2.admin.state.index','Country')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.admin.state.index','Créer le')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.admin.state.index','Mise à jour le')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('id','V2.admin.state.index','Id')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('content','V2.admin.state.index','Description')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('country','V2.admin.state.index','Pays')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','V2.admin.state.index','Créer le')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','V2.admin.state.index','Mise à jour le')!!}
                                             <th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
@@ -67,7 +67,7 @@
                                           data-name="content"
                                           data-value="{{ $record->content }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.admin.state.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('V2.admin.state.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->content }}</span>
                                                                     </td>
                                                                 <td>
@@ -76,7 +76,7 @@
                                           data-name="country"
                                           data-value="{{ $record->country }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.admin.state.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('V2.admin.state.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->country }}</span>
                                                                     </td>
                                                                 <td>
@@ -85,7 +85,7 @@
                                                                 <td>
                                                                             {{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}
                                                                     </td>
-                                                                @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('v2.admin.state.index'), 'record' => $record ] )
+                                                                @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('V2.admin.state.index'), 'record' => $record ] )
                             </tr>
                         @empty
                             @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 6])

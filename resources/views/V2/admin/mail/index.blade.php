@@ -8,7 +8,7 @@
         <h2>Mails</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.admin.mail.index') }}">Mails</a>
+                <a href="{{ route('V2.admin.mail.index') }}">Mails</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Listes</strong>
@@ -17,7 +17,7 @@
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ route('v2.admin.mail.create') }}" type="button" class="btn btn-primary btn-block">
+            <a href="{{ route('V2.admin.mail.create') }}" type="button" class="btn btn-primary btn-block">
                 <i class="fa fa-plus"></i> Ajouter un nouveau Mail            </a>
         </div>
     </div>
@@ -35,14 +35,14 @@
                 <table class="table table-striped grid-view-tbl">
                 <thead>
                     <tr class="header-row">
-                                                    {!!\Nvd\Crud\Html::sortableTh('id','v2.admin.mail.index','Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('subject','v2.admin.mail.index','Subject')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('content','v2.admin.mail.index','Content')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('copied_from','v2.admin.mail.index','Copied From')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('status','v2.admin.mail.index','Status')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('sender_id','v2.admin.mail.index','Sender Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.admin.mail.index','Créer le')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.admin.mail.index','Mise à jour le')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('id','V2.admin.mail.index','Id')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('subject','V2.admin.mail.index','Subject')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('content','V2.admin.mail.index','Content')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('copied_from','V2.admin.mail.index','Copied From')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('status','V2.admin.mail.index','Status')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('sender_id','V2.admin.mail.index','Sender Id')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','V2.admin.mail.index','Créer le')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','V2.admin.mail.index','Mise à jour le')!!}
                                             <th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
@@ -72,7 +72,7 @@
                                           data-name="subject"
                                           data-value="{{ $record->subject }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.admin.mail.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('V2.admin.mail.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->subject }}</span>
                                                                     </td>
                                                                 <td>
@@ -81,7 +81,7 @@
                                           data-name="content"
                                           data-value="{{ $record->content }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.admin.mail.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('V2.admin.mail.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ str_limit(strip_tags($record->content), "100", "...") }}</span>
                                                                     </td>
                                                                 <td>
@@ -90,7 +90,7 @@
                                           data-name="copied_from"
                                           data-value="{{ $record->copied_from }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.admin.mail.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('V2.admin.mail.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->copied_from }}</span>
                                                                     </td>
                                                                 <td>
@@ -99,7 +99,7 @@
                                           data-name="status"
                                           data-value="{{ $record->status }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.admin.mail.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('V2.admin.mail.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->status }}</span>
                                                                     </td>
                                                                 <td>
@@ -108,7 +108,7 @@
                                           data-name="sender_id"
                                           data-value="{{ $record->sender_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.admin.mail.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('V2.admin.mail.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->sender_id }}</span>
                                                                     </td>
                                                                 <td>
@@ -117,7 +117,7 @@
                                                                 <td>
                                                                             {{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}
                                                                     </td>
-                                                                @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('v2.admin.mail.index'), 'record' => $record ] )
+                                                                @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('V2.admin.mail.index'), 'record' => $record ] )
                             </tr>
                         @empty
                             @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 9])

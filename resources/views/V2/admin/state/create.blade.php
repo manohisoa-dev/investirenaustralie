@@ -11,7 +11,7 @@
                 <a href="#">States</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.admin.state.index') }}">Listes</a>
+                <a href="{{ route('V2.admin.state.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Ajout</strong>
@@ -29,10 +29,10 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Ajouter un nouveau State</h5>
+                <h5>Ajouter un nouveau Etat</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-validation form-padding" action="{{ route('v2.admin.state.store') }}" method="post">
+                <form class="form-validation form-padding" action="{{ route('V2.admin.state.store') }}" method="post">
 
                     {{ csrf_field() }}
                                                         

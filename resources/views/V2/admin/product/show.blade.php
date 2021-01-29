@@ -11,7 +11,7 @@
                 <a href="#">Products</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.admin.product.index') }}">Listes</a>
+                <a href="{{ route('V2.admin.product.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Détail</strong>
@@ -38,30 +38,7 @@
 				</div>
             </div>
             <div class="ibox-content">
-                <div class="row">
-					<div class="col-md-6">
-						<img src="{{$product->imageUrl()}}" alt="" class="img-responsive" style="width:100%">
-					</div>
-					<div class="col-md-6">
-						<dl class="row mb-0">
-							<div class="col-sm-4 text-sm">
-								<dt>@lang('app.reference'):</dt>
-							</div>
-							<div class="col-sm-8 text-sm-left">
-								<dd class="mb-1"><span class="label label-primary">{{$product->reference}}</span></dd>
-							</div>
-						</dl>
-						<dl class="row mb-0">
-							<div class="col-sm-4 text-sm">
-								<dt>@lang('app.status'):</dt>
-							</div>
-							<div class="col-sm-8 text-sm-left">
-								<dd class="mb-1"><span class="label label-primary">{{$product->reference}}</span></dd>
-							</div>
-						</dl>
-					</div>
-				</div>
-            </div>
+                                    </ul>            </div>
         </div>
     </div>
 </div>

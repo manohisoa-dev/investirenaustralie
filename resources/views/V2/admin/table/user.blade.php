@@ -17,7 +17,7 @@
      <tr class="user-item-{{$item->id}}">
          <td>{{$item->id}}</td>
          <td style="position: relative;">
-             <a href="{{route('v2.admin.user.show', $item)}}"><img class="img-circle" src="{{$item->imageUrl()}}" width="50"></a>
+             <a href="{{route('V2.admin.user.show', $item)}}"><img class="img-circle" src="{{$item->imageUrl()}}" width="50"></a>
              @if($item->isOnline())
                 <span class="badge badge-danger" style="background-color:green; margin-left:-20px;margin-bottom:-30px;">&nbsp;</span>
              @endif

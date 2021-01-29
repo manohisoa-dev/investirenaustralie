@@ -8,7 +8,7 @@
         <h2>Plans</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.admin.plan.index') }}">Plans</a>
+                <a href="{{ route('V2.admin.plan.index') }}">Plans</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Listes</strong>
@@ -17,7 +17,7 @@
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ route('v2.admin.plan.create') }}" type="button" class="btn btn-primary btn-block">
+            <a href="{{ route('V2.admin.plan.create') }}" type="button" class="btn btn-primary btn-block">
                 <i class="fa fa-plus"></i> Ajouter un nouveau Plan            </a>
         </div>
     </div>
@@ -36,15 +36,15 @@
                 <table class="table table-striped grid-view-tbl">
                 <thead>
                     <tr class="header-row">
-                                                    {!!\Nvd\Crud\Html::sortableTh('id','v2.admin.plan.index','Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('slug','v2.admin.plan.index','Slug')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('name','v2.admin.plan.index','Name')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('cost','v2.admin.plan.index','Cost')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('description','v2.admin.plan.index','Description')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('type','v2.admin.plan.index','Type')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('role','v2.admin.plan.index','Role')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.admin.plan.index','Créer le')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.admin.plan.index','Mise à jour le')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('id','V2.admin.plan.index','Id')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('slug','V2.admin.plan.index','Slug')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('name','V2.admin.plan.index','Name')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('cost','V2.admin.plan.index','Cost')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('description','V2.admin.plan.index','Description')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('type','V2.admin.plan.index','Type')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('role','V2.admin.plan.index','Role')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','V2.admin.plan.index','Créer le')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','V2.admin.plan.index','Mise à jour le')!!}
                                             <th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
@@ -75,7 +75,7 @@
                                           data-name="slug"
                                           data-value="{{ $record->slug }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.admin.plan.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('V2.admin.plan.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->slug }}</span>
                                                                     </td>
                                                                 <td>
@@ -84,7 +84,7 @@
                                           data-name="name"
                                           data-value="{{ $record->name }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.admin.plan.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('V2.admin.plan.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->name }}</span>
                                                                     </td>
                                                                 <td>
@@ -93,7 +93,7 @@
                                           data-name="cost"
                                           data-value="{{ $record->cost }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.admin.plan.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('V2.admin.plan.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->cost }}</span>
                                                                     </td>
                                                                 <td>
@@ -102,7 +102,7 @@
                                           data-name="description"
                                           data-value="{{ $record->description }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.admin.plan.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('V2.admin.plan.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->description }}</span>
                                                                     </td>
                                                                 <td>
@@ -111,7 +111,7 @@
                                           data-name="type"
                                           data-value="{{ $record->type }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.admin.plan.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('V2.admin.plan.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->type }}</span>
                                                                     </td>
                                                                 <td>
@@ -120,7 +120,7 @@
                                           data-name="role"
                                           data-value="{{ $record->role }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.admin.plan.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('V2.admin.plan.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->role }}</span>
                                                                     </td>
                                                                 <td>
@@ -129,7 +129,7 @@
                                                                 <td>
                                                                             {{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}
                                                                     </td>
-                                                                @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('v2.admin.plan.index'), 'record' => $record ] )
+                                                                @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('V2.admin.plan.index'), 'record' => $record ] )
                             </tr>
                         @empty
                             @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 10])

@@ -41,7 +41,7 @@
 					</div>
 					<div class="col-sm-9">
 						<h3 class="m-t-none m-b">@lang('app.login_info')</h3>
-						<form role="form" action="{{route('v2.admin.profile.info')}}" method="post" enctype="multipart/form-data">
+						<form role="form" action="{{route('V2.admin.profile.info')}}" method="post" enctype="multipart/form-data">
 							<div class="row">
 								<div class="col-sm-6">
 									<div class="form-group">
@@ -99,7 +99,7 @@
 				</div>
 			</div>
 			<div class="ibox-content">
-				<form role="form" action="{{route('v2.admin.password')}}" method="post" id="passwordForm">
+				<form role="form" action="{{route('V2.admin.password')}}" method="post" id="passwordForm">
 					<div class="row">
 						<div class="col-sm-4">
 							<div class="form-group">
@@ -142,7 +142,7 @@
 					</a>
 				</div>
 			</div>
-			<form role="form" action="{{route('v2.admin.location.edit')}}" method="post">
+			<form role="form" action="{{route('V2.admin.location.edit')}}" method="post">
 			<div class="ibox-content">
 				<!--<div id="map"></div>-->
 				<div class="hr-line-dashed"></div>

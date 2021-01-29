@@ -11,7 +11,7 @@
                 <a href="#">States</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.admin.state.index') }}">Listes</a>
+                <a href="{{ route('V2.admin.state.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Détail</strong>
@@ -39,11 +39,11 @@
                         <h5>{{$state->id}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Content</h4>
+                        <h4>Description</h4>
                         <h5>{{$state->content}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Country</h4>
+                        <h4>Pays</h4>
                         <h5>{{$state->country}}</h5>
                     </li>
                                         <li class="list-group-item">

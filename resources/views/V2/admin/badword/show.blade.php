@@ -1,17 +1,17 @@
 @extends('V2.admin.layouts.app')
 
-@section('title', 'Badwords - Détail ')
+@section('title', 'Mot interdits - Détail ')
 
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Badwords</h2>
+        <h2>Mot interdits</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Badwords</a>
+                <a href="#">Mot interdits</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.admin.badword.index') }}">Listes</a>
+                <a href="{{ route('V2.admin.badword.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Détail</strong>
@@ -30,7 +30,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Détail Badword : {{str_limit(strip_tags($badword->content), "100", "...")}}</h5>
+                <h5>Détail Mot interdit : {{str_limit(strip_tags($badword->content), "100", "...")}}</h5>
             </div>
             <div class="ibox-content">
                 <ul class="list-group">
