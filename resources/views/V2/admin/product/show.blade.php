@@ -38,7 +38,10 @@
 				</div>
             </div>
             <div class="ibox-content">
-                                    </ul>            </div>
+				<div class="row">
+                
+				</div>       
+			</div>
         </div>
     </div>
 </div>
