@@ -42,7 +42,7 @@ class PlanController extends Controller
 
         # notification
         Notify::success('Plan a été créer avec succès');
-        return redirect(route('v2.admin.plan.index'));
+        return redirect(redirect(route('v2.adminplan.index'));
     }
 
     /**
@@ -89,7 +89,7 @@ class PlanController extends Controller
 
         # notification
         Notify::success('Plan a été mise à jour avec succès');
-        return redirect(route('v2.admin.plan.index'));
+        return redirect(redirect(route('v2.adminplan.index'));
     }
 
     /**
@@ -103,7 +103,7 @@ class PlanController extends Controller
 
         # notification
         Notify::success('Plan a été supprimer avec succès');
-        return redirect(route('v2.admin.plan.index'));
+        return redirect(redirect(route('v2.adminplan.index'));
     }
 
     protected function view($view, $data = [])
