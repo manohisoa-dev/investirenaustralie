@@ -40,10 +40,9 @@
                                                     {!!\Nvd\Crud\Html::sortableTh('content','V2.admin.page.index','Content')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('path','V2.admin.page.index','Path')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('page_order','V2.admin.page.index','Page Order')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('is_pub','V2.admin.page.index','Is Pub')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('language','V2.admin.page.index','Language')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('parent_id','V2.admin.page.index','Parent Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('author_id','V2.admin.page.index','Author Id')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('parent_id','V2.admin.page.index','Parent')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('author_id','V2.admin.page.index','Auteur')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('created_at','V2.admin.page.index','Créer le')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('updated_at','V2.admin.page.index','Mise à jour le')!!}
                                             <th><a href="javascript:void(0)">Actions</a></th>
@@ -55,7 +54,6 @@
                                                             <td><input type="text" class="form-control" name="content" value="{{Request::input("content")}}"></td>
                                                             <td><input type="text" class="form-control" name="path" value="{{Request::input("path")}}"></td>
                                                             <td><input type="text" class="form-control" name="page_order" value="{{Request::input("page_order")}}"></td>
-                                                            <td><input type="text" class="form-control" name="is_pub" value="{{Request::input("is_pub")}}"></td>
                                                             <td><input type="text" class="form-control" name="language" value="{{Request::input("language")}}"></td>
                                                             <td><input type="text" class="form-control" name="parent_id" value="{{Request::input("parent_id")}}"></td>
                                                             <td><input type="text" class="form-control" name="author_id" value="{{Request::input("author_id")}}"></td>
@@ -110,15 +108,6 @@
                                                                     </td>
                                                                 <td>
                                                                         <span class="editable"
-                                          data-type="number"
-                                          data-name="is_pub"
-                                          data-value="{{ $record->is_pub }}"
-                                          data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('V2.admin.page.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->is_pub }}</span>
-                                                                    </td>
-                                                                <td>
-                                                                        <span class="editable"
                                           data-type="text"
                                           data-name="language"
                                           data-value="{{ $record->language }}"
@@ -133,7 +122,7 @@
                                           data-value="{{ $record->parent_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
                                           data-url="{{ route('V2.admin.page.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->parent_id }}</span>
+                                          >{{ $record->parent ? $record->parent->title : ''}}</span>
                                                                     </td>
                                                                 <td>
                                                                         <span class="editable"
@@ -142,7 +131,7 @@
                                           data-value="{{ $record->author_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
                                           data-url="{{ route('V2.admin.page.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->author_id }}</span>
+                                          >{{ $record->author ? $record->author->name : ''}}</span>
                                                                     </td>
                                                                 <td>
                                                                             {{ $record->created_at ? $record->created_at->diffForHumans() : ''}}
