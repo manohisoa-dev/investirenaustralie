@@ -15,6 +15,7 @@ class ProductController extends Controller
     public function index()
     {
         $records = Product::findRequested();
+        
         return $this->view( "index", ['records' => $records] );
     }
 
