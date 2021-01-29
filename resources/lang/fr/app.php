@@ -562,6 +562,7 @@ return [
     'txt.inscriptionafa'               =>"Inscription Agents francophones australiens",
     'txt.inscriptionapl'               =>"Inscription Agences Partenaires Locales",
     'txt.inscriptionseller'               =>"Inscription Vendeur",
+    'txt.information'               =>"Information",
     
     
     'childs' => 'Fils',
