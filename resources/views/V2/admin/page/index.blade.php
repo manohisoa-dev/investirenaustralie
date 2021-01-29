@@ -39,7 +39,7 @@
                                                     {!!\Nvd\Crud\Html::sortableTh('title','V2.admin.page.index','Title')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('content','V2.admin.page.index','Content')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('path','V2.admin.page.index','Path')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('page_order','V2.admin.page.index','Page Order')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('page_order','V2.admin.page.index','Ordre')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('language','V2.admin.page.index','Language')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('parent_id','V2.admin.page.index','Parent')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('author_id','V2.admin.page.index','Auteur')!!}
@@ -54,7 +54,13 @@
                                                             <td><input type="text" class="form-control" name="content" value="{{Request::input("content")}}"></td>
                                                             <td><input type="text" class="form-control" name="path" value="{{Request::input("path")}}"></td>
                                                             <td><input type="text" class="form-control" name="page_order" value="{{Request::input("page_order")}}"></td>
-                                                            <td><input type="text" class="form-control" name="language" value="{{Request::input("language")}}"></td>
+                                                            <td>
+                                                                <select name="language" id="language" class="form-control">
+                                                                    <option value=""></option>
+                                                                    <option value="fr" {{Request::input("language") == 'fr' ? 'selected' : ''}}>Fr</option>
+                                                                    <option value="en" {{Request::input("language") == 'en' ? 'selected' : ''}}>En</option>
+                                                                </select>
+                                                            </td>
                                                             <td><input type="text" class="form-control" name="parent_id" value="{{Request::input("parent_id")}}"></td>
                                                             <td><input type="text" class="form-control" name="author_id" value="{{Request::input("author_id")}}"></td>
                                                             <td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>
