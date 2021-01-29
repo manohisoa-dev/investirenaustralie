@@ -46,7 +46,7 @@ class ProductController extends Controller
 
         # notification
         Notify::success('Product a été créer avec succès');
-        return redirect(redirect(route('v2.adminproduct.index'));
+        return redirect(route('v2.adminproduct.index'));
     }
 
     /**
@@ -93,7 +93,7 @@ class ProductController extends Controller
 
         # notification
         Notify::success('Product a été mise à jour avec succès');
-        return redirect(redirect(route('v2.adminproduct.index'));
+        return redirect(route('v2.adminproduct.index'));
     }
 
     /**
@@ -107,7 +107,7 @@ class ProductController extends Controller
 
         # notification
         Notify::success('Product a été supprimer avec succès');
-        return redirect(redirect(route('v2.adminproduct.index'));
+        return redirect(route('v2.adminproduct.index'));
     }
 
     protected function view($view, $data = [])
