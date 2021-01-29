@@ -8,7 +8,7 @@
         <h2>Blogs</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.admin.blog.index') }}">Blogs</a>
+                <a href="{{ route('V2.admin.blog.index') }}">Blogs</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Listes</strong>
@@ -17,7 +17,7 @@
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ route('v2.admin.blog.create') }}" type="button" class="btn btn-primary btn-block">
+            <a href="{{ route('V2.admin.blog.create') }}" type="button" class="btn btn-primary btn-block">
                 <i class="fa fa-plus"></i> Ajouter un nouveau Blog            </a>
         </div>
     </div>
@@ -36,20 +36,20 @@
                 <table class="table table-striped grid-view-tbl">
                 <thead>
                     <tr class="header-row">
-                                                    {!!\Nvd\Crud\Html::sortableTh('id','v2.admin.blog.index','Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('slug','v2.admin.blog.index','Slug')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('title','v2.admin.blog.index','Title')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('content','v2.admin.blog.index','Content')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('meta_tag','v2.admin.blog.index','Meta Tag')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('meta_description','v2.admin.blog.index','Meta Description')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('view_count','v2.admin.blog.index','View Count')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('status','v2.admin.blog.index','Status')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('starred','v2.admin.blog.index','Starred')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('post_type','v2.admin.blog.index','Post Type')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('image_id','v2.admin.blog.index','Image Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('author_id','v2.admin.blog.index','Author Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','v2.admin.blog.index','Created At')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.admin.blog.index','Updated At')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('id','V2.admin.blog.index','Id')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('slug','V2.admin.blog.index','Slug')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('title','V2.admin.blog.index','Title')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('content','V2.admin.blog.index','Content')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('meta_tag','V2.admin.blog.index','Meta Tag')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('meta_description','V2.admin.blog.index','Meta Description')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('view_count','V2.admin.blog.index','View Count')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('status','V2.admin.blog.index','Status')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('starred','V2.admin.blog.index','Starred')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('post_type','V2.admin.blog.index','Post Type')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('image_id','V2.admin.blog.index','Image Id')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('author_id','V2.admin.blog.index','Author Id')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','V2.admin.blog.index','Created At')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','V2.admin.blog.index','Updated At')!!}
                                                 <th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
@@ -85,7 +85,7 @@
                                           data-name="slug"
                                           data-value="{{ $record->slug }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('V2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->slug }}</span>
                                                                     </td>
                                                                 <td>
@@ -94,7 +94,7 @@
                                           data-name="title"
                                           data-value="{{ $record->title }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('V2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->title }}</span>
                                                                     </td>
                                                                 <td>
@@ -103,7 +103,7 @@
                                           data-name="content"
                                           data-value="{{ $record->content }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('V2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ str_limit(strip_tags($record->content), "100", "...") }}</span>
                                                                     </td>
                                                                 <td>
@@ -112,7 +112,7 @@
                                           data-name="meta_tag"
                                           data-value="{{ $record->meta_tag }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('V2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->meta_tag }}</span>
                                                                     </td>
                                                                 <td>
@@ -121,7 +121,7 @@
                                           data-name="meta_description"
                                           data-value="{{ $record->meta_description }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('V2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->meta_description }}</span>
                                                                     </td>
                                                                 <td>
@@ -130,7 +130,7 @@
                                           data-name="view_count"
                                           data-value="{{ $record->view_count }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('V2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->view_count }}</span>
                                                                     </td>
                                                                 <td>
@@ -139,7 +139,7 @@
                                           data-name="status"
                                           data-value="{{ $record->status }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('V2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->status }}</span>
                                                                     </td>
                                                                 <td>
@@ -148,7 +148,7 @@
                                           data-name="starred"
                                           data-value="{{ $record->starred }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('V2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->starred }}</span>
                                                                     </td>
                                                                 <td>
@@ -157,7 +157,7 @@
                                           data-name="post_type"
                                           data-value="{{ $record->post_type }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('V2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->post_type }}</span>
                                                                     </td>
                                                                 <td>
@@ -166,7 +166,7 @@
                                           data-name="image_id"
                                           data-value="{{ $record->image_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('V2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->image_id }}</span>
                                                                     </td>
                                                                 <td>
@@ -175,7 +175,7 @@
                                           data-name="author_id"
                                           data-value="{{ $record->author_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('v2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('V2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->author_id }}</span>
                                                                     </td>
                                                                 <td>
@@ -184,7 +184,7 @@
                                                                 <td>
                                                                             {{ $record->updated_at }}
                                                                     </td>
-                                                                @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('v2.admin.blog.index'), 'record' => $record ] )
+                                                                @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('V2.admin.blog.index'), 'record' => $record ] )
                             </tr>
                         @empty
                             @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 15])

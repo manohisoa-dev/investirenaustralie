@@ -4,7 +4,7 @@
         <h2>Products</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.admin.product.index') }}">Products</a>
+                <a href="{{ route('V2.admin.product.index') }}">Products</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Listes</strong>
@@ -13,7 +13,7 @@
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ route('v2.admin.product.create') }}" type="button" class="btn btn-primary btn-block"> <i class="fa fa-plus"></i> Ajouter un nouveau Product </a>
+            <a href="{{ route('V2.admin.product.create') }}" type="button" class="btn btn-primary btn-block"> <i class="fa fa-plus"></i> Ajouter un nouveau Product </a>
         </div>
     </div>
 </div>
@@ -29,15 +29,15 @@
                 <table class="table table-striped grid-view-tbl">
                     <thead>
                         <tr class="header-row">
-                            {!!\Nvd\Crud\Html::sortableTh('id','v2.admin.product.index','Id')!!} 
-							{!!\Nvd\Crud\Html::sortableTh('image_id','v2.admin.product.index','Image')!!}
-							{!!\Nvd\Crud\Html::sortableTh('title','v2.admin.product.index','Titre')!!}
-							{!!\Nvd\Crud\Html::sortableTh('currency','v2.admin.product.index','Devise')!!}
-							{!!\Nvd\Crud\Html::sortableTh('price','v2.admin.product.index','Prix')!!}     
-							{!!\Nvd\Crud\Html::sortableTh('created_at','v2.admin.product.index','Date')!!}     
-							{!!\Nvd\Crud\Html::sortableTh('status','v2.admin.product.index','Status')!!}
-							{!!\Nvd\Crud\Html::sortableTh('seller_id','v2.admin.product.index','Vendeur')!!}
-							{!!\Nvd\Crud\Html::sortableTh('author_id','v2.admin.product.index','Auteurs')!!}
+                            {!!\Nvd\Crud\Html::sortableTh('id','V2.admin.product.index','Id')!!}
+							{!!\Nvd\Crud\Html::sortableTh('image_id','V2.admin.product.index','Image')!!}
+							{!!\Nvd\Crud\Html::sortableTh('title','V2.admin.product.index','Titre')!!}
+							{!!\Nvd\Crud\Html::sortableTh('currency','V2.admin.product.index','Devise')!!}
+							{!!\Nvd\Crud\Html::sortableTh('price','V2.admin.product.index','Prix')!!}
+							{!!\Nvd\Crud\Html::sortableTh('created_at','V2.admin.product.index','Date')!!}
+							{!!\Nvd\Crud\Html::sortableTh('status','V2.admin.product.index','Status')!!}
+							{!!\Nvd\Crud\Html::sortableTh('seller_id','V2.admin.product.index','Vendeur')!!}
+							{!!\Nvd\Crud\Html::sortableTh('author_id','V2.admin.product.index','Auteurs')!!}
                             <th><a href="javascript:void(0)">Actions</a></th>
                         </tr>
                         <tr class="search-row">
@@ -74,7 +74,7 @@
                                     data-name="title"
                                     data-value="{{ $record->title }}"
                                     data-pk="{{ $record->{$record->getKeyName()} }}"
-                                    data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                    data-url="{{ route('V2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
                                     {{ $record->title }}
                                 </span></a><br />
@@ -87,7 +87,7 @@
                                     data-name="currency"
                                     data-value="{{ $record->currency }}"
                                     data-pk="{{ $record->{$record->getKeyName()} }}"
-                                    data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                    data-url="{{ route('V2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
                                     {{ $record->currency }}
                                 </span>
@@ -99,7 +99,7 @@
                                     data-name="price"
                                     data-value="{{ $record->price }}"
                                     data-pk="{{ $record->{$record->getKeyName()} }}"
-                                    data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                    data-url="{{ route('V2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
                                     {{ $record->price }}
                                 </span>
@@ -114,7 +114,7 @@
                                     data-name="status"
                                     data-value="{{ $record->status }}"
                                     data-pk="{{ $record->{$record->getKeyName()} }}"
-                                    data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                    data-url="{{ route('V2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
 									@if($record->status=='published')
 									<span class="label label-success">{{$record->status}}</span>
@@ -130,7 +130,7 @@
                                     data-name="seller_id"
                                     data-value="{{ $record->seller_id }}"
                                     data-pk="{{ $record->{$record->getKeyName()} }}"
-                                    data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                    data-url="{{ route('V2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
                                     {{ $record->seller->name }}
                                 </span>
@@ -142,12 +142,12 @@
                                     data-name="author_id"
                                     data-value="{{ $record->author_id }}"
                                     data-pk="{{ $record->{$record->getKeyName()} }}"
-                                    data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                    data-url="{{ route('V2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
                                     {{ $record->author->name }}
                                 </span>
                             </td>
-                            @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('v2.admin.product.index'), 'record' => $record ] )
+                            @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('V2.admin.product.index'), 'record' => $record ] )
                         </tr>
                         @empty @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 40]) @endforelse
                     </tbody>

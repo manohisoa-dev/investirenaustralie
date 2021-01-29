@@ -37,21 +37,21 @@
     <nav class="navbar-default navbar-static-side" role="navigation">
         <div class="sidebar-collapse">
             <ul class="nav metismenu" id="side-menu">
-                @include('v2.admin.layouts.menu')
+                @include('V2.admin.layouts.menu')
             </ul>
 
         </div>
     </nav>
 
     <div id="page-wrapper" class="gray-bg dashbard-1">
-        @include('v2.admin.layouts.head')
+        @include('V2.admin.layouts.head')
 
         @yield('breadcrumb')
 
         <div class="wrapper wrapper-content">
             @yield('content')
         </div>
-        @include('v2.admin.layouts.footer')
+        @include('V2.admin.layouts.footer')
     </div>
     <div class="small-chat-box fadeInRight animated">
 

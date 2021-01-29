@@ -11,7 +11,7 @@
                 <a href="#">Categories</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.admin.category.index') }}">Listes</a>
+                <a href="{{ route('V2.admin.category.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Détail</strong>

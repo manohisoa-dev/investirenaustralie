@@ -42,7 +42,7 @@ class BlogController extends Controller
 
         # notification
         Notify::success('Blog a été créer avec succès');
-        return redirect(route('v2.admin.blog.index'));
+        return redirect(route('V2.admin.blog.index'));
     }
 
     /**
@@ -89,7 +89,7 @@ class BlogController extends Controller
 
         # notification
         Notify::success('Blog a été mise à jour avec succès');
-        return redirect(route('v2.admin.blog.index'));
+        return redirect(route('V2.admin.blog.index'));
     }
 
     /**
@@ -103,7 +103,7 @@ class BlogController extends Controller
 
         # notification
         Notify::success('Blog a été supprimer avec succès');
-        return redirect(route('v2.admin.blog.index'));
+        return redirect(route('V2.admin.blog.index'));
     }
 
     protected function view($view, $data = [])

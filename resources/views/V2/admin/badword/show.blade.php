@@ -11,7 +11,7 @@
                 <a href="#">Mot interdits</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.admin.badword.index') }}">Listes</a>
+                <a href="{{ route('V2.admin.badword.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Détail</strong>

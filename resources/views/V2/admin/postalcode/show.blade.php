@@ -11,7 +11,7 @@
                 <a href="#">Code postaux</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.admin.postalcode.index') }}">Listes</a>
+                <a href="{{ route('V2.admin.postalcode.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Détail</strong>
