@@ -259,4 +259,15 @@ Route::prefix('V2')->namespace('V2')->as('v2.')->group(function(){
     // Contact Page
     Route::get('contact','MailController@contact');
     Route::post('contact','MailController@contact')->name('contact');
+
+    // Auth
+    Route::get('login', 'IndexController@login')->name('login');
+
+    // Register
+    Route::middleware('guest')->group(function(){
+        Route::get('register/{role}', 'Auth\RegisterController@index')->name('register');
+        Route::post('register/{role}', 'Auth\RegisterController@register');
+        Route::get('verify-user/{code}', 'Auth\RegisterController@activateUser')->name('activate.user');
+        Route::get('resend-code/{user}', 'Auth\RegisterController@resendActivation')->name('resend_code');
+    });
 });

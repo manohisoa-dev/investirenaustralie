@@ -180,7 +180,7 @@
                     </li>
                                         <li class="list-group-item">
                         <h4>Image Id</h4>
-                        <h5>{{$product->image_id}}</h5>
+                                            <img src="{{$product->imageUrl()}}" alt="" width="50" height="50">
                     </li>
                                         <li class="list-group-item">
                         <h4>Created At</h4>

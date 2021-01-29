@@ -4,7 +4,9 @@
             <img src="{{$item->imageUrl()}}" alt="{{$item->title}}">
         </div>
         <div class="p-5px-t p-20px-b text-center">
-            <small><i class="fa fa-map-marker"></i> {{$item->location? substr(strip_tags($item->location->toString()), 0, 25):''}}</small>
+            <small><i class="fa fa-map-marker"></i> 
+
+            {{  $item->location? (isset($page_id) ? substr(strip_tags($item->location->toString()), 0, 25) : $item->location->toString()) :''}}</small>
             
             <h6 class="m-10px-b font-w-600"><a class="dark-color" href="{{route('v2.product.index',['product'=>$item->slug])}}">{{$item->title}}</a></h6>
 
