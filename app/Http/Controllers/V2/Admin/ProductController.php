@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Jleon\LaravelPnotify\Notify;
 
 use App\Models\Image;
+use App\Models\User;
 
 class ProductController extends Controller
 {

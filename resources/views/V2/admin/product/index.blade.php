@@ -77,7 +77,8 @@
                                     data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
                                     {{ $record->title }}
-                                </span></a>
+                                </span></a><br />
+								{{$record->excerpt()}}
                             </td>							
                             <td>
                                 <span
@@ -131,7 +132,7 @@
                                     data-pk="{{ $record->{$record->getKeyName()} }}"
                                     data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
-                                    {{ $record->seller_id }}
+                                    {{ $record->seller->name }}
                                 </span>
                             </td>
 							<td>
@@ -143,7 +144,7 @@
                                     data-pk="{{ $record->{$record->getKeyName()} }}"
                                     data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
-                                    {{ $record->author_id }}
+                                    {{ $record->author->name }}
                                 </span>
                             </td>
                             @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('v2.admin.product.index'), 'record' => $record ] )
