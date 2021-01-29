@@ -291,4 +291,22 @@ function affichageHeader(){
 	}
 }
 
+function setImage($id_image)
+{
+    $image = App\Models\Image::find($id_image);
+    return thumbnail('/product/'.$image->filename);
+    //return $image->filename;
+}
+
+function setNomUser($id_user)
+{
+    $user = App\Models\User::find($id_user);
+    return $user->name;
+    //return $image->filename;
+}
+
+function separateur_millier($value) {
+    return number_format($value, 0, ",", " ");
+}
+
 

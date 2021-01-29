@@ -162,7 +162,7 @@
 							<label>@lang('app.country')</label> 
 							<select class="form-control" name="country" id="country">
 								<option value="0">@lang('app.select_country')</option>
-								@foreach($countries as $country)
+								@foreach(\App\Country::all() as $country)
 									<option value="{{$country->id}}" {{ ( $country->content == $location->country) ? 'selected' : '' }}> {{$country->content}}</option>
 								@endforeach
 							</select>

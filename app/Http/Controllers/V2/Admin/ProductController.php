@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Jleon\LaravelPnotify\Notify;
 
+use App\Models\Image;
+
 class ProductController extends Controller
 {
     public $viewDir = "V2.admin.product";
