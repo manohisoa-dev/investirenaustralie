@@ -362,4 +362,9 @@ class IndexController extends Controller
 
         // return view('editlangue', compact('json'));
     }
+
+    public function login()
+    {
+        return view('v2.auth.login');
+    }
 }

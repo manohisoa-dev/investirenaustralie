@@ -1,6 +1,6 @@
 <!-- Page Title -->
-<section class="section bg-center bg-cover bg-fixed effect-section" style="background-image: url(static/img/1600x900.jpg);">
-    <div class="mask theme-bg opacity-9"></div>
+<section class="section bg-center bg-cover bg-fixed effect-section" style="background-image: url({{ asset('images/slider/1.jpg') }});">
+    <div class="mask theme-bg opacity-5"></div>
     <div class="container">
         <div class="row justify-content-center p-50px-t">
             <div class="col-lg-8 text-center">

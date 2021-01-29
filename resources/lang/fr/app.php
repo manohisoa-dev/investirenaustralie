@@ -553,6 +553,15 @@ return [
     'txt.help'               =>"Aides",
     'txt.publicite'               =>"Publicités",
     'txt.service'               =>"Services",
+    'txt.login.libelle'               =>"Connectez-vous à votre compte pour continuer.",
+    'txt.inscription.membre.title'               =>"Inscription en Qualité de Membre",
+    'txt.inscription.afa.title'               =>"Inscription Agents francophones australiens",
+    'txt.inscription.apl.title'               =>"Inscription Agences Partenaires Locales",
+    'txt.inscription.seller.title'               =>"Inscription Vendeur",
+    'txt.inscriptionmembre'               =>"Inscription en Qualité de Membre",
+    'txt.inscriptionafa'               =>"Inscription Agents francophones australiens",
+    'txt.inscriptionapl'               =>"Inscription Agences Partenaires Locales",
+    'txt.inscriptionseller'               =>"Inscription Vendeur",
     
     
     'childs' => 'Fils',
