@@ -20,7 +20,6 @@
 
 @endsection @section('content')
 <div class="row">
-<<<<<<< HEAD
 	<div class="col-lg-12">
 		<div class="ibox float-e-margins">
 			<div class="ibox-title">
@@ -30,14 +29,12 @@
 
 
 			<div class="ibox-content">
-=======
-    <div class="col-lg-12">
+    	<div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <h5>Products</h5>
             </div>
             <div class="ibox-content" style="overflow:scroll">
->>>>>>> d769bb8e8e69dab6e89ab04fa630b0de4c769100
                 <table class="table table-striped grid-view-tbl">
                     <thead>
                         <tr class="header-row">
