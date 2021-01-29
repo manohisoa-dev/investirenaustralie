@@ -32,7 +32,6 @@
                             {!!\Nvd\Crud\Html::sortableTh('id','v2.admin.product.index','Id')!!} 
 							{!!\Nvd\Crud\Html::sortableTh('image_id','v2.admin.product.index','Image')!!}
 							{!!\Nvd\Crud\Html::sortableTh('title','v2.admin.product.index','Titre')!!}
-							{!!\Nvd\Crud\Html::sortableTh('currency','v2.admin.product.index','Devise')!!}
 							{!!\Nvd\Crud\Html::sortableTh('price','v2.admin.product.index','Prix')!!}     
 							{!!\Nvd\Crud\Html::sortableTh('created_at','v2.admin.product.index','Date')!!}     
 							{!!\Nvd\Crud\Html::sortableTh('status','v2.admin.product.index','Status')!!}
@@ -45,7 +44,6 @@
                                 <td style="width:2%"><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
 								<td><input type="text" class="form-control" name="image_id" value="{{Request::input("image_id")}}"></td>
 								<td><input type="text" class="form-control" name="title" value="{{Request::input("title")}}"></td>
-								<td><input type="text" class="form-control" name="currency" value="{{Request::input("currency")}}"></td>
 								<td><input type="text" class="form-control" name="price" value="{{Request::input("price")}}"></td>    
 								<td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>  
 								<td><input type="text" class="form-control" name="status" value="{{Request::input("status")}}"></td>
@@ -79,18 +77,6 @@
                                     {{ $record->title }}
                                 </span></a><br />
 								{{$record->excerpt()}}
-                            </td>							
-                            <td>
-                                <span
-                                    class="editable"
-                                    data-type="text"
-                                    data-name="currency"
-                                    data-value="{{ $record->currency }}"
-                                    data-pk="{{ $record->{$record->getKeyName()} }}"
-                                    data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                >
-                                    {{ $record->currency }}
-                                </span>
                             </td>
 							<td>
                                 <span
@@ -101,7 +87,7 @@
                                     data-pk="{{ $record->{$record->getKeyName()} }}"
                                     data-url="{{ route('v2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
-                                    {{ $record->price }}
+                                    {{ $record->currency }}&nbsp;{{ number_format($record->price, 0, '.', ' ') }}
                                 </span>
                             </td>
 							<td>
