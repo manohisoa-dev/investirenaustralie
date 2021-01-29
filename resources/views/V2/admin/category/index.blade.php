@@ -18,7 +18,7 @@
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
             <a href="{{ route('v2.admin.category.create') }}" type="button" class="btn btn-primary btn-block">
-                <i class="fa fa-plus"></i> Ajouter un nouveau Category            </a>
+                <i class="fa fa-plus"></i> Ajouter un nouveau catégorie           </a>
         </div>
     </div>
 </div>

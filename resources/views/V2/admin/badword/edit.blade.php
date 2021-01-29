@@ -1,14 +1,14 @@
 @extends('V2.admin.layouts.app')
 
-@section('title', 'Badwords - Modification ')
+@section('title', 'Mot interdits - Modification ')
 
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Badwords</h2>
+        <h2>Mot interdits</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Badwords</a>
+                <a href="#">Mot interdits</a>
             </li>
             <li class="breadcrumb-item">
                 <a href="{{ route('v2.admin.badword.index') }}">Listes</a>
@@ -29,7 +29,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Mise à jour Badword : {{$badword->content}}</h5>
+                <h5>Mise à jour Mot interdit : {{$badword->content}}</h5>
             </div>
             <div class="ibox-content">
                 <form action="{{ route('v2.admin.badword.index')}}/{{$badword->id}}" method="post">

@@ -29,7 +29,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Ajouter un nouveau State</h5>
+                <h5>Ajouter un nouveau Etat</h5>
             </div>
             <div class="ibox-content">
                 <form class="form-validation form-padding" action="{{ route('v2.admin.state.store') }}" method="post">

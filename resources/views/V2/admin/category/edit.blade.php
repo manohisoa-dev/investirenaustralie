@@ -29,7 +29,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Mise à jour Category : {{$category->slug}}</h5>
+                <h5>Mise à jour catégorie: {{$category->slug}}</h5>
             </div>
             <div class="ibox-content">
                 <form action="{{ route('v2.category.index')}}/{{$category->id}}" method="post">

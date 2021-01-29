@@ -1,14 +1,14 @@
 @extends('V2.admin.layouts.app')
 
-@section('title', 'Countries - Listes ')
+@section('title', 'Pays - Listes ')
 
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Countries</h2>
+        <h2>Pays</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.admin.country.index') }}">Countries</a>
+                <a href="{{ route('v2.admin.country.index') }}">Pays</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Listes</strong>
@@ -18,7 +18,7 @@
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
             <a href="{{ route('v2.admin.country.create') }}" type="button" class="btn btn-primary btn-block">
-                <i class="fa fa-plus"></i> Ajouter un nouveau Country            </a>
+                <i class="fa fa-plus"></i> Ajouter un nouveauPays            </a>
         </div>
     </div>
 </div>
@@ -30,7 +30,7 @@
 	<div class="col-lg-12">
 		<div class="ibox float-e-margins">
 			<div class="ibox-title">
-				<h5>Countries</h5>
+				<h5>Pays</h5>
 			</div>
 			<div class="ibox-content">
                 <table class="table table-striped grid-view-tbl">

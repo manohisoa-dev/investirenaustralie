@@ -151,7 +151,7 @@
                         <h5>{{$product->location_type_id}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Category Id</h4>
+                        <h4>catégorieId</h4>
                         <h5>{{$product->category_id}}</h5>
                     </li>
                                         <li class="list-group-item">

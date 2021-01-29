@@ -18,7 +18,7 @@
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
             <a href="{{ route('v2.admin.state.create') }}" type="button" class="btn btn-primary btn-block">
-                <i class="fa fa-plus"></i> Ajouter un nouveau State            </a>
+                <i class="fa fa-plus"></i> Ajouter un nouveau Etat            </a>
         </div>
     </div>
 </div>
@@ -37,8 +37,8 @@
                 <thead>
                     <tr class="header-row">
                                                     {!!\Nvd\Crud\Html::sortableTh('id','v2.admin.state.index','Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('content','v2.admin.state.index','Content')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('country','v2.admin.state.index','Country')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('content','v2.admin.state.index','Description')!!}
+                                                    {!!\Nvd\Crud\Html::sortableTh('country','v2.admin.state.index','Pays')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('created_at','v2.admin.state.index','Créer le')!!}
                                                     {!!\Nvd\Crud\Html::sortableTh('updated_at','v2.admin.state.index','Mise à jour le')!!}
                                             <th><a href="javascript:void(0)">Actions</a></th>

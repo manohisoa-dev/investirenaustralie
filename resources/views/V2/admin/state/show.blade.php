@@ -39,11 +39,11 @@
                         <h5>{{$state->id}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Content</h4>
+                        <h4>Description</h4>
                         <h5>{{$state->content}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Country</h4>
+                        <h4>Pays</h4>
                         <h5>{{$state->country}}</h5>
                     </li>
                                         <li class="list-group-item">
