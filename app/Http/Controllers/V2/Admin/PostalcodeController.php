@@ -42,7 +42,7 @@ class PostalcodeController extends Controller
 
         # notification
         Notify::success('Postalcode a été créer avec succès');
-        return redirect(redirect(route('v2.adminpostalcode.index'));
+        return redirect(route('v2.adminpostalcode.index'));
     }
 
     /**
@@ -89,7 +89,7 @@ class PostalcodeController extends Controller
 
         # notification
         Notify::success('Postalcode a été mise à jour avec succès');
-        return redirect(redirect(route('v2.adminpostalcode.index'));
+        return redirect(route('v2.adminpostalcode.index'));
     }
 
     /**
@@ -103,7 +103,7 @@ class PostalcodeController extends Controller
 
         # notification
         Notify::success('Postalcode a été supprimer avec succès');
-        return redirect(redirect(route('v2.adminpostalcode.index'));
+        return redirect(route('v2.adminpostalcode.index'));
     }
 
     protected function view($view, $data = [])

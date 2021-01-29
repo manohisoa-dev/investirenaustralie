@@ -42,7 +42,7 @@ class CountryController extends Controller
 
         # notification
         Notify::success('Country a été créer avec succès');
-        return redirect(redirect(route('v2.admincountry.index'));
+        return redirect(route('v2.admincountry.index'));
     }
 
     /**
@@ -89,7 +89,7 @@ class CountryController extends Controller
 
         # notification
         Notify::success('Country a été mise à jour avec succès');
-        return redirect(redirect(route('v2.admincountry.index'));
+        return redirect(route('v2.admincountry.index'));
     }
 
     /**
@@ -103,7 +103,7 @@ class CountryController extends Controller
 
         # notification
         Notify::success('Country a été supprimer avec succès');
-        return redirect(redirect(route('v2.admincountry.index'));
+        return redirect(route('v2.admincountry.index'));
     }
 
     protected function view($view, $data = [])
