@@ -104,9 +104,9 @@
                                     data-url="{{ route('V2.admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
 									@if($record->status=='published')
-									<span class="label label-success">{{$record->status}}</span>
+									<span class="label label-success">@lang('app.'.$record->status)</span>
 									@else
-									<span class="label label-warning">{{$record->status}}</span>
+									<span class="label label-warning">@lang('app.'.$record->status)</span>
 									@endif
                                 </span>
                             </td>

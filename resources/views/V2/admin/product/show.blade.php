@@ -44,11 +44,25 @@
 					</div>
 					<div class="col-md-6">
 						<dl class="row mb-0">
-							<div class="col-sm-4 text-sm-right">
+							<div class="col-sm-4 text-sm">
 								<dt>Statuts:</dt>
 							</div>
 							<div class="col-sm-8 text-sm-left">
-								<dd class="mb-1"><span class="label label-primary">Active</span></dd>
+								<dd class="mb-1">
+									@if($product->status=='published')
+									<span class="label label-success">@lang('app.'.$product->status)</span>
+									@else
+									<span class="label label-warning">@lang('app.'.$product->status)</span>
+									@endif
+								</dd>
+							</div>
+						</dl>
+						<dl class="row mb-0">
+							<div class="col-sm-4 text-sm">
+								<dt>@lang('app.reference'):</dt>
+							</div>
+							<div class="col-sm-8 text-sm-left">
+								<dd class="mb-1">{{$product->reference}}</dd>
 							</div>
 						</dl>
 						<dl class="row mb-0">
