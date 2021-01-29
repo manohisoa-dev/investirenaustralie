@@ -365,6 +365,6 @@ class IndexController extends Controller
 
     public function login()
     {
-        return view('v2.auth.login');
+        return view('V2.auth.login');
     }
 }
