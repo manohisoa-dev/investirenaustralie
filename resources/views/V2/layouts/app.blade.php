@@ -71,25 +71,25 @@
                                 </li>
                                 @endif
                                 <li class="small m-10px-l"><i class="fas fa-globe"></i> @lang('app.language') : 
-                                    <!-- <div class="dropdown pull-right">
-                                      <a href="#" class="small font-weight-bold dropdown-toggle" type="button" data-toggle="dropdown">
-                                          @lang('app.form.login.not_registered')</a>
-                                          <ul class="dropdown-menu form-control-label" id="language-dropdown" onChange="location.href=''+this.options[this.selectedIndex].value;">
-                                            <li><a href="{{route('localization', ['locale'=>'fr'])}}">Fr</a></li>
-                                            <li><a href="{{route('localization', ['locale'=>'en'])}}">En</a></li>
+                                    <div class="dropdown pull-right">
+                                      <a href="#" class="font-weight-bold dropdown-toggle" type="button" data-toggle="dropdown">
+                                          <label class="m-10px-l"> {{ app()->getLocale() }}</label></a>
+                                          <ul class="dropdown-menu" id="language-dropdown" >
+                                            <li style="padding-left: 5px;"><a style="color:#555658;" href="{{route('localization', ['locale'=>'fr'])}}"><img src="{{ asset('images/ico/fr.png') }}"> Fr</a></li>
+                                            <li style="padding-left: 5px;"><a style="color:#555658;" href="{{route('localization', ['locale'=>'en'])}}"><img src="{{ asset('images/ico/en.png') }}"> En</a></li>
                                           </ul>
                                     </div>
- -->
-                                    <select name="currency" id="language-dropdown" onChange="location.href=''+this.options[this.selectedIndex].value;" class="white-bg-alt border-color-dark-gray border-radius-0 white-color">
+
+                                    <!-- <select name="currency" id="language-dropdown" onChange="location.href=''+this.options[this.selectedIndex].value;" class="white-bg-alt border-color-dark-gray border-radius-0 white-color">
                                         <option style="background-image:url({{ asset('images/ico/fr.png') }});" value="{{route('localization', ['locale'=>'fr'])}}" @if(App::isLocale('fr')) selected @endif > Fr</option>
                                         <option style="background-image:url({{ asset('images/ico/en.png') }});" value="{{route('localization', ['locale'=>'en'])}}" @if(App::isLocale('en')) selected @endif > Eng</option>
-                                    </select>
+                                    </select> -->
                                 </li>
                                 <li class="small m-10px-l">
                                     @php $socialConfig = \App\Models\Config::social(); @endphp
                                     @foreach(\App\Models\Config::socialRules() as $key => $value)
                                         @if($metaConfig = $socialConfig->get_meta($key))
-                                            <a href="{{$metaConfig->value}}"><i class="{{'fab fa-'.$key}}"></i></a>
+                                            <a href="{{$metaConfig->value}}" target="_blank"><i class="{{'fab fa-'.$key}}"></i></a>
                                         @endif
                                     @endforeach
                                 </li>
@@ -174,7 +174,7 @@
         <div class="footer-top">
             <div class="container">
                 <div class="row">
-                    <div class="col-12 col-md-4 col-lg-4 m-15px-tb">
+                    <div class="col-12 col-md-4 col-lg-3 m-15px-tb">
                         <div class="m-10px-b">
                             <a class="footer-logo" href="{{route('home')}}">
                                 <img src="{{ asset('images/logo.png') }}" title="Logo IEA" alt="Logo IEA">
@@ -187,18 +187,15 @@
                             {{ Illuminate\Support\Str::upper(trans('app.rapid_link')) }}
                         </h6>
                         <ul class="list-unstyled links-white footer-link-1">
-                        <li><a href="{{route('v2.home')}}">@lang('app.home')</a></li>
-                        <li><a href="{{route('v2.shop.index')}}">@lang('app.immobilier')</a></li>
-                        <li><a href="{{route('v2.shop.index')}}">@lang('app.business')</a></li>
-                        <li><a href="{{route('v2.services')}}">@lang('app.services')</a></li>
-                        <li><a href="{{route('v2.blog.all')}}">@lang('app.blog')</a></li>
-                        <li><a href="{{route('v2.contact')}}">@lang('app.contact')</a></li>
-                        @if(Auth::check())
-                        <li><a href="{{route('profile')}}">@lang('app.account')</a></li>
-                        @endif
+                            <li><a href="{{route('v2.home')}}">@lang('app.home')</a></li>
+                            <li><a href="{{route('v2.shop.index')}}">@lang('app.immobilier')</a></li>
+                            <li><a href="{{route('v2.shop.index')}}">@lang('app.business')</a></li>
+                            <li><a href="{{route('v2.services')}}">@lang('app.services')</a></li>
+                            <li><a href="{{route('v2.blog.all')}}">@lang('app.blog')</a></li>
+                            <li><a href="{{route('v2.contact')}}">@lang('app.contact')</a></li>
                         </ul>
                     </div>
-                    <div class="col-6 col-md-4 col-lg-2 m-35px-tb">
+                    <div class="col-6 col-md-4 col-lg-2 m-35px-tb mr-4">
                         <h6 class="white-color">
                             
                         </h6>
@@ -207,21 +204,24 @@
                             <li><a href="{{route('v2.confidentialities')}}">@lang('app.confidential')</a></li>
                             <li><a href="{{route('v2.help')}}">@lang('app.user_guide')</a></li>
                             <li><a href="{{route('v2.publicities')}}">@lang('app.pubs')</a></li>
+                            @if(Auth::check())
+                                <li><a href="{{route('profile')}}">@lang('app.account')</a></li>
+                            @endif
                         </ul>
                     </div>
-                    <div class="col-lg-4 col-sm-6 m-15px-tb d-none d-md-block">
+                    <div class="col-lg-4 col-sm-6 m-15px-tb d-none d-md-block ml-5">
                         <h6 class="white-color">
                             {{ Illuminate\Support\Str::upper(trans('app.txt.information')) }}
                         </h6>
                         <address>
                             <p class="white-color-light m-5px-b">301 The Greenhouse London,<br> E2 8DY UK</p>
-                            <p class="m-5px-b"><a class="theme2nd-color border-bottom-1 border-color-theme2nd" href="mailto:support@domain.com">info@admin.com</a></p>
-                            <p class="m-5px-b"><a class="theme2nd-color border-bottom-1 border-color-theme2nd" href="tel:820-885-3321">+61 33 333 33</a></p>
+                            <p class="m-5px-b"><a class="theme2nd-color border-color-theme2nd" href="mailto:support@domain.com">info@admin.com</a></p>
+                            <p class="m-5px-b"><a class="theme2nd-color border-color-theme2nd" href="tel:820-885-3321">+61 33 333 33</a></p>
                         </address>
                         <div class="social-icon si-30 theme2nd nav">
                             @foreach(\App\Models\Config::socialRules() as $key => $value)
                                 @if($metaConfig = $socialConfig->get_meta($key))
-                                <a href="{{$metaConfig->value}}"><i class="fab fa-{{$key}}"></i></a>
+                                <a href="{{$metaConfig->value}}" target="_blank"><i class="fab fa-{{$key}}"></i></a>
                                 @endif
                             @endforeach
                         </div>

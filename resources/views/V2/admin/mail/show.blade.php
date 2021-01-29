@@ -43,7 +43,7 @@
                         <h5>{{$mail->subject}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Content</h4>
+                        <h4>Contenu</h4>
                         <h5>{{$mail->content}}</h5>
                     </li>
                                         <li class="list-group-item">
@@ -56,14 +56,14 @@
                     </li>
                                         <li class="list-group-item">
                         <h4>Sender Id</h4>
-                        <h5>{{$mail->sender_id}}</h5>
+                        <h5>{{$mail->sender->name}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Created At</h4>
+                        <h4>Créer le</h4>
                         <h5>{{$mail->created_at ? $mail->created_at->diffForHumans() : ''}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Updated At</h4>
+                        <h4>Mise à jour le</h4>
                         <h5>{{$mail->updated_at ? $mail->updated_at->diffForHumans() : ''}}</h5>
                     </li>
                                     </ul>

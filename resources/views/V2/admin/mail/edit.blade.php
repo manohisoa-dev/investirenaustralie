@@ -38,7 +38,7 @@
 
                     {{ method_field("PUT") }}
                                                                                                 
-                            {!! \Nvd\Crud\Form::textarea( 'subject' )->model($mail)->show() !!}
+                            {!! \Nvd\Crud\Form::input( 'subject' )->model($mail)->show() !!}
                                                                         
                             {!! \Nvd\Crud\Form::textarea( 'content' )->model($mail)->show() !!}
                                                                         
@@ -55,4 +55,14 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('custom-script')
+    <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            CKEDITOR.replace( 'content' );
+        }) ;
+    </script>
 @endsection

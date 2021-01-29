@@ -29,7 +29,7 @@
                                 <option value="view_count" {{$orderBy=='view_count'?'selected':''}}>@lang('app.most_view')</option>
                             </select>
                         </div>
-                        <div  class="pull-left">
+                        <div  class="pull-left ml-1">
                             <label for="order"> @lang('app.form.order'):   </label>  
                             <select name="order" id="order" onchange="document.getElementById('filter-form').submit();"> 
                                 <option value="asc" {{$order=='asc'?'selected':''}}>@lang('app.form.asc')</option> 
@@ -37,7 +37,7 @@
                             </select>
                         </div>
                         <div  class="pull-right">
-                            <p class="layout-view"> @lang('app.form.vue'):<i class="fa fa-th-large selected" data-layout="6"></i> <i class="fa fa-list-ul" data-layout="12"></i> </p> 
+                            <p class="layout-view"> @lang('app.form.vue'): <i class="fa fa-th-large selected" data-layout="6"></i> <i class="fa fa-list-ul" data-layout="12"></i> </p>
                         </div>
                     </form>
                 </div>           
@@ -68,8 +68,4 @@
 
 @endsection
 
-@section('script')
-
-</script>
-@endsection
 
