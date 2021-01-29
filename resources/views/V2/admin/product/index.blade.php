@@ -38,7 +38,16 @@
                 <table class="table table-striped grid-view-tbl">
                     <thead>
                         <tr class="header-row">
+							{!!\Nvd\Crud\Html::sortableTh('id','V2.admin.product.index','Id')!!} 
+							{!!\Nvd\Crud\Html::sortableTh('image_id','V2.admin.product.index','Image')!!}
+							{!!\Nvd\Crud\Html::sortableTh('title','V2.admin.product.index','Titre')!!}
+							{!!\Nvd\Crud\Html::sortableTh('price','V2.admin.product.index','Prix')!!}   
+							{!!\Nvd\Crud\Html::sortableTh('created_at','V2.admin.product.index','Date')!!}  
+							{!!\Nvd\Crud\Html::sortableTh('status','V2.admin.product.index','Status')!!}
+							{!!\Nvd\Crud\Html::sortableTh('seller_id','V2.admin.product.index','Vendeur')!!}
+							{!!\Nvd\Crud\Html::sortableTh('author_id','V2.admin.product.index','Auteur')!!}
                             <th><a href="javascript:void(0)">Actions</a></th>
+							
                         </tr>
                         <tr class="search-row">
                             <form class="search-form">
