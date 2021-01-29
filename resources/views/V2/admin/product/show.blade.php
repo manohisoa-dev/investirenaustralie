@@ -39,7 +39,12 @@
             </div>
             <div class="ibox-content">
 				<div class="row">
-                
+                	<div class="col-md-6">
+						<img src="" class="img-responsive" style="width:100%" />
+					</div>
+					<div class="col-md-6">
+					
+					</div>
 				</div>       
 			</div>
         </div>
