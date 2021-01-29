@@ -17,7 +17,7 @@
             <a class="body-color font-w-500" href="#"><i class="fa fa-bathtub"></i> @lang('app.num.bath', ['num'=>$item->bathrooms])</a>
             <a class="body-color font-w-500" href="#"><i class="fa fa-cab"></i> {{$item->garage_spaces?__('app.yes'):__('app.no')}}</a>
         </div>
-        <button type="button" class="m-btn m-btn-theme2nd font-w-500 ml-auto">{{$item->currency}} {{$item->price}}</button>
+        <button type="button" class="m-btn m-btn-theme2nd font-w-500 ml-auto">{{$item->currency}} {{number_format($item->price,0,"."," ")}}</button>
     </div>
 </div>
 

@@ -32,6 +32,9 @@
 			<div class="ibox-title">
 				<h5>Products</h5>
 			</div>
+
+
+
 			<div class="ibox-content">
                 <table class="table table-striped grid-view-tbl">
                 <thead>

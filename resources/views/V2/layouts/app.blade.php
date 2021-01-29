@@ -24,6 +24,7 @@
 <link href="{{ asset('static/plugin/magnific/magnific-popup.css') }}" rel="stylesheet">
 <!-- theme css -->
 <link href="{{ asset('static/style/master.css') }}" rel="stylesheet">
+<link href="{{ asset('static/style/app.css') }}" rel="stylesheet">
 <!-- Fin Mombo -->
 
 @yield('style')
@@ -52,12 +53,12 @@
                             </ul>
                         </div>
                         <div class="col-md-7 d-none d-md-block">
-                            <ul class="nav justify-content-end links-white">
+                            <ul class="nav justify-content-end links-white dropdown-dark-header">
                                 @if(!Auth::check())
                                 <li class="small m-10px-l"><i class="fas fa-mouse-pointer"></i> <a href="{{route('v2.login')}}">@lang('app.connexion')</a> 
                                 </li>
                                 <li class="small m-10px-l"><i class="fas fa-sign-in-alt"></i> @lang('app.sinscrire') : 
-                                    <select id="currency-dropdown" onChange="location.href=''+this.options[this.selectedIndex].value;">
+                                    <select id="currency-dropdown" onChange="location.href=''+this.options[this.selectedIndex].value;" class="white-bg-alt border-color-dark-gray border-radius-0 white-color">
                                         <option value="#" selected="true" disabled="disabled">@lang('app.as')</option>
                                         <option value="{{route('v2.register', ['role'=>'member'])}}">@lang('app.member')</option>
                                         <option value="{{route('v2.register', ['role'=>'seller'])}}">@lang('app.seller')</option>
@@ -70,9 +71,17 @@
                                 </li>
                                 @endif
                                 <li class="small m-10px-l"><i class="fas fa-globe"></i> @lang('app.language') : 
-                                    <select name="currency" id="language-dropdown" onChange="location.href=''+this.options[this.selectedIndex].value;">
-                                        <option value="{{route('localization', ['locale'=>'fr'])}}" @if(App::isLocale('fr')) selected @endif>Fr</option>
-                                        <option value="{{route('localization', ['locale'=>'en'])}}" @if(App::isLocale('en')) selected @endif>Eng</option>
+                                    <!-- <li class="mm-in px-dropdown">
+                                        <a href="#home">@lang('app.business')</a>
+                                        <i class="fa fa-angle-down px-nav-toggle"></i>
+                                        <ul class="px-dropdown-menu mm-dorp-in">
+                                            <li><a href="{{route('v2.shop.index', \App\Models\Category::find(3))}}">@lang('app.industrial')</a></li>
+                                            <li><a href="{{route('v2.shop.index', \App\Models\Category::find(4))}}">@lang('app.commercial')</a></li>
+                                        </ul>
+                                    </li> -->
+                                    <select name="currency" id="language-dropdown" onChange="location.href=''+this.options[this.selectedIndex].value;" class="white-bg-alt border-color-dark-gray border-radius-0 white-color">
+                                        <option style="background-image:url({{ asset('images/ico/fr.png') }});" value="{{route('localization', ['locale'=>'fr'])}}" @if(App::isLocale('fr')) selected @endif > Fr</option>
+                                        <option style="background-image:url({{ asset('images/ico/en.png') }});" value="{{route('localization', ['locale'=>'en'])}}" @if(App::isLocale('en')) selected @endif > Eng</option>
                                     </select>
                                 </li>
                                 <li class="small m-10px-l">
@@ -206,6 +215,44 @@
                             <li><a href="{{route('v2.help')}}">@lang('app.user_guide')</a></li>
                             <li><a href="{{route('v2.publicities')}}">@lang('app.pubs')</a></li>
                         </ul>
+                    </div>
+                    <div class="col-12 col-lg-4 m-15px-tb">
+                        <div class="white-bg-alt p-25px box-shadow border-radius-0">
+                            <h5 class="white-color font-w-600 m-20px-b">
+                                @lang('app.txt.contact')
+                            </h5>
+                            <form class="rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" action="{{route('contact')}}" id="commentform">
+
+                                {{ csrf_field() }}
+                                 
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="white-color font-w-500">Email</label>
+                                            <input id="email" type="email" name="email" placeholder="Votre email *" required="required" data-constraints="@Required" class="form-control border-radius-0">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="white-color font-w-500">Sujet</label>
+                                            <input id="subject" type="text" name="subject" placeholder="Sujet *" data-constraints="@Required" class="form-control border-radius-0" required="required">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="white-color font-w-500">Comment</label>
+                                            <textarea class="form-control border-radius-0" id="content" name="content" rows="3" placeholder="Votre message *" data-constraints="@Required" required="required"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 p-10px-t">
+                                        <button class="m-btn m-btn-t-white w-100 m-btn-radius-0 m-10px-t" type="submit" name="send">@lang('app.btn.send')</button>
+                                        <div class="snackbars" id="form-output-global"></div>
+                                    </div>
+                                    <div id="error-container"></div>
+                                    <div id="message-container"></div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
