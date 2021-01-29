@@ -42,7 +42,7 @@ class StateController extends Controller
 
         # notification
         Notify::success('State a été créer avec succès');
-        return redirect(route('v2.admin.state.index'));
+        return redirect(route('V2.admin.state.index'));
     }
 
     /**
@@ -89,7 +89,7 @@ class StateController extends Controller
 
         # notification
         Notify::success('State a été mise à jour avec succès');
-        return redirect(route('v2.admin.state.index'));
+        return redirect(route('V2.admin.state.index'));
     }
 
     /**
@@ -103,7 +103,7 @@ class StateController extends Controller
 
         # notification
         Notify::success('State a été supprimer avec succès');
-        return redirect(route('v2.admin.state.index'));
+        return redirect(route('V2.admin.state.index'));
     }
 
     protected function view($view, $data = [])

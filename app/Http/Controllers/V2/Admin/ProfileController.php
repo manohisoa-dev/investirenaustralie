@@ -11,8 +11,6 @@ use App\Models\Cart;
 use App\Models\Image;
 use App\Models\Localisation;
 
-use App\Models\Country;
-use App\Models\State;
 use App\Http\Controllers\Controller;
 use Jleon\LaravelPnotify\Notify;
 
@@ -43,8 +41,6 @@ class ProfileController extends Controller {
         $view->with('title', __('app.profile'))
         ->with('item', Auth::user())
         ->with('location',Auth::user()->location)
-        ->with('countries', Country::all())
-        ->with('states', State::all())
         ->with('breadcrumbs', __('app.profile'));
     }
 
@@ -173,8 +169,8 @@ class ProfileController extends Controller {
         }
         catch (\Exception $exception) {
             logger()->error($exception);
-            //Notify::success('Unable to edit your profile');
-            return back()->with('info', 'Unable to edit your profile.');
+            Notify::error('Unable to edit your profile');
+            return back();
         }
 
         // Success
@@ -204,7 +200,8 @@ class ProfileController extends Controller {
         }
 
         // Success
-        return back()->with('success', "Votre mot de passe a été bien modifié.");
+        Notify::success('Votre mot de passe a été bien modifié.');
+        return back();
     }
 
     /**
@@ -233,7 +230,8 @@ class ProfileController extends Controller {
             $location->fill($datas);
 
             // Success
-            return back()->with('success', "Votre location a été bien modifiée.");
+            Notify::success('Votre location a été bien modifiée.');
+            return back();
         } else
             if ($location = Localisation::create($datas)) {
                 $user->location_id = $location->id > 0 ? $location->id : 0;
@@ -242,11 +240,13 @@ class ProfileController extends Controller {
             $user->save();
         }
         catch (\Exception $e) {
-            return back()->with('error', $e->getMessage());
+            Notify::error($e->getMessage());
+            return back();
         }
 
         // Success
-        return back()->with('success', "Votre location a été bien ajoutée.");
+        Notify::success('Votre location a été bien ajoutée.');
+        return back();
     }
 
 }

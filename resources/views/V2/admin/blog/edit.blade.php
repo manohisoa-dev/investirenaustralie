@@ -11,7 +11,7 @@
                 <a href="#">Blogs</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.admin.blog.index') }}">Listes</a>
+                <a href="{{ route('V2.admin.blog.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Edition</strong>
@@ -32,7 +32,7 @@
                 <h5>Mise à jour Blog : {{$blog->slug}}</h5>
             </div>
             <div class="ibox-content">
-                <form action="{{ route('v2.admin.blog.index')}}/{{$blog->id}}" method="post">
+                <form action="{{ route('V2.admin.blog.index')}}/{{$blog->id}}" method="post">
 
                     {{ csrf_field() }}
 

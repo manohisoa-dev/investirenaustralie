@@ -8,6 +8,9 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Jleon\LaravelPnotify\Notify;
 
+use App\Models\Image;
+use App\Models\User;
+
 class ProductController extends Controller
 {
     public $viewDir = "V2.admin.product";
@@ -43,7 +46,7 @@ class ProductController extends Controller
 
         # notification
         Notify::success('Product a été créer avec succès');
-        return redirect(route('v2.admin.product.index'));
+        return redirect(redirect(route('v2.adminproduct.index'));
     }
 
     /**
@@ -90,7 +93,7 @@ class ProductController extends Controller
 
         # notification
         Notify::success('Product a été mise à jour avec succès');
-        return redirect(route('v2.admin.product.index'));
+        return redirect(redirect(route('v2.adminproduct.index'));
     }
 
     /**
@@ -104,7 +107,7 @@ class ProductController extends Controller
 
         # notification
         Notify::success('Product a été supprimer avec succès');
-        return redirect(route('v2.admin.product.index'));
+        return redirect(redirect(route('v2.adminproduct.index'));
     }
 
     protected function view($view, $data = [])

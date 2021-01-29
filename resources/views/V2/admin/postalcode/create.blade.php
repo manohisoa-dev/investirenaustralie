@@ -1,17 +1,17 @@
 @extends('V2.admin.layouts.app')
 
-@section('title', 'Postalcodes - Ajout ')
+@section('title', 'Code postaux - Ajout ')
 
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Postalcodes</h2>
+        <h2>Code postaux</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Postalcodes</a>
+                <a href="#">Code postaux</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.admin.postalcode.index') }}">Listes</a>
+                <a href="{{ route('V2.admin.postalcode.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Ajout</strong>

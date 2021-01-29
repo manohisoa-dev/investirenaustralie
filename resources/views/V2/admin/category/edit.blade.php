@@ -11,7 +11,7 @@
                 <a href="#">Categories</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.admin.category.index') }}">Listes</a>
+                <a href="{{ route('V2.admin.category.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Edition</strong>
@@ -29,7 +29,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Mise à jour Category : {{$category->slug}}</h5>
+                <h5>Mise à jour catégorie: {{$category->slug}}</h5>
             </div>
             <div class="ibox-content">
                 <form action="{{ route('v2.category.index')}}/{{$category->id}}" method="post">

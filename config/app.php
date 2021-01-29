@@ -194,9 +194,8 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         
         Nvd\Crud\Providers\NvdCrudServiceProvider::class,
-        
-        Jleon\LaravelPnotify\NotifyServiceProvider::class,
 
+        Jleon\LaravelPnotify\NotifyServiceProvider::class,
     ],
 
     /*

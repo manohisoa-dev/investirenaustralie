@@ -42,7 +42,7 @@ class PubController extends Controller
 
         # notification
         Notify::success('Pub a été créer avec succès');
-        return redirect(route('v2.admin.pub.index'));
+        return redirect(redirect(route('v2.adminpub.index'));
     }
 
     /**
@@ -89,7 +89,7 @@ class PubController extends Controller
 
         # notification
         Notify::success('Pub a été mise à jour avec succès');
-        return redirect(route('v2.admin.pub.index'));
+        return redirect(redirect(route('v2.adminpub.index'));
     }
 
     /**
@@ -103,7 +103,7 @@ class PubController extends Controller
 
         # notification
         Notify::success('Pub a été supprimer avec succès');
-        return redirect(route('v2.admin.pub.index'));
+        return redirect(redirect(route('v2.adminpub.index'));
     }
 
     protected function view($view, $data = [])

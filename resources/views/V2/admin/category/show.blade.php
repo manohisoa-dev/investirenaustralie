@@ -11,7 +11,7 @@
                 <a href="#">Categories</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2.admin.category.index') }}">Listes</a>
+                <a href="{{ route('V2.admin.category.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Détail</strong>
@@ -30,7 +30,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Détail Category : {{$category->slug}}</h5>
+                <h5>Détail catégorie: {{$category->slug}}</h5>
             </div>
             <div class="ibox-content">
                 <ul class="list-group">
