@@ -40,10 +40,25 @@
             <div class="ibox-content">
 				<div class="row">
                 	<div class="col-md-6">
-						<img src="" class="img-responsive" style="width:100%" />
+						<img src="{{$product->imageUrl()}}" class="img-responsive" style="width:100%" />
 					</div>
 					<div class="col-md-6">
-					
+						<dl class="row mb-0">
+							<div class="col-sm-4 text-sm-right">
+								<dt>Statuts:</dt>
+							</div>
+							<div class="col-sm-8 text-sm-left">
+								<dd class="mb-1"><span class="label label-primary">Active</span></dd>
+							</div>
+						</dl>
+						<dl class="row mb-0">
+							<div class="col-sm-4 text-sm">
+								<dt>@lang('app.reference'):</dt>
+							</div>
+							<div class="col-sm-8 text-sm-left">
+								<dd class="mb-1">{{$product->reference}}</dd>
+							</div>
+						</dl>
 					</div>
 				</div>       
 			</div>
