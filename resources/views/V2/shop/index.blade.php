@@ -2,7 +2,7 @@
 
 @section('content')
 
-@component('V2.includes.breadcrumb2', ['cat'=>$category->slug])
+@component('V2.includes.breadcrumb2', $category->slug ? ['cat'=>$category->slug] : ['cat'=>'shop'])
     @lang('all_products')
 @endcomponent
 
@@ -14,16 +14,16 @@
                 <div class="col-md-12">
                     <div class="property-sorting">        
                         <form id="filter-form" method="get" action="">
-                            <div  class="pull-left">
+                            <div  class="pull-left form-group">
                                 <label for="orderBy"> @lang('app.form.filterBy'):   </label>  
-                                <select name="orderBy" id="orderBy" onchange="document.getElementById('filter-form').submit();"> 
+                                <select class="form-control" name="orderBy" id="orderBy" onchange="document.getElementById('filter-form').submit();"> 
                                     <option value="created_at" {{$orderBy=='created_at'?'selected':''}}>@lang('app.pub_date')</option>  
                                     <option value="view_count" {{$orderBy=='view_count'?'selected':''}}>@lang('app.most_view')</option>
                                 </select>
                             </div>
-                            <div  class="pull-left ml-1">
+                            <div  class="pull-left ml-4 form-group">
                                 <label for="order"> @lang('app.form.order'):   </label>  
-                                <select name="order" id="order" onchange="document.getElementById('filter-form').submit();"> 
+                                <select class="form-control" name="order" id="order" onchange="document.getElementById('filter-form').submit();"> 
                                     <option value="asc" {{$order=='asc'?'selected':''}}>@lang('app.form.asc')</option> 
                                     <option value="desc" {{$order=='desc'?'selected':''}}>@lang('app.form.desc')</option> 
                                 </select>
@@ -34,22 +34,25 @@
                         </form>
                     </div>           
                 </div>
-                <!-- Section -->
-                <section class="section">
-                    <div class="container">
-                        <div class="row">
-                            <div id="infinite-scroll" class="product-data"> 
-                                @include('V2.ajax.product.all',['items'=>$items])
-                            </div>
-                            <div class="row">
-                                <div class="ajax-load text-center" style="display:none">
-                                    <p><img src="{{asset('images/loader.gif')}}">@lang('app.load_more_product')</p>
-                                </div>  
+                <div class="col-md-12">
+                    <!-- Section -->
+                    <section class="section">
+                        <div class="container">
+                            <div class="row w-100" >
+                                <div id="infinite-scroll" class="product-data"> 
+                                    @include('V2.ajax.product.all',['items'=>$items])
+                                </div>
+                                <div class="row">
+                                    <div class="ajax-load text-center" style="display:none">
+                                        <p><img src="{{asset('images/loader.gif')}}">@lang('app.load_more_product')</p>
+                                    </div>  
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </section>
-                <!-- End Section -->
+                    </section>
+                    <!-- End Section -->
+                </div>
+                
             </div>
 
             <!-- Sidebar -->

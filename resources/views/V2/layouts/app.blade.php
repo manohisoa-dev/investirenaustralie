@@ -59,11 +59,11 @@
                                 </li>
                                 <li class="small m-10px-l"><i class="fas fa-sign-in-alt"></i> @lang('app.sinscrire') : 
                                     <select id="currency-dropdown" onChange="location.href=''+this.options[this.selectedIndex].value;" class="white-bg-alt border-color-dark-gray border-radius-0 white-color">
-                                        <option value="#" selected="true" disabled="disabled">@lang('app.as')</option>
-                                        <option value="{{route('v2.register', ['role'=>'member'])}}">@lang('app.member')</option>
-                                        <option value="{{route('v2.register', ['role'=>'seller'])}}">@lang('app.seller')</option>
-                                        <option value="{{route('v2.register', ['role'=>'afa'])}}">@lang('app.afa')</option>
-                                        <option value="{{route('v2.register', ['role'=>'apl'])}}">@lang('app.apl')</option>
+                                        <option class="dark-color" value="#" selected="true" disabled="disabled">@lang('app.as')</option>
+                                        <option class="dark-color" value="{{route('v2.register', ['role'=>'member'])}}">@lang('app.member')</option>
+                                        <option class="dark-color" value="{{route('v2.register', ['role'=>'seller'])}}">@lang('app.seller')</option>
+                                        <option class="dark-color" value="{{route('v2.register', ['role'=>'afa'])}}">@lang('app.afa')</option>
+                                        <option class="dark-color" value="{{route('v2.register', ['role'=>'apl'])}}">@lang('app.apl')</option>
                                     </select>
                                 </li>
                                 @else
@@ -73,10 +73,11 @@
                                 <li class="small m-10px-l"><i class="fas fa-globe"></i> @lang('app.language') : 
                                     <div class="dropdown pull-right">
                                       <a href="#" class="font-weight-bold dropdown-toggle" type="button" data-toggle="dropdown">
-                                          <label class="m-10px-l"> {{ app()->getLocale() }}</label></a>
-                                          <ul class="dropdown-menu" id="language-dropdown" >
-                                            <li style="padding-left: 5px;"><a style="color:#555658;" href="{{route('localization', ['locale'=>'fr'])}}"><img src="{{ asset('images/ico/fr.png') }}"> Fr</a></li>
-                                            <li style="padding-left: 5px;"><a style="color:#555658;" href="{{route('localization', ['locale'=>'en'])}}"><img src="{{ asset('images/ico/en.png') }}"> En</a></li>
+                                        @php $ico_fr= asset('images/ico/fr.png');$ico_en= asset('images/ico/en.png'); @endphp
+                                          <label class="m-10px-l"> {!! app()->getLocale()=='fr' ? '<img src="'.$ico_fr.'">' : '<img src="'.$ico_en.'">' !!}</label></a>
+                                          <ul class="dropdown-menu p-10px-l w-100" id="language-dropdown" >
+                                            <li><a style="color:#555658;" href="{{route('localization', ['locale'=>'fr'])}}"><img src="{{ asset('images/ico/fr.png') }}"> Fr <span class="dark-color">(@lang('app.txt.fr'))</span></a></li>
+                                            <li><a style="color:#555658;" href="{{route('localization', ['locale'=>'en'])}}"><img src="{{ asset('images/ico/en.png') }}"> En <span class="dark-color">(@lang('app.txt.en'))</span></a></li>
                                           </ul>
                                     </div>
 
@@ -153,8 +154,8 @@
                     </div>
                     <div class="extra-menu d-flex align-items-center">
                         <div class="d-none d-md-block h-btn m-35px-l">
-                            <form class="d-flex flex-row m-5px-b p-1 white-bg input-group" action="{{route('shop.index')}}" method="get">
-                                <input type="email" class="form-control border-radius-0 border-0" placeholder="@lang('app.input.recherche')" name="q" value="{{isset($q)?$q:''}}">
+                            <form class="d-flex flex-row m-5px-b p-1 white-bg input-group" action="{{route('v2.shop.index')}}" method="get">
+                                <input type="text" class="form-control border-radius-0 border-0" placeholder="@lang('app.input.recherche')" name="q" value="{{isset($q)?$q:''}}">
                                 <button class="m-btn m-btn-theme2nd flex-shrink-0" type="submit">@lang('app.input.recherche')</button>
                             </form>
                         </div>
@@ -176,7 +177,7 @@
                 <div class="row">
                     <div class="col-lg-3 col-sm-12 m-15px-tb mr-auto">
                         <div class="m-20px-b">
-                            <a class="footer-logo" href="{{route('home')}}">
+                            <a class="footer-logo" href="{{route('v2.home')}}">
                                 <img src="{{ asset('images/logo.png') }}" title="Logo IEA" alt="Logo IEA">
                             </a>
                         </div>

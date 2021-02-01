@@ -564,6 +564,8 @@ return [
     'txt.inscriptionseller'               =>"Inscription Vendeur",
     'txt.information'               =>"Information",
     'txt.aboutus'               =>"A propos de nous",
+    'txt.fr'               =>"Français",
+    'txt.en'               =>"Anglais",
     
     
     'childs' => 'Fils',
@@ -714,6 +716,7 @@ return [
     'txt.listes_des_agences_partenaires_locales' =>  'Listes des Agences partenaires Locales',
     'txt.products'      =>'Produits',
     'txt.product'      =>'produits',
+    'txt.shop'                  =>'Vente',
 
     'dernierprod'           =>'Derniers Produits',
     'dernierart'           =>'Derniers Articles',

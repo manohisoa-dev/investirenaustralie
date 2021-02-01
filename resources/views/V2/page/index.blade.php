@@ -34,7 +34,7 @@
                 <div class="container">
                     <div class="row align-items-center justify-content-between">
                         <div class="col-lg-6 text-center m-15px-tb">
-                            <img src="static/img/500x500.jpg" title="" alt="">
+                            <img src="{{ asset('images/map-of-australia.jpg') }}" title="" alt="">
                         </div>
                         <div class="col-lg-5 m-15px-tb">
                             <h2 class="h1 m-25px-b">{{$child->title}}</h2>
@@ -51,7 +51,7 @@
             <!--End Section -->
             @elseif($child->page_order == 2)
                 <!-- Section -->
-                <section id="feature" class="section bg-cover bg-no-repeat parallax" style="background-image: url(static/img/1600x900.jpg);">
+                <section id="feature" class="section bg-cover bg-no-repeat parallax opacity-10" style="background-image: url(images/fond-grenat.jpg);">
                     <div class="container">
                         <div class="row md-m-25px-b m-45px-b justify-content-center text-center">
                             <div class="col-lg-8">
@@ -102,7 +102,7 @@
                                 <div id="tab3_sec1" class="tab-pane fade in active show">
                                     <div class="row align-items-center p-25px-t lg-p-15px-t">
                                         <div class="col-lg-6 text-center">
-                                            <img src="static/img/500x500.jpg" title="" alt="">
+                                            <img src="{{ asset('images/step1.png') }}" title="" alt="">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="p-70px-l lg-p-0px-l lg-m-30px-t">
@@ -121,14 +121,14 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-6 order-lg-2 order-first text-center">
-                                            <img src="static/img/500x500.jpg" title="" alt="">
+                                            <img src="{{ asset('images/step2.png') }}" title="" alt="">
                                         </div>
                                     </div>
                                 </div>
                                 <div id="tab3_sec3" class="tab-pane fade in">
                                     <div class="row align-items-center p-25px-t lg-p-15px-t">
                                         <div class="col-lg-6 text-center">
-                                            <img src="static/img/500x500.jpg" title="" alt="">
+                                            <img src="{{ asset('images/step3.png') }}" title="" alt="">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="p-70px-l lg-p-0px-l lg-m-30px-t">
@@ -147,7 +147,7 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-6 order-lg-2 order-first text-center">
-                                            <img src="static/img/500x500.jpg" title="" alt="">
+                                            <img src="{{ asset('images/step4.png') }}" title="" alt="">
                                         </div>
                                     </div>
                                 </div>
