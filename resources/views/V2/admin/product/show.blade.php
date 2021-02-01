@@ -99,7 +99,54 @@
 						
 						<div class="widget-text-box" style="margin-top:5%">
                             <h4 class="media-heading">@lang('app.location_info')</h4>
-                            @include('admin.product.location', ['location'=>$product->location])
+                            <dl class="row mb-0">
+								<div class="col-sm-4 text-sm">
+									<dt>@lang('app.location.country'):</dt>
+								</div>
+								<div class="col-sm-8 text-sm-left">
+									<dd class="mb-1">{{$product->location->country}}</dd>
+								</div>
+							</dl>
+							<dl class="row mb-0">
+								<div class="col-sm-4 text-sm">
+									<dt>@lang('app.location.area_level_1'):</dt>
+								</div>
+								<div class="col-sm-8 text-sm-left">
+									<dd class="mb-1">{{$product->location?$product->location->area_level_1:''}}</dd>
+								</div>
+							</dl>
+							<dl class="row mb-0">
+								<div class="col-sm-4 text-sm">
+									<dt>@lang('app.location.area_level_2'):</dt>
+								</div>
+								<div class="col-sm-8 text-sm-left">
+									<dd class="mb-1">{{$product->location?$product->location->area_level_2:''}}</dd>
+								</div>
+							</dl>
+							<dl class="row mb-0">
+								<div class="col-sm-4 text-sm">
+									<dt>@lang('app.location.locality'):</dt>
+								</div>
+								<div class="col-sm-8 text-sm-left">
+									<dd class="mb-1">{{$product->location?$product->location->locality:''}}</dd>
+								</div>
+							</dl>
+							<dl class="row mb-0">
+								<div class="col-sm-4 text-sm">
+									<dt>@lang('app.location.route'):</dt>
+								</div>
+								<div class="col-sm-8 text-sm-left">
+									<dd class="mb-1">{{$product->location?$product->location->route:''}}</dd>
+								</div>
+							</dl>
+							<dl class="row mb-0">
+								<div class="col-sm-4 text-sm">
+									<dt>@lang('app.location.postalCode'):</dt>
+								</div>
+								<div class="col-sm-8 text-sm-left">
+									<dd class="mb-1">{{$product->location?$product->location->postalCode:''}}</dd>
+								</div>
+							</dl>
                         </div>
 					</div>
 				</div>       
