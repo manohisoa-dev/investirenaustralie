@@ -39,24 +39,10 @@
 		<span class="nav-label">Parties prenantes </span><span class="fa arrow"></span>
 	</a>
     <ul class="nav nav-second-level collapse">
-		<li class="{{ (request()->is('V2/admin/users')) ? 'active' : '' }}">
-			<a href="{{ route('V2.admin.user.list') }}">Tous</a>
+		<li class="">
+			<a href="#">Tous</a>
 		</li>
-        <li class="{{ (request()->is('V2/admin/users/admin')) ? 'active' : '' }}">
-			<a href="{{route('V2.admin.user.list', ['filter'=>'admin'])}}">Admin</a>
-		</li>
-        <li class="{{ (request()->is('V2/admin/users/seller')) ? 'active' : '' }}">
-			<a href="{{route('V2.admin.user.list', ['filter'=>'seller'])}}">Vendeurs</a>
-		</li>
-        <li class="{{ (request()->is('V2/admin/users/afa')) ? 'active' : '' }}">
-			<a href="{{route('V2.admin.user.list', ['filter'=>'afa'])}}">AFA</a>
-		</li>
-        <li class="{{ (request()->is('V2/admin/users/apl')) ? 'active' : '' }}">
-			<a href="{{route('V2.admin.user.list', ['filter'=>'apl'])}}">APL</a>
-		</li>
-        <li class="{{ (request()->is('V2/admin/users/member')) ? 'active' : '' }}">
-			<a href="{{route('V2.admin.user.list', ['filter'=>'member'])}}">Membres</a>
-		</li>
+        
     </ul>
 </li>
 <li class="{{Request::is('*/product/*') || Request::is('*/product') ? 'active' : ''}}">
