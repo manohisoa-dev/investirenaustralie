@@ -96,8 +96,8 @@
 							</div>
 						</dl>
 						@endif
-						
-						<div class="widget-text-box" style="margin-top:5%">
+						<div class="hr-line-dashed"></div>
+						<div>
                             <h4 class="media-heading">@lang('app.location_info')</h4>
                             <dl class="row mb-0">
 								<div class="col-sm-4 text-sm">
