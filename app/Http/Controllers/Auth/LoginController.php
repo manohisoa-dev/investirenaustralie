@@ -43,6 +43,7 @@ class LoginController extends Controller
         Auth::check();
         Session::put('locale',Auth::user()->language);
         Session::save();
+        $link="/";
         
         /*
         try{
@@ -68,7 +69,14 @@ class LoginController extends Controller
         if(Auth::user()->use_default_password==1){
             return '/profile/password';
         }
-        return '/'.Auth::user()->role;
+
+
+        if(session('paths') == "V2/login"){
+            $link="V2/";        
+        }  
+
+        return $link.Auth::user()->role;
+        
     }
     
     /**
@@ -158,6 +166,9 @@ class LoginController extends Controller
         // to login and redirect the user back to the login form. Of course, when this
         // user surpasses their maximum number of attempts they will get locked out.
         $this->incrementLoginAttempts($request);
+
+
+
 
         return $this->sendFailedLoginResponse($request);
     }

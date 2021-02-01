@@ -278,6 +278,9 @@ return [
     'txt.inscriptionseller'               =>"Registration as a Seller",
     'txt.information'               =>"Information",
     'txt.aboutus'               =>"About us",
+    'txt.fr'               =>"French",
+    'txt.en'               =>"English",
+    'txt.shop'      =>'Shop',
 
     'dernierprod'           =>'Last Products',
     'dernierart'           =>'Last Articles',
@@ -286,6 +289,7 @@ return [
     'recent.product'  => 'Recent products',
     'recent.category' => 'Recent categories',
     'txt.listes_des_agences_partenaires_locales' =>  'Lists of Local Partner Agencies',
+
 
     'num.area' => ':num m2',
     'num.bed' =>  ':num Chs',
