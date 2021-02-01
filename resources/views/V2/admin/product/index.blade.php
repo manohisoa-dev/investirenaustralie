@@ -63,10 +63,12 @@
                                 {{ $record->id }}
                             </td>
 							<td>
-								<img src="{{$record->imageUrl()}}" class="img-responsive" style="height:80px" />
+								<a href="{{route('V2.admin.product.index')}}/{{$record->id}}">
+									<img src="{{$record->imageUrl()}}" class="img-responsive" style="height:80px" />
+								</a>
                             </td>
 							<td>
-								<a href="#">
+								<a href="{{route('V2.admin.product.index')}}/{{$record->id}}">
                                 <span
                                     class="editable"
                                     data-type="text"
@@ -78,7 +80,8 @@
                                     {{ $record->title }}
                                 </span></a><br />
 								{{$record->excerpt()}}
-                                </span>                            </td>
+                                </span>                            
+							</td>
 							<td>
                                 <span
                                     class="editable"
