@@ -39,36 +39,22 @@
 		<span class="nav-label">Parties prenantes </span><span class="fa arrow"></span>
 	</a>
     <ul class="nav nav-second-level collapse">
-		<li class="{{ (request()->is('V2/admin/users')) ? 'active' : '' }}">
-			<a href="{{ route('V2.admin.user.list') }}">Tous</a>
+		<li class="">
+			<a href="#">Tous</a>
 		</li>
-        <li class="{{ (request()->is('V2/admin/users/admin')) ? 'active' : '' }}">
-			<a href="{{route('V2.admin.user.list', ['filter'=>'admin'])}}">Admin</a>
-		</li>
-        <li class="{{ (request()->is('V2/admin/users/seller')) ? 'active' : '' }}">
-			<a href="{{route('V2.admin.user.list', ['filter'=>'seller'])}}">Vendeurs</a>
-		</li>
-        <li class="{{ (request()->is('V2/admin/users/afa')) ? 'active' : '' }}">
-			<a href="{{route('V2.admin.user.list', ['filter'=>'afa'])}}">AFA</a>
-		</li>
-        <li class="{{ (request()->is('V2/admin/users/apl')) ? 'active' : '' }}">
-			<a href="{{route('V2.admin.user.list', ['filter'=>'apl'])}}">APL</a>
-		</li>
-        <li class="{{ (request()->is('V2/admin/users/member')) ? 'active' : '' }}">
-			<a href="{{route('V2.admin.user.list', ['filter'=>'member'])}}">Membres</a>
-		</li>
+        
     </ul>
 </li>
 <li class="{{Request::is('*/product/*') || Request::is('*/product') ? 'active' : ''}}">
     <a href="mailbox.html"><i class="fa fa-product-hunt" title="Produits"></i> <span class="nav-label">Produits </span><span class="label label-warning float-right">16/24</span></a>
     <ul class="nav nav-second-level collapse">
         <li><a href="{{route('V2.admin.product.index')}}">Liste des produits</a></li>
-        <li><a href="mail_detail.html">Produits en attente</a></li>
+        <!--<li><a href="mail_detail.html">Produits en attente</a></li>
         <li><a href="mail_compose.html">Produits publiés</a></li>
         <li><a href="email_template.html">Produits commandés</a></li>
         <li><a href="email_template.html">Produits vendus</a></li>
         <li><a href="email_template.html">Produits archivés</a></li>
-        <li><a href="email_template.html">Produits aux corbeilles</a></li>
+        <li><a href="email_template.html">Produits aux corbeilles</a></li>-->
     </ul>
 </li>
 <li>

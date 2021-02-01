@@ -23,10 +23,6 @@ Route::prefix('V2')->namespace('V2')->as('V2.')->group(function(){
         Route::post('update', 'ProfileController@updateLocation')->name('location.edit');
         Route::post('password', 'ProfileController@updatePassword')->name('password');
 
-        //user
-        Route::get('users/{filter?}', 'UserController@all')->name('user.list');
-        Route::get('show/{user}', 'UserController@show')->name('user.show');
-
         Route::resource('country','CountryController');
         Route::resource('state','StateController');
         Route::resource('category','CategoryController');
@@ -43,6 +39,7 @@ Route::prefix('V2')->namespace('V2')->as('V2.')->group(function(){
         Route::get('restore/{product}', 'ProductController@restore')->name('product.restore');
         Route::get('publish/{product}', 'ProductController@publish')->name('product.publish');
         Route::resource('blog','BlogController');
+        Route::resource('user','UserController');
     });
 
     // Config Controller

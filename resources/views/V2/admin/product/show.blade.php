@@ -28,7 +28,8 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
+        
+		<div class="ibox float-e-margins">
             <div class="ibox-title">
                 <h5>{{$product->title}}</h5>
 				<div class="ibox-tools">
@@ -65,18 +66,106 @@
 								<dd class="mb-1">{{$product->reference}}</dd>
 							</div>
 						</dl>
+						@if($product->category)
 						<dl class="row mb-0">
 							<div class="col-sm-4 text-sm">
-								<dt>@lang('app.reference'):</dt>
+								<dt>@lang('app.category'):</dt>
 							</div>
 							<div class="col-sm-8 text-sm-left">
-								<dd class="mb-1">{{$product->reference}}</dd>
+								<dd class="mb-1"><span class="label label-info">{{$product->category->title}}</span></dd>
 							</div>
 						</dl>
+						@endif
+						@if($product->seller)
+						<dl class="row mb-0">
+							<div class="col-sm-4 text-sm">
+								<dt>@lang('app.seller'):</dt>
+							</div>
+							<div class="col-sm-8 text-sm-left">
+								<dd class="mb-1">{{$product->seller->name}}</dd>
+							</div>
+						</dl>
+						@endif
+						@if($product->buyer)
+						<dl class="row mb-0">
+							<div class="col-sm-4 text-sm">
+								<dt>@lang('app.buyer'):</dt>
+							</div>
+							<div class="col-sm-8 text-sm-left">
+								<dd class="mb-1">{{$product->buyer->name}}</dd>
+							</div>
+						</dl>
+						@endif
+						<div class="hr-line-dashed"></div>
+						<div>
+                            <h4 class="media-heading">@lang('app.location_info')</h4>
+                            <dl class="row mb-0">
+								<div class="col-sm-4 text-sm">
+									<dt>@lang('app.location.country'):</dt>
+								</div>
+								<div class="col-sm-8 text-sm-left">
+									<dd class="mb-1">{{$product->location->country}}</dd>
+								</div>
+							</dl>
+							<dl class="row mb-0">
+								<div class="col-sm-4 text-sm">
+									<dt>@lang('app.location.area_level_1'):</dt>
+								</div>
+								<div class="col-sm-8 text-sm-left">
+									<dd class="mb-1">{{$product->location?$product->location->area_level_1:''}}</dd>
+								</div>
+							</dl>
+							<dl class="row mb-0">
+								<div class="col-sm-4 text-sm">
+									<dt>@lang('app.location.area_level_2'):</dt>
+								</div>
+								<div class="col-sm-8 text-sm-left">
+									<dd class="mb-1">{{$product->location?$product->location->area_level_2:''}}</dd>
+								</div>
+							</dl>
+							<dl class="row mb-0">
+								<div class="col-sm-4 text-sm">
+									<dt>@lang('app.location.locality'):</dt>
+								</div>
+								<div class="col-sm-8 text-sm-left">
+									<dd class="mb-1">{{$product->location?$product->location->locality:''}}</dd>
+								</div>
+							</dl>
+							<dl class="row mb-0">
+								<div class="col-sm-4 text-sm">
+									<dt>@lang('app.location.route'):</dt>
+								</div>
+								<div class="col-sm-8 text-sm-left">
+									<dd class="mb-1">{{$product->location?$product->location->route:''}}</dd>
+								</div>
+							</dl>
+							<dl class="row mb-0">
+								<div class="col-sm-4 text-sm">
+									<dt>@lang('app.location.postalCode'):</dt>
+								</div>
+								<div class="col-sm-8 text-sm-left">
+									<dd class="mb-1">{{$product->location?$product->location->postalCode:''}}</dd>
+								</div>
+							</dl>
+                        </div>
 					</div>
 				</div>       
 			</div>
         </div>
+		
+		<div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>@lang('app.description')</h5>
+				<div class="ibox-tools">
+					<a class="collapse-link">
+						<i class="fa fa-chevron-up"></i>
+					</a>
+				</div>
+            </div>
+            <div class="ibox-content">
+				<p>{!!$product->content!!}</p>
+			</div>
+		</div>
     </div>
 </div>
 
