@@ -40,6 +40,8 @@ Route::prefix('V2')->namespace('V2')->as('V2.')->group(function(){
         Route::get('publish/{product}', 'ProductController@publish')->name('product.publish');
         Route::resource('blog','BlogController');
         Route::resource('user','UserController');
+        Route::get('disable/{user}', 'UserController@disable')->name('user.disable');
+        Route::get('show/{user}', 'UserController@show')->name('user.show');
     });
 
     // Config Controller

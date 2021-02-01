@@ -275,7 +275,6 @@ class UserController extends Controller
         if($user->id==1){
             return back()->with('error',"Cette action ne peut pas etre réalisée.");
         }
-        
         $status = $user->status;
         
         $user->status = 'disabled';

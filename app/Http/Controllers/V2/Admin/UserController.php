@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\V2\Admin;
 
 use App\User;
@@ -8,14 +9,20 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Jleon\LaravelPnotify\Notify;
 
-class UserController extends Controller
-{
+use App\Mail;
+use App\Models\MailUser;
+use App\Country;
+use App\State;
+
+class UserController extends Controller {
     public $viewDir = "V2.admin.user";
 
-    public function index()
-    {
+    public function index() {
+        $this->middleware('auth');
+        $this->middleware('role:admin');
+        
         $records = User::findRequested();
-        return $this->view( "index", ['records' => $records] );
+        return $this->view("index", ['records' => $records]);
     }
 
     /**
@@ -23,8 +30,7 @@ class UserController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         return $this->view("create");
     }
 
@@ -34,8 +40,7 @@ class UserController extends Controller
      * @param    \Illuminate\Http\Request  $request
      * @return  \Illuminate\Http\Response
      */
-    public function store( Request $request )
-    {
+    public function store(Request $request) {
         $this->validate($request, User::validationRules());
 
         User::create($request->all());
@@ -50,9 +55,8 @@ class UserController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function show(Request $request, User $user)
-    {
-        return $this->view("show",['user' => $user]);
+    public function show(Request $request, User $user) {
+        return $this->view("show", ['user' => $user]);
     }
 
     /**
@@ -60,9 +64,8 @@ class UserController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function edit(Request $request, User $user)
-    {
-        return $this->view( "edit", ['user' => $user] );
+    public function edit(Request $request, User $user) {
+        return $this->view("edit", ['user' => $user]);
     }
 
     /**
@@ -71,14 +74,12 @@ class UserController extends Controller
      * @param    \Illuminate\Http\Request  $request
      * @return  \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
-    {
-        if( $request->isXmlHttpRequest() )
-        {
-            $data = [$request->name  => $request->value];
-            $validator = \Validator::make( $data, User::validationRules( $request->name ) );
-            if($validator->fails())
-                return response($validator->errors()->first( $request->name),403);
+    public function update(Request $request, User $user) {
+        if ($request->isXmlHttpRequest()) {
+            $data = [$request->name => $request->value];
+            $validator = \Validator::make($data, User::validationRules($request->name));
+            if ($validator->fails())
+                return response($validator->errors()->first($request->name), 403);
             $user->update($data);
             return "Record updated";
         }
@@ -97,8 +98,7 @@ class UserController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function destroy(Request $request, User $user)
-    {
+    public function destroy(Request $request, User $user) {
         $user->delete();
 
         # notification
@@ -106,9 +106,48 @@ class UserController extends Controller
         return redirect(route('V2.admin.user.index'));
     }
 
-    protected function view($view, $data = [])
-    {
-        return view($this->viewDir.".".$view, $data);
+    protected function view($view, $data = []) {
+        return view($this->viewDir . "." . $view, $data);
+    }
+
+    /**
+     * Disable User
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function disable(Request $request, User $user) {
+        
+        dd($request->all());
+        
+        
+        if ($user->id == 1) {
+            echo 'ato';
+            //return back()->with('error',"Cette action ne peut pas etre réalisée.");
+        }
+
+        $user->status = 'disabled';
+        $user->save();
+        Notify::error("L'utilsateur a été desactivé avec succés");
+        return redirect(route('V2.admin.user.index'));
+
+
+        /*if($user->id==1){
+        echo 'ato';
+        //return back()->with('error',"Cette action ne peut pas etre réalisée.");
+        }
+
+        $status = $user->status;
+        $user->status = 'disabled';
+        $user->save();
+        
+        try{
+        $user->notify(new AccountDisabled($user, $status));
+        }catch(\Exception $e){}
+        
+        Notify::error("L'utilsateur a été desactivé avec succés");
+        return redirect(route('V2.admin.user.index'));*/
     }
 
 }
