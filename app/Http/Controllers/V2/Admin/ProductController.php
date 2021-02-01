@@ -46,7 +46,7 @@ class ProductController extends Controller
 
         # notification
         Notify::success('Product a été créer avec succès');
-        return redirect(route('v2.adminproduct.index'));
+        return redirect(route('V2.adminproduct.index'));
     }
 
     /**
@@ -92,8 +92,8 @@ class ProductController extends Controller
         $product->update($request->all());
 
         # notification
-        Notify::success('Product a été mise à jour avec succès');
-        return redirect(route('v2.adminproduct.index'));
+        Notify::success('Produit a été mise à jour avec succès');
+        return redirect(route('V2.admin.product.index'));
     }
 
     /**
@@ -106,8 +106,70 @@ class ProductController extends Controller
         $product->delete();
 
         # notification
-        Notify::success('Product a été supprimer avec succès');
-        return redirect(route('v2.adminproduct.index'));
+        Notify::success('Produit a été supprimer avec succès');
+        return redirect(route('V2.admin.product.index'));
+    }
+    
+    public function archive(Request $request,Product  $product)
+    {
+        $product->status = 'archived';
+        $product->save();
+        Notify::success('Le produit a été archivé avec succés');
+        return redirect(route('V2.admin.product.index'));
+    }
+    
+    /**
+    * Trash product
+    *
+    * @param  \Illuminate\Http\Request  $request
+     * @param  App\Models\Product  $product
+    * @return \Illuminate\Http\Response
+    */
+    public function trash(Request $request,Product  $product)
+    {        
+        $product->status = 'trashed';
+        $product->save();
+        
+        Notify::success('Le produit a été ajouté au corbeille avec succés');
+        return redirect(route('V2.admin.product.index'));
+    }
+    
+    /**
+    * Restore trashed product
+    *
+    * @param  \Illuminate\Http\Request  $request
+     * @param  App\Models\Product  $product
+    * @return \Illuminate\Http\Response
+    */
+    public function restore(Request $request,Product  $product)
+    {
+        $this->middleware('auth');
+        $this->middleware('role:admin');
+        
+        $product->status = 'pinged';
+        $product->save();
+        
+        Notify::success('Le produit a été restoré avec succés');
+        return redirect(route('V2.admin.product.index'));
+    }
+    
+    /**
+    * Publish product
+    *
+    * @param  \Illuminate\Http\Request  $request
+     * @param  App\Models\Product  $product
+    * @return \Illuminate\Http\Response
+    */
+    public function publish(Request $request,Product  $product)
+    {
+        $this->middleware('auth');
+        $this->middleware('role:admin');
+        
+        $product->status = 'published';
+        $product->save();
+        
+        Notify::success('Le produit a été publié avec succés');
+        return redirect(route('V2.admin.product.index'));
     }
 
     protected function view($view, $data = [])

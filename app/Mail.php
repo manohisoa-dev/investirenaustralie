@@ -55,5 +55,42 @@ class Mail extends Model {
         return $newRules;
     }
 
+    /**
+     * Excerpt
+     *
+     * @param int $length
+     * @return String
+     */
+    public function excerpt($length = 100)
+    {
+        return substr($this->content, 0, $length);
+    }
+
+    /**
+     * Get the sender associated with the mail.
+     */
+    public function sender()
+    {
+        return $this->belongsTo(User::class, 'sender_id', 'id');
+    }
+
+    /**
+     * Get the receiver associated with the mail.
+     */
+    public function receiver()
+    {
+        return $this->belongsTo(User::class, 'receiver_id', 'id');
+    }
+
+    /**
+     * An user can have many mails with mails_users pivot table
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\ManyToMany
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'mails_users', 'mail_id', 'user_id');
+    }
+
 }
 

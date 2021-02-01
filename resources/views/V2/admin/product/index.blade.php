@@ -134,7 +134,51 @@
                                     {{ $record->author->name }}
                                 </span>
                             </td>
-                            @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('V2.admin.product.index'), 'record' => $record ] )
+							<td class="actions-cell text-center" width="12%">
+								<form class="form-inline" action="{{route('V2.admin.product.index')}}/{{$record->id}}" method="POST">
+									<a href="{{route('V2.admin.product.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="Détail">
+										<i class="fa fa-eye"></i>
+									</a>&nbsp;&nbsp;
+									@if($record->status=='pinged' || $record->status=='archived')
+										<a href="{{route('V2.admin.product.publish', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.publish')">
+											<i class="fa fa-check"></i>
+										</a>&nbsp;&nbsp;
+										<a href="{{route('V2.admin.product.trash', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
+											<i class="fa fa-trash-o"></i>
+										</a>&nbsp;&nbsp;
+									@elseif($record->status=='trashed')
+										<a href="{{route('V2.admin.product.restore', $record->id)}}" class="btn btn-default btn-circle" title="Restore">
+											<i class="fa fa-window-restore"></i>
+										</a>&nbsp;&nbsp;
+									@endif
+									@if($record->status=='published')
+										<a href="{{route('V2.admin.product.archive', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.archive')">
+											<i class="fa fa-archive"></i>
+										</a>&nbsp;&nbsp;
+										<a href="{{route('V2.admin.product.trash', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
+											<i class="fa fa-trash-o"></i>
+										</a>&nbsp;&nbsp;
+									@endif
+									
+									{{ csrf_field() }}
+									{{ method_field('DELETE') }}
+									<button onclick="return confirm('Vous êtes sur?')"
+											type="submit" class="btn btn-default btn-circle" title="Suppression"><i class="fa fa-times text-danger"></i></button>
+									<?php /*?><a href="{{route('V2.admin.product.archive', $record->id)}}" class="btn btn-default btn-circle" title="Archiver">
+										<i class="fa fa-archive"></i>
+									</a>&nbsp;&nbsp;
+									<a href="{{route('V2.admin.product.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="Détail">
+										<i class="fa fa-eye"></i>
+									</a>&nbsp;&nbsp;								
+									<a href="{{route('V2.admin.product.index')}}/{{$record->id}}/edit" class="btn btn-default btn-circle" title="Modification">
+										<i class="fa fa-pencil-square-o"></i>
+									</a>&nbsp;&nbsp;									
+									{{ csrf_field() }}
+									{{ method_field('DELETE') }}
+									<button onclick="return confirm('Vous êtes sur?')"
+											type="submit" class="btn btn-default btn-circle" title="Suppression"><i class="fa fa-trash text-danger"></i></button><?php */?>
+								</form>
+							</td>
                         </tr>
                         @empty @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 40]) @endforelse
                     </tbody>

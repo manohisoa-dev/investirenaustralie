@@ -89,7 +89,7 @@
                                     @php $socialConfig = \App\Models\Config::social(); @endphp
                                     @foreach(\App\Models\Config::socialRules() as $key => $value)
                                         @if($metaConfig = $socialConfig->get_meta($key))
-                                            <a href="{{$metaConfig->value}}"><i class="{{'fab fa-'.$key}}"></i></a>
+                                            <a href="{{$metaConfig->value}}" target="_blank"><i class="{{'fab fa-'.$key}}"></i></a>
                                         @endif
                                     @endforeach
                                 </li>
@@ -174,7 +174,7 @@
         <div class="footer-top">
             <div class="container">
                 <div class="row">
-                    <div class="col-12 col-md-4 col-lg-4 m-15px-tb">
+                    <div class="col-12 col-md-4 col-lg-3 m-15px-tb">
                         <div class="m-10px-b">
                             <a class="footer-logo" href="{{route('home')}}">
                                 <img src="{{ asset('images/logo.png') }}" title="Logo IEA" alt="Logo IEA">
@@ -187,18 +187,15 @@
                             {{ Illuminate\Support\Str::upper(trans('app.rapid_link')) }}
                         </h6>
                         <ul class="list-unstyled links-white footer-link-1">
-                        <li><a href="{{route('v2.home')}}">@lang('app.home')</a></li>
-                        <li><a href="{{route('v2.shop.index')}}">@lang('app.immobilier')</a></li>
-                        <li><a href="{{route('v2.shop.index')}}">@lang('app.business')</a></li>
-                        <li><a href="{{route('v2.services')}}">@lang('app.services')</a></li>
-                        <li><a href="{{route('v2.blog.all')}}">@lang('app.blog')</a></li>
-                        <li><a href="{{route('v2.contact')}}">@lang('app.contact')</a></li>
-                        @if(Auth::check())
-                        <li><a href="{{route('profile')}}">@lang('app.account')</a></li>
-                        @endif
+                            <li><a href="{{route('v2.home')}}">@lang('app.home')</a></li>
+                            <li><a href="{{route('v2.shop.index')}}">@lang('app.immobilier')</a></li>
+                            <li><a href="{{route('v2.shop.index')}}">@lang('app.business')</a></li>
+                            <li><a href="{{route('v2.services')}}">@lang('app.services')</a></li>
+                            <li><a href="{{route('v2.blog.all')}}">@lang('app.blog')</a></li>
+                            <li><a href="{{route('v2.contact')}}">@lang('app.contact')</a></li>
                         </ul>
                     </div>
-                    <div class="col-6 col-md-4 col-lg-2 m-35px-tb">
+                    <div class="col-6 col-md-4 col-lg-2 m-35px-tb mr-4">
                         <h6 class="white-color">
                             
                         </h6>
@@ -207,21 +204,24 @@
                             <li><a href="{{route('v2.confidentialities')}}">@lang('app.confidential')</a></li>
                             <li><a href="{{route('v2.help')}}">@lang('app.user_guide')</a></li>
                             <li><a href="{{route('v2.publicities')}}">@lang('app.pubs')</a></li>
+                            @if(Auth::check())
+                                <li><a href="{{route('profile')}}">@lang('app.account')</a></li>
+                            @endif
                         </ul>
                     </div>
-                    <div class="col-lg-4 col-sm-6 m-15px-tb d-none d-md-block">
+                    <div class="col-lg-4 col-sm-6 m-15px-tb d-none d-md-block ml-5">
                         <h6 class="white-color">
                             {{ Illuminate\Support\Str::upper(trans('app.txt.information')) }}
                         </h6>
                         <address>
                             <p class="white-color-light m-5px-b">301 The Greenhouse London,<br> E2 8DY UK</p>
-                            <p class="m-5px-b"><a class="theme2nd-color border-bottom-1 border-color-theme2nd" href="mailto:support@domain.com">info@admin.com</a></p>
-                            <p class="m-5px-b"><a class="theme2nd-color border-bottom-1 border-color-theme2nd" href="tel:820-885-3321">+61 33 333 33</a></p>
+                            <p class="m-5px-b"><a class="theme2nd-color border-color-theme2nd" href="mailto:support@domain.com">info@admin.com</a></p>
+                            <p class="m-5px-b"><a class="theme2nd-color border-color-theme2nd" href="tel:820-885-3321">+61 33 333 33</a></p>
                         </address>
                         <div class="social-icon si-30 theme2nd nav">
                             @foreach(\App\Models\Config::socialRules() as $key => $value)
                                 @if($metaConfig = $socialConfig->get_meta($key))
-                                <a href="{{$metaConfig->value}}"><i class="fab fa-{{$key}}"></i></a>
+                                <a href="{{$metaConfig->value}}" target="_blank"><i class="fab fa-{{$key}}"></i></a>
                                 @endif
                             @endforeach
                         </div>

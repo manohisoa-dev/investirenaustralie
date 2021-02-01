@@ -38,6 +38,10 @@ Route::prefix('V2')->namespace('V2')->as('V2.')->group(function(){
         Route::resource('page','PageController');
         Route::resource('mail','MailController');
         Route::resource('product','ProductController');
+        Route::get('archive/{product}', 'ProductController@archive')->name('product.archive');
+        Route::get('trash/{product}', 'ProductController@trash')->name('product.trash');
+        Route::get('restore/{product}', 'ProductController@restore')->name('product.restore');
+        Route::get('publish/{product}', 'ProductController@publish')->name('product.publish');
         Route::resource('blog','BlogController');
     });
 

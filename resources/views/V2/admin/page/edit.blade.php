@@ -46,14 +46,33 @@
                                                                         
                             {!! \Nvd\Crud\Form::input('page_order','text')->model($page)->show() !!}
                                                                         
-                            {!! \Nvd\Crud\Form::input('is_pub','text')->model($page)->show() !!}
-                                                                        
-                            {!! \Nvd\Crud\Form::input('language','text')->model($page)->show() !!}
-                                                                        
-                            {!! \Nvd\Crud\Form::input('parent_id','text')->model($page)->show() !!}
+                            <div class="form-group">
+                                <label for="language">Est un pub</label>
+                                <select name="language" id="language" class="form-control">
+                                    <option value="1" {{$page->is_pub == '1' ? 'selected' : ''}}>Oui</option>
+                                    <option value="0" {{$page->is_pub == '0' ? 'selected' : ''}}>Non</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="language">Langue</label>
+                                <select name="language" id="language" class="form-control">
+                                    <option value="fr" {{$page->language == 'fr' ? 'selected' : ''}}>Fr</option>
+                                    <option value="en" {{$page->language == 'en' ? 'selected' : ''}}>En</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="parent_id">Parent</label>
+                                <select name="parent_id" id="parent_id" class="form-control">
+                                    @foreach(\App\Page::all() as $item)
+                                        <option value="{{$item->id}}" {{$page->parent_id == $item->id ? 'selected' : ''}}>{{$item->title}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                                                                         
                             {!! \Nvd\Crud\Form::input('author_id','text')->model($page)->show() !!}
-                                                                                                                                                
+
                     <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Enregistrer</button>
 
                 </form>
@@ -61,4 +80,14 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('custom-script')
+    <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            CKEDITOR.replace( 'content' );
+        }) ;
+    </script>
 @endsection
