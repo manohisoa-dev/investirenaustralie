@@ -35,6 +35,8 @@
                 <form class="form-validation form-padding" action="{{ route('V2.admin.page.store') }}" method="post">
 
                     {{ csrf_field() }}
+
+                    <input type="hidden" name="author_id" value="{{Auth::id()}}">
                                                         
                     {!! \Nvd\Crud\Form::input('title','text')->show() !!}
                                             
@@ -42,16 +44,33 @@
                                             
                     {!! \Nvd\Crud\Form::input('path','text')->show() !!}
                                             
-                    {!! \Nvd\Crud\Form::input('page_order','text')->show() !!}
+                    {!! \Nvd\Crud\Form::input('page_order','number')->show() !!}
                                             
-                    {!! \Nvd\Crud\Form::input('is_pub','text')->show() !!}
+                    <div class="form-group">
+                        <label for="language">Est un pub</label>
+                        <select name="language" id="language" class="form-control">
+                            <option value="1">Oui</option>
+                            <option value="0">Non</option>
+                        </select>
+                    </div>
                                             
-                    {!! \Nvd\Crud\Form::input('language','text')->show() !!}
+                    <div class="form-group">
+                        <label for="language">Langue</label>
+                        <select name="language" id="language" class="form-control">
+                            <option value="fr">Fr</option>
+                            <option value="en">En</option>
+                        </select>
+                    </div>
                                             
-                    {!! \Nvd\Crud\Form::input('parent_id','text')->show() !!}
+                    <div class="form-group">
+                        <label for="parent_id">Parent</label>
+                        <select name="parent_id" id="parent_id" class="form-control">
+                            @foreach(\App\Page::all() as $page)
+                                <option value="{{$page->id}}">{{$page->title}}</option>
+                            @endforeach
+                        </select>
+                    </div>
                                             
-                    {!! \Nvd\Crud\Form::input('author_id','text')->show() !!}
-                                                                                    
                     <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Créer</button>
 
                 </form>

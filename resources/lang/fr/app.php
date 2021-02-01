@@ -563,6 +563,7 @@ return [
     'txt.inscriptionapl'               =>"Inscription Agences Partenaires Locales",
     'txt.inscriptionseller'               =>"Inscription Vendeur",
     'txt.information'               =>"Information",
+    'txt.aboutus'               =>"A propos de nous",
     
     
     'childs' => 'Fils',

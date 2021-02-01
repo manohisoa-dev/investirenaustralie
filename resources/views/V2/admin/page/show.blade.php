@@ -44,7 +44,7 @@
                     </li>
                                         <li class="list-group-item">
                         <h4>Content</h4>
-                        <h5>{{$page->content}}</h5>
+                        <h5>{!! $page->content !!}</h5>
                     </li>
                                         <li class="list-group-item">
                         <h4>Path</h4>
@@ -64,11 +64,11 @@
                     </li>
                                         <li class="list-group-item">
                         <h4>Parent Id</h4>
-                        <h5>{{$page->parent_id}}</h5>
+                        <h5>{{$page->parent ? $page->parent->title : ''}}</h5>
                     </li>
                                         <li class="list-group-item">
                         <h4>Author Id</h4>
-                        <h5>{{$page->author_id}}</h5>
+                        <h5>{{$page->author ? $page->author->name : ''}}</h5>
                     </li>
                                         <li class="list-group-item">
                         <h4>Créer le</h4>

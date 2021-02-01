@@ -277,6 +277,7 @@ return [
     'txt.inscriptionapl'               =>"Registration as a Agences Partenaires Locales",
     'txt.inscriptionseller'               =>"Registration as a Seller",
     'txt.information'               =>"Information",
+    'txt.aboutus'               =>"About us",
 
     'dernierprod'           =>'Last Products',
     'dernierart'           =>'Last Articles',

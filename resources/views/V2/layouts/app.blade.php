@@ -174,15 +174,14 @@
         <div class="footer-top">
             <div class="container">
                 <div class="row">
-                    <div class="col-12 col-md-4 col-lg-3 m-15px-tb">
-                        <div class="m-10px-b">
+                    <div class="col-lg-3 col-sm-12 m-15px-tb mr-auto">
+                        <div class="m-20px-b">
                             <a class="footer-logo" href="{{route('home')}}">
                                 <img src="{{ asset('images/logo.png') }}" title="Logo IEA" alt="Logo IEA">
                             </a>
                         </div>
                     </div>
-
-                    <div class="col-6 col-md-4 col-lg-2 m-15px-tb">
+                    <div class="col-lg-3 col-sm-6 m-15px-tb">
                         <h6 class="white-color">
                             {{ Illuminate\Support\Str::upper(trans('app.rapid_link')) }}
                         </h6>
@@ -195,9 +194,9 @@
                             <li><a href="{{route('v2.contact')}}">@lang('app.contact')</a></li>
                         </ul>
                     </div>
-                    <div class="col-6 col-md-4 col-lg-2 m-35px-tb mr-4">
+                    <div class="col-lg-3 col-sm-6 m-15px-tb">
                         <h6 class="white-color">
-                            
+                            {{ Illuminate\Support\Str::upper(trans('app.txt.aboutus')) }}
                         </h6>
                         <ul class="list-unstyled links-white footer-link-1">
                             <li><a href="{{route('v2.terms')}}">@lang('app.terms')</a></li>
@@ -209,7 +208,7 @@
                             @endif
                         </ul>
                     </div>
-                    <div class="col-lg-4 col-sm-6 m-15px-tb d-none d-md-block ml-5">
+                    <div class="col-lg-3 col-sm-6 m-15px-tb">
                         <h6 class="white-color">
                             {{ Illuminate\Support\Str::upper(trans('app.txt.information')) }}
                         </h6>
