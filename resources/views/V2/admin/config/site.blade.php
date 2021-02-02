@@ -33,7 +33,6 @@
                 </div>
                 <div class="ibox-content">
                     <div class="row">
-                        @include('includes.alerts')
                         <div class="col-sm-12 col-lg-12">
                             <form role="form" method="post" action="{{route('V2.admin.config.site.update')}}">
                                 <input type="hidden" name="_token" value="{{csrf_token()}}">

@@ -83,8 +83,8 @@ class ConfigController extends Controller
 
             // Check validation
             if ($validator->fails()) {
-                return back()->withErrors($validator)
-                    ->withInput();
+                Notify::error($validator);
+                return back()->withInput();
             }
 
             // Save Config into MetaData By Validator rules key
@@ -95,10 +95,11 @@ class ConfigController extends Controller
             }
 
             // Go back with notification
-            return back()->with('success','La configuration a été modifiée avec succés ! ');
+            Notify::success('La configuration a été modifiée avec succés ! ');
+            return back();
         }
 
-        return view('config.login',compact('item'))
+        return view('V2.admin.config.login',compact('item'))
             ->with('breadcrumbs', __('app.config'));
     }
 
