@@ -168,7 +168,8 @@
 									{{ csrf_field() }}
 									{{ method_field('DELETE') }}
 									<button onclick="return confirm('Vous êtes sur?')"
-											type="submit" class="btn btn-default btn-circle" title="Suppression"><i class="fa fa-times text-danger"></i></button>
+											type="submit" class="btn btn-default btn-circle" title="Suppression"><i class="fa fa-times text-danger"></i>
+									</button>
 									<?php /*?><a href="{{route('V2.admin.product.archive', $record->id)}}" class="btn btn-default btn-circle" title="Archiver">
 										<i class="fa fa-archive"></i>
 									</a>&nbsp;&nbsp;

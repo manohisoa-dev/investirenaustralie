@@ -33,16 +33,15 @@
         <li><a href="graph_peity.html">Carts</a></li>
     </ul>
 </li>
-<li class="{{ @$bloc_mn == 'users' ? 'active' : '' }}">
+<li class="{{Request::is('*/user/*') || Request::is('*/user') ? 'active' : ''}}">
     <a href="#">
 		<i class="fa fa-users" title="Parties prenantes"></i> 
 		<span class="nav-label">Parties prenantes </span><span class="fa arrow"></span>
 	</a>
     <ul class="nav nav-second-level collapse">
 		<li class="">
-			<a href="#">Tous</a>
+			<a href="{{route('V2.admin.user.index')}}">Tous</a>
 		</li>
-        
     </ul>
 </li>
 <li class="{{Request::is('*/product/*') || Request::is('*/product') ? 'active' : ''}}">

@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use Jleon\LaravelPnotify\Notify;
 
 use App\Models\Image;
-use App\Models\User;
+use App\User;
 
 class ProductController extends Controller
 {
@@ -112,6 +112,7 @@ class ProductController extends Controller
     
     public function archive(Request $request,Product  $product)
     {
+        var_dump($product);die();
         $product->status = 'archived';
         $product->save();
         Notify::success('Le produit a été archivé avec succés');
