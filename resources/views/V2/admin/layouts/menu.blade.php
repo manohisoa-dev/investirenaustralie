@@ -146,7 +146,7 @@
         <li><a href="{{route('V2.admin.config.site')}}">Information du site</a></li>
         <li><a href="{{route('V2.admin.config.login')}}">Ecran de connexion</a></li>
         <li><a href="{{route('V2.admin.config.social')}}">Réseaux sociaux</a></li>
-        <li><a href="table_foo_table.html">Paiement</a></li>
+        <li><a href="{{route('V2.admin.config.payment')}}">Paiement</a></li>
 
     </ul>
 </li>

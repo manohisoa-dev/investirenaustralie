@@ -172,7 +172,7 @@ class ConfigController extends Controller
             return back();
         }
 
-        return view('config.payment',compact('item', 'keys'))
+        return view('V2.admin.config.payment',compact('item', 'keys'))
             ->with('breadcrumbs', __('app.config'));
     }
 
