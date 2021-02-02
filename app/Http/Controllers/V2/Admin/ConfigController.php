@@ -12,6 +12,7 @@ use App\Models\Config;
 
 use App\Notifications\NewMail;
 use App\Http\Controllers\Controller;
+use Jleon\LaravelPnotify\Notify;
 
 class ConfigController extends Controller
 {
@@ -44,8 +45,9 @@ class ConfigController extends Controller
 
             // Check validation
             if ($validator->fails()) {
-                return back()->withErrors($validator)
-                    ->withInput();
+                #notification
+                Notify::error($validator);
+                return back()->withErrors($validator)->withInput() ;
             }
 
             // Save Config into MetaData By Validator rules key
@@ -53,8 +55,9 @@ class ConfigController extends Controller
                 if($value = $request->input($key)) $item->update_meta($key, $value);
             }
 
-            // Go back with notification
-            return back()->with('success','La configuration a été modifiée avec succés ! ');
+            # notification
+            Notify::success('La configuration a été modifiée avec succés ! ');
+            return back() ;
         }
 
         return view('V2.admin.config.site',compact('item', 'keys'))
