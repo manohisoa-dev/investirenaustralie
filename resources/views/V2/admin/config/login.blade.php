@@ -1,6 +1,6 @@
 @extends('V2.admin.layouts.app')
 
-@section('title', 'Configuration site')
+@section('title', 'Configuration login')
 
 @section('breadcrumb')
     <div class="row wrapper border-bottom white-bg page-heading">
