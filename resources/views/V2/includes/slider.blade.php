@@ -65,15 +65,15 @@
 
 
                     <div class="form-group">
-                        <div class="slidecontainer">
-                        <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
-                        </div>
+                        <!-- Ranger Slider -->
+                        
                     </div>
 
 
                     <div class="form-group mar-r-20">
                         <label for="price-range">@lang('app.input.prix') ( Australia Dollar AUD ) :</label>
-                        <input type="text" class="span2" name="price" value="" data-slider-min="100000" data-slider-max="10000000" data-slider-step="100000" data-slider-value="[500000,5000000]" id="price-range1">
+                        <div class="pmd-range-slider" id="price-range1"></div>
+                        <input type="text" class="pmd-range-slider" name="price" value="" id="price-range">
                         <br>
                         <b class="pull-left color">100.000$</b>
                         <b class="pull-right color">10.000.000$</b>
@@ -195,56 +195,25 @@
     </script>
 
 
-    <style type="text/css">
-        .slidecontainer {
-          width: 100%; /* Width of the outside container */
-        }
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/8.5.1/nouislider.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/range-slider.css') }}">
 
-        /* The slider itself */
-        .slider {
-          -webkit-appearance: none;  /* Override default CSS styles */
-          appearance: none;
-          width: 100%; /* Full-width */
-          height: 25px; /* Specified height */
-          background: #d3d3d3; /* Grey background */
-          outline: none; /* Remove outline */
-          opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-          -webkit-transition: .2s; /* 0.2 seconds transition on hover */
-          transition: opacity .2s;
-        }
+    <!-- Slider js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.1.0/wNumb.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/8.5.1/nouislider.min.js"></script>
 
-        /* Mouse-over effects */
-        .slider:hover {
-          opacity: 1; /* Fully shown on mouse-over */
-        }
+    <script>
 
-        /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
-        .slider::-webkit-slider-thumb {
-          -webkit-appearance: none; /* Override default look */
-          appearance: none;
-          width: 25px; /* Set a specific slider handle width */
-          height: 25px; /* Slider handle height */
-          background: #4CAF50; /* Green background */
-          cursor: pointer; /* Cursor on hover */
-        }
-
-        .slider::-moz-range-thumb {
-          width: 25px; /* Set a specific slider handle width */
-          height: 25px; /* Slider handle height */
-          background: #4CAF50; /* Green background */
-          cursor: pointer; /* Cursor on hover */
-        }
-    </style>
-
-    <script type="text/javascript">
-        var slider = document.getElementById("myRange");
-        var output = document.getElementById("demo");
-        output.innerHTML = slider.value; // Display the default slider value
-
-        // Update the current slider value (each time you drag the slider handle)
-        var val = slider.oninput = function() {
-          output.innerHTML = this.value;
-        }
-
+        // multiple range slider
+        var priceRange = document.getElementById('price-range1');
+        noUiSlider.create(priceRange, {
+            start: [30, 75],
+            connect: true,
+            tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
+            range: {
+                'min': 0,
+                'max': 100
+            }
+        }); 
     </script>
 @endpush
