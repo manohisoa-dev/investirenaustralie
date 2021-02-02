@@ -185,4 +185,31 @@ class LoginController extends Controller
 
         return $this->sendFailedLoginResponse($request);
     }
+
+
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+
+        $link="/";
+
+        if(session('paths') == "V2/login"){
+            $link= "/V2";
+            \Session::forget('paths');
+        }
+        
+
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        
+        return redirect($link);
+
+    }
 }

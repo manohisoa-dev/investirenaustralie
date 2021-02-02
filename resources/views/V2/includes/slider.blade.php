@@ -65,12 +65,9 @@
 
 
                     <div class="form-group">
-                      <h2>Bootstrap Slider with Tooltip</h2>
-                      <input id="ex1" data-slider-id='ex1Slider' type="text" 
-                             data-slider-min="0" 
-                             data-slider-max="20" 
-                             data-slider-step="1" 
-                             data-slider-value="14"/>
+                        <div class="slidecontainer">
+                        <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+                        </div>
                     </div>
 
 
@@ -169,9 +166,7 @@
 <!-- End Section -->
 
 @push('script')
-<!-- bootstrap-slider js + css  -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/bootstrap-slider.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/css/bootstrap-slider.min.css" />
+
     <script type="text/javascript">
         $('#residentiel').on('show.bs.collapse', function () {
             $('#foncier').collapse('hide');
@@ -197,62 +192,59 @@
             $('#foncier').collapse('hide');
         });
 
-
-        $('#ex1').slider({
-          formatter: function(value) {
-            return value;
-          }
-        });
-
     </script>
 
 
     <style type="text/css">
-    
-  background: #fafafa;
-  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
-  height: 7px;
+        .slidecontainer {
+          width: 100%; /* Width of the outside container */
+        }
 
-}
-#ex1Slider {
-  width: 300px;
-}
+        /* The slider itself */
+        .slider {
+          -webkit-appearance: none;  /* Override default CSS styles */
+          appearance: none;
+          width: 100%; /* Full-width */
+          height: 25px; /* Specified height */
+          background: #d3d3d3; /* Grey background */
+          outline: none; /* Remove outline */
+          opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+          -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+          transition: opacity .2s;
+        }
 
-/* .tooltip - background of tooltip */
-#ex1Slider  .tooltip-inner {
-  background-color: #fafafa;
-  border-radius: 15px;
-  color: #ccc;
-  margin-left: -3.5px;
-  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
-  opacity: 1;
-}
+        /* Mouse-over effects */
+        .slider:hover {
+          opacity: 1; /* Fully shown on mouse-over */
+        }
 
-#ex1Slider .slider-handle {
-  background: #fafafa;
-  width: 16px;
-  height: 16px;
-  box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.3), 0px 0px 1px rgba(13, 13, 13, 0.3);
-  border: 1px solid rgba(0, 0, 0, 0);
-}
+        /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+        .slider::-webkit-slider-thumb {
+          -webkit-appearance: none; /* Override default look */
+          appearance: none;
+          width: 25px; /* Set a specific slider handle width */
+          height: 25px; /* Slider handle height */
+          background: #4CAF50; /* Green background */
+          cursor: pointer; /* Cursor on hover */
+        }
 
-/* This sets the color of the arrow that connects the tooltip to the handle */
-#ex1Slider .tooltip-arrow {
-  border-top-color: #fafafa;
-  margin-left: -7px;
-  display: none;
-}
-
-body {
-  background-color: #fff;
-}
-
-.form-group {
-  padding: 25px;
-}
-
-h2 {
-  padding: 15px 0px 30px 0px;
-}
+        .slider::-moz-range-thumb {
+          width: 25px; /* Set a specific slider handle width */
+          height: 25px; /* Slider handle height */
+          background: #4CAF50; /* Green background */
+          cursor: pointer; /* Cursor on hover */
+        }
     </style>
+
+    <script type="text/javascript">
+        var slider = document.getElementById("myRange");
+        var output = document.getElementById("demo");
+        output.innerHTML = slider.value; // Display the default slider value
+
+        // Update the current slider value (each time you drag the slider handle)
+        var val = slider.oninput = function() {
+          output.innerHTML = this.value;
+        }
+
+    </script>
 @endpush
