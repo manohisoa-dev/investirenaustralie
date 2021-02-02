@@ -6834,6 +6834,11 @@ mark {
   margin-right: 100px;
 }
 
+.m-150px-lr {
+  margin-left: 150px;
+  margin-right: 150px;
+}
+
 .m-100px-t {
   margin-top: 100px;
 }
