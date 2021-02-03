@@ -143,10 +143,10 @@
 <li class="{{Request::is('*/config/*') ? 'active' : ''}}">
     <a href="#"><i class="fa fa-wrench" title="Configurations"></i> <span class="nav-label">Configurations</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
-        <li><a href="{{route('V2.config.site')}}">Information du site</a></li>
-        <li><a href="table_data_tables.html">Ecran de connexion</a></li>
-        <li><a href="table_foo_table.html">Réseaux sociaux</a></li>
-        <li><a href="table_foo_table.html">Paiement</a></li>
+        <li><a href="{{route('V2.admin.config.site')}}">Information du site</a></li>
+        <li><a href="{{route('V2.admin.config.login')}}">Ecran de connexion</a></li>
+        <li><a href="{{route('V2.admin.config.social')}}">Réseaux sociaux</a></li>
+        <li><a href="{{route('V2.admin.config.payment')}}">Paiement</a></li>
 
     </ul>
 </li>

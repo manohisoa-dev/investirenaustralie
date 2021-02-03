@@ -12,6 +12,7 @@ use App\Models\Config;
 
 use App\Notifications\NewMail;
 use App\Http\Controllers\Controller;
+use Jleon\LaravelPnotify\Notify;
 
 class ConfigController extends Controller
 {
@@ -44,8 +45,9 @@ class ConfigController extends Controller
 
             // Check validation
             if ($validator->fails()) {
-                return back()->withErrors($validator)
-                    ->withInput();
+                #notification
+                Notify::error($validator);
+                return back()->withErrors($validator)->withInput() ;
             }
 
             // Save Config into MetaData By Validator rules key
@@ -53,8 +55,9 @@ class ConfigController extends Controller
                 if($value = $request->input($key)) $item->update_meta($key, $value);
             }
 
-            // Go back with notification
-            return back()->with('success','La configuration a été modifiée avec succés ! ');
+            # notification
+            Notify::success('La configuration a été modifiée avec succés ! ');
+            return back() ;
         }
 
         return view('V2.admin.config.site',compact('item', 'keys'))
@@ -80,8 +83,8 @@ class ConfigController extends Controller
 
             // Check validation
             if ($validator->fails()) {
-                return back()->withErrors($validator)
-                    ->withInput();
+                Notify::error($validator);
+                return back()->withInput();
             }
 
             // Save Config into MetaData By Validator rules key
@@ -92,10 +95,11 @@ class ConfigController extends Controller
             }
 
             // Go back with notification
-            return back()->with('success','La configuration a été modifiée avec succés ! ');
+            Notify::success('La configuration a été modifiée avec succés ! ');
+            return back();
         }
 
-        return view('config.login',compact('item'))
+        return view('V2.admin.config.login',compact('item'))
             ->with('breadcrumbs', __('app.config'));
     }
 
@@ -117,8 +121,8 @@ class ConfigController extends Controller
 
             // Check validation
             if ($validator->fails()) {
-                return back()->withErrors($validator)
-                    ->withInput();
+                Notify::error($validator);
+                return back()->withInput();
             }
 
             // Save Config into MetaData By Validator rules key
@@ -127,10 +131,11 @@ class ConfigController extends Controller
             }
 
             // Go back with notification
-            return back()->with('success','La configuration a été modifiée avec succés ! ');
+            Notify::success('La configuration a été modifiée avec succés ! ');
+            return back();
         }
 
-        return view('config.social',compact('item', 'keys', 'titles'))
+        return view('V2.admin.config.social',compact('item', 'keys', 'titles'))
             ->with('breadcrumbs', __('app.config'));
     }
 
@@ -152,8 +157,8 @@ class ConfigController extends Controller
 
             // Check validation
             if ($validator->fails()) {
-                return back()->withErrors($validator)
-                    ->withInput();
+                Notify::error($validator);
+                return back()->withInput();
             }
 
             // Save Config into MetaData By Validator rules key
@@ -163,10 +168,11 @@ class ConfigController extends Controller
             }
 
             // Go back with notification
-            return back()->with('success','La configuration a été modifiée avec succés ! ');
+            Notify::success('La configuration a été modifiée avec succés ! ');
+            return back();
         }
 
-        return view('config.payment',compact('item', 'keys'))
+        return view('V2.admin.config.payment',compact('item', 'keys'))
             ->with('breadcrumbs', __('app.config'));
     }
 
