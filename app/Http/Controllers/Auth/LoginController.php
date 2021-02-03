@@ -40,6 +40,7 @@ class LoginController extends Controller
      */
     protected function redirectTo()
     {
+
         Auth::check();
         Session::put('locale',Auth::user()->language);
         Session::save();
@@ -86,6 +87,9 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
+
+
+
         $latitude = option(\App\Models\Config::$APP_LATITUDE, -25.647467468105795);
         $longitude = option(\App\Models\Config::$APP_LONGITUDE, 146.89921517372136);
         
@@ -95,6 +99,14 @@ class LoginController extends Controller
         $address = \App\Models\Config::login()->get_meta_array('address', $locale);
         $contact = \App\Models\Config::login()->get_meta_array('contact', $locale);
         
+
+        $prev_url = url()->previous();
+        $vers = explode('/', $prev_url);
+
+        if(explode('/', $prev_url)[3] == "V2"){
+            return \Redirect::to('V2/login');            
+        }
+
         return view('auth.login')
             ->with('latitude', $latitude)
             ->with('longitude', $longitude)
@@ -102,6 +114,7 @@ class LoginController extends Controller
             ->with('content', $content)
             ->with('address', $address)
             ->with('contact', $contact);
+        
     }
     
     
@@ -171,5 +184,32 @@ class LoginController extends Controller
 
 
         return $this->sendFailedLoginResponse($request);
+    }
+
+
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+
+        $link="/";
+
+        if(session('paths') == "V2/login"){
+            $link= "/V2";
+            \Session::forget('paths');
+        }
+        
+
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        
+        return redirect($link);
+
     }
 }

@@ -42,19 +42,19 @@ Route::prefix('V2')->namespace('V2')->as('V2.')->group(function(){
         Route::resource('user','UserController');
         Route::get('desactiver/{user}', 'UserController@desactiver')->name('user.desactiver');
         Route::get('show/{user}', 'UserController@show')->name('user.show');
-    });
 
-    // Config Controller
-    Route::prefix('config')->group(function () {
-        Route::get('site', 'ConfigController@site')->name('config.site');
-        Route::post('site', 'ConfigController@site')->name('config.site.update');
-        Route::get('login', 'ConfigController@login')->name('config.login');
-        Route::post('login', 'ConfigController@login')->name('config.login.update');
-        Route::get('social', 'ConfigController@social')->name('config.social');
-        Route::post('social', 'ConfigController@social')->name('config.social.update');
-        Route::get('payment', 'ConfigController@payment')->name('config.payment');
-        Route::post('payment', 'ConfigController@payment')->name('config.payment.update');
-        Route::get('fontawesome', 'ConfigController@fontawesome')->name('config.fontawesome');
+        // Config Controller
+        Route::prefix('config')->as('config.')->group(function () {
+            Route::get('site', 'ConfigController@site')->name('site');
+            Route::post('site', 'ConfigController@site')->name('site.update');
+            Route::get('login', 'ConfigController@login')->name('login');
+            Route::post('login', 'ConfigController@login')->name('login.update');
+            Route::get('social', 'ConfigController@social')->name('social');
+            Route::post('social', 'ConfigController@social')->name('social.update');
+            Route::get('payment', 'ConfigController@payment')->name('payment');
+            Route::post('payment', 'ConfigController@payment')->name('payment.update');
+            Route::get('fontawesome', 'ConfigController@fontawesome')->name('fontawesome');
+        });
     });
 });
 

@@ -29,13 +29,12 @@
         <div class="col-lg-12">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h5>Basic form <small>Simple login form example</small></h5>
+                    <h5>@lang('app.info_site') <small>Mise à jour des informations</small></h5>
                 </div>
                 <div class="ibox-content">
                     <div class="row">
-                        @include('includes.alerts')
-                        <div class="col-sm-12 col-lg-12"><h3 class="m-t-none m-b">@lang('app.info_site')</h3>
-                            <form role="form" method="post" action="{{route('v2.config.site.update')}}">
+                        <div class="col-sm-12 col-lg-12">
+                            <form role="form" method="post" action="{{route('V2.admin.config.site.update')}}">
                                 <input type="hidden" name="_token" value="{{csrf_token()}}">
 
                                 <div class="row">

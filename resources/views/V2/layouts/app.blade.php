@@ -171,14 +171,14 @@
     
     @yield('content')
 
-    <footer class="dark-bg footer border-top-1 border-color-dark-gray">
+    <footer class="garnet-bg footer border-top-1 border-color-dark-gray">
         <div class="footer-top">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-3 col-sm-12 m-15px-tb mr-auto">
                         <div class="m-20px-b">
                             <a class="footer-logo" href="{{route('v2.home')}}">
-                                <img src="{{ asset('images/logo.png') }}" title="Logo IEA" alt="Logo IEA">
+                                <img src="{{ asset('images/logo_white.png') }}" title="Logo IEA" alt="Logo IEA">
                             </a>
                         </div>
                     </div>
@@ -215,8 +215,8 @@
                         </h6>
                         <address>
                             <p class="white-color-light m-5px-b">301 The Greenhouse London,<br> E2 8DY UK</p>
-                            <p class="m-5px-b"><a class="theme2nd-color border-color-theme2nd" href="mailto:support@domain.com">info@admin.com</a></p>
-                            <p class="m-5px-b"><a class="theme2nd-color border-color-theme2nd" href="tel:820-885-3321">+61 33 333 33</a></p>
+                            <p class="m-5px-b"><a class="theme4rd-color border-color-theme4nd" href="mailto:support@domain.com">info@admin.com</a></p>
+                            <p class="m-5px-b"><a class="theme4rd-color border-color-theme4nd" href="tel:820-885-3321">+61 33 333 33</a></p>
                         </address>
                         <div class="social-icon si-30 theme2nd nav">
                             @foreach(\App\Models\Config::socialRules() as $key => $value)
@@ -245,6 +245,7 @@
         </div>
     </footer>
     <!-- End footer -->
+
     <!-- jquery -->
     <script src="{{ asset('static/js/jquery-3.2.1.min.js') }}"></script>
     <script src="{{ asset('static/js/jquery-migrate-3.0.0.min.js') }}"></script>
@@ -267,6 +268,13 @@
     <!-- end -->
     <!-- carousel js -->
     <script src="{{ asset('static/plugin/owl-carousel/js/owl.carousel.min.js') }}"></script>
+    <!-- bootstrap-slider.js -->
+    <script src="{{ asset('js/bootstrap-slider.js') }}"></script>
+    <!-- Bootstrap 3 slider -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/css/bootstrap-slider.min.css" /> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/bootstrap-slider.min.js"></script> 
+    <!-- end -->
+    @stack('script')
     <!-- end -->
     
 </body>
