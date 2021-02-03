@@ -20,9 +20,10 @@ class UserController extends Controller {
     public function index() {
         $this->middleware('auth');
         $this->middleware('role:admin');
-        
+
+        $type = User::groupBy('type')->pluck('type', 'type');
         $records = User::findRequested();
-        return $this->view("index", ['records' => $records]);
+        return $this->view("index", ['records' => $records, 'type' => $type]);
     }
 
     /**
@@ -117,11 +118,8 @@ class UserController extends Controller {
      * @param  App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function disable(Request $request, User $user) {
-        
-        dd($request->all());
-        
-        
+    public function desactiver(Request $request, User $user) {
+
         if ($user->id == 1) {
             echo 'ato';
             //return back()->with('error',"Cette action ne peut pas etre réalisée.");

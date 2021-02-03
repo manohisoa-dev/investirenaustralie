@@ -54,8 +54,24 @@
 							<td><input type="text" class="form-control" name="name" value="{{Request::input("name")}}"></td>
                             <td><input type="text" class="form-control" name="email" value="{{Request::input("email")}}"></td>
 							<td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>
-							<td><input type="text" class="form-control" name="role" value="{{Request::input("role")}}"></td>
-							<td><input type="text" class="form-control" name="type" value="{{Request::input("type")}}"></td>
+							<td>
+								<select class="form-control" name="role">
+									<option value="">@lang('app.select_role')</option>
+									<option value="admin" {{@$_GET['role']=='admin'?'selected':''}}>@lang('app.admin')</option>
+									<option value="apl" {{@$_GET['role']=='apl'?'selected':''}}>@lang('app.apl')</option>
+									<option value="afa" {{@$_GET['role']=='afa'?'selected':''}}>@lang('app.afa')</option>
+									<option value="member" {{@$_GET['role']=='member'?'selected':''}}>@lang('app.member')</option>
+								</select>
+							</td>
+							<td>
+								<select class="form-control" name="type">
+									<option value="">@lang('app.select_user')</option>
+									@foreach($type as $ty)
+									<option value="{{$ty}}" {{@$_GET['type']==$ty?'selected':''}}>{{$ty}}</option>
+									@endforeach
+								</select>
+								<?php /*?><input type="text" class="form-control" name="type" value="{{Request::input("type")}}"><?php */?>
+							</td>
 							<td><input type="text" class="form-control" name="status" value="{{Request::input("status")}}"></td>
                             <td style="min-width: 10em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>
                         </form>
@@ -135,7 +151,7 @@
 							</td>
 							<td>
 								@if($record->status=='active')
-								<a href="{{route('V2.admin.user.disable', ['user'=>$record->id])}}" class="btn btn-default btn-circle" title="@lang('app.btn.disable')">
+								<a href="{{route('V2.admin.user.desactiver', ['user_id' => $record->id])}}" class="btn btn-default btn-circle" title="@lang('app.btn.disable')">
 									<i class="fa fa-eye-slash"></i>
 								</a>&nbsp;&nbsp;
 								@else
