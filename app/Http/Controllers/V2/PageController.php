@@ -11,6 +11,7 @@ use App\Models\Page;
 use App\Models\PubPage;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Localisation;
 
 class PageController extends Controller
 {
@@ -44,6 +45,12 @@ class PageController extends Controller
             ->take(6)->get();
         
         $page->load(['childs', 'childs.pubs', 'pubs']);
+
+        $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','apl')
+                ->groupBy('localizations.area_level_1')
+                ->get();
         
         return view('V2.page.index')
             ->with('item', $page)
@@ -51,7 +58,8 @@ class PageController extends Controller
             ->with('products', $products)
             ->with('blogs', $blogs)
             ->with('recentProducts', $recentProducts)
-            ->with('categories', $categories);
+            ->with('categories', $categories)
+            ->with('lapls', $lapls);
     }
     
 

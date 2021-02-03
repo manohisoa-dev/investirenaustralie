@@ -281,6 +281,8 @@ return [
     'txt.fr'               =>"French",
     'txt.en'               =>"English",
     'txt.shop'      =>'Shop',
+    'txt.close'      =>'Close',
+    'txt.aplfound'      =>"Number of APL's found",
 
     'dernierprod'           =>'Last Products',
     'dernierart'           =>'Last Articles',
@@ -323,6 +325,7 @@ return [
     'seller'   => 'Seller',
     'afa'      => 'Agence Francophone Australienne (AFA)',
     'apl'      => 'Agence Partenaire Locale (APL)',
+    'apls'      => 'Agences Partenaires Locales (APL)',
     'favorites'=> 'Stars',
     'pin'      => 'Pin',
     'pins'     => 'Pins',

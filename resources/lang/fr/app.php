@@ -205,6 +205,7 @@ return [
     'seller'   => 'Vendeur',
     'afa'      => 'Agence Francophone Australienne',
     'apl'      => 'Agence Partenaire Locale',
+    'apls'      => 'Agences Partenaires Locales',
     'favorites'=> 'Favoris',
     'pin'      => 'Epingle',
     'pins'     => 'Epingles',
@@ -566,6 +567,8 @@ return [
     'txt.aboutus'               =>"A propos de nous",
     'txt.fr'               =>"Français",
     'txt.en'               =>"Anglais",
+    'txt.close'      =>'Fermer',
+    'txt.aplfound'      =>"Nombre d'APL trouvée",
     
     
     'childs' => 'Fils',

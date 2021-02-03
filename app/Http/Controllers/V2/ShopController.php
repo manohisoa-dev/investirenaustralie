@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Models\Type;
 use App\Models\State;
 use App\Models\Search;
+use App\Models\Localisation;
 
 class ShopController extends Controller
 {
@@ -90,6 +91,12 @@ class ShopController extends Controller
         
         $states = State::orderBy('content', 'asc')
             ->get();
+
+        $lapls = Localisation::select('localizations.*')
+            ->join('users','users.location_id','=','localizations.id')
+            ->where('users.role','=','apl')
+            ->groupBy('localizations.area_level_1')
+            ->get();
         
         return view('V2.shop.index')
             ->with('items', $items)
@@ -104,6 +111,7 @@ class ShopController extends Controller
             ->with('locationTypes', $locationTypes)
             ->with('states', $states)
             ->with('category', $category)
+            ->with('lapls', $lapls)
             ->with('categories', $categories); 
     }
     

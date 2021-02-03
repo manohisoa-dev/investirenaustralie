@@ -36,7 +36,7 @@
                         <!-- <a class="dark-color font-w-600 m-15px-l" href="#"><i class="far fa-folder-open"></i> Categories</a> -->
                     </div>
                     
-                    {!! $item->content !!}
+                    <div class="text-justify">{!! $item->content !!}</div>
                     
                     <div class="p-25px-tb m-35px-tb border-top-1 border-bottom-1 border-color-gray">
                         <div class="d-flex justify-content-between align-items-center">

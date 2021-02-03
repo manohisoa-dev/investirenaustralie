@@ -38,7 +38,9 @@
                         </div>
                         <div class="col-lg-5 m-15px-tb">
                             <h2 class="h1 m-25px-b">{{$child->title}}</h2>
-                            <p class="m-5px-b">{!!$child->content!!}</p>
+                            <div class="text-justify">
+                                <p class="m-5px-b">{!!$child->content!!}</p>
+                            </div>
                             @if(Auth::check()&&Auth::user()->isAdmin())
                                 <div class="btn-bar p-15px-t">
                                     <a class="m-btn-theme" href="{{route('admin.page.update',$child)}}"><i class="icon-edit"></i> @lang('app.btn.edit')</a>
@@ -107,7 +109,7 @@
                                         <div class="col-lg-6">
                                             <div class="p-70px-l lg-p-0px-l lg-m-30px-t">
                                                 <h2 class="h1 m-25px-b">@lang('app.home.step1.large.title')</u></h2>
-                                                <p class="m-5px-b">@lang('app.home.step1.content')</p>
+                                                <p class="m-5px-b text-justify">@lang('app.home.step1.content')</p>
                                             </div>
                                         </div>
                                     </div>
@@ -117,7 +119,7 @@
                                         <div class="col-lg-6">
                                             <div class="p-70px-r lg-p-0px-r lg-m-30px-t">
                                                 <h2 class="h1 m-25px-b">@lang('app.home.step2.large.title')</u></h2>
-                                                <p class="m-5px-b">@lang('app.home.step2.content')</p>
+                                                <p class="m-5px-b text-justify">@lang('app.home.step2.content')</p>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 order-lg-2 order-first text-center">
@@ -133,7 +135,7 @@
                                         <div class="col-lg-6">
                                             <div class="p-70px-l lg-p-0px-l lg-m-30px-t">
                                                 <h2 class="h1 m-25px-b">@lang('app.home.step3.large.title')</u></h2>
-                                                <p class="m-5px-b">@lang('app.home.step3.content')</p>
+                                                <p class="m-5px-b text-justify">@lang('app.home.step3.content')</p>
                                             </div>
                                         </div>
                                     </div>
@@ -143,7 +145,7 @@
                                         <div class="col-lg-6">
                                             <div class="p-70px-r lg-p-0px-r lg-m-30px-t">
                                                 <h2 class="h1 m-25px-b">@lang('app.home.step4.large.title')</u></h2>
-                                                <p class="m-5px-b">@lang('app.home.step4.content')</p>
+                                                <p class="m-5px-b text-justify">@lang('app.home.step4.content')</p>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 order-lg-2 order-first text-center">
@@ -170,7 +172,7 @@
                                         <i class="white-color fa fa-podcast"></i>
                                     </div>
                                     <h5 class="h3 m-10px-b">@lang('app.txt.mission.title')</h5>
-                                    <p class="m-0px text-left">@lang('app.txt.mission.content')</p>
+                                    <p class="m-0px text-justify">@lang('app.txt.mission.content')</p>
                                 </div>
                             </div>
                             <div class="col-md-6 m-15px-tb">
@@ -179,7 +181,7 @@
                                         <i class="white-color fa fa-eye"></i>
                                     </div>
                                     <h5 class="h3 m-10px-b">@lang('app.txt.vision.title')</h5>
-                                    <p class="m-0px text-left p-50px-tb">@lang('app.txt.vision.content')</p>
+                                    <p class="m-0px  text-justify p-50px-tb">@lang('app.txt.vision.content')</p>
                                 </div>
                             </div>
                         </div>

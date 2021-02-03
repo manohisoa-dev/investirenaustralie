@@ -171,18 +171,19 @@
     
     @yield('content')
 
+
     <footer class="garnet-bg footer border-top-1 border-color-dark-gray">
         <div class="footer-top">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-3 col-sm-12 m-15px-tb mr-auto">
+                    <div class="col-lg-4 col-sm-12 m-15px-tb mr-auto">
                         <div class="m-20px-b">
                             <a class="footer-logo" href="{{route('v2.home')}}">
                                 <img src="{{ asset('images/logo_white.png') }}" title="Logo IEA" alt="Logo IEA">
                             </a>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-sm-6 m-15px-tb">
+                    <div class="col-lg-2 col-sm-5 m-15px-tb">
                         <h6 class="white-color">
                             {{ Illuminate\Support\Str::upper(trans('app.rapid_link')) }}
                         </h6>
@@ -195,7 +196,7 @@
                             <li><a href="{{route('v2.contact')}}">@lang('app.contact')</a></li>
                         </ul>
                     </div>
-                    <div class="col-lg-3 col-sm-6 m-15px-tb">
+                    <div class="col-lg-2 col-sm-5 m-15px-tb">
                         <h6 class="white-color">
                             {{ Illuminate\Support\Str::upper(trans('app.txt.aboutus')) }}
                         </h6>
@@ -209,7 +210,17 @@
                             @endif
                         </ul>
                     </div>
-                    <div class="col-lg-3 col-sm-6 m-15px-tb">
+                    <div class="col-lg-2 col-sm-5 m-15px-tb" id="apl_list">
+                        <h6 class="white-color">
+                            {{ Illuminate\Support\Str::upper(trans('app.apls')) }}
+                        </h6>
+                        <ul class="list-unstyled links-white footer-link-1">
+                            @foreach($lapls as $apl)
+                                <li><a class="apl_item" href="javascript:void(0);" value="{{ $apl->area_level_1 }}" data-toggle="modal" data-target="#listAplModal">{{ $apl->area_level_1 }}</a></li>                                
+                            @endforeach
+                        </ul>
+                    </div>
+                    <div class="col-lg-2 col-sm-5 m-15px-tb">
                         <h6 class="white-color">
                             {{ Illuminate\Support\Str::upper(trans('app.txt.information')) }}
                         </h6>
@@ -243,8 +254,29 @@
                 </div>
             </div>
         </div>
+
     </footer>
     <!-- End footer -->
+    
+    <!-- modal -->
+    <div class="container">
+        <div class="modal left fade" id="listAplModal" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content dark-bg">
+                    <div class="modal-header" style="background-color: #AE4435 !important;">
+                    </div>
+                    <div class="modal-body">
+                        <div class="nav flex-sm-column flex-row">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="m-btn m-btn-theme2nd" data-dismiss="modal">@lang('app.txt.close')</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin modal -->
 
     <!-- jquery -->
     <script src="{{ asset('static/js/jquery-3.2.1.min.js') }}"></script>
@@ -274,6 +306,34 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/css/bootstrap-slider.min.css" /> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/bootstrap-slider.min.js"></script> 
     <!-- end -->
+
+    <script type="text/javascript">
+        $('#apl_list').on('click','.apl_item',function(){
+            var val = $(this).attr('value');
+
+            $.ajax({
+                url : "V2/getApl/"+val,
+                method : 'get',
+                dataType: 'json',
+                success : function(data){
+                    // set apl title
+                    $('#listAplModal .modal-header').html('<h4 class="white-color">'+val+'</h4>');
+
+                    // initialize apl items
+                    $('#listAplModal .modal-body').html('');
+
+                    // set apl items
+                    $('#listAplModal .modal-body').append("<h6 class='white-color'>@lang('app.txt.aplfound') : "+data.res.length+"</h6>");
+                    $.each(data.res,function(key,value){
+                        $('#listAplModal .modal-body').append('<a href={{route("member.select.apl")}} class="nav-item nav-link white-color"><i class="fa fa-building"></i> '+value.locality+'</a>');
+                    });
+                }
+            });
+        });
+    </script>
+
+
+
     @stack('script')
     <!-- end -->
     
