@@ -126,10 +126,10 @@ class IndexController extends Controller
         $page->load(['childs', 'childs.pubs', 'pubs']);
 
         $lapls = Localisation::select('localizations.*')
-                    ->join('users','users.location_id','=','localizations.id')
-                    ->where('users.role','=','apl')
-                    ->groupBy('localizations.area_level_1')
-                    ->get();
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','apl')
+                ->groupBy('localizations.locality')
+                ->get();
         
         if($page){$pubs = $page->pubs;}else{$pubs = [];}
 
@@ -181,10 +181,10 @@ class IndexController extends Controller
         $page->load(['childs', 'childs.pubs', 'pubs']);
 
         $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','apl')
-            ->groupBy('localizations.area_level_1')
-            ->get();
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','apl')
+                ->groupBy('localizations.locality')
+                ->get();
         
         if($page){$pubs = $page->pubs;}else{$pubs = [];}
 
@@ -237,10 +237,10 @@ class IndexController extends Controller
         $page->load(['childs', 'childs.pubs', 'pubs']);
 
         $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','apl')
-            ->groupBy('localizations.area_level_1')
-            ->get();
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','apl')
+                ->groupBy('localizations.locality')
+                ->get();
         
         if($page){$pubs = $page->pubs;}else{$pubs = [];}
 
@@ -291,10 +291,10 @@ class IndexController extends Controller
         $page->load(['childs', 'childs.pubs', 'pubs']);
 
         $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','apl')
-            ->groupBy('localizations.area_level_1')
-            ->get();
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','apl')
+                ->groupBy('localizations.locality')
+                ->get();
         
         if($page){$pubs = $page->pubs;}else{$pubs = [];}
 
@@ -345,10 +345,10 @@ class IndexController extends Controller
         $page->load(['childs', 'childs.pubs', 'pubs']);
 
         $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','apl')
-            ->groupBy('localizations.area_level_1')
-            ->get();
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','apl')
+                ->groupBy('localizations.locality')
+                ->get();
         
         if($page){$pubs = $page->pubs;}else{$pubs = [];}
 
@@ -402,10 +402,10 @@ class IndexController extends Controller
     public function login()
     {
         $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','apl')
-            ->groupBy('localizations.area_level_1')
-            ->get();
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','apl')
+                ->groupBy('localizations.locality')
+                ->get();
 
         return view('V2.auth.login')
             ->with('lapls',$lapls);
@@ -413,9 +413,9 @@ class IndexController extends Controller
     
     public function getApl($apl)
     {
-        $lapls = Localisation::select('localizations.*')
+        $lapls = Localisation::select('users.*')
                 ->join('users','users.location_id','=','localizations.id')
-                ->where('localizations.area_level_1', '=', $apl)
+                ->where('localizations.locality', '=', $apl)
                 ->where('users.role','=','apl')
                 ->get();
 

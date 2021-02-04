@@ -93,10 +93,10 @@ class ShopController extends Controller
             ->get();
 
         $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','apl')
-            ->groupBy('localizations.area_level_1')
-            ->get();
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','apl')
+                ->groupBy('localizations.locality')
+                ->get();
         
         return view('V2.shop.index')
             ->with('items', $items)

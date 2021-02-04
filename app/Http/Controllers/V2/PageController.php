@@ -12,6 +12,7 @@ use App\Models\PubPage;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Localisation;
+use App\Models\User;
 
 class PageController extends Controller
 {
@@ -49,7 +50,7 @@ class PageController extends Controller
         $lapls = Localisation::select('localizations.*')
                 ->join('users','users.location_id','=','localizations.id')
                 ->where('users.role','=','apl')
-                ->groupBy('localizations.area_level_1')
+                ->groupBy('localizations.locality')
                 ->get();
         
         return view('V2.page.index')

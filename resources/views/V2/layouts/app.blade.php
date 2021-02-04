@@ -212,7 +212,7 @@
                         </h6>
                         <ul class="list-unstyled links-white footer-link-1">
                             @foreach($lapls as $apl)
-                                <li><a class="apl_item" href="javascript:void(0);" value="{{ $apl->area_level_1 }}" data-toggle="modal" data-target="#listAplModal">{{ $apl->area_level_1 }}</a></li>                                
+                                <li><a class="apl_item" href="javascript:void(0);" value="{{ $apl->locality }}" data-toggle="modal" data-target="#listAplModal">{{ $apl->locality }}</a></li>                                
                             @endforeach
                         </ul>
                     </div>
@@ -322,7 +322,7 @@
                     // set apl items
                     $('#listAplModal .modal-body').append("<h6 class='white-color'>@lang('app.txt.aplfound') : "+data.res.length+"</h6>");
                     $.each(data.res,function(key,value){
-                        $('#listAplModal .modal-body').append('<a href={{route("member.select.apl")}} class="nav-item nav-link white-color"><i class="fa fa-building"></i> '+value.locality+'</a>');
+                        $('#listAplModal .modal-body').append('<a href={{route("member.select.apl")}} class="nav-item nav-link white-color"><i class="fa fa-building"></i> '+value.name+'</a>');
                     });
                 }
             });

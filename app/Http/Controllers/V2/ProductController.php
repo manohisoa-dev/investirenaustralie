@@ -85,7 +85,7 @@ class ProductController extends Controller
                 $lapls = Localisation::select('localizations.*')
                     ->join('users','users.location_id','=','localizations.id')
                     ->where('users.role','=','apl')
-                    ->groupBy('localizations.area_level_1')
+                    ->groupBy('localizations.locality')
                     ->get();
                 
                 return view('V2.product.index')

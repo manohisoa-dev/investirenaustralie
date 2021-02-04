@@ -71,10 +71,10 @@ class BlogController extends Controller
                     ->first();
 
                 $lapls = Localisation::select('localizations.*')
-                    ->join('users','users.location_id','=','localizations.id')
-                    ->where('users.role','=','apl')
-                    ->groupBy('localizations.area_level_1')
-                    ->get();
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','apl')
+                ->groupBy('localizations.locality')
+                ->get();
                 
                 if($page){$pubs = $page->pubs;}else{$pubs = [];}
 
@@ -112,10 +112,10 @@ class BlogController extends Controller
             ->get();
 
         $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','apl')
-            ->groupBy('localizations.area_level_1')
-            ->get();
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','apl')
+                ->groupBy('localizations.locality')
+                ->get();
         
         $page = Page::where('path', '=', '/blogs*')
             ->first();
@@ -178,10 +178,10 @@ class BlogController extends Controller
             ->first();
 
         $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','apl')
-            ->groupBy('localizations.area_level_1')
-            ->get();
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','apl')
+                ->groupBy('localizations.locality')
+                ->get();
         
         if($page2){$pubs = $page->pubs;}else{$pubs = [];}
 

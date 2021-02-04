@@ -69,10 +69,10 @@ class MailController extends Controller
         $address = \App\Models\Config::login()->get_meta_array('address', $locale);
         $contact = \App\Models\Config::login()->get_meta_array('contact', $locale);
         $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','apl')
-            ->groupBy('localizations.area_level_1')
-            ->get();
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','apl')
+                ->groupBy('localizations.locality')
+                ->get();
 
         return view('V2.index.contact')
             ->with('title', __('app.send_mail'))
