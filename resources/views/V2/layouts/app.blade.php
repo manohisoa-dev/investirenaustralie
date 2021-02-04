@@ -38,6 +38,7 @@
     <!-- Preload -->
     <div id="loading">
         <div class="load-circle"><span class="one"></span></div>
+        <input type="hidden" name="page_id" id="page_id" value="{{ isset($item->id)?$item->id:0 }}">
     </div>
     <!-- End Preload -->
     <!-- Header -->
@@ -240,6 +241,7 @@
                 </div>
             </div>
         </div>
+
         <div class="footer-bottom footer-border-light">
             <div class="container">
                 <div class="row">
@@ -254,7 +256,6 @@
                 </div>
             </div>
         </div>
-
     </footer>
     <!-- End footer -->
     
@@ -310,9 +311,10 @@
     <script type="text/javascript">
         $('#apl_list').on('click','.apl_item',function(){
             var val = $(this).attr('value');
+            var path = $('#page_id').val()==1?'V2/getApl':'../V2/getApl';
 
             $.ajax({
-                url : "V2/getApl/"+val,
+                url : path+'/'+val,
                 method : 'get',
                 dataType: 'json',
                 success : function(data){
