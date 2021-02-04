@@ -569,6 +569,7 @@ return [
     'txt.en'               =>"Anglais",
     'txt.close'      =>'Fermer',
     'txt.aplfound'      =>"Nombre d'APL trouvée",
+    'txt.sharepost' =>  "Partager l'article",
     
     
     'childs' => 'Fils',
@@ -611,6 +612,7 @@ return [
     'btn.prev'           => "Precedent",
     'btn.save_as_model'  => "Enregistrer en tant que Model",
     'btn.register'       => "Valider l'inscription",
+    'btn.submit'    => "Soumettre",
     
     'contact_admin'  => "Contacter l'administrateur",
     'contact_apl'    => "Contacter l'APL",
@@ -712,6 +714,7 @@ return [
     'txt.Commercial'      =>'Commercial',
     'txt.postepar'      =>'Posté par',
     'txt.commentaire'      =>'Commentaire',
+    'txt.commentaires'      =>'Commentaires',
     'txt.lecture'      =>'Continuer la lecture',
     'txt.enregistrer_recherche'      =>'Enregister la recherche',
     'txt.nos_services'      =>'Nos services',
@@ -720,6 +723,11 @@ return [
     'txt.products'      =>'Produits',
     'txt.product'      =>'produits',
     'txt.shop'                  =>'Vente',
+    'txt.leavereply' =>  'Laisser une réponse',
+    'txt.fullname' =>  'Nom et prénom',
+    'txt.youremail' =>  'Votre e-mail',
+    'txt.yourcomment' =>  'Votre Commentaire ?',
+    'txt.saveinfo' =>  "Enregistrez mon nom, mon adresse e-mail et mon site Web dans ce navigateur pour la prochaine fois que je commenterai.",
 
     'dernierprod'           =>'Derniers Produits',
     'dernierart'           =>'Derniers Articles',

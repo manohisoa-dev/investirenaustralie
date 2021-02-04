@@ -41,7 +41,7 @@
                     <div class="p-25px-tb m-35px-tb border-top-1 border-bottom-1 border-color-gray">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <h5 class="m-0px">Share Post</h5>
+                                <h5 class="m-0px">@lang('app.txt.sharepost')</h5>
                             </div>
                             <div>
                                 <div class="nav justify-content-center justify-content-md-end social-icon si-30 gray">
@@ -64,7 +64,7 @@
                     </div>
                     <div class="comments-area m-40px-t m-50px-b">
                         <div class="border-bottom-1 border-color-gray p-10px-b m-25px-b">
-                            <h4 class="m-0px">{{$item->comments_count}} Comments</h4>
+                            <h4 class="m-0px">{{$item->comments_count}} {{ ($item->comments_count>0) ? trans('app.txt.commentaires') : trans('app.txt.commentaire') }}</h4>
                         </div>
                         <ul class="comment-list">
                             <li class="comment">
@@ -80,7 +80,7 @@
                                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
                                     </div>
                                     <div class="comment-reply">
-                                        <a class="m-btn m-btn-t-theme m-btn-radius m-btn-sm" href="#">Reply</a>
+                                        <a class="m-btn m-btn-t-theme m-btn-sm" href="#">@lang('app.btn.reply')</a>
                                     </div>
                                 </article>
                                 <ul class="children">
@@ -97,7 +97,7 @@
                                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
                                             </div>
                                             <div class="comment-reply">
-                                                <a class="m-btn m-btn-t-theme m-btn-radius m-btn-sm" href="#">Reply</a>
+                                                <a class="m-btn m-btn-t-theme m-btn-sm" href="#">@lang('app.btn.reply')</a>
                                             </div>
                                         </article>
                                     </li>
@@ -116,7 +116,7 @@
                                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
                                     </div>
                                     <div class="comment-reply">
-                                        <a class="m-btn m-btn-t-theme m-btn-radius m-btn-sm" href="#">Reply</a>
+                                        <a class="m-btn m-btn-t-theme m-btn-sm" href="#">@lang('app.btn.reply')</a>
                                     </div>
                                 </article>
                             </li>
@@ -124,24 +124,24 @@
                     </div>
                     <div class="card gray-bg">
                         <div class="card-body">
-                            <h4 class="m-30px-b">Leave a Reply</h4>
+                            <h4 class="m-30px-b">@lang('app.txt.leavereply')</h4>
                             <form>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="form-control-label">Full Name</label>
+                                            <label class="form-control-label">@lang('app.txt.fullname')</label>
                                             <input type="text" class="form-control" placeholder="Martin Luthar">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="form-control-label">Your Email</label>
+                                            <label class="form-control-label">@lang('app.txt.youremail')</label>
                                             <input type="text" class="form-control" placeholder="info@domain.com">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="form-control-label">Your Comment?</label>
+                                            <label class="form-control-label">@lang('app.txt.yourcomment')</label>
                                             <textarea class="form-control" rows="6" name="answer" placeholder="Hello, There! " aria-label="How'd you hear about Front?" required="" data-msg="Please enter an answer." data-error-class="u-has-error" data-success-class="u-has-success"></textarea>
                                         </div>
                                     </div>
@@ -149,12 +149,12 @@
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox mb-3">
                                                 <input type="checkbox" class="custom-control-input" id="check-terms">
-                                                <label class="custom-control-label" for="check-terms">Save my name, email, and website in this browser for the next time I comment.</a></label>
+                                                <label class="custom-control-label" for="check-terms">@lang('app.txt.saveinfo')</a></label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <button class="m-btn m-btn-radius m-btn-theme">Submit</button>
+                                        <button class="m-btn  m-btn-theme">@lang('app.btn.submit')</button>
                                     </div>
                                 </div>
                             </form>

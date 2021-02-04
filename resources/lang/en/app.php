@@ -206,6 +206,7 @@ return [
     'btn.save_as_model'  => "Save as model",
     'btn.register'       => "Confirm registration",
     'btn.add_to_cart'    => "I want to buy this Product",
+    'btn.submit'    => "Submit",
     
     'contact_admin'  => "Contacter l'administrateur",
     'contact_apl'    => "Contacter l'APL",
@@ -218,6 +219,7 @@ return [
     'txt.Commercial'      =>'Commercial',
     'txt.postepar'      =>'Posted by',
     'txt.commentaire'      =>'Comment',
+    'txt.commentaires'      =>'Comments',
     'txt.lecture'      =>'Continue reading',
     'txt.enregistrer_recherche'      =>'Save search',
     'txt.latest_product'  => 'Registered products',
@@ -291,6 +293,12 @@ return [
     'recent.product'  => 'Recent products',
     'recent.category' => 'Recent categories',
     'txt.listes_des_agences_partenaires_locales' =>  'Lists of Local Partner Agencies',
+    'txt.sharepost' =>  'Share Post',
+    'txt.leavereply' =>  'Leave a Reply',
+    'txt.fullname' =>  'Full Name',
+    'txt.youremail' =>  'Your Email',
+    'txt.yourcomment' =>  'Your Comment ?',
+    'txt.saveinfo' =>  'Save my name, email, and website in this browser for the next time I comment.',
 
 
     'num.area' => ':num m2',

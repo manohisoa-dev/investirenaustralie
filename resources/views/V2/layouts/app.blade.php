@@ -81,11 +81,6 @@
                                             <li><a style="color:#555658;" href="{{route('localization', ['locale'=>'en'])}}"><img src="{{ asset('images/ico/en.png') }}"> En <span class="dark-color">(@lang('app.txt.en'))</span></a></li>
                                           </ul>
                                     </div>
-
-                                    <!-- <select name="currency" id="language-dropdown" onChange="location.href=''+this.options[this.selectedIndex].value;" class="white-bg-alt border-color-dark-gray border-radius-0 white-color">
-                                        <option style="background-image:url({{ asset('images/ico/fr.png') }});" value="{{route('localization', ['locale'=>'fr'])}}" @if(App::isLocale('fr')) selected @endif > Fr</option>
-                                        <option style="background-image:url({{ asset('images/ico/en.png') }});" value="{{route('localization', ['locale'=>'en'])}}" @if(App::isLocale('en')) selected @endif > Eng</option>
-                                    </select> -->
                                 </li>
                                 <li class="small m-10px-l">
                                     @php $socialConfig = \App\Models\Config::social(); @endphp
@@ -103,9 +98,9 @@
             <div class="container container-large">
                 <div class="navbar navbar-default navbar-expand-lg main-navbar">
                     <div class="navbar-brand">
-                        <a href="{{ route('v2.home') }}" title="Mombo" class="logo">
-                            <img src="{{asset('images/logo.png')}}" class="light-logo" alt="Mombo" title="">
-                            <img src="{{asset('images/logo.png')}}" class="dark-logo" alt="Mombo" title="">
+                        <a href="{{ route('v2.home') }}" title="{{ app_name() }}" class="logo">
+                            <img src="{{asset('images/logo.png')}}" class="light-logo" alt="{{ app_name() }}" title="">
+                            <img src="{{asset('images/logo.png')}}" class="dark-logo" alt="{{ app_name() }}" title="">
                         </a>
                     </div>
                     <div class="navbar-collapse justify-content-end collapse" id="navbar-collapse-toggle">
