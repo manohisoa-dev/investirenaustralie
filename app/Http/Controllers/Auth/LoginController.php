@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Session;
+use App\Models\User;
 
 class LoginController extends Controller
 {
@@ -75,8 +76,8 @@ class LoginController extends Controller
         if(session('paths') == "V2/login"){
             $link="V2/";        
         }  
-
-        return $link.\App\User::find(Auth::id())->roleUser->role_initial;
+        return $link.(User::find(Auth::id())->role_initial);
+        
         
     }
     

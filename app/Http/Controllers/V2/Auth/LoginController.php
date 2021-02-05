@@ -86,6 +86,11 @@ class LoginController extends Controller
         $content = \App\Models\Config::login()->get_meta_array('content', $locale);
         $address = \App\Models\Config::login()->get_meta_array('address', $locale);
         $contact = \App\Models\Config::login()->get_meta_array('contact', $locale);
+        $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','4')
+                ->groupBy('localizations.locality')
+                ->get();
         
         return view('auth.login')
             ->with('latitude', $latitude)
@@ -94,6 +99,7 @@ class LoginController extends Controller
             ->with('content', $content)
             ->with('address', $address)
             ->with('contact', $contact);
+            ->with('lapls', $lapls);
     }
     
     
