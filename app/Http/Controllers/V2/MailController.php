@@ -70,7 +70,7 @@ class MailController extends Controller
         $contact = \App\Models\Config::login()->get_meta_array('contact', $locale);
         $lapls = Localisation::select('localizations.*')
                 ->join('users','users.location_id','=','localizations.id')
-                ->where('users.role','=','apl')
+                ->where('users.role','=','4')
                 ->groupBy('localizations.locality')
                 ->get();
 

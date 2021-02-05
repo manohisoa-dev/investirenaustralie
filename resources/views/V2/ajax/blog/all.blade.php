@@ -1,12 +1,12 @@
 @foreach($items as $item)
-<div class="col-md-6 col-lg-4 m-30px-b b-item">
+<div class="col-md-6 col-lg-4 m-30px-b view-item">
     <div class="hover-top card box-shadow-only-hover overflow-hidden">
-        <div class="b-img">
+        <div>
             <a href="#">
                 <img src="{{$item->imageUrl()}}" alt="{{$item->title}}">
             </a>
         </div>
-        <div class="p-20px b-content">
+        <div class="p-20px">
             <label class="font-small">@lang('app.txt.postepar') : <a href="#">{{$item->author->name}}</a> – {{$item->created_at->diffForHumans()}}</label>
             <h5 class="m-10px-b font-w-600"><a class="dark-color" href="{{route('v2.blog.index',$item->slug)}}">{{str_limit($item->title, 50, '...')}}</a></h5>
             <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod.</p> -->

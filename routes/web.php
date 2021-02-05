@@ -318,7 +318,4 @@ Route::prefix('V2')->namespace('V2')->as('v2.')->group(function(){
     });
 
 
-
-
-
 });

@@ -419,7 +419,7 @@ a:hover {
 }
 
 .m-btn.m-btn-theme4rd {
-  background: #051b35;
+  background: #008A3E;
   color: #ffffff;
 }
 .m-btn.m-btn-theme4rd.active, .m-btn.m-btn-theme4rd:focus, .m-btn.m-btn-theme4rd:hover {
@@ -1171,7 +1171,7 @@ figcaption {
 }
 
 .grey-bg {
-  background-color: #ddd;
+  background-color: #323232;
 }
 
 .dark-after:after {
@@ -5424,8 +5424,8 @@ mark {
 }
 
 .custom-control-input:checked ~ .custom-control-label:before {
-  background: #323232;
-  border-color: #323232;
+  background: #AE4435;
+  border-color: #AE4435;
 }
 
 .rd-mailform .has-error .invalid-feedback {

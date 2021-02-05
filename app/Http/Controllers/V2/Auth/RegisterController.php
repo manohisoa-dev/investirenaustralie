@@ -153,6 +153,11 @@ class RegisterController extends Controller
         $page = Page::where('path', '/register/'.$role)
             ->locale()
             ->first();
+        $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','4')
+                ->groupBy('localizations.locality')
+                ->get();
         switch($role){
             case "member":
                 $pays = $this->getPaysFromCsv();
@@ -160,22 +165,26 @@ class RegisterController extends Controller
                 return view('v2.login.'.$role)
                     ->with('action', $action)
                     ->with('countries', Country::all())
-                    ->with('page', $page);
+                    ->with('page', $page)
+                    ->with('lapls', $lapls);
                 break;
             case "afa":
                 $request->session()->put("step", "condition");
                 return view('v2.login.condition.afa')
-                    ->with('page', $page);
+                    ->with('page', $page)
+                    ->with('lapls', $lapls);
                 break;
             case "apl":
                 $request->session()->put("step", "condition");
                 return view('v2.login.condition.apl')
-                    ->with('page', $page);
+                    ->with('page', $page)
+                    ->with('lapls', $lapls);
                 break;
             case "seller":
                 $request->session()->put("step", "condition");
                 return view('v2.login.condition.seller')
-                    ->with('page', $page);
+                    ->with('page', $page)
+                    ->with('lapls', $lapls);
                 break;
             default:
                 abort(404);

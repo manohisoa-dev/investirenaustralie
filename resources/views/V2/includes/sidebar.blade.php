@@ -1,6 +1,6 @@
 
 <div class="col-lg-4 md-m-15px-tb">
-    <a href="{{route('v2.apls')}}" class="m-btn m-btn-theme2nd flex-shrink-0 col-md-12" style="margin-bottom: 20px;">@lang('app.list_apl')</a>
+    <a href="{{route('v2.apls')}}" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12" style="margin-bottom: 20px;">@lang('app.list_apl')</a>
 
     <div class="card m-35px-t">
         @foreach($pubs as $pub)
@@ -44,7 +44,7 @@
         @if(\Auth::check()&&\Auth::user()->hasRole('member'))
         <section class="widget recent-properties clearfix">
             <a href="{{route('member.contact', ['role'=>'admin'])}}" class="m-btn m-btn-theme col-sm-12"><i class="fa fa-envelope-open-o"></i> @lang('app.btn.contact_admin')</a>
-            <a href="{{route('member.contact', ['role'=>'apl'])}}" class="m-btn m-btn-theme2nd col-sm-12"><i class="fa fa-envelope-open-o"></i> @lang('app.btn.contact_apl')</a>
+            <a href="{{route('member.contact', ['role'=>'apl'])}}" class="m-btn m-btn-theme4rd col-sm-12"><i class="fa fa-envelope-open-o"></i> @lang('app.btn.contact_apl')</a>
         </section>
         @endif
     </div>

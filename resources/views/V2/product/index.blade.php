@@ -136,11 +136,7 @@
             </div>
             <div class="row">
                 <!-- start section products -->
-                @foreach($products as $product)
-                <!-- <div class="col-lg-10 col-sm-12 layout-item-wrap"> -->
-                    @include('V2.product.single', ['item'=>$product])
-                <!-- </div> -->
-                @endforeach
+                @include('V2.product.all', ['items'=>$products])
                 <!-- end section products -->
             </div>
         </div>
