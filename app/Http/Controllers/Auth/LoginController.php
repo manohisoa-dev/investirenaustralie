@@ -76,7 +76,7 @@ class LoginController extends Controller
             $link="V2/";        
         }  
 
-        return $link.Auth::user()->role;
+        return $link.\App\User::find(Auth::id())->roleUser->role_initial;
         
     }
     
