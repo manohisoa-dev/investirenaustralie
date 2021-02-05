@@ -37,14 +37,34 @@
                             </select>
                         </div>
                         <div  class="pull-right">
-                            <p class="layout-view"> @lang('app.form.vue'): <i class="fa fa-th-large selected" data-layout="6"></i> <i class="fa fa-list-ul" data-layout="12"></i> </p>
+                            <p class="layout-view"> @lang('app.form.vue'): <a href="javascript:void(0)" id="grid"><i class="fa fa-th-large selected" data-layout="6"></i></a> <a href="javascript:void(0)" id="list"><i class="fa fa-list-ul" data-layout="12"></i></a> </p>
                         </div>
                     </form>
                 </div>           
             </div>
 
+
+            @push('script') 
+
+                <script type="text/javascript">
+                    $(document).ready(function() {
+                        $('#list').click(function(event){
+                            event.preventDefault();
+                            
+                        });
+
+
+                        $('#grid').click(function(event){
+                            event.preventDefault();
+                            
+                        });
+                    });
+                </script>
+
+            @endpush
+
             <!-- Show all blog -->
-            @include('V2.ajax.blog.all',['items'=>$items])
+            @include('V2.ajax.blog.all',['items'=>$items])            
             
             <!-- <div class="col-12 p-30px-t">
                 <ul class="pagination justify-content-center">

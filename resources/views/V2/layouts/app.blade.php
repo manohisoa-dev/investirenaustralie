@@ -38,6 +38,7 @@
     <!-- Preload -->
     <div id="loading">
         <div class="load-circle"><span class="one"></span></div>
+        <input type="hidden" name="page_id" id="page_id" value="{{ isset($item->id)?$item->id:0 }}">
     </div>
     <!-- End Preload -->
     <!-- Header -->
@@ -80,11 +81,6 @@
                                             <li><a style="color:#555658;" href="{{route('localization', ['locale'=>'en'])}}"><img src="{{ asset('images/ico/en.png') }}"> En <span class="dark-color">(@lang('app.txt.en'))</span></a></li>
                                           </ul>
                                     </div>
-
-                                    <!-- <select name="currency" id="language-dropdown" onChange="location.href=''+this.options[this.selectedIndex].value;" class="white-bg-alt border-color-dark-gray border-radius-0 white-color">
-                                        <option style="background-image:url({{ asset('images/ico/fr.png') }});" value="{{route('localization', ['locale'=>'fr'])}}" @if(App::isLocale('fr')) selected @endif > Fr</option>
-                                        <option style="background-image:url({{ asset('images/ico/en.png') }});" value="{{route('localization', ['locale'=>'en'])}}" @if(App::isLocale('en')) selected @endif > Eng</option>
-                                    </select> -->
                                 </li>
                                 <li class="small m-10px-l">
                                     @php $socialConfig = \App\Models\Config::social(); @endphp
@@ -102,9 +98,9 @@
             <div class="container container-large">
                 <div class="navbar navbar-default navbar-expand-lg main-navbar">
                     <div class="navbar-brand">
-                        <a href="{{ route('v2.home') }}" title="Mombo" class="logo">
-                            <img src="{{asset('images/logo.png')}}" class="light-logo" alt="Mombo" title="">
-                            <img src="{{asset('images/logo.png')}}" class="dark-logo" alt="Mombo" title="">
+                        <a href="{{ route('v2.home') }}" title="{{ app_name() }}" class="logo">
+                            <img src="{{asset('images/logo.png')}}" class="light-logo" alt="{{ app_name() }}" title="">
+                            <img src="{{asset('images/logo.png')}}" class="dark-logo" alt="{{ app_name() }}" title="">
                         </a>
                     </div>
                     <div class="navbar-collapse justify-content-end collapse" id="navbar-collapse-toggle">
@@ -171,18 +167,19 @@
     
     @yield('content')
 
+
     <footer class="garnet-bg footer border-top-1 border-color-dark-gray">
         <div class="footer-top">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-3 col-sm-12 m-15px-tb mr-auto">
+                    <div class="col-lg-4 col-sm-12 m-15px-tb mr-auto">
                         <div class="m-20px-b">
                             <a class="footer-logo" href="{{route('v2.home')}}">
                                 <img src="{{ asset('images/logo_white.png') }}" title="Logo IEA" alt="Logo IEA">
                             </a>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-sm-6 m-15px-tb">
+                    <div class="col-lg-2 col-sm-5 m-15px-tb">
                         <h6 class="white-color">
                             {{ Illuminate\Support\Str::upper(trans('app.rapid_link')) }}
                         </h6>
@@ -195,7 +192,7 @@
                             <li><a href="{{route('v2.contact')}}">@lang('app.contact')</a></li>
                         </ul>
                     </div>
-                    <div class="col-lg-3 col-sm-6 m-15px-tb">
+                    <div class="col-lg-2 col-sm-5 m-15px-tb">
                         <h6 class="white-color">
                             {{ Illuminate\Support\Str::upper(trans('app.txt.aboutus')) }}
                         </h6>
@@ -209,7 +206,17 @@
                             @endif
                         </ul>
                     </div>
-                    <div class="col-lg-3 col-sm-6 m-15px-tb">
+                    <div class="col-lg-2 col-sm-5 m-15px-tb" id="apl_list">
+                        <h6 class="white-color">
+                            {{ Illuminate\Support\Str::upper(trans('app.apls')) }}
+                        </h6>
+                        <ul class="list-unstyled links-white footer-link-1">
+                            @foreach($lapls as $apl)
+                                <li><a class="apl_item" href="javascript:void(0);" value="{{ $apl->locality }}" data-toggle="modal" data-target="#listAplModal">{{ $apl->locality }}</a></li>                                
+                            @endforeach
+                        </ul>
+                    </div>
+                    <div class="col-lg-2 col-sm-5 m-15px-tb">
                         <h6 class="white-color">
                             {{ Illuminate\Support\Str::upper(trans('app.txt.information')) }}
                         </h6>
@@ -229,6 +236,7 @@
                 </div>
             </div>
         </div>
+
         <div class="footer-bottom footer-border-light">
             <div class="container">
                 <div class="row">
@@ -245,6 +253,26 @@
         </div>
     </footer>
     <!-- End footer -->
+    
+    <!-- modal -->
+    <div class="container">
+        <div class="modal left fade" id="listAplModal" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content dark-bg">
+                    <div class="modal-header" style="background-color: #AE4435 !important;">
+                    </div>
+                    <div class="modal-body">
+                        <div class="nav flex-sm-column flex-row">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="m-btn m-btn-theme2nd" data-dismiss="modal">@lang('app.txt.close')</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin modal -->
 
     <!-- jquery -->
     <script src="{{ asset('static/js/jquery-3.2.1.min.js') }}"></script>
@@ -274,6 +302,35 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/css/bootstrap-slider.min.css" /> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/bootstrap-slider.min.js"></script> 
     <!-- end -->
+
+    <script type="text/javascript">
+        $('#apl_list').on('click','.apl_item',function(){
+            var val = $(this).attr('value');
+            var path = $('#page_id').val()==1?'V2/getApl':'../V2/getApl';
+
+            $.ajax({
+                url : path+'/'+val,
+                method : 'get',
+                dataType: 'json',
+                success : function(data){
+                    // set apl title
+                    $('#listAplModal .modal-header').html('<h4 class="white-color">'+val+'</h4>');
+
+                    // initialize apl items
+                    $('#listAplModal .modal-body').html('');
+
+                    // set apl items
+                    $('#listAplModal .modal-body').append("<h6 class='white-color'>@lang('app.txt.aplfound') : "+data.res.length+"</h6>");
+                    $.each(data.res,function(key,value){
+                        $('#listAplModal .modal-body').append('<a href={{route("member.select.apl")}} class="nav-item nav-link white-color"><i class="fa fa-building"></i> '+value.name+'</a>');
+                    });
+                }
+            });
+        });
+    </script>
+
+
+
     @stack('script')
     <!-- end -->
     

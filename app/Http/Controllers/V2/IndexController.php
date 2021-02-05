@@ -13,6 +13,7 @@ use App\Models\Category;
 use App\Models\Blog;
 use App\Models\Type;
 use App\Models\State;
+use App\Models\Localisation;
 use Session;
 use View;
 
@@ -61,14 +62,14 @@ class IndexController extends Controller
      */
     public function apl(Request $request)
     {
-        $apls = User::ofRole('apl')
+        $lapls = User::ofRole('apl')
             ->isActive()
             ->has('location')
             ->with('location')
             ->get();
         
         $data = [];
-        foreach($apls as $item){
+        foreach($lapls as $item){
             $html = view('user.map')->with('item', $item)->render();
             $data[] = [
               'id' => $item->id,
@@ -82,7 +83,7 @@ class IndexController extends Controller
         }
         
     	return view('V2.index.apl')
-            ->with('items', $apls)
+            ->with('items', $lapls)
             ->with(['data' => json_encode($data)]);
     }
 
@@ -123,6 +124,12 @@ class IndexController extends Controller
             ->get();
         
         $page->load(['childs', 'childs.pubs', 'pubs']);
+
+        $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','apl')
+                ->groupBy('localizations.locality')
+                ->get();
         
         if($page){$pubs = $page->pubs;}else{$pubs = [];}
 
@@ -130,6 +137,7 @@ class IndexController extends Controller
             ->with('item', $page)
             ->with('pubs', $page->pubs)
             ->with('products', $products)
+            ->with('lapls', $lapls)
             ->with('categories', $categories);
     }
 
@@ -171,6 +179,12 @@ class IndexController extends Controller
             ->get();
         
         $page->load(['childs', 'childs.pubs', 'pubs']);
+
+        $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','apl')
+                ->groupBy('localizations.locality')
+                ->get();
         
         if($page){$pubs = $page->pubs;}else{$pubs = [];}
 
@@ -178,6 +192,7 @@ class IndexController extends Controller
             ->with('item', $page)
             ->with('pubs', $page->pubs)
             ->with('products', $products)
+            ->with('lapls', $lapls)
             ->with('categories', $categories);
     }
 
@@ -220,6 +235,12 @@ class IndexController extends Controller
             ->get();
         
         $page->load(['childs', 'childs.pubs', 'pubs']);
+
+        $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','apl')
+                ->groupBy('localizations.locality')
+                ->get();
         
         if($page){$pubs = $page->pubs;}else{$pubs = [];}
 
@@ -227,6 +248,7 @@ class IndexController extends Controller
             ->with('item', $page)
             ->with('pubs', $page->pubs)
             ->with('products', $products)
+            ->with('lapls', $lapls)
             ->with('categories', $categories);
     }
 
@@ -267,6 +289,12 @@ class IndexController extends Controller
             ->get();
         
         $page->load(['childs', 'childs.pubs', 'pubs']);
+
+        $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','apl')
+                ->groupBy('localizations.locality')
+                ->get();
         
         if($page){$pubs = $page->pubs;}else{$pubs = [];}
 
@@ -274,6 +302,7 @@ class IndexController extends Controller
             ->with('item', $page)
             ->with('pubs', $page->pubs)
             ->with('products', $products)
+            ->with('lapls', $lapls)
             ->with('categories', $categories);
     }
 
@@ -314,6 +343,12 @@ class IndexController extends Controller
             ->get();
         
         $page->load(['childs', 'childs.pubs', 'pubs']);
+
+        $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','apl')
+                ->groupBy('localizations.locality')
+                ->get();
         
         if($page){$pubs = $page->pubs;}else{$pubs = [];}
 
@@ -321,6 +356,7 @@ class IndexController extends Controller
             ->with('item', $page)
             ->with('pubs', $page->pubs)
             ->with('products', $products)
+            ->with('lapls', $lapls)
             ->with('categories', $categories);
     }
 
@@ -365,6 +401,24 @@ class IndexController extends Controller
 
     public function login()
     {
-        return view('V2.auth.login');
+        $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','apl')
+                ->groupBy('localizations.locality')
+                ->get();
+
+        return view('V2.auth.login')
+            ->with('lapls',$lapls);
+    }
+    
+    public function getApl($apl)
+    {
+        $lapls = Localisation::select('users.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('localizations.locality', '=', $apl)
+                ->where('users.role','=','apl')
+                ->get();
+
+        return response()->json(['res'=>$lapls]);
     }
 }

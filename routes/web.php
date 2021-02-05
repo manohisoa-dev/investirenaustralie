@@ -246,6 +246,8 @@ Route::prefix('V2')->namespace('V2')->as('v2.')->group(function(){
     Route::get('publicities', 'IndexController@publicities_v2')->name('publicities');
     Route::get('confidentialities', 'IndexController@confidentialities_v2')->name('confidentialities');
     Route::get('apls', 'IndexController@apl')->name('apls');
+    // Get APL footer
+    Route::get('getApl/{apl}', 'IndexController@getApl')->name('getapl');
 
     // Shop and Product
     Route::post('shop/{category?}', 'SearchController@index')->name('search');
@@ -262,6 +264,7 @@ Route::prefix('V2')->namespace('V2')->as('v2.')->group(function(){
 
     // Auth
     Route::get('login', 'IndexController@login')->name('login');
+    
 
     // Register
     Route::middleware('guest')->group(function(){
@@ -270,4 +273,52 @@ Route::prefix('V2')->namespace('V2')->as('v2.')->group(function(){
         Route::get('verify-user/{code}', 'Auth\RegisterController@activateUser')->name('activate.user');
         Route::get('resend-code/{user}', 'Auth\RegisterController@resendActivation')->name('resend_code');
     });
+
+
+    Route::middleware(["auth", "role:member"])->group(function(){
+        // Buy product
+        Route::post('product/{product}', 'ShopController@order')->name('shop.order');
+        Route::get('product/{product}/apl', 'ShopController@selectApl')->name('shop.select.apl');
+
+        Route::get('order/last', 'ShopController@lastOrder')->name('shop.order.last');
+        Route::post('order/last', 'ShopController@cancel');
+        
+        Route::get('checkout', 'ShopController@getCheckout')->name('shop.checkout');
+        Route::post('checkout', 'ShopController@postCheckout');
+        
+        Route::prefix('member')->group(function(){
+
+            Route::get('select-apl', 'MemberController@selectApl')->name('member.select.apl');
+            Route::post('select-apl', 'MemberController@updateApl');
+
+            Route::get('/', 'BackendController@dashboard');
+            Route::get('favorites', 'BackendController@favorites');
+            Route::get('pins', 'BackendController@pins');
+            Route::get('searches', 'BackendController@searches');
+            
+            Route::get('contact/role/{role}', 'MemberController@contact')->name('member.contact');
+            Route::post('contact/role/{role}', 'MemberController@sendMail');
+            
+            Route::get('carts', 'MemberController@carts')->name('member.carts');
+            Route::get('orders', 'MemberController@orders')->name('member.orders');
+            Route::get('purchases', 'MemberController@purchases')->name('member.purchases');
+            Route::get('sale/{sale}', 'SaleController@show')->name('member.cart');
+            
+            Route::get('contact/{user}' , 'BackendController@contact')->name('member.user.contact');
+            Route::post('contact/{user}', 'BackendController@postContact');
+            
+            // Mail Controller Groups
+            Route::get('mails/{filter?}', 'MailController@all')->name('member.mail.list');
+            Route::prefix('mail')->group(function(){
+                Route::get('{mail}', 'MailController@view')->name('member.mail.index');
+                Route::get('delete/{mail}', 'MailController@delete')->name('member.mail.delete');
+            });
+        });
+        
+    });
+
+
+
+
+
 });

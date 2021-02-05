@@ -1,5 +1,5 @@
 <!-- Home Banner -->
-<section id="home" class="effect-section parallax" style="background-image: url({{ asset('images/slider/1.jpg') }});height: 36rem;">
+<section id="home" class="effect-section parallax" style="background-image: url({{ asset('images/slider/1.jpg') }});height: 42rem;">
     <div class="container">
         <div class="row full-screen align-items-center justify-content-between lg-m-80px-tb">
             
@@ -33,33 +33,35 @@
                 <a class="m-btn m-btn-theme m-100px-l" data-toggle="collapse" href="#residentiel" role="button" aria-expanded="false" aria-controls="residentiel">
                 <i class="fa fa-home" aria-hidden="true">&nbsp;@lang('app.btn.residentiel')</i></a>
                 <a class="m-btn m-btn-theme m-10px-l" data-toggle="collapse" href="#foncier" role="button" aria-expanded="false" aria-controls="foncier">
-                <i class="fa fa-home" aria-hidden="true">&nbsp;@lang('app.btn.foncier')</i></a>
+                <i class="fas fa-map" aria-hidden="true">&nbsp;@lang('app.btn.foncier')</i></a>
                 <a class="m-btn m-btn-theme m-10px-l" data-toggle="collapse" href="#industriel" role="button" aria-expanded="false" aria-controls="industriel">
-                <i class="fa fa-home" aria-hidden="true">&nbsp;@lang('app.btn.industriel')</i></a>
+                <i class="fa fa-industry" aria-hidden="true">&nbsp;@lang('app.btn.industriel')</i></a>
                 <a class="m-btn m-btn-theme m-10px-l" data-toggle="collapse" href="#commercial" role="button" aria-expanded="false" aria-controls="commercial">
-                <i class="fa fa-home" aria-hidden="true">&nbsp;@lang('app.btn.commercial')</i></a>
+                <i class="fa fa-building" aria-hidden="true">&nbsp;@lang('app.btn.commercial')</i></a>
             </div>
             <!-- residentiel -->
-            <div class="collapse m-150px-lr" id="residentiel">
-                <div class="form-group">
-                    <select id="basic" class="form-control" name="type">
-                        <option value="">@lang('app.input.type')</option>
-                        @if(isset($types))
-                            @foreach($types as $type)
-                                <option value="{{$type->id}}">{{$type->title.' ('.$type->products()->where('products.status', 'published')->count().')'}}</option>
-                            @endforeach
-                        @endif
-                    </select>
-                </div>
-                <div class="form-group">
-                    <select id="basic" class="form-control" name="location_type">
-                        <option value="">@lang('app.input.localisation')</option>
-                        @if(isset($locationTypes))
-                            @foreach($locationTypes as $locationType)
-                                <option value="{{$locationType->id}}">{{$locationType->title.' ('.$locationType->products()->where('products.status', 'published')->count().')'}}</option>
-                            @endforeach
-                        @endif
-                    </select>
+            <div class="collapse m-150px-lr p-25px-tb" id="residentiel">
+                <div class="col-lg-12 row">
+                    <div class="form-group mar-r-20 col-lg-6">
+                        <select id="basic" class="form-control" name="type">
+                            <option value="">@lang('app.input.type')</option>
+                            @if(isset($types))
+                                @foreach($types as $type)
+                                    <option value="{{$type->id}}">{{$type->title.' ('.$type->products()->where('products.status', 'published')->count().')'}}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                    <div class="form-group mar-r-20 col-lg-6">
+                        <select id="basic" class="form-control" name="location_type">
+                            <option value="">@lang('app.input.localisation')</option>
+                            @if(isset($locationTypes))
+                                @foreach($locationTypes as $locationType)
+                                    <option value="{{$locationType->id}}">{{$locationType->title.' ('.$locationType->products()->where('products.status', 'published')->count().')'}}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
                 </div>
                 
                 <div class="col-lg-12 row">
@@ -148,13 +150,11 @@
                         </div>
                     </div>
                 </div>
-
-                <button class="m-btn m-btn-theme2nd" type="submit"><i class="fa fa-search"></i></button>
             </div>
             <!-- fin residentiel -->
 
-            <!-- foncier -->
-            <div class="collapse m-100px-l" id="foncier">
+            <!-- foncier --> 
+            <div class="collapse m-100px-l p-25px-tb" id="foncier">
                 <div class="col-lg-12 row">
                     <div class="form-group mar-r-20 col-lg-6">
                         <label for="prix">@lang('app.input.prix') ( Australia Dollar AUD ) :</label>
@@ -183,21 +183,28 @@
                         </div>
                     </div>
                 </div>
-              </div><!-- end search-row -->
             </div>
             <!-- fin foncier -->
 
             <!-- industriel -->
-            <div class="collapse m-100px-l" id="industriel">
-                <h3>@lang('app.input.menuindustriel')</h3>
-                <p>@lang('app.input.menuindustriel.content')</p>      
+            <div class="collapse m-100px-l p-25px-tb" id="industriel">
+                <div class="col-lg-12 row">
+                    <div class="form-group mar-r-20 col-lg-6">
+                        <h3>@lang('app.input.menuindustriel')</h3>
+                        <p>@lang('app.input.menuindustriel.content')</p> 
+                    </div>
+                </div><!-- end search-row -->
             </div>
             <!-- fin industriel -->
 
             <!-- commercial -->
-            <div class="collapse m-100px-l" id="commercial">
-                <h3>@lang('app.input.menucommercial')</h3>
-                <p>@lang('app.input.menucommercial.content')</p>
+            <div class="collapse m-100px-l p-25px-tb" id="commercial">
+                <div class="col-lg-12 row">
+                    <div class="form-group mar-r-20 col-lg-6">
+                        <h3>@lang('app.input.menucommercial')</h3>
+                        <p>@lang('app.input.menucommercial.content')</p>
+                    </div>
+                </div>
             </div>
             <!-- fin commercial -->
           </div>

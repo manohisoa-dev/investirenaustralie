@@ -14,8 +14,8 @@
         <div class="font-small p-5px-t p-20px-b text-center border-top-1 border-color-dark-gray">
             <a class="m-15px-r body-color font-w-500" href="#"><i class="fa fa-arrows-alt"></i> @lang('app.num.area', ['num'=>number_format($item->area, 0)])</a>
             <a class="body-color font-w-500" href="#"><i class="fa fa-bed"></i> @lang('app.num.bed', ['num'=>$item->bedrooms])</a>
-            <a class="body-color font-w-500" href="#"><i class="fa fa-bathtub"></i> @lang('app.num.bath', ['num'=>$item->bathrooms])</a>
-            <a class="body-color font-w-500" href="#"><i class="fa fa-cab"></i> {{$item->garage_spaces?__('app.yes'):__('app.no')}}</a>
+            <a class="body-color font-w-500" href="#"><i class="fa fa-bath"></i> @lang('app.num.bath', ['num'=>$item->bathrooms])</a>
+            <a class="body-color font-w-500" href="#"><i class="fa fa-car"></i> {{$item->garage_spaces?__('app.yes'):__('app.no')}}</a>
         </div>
         <button type="button" class="m-btn m-btn-theme2nd font-w-500 ml-auto">{{$item->currency}} {{number_format($item->price, 0, '.', ' ')}}</button>
     </div>

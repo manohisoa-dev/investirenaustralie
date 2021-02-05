@@ -15,6 +15,7 @@ use App\Models\Pub;
 use App\Models\User;
 use App\Models\State;
 use App\Models\Type;
+use App\Models\Localisation;
 
 class ProductController extends Controller
 {
@@ -80,6 +81,12 @@ class ProductController extends Controller
                 
                 $states = State::orderBy('content', 'asc')
                     ->get();
+
+                $lapls = Localisation::select('localizations.*')
+                    ->join('users','users.location_id','=','localizations.id')
+                    ->where('users.role','=','apl')
+                    ->groupBy('localizations.locality')
+                    ->get();
                 
                 return view('V2.product.index')
                     ->with('item', $product)
@@ -91,6 +98,7 @@ class ProductController extends Controller
                     ->with('states', $states)
                     ->with('locationTypes', $locationTypes)
                     ->with('types', $types)
+                    ->with('lapls', $lapls)
                     ->with('categories', $categories);
             }
         }else{

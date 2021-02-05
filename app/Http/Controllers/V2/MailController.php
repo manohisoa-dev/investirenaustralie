@@ -9,6 +9,7 @@ use Validator;
 use App\Models\User;
 use App\Models\Mail;
 use App\Notifications\NewMail;
+use App\Models\Localisation;
 
 class MailController extends Controller
 {
@@ -67,11 +68,18 @@ class MailController extends Controller
         $content = \App\Models\Config::login()->get_meta_array('content', $locale);
         $address = \App\Models\Config::login()->get_meta_array('address', $locale);
         $contact = \App\Models\Config::login()->get_meta_array('contact', $locale);
+        $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','apl')
+                ->groupBy('localizations.locality')
+                ->get();
+
         return view('V2.index.contact')
             ->with('title', __('app.send_mail'))
             ->with('content', $content)
             ->with('address', $address)
             ->with('contact', $contact)
+            ->with('lapls', $lapls)
             ->with('breadcrumbs', __('app.send_mail'));
     }
 
