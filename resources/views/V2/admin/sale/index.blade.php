@@ -66,10 +66,16 @@
                         @forelse ( $records as $record )
                             <tr>
                             	<td>{{ $record->id }} </td>
-								<td><img class="thumb" src="{{$record->product->imageUrl()}}" width="50"></td>
+								<td>
+									<a href="{{route('V2.admin.product.index')}}/{{$record->id}}">
+										<img class="thumb" src="{{$record->product->imageUrl()}}" width="50">
+									</a>
+								</td>
 								<td>
 								@if($record->product)
-									<a href="#">{{$record->product->title}}</a><br />{{$record->product->excerpt()}}
+									<a href="{{route('V2.admin.product.index')}}/{{$record->id}}">
+										{{$record->product->title}}
+									</a><br />{{$record->product->excerpt()}}
 								@endif
 								</td>
 								<td>{{$record->currency}} {{number_format($record->price, 0, '.', ' ')}} / {{number_format($record->tma, 0, '.', ' ')}}</td>
@@ -109,7 +115,7 @@
 											@endif
 							
 											@if(!$record->afa_paid_at)
-												<a href="#" class="btn btn-default btn-circle" title="@lang('app.admin.sale.pay.afa')">
+												<a href="{{route('V2.admin.sale.pay', ['cartitem'=>$record, 'role'=>'afa'])}}" class="btn btn-default btn-circle" title="@lang('app.admin.sale.pay.afa')">
 													<i class="fa fa-university"></i>
 												</a>&nbsp;&nbsp;
 											@endif

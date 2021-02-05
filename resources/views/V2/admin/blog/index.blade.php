@@ -18,7 +18,8 @@
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
             <a href="{{ route('V2.admin.blog.create') }}" type="button" class="btn btn-primary btn-block">
-                <i class="fa fa-plus"></i> Ajouter un nouveau Blog            </a>
+                <i class="fa fa-plus"></i> Ajouter un nouveau Blog            
+			</a>
         </div>
     </div>
 </div>
@@ -36,39 +37,46 @@
                 <table class="table table-striped grid-view-tbl">
                 <thead>
                     <tr class="header-row">
-                                                    {!!\Nvd\Crud\Html::sortableTh('id','V2.admin.blog.index','Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('slug','V2.admin.blog.index','Slug')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('title','V2.admin.blog.index','Title')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('content','V2.admin.blog.index','Content')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('meta_tag','V2.admin.blog.index','Meta Tag')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('meta_description','V2.admin.blog.index','Meta Description')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('view_count','V2.admin.blog.index','View Count')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('status','V2.admin.blog.index','Status')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('starred','V2.admin.blog.index','Starred')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('post_type','V2.admin.blog.index','Post Type')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('image_id','V2.admin.blog.index','Image Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('author_id','V2.admin.blog.index','Author Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','V2.admin.blog.index','Created At')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','V2.admin.blog.index','Updated At')!!}
-                                                <th><a href="javascript:void(0)">Actions</a></th>
+						{!!\Nvd\Crud\Html::sortableTh('id','V2.admin.blog.index','Id')!!}
+						<th>@lang('app.table.photo')</th>
+						{!!\Nvd\Crud\Html::sortableTh('title','V2.admin.blog.index','Titres/Contenus')!!}
+						<th>@lang('app.table.comment')</th>
+						{!!\Nvd\Crud\Html::sortableTh('meta_tag','V2.admin.blog.index','Meta TAG')!!}
+						{!!\Nvd\Crud\Html::sortableTh('meta_description','V2.admin.blog.index','Meta DESC')!!}
+						{!!\Nvd\Crud\Html::sortableTh('status','V2.admin.blog.index','Statut')!!}
+						{!!\Nvd\Crud\Html::sortableTh('created_at','V2.admin.blog.index','Date')!!}
+						
+						<?php /*?>{!!\Nvd\Crud\Html::sortableTh('slug','V2.admin.blog.index','Slug')!!}
+						{!!\Nvd\Crud\Html::sortableTh('title','V2.admin.blog.index','Title')!!}
+						{!!\Nvd\Crud\Html::sortableTh('content','V2.admin.blog.index','Content')!!}						
+						{!!\Nvd\Crud\Html::sortableTh('view_count','V2.admin.blog.index','View Count')!!}						
+						{!!\Nvd\Crud\Html::sortableTh('starred','V2.admin.blog.index','Starred')!!}
+						{!!\Nvd\Crud\Html::sortableTh('post_type','V2.admin.blog.index','Post Type')!!}
+						{!!\Nvd\Crud\Html::sortableTh('image_id','V2.admin.blog.index','Image Id')!!}
+						{!!\Nvd\Crud\Html::sortableTh('author_id','V2.admin.blog.index','Author Id')!!}						
+						{!!\Nvd\Crud\Html::sortableTh('updated_at','V2.admin.blog.index','Updated At')!!}<?php */?>
+						<th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">
-                                                            <td><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
-                                                            <td><input type="text" class="form-control" name="slug" value="{{Request::input("slug")}}"></td>
-                                                            <td><input type="text" class="form-control" name="title" value="{{Request::input("title")}}"></td>
-                                                            <td><input type="text" class="form-control" name="content" value="{{Request::input("content")}}"></td>
-                                                            <td><input type="text" class="form-control" name="meta_tag" value="{{Request::input("meta_tag")}}"></td>
-                                                            <td><input type="text" class="form-control" name="meta_description" value="{{Request::input("meta_description")}}"></td>
-                                                            <td><input type="text" class="form-control" name="view_count" value="{{Request::input("view_count")}}"></td>
-                                                            <td><input type="text" class="form-control" name="status" value="{{Request::input("status")}}"></td>
-                                                            <td><input type="text" class="form-control" name="starred" value="{{Request::input("starred")}}"></td>
-                                                            <td><input type="text" class="form-control" name="post_type" value="{{Request::input("post_type")}}"></td>
-                                                            <td><input type="text" class="form-control" name="image_id" value="{{Request::input("image_id")}}"></td>
-                                                            <td><input type="text" class="form-control" name="author_id" value="{{Request::input("author_id")}}"></td>
-                                                            <td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>
-                                                            <td><input type="text" class="form-control" name="updated_at" value="{{Request::input("updated_at")}}"></td>
-                                                        <td style="min-width: 6em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>
+							<td width="5%"><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
+							<td></td>
+							<td><input type="text" class="form-control" name="title" value="{{Request::input("title")}}"></td>
+							<td></td>
+							<td><input type="text" class="form-control" name="meta_tag" value="{{Request::input("meta_tag")}}"></td>
+							<td><input type="text" class="form-control" name="meta_description" value="{{Request::input("meta_description")}}"></td>
+							<td><input type="text" class="form-control" name="status" value="{{Request::input("status")}}"></td>
+							<td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>
+							
+							<?php /*?><td><input type="text" class="form-control" name="slug" value="{{Request::input("slug")}}"></td>							
+							<td><input type="text" class="form-control" name="content" value="{{Request::input("content")}}"></td>							
+							<td><input type="text" class="form-control" name="view_count" value="{{Request::input("view_count")}}"></td>							
+							<td><input type="text" class="form-control" name="starred" value="{{Request::input("starred")}}"></td>
+							<td><input type="text" class="form-control" name="post_type" value="{{Request::input("post_type")}}"></td>
+							<td><input type="text" class="form-control" name="image_id" value="{{Request::input("image_id")}}"></td>
+							<td><input type="text" class="form-control" name="author_id" value="{{Request::input("author_id")}}"></td>							
+							<td><input type="text" class="form-control" name="updated_at" value="{{Request::input("updated_at")}}"></td><?php */?>
+							<td style="min-width: 6em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>
                         </form>
                     </tr>
                     </thead>
@@ -76,115 +84,64 @@
                     <tbody>
                         @forelse ( $records as $record )
                             <tr>
-                                                                <td>
-                                                                            {{ $record->id }}
-                                                                    </td>
-                                                                <td>
-                                                                        <span class="editable"
-                                          data-type="text"
-                                          data-name="slug"
-                                          data-value="{{ $record->slug }}"
-                                          data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('V2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->slug }}</span>
-                                                                    </td>
-                                                                <td>
-                                                                        <span class="editable"
+                                <td>{{ $record->id }}</td>
+								<td>
+									<a href="{{route('v2.blog.index',$record->slug)}}" target="_blank">
+										<img class="thumb" src="{{$record->imageUrl(true)}}" width="50">
+									</a>
+								</td>
+								<td>
+                                    <span class="editable"
                                           data-type="text"
                                           data-name="title"
                                           data-value="{{ $record->title }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
                                           data-url="{{ route('V2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->title }}</span>
-                                                                    </td>
-                                                                <td>
-                                                                        <span class="editable"
-                                          data-type="text"
-                                          data-name="content"
-                                          data-value="{{ $record->content }}"
-                                          data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('V2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ str_limit(strip_tags($record->content), "100", "...") }}</span>
-                                                                    </td>
-                                                                <td>
-                                                                        <span class="editable"
+                                          >
+										  <a href="{{route('v2.blog.index',$record->slug)}}" target="_blank">{{ $record->title }}</a><br />
+										  {{str_limit(strip_tags($record->excerpt()),"100","...")}}
+									</span>
+                                </td>
+								<td><a href="#">{{$record->comments_count}}</a></td>
+								<td>
+                                     <span class="editable"
                                           data-type="text"
                                           data-name="meta_tag"
                                           data-value="{{ $record->meta_tag }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
                                           data-url="{{ route('V2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->meta_tag }}</span>
-                                                                    </td>
-                                                                <td>
-                                                                        <span class="editable"
+                                          >{{ $record->meta_tag }}
+									 </span>
+                                 </td>
+                                 <td>
+                                     <span class="editable"
                                           data-type="text"
                                           data-name="meta_description"
                                           data-value="{{ $record->meta_description }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
                                           data-url="{{ route('V2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->meta_description }}</span>
-                                                                    </td>
-                                                                <td>
-                                                                        <span class="editable"
-                                          data-type="text"
-                                          data-name="view_count"
-                                          data-value="{{ $record->view_count }}"
-                                          data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('V2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->view_count }}</span>
-                                                                    </td>
-                                                                <td>
-                                                                        <span class="editable"
+                                          >{{ $record->meta_description }}
+									 </span>
+                                  </td>
+								  <td>
+                                      <span class="editable"
                                           data-type="text"
                                           data-name="status"
                                           data-value="{{ $record->status }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
                                           data-url="{{ route('V2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->status }}</span>
-                                                                    </td>
-                                                                <td>
-                                                                        <span class="editable"
-                                          data-type="number"
-                                          data-name="starred"
-                                          data-value="{{ $record->starred }}"
-                                          data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('V2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->starred }}</span>
-                                                                    </td>
-                                                                <td>
-                                                                        <span class="editable"
-                                          data-type="text"
-                                          data-name="post_type"
-                                          data-value="{{ $record->post_type }}"
-                                          data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('V2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->post_type }}</span>
-                                                                    </td>
-                                                                <td>
-                                                                        <span class="editable"
-                                          data-type="text"
-                                          data-name="image_id"
-                                          data-value="{{ $record->image_id }}"
-                                          data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('V2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->image_id }}</span>
-                                                                    </td>
-                                                                <td>
-                                                                        <span class="editable"
-                                          data-type="text"
-                                          data-name="author_id"
-                                          data-value="{{ $record->author_id }}"
-                                          data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('V2.admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->author_id }}</span>
-                                                                    </td>
-                                                                <td>
-                                                                            {{ $record->created_at }}
-                                                                    </td>
-                                                                <td>
-                                                                            {{ $record->updated_at }}
-                                                                    </td>
-                                                                @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('V2.admin.blog.index'), 'record' => $record ] )
+                                          >
+										  <a href="{{route('admin.blog.list', ['filter'=>$record->status])}}">
+											 @if($record->status=='published')
+											 <span class="label label-success">{{$record->status}}</span>
+											 @else
+											 <span class="label label-warning">{{$record->status}}</span>
+											 @endif
+										 </a>
+									  </span>
+                                   </td>
+								   <td>{{$record->created_at->diffForHumans()}}</td>
+                                   @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('V2.admin.blog.index'), 'record' => $record ] )
                             </tr>
                         @empty
                             @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 15])
