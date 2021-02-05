@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
+use App\User;
 use Session;
 
 class LoginController extends Controller
@@ -76,8 +77,7 @@ class LoginController extends Controller
             $link="V2/";        
         }  
 
-        return $link.\App\User::find(Auth::id())->roleUser->role_initial;
-        
+        return $link.(User::find(Auth::id())->roleUser->role_initial);
     }
     
     /**

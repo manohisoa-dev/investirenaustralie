@@ -127,27 +127,27 @@
         <li><a href="{{route('V2.admin.badword.create')}}">Ajouter un mot interdit</a></li>
     </ul>
 </li>
-<li class="{{Request::is('*/postalcode/*') || Request::is('*/postalcode') ? 'active' : ''}}">
-    <a href="#"><i class="fa fa-bars" title="Liste des codes postaux"></i> <span class="nav-label">Liste des codes postaux</span><span class="fa arrow"></span></a>
-    <ul class="nav nav-second-level collapse">
-        <li><a href="{{route('V2.admin.postalcode.index')}}">Liste des codes postaux</a></li>
-        <li><a href="{{route('V2.admin.postalcode.create')}}">Ajouter un code postal</a></li>
-    </ul>
-</li>
-<li class="{{Request::is('*/state/*') || Request::is('*/state') ? 'active' : ''}}">
-    <a href="#"><i class="fa fa-th-list" title="Liste des etats"></i> <span class="nav-label">Liste des etats</span><span class="fa arrow"></span></a>
-    <ul class="nav nav-second-level collapse">
-        <li><a href="{{route('V2.admin.state.index')}}">Liste des etats</a></li>
-        <li><a href="{{route('V2.admin.state.create')}}">Ajouter un Etat</a></li>
-    </ul>
-</li>
-<li class="{{Request::is('*/plan/*') || Request::is('*/plan') ? 'active' : ''}}">
-    <a href="#"><i class="fa fa-bars" title="Liste des plans"></i> <span class="nav-label">Liste des plans</span><span class="fa arrow"></span></a>
-    <ul class="nav nav-second-level collapse">
-        <li><a href="{{route('V2.admin.plan.index')}}">Liste des plans</a></li>
-        <li><a href="{{route('V2.admin.plan.create')}}">Ajouter un plan</a></li>
-    </ul>
-</li>
+{{--<li class="{{Request::is('*/postalcode/*') || Request::is('*/postalcode') ? 'active' : ''}}">--}}
+    {{--<a href="#"><i class="fa fa-bars" title="Liste des codes postaux"></i> <span class="nav-label">Liste des codes postaux</span><span class="fa arrow"></span></a>--}}
+    {{--<ul class="nav nav-second-level collapse">--}}
+        {{--<li><a href="{{route('V2.admin.postalcode.index')}}">Liste des codes postaux</a></li>--}}
+        {{--<li><a href="{{route('V2.admin.postalcode.create')}}">Ajouter un code postal</a></li>--}}
+    {{--</ul>--}}
+{{--</li>--}}
+{{--<li class="{{Request::is('*/state/*') || Request::is('*/state') ? 'active' : ''}}">--}}
+    {{--<a href="#"><i class="fa fa-th-list" title="Liste des etats"></i> <span class="nav-label">Liste des etats</span><span class="fa arrow"></span></a>--}}
+    {{--<ul class="nav nav-second-level collapse">--}}
+        {{--<li><a href="{{route('V2.admin.state.index')}}">Liste des etats</a></li>--}}
+        {{--<li><a href="{{route('V2.admin.state.create')}}">Ajouter un Etat</a></li>--}}
+    {{--</ul>--}}
+{{--</li>--}}
+{{--<li class="{{Request::is('*/plan/*') || Request::is('*/plan') ? 'active' : ''}}">--}}
+    {{--<a href="#"><i class="fa fa-bars" title="Liste des plans"></i> <span class="nav-label">Liste des plans</span><span class="fa arrow"></span></a>--}}
+    {{--<ul class="nav nav-second-level collapse">--}}
+        {{--<li><a href="{{route('V2.admin.plan.index')}}">Liste des plans</a></li>--}}
+        {{--<li><a href="{{route('V2.admin.plan.create')}}">Ajouter un plan</a></li>--}}
+    {{--</ul>--}}
+{{--</li>--}}
 <li class="{{Request::is('*/config/*') ? 'active' : ''}}">
     <a href="#"><i class="fa fa-wrench" title="Configurations"></i> <span class="nav-label">Configurations</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">

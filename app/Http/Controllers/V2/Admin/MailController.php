@@ -42,7 +42,7 @@ class MailController extends Controller
 
         # notification
         Notify::success('Mail a été créer avec succès');
-        return redirect(route('v2.adminmail.index'));
+        return redirect(route('v2.admin.mail.index'));
     }
 
     /**
@@ -89,7 +89,7 @@ class MailController extends Controller
 
         # notification
         Notify::success('Mail a été mise à jour avec succès');
-        return redirect(route('v2.adminmail.index'));
+        return redirect(route('v2.admin.mail.index'));
     }
 
     /**
@@ -103,7 +103,7 @@ class MailController extends Controller
 
         # notification
         Notify::success('Mail a été supprimer avec succès');
-        return redirect(route('v2.adminmail.index'));
+        return redirect(route('v2.admin.mail.index'));
     }
 
     protected function view($view, $data = [])
