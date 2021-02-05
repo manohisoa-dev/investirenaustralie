@@ -104,7 +104,7 @@
 									<dt>@lang('app.location.country'):</dt>
 								</div>
 								<div class="col-sm-8 text-sm-left">
-									<dd class="mb-1">{{$product->location->country}}</dd>
+									<dd class="mb-1">{{@$product->location->country}}</dd>
 								</div>
 							</dl>
 							<dl class="row mb-0">

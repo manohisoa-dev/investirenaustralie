@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\User;
 use App\Models\Mail;
 use App\Models\MailUser;
+use App\Role;
 
 use App\Notifications\NewMail;
 use App\Http\Controllers\Controller;
@@ -25,7 +26,7 @@ class AdminController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:admin');
+        $this->middleware('role:1');
     }
 
     /**

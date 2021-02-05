@@ -55,7 +55,7 @@ class User extends Model {
         \Request::input('email') and $query->where('email','like','%'.\Request::input('email').'%');
         \Request::input('password') and $query->where('password','like','%'.\Request::input('password').'%');
         \Request::input('role') and $query->where('role','like','%'.\Request::input('role').'%');
-        \Request::input('type') and $query->where('type','like','%'.\Request::input('type').'%');
+        \Request::input('type_users_id') and $query->where('type_users_id','like','%'.\Request::input('type_users_id').'%');
         \Request::input('language') and $query->where('language','like','%'.\Request::input('language').'%');
         \Request::input('status') and $query->where('status','like','%'.\Request::input('status').'%');
         \Request::input('percent') and $query->where('percent',\Request::input('percent'));
@@ -97,7 +97,7 @@ class User extends Model {
             'email' => 'required|string|max:100|email',
             'password' => 'required|string|max:191',
             'role' => 'required|string|max:20',
-            'type' => 'required|string|max:20',
+            'type_users_id' => 'required',
             'language' => 'required|string|max:191',
             'status' => 'required|string|max:20',
             'percent' => '',
@@ -211,25 +211,25 @@ class User extends Model {
             return false;
         
         
-        if($this->hasRole('afa')){
-            return !$user->hasRole('member');
+        if($this->hasRole(3)){
+            return !$user->hasRole(5);
         }
         
-        if($this->hasRole('seller')){
-            return !$user->hasRole('member');
+        if($this->hasRole(2)){
+            return !$user->hasRole(5);
         }
         
         
-        if($this->hasRole('member')){
-            if($user->hasRole('apl')){
+        if($this->hasRole(5)){
+            if($user->hasRole(4)){
                 return $this->apl && ($this->apl->id == $user->id);
             }
             
-            return $user->hasRole('admin');
+            return $user->hasRole(1);
         }
         
-        if($this->hasRole('apl')){
-            if($user->hasRole('member')){
+        if($this->hasRole(4)){
+            if($user->hasRole(5)){
                 return $user->apl && ($user->apl->id == $this->id);
             }
             
@@ -264,7 +264,7 @@ class User extends Model {
      */
     public function isAdmin()
     {
-      return $this->hasRole('admin');
+      return $this->hasRole(1);
     }
     
     /**
@@ -284,7 +284,7 @@ class User extends Model {
      */
     public function isPerson()
     {
-      return $this->hasRole('member')&&($this->type=='person');
+      return $this->hasRole(5)&&($this->type==2);
     }
     
     /**
@@ -294,7 +294,7 @@ class User extends Model {
      */
     public function hasApl()
     {
-      return $this->hasRole('member')
+      return $this->hasRole(5)
               &&$this->apl
               &&(!empty($this->apl_ends_at))
               &&($this->apl_ends_at>=\Carbon\Carbon::now());
@@ -354,6 +354,23 @@ class User extends Model {
     public function location()
     {
       return $this->hasOne(Localisation::class, 'id', 'location_id');
+    }
+    
+    /**
+     * A user can have one role
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function roleUser()
+    {
+        //return $this->belongsTo('App\Role');
+        return $this->hasOne(Role::class,'id','role');
+    }
+    
+    public function typeUser()
+    {
+        //return $this->belongsTo('App\Role');
+        return $this->hasOne(TypeUser::class,'id','type_users_id');
     }
     
     /**
@@ -466,9 +483,9 @@ class User extends Model {
      */
     public function orders()
     {
-        if($this->hasRole('member')) return $this->hasMany(Sale::class, 'author_id', 'id');
-        if($this->hasRole('apl'))    return $this->hasMany(Sale::class, 'apl_id', 'id');
-        if($this->hasRole('afa'))    return $this->hasMany(Sale::class, 'afa_id', 'id');
+        if($this->hasRole(5)) return $this->hasMany(Sale::class, 'author_id', 'id');
+        if($this->hasRole(4))    return $this->hasMany(Sale::class, 'apl_id', 'id');
+        if($this->hasRole(3))    return $this->hasMany(Sale::class, 'afa_id', 'id');
         return null;
     }
     
@@ -489,7 +506,7 @@ class User extends Model {
      */
     public function sales()
     {
-        if($this->hasRole('afa')){
+        if($this->hasRole(3)){
             return $this->belongsToMany(Product::class, 'sales', 'afa_id', 'product_id');
         }
         // else APL

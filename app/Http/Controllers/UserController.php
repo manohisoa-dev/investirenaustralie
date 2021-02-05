@@ -35,7 +35,7 @@ class UserController extends Controller
     public function contact(Request $request, User $user)
     {
         $this->middleware('auth');
-        $this->middleware('auth:admin');
+        $this->middleware('auth:1');
         
         $mail = new Mail();
         if($value = $request->old('subject'))    $mail->subject = $value;
@@ -53,7 +53,7 @@ class UserController extends Controller
     public function postContact(Request $request, User $user)
     {
         $this->middleware('auth');
-        $this->middleware('auth:admin');
+        $this->middleware('auth:1');
             
         // Validate request
         $datas = $request->all();
@@ -122,7 +122,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         $this->middleware('auth');
-        $this->middleware('role:admin');
+        $this->middleware('role:1');
         if(!in_array($user->role, ['admin', 'member', 'afa', 'apl', 'seller'])){
             return back()->with('error', 'Un probleme a survenu');
         }
@@ -147,7 +147,7 @@ class UserController extends Controller
     public function all(Request $request, $filter='all')
     {
         $this->middleware('auth');
-        $this->middleware('role:admin');
+        $this->middleware('role:1');
         
         $items = new User();
         

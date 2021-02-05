@@ -49,7 +49,14 @@
 								<td><input type="text" class="form-control" name="title" value="{{Request::input("title")}}"></td>
 								<td><input type="text" class="form-control" name="price" value="{{Request::input("price")}}"></td>    
 								<td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>  
-								<td><input type="text" class="form-control" name="status" value="{{Request::input("status")}}"></td>
+								<td>
+									<select class="form-control" name="status">
+										<option value="">Choisir statut</option>
+										@foreach($status as $st)
+										<option value="{{$st}}" {{@$_GET['status']==$st?'selected':''}}>{{$st}}</option>
+										@endforeach
+									</select>
+								</td>
 								<td><input type="text" class="form-control" name="seller_id" value="{{Request::input("seller_id")}}"></td>
 								<td><input type="text" class="form-control" name="author_id" value="{{Request::input("author_id")}}"></td>
                                 <td style="min-width: 6em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>

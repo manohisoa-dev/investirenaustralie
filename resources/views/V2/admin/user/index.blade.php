@@ -8,7 +8,7 @@
         <h2>Utilisateurs</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('V2.admin.user.index') }}">Utilisateurs</a>
+                <a href="{{ route('V2.admin.user.index') }}">Utilisateurs {{app()->getLocale()}}</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Listes</strong>
@@ -34,6 +34,77 @@
 				<h5>Liste des utilisateurs</h5>
 			</div>
 			<div class="ibox-content">
+				<div class="ibox float-e-margins">
+					<div class="ibox-title">
+						<h5><i class="fa fa-search"></i> Filtre de recherche</h5>
+						<div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+					</div>
+					<div class="ibox-content">
+						<form class="search-form">
+							<div class="row">
+								<div class="col-md-2">
+									<div class="form-group">
+										<label>@lang('app.select_role')</label> 
+										<select class="form-control" name="role" id="role">
+											<option value="">Tous</option>
+											@foreach($roles as $role)
+											<option value="{{$role->id}}" {{@$_GET['role']==$role->id?'selected':''}}>{{$role->role_name}}</option>
+											@endforeach
+										</select>
+									</div>
+								</div>
+								<div class="col-md-2">
+									<label>@lang('app.select_country')</label> 
+									<select class="form-control" name="country_id" id="country_id">
+										<option value="">Tous</option>
+										@foreach($countries as $c)
+										<option value="{{$c->id}}" {{@$_GET['country_id']==$c->id?'selected':''}}>{{$c->content}}</option>
+										@endforeach
+									</select>
+								</div>
+								<div class="col-md-2">
+									<label>@lang('app.select_state')</label> 
+									<select class="form-control" name="state_id" id="state_id">
+										<option value="">Tous</option>
+										@foreach($states as $stateItem)
+										<option value="{{$stateItem->id}}" {{@$_GET['state_id']==$stateItem->id?'selected':''}}>{{$stateItem->content}}</option>
+										@endforeach
+									</select>
+								</div>
+								<div class="col-md-2">
+									<label>Nom</label> 
+									<input type="text" name="name" value="{{@$_GET['name']}}" class="form-control" />
+								</div>
+								<div class="col-md-2">
+									<label>Type</label> 
+									<select class="form-control" name="type_users_id" id="type_users_id">
+										<option value="">Tous</option>
+										@foreach($typeUser as $type)
+										<option value="{{$type->id}}" {{@$_GET['type_users_id']==$type->id?'selected':''}}>{{$type->type_user_name}}</option>
+										@endforeach
+									</select>
+								</div>
+								<div class="col-md-2">
+									<label>Status</label> 
+									<select class="form-control" name="status">
+										<option value="">Tous</option>
+										@foreach($statuts as $st)
+										<option value="{{$st}}" {{@$_GET['status']==$st?'selected':''}}>{{$st}}</option>
+										@endforeach
+									</select>
+								</div>
+							</div>
+							<div class="hr-line-dashed"></div>
+							<button type="submit" class="btn btn-primary btn-sm pull-right"><i class="fa fa-search"></i> Filtrer</button>
+							<div style="clear:both"></div>
+						</form>
+					</div>
+				</div>
+				
                 <table class="table table-striped grid-view-tbl">
                 <thead>
                     <tr class="header-row">
@@ -43,38 +114,9 @@
                         {!!\Nvd\Crud\Html::sortableTh('email','V2.admin.user.index','Email')!!}
 						{!!\Nvd\Crud\Html::sortableTh('created_at','V2.admin.user.index','Date')!!}
 						{!!\Nvd\Crud\Html::sortableTh('role','V2.admin.user.index','Rôle')!!}
-						{!!\Nvd\Crud\Html::sortableTh('type','V2.admin.user.index','Type')!!}
+						{!!\Nvd\Crud\Html::sortableTh('type_users_id','V2.admin.user.index','Type')!!}
 						{!!\Nvd\Crud\Html::sortableTh('status','V2.admin.user.index','Statuts')!!}
 						<th><a href="javascript:void(0)">Actions</a></th>
-                    </tr>
-                    <tr class="search-row">
-                        <form class="search-form">
-							<td style="width:2%"><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
-							<td></td>
-							<td><input type="text" class="form-control" name="name" value="{{Request::input("name")}}"></td>
-                            <td><input type="text" class="form-control" name="email" value="{{Request::input("email")}}"></td>
-							<td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>
-							<td>
-								<select class="form-control" name="role">
-									<option value="">@lang('app.select_role')</option>
-									<option value="admin" {{@$_GET['role']=='admin'?'selected':''}}>@lang('app.admin')</option>
-									<option value="apl" {{@$_GET['role']=='apl'?'selected':''}}>@lang('app.apl')</option>
-									<option value="afa" {{@$_GET['role']=='afa'?'selected':''}}>@lang('app.afa')</option>
-									<option value="member" {{@$_GET['role']=='member'?'selected':''}}>@lang('app.member')</option>
-								</select>
-							</td>
-							<td>
-								<select class="form-control" name="type">
-									<option value="">@lang('app.select_user')</option>
-									@foreach($type as $ty)
-									<option value="{{$ty}}" {{@$_GET['type']==$ty?'selected':''}}>{{$ty}}</option>
-									@endforeach
-								</select>
-								<?php /*?><input type="text" class="form-control" name="type" value="{{Request::input("type")}}"><?php */?>
-							</td>
-							<td><input type="text" class="form-control" name="status" value="{{Request::input("status")}}"></td>
-                            <td style="min-width: 10em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>
-                        </form>
                     </tr>
                     </thead>
 
@@ -113,21 +155,23 @@
 								data-value="{{ $record->role }}"
 								data-pk="{{ $record->{$record->getKeyName()} }}"
 								data-url="{{ route('V2.admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
-								><a href=""><span class="label label-warning">{{$record->role}}</span></a></span>
+								><a href=""><span class="label label-warning">{{$record->roleUser['role_initial']}}</span></a></span>
 							</td>
 							<td>
 								<span class="editable"
 								data-type="text"
-								data-name="type"
-								data-value="{{ $record->type }}"
+								data-name="type_users_id"
+								data-value="{{ $record->type_users_id }}"
 								data-pk="{{ $record->{$record->getKeyName()} }}"
 								data-url="{{ route('V2.admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
 								>
-								@if($record->isPerson())
-								<a href=""><span class="label label-success">{{$record->type}}</span>
+								@if($record->type_users_id == 2)
+								<a href="">
+									<span class="label label-success">{{$record->typeUser['type_user_name']}}</span>
 								</a>
 								@else
-								<a href=""><span class="label label-primary">{{$record->type}}</span>
+								<a href="">
+									<span class="label label-primary">{{$record->typeUser['type_user_name']}}</span>
 								</a>
 								@endif
 								</span>
@@ -184,4 +228,14 @@
 		</div>
 	</div>
 </div>
+@endsection
+@section('custom-script')
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#role").select2();
+		$("#country_id").select2();
+		$("#state_id").select2();
+		$("#type_users_id").select2();
+	});
+</script>
 @endsection

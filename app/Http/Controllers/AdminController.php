@@ -24,7 +24,7 @@ class AdminController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:admin');
+        $this->middleware('role:1');
     }
 
     /**
@@ -34,7 +34,6 @@ class AdminController extends Controller
      */
     public function dashboard()
     {
-        $count = [];
         $count['users'] = User::count();
         $count['products'] = Product::count();
         $count['orders'] = Product::ofStatus('ordered')->count();

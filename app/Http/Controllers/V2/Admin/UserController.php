@@ -13,17 +13,25 @@ use App\Mail;
 use App\Models\MailUser;
 use App\Country;
 use App\State;
+use App\Role;
+use App\TypeUser;
 
 class UserController extends Controller {
     public $viewDir = "V2.admin.user";
 
     public function index() {
         $this->middleware('auth');
-        $this->middleware('role:admin');
-
-        $type = User::groupBy('type')->pluck('type', 'type');
-        $records = User::findRequested();
-        return $this->view("index", ['records' => $records, 'type' => $type]);
+        $this->middleware('role:1');
+        
+        $role = Role::all();
+        $statuts = User::groupBy('status')->pluck('status', 'status');
+        $countries = Country::all();
+        $states = State::all();
+        $typeUser = TypeUser::all();
+        $records = User::findRequested();        
+        
+        return $this->view("index", ['records' => $records, 'roles' => $role, 'countries' =>
+            $countries,'states'=>$states,'typeUser' => $typeUser,'statuts'=>$statuts]);
     }
 
     /**
