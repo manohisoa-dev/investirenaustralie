@@ -113,5 +113,51 @@ class SaleController extends Controller
     {
         return view($this->viewDir.".".$view, $data);
     }
+    
+    /**
+    * Pay user by role
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @param  \App\Models\Sale $sale
+    * @param  Mixed $role
+    * @return \Illuminate\Http\Response
+    */
+    public function pay(Request $request, Sale $sale, $role)
+    {
+        $this->middleware('auth');
+        $this->middleware('role:1');
+        
+        if(($sale->status!='ordered')||!$sale->product||!$sale->apl||!$sale->afa){
+            abort(404);
+        }
+        
+        switch($role){
+            case 'apl':
+                if(!empty($sale->apl_paid_at)){
+                    abort(404);
+                }
+                $user = $sale->apl;
+                break;
+            case 'afa':
+                if(!empty($sale->afa_paid_at)){
+                    abort(404);
+                }
+                $user = $sale->afa;
+                break;
+            default:
+                abort(404);
+                break;
+        }
+        
+        $action = route('admin.sale.pay', ['sale'=>$sale, 'role'=>$role]);
+        $title = __('app.shop.pay.'.$role);
+        return view('V2.admin.sale.pay')
+            ->with('title',   $title)
+            ->with('role',    $role)
+            ->with('action',  $action)
+            ->with('item',    $sale)
+            ->with('user',    $user)
+            ->with('breadcrumbs', $title);
+    }
 
 }

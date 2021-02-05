@@ -46,7 +46,7 @@
 						<th>@lang('app.table.customer')</th>
 						<th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
-                    <tr class="search-row">
+                    <?php /*?><tr class="search-row">
                         <form class="search-form">
 							<td width="5%"><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
 							<td></td>
@@ -59,7 +59,7 @@
 							<td></td>
 							<td style="min-width: 6em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>
                         </form>
-                    </tr>
+                    </tr><?php */?>
                     </thead>
 
                     <tbody>
@@ -103,7 +103,7 @@
 									<form class="form-inline" action="{{route('V2.admin.sale.index')}}/{{$record->id}}" method="POST">
 										@if($record->status=='ordered')
 											@if(!$record->apl_paid_at)
-												<a href="#" class="btn btn-default btn-circle" title="@lang('app.admin.sale.pay.apl')">
+												<a href="{{route('V2.admin.sale.pay', ['cartitem'=>$record, 'role'=>'apl'])}}" class="btn btn-default btn-circle" title="@lang('app.admin.sale.pay.apl')">
 													<i class="fa fa-handshake-o" aria-hidden="true"></i>
 												</a>&nbsp;&nbsp;
 											@endif

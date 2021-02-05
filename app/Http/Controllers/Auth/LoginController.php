@@ -76,9 +76,6 @@ class LoginController extends Controller
         if(session('paths') == "V2/login"){
             $link="V2/";        
         }  
-
-        // dd(Auth::user());
-
         return $link.(User::find(Auth::id())->role_initial);
         
         
@@ -91,8 +88,6 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-
-
 
         $latitude = option(\App\Models\Config::$APP_LATITUDE, -25.647467468105795);
         $longitude = option(\App\Models\Config::$APP_LONGITUDE, 146.89921517372136);
@@ -154,7 +149,6 @@ class LoginController extends Controller
         */
         if ($this->guard()->validate($this->credentials($request))) {
             $user = $this->guard()->getLastAttempted();
-            
             // Make sure the user is active
             if ($user->active() && $this->attemptLogin($request)) {
                 // Send the normal successful login response
