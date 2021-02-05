@@ -44,6 +44,7 @@ Route::prefix('V2')->namespace('V2')->as('V2.')->group(function(){
         Route::get('show/{user}', 'UserController@show')->name('user.show');
         
         Route::resource('sale','SaleController');
+        Route::get('pay/{sale}/{role}', 'SaleController@pay')->name('sale.pay');
         Route::resource('role','RoleController');
         Route::resource('type-user','TypeUserController');
 
