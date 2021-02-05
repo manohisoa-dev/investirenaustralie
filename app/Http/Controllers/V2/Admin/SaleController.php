@@ -1,0 +1,117 @@
+<?php
+namespace App\Http\Controllers\V2\Admin;
+
+use App\Sale;
+use App\Product;
+use Illuminate\Http\Request;
+
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+use Jleon\LaravelPnotify\Notify;
+
+class SaleController extends Controller
+{
+    public $viewDir = "V2.admin.sale";
+
+    public function index()
+    {
+        $records = Sale::findRequested();
+        return $this->view( "index", ['records' => $records] );
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return  \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return $this->view("create");
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param    \Illuminate\Http\Request  $request
+     * @return  \Illuminate\Http\Response
+     */
+    public function store( Request $request )
+    {
+        $this->validate($request, Sale::validationRules());
+
+        Sale::create($request->all());
+
+        # notification
+        Notify::success('Sale a été créer avec succès');
+        return redirect(route('V2.admin.sale.index'));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @return  \Illuminate\Http\Response
+     */
+    public function show(Request $request, Sale $sale)
+    {
+        return $this->view("show",['sale' => $sale]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @return  \Illuminate\Http\Response
+     */
+    public function edit(Request $request, Sale $sale)
+    {
+        return $this->view( "edit", ['sale' => $sale] );
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param    \Illuminate\Http\Request  $request
+     * @return  \Illuminate\Http\Response
+     */
+    public function update(Request $request, Sale $sale)
+    {
+        if( $request->isXmlHttpRequest() )
+        {
+            $data = [$request->name  => $request->value];
+            $validator = \Validator::make( $data, Sale::validationRules( $request->name ) );
+            if($validator->fails())
+                return response($validator->errors()->first( $request->name),403);
+            $sale->update($data);
+            return "Record updated";
+        }
+
+        $this->validate($request, Sale::validationRules());
+
+        $sale->update($request->all());
+
+        # notification
+        Notify::success('Sale a été mise à jour avec succès');
+        return redirect(route('V2.admin.sale.index'));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @return  \Illuminate\Http\Response
+     */
+    public function destroy(Request $request, Sale $sale)
+    {
+        $this->middleware('auth');
+        $this->middleware('role:1');
+        $sale->delete();
+
+        # notification
+        Notify::success('Vente a été supprimer avec succès');
+        return redirect(route('V2.admin.sale.index'));
+    }
+
+    protected function view($view, $data = [])
+    {
+        return view($this->viewDir.".".$view, $data);
+    }
+
+}

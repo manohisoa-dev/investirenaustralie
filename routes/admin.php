@@ -14,7 +14,7 @@ use Intervention\Image\ImageManagerStatic as InterventionImage;
 use Illuminate\Support\Facades\Storage;
 /* ---------- ROUTE V2 ------------------*/
 Route::prefix('V2')->namespace('V2')->as('V2.')->group(function(){
-    Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","role:admin"])->group(function(){
+    Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","role:1"])->group(function(){
         Route::get('/', 'AdminController@dashboard')->name('dashboard');
         //profil
 
@@ -42,6 +42,10 @@ Route::prefix('V2')->namespace('V2')->as('V2.')->group(function(){
         Route::resource('user','UserController');
         Route::get('desactiver/{user}', 'UserController@desactiver')->name('user.desactiver');
         Route::get('show/{user}', 'UserController@show')->name('user.show');
+        
+        Route::resource('sale','SaleController');
+        Route::resource('role','RoleController');
+        Route::resource('type-user','TypeUserController');
 
         // Config Controller
         Route::prefix('config')->as('config.')->group(function () {
@@ -60,7 +64,7 @@ Route::prefix('V2')->namespace('V2')->as('V2.')->group(function(){
 
 
 /* ---------- ROUTE V1 ------------------*/
-Route::prefix('admin')->middleware(["auth","role:admin"])->group(function(){
+Route::prefix('admin')->middleware(["auth","role:1"])->group(function(){
 
     // User Controller Groups
     Route::get('users/{filter?}', 'UserController@all')->name('admin.user.list');

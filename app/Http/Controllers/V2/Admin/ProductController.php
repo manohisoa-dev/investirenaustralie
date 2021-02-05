@@ -18,8 +18,8 @@ class ProductController extends Controller
     public function index()
     {
         $records = Product::findRequested();
-        
-        return $this->view( "index", ['records' => $records] );
+        $status = Product::groupBy('status')->pluck('status', 'status');        
+        return $this->view( "index", ['records' => $records,'status' => $status] );
     }
 
     /**

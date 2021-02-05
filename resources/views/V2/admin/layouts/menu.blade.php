@@ -4,7 +4,7 @@
         <img alt="image" class="rounded-circle" src="{{Auth::user()->imageUrl()}}" width="50"/>
         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
             <span class="block m-t-xs font-bold">{{ucfirst(Auth::user()->name)}}</span>
-            <span class="text-muted text-xs block">{{ucfirst(Auth::user()->role)}}<b class="caret"></b></span>
+            <span class="text-muted text-xs block">{{\App\User::find(Auth::id())->roleUser->role_name}}<b class="caret"></b></span>
         </a>
         <ul class="dropdown-menu animated fadeInRight m-t-xs">
             <li><a class="dropdown-item" href="{{route('V2.admin.profile')}}">Profile</a></li>
@@ -33,7 +33,7 @@
         <li><a href="graph_peity.html">Carts</a></li>
     </ul>
 </li>
-<li class="{{Request::is('*/user/*') || Request::is('*/user') ? 'active' : ''}}">
+<li class="{{Request::is('*/user/*') || Request::is('*/user') || Request::is('*/role/*') || Request::is('*/role') || Request::is('*/type-user/*') || Request::is('*/type-user') ? 'active' : ''}}">
     <a href="#">
 		<i class="fa fa-users" title="Parties prenantes"></i> 
 		<span class="nav-label">Parties prenantes </span><span class="fa arrow"></span>
@@ -42,31 +42,39 @@
 		<li class="">
 			<a href="{{route('V2.admin.user.index')}}">Tous</a>
 		</li>
+		<li class="">
+			<a href="{{route('V2.admin.role.index')}}">Rôles</a>
+		</li>
+		<li class="">
+			<a href="{{route('V2.admin.type-user.index')}}">Types</a>
+		</li>
     </ul>
 </li>
 <li class="{{Request::is('*/product/*') || Request::is('*/product') ? 'active' : ''}}">
-    <a href="mailbox.html"><i class="fa fa-product-hunt" title="Produits"></i> <span class="nav-label">Produits </span><span class="label label-warning float-right">16/24</span></a>
+    <a href="#">
+		<i class="fa fa-product-hunt" title="Produits"></i> 
+		<span class="nav-label">Produits </span>
+		<span class="label label-warning float-right">16/24</span>
+	</a>
     <ul class="nav nav-second-level collapse">
         <li><a href="{{route('V2.admin.product.index')}}">Liste des produits</a></li>
-        <!--<li><a href="mail_detail.html">Produits en attente</a></li>
-        <li><a href="mail_compose.html">Produits publiés</a></li>
-        <li><a href="email_template.html">Produits commandés</a></li>
-        <li><a href="email_template.html">Produits vendus</a></li>
-        <li><a href="email_template.html">Produits archivés</a></li>
-        <li><a href="email_template.html">Produits aux corbeilles</a></li>-->
     </ul>
 </li>
-<li>
-    <a href="mailbox.html"><i class="fa fa-shopping-cart" title="Ventes"></i> <span class="nav-label">Ventes </span><span class="label label-warning float-right">16/24</span></a>
+<li class="{{Request::is('*/sale/*') || Request::is('*/sale') ? 'active' : ''}}">
+    <a href="#">
+		<i class="fa fa-shopping-cart" title="Ventes"></i> 
+		<span class="nav-label">Ventes </span>
+		<span class="label label-warning float-right">16/24</span>
+	</a>
     <ul class="nav nav-second-level collapse">
-        <li><a href="mailbox.html">Toutes les ventes</a></li>
-        <li><a href="mail_detail.html">Ventes en attente</a></li>
+        <li><a href="{{route('V2.admin.sale.index')}}">Toutes les ventes</a></li>
+        <?php /*?><li><a href="mail_detail.html">Ventes en attente</a></li>
         <li><a href="mail_compose.html">Ventes en cours</a></li>
         <li><a href="email_template.html">Ventes: APL non payé</a></li>
         <li><a href="email_template.html">Ventes: APL payé</a></li>
         <li><a href="email_template.html">Ventes: AFA non payé</a></li>
         <li><a href="email_template.html">Ventes: AFA payé</a></li>
-        <li><a href="email_template.html">Ventes effectué</a></li>
+        <li><a href="email_template.html">Ventes effectué</a></li><?php */?>
     </ul>
 </li>
 <li class="{{Request::is('*/blog/*') || Request::is('*/blog') ? 'active' : ''}}">
