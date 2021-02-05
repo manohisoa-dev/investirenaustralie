@@ -10,55 +10,51 @@
 <section class="section">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8">
-                <div class="col-md-12">
-                    <div class="property-sorting">        
-                        <form id="filter-form" method="get" action="">
-                            <div  class="pull-left form-group">
-                                <label for="orderBy"> @lang('app.form.filterBy'):   </label>  
-                                <select class="form-control" name="orderBy" id="orderBy" onchange="document.getElementById('filter-form').submit();"> 
-                                    <option value="created_at" {{$orderBy=='created_at'?'selected':''}}>@lang('app.pub_date')</option>  
-                                    <option value="view_count" {{$orderBy=='view_count'?'selected':''}}>@lang('app.most_view')</option>
-                                </select>
-                            </div>
-                            <div  class="pull-left ml-4 form-group">
-                                <label for="order"> @lang('app.form.order'):   </label>  
-                                <select class="form-control" name="order" id="order" onchange="document.getElementById('filter-form').submit();"> 
-                                    <option value="asc" {{$order=='asc'?'selected':''}}>@lang('app.form.asc')</option> 
-                                    <option value="desc" {{$order=='desc'?'selected':''}}>@lang('app.form.desc')</option> 
-                                </select>
-                            </div>
-                            <div  class="pull-right">
-                                <p class="layout-view"> @lang('app.form.vue'): <i class="fa fa-th-large selected" data-layout="6"></i> <i class="fa fa-list-ul" data-layout="12"></i> </p>
-                            </div>
-                        </form>
-                    </div>           
-                </div>
-                <div class="col-md-12">
-                    <!-- Section -->
-                    <section class="section">
-                        <div class="container">
-                            <div class="row w-100" >
-                                <div id="infinite-scroll" class="product-data"> 
-                                    @include('V2.ajax.product.all',['items'=>$items])
+            <div class="col-lg-8" style="margin-top: -10%;">
+                <!-- Section -->
+                <section class="section">
+                    <div class="m-15px-l col-md-11">
+                        <div class="property-sorting">        
+                            <form id="filter-form" method="get" action="">
+                                <div  class="pull-left form-group">
+                                    <label for="orderBy"> @lang('app.form.filterBy'):   </label>  
+                                    <select class="form-control" name="orderBy" id="orderBy" onchange="document.getElementById('filter-form').submit();"> 
+                                        <option value="created_at" {{$orderBy=='created_at'?'selected':''}}>@lang('app.pub_date')</option>  
+                                        <option value="view_count" {{$orderBy=='view_count'?'selected':''}}>@lang('app.most_view')</option>
+                                    </select>
                                 </div>
-                                <div class="row">
-                                    <div class="ajax-load text-center" style="display:none">
-                                        <p><img src="{{asset('images/loader.gif')}}">@lang('app.load_more_product')</p>
-                                    </div>  
+                                <div  class="pull-left ml-4 form-group">
+                                    <label for="order"> @lang('app.form.order'):   </label>  
+                                    <select class="form-control" name="order" id="order" onchange="document.getElementById('filter-form').submit();"> 
+                                        <option value="asc" {{$order=='asc'?'selected':''}}>@lang('app.form.asc')</option> 
+                                        <option value="desc" {{$order=='desc'?'selected':''}}>@lang('app.form.desc')</option> 
+                                    </select>
                                 </div>
+                                <div  class="pull-right">
+                                    <p class="layout-view"> @lang('app.form.vue'): <a href="javascript:void(0)" id="grid"><i class="fa fa-th-large selected" data-layout="6"></i></a> <a href="javascript:void(0)" id="list"><i class="fa fa-list-ul" data-layout="12"></i></a> </p>
+                                </div>
+                            </form>
+                        </div>           
+                    </div>
+                    <div class="container">
+                        <div class="row w-100" >
+                            <div id="infinite-scroll" class="product-data"> 
+                                @include('V2.ajax.product.all',['items'=>$items])
+                            </div>
+                            <div class="row">
+                                <div class="ajax-load text-center" style="display:none">
+                                    <p><img src="{{asset('images/loader.gif')}}">@lang('app.load_more_product')</p>
+                                </div>  
                             </div>
                         </div>
-                    </section>
-                    <!-- End Section -->
-                </div>
-                
+                    </div>
+                </section>
+                <!-- End Section -->
             </div>
 
             <!-- Sidebar -->
                 @include('V2.includes.sidebar')
             <!-- fin sidebar -->
-
         </div>
     </div>
 </section>
@@ -175,5 +171,25 @@
         </script>
     @endif
 @endsection
+
+@push('script')
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // list view
+            $('#list').click(function(event){
+                event.preventDefault();
+                $('.view-item').removeClass('col-lg-6');
+                $('.view-item').addClass('col-lg-12');
+            });
+
+            // grid view
+            $('#grid').click(function(event){
+                event.preventDefault();
+                $('.view-item').removeClass('col-lg-12');
+                $('.view-item').addClass('col-lg-6');
+            });
+        });
+    </script>
+@endpush
 
 

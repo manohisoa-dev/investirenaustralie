@@ -43,26 +43,6 @@
                 </div>           
             </div>
 
-
-            @push('script') 
-
-                <script type="text/javascript">
-                    $(document).ready(function() {
-                        $('#list').click(function(event){
-                            event.preventDefault();
-                            
-                        });
-
-
-                        $('#grid').click(function(event){
-                            event.preventDefault();
-                            
-                        });
-                    });
-                </script>
-
-            @endpush
-
             <!-- Show all blog -->
             @include('V2.ajax.blog.all',['items'=>$items])            
             
@@ -85,6 +65,10 @@
     </div>
 </section>
 <!-- End Section -->
+
+    @push('script') 
+        <script type="text/javascript" src="{{ asset('static/js/app.js') }}"></script>
+    @endpush
 
 @endsection
 

@@ -168,14 +168,14 @@
     @yield('content')
 
 
-    <footer class="garnet-bg footer border-top-1 border-color-dark-gray">
-        <div class="footer-top">
+    <footer class="grey-bg footer border-top-1 border-color-dark-gray">
+        <div class="footer-top site-footer">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-4 col-sm-12 m-15px-tb mr-auto">
                         <div class="m-20px-b">
                             <a class="footer-logo" href="{{route('v2.home')}}">
-                                <img src="{{ asset('images/logo_white.png') }}" title="Logo IEA" alt="Logo IEA">
+                                <img src="{{ asset('images/logos.png') }}" title="Logo IEA" alt="Logo IEA">
                             </a>
                         </div>
                     </div>
@@ -212,7 +212,7 @@
                         </h6>
                         <ul class="list-unstyled links-white footer-link-1">
                             @foreach($lapls as $apl)
-                                <li><a class="apl_item" href="javascript:void(0);" value="{{ $apl->locality }}" data-toggle="modal" data-target="#listAplModal">{{ $apl->locality }}</a></li>                                
+                                <li><a class="apl_item" href="#" value="{{ $apl->locality }}" data-toggle="modal" data-target="#listAplModal">{{ $apl->locality }}</a></li>                                
                             @endforeach
                         </ul>
                     </div>
@@ -222,8 +222,8 @@
                         </h6>
                         <address>
                             <p class="white-color-light m-5px-b">301 The Greenhouse London,<br> E2 8DY UK</p>
-                            <p class="m-5px-b"><a class="theme4rd-color border-color-theme4nd" href="mailto:support@domain.com">info@admin.com</a></p>
-                            <p class="m-5px-b"><a class="theme4rd-color border-color-theme4nd" href="tel:820-885-3321">+61 33 333 33</a></p>
+                            <p class="m-5px-b"><a class="theme2nd-color border-color-theme4nd" href="mailto:support@domain.com">info@admin.com</a></p>
+                            <p class="m-5px-b"><a class="theme2nd-color border-color-theme4nd" href="tel:820-885-3321">+61 33 333 33</a></p>
                         </address>
                         <div class="social-icon si-30 theme2nd nav">
                             @foreach(\App\Models\Config::socialRules() as $key => $value)
@@ -306,26 +306,43 @@
     <script type="text/javascript">
         $('#apl_list').on('click','.apl_item',function(){
             var val = $(this).attr('value');
-            var path = $('#page_id').val()==1?'V2/getApl':'../V2/getApl';
+            var uri = '{{ URL::to("V2/getApl") }}'+'/'+val;
+            var envoi = $.get( uri );
 
-            $.ajax({
-                url : path+'/'+val,
-                method : 'get',
-                dataType: 'json',
-                success : function(data){
-                    // set apl title
-                    $('#listAplModal .modal-header').html('<h4 class="white-color">'+val+'</h4>');
+            envoi.done( function(data) {
+                // set apl title
+                $('#listAplModal .modal-header').html('<h4 class="white-color">'+val+'</h4>');
 
-                    // initialize apl items
-                    $('#listAplModal .modal-body').html('');
+                // initialize apl items
+                $('#listAplModal .modal-body').html('');
 
-                    // set apl items
-                    $('#listAplModal .modal-body').append("<h6 class='white-color'>@lang('app.txt.aplfound') : "+data.res.length+"</h6>");
-                    $.each(data.res,function(key,value){
-                        $('#listAplModal .modal-body').append('<a href={{route("member.select.apl")}} class="nav-item nav-link white-color"><i class="fa fa-building"></i> '+value.name+'</a>');
-                    });
-                }
+                // set apl items
+                $('#listAplModal .modal-body').append("<h6 class='white-color'>@lang('app.txt.aplfound') : "+data.res.length+"</h6>");
+                $.each(data.res,function(key,value){
+                    $('#listAplModal .modal-body').append('<a href={{route("member.select.apl")}} class="nav-item nav-link white-color"><i class="fa fa-building"></i> '+value.name+'</a>');
+                });
             });
+
+            
+            // var path = $('#page_id').val()==1?'V2/getApl':'../V2/getApl';
+            // $.ajax({
+            //     url : path+'/'+val,
+            //     method : 'get',
+            //     dataType: 'json',
+            //     success : function(data){
+            //         // set apl title
+            //         $('#listAplModal .modal-header').html('<h4 class="white-color">'+val+'</h4>');
+
+            //         // initialize apl items
+            //         $('#listAplModal .modal-body').html('');
+
+            //         // set apl items
+            //         $('#listAplModal .modal-body').append("<h6 class='white-color'>@lang('app.txt.aplfound') : "+data.res.length+"</h6>");
+            //         $.each(data.res,function(key,value){
+            //             $('#listAplModal .modal-body').append('<a href={{route("member.select.apl")}} class="nav-item nav-link white-color"><i class="fa fa-building"></i> '+value.name+'</a>');
+            //         });
+            //     }
+            // });
         });
     </script>
 

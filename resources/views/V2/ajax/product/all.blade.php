@@ -3,7 +3,7 @@
     @if($i%2 === 0)
         <div class="row" id="txtHint">
     @endif
-    <div class="col-md-6 layout-item-wrap">
+    <div class="col-md-6 view-item layout-item-wrap">
         @include('V2.product.single', ['item'=>$item])
     </div>
     @php $i++; @endphp

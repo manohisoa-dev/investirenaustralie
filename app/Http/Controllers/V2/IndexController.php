@@ -127,7 +127,7 @@ class IndexController extends Controller
 
         $lapls = Localisation::select('localizations.*')
                 ->join('users','users.location_id','=','localizations.id')
-                ->where('users.role','=','apl')
+                ->where('users.role','=','4')
                 ->groupBy('localizations.locality')
                 ->get();
         
@@ -182,7 +182,7 @@ class IndexController extends Controller
 
         $lapls = Localisation::select('localizations.*')
                 ->join('users','users.location_id','=','localizations.id')
-                ->where('users.role','=','apl')
+                ->where('users.role','=','4')
                 ->groupBy('localizations.locality')
                 ->get();
         
@@ -238,7 +238,7 @@ class IndexController extends Controller
 
         $lapls = Localisation::select('localizations.*')
                 ->join('users','users.location_id','=','localizations.id')
-                ->where('users.role','=','apl')
+                ->where('users.role','=','4')
                 ->groupBy('localizations.locality')
                 ->get();
         
@@ -292,7 +292,7 @@ class IndexController extends Controller
 
         $lapls = Localisation::select('localizations.*')
                 ->join('users','users.location_id','=','localizations.id')
-                ->where('users.role','=','apl')
+                ->where('users.role','=','4')
                 ->groupBy('localizations.locality')
                 ->get();
         
@@ -346,7 +346,7 @@ class IndexController extends Controller
 
         $lapls = Localisation::select('localizations.*')
                 ->join('users','users.location_id','=','localizations.id')
-                ->where('users.role','=','apl')
+                ->where('users.role','=','4')
                 ->groupBy('localizations.locality')
                 ->get();
         
@@ -403,7 +403,7 @@ class IndexController extends Controller
     {
         $lapls = Localisation::select('localizations.*')
                 ->join('users','users.location_id','=','localizations.id')
-                ->where('users.role','=','apl')
+                ->where('users.role','=','4')
                 ->groupBy('localizations.locality')
                 ->get();
 
@@ -416,7 +416,7 @@ class IndexController extends Controller
         $lapls = Localisation::select('users.*')
                 ->join('users','users.location_id','=','localizations.id')
                 ->where('localizations.locality', '=', $apl)
-                ->where('users.role','=','apl')
+                ->where('users.role','=','4')
                 ->get();
 
         return response()->json(['res'=>$lapls]);
