@@ -1,6 +1,9 @@
 @extends('V2.layouts.app')
 
 @section('content')
+
+@php $lapls = App\Http\Controllers\V2\IndexController::getListApls() @endphp
+
     <!-- Home Slider -->
     <section class="white-bg" style="padding-top:8%;padding-bottom:5%;">
         <div class="container">

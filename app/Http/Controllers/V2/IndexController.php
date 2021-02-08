@@ -421,4 +421,13 @@ class IndexController extends Controller
 
         return response()->json(['res'=>$lapls]);
     }
+
+    public static function getListApls()
+    {
+        return $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','4')
+                ->groupBy('localizations.locality')
+                ->get();
+    }
 }

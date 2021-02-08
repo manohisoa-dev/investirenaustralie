@@ -211,11 +211,9 @@
                             {{ Illuminate\Support\Str::upper(trans('app.apls')) }}
                         </h6>
                         <ul class="list-unstyled links-white footer-link-1">
-                            <?php /*?>
 							@foreach($lapls as $apl)
                                 <li><a class="apl_item" href="#" value="{{ $apl->locality }}" data-toggle="modal" data-target="#listAplModal">{{ $apl->locality }}</a></li>                                
                             @endforeach
-							<?php */?>
                         </ul>
                     </div>
                     <div class="col-lg-2 col-sm-5 m-15px-tb">
