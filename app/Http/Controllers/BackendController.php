@@ -12,6 +12,7 @@ use App\Models\Image;
 use App\Models\Mail;
 use App\Models\MailUser;
 use App\Models\User;
+use App\Role;
 
 class BackendController extends Controller
 {
@@ -30,11 +31,13 @@ class BackendController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function dashboard()
     {
         $user = Auth::user();
+        $role_init = Role::find($user->role)->role_initial;
         
-        $view = view('backend.dashboard.'.$user->role)
+        $view = view('backend.dashboard.'.$role_init)
             ->with('title', __('app.dashboard'))
             ->with('item', $user);
         
@@ -54,7 +57,7 @@ class BackendController extends Controller
             ->take($this->recentSize)
             ->get();
         
-        switch($user->role){
+        switch($role_init){
             case 'member':
                 $sale = Session::has('sale') ? Session::get('sale') : null;
                 $view->with('sale', $sale);
@@ -138,6 +141,7 @@ class BackendController extends Controller
         $view->with('recent', $recent);
         return $view;
     }
+
     
     /**
      * 

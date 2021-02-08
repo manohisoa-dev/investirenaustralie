@@ -41,32 +41,11 @@ class LoginController extends Controller
      */
     protected function redirectTo()
     {
-
         Auth::check();
         Session::put('locale',Auth::user()->language);
         Session::save();
         $link="/";
         
-        /*
-        try{
-            // get current logged in customer
-            $customer = Auth::user();
-
-            // using your customer id we will create
-            // brain tree customer id with same id
-            $response = \Braintree_Customer::create([
-               'id' => $customer->id
-            ]);
-
-            // save your braintree customer id
-            if( $response->success) {
-                $customer->braintree_customer_id = $response->customer->id;
-                $customer->save();
-            }
-        }catch(\Exception $e){
-            
-        }
-        */
         
         if(Auth::user()->use_default_password==1){
             return '/profile/password';
@@ -76,6 +55,7 @@ class LoginController extends Controller
         if(session('paths') == "V2/login"){
             $link="V2/";        
         }  
+
 
         return $link.(User::find(Auth::id())->roleUser->role_initial);
     }
