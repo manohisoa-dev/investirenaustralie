@@ -24,20 +24,25 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="card m-20px-b">
-                          @if(Auth::user()->hasRole(5))
-                              <a class="btn-select-apl m-btn m-btn-theme4rd" href="{{route('member.select.apl')}}">@lang('member.select.apl')</a>
-                          @endif
-                        </div> -->
+                        
                         <div class="card m-20px-b">
                             @if(Auth::user()->hasRole(5))
-                                <a class="btn-select-apl m-btn m-btn-theme4rd" href="{{route('member.select.apl')}}">@lang('member.select.apl')</a>
+                                <a class="btn-select-apl m-btn m-btn-theme4rd" data-toggle="modal" data-target="#modal-select-apl" href="{{route('v2.member.select.apl')}}">@lang('member.select.apl')</a>
                             @endif
                             <div class="list-group list-group-flush">
                                 <a href="{{url('V2/'.\App\User::find(Auth::id())->roleUser->role_initial)}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                     <div>
                                         <i class="fa fa-tachometer-alt m-10px-r"></i>
                                         <span>@lang('app.dashboard')</span>
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-chevron-right"></i>
+                                    </div>
+                                </a>
+                                <a href="{{route('v2.profile')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                    <div>
+                                        <i class="fa fa-edit m-10px-r"></i>
+                                        <span>@lang('app.profile')</span>
                                     </div>
                                     <div>
                                         <i class="fas fa-chevron-right"></i>
@@ -281,11 +286,11 @@
           @endif
       </div>
       <div class="modal-footer">
-          <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">@lang('app.btn.cancel')</button>
+          <button class="m-btn m-btn-theme" data-dismiss="modal" aria-hidden="true">@lang('app.btn.cancel')</button>
           @if(Auth::user()->hasAPl())
-            <a href="{{route('member.select.apl')}}" class="btn btn-success" type="submit">@lang('app.btn.next')</a>
+            <a href="{{route('v2.member.select.apl')}}" class="m-btn m-btn-theme" type="submit">@lang('app.btn.next')</a>
           @else
-              <a href="{{route('member.select.apl')}}" class="btn btn-success" type="submit">@lang('member.select.apl')</a>
+              <a href="{{route('v2.member.select.apl')}}" class="m-btn m-btn-theme4rd" type="submit">@lang('member.select.apl')</a>
           @endif
       </div>
     </div>

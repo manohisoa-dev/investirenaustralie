@@ -274,6 +274,43 @@ Route::prefix('V2')->namespace('V2')->as('v2.')->group(function(){
         Route::get('resend-code/{user}', 'Auth\RegisterController@resendActivation')->name('resend_code');
     });
 
+    Route::middleware(["auth"])->group(function(){
+        // Notification
+        Route::get('notifications/{filter?}', 'NotificationController@all')->name('notification.list');
+
+        //Chat
+        Route::get('chat', 'ChatController@index');
+        Route::post('chat/threads', 'ThreadController@store');
+        Route::post('chat/messages', 'ChatController@store');
+
+        // Label
+        Route::get('product/{product}/label/{type}', 'LabelController@storeOrUpdate')->name('label.store');// Save OR Star Product
+        Route::get('products/label/{type}', 'LabelController@all')->name('label.list');// List saved products OR starred Product
+
+        // Subscription Plan
+        Route::get('/plans', 'PlanController@index')->name('plans');
+        Route::get('/plan/{plan}', 'PlanController@show')->name('plan.show');
+        Route::post('/subscribe', 'PlanController@subscribe')->name('subscribe');
+        Route::post('/subscription/success', 'SubscriptionController@success')->name('subscription.success');
+        
+        // Profile
+        Route::prefix('profile')->group(function(){
+            Route::get('/', 'ProfileController@index')->name('profile');
+            Route::get('edit', 'ProfileController@profile')->name('profile.edit');
+            Route::post('edit', 'ProfileController@editProfile');
+            Route::get('password', 'ProfileController@password')->name('password.edit');
+            Route::post('password', 'ProfileController@updatePassword');
+            Route::get('avatar', 'ProfileController@avatar')->name('avatar.edit');
+            Route::post('avatar', 'ProfileController@updateAvatar');
+            Route::get('location', 'ProfileController@location')->name('location.edit');
+            Route::post('location', 'ProfileController@updateLocation');
+        });
+        
+        Route::post('search', 'SearchController@edit')->name('search.edit');
+        Route::post('search/delete', 'SearchController@delete')->name('search.delete');
+
+    });
+
 
     Route::middleware(["auth", "role:5"])->group(function(){
         // Buy product

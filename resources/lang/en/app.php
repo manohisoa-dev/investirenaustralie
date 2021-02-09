@@ -318,7 +318,25 @@ return [
     'txt.contactinfo'      =>"Contact Information",
     'txt.contact.mobile'      =>"Contact Mobile",
     'txt.businessdetail'      =>"Business Detail",
+    'txt.persondetail'      =>"Person Details",
+    'txt.aplinformation'      =>"APL Information",
     'txt.sendmessage'      =>"Send a Message",
+    'txt.phone'      =>"Phone",
+    'txt.businessname'      =>"Business Name",
+    'txt.businessemail'      =>"Business Email",
+    'txt.businessphone'      =>"Business Phone",
+    'txt.businesspresentation'      =>"Business Presentation",
+    'txt.websiteurl'      =>"Website URL",
+    'txt.localityinformation'      =>"Locality Information",
+    'txt.streetaddress'      =>"Street Address",
+    'txt.suburb'      =>"Suburb",
+    'txt.contactname'      =>"Contact Name",
+    'txt.contactemail'      =>"Contact Email",
+    'txt.contactphone'      =>"Contact Phone",
+    'txt.crmprovider'      =>"CRM Provider",
+    'txt.crmprovidername'      =>"CRM Provider Name",
+    'txt.crmprovideremail'      =>"CRM Provider Email",
+
 
 
 

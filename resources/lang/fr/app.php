@@ -601,6 +601,23 @@ return [
     'txt.contact.mobile'      =>"Contact Mobile",
     'txt.businessdetail'      =>"Detail de l'Entreprise",
     'txt.sendmessage'      =>"Envoyer un Message",
+    'txt.persondetail'      =>"Détails de la personne",
+    'txt.aplinformation'      =>"Informations APL",
+    'txt.phone'      =>"Téléphone",
+    'txt.businessname'      =>"Nom de l'Entreprise",
+    'txt.businessemail'      =>"Courriel",
+    'txt.businessphone'      =>"Téléphone",
+    'txt.businesspresentation'      =>"Présentation de l'Entreprise",
+    'txt.websiteurl'      =>"Site Web URL",
+    'txt.localityinformation'      =>"Informations sur la localité",
+    'txt.streetaddress'      =>"Rue",
+    'txt.suburb'      =>"Banlieue",
+    'txt.contactname'      =>"Nom du Contact",
+    'txt.contactemail'      =>"Email du Contact",
+    'txt.contactphone'      =>"Téléphone du Contact",
+    'txt.crmprovider'      =>"Fournisseur CRM",
+    'txt.crmprovidername'      =>"Nom du fournisseur CRM",
+    'txt.crmprovideremail'      =>"Email du fournisseur CRM",
     
 
     

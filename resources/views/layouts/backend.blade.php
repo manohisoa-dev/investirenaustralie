@@ -12,7 +12,7 @@
                         <li><a class="btn-select-apl btn btn-success" href="{{route('member.select.apl')}}">@lang('member.select.apl')</a></li>
                     @endif
                     
-                    <li><a href="{{url(Auth::user()->role)}}"><i class="fa fa-tachometer" aria-hidden="true"></i> @lang('app.dashboard')</a></li>
+                    <li><a href="{{url(App\Role::find(Auth::user()->role)->role_initial)}}"><i class="fa fa-tachometer" aria-hidden="true"></i> @lang('app.dashboard')</a></li>
                     <li><a href="{{route('profile')}}"><i class="fa fa-pencil-square" aria-hidden="true"></i> @lang('app.profile')</a></li>
                     
                     @if(Auth::user()->hasRole(5))
@@ -50,8 +50,8 @@
                     @endif
                     
                     @if(!Auth::user()->isAdmin())
-                        <li><a href="{{url(Auth::user()->role.'/favorites')}}"><i class="fa fa-gratipay" aria-hidden="true"></i> @lang('app.favorites')</a></li>
-                        <li><a href="{{url(Auth::user()->role.'/searches')}}"><i class="fa fa-search" aria-hidden="true"></i> @lang('app.saved_searches')</a></li>
+                        <li><a href="{{url(App\Role::find(Auth::user()->role)->role_initial.'/favorites')}}"><i class="fa fa-gratipay" aria-hidden="true"></i> @lang('app.favorites')</a></li>
+                        <li><a href="{{url(App\Role::find(Auth::user()->role)->role_initial.'/searches')}}"><i class="fa fa-search" aria-hidden="true"></i> @lang('app.saved_searches')</a></li>
                         <li>
                              <a href="{{route(App\Role::find(Auth::user()->role)->role_initial.'.mail.list',['filter'=>'inbox'])}}">
                                 <i class="fa fa-envelope"></i> @lang('app.mails')
@@ -91,7 +91,7 @@
           @if(Auth::user()->hasAPl())
             <a href="{{route('member.select.apl')}}" class="btn btn-success" type="submit">@lang('app.btn.next')</a>
           @else
-            <a href="{{route('member.select.apl')}}" class="btn btn-success" type="submit">@lang('member.select.apl')
+            <a href="{{route('member.select.apl')}}" class="btn btn-success" type="submit">@lang('member.select.apl')</a>
           @endif
       </div>
     </div>
