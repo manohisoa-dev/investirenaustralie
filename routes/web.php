@@ -119,7 +119,7 @@ Route::middleware(["auth"])->group(function(){
 });
 
 
-Route::middleware(["auth", "role:member"])->group(function(){
+Route::middleware(["auth", "role:5"])->group(function(){
     // Buy product
     Route::post('product/{product}', 'ShopController@order')->name('shop.order');
     Route::get('product/{product}/apl', 'ShopController@selectApl')->name('shop.select.apl');
@@ -161,7 +161,7 @@ Route::middleware(["auth", "role:member"])->group(function(){
     
 });
 
-Route::prefix('afa')->middleware(["auth","role:afa"])->group(function(){
+Route::prefix('afa')->middleware(["auth","role:3"])->group(function(){
     
     Route::get('/', 'BackendController@dashboard');
     Route::get('favorites', 'BackendController@favorites');
@@ -184,7 +184,7 @@ Route::prefix('afa')->middleware(["auth","role:afa"])->group(function(){
     
 });
 
-Route::prefix('apl')->middleware(["auth","role:apl"])->group(function(){
+Route::prefix('apl')->middleware(["auth","role:4"])->group(function(){
     
     Route::get('/', 'BackendController@dashboard');
     Route::get('favorites', 'BackendController@favorites');
@@ -209,7 +209,7 @@ Route::prefix('apl')->middleware(["auth","role:apl"])->group(function(){
     
 });
 
-Route::prefix('seller')->middleware(["auth","role:seller"])->group(function(){
+Route::prefix('seller')->middleware(["auth","role:2"])->group(function(){
     
     Route::get('/', 'BackendController@dashboard');
     Route::get('favorites', 'BackendController@favorites');
@@ -275,7 +275,7 @@ Route::prefix('V2')->namespace('V2')->as('v2.')->group(function(){
     });
 
 
-    Route::middleware(["auth", "role:member"])->group(function(){
+    Route::middleware(["auth", "role:5"])->group(function(){
         // Buy product
         Route::post('product/{product}', 'ShopController@order')->name('shop.order');
         Route::get('product/{product}/apl', 'ShopController@selectApl')->name('shop.select.apl');

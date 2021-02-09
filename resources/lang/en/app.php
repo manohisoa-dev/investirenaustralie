@@ -318,6 +318,7 @@ return [
     'txt.contactinfo'      =>"Contact Information",
     'txt.contact.mobile'      =>"Contact Mobile",
     'txt.businessdetail'      =>"Business Detail",
+    'txt.sendmessage'      =>"Send a Message",
 
 
 

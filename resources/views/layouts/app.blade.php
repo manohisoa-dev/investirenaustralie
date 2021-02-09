@@ -126,6 +126,7 @@
                         @else
                         <div class="currency-in-header">
                             <i class="fa fa-user"></i><a href="{{\App\User::find(Auth::id())->roleUser->role_initial}}">{{Auth::user()->name}}</a>
+                            <!-- <i class="fa fa-user"></i><a href="{{url(Auth::user()->role)}}">{{Auth::user()->name}}</a> -->
                         </div>
                         @endif
                     </div>

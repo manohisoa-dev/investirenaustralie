@@ -12,6 +12,8 @@ use App\Models\Image;
 use App\Models\Mail;
 use App\Models\MailUser;
 use App\Models\User;
+use App\Role;
+use App\Localisation;
 
 class BackendController extends Controller
 {
@@ -30,11 +32,13 @@ class BackendController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function dashboard()
     {
         $user = Auth::user();
+        $role_init = Role::find($user->role)->role_initial;
         
-        $view = view('backend.dashboard.'.$user->role)
+        $view = view('v2.backend.dashboard.'.$role_init)
             ->with('title', __('app.dashboard'))
             ->with('item', $user);
         
@@ -53,8 +57,13 @@ class BackendController extends Controller
             ->orderBy('created_at', 'desc')
             ->take($this->recentSize)
             ->get();
+        $lapls = Localisation::select('localizations.*')
+            ->join('users','users.location_id','=','localizations.id')
+            ->where('users.role','=','4')
+            ->groupBy('localizations.locality')
+            ->get();
         
-        switch($user->role){
+        switch($role_init){
             case 'member':
                 $sale = Session::has('sale') ? Session::get('sale') : null;
                 $view->with('sale', $sale);
@@ -136,8 +145,10 @@ class BackendController extends Controller
         
         $view->with('count', $count);
         $view->with('recent', $recent);
+        $view->with('lapls', $lapls);
         return $view;
     }
+
     
     /**
      * 

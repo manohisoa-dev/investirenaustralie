@@ -7,7 +7,7 @@
           <div class="col-md-3">
             <div class="sidebar content-box" style="display: block; background: #fff; margin-bottom: 10px;">
                 <ul class="nav nav-side">
-                    
+
                     @if(Auth::user()->hasRole(5))
                         <li><a class="btn-select-apl btn btn-success" href="{{route('member.select.apl')}}">@lang('member.select.apl')</a></li>
                     @endif
@@ -53,7 +53,7 @@
                         <li><a href="{{url(Auth::user()->role.'/favorites')}}"><i class="fa fa-gratipay" aria-hidden="true"></i> @lang('app.favorites')</a></li>
                         <li><a href="{{url(Auth::user()->role.'/searches')}}"><i class="fa fa-search" aria-hidden="true"></i> @lang('app.saved_searches')</a></li>
                         <li>
-                             <a href="{{route(Auth::user()->role.'.mail.list',['filter'=>'inbox'])}}">
+                             <a href="{{route(App\Role::find(Auth::user()->role)->role_initial.'.mail.list',['filter'=>'inbox'])}}">
                                 <i class="fa fa-envelope"></i> @lang('app.mails')
                              </a>
                         </li>
