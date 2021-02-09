@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Config;
 
 class Blog extends Model {
 
-
     public $guarded = ["id","created_at","updated_at"];
 
     public static function findRequested()
