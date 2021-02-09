@@ -128,7 +128,7 @@
                                 <a href="#home">@lang('app.account')</a>
                                 <i class="fa fa-angle-down px-nav-toggle"></i>
                                 <ul class="px-dropdown-menu mm-dorp-in">
-                                    <li><a href="{{url(Auth::user()->role)}}">@lang('app.dashboard')</a></li>
+                                    <li><a href="{{url('V2/'.\App\User::find(Auth::id())->roleUser->role_initial)}}">@lang('app.dashboard')</a></li>
                                     <li><a href="{{route('profile')}}">@lang('app.profile')</a></li>
                                     <li><a href="{{route('logout')}}">@lang('app.logout')</a></li>
                                 </ul>

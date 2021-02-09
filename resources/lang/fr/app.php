@@ -600,6 +600,7 @@ return [
     'txt.contactinfo'      =>"Informations de contact",
     'txt.contact.mobile'      =>"Contact Mobile",
     'txt.businessdetail'      =>"Detail de l'Entreprise",
+    'txt.sendmessage'      =>"Envoyer un Message",
     
 
     
