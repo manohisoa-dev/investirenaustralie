@@ -285,7 +285,7 @@
           @if(Auth::user()->hasAPl())
             <a href="{{route('member.select.apl')}}" class="btn btn-success" type="submit">@lang('app.btn.next')</a>
           @else
-              <a href="{{route('member.select.apl')}}" class="btn btn-success" type="submit">@lang('member.select.apl')</a>x
+              <a href="{{route('member.select.apl')}}" class="btn btn-success" type="submit">@lang('member.select.apl')</a>
           @endif
       </div>
     </div>
