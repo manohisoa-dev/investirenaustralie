@@ -112,7 +112,6 @@ class ProductController extends Controller
     
     public function archive(Request $request,Product  $product)
     {
-        var_dump($product);die();
         $product->status = 'archived';
         $product->save();
         Notify::success('Le produit a été archivé avec succés');

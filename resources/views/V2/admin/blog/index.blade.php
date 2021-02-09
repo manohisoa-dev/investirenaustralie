@@ -65,7 +65,15 @@
 							<td></td>
 							<td><input type="text" class="form-control" name="meta_tag" value="{{Request::input("meta_tag")}}"></td>
 							<td><input type="text" class="form-control" name="meta_description" value="{{Request::input("meta_description")}}"></td>
-							<td><input type="text" class="form-control" name="status" value="{{Request::input("status")}}"></td>
+							<td>
+								<select class="form-control" name="status">
+									<option value="">Choisir statut</option>
+									@foreach($status as $st)
+									<option value="{{$st}}" {{@$_GET['status']==$st?'selected':''}}>{{$st}}</option>
+									@endforeach
+								</select>
+								<?php /*?><input type="text" class="form-control" name="status" value="{{Request::input("status")}}"><?php */?>
+							</td>
 							<td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>
 							
 							<?php /*?><td><input type="text" class="form-control" name="slug" value="{{Request::input("slug")}}"></td>							
@@ -141,7 +149,39 @@
 									  </span>
                                    </td>
 								   <td>{{$record->created_at->diffForHumans()}}</td>
-                                   @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('V2.admin.blog.index'), 'record' => $record ] )
+								   <td class="actions-cell text-center" width="12%">
+									<form class="form-inline" action="{{route('V2.admin.blog.index')}}/{{$record->id}}" method="POST">									
+										<a href="{{route('V2.admin.blog.index')}}/{{$record->id}}/edit" title="Modification" class="btn btn-default btn-circle">
+											<i class="fa fa-pencil-square-o"></i>
+										</a>&nbsp;&nbsp;
+										@if($record->status=='pinged' || $record->status=='archived')
+											<a href="#" class="btn btn-default btn-circle" title="@lang('app.btn.publish')">
+												<i class="fa fa-check"></i>
+											</a>&nbsp;
+											<a href="#" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
+												<i class="fa fa-trash-o"></i>
+											</a>&nbsp;&nbsp;
+										 @elseif($record->status=='trashed')
+											<a href="#" class="btn btn-default btn-circle" title="Restore">
+												<i class="fa fa-window-restore"></i>
+											</a>&nbsp;&nbsp;
+										 @endif
+										 @if($record->status=='published')
+										 	<a href="{{route('V2.admin.blog.archive',$record)}}" class="btn btn-default btn-circle" title="@lang('app.btn.archive')">
+												<i class="fa fa-archive"></i>
+											</a>&nbsp;&nbsp;
+											<a href="#" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
+												<i class="fa fa-trash-o"></i>
+											</a>&nbsp;&nbsp;
+										 @endif
+										{{ csrf_field() }}
+										{{ method_field('DELETE') }}
+										<button class="btn btn-default btn-circle"
+												onclick="return confirm('Vous êtes sur?')"
+												type="submit" title="Suppression"><i class="fa fa-times text-danger"></i></button>
+									</form>
+									</td>
+                                  <?php /*?> @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('V2.admin.blog.index'), 'record' => $record ] )<?php */?>
                             </tr>
                         @empty
                             @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 15])

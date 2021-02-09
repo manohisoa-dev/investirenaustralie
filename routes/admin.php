@@ -38,7 +38,10 @@ Route::prefix('V2')->namespace('V2')->as('V2.')->group(function(){
         Route::get('trash/{product}', 'ProductController@trash')->name('product.trash');
         Route::get('restore/{product}', 'ProductController@restore')->name('product.restore');
         Route::get('publish/{product}', 'ProductController@publish')->name('product.publish');
+        
         Route::resource('blog','BlogController');
+        Route::get('archive_blog/{blog}', 'BlogController@archive')->name('blog.archive');
+        
         Route::resource('user','UserController');
         Route::get('desactiver/{user}', 'UserController@desactiver')->name('user.desactiver');
         Route::get('show/{user}', 'UserController@show')->name('user.show');

@@ -82,10 +82,10 @@
     <ul class="nav nav-second-level collapse">
         <li><a href="{{route('V2.admin.blog.create')}}">Ajouter un article</a></li>
         <li><a href="{{route('V2.admin.blog.index')}}">Liste des blogs</a></li>
-        <li><a href="form_wizard.html">Articles publiés</a></li>
+        <!--<li><a href="form_wizard.html">Articles publiés</a></li>
         <li><a href="form_file_upload.html">Articles en attente</a></li>
         <li><a href="form_editors.html">Articles archivés</a></li>
-        <li><a href="form_autocomplete.html">Articles aux corbeilles</a></li>
+        <li><a href="form_autocomplete.html">Articles aux corbeilles</a></li>-->
     </ul>
 </li>
 <li class="{{Request::is('*/category/*') || Request::is('*/category') ? 'active' : ''}}">

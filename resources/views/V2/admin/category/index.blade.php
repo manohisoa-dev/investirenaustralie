@@ -18,7 +18,8 @@
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
             <a href="{{ route('V2.admin.category.create') }}" type="button" class="btn btn-primary btn-block">
-                <i class="fa fa-plus"></i> Ajouter un nouveau catégorie           </a>
+                <i class="fa fa-plus"></i> Ajouter un nouveau catégorie           
+			</a>
         </div>
     </div>
 </div>
@@ -36,25 +37,27 @@
                 <table class="table table-striped grid-view-tbl">
                 <thead>
                     <tr class="header-row">
-                                                    {!!\Nvd\Crud\Html::sortableTh('id','V2.admin.category.index','Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('slug','V2.admin.category.index','Slug')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('title','V2.admin.category.index','Titre')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('content','V2.admin.category.index','Content')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('author_id','V2.admin.category.index','Auteur')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','V2.admin.category.index','Créer le')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','V2.admin.category.index','Mise à jour le')!!}
-                                            <th><a href="javascript:void(0)">Actions</a></th>
+						{!!\Nvd\Crud\Html::sortableTh('id','V2.admin.category.index','ID')!!}
+						{!!\Nvd\Crud\Html::sortableTh('title','V2.admin.category.index','Titre')!!}
+						{!!\Nvd\Crud\Html::sortableTh('created_at','V2.admin.category.index','Créer le')!!}
+						<th>Produits/SubProduits<span class="column-sorter"></span></th>
+						<!--{!!\Nvd\Crud\Html::sortableTh('slug','V2.admin.category.index','Slug')!!}	-->					
+						{!!\Nvd\Crud\Html::sortableTh('content','V2.admin.category.index','Content')!!}
+						{!!\Nvd\Crud\Html::sortableTh('author_id','V2.admin.category.index','Auteur')!!}
+						{!!\Nvd\Crud\Html::sortableTh('updated_at','V2.admin.category.index','Mise à jour le')!!}
+						<th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">
-                                                            <td><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
-                                                            <td><input type="text" class="form-control" name="slug" value="{{Request::input("slug")}}"></td>
-                                                            <td><input type="text" class="form-control" name="title" value="{{Request::input("title")}}"></td>
-                                                            <td><input type="text" class="form-control" name="content" value="{{Request::input("content")}}"></td>
-                                                            <td><input type="text" class="form-control" name="author_id" value="{{Request::input("author_id")}}"></td>
-                                                            <td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>
-                                                            <td><input type="text" class="form-control" name="updated_at" value="{{Request::input("updated_at")}}"></td>
-                                                        <td style="min-width: 6em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>
+							<td style="width:5%"><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
+							<td><input type="text" class="form-control" name="title" value="{{Request::input("title")}}"></td>
+							<td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>
+							<?php /*?><td><input type="text" class="form-control" name="slug" value="{{Request::input("slug")}}"></td><?php */?>
+							<td><input type="text" class="form-control" name="content" value="{{Request::input("content")}}"></td>
+							<td><input type="text" class="form-control" name="author_id" value="{{Request::input("author_id")}}"></td>
+							
+							<td><input type="text" class="form-control" name="updated_at" value="{{Request::input("updated_at")}}"></td>
+							<td style="min-width: 6em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>
                         </form>
                     </tr>
                     </thead>
@@ -62,36 +65,38 @@
                     <tbody>
                         @forelse ( $records as $record )
                             <tr>
-                                                                <td>
-                                                                            {{ $record->id }}
-                                                                    </td>
-                                                                <td>
-                                                                        <span class="editable"
-                                          data-type="text"
-                                          data-name="slug"
-                                          data-value="{{ $record->slug }}"
-                                          data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('V2.admin.category.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->slug }}</span>
-                                                                    </td>
-                                                                <td>
-                                                                        <span class="editable"
+                                <td>{{ $record->id }}</td>
+								<td>
+                                    <span class="editable"
                                           data-type="text"
                                           data-name="title"
                                           data-value="{{ $record->title }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
                                           data-url="{{ route('V2.admin.category.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->title }}</span>
-                                                                    </td>
-                                                                <td>
-                                                                        <span class="editable"
+                                </td>
+								<td>
+									{{ $record->created_at ? $record->created_at->diffForHumans() : '' }}
+                                </td>
+                                <?php /*?><td>
+                                    <span class="editable"
+                                          data-type="text"
+                                          data-name="slug"
+                                          data-value="{{ $record->slug }}"
+                                          data-pk="{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('V2.admin.category.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          >{{ $record->slug }}</span>
+                                </td><?php */?>
+                                
+                                <td>
+                                    <span class="editable"
                                           data-type="text"
                                           data-name="content"
                                           data-value="{{ $record->content }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
                                           data-url="{{ route('V2.admin.category.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->content }}</span>
-                                                                    </td>
+                                          >{{count($record->blogs)}}<br />{{ $record->content }}</span>
+                               </td>
                                                                 <td>
                                                                         <span class="editable"
                                           data-type="text"
@@ -101,9 +106,7 @@
                                           data-url="{{ route('V2.admin.category.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->author->name }}</span>
                                                                     </td>
-                                                                <td>
-                                                                            {{ $record->created_at ? $record->created_at->diffForHumans() : '' }}
-                                                                    </td>
+                                                                
                                                                 <td>
                                                                             {{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}
                                                                     </td>
