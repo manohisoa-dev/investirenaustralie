@@ -152,7 +152,7 @@ class BlogController extends Controller
             ->orderBy('created_at','desc')
             ->take($this->recentSize)
             ->get();
-        
+
         $categories = Category::orderBy('created_at', 'desc')
             ->has('products')
             ->withCount(['products'])
