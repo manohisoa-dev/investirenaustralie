@@ -336,8 +336,15 @@ return [
     'txt.crmprovider'      =>"CRM Provider",
     'txt.crmprovidername'      =>"CRM Provider Name",
     'txt.crmprovideremail'      =>"CRM Provider Email",
+    'txt.apl'      =>"APL",
+    'txt.tauxdereservation'      =>"Booking rate",
+    'txt.reservation'      =>"Reservation",
+    'txt.action'      =>"Action",
+    'txt.motcle'        =>"Key word",
 
 
+    'table.title'  => "Title",
+    'table.titles'  => "Titles",
 
 
 

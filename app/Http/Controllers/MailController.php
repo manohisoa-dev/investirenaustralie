@@ -9,6 +9,7 @@ use Validator;
 use App\Models\User;
 use App\Models\Mail;
 use App\Notifications\NewMail;
+use App\Role;
 
 class MailController extends Controller
 {
@@ -195,7 +196,7 @@ class MailController extends Controller
         }else{
             $view = view('backend.mail.all');
             
-            switch(Auth::user()->role){
+            switch(Role::find(Auth::user()->role)->role_initial){
                 case 'apl':
                     $view->with('users', User::isActive()->get());
                 break;

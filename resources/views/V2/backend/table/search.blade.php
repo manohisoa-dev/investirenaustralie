@@ -1,16 +1,16 @@
-<table class="table table-striped table-hover">
+<table class="shop_table shop_table_responsive cart table table-striped table-hover">
     <thead>
         <tr>
-            <th>Titre</th>
-            <th>Mot cle</th>
-            <th>Date</th>
-            <th class="pull-right">Action</th>
+            <th colspan="2">@lang('app.table.title')</th>
+            <th>@lang('app.txt.motcle')</th>
+            <th>@lang('app.date')</th>
+            <th>@lang('app.txt.action')</th>
         </tr>
     </thead>
     <tbody>
-        @foreach($searches as $search)
+        @foreach($searchs as $search)
         <tr>
-            <td id="search-title">
+            <td id="search-title" colspan="2">
                 <strong>{{$search->title}}</strong>
                 <p id="success-message" style="color:green;"></p>
                 <p id="error-message" style="color:red;"></p>
@@ -18,18 +18,18 @@
             <td>{{$search->keyword}}</td>
             <td>{{$search->created_at->diffForHumans()}}</td>
             <td>
-                <a class="btn btn-danger btn-delete pull-right" 
-                   data-search-id="{{$search->id}}">x</a>
-                <a class="btn btn-default btn-edit-search pull-right" 
+                <a class="btn btn-info border-radius-0 btn-edit-search" style="color:#fff;" 
                    data-search-id="{{$search->id}}" 
                    data-search-title="{{$search->title}}" >@lang('app.btn.edit')</a>
+                <a class="btn btn-danger border-radius-0 btn-delete white-color" style="color:#fff;" 
+                   data-search-id="{{$search->id}}">x</a>
             </td>
         </tr>
         @endforeach
     </tbody>
 </table>
 
-{{$searches->links()}}
+{{$searchs->links()}}
 
 <!-- Modal -->
 <div id="modal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
@@ -53,64 +53,64 @@
   </div>
 </div>
 
-@section('script')
+@push('script')
     @parent
-<script>
-$(document).ready(function () {
-    var btn_clicked;
-    $('.btn-delete').on('click', function(e){
-        var $this = $(this);
-        $('#mute').addClass('on');
-        var id = $(this).attr('data-search-id');
-        var data = {
-            _token: $('meta[name=csrf-token]').attr('content'),
-            search: id,
-        };
-        var $parent = $this.parent().parent().find('#search-title');
-        $.post('{{route("search.delete")}}', data, function(res){
-            if(res.state == 1){
-                $this.parent().parent().remove();
-            }else{
-                $parent.find('#error-message').html(res.message);
-            }
-            $('#mute').removeClass('on');
+    <script>
+        $(document).ready(function () {
+            var btn_clicked;
+            $('.btn-delete').on('click', function(e){
+                var $this = $(this);
+                $('#mute').addClass('on');
+                var id = $(this).attr('data-search-id');
+                var data = {
+                    _token: $('meta[name=csrf-token]').attr('content'),
+                    search: id,
+                };
+                var $parent = $this.parent().parent().find('#search-title');
+                $.post('{{route("search.delete")}}', data, function(res){
+                    if(res.state == 1){
+                        $this.parent().parent().remove();
+                    }else{
+                        $parent.find('#error-message').html(res.message);
+                    }
+                    $('#mute').removeClass('on');
+                });
+                e.preventDefault();
+            });
+            
+            $('.btn-edit-search').on('click', function(e){
+                btn_clicked = $(this);
+                var id = $(this).attr('data-search-id');
+                var title = $(this).attr('data-search-title');
+                $('#input-search-id').attr('value', id);
+                $('#input-search-title').attr('value', title);
+                $('#modal').modal('show');
+                e.preventDefault();
+            });
+            
+            $('#form-edit-search').on('submit', function(e){
+                $('#mute').addClass('on');
+                $('#modal').modal('hide');
+                
+                var $parent = btn_clicked.parent().parent().find('#search-title');
+                var data = {
+                    _token: $('meta[name=csrf-token]').attr('content'),
+                    search: $('#input-search-id').val(),
+                    title: $('#input-search-title').val(),
+                };
+                $parent.find('#success-message').html('');
+                $parent.find('#error-message').html('');
+                $.post('{{route("search.edit")}}', data, function(res){
+                    if(res.state == 1){
+                        $parent.find('strong').html(data.title);
+                        $parent.find('#success-message').html(res.message);
+                    }else{
+                        $parent.find('#error-message').html(res.message);
+                    }
+                    $('#mute').removeClass('on');
+                });
+                e.preventDefault();
+            });
         });
-        e.preventDefault();
-    });
-    
-    $('.btn-edit-search').on('click', function(e){
-        btn_clicked = $(this);
-        var id = $(this).attr('data-search-id');
-        var title = $(this).attr('data-search-title');
-        $('#input-search-id').attr('value', id);
-        $('#input-search-title').attr('value', title);
-        $('#modal').modal('show');
-        e.preventDefault();
-    });
-    
-    $('#form-edit-search').on('submit', function(e){
-        $('#mute').addClass('on');
-        $('#modal').modal('hide');
-        
-        var $parent = btn_clicked.parent().parent().find('#search-title');
-        var data = {
-            _token: $('meta[name=csrf-token]').attr('content'),
-            search: $('#input-search-id').val(),
-            title: $('#input-search-title').val(),
-        };
-        $parent.find('#success-message').html('');
-        $parent.find('#error-message').html('');
-        $.post('{{route("search.edit")}}', data, function(res){
-            if(res.state == 1){
-                $parent.find('strong').html(data.title);
-                $parent.find('#success-message').html(res.message);
-            }else{
-                $parent.find('#error-message').html(res.message);
-            }
-            $('#mute').removeClass('on');
-        });
-        e.preventDefault();
-    });
-});
-</script>
-@endsection
+    </script>
+@endpush

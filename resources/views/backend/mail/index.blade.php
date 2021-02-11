@@ -3,7 +3,7 @@
 @section('subcontent')
 <div id="property-sidebar">
     <div class="col-sm-12">
-        <a href="{{route('mail.delete', $item)}}" class="pull-right submit-btn btn btn-default btn-lg" data-hover="@lang('app.btn.delete')">@lang('app.btn.delete')</a>
+        <a href="{{route(App\Role::find(Auth::user()->role)->role_initial.'.mail.delete', $item)}}" class="pull-right submit-btn btn btn-default btn-lg" data-hover="@lang('app.btn.delete')">@lang('app.btn.delete')</a>
         <section class="widget property-contents common">
             <h3 class="entry-title">{{$item->subject}}</h3>
             <p>{{$item->content}}</p>

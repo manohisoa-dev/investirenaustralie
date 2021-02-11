@@ -9,10 +9,11 @@ use Validator;
 use App\Notifications\NewMail;
 use App\Notifications\AplChanged;
 
-use App\Models\Order;
-use App\Models\User;
-use App\Models\Mail;
-use App\Models\MailUser;
+use App\Order;
+use App\User;
+use App\Mail;
+use App\MailUser;
+use App\Localisation;
 
 class MemberController extends Controller
 {
@@ -24,7 +25,7 @@ class MemberController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:member');
+        $this->middleware('role:5');
     }
 
     /**
@@ -53,9 +54,15 @@ class MemberController extends Controller
         $items = Auth::user()->orders()
             ->where('status', 'ordered')
             ->paginate($this->pageSize);
+        $lapls = Localisation::select('localizations.*')
+        ->join('users','users.location_id','=','localizations.id')
+        ->where('users.role','=','4')
+        ->groupBy('localizations.locality')
+        ->get();
         
-        return view('backend.sale.all')
+        return view('V2.backend.sale.all')
             ->with('title', __('member.orders'))
+            ->with('lapls', $lapls)
             ->with('items', $items);
     }
 
@@ -69,22 +76,34 @@ class MemberController extends Controller
         $items = Auth::user()->orders()
             ->where('status', 'paid')
             ->paginate($this->pageSize);
+        $lapls = Localisation::select('localizations.*')
+            ->join('users','users.location_id','=','localizations.id')
+            ->where('users.role','=','4')
+            ->groupBy('localizations.locality')
+            ->get();
         
-        return view('backend.sale.all')
+        return view('v2.backend.sale.all')
             ->with('title', __('member.purchases'))
+            ->with('lapls', $lapls)
             ->with('items', $items);
     }
 
     public function contact(Request $request, $role){
         $action = route('member.contact', ['role'=>$role]);
+        $lapls = Localisation::select('localizations.*')
+            ->join('users','users.location_id','=','localizations.id')
+            ->where('users.role','=','4')
+            ->groupBy('localizations.locality')
+            ->get();
         
         if(($role=='apl') && !Auth::user()->apl){
             return redirect()->route('member.select.apl')
                 ->with('error', 'Vous devez choisir un APL d\'abord.');
         }
         
-        return view('backend.contact.member')
+        return view('v2.backend.contact.member')
             ->with('action', $action)
+            ->with('lapls', $lapls)
             ->with('title', __('app.contact_'.$role));
     }
 
@@ -92,7 +111,7 @@ class MemberController extends Controller
     {
         
         if(($role=='apl') && !Auth::user()->apl){
-            return redirect()->route('member.select.apl')
+            return redirect()->route('v2.member.select.apl')
                 ->with('error', 'Vous devez choisir un APL d\'abord.');
         }
         

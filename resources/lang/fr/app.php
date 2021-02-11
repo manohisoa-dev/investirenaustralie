@@ -98,7 +98,8 @@ return [
     'table.seller' => "Vendeus",
     'table.apl'    => "APL",
     'table.afa'    => "AFA",
-    'table.title'  => "Titres",
+    'table.titles'  => "Titres",
+    'table.title'  => "Titre",
     'table.content'=> "Contenus",
     'table.price'  => "Prix",
     'table.tma'    => "TMA",
@@ -618,6 +619,11 @@ return [
     'txt.crmprovider'      =>"Fournisseur CRM",
     'txt.crmprovidername'      =>"Nom du fournisseur CRM",
     'txt.crmprovideremail'      =>"Email du fournisseur CRM",
+    'txt.apl'      =>"APL",
+    'txt.tauxdereservation'      =>"Taux de réservation",
+    'txt.reservation'      =>"Réservation",
+    'txt.action'      =>"Action",
+    'txt.motcle'        =>"Mot clé",
     
 
     

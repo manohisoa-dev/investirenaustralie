@@ -20,7 +20,7 @@
                                 <h6 class="font-w-500 m-15px-t m-0px"><span class="font-w-700">{{ Auth::user()->name }}</span></h6>
                                 <span class="font-small">{{ \App\User::find(Auth::id())->roleUser->role_initial }}</span>
                                 <div class="p-10px-t">
-                                    <a class="m-btn m-btn-sm m-btn-theme-light m-btn-radius" href="{{route(App\Role::find(Auth::user()->role)->role_initial.'.mail.list',['filter'=>'inbox'])}}"><i class="far fa-envelope"></i> @lang('app.txt.sendmessage') </a>
+                                    <a class="m-btn m-btn-sm m-btn-theme-light m-btn-radius" href="{{route('v2.'.App\Role::find(Auth::user()->role)->role_initial.'.mail.list',['filter'=>'inbox'])}}"><i class="far fa-envelope"></i> @lang('app.txt.sendmessage') </a>
                                 </div>
                             </div>
                         </div>
@@ -50,7 +50,7 @@
                                 </a>
 
                             @if(Auth::user()->hasRole(5))
-                                <a href="{{route('shop.order.last')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                <a href="{{route('v2.shop.order.last')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                     <div>
                                         <i class="fa fa-cart-arrow-down m-10px-r"></i>
                                         <span>@lang('member.cart')</span>
@@ -59,7 +59,7 @@
                                         <i class="fas fa-chevron-right"></i>
                                     </div>
                                 </a>
-                                <a href="{{route('member.orders')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                <a href="{{route('v2.member.orders')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                     <div>
                                         <i class="fa fa-cart-plus m-10px-r"></i>
                                         <span>@lang('member.orders')</span>
@@ -68,7 +68,7 @@
                                         <i class="fas fa-chevron-right"></i>
                                     </div>
                                 </a>
-                                <a href="{{route('member.purchases')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                <a href="{{route('v2.member.purchases')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                     <div>
                                         <i class="far fa-credit-card m-10px-r"></i>
                                         <span>@lang('member.purchases')</span>
@@ -77,7 +77,7 @@
                                         <i class="fas fa-chevron-right"></i>
                                     </div>
                                 </a>
-                                <a href="{{route('member.contact', ['role'=>'admin'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                <a href="{{route('v2.member.contact', ['role'=>'admin'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                     <div>
                                         <i class="far fa-envelope m-10px-r"></i>
                                         <span>@lang('member.contact_admin')</span>
@@ -87,7 +87,7 @@
                                     </div>
                                 </a>
                                 @if(Auth::user()->hasApl())
-                                  <a href="{{route('member.contact', ['role'=>'apl'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                  <a href="{{route('v2.member.contact', ['role'=>'apl'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                       <div>
                                           <i class="far fa-envelope m-10px-r"></i>
                                           <span>@lang('member.contact_apl')</span>
@@ -100,7 +100,7 @@
                             @endif
 
                             @If(Auth::user()->hasRole(4))
-                              <a href="{{route('apl.orders')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                              <a href="{{route('v2.apl.orders')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
                                       <i class="fa fa-cart-plus m-10px-r"></i>
                                       <span>@lang('apl.orders')</span>
@@ -109,7 +109,7 @@
                                       <i class="fas fa-chevron-right"></i>
                                   </div>
                               </a>
-                              <a href="{{route('apl.sales')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                              <a href="{{route('v2.apl.sales')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
                                       <i class="fa fa-chart-line m-10px-r"></i>
                                       <span>@lang('apl.sales')</span>
@@ -118,7 +118,7 @@
                                       <i class="fas fa-chevron-right"></i>
                                   </div>
                               </a>
-                              <a href="{{route('apl.customers')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                              <a href="{{route('v2.apl.customers')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
                                       <i class="far fa-users m-10px-r"></i>
                                       <span>@lang('apl.customers')</span>
@@ -127,7 +127,7 @@
                                       <i class="fas fa-chevron-right"></i>
                                   </div>
                               </a>
-                              <a href="{{route('apl.commissions', ['filter'=>'not-paid'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                              <a href="{{route('v2.apl.commissions', ['filter'=>'not-paid'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
                                       <i class="fa fa-hand-holding-usd m-10px-r"></i>
                                       <span>@lang('app.commissions.not_paid')</span>
@@ -136,7 +136,7 @@
                                       <i class="fas fa-chevron-right"></i>
                                   </div>
                               </a>
-                              <a href="{{route('apl.commissions', ['filter'=>'paid'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                              <a href="{{route('v2.apl.commissions', ['filter'=>'paid'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
                                       <i class="far fa-money-bill-alt m-10px-r"></i>
                                       <span>@lang('app.commissions.paid')</span>
@@ -148,7 +148,7 @@
                             @endif
 
                             @If(Auth::user()->hasRole(3))
-                              <a href="{{route('afa.orders')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                              <a href="{{route('v2.afa.orders')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
                                       <i class="fa fa-cart-plus m-10px-r"></i>
                                       <span>@lang('afa.orders')</span>
@@ -157,7 +157,7 @@
                                       <i class="fas fa-chevron-right"></i>
                                   </div>
                               </a>
-                              <a href="{{route('afa.sales')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                              <a href="{{route('v2.afa.sales')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
                                       <i class="far fa-chart-line m-10px-r"></i>
                                       <span>@lang('afa.sales')</span>
@@ -166,7 +166,7 @@
                                       <i class="fas fa-chevron-right"></i>
                                   </div>
                               </a>
-                              <a href="{{route('afa.commissions', ['filter'=>'paid'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                              <a href="{{route('v2.afa.commissions', ['filter'=>'paid'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
                                       <i class="fa fa-money-bill-alt m-10px-r"></i>
                                       <span>@lang('app.commissions.paid')</span>
@@ -175,7 +175,7 @@
                                       <i class="fas fa-chevron-right"></i>
                                   </div>
                               </a>
-                              <a href="{{route('afa.commissions', ['filter'=>'not-paid'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                              <a href="{{route('v2.afa.commissions', ['filter'=>'not-paid'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
                                       <i class="fa fa-hand-holding-usd m-10px-r"></i>
                                       <span>@lang('app.commissions.not_paid')</span>
@@ -187,7 +187,7 @@
                             @endif
 
                             @If(Auth::user()->hasRole(2))
-                              <a href="{{route('seller.products')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                              <a href="{{route('v2.seller.products')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
                                       <i class="far fa-paperclip m-10px-r"></i>
                                       <span>@lang('seller.products')</span>
@@ -196,7 +196,7 @@
                                       <i class="fas fa-chevron-right"></i>
                                   </div>
                               </a>
-                              <a href="{{route('seller.orders')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                              <a href="{{route('v2.seller.orders')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
                                       <i class="far fa-cart-plus m-10px-r"></i>
                                       <span>@lang('seller.orders')</span>
@@ -205,7 +205,7 @@
                                       <i class="fas fa-chevron-right"></i>
                                   </div>
                               </a>
-                              <a href="{{route('seller.sales')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                              <a href="{{route('v2.seller.sales')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
                                       <i class="far fa-chart-line m-10px-r"></i>
                                       <span>@lang('seller.sales')</span>
@@ -235,7 +235,7 @@
                                       <i class="fas fa-chevron-right"></i>
                                   </div>
                               </a>
-                              <a href="{{route(App\Role::find(Auth::user()->role)->role_initial.'.mail.list',['filter'=>'inbox'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                              <a href="{{route('v2.'.\App\User::find(Auth::id())->roleUser->role_initial.'.mail.list',['filter'=>'inbox'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
                                       <i class="far fa-envelope m-10px-r"></i>
                                       <span>@lang('app.mails')</span>

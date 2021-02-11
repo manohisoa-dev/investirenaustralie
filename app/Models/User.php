@@ -133,25 +133,25 @@ class User extends Authenticatable
             return false;
         
         
-        if($this->hasRole('afa')){
+        if($this->hasRole(3)){
             return !$user->hasRole('member');
         }
         
-        if($this->hasRole('seller')){
+        if($this->hasRole(2)){
             return !$user->hasRole('member');
         }
         
         
-        if($this->hasRole('member')){
-            if($user->hasRole('apl')){
+        if($this->hasRole(5)){
+            if($user->hasRole(4)){
                 return $this->apl && ($this->apl->id == $user->id);
             }
             
-            return $user->hasRole('admin');
+            return $user->hasRole(1);
         }
         
-        if($this->hasRole('apl')){
-            if($user->hasRole('member')){
+        if($this->hasRole(4)){
+            if($user->hasRole(5)){
                 return $user->apl && ($user->apl->id == $this->id);
             }
             
@@ -186,7 +186,7 @@ class User extends Authenticatable
      */
     public function isAdmin()
     {
-      return $this->hasRole('admin');
+      return $this->hasRole(1);
     }
     
     /**
@@ -206,7 +206,7 @@ class User extends Authenticatable
      */
     public function isPerson()
     {
-      return $this->hasRole('member')&&($this->type=='person');
+      return $this->hasRole(5)&&($this->type=='person');
     }
     
     /**
@@ -216,7 +216,7 @@ class User extends Authenticatable
      */
     public function hasApl()
     {
-      return $this->hasRole('member')
+      return $this->hasRole(5)
               &&$this->apl
               &&(!empty($this->apl_ends_at))
               &&($this->apl_ends_at>=\Carbon\Carbon::now());
@@ -388,9 +388,9 @@ class User extends Authenticatable
      */
     public function orders()
     {
-        if($this->hasRole('member')) return $this->hasMany(Sale::class, 'author_id', 'id');
-        if($this->hasRole('apl'))    return $this->hasMany(Sale::class, 'apl_id', 'id');
-        if($this->hasRole('afa'))    return $this->hasMany(Sale::class, 'afa_id', 'id');
+        if($this->hasRole(5)) return $this->hasMany(Sale::class, 'author_id', 'id');
+        if($this->hasRole(4))    return $this->hasMany(Sale::class, 'apl_id', 'id');
+        if($this->hasRole(3))    return $this->hasMany(Sale::class, 'afa_id', 'id');
         return null;
     }
     
@@ -411,7 +411,7 @@ class User extends Authenticatable
      */
     public function sales()
     {
-        if($this->hasRole('afa')){
+        if($this->hasRole(3)){
             return $this->belongsToMany(Product::class, 'sales', 'afa_id', 'product_id');
         }
         // else APL

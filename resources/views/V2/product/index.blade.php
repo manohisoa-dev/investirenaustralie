@@ -53,7 +53,7 @@
                         <div class="col-sm-9">
                             <form action="{{route('shop.order', ['product'=>$item])}}" method="post">
                                 {{csrf_field()}}
-                                <button type="submit" class="m-btn m-btn-theme2nd flex-shrink-0 col-md-12"><i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')</button>
+                                <button type="submit" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12"><i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')</button>
                             </form>
                         </div>
                         <div class="col-sm-3">
