@@ -18,7 +18,7 @@ class CategoryController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:admin');
+        $this->middleware('role:1');
     }
 
 
@@ -63,7 +63,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $this->middleware('auth');
-        $this->middleware('role:admin');
+        $this->middleware('role:1');
 
         // Validate request
         $datas = $request->all();

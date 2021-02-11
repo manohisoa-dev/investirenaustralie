@@ -68,6 +68,8 @@ class LoginController extends Controller
     public function showLoginForm()
     {
 
+        // http://investirenaustralie.loc/admin/pub/1
+
         $latitude = option(\App\Models\Config::$APP_LATITUDE, -25.647467468105795);
         $longitude = option(\App\Models\Config::$APP_LONGITUDE, 146.89921517372136);
         
@@ -78,12 +80,12 @@ class LoginController extends Controller
         $contact = \App\Models\Config::login()->get_meta_array('contact', $locale);
         
 
-        // $current_url = url()->current();
-        // $vers = explode('/', $current_url);
+        $previous_url = url()->previous();
+        $prev = explode('/', $previous_url);
 
-        // if($vers[3] == "V1"){
-        //     return \Redirect::to('login');
-        // }
+        if($prev[3] != "V1"){
+            return \Redirect::to('login');
+        }
 
         return view('auth.login')
             ->with('latitude', $latitude)
