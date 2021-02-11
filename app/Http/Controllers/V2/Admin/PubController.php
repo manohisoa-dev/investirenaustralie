@@ -2,6 +2,9 @@
 namespace App\Http\Controllers\V2\Admin;
 
 use App\Pub;
+use App\Page;
+use App\PubPage;
+use App\Image;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -42,7 +45,7 @@ class PubController extends Controller
 
         # notification
         Notify::success('Pub a été créer avec succès');
-        return redirect(route('v2.adminpub.index'));
+        return redirect(route('v2.admin.pub.index'));
     }
 
     /**
@@ -85,11 +88,11 @@ class PubController extends Controller
 
         $this->validate($request, Pub::validationRules());
 
-        $pub->update($request->all());
+        //$pub->update($request->all());
 
         # notification
         Notify::success('Pub a été mise à jour avec succès');
-        return redirect(route('v2.adminpub.index'));
+        return redirect(route('v2.admin.pub.index'));
     }
 
     /**
@@ -103,7 +106,7 @@ class PubController extends Controller
 
         # notification
         Notify::success('Pub a été supprimer avec succès');
-        return redirect(route('v2.adminpub.index'));
+        return redirect(route('v2.admin.pub.index'));
     }
 
     protected function view($view, $data = [])

@@ -54,6 +54,48 @@ class Pub extends Model {
             $newRules[$attr] = $rules[$attr];
         return $newRules;
     }
+    
+    /**
+     * Get the author record associated with the blog.
+     */
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'author_id', 'id');
+    }
+    
+    /**
+     * Get Url of Attached Image OR Default Image
+     *
+     * @param Boolean $thumb
+     * @return String
+     */
+    public function imageUrl($thumb=false)
+    {
+        // Image is setted
+        if($this->image){
+            if($thumb) return thumbnail($this->image->filepath);
+            return storage($this->image->filepath);
+        } 
+        return asset('images/pub.png');
+    }
+    
+    /**
+     * An many pubs can have many pages from pubs_pages table
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\ManyToMany
+     */
+    public function pages()
+    {
+      return $this->belongsToMany(Page::class, 'pubs_pages', 'pub_id', 'page_id');
+    }
+    
+    /**
+     * Get the image record associated with the pub.
+     */
+    public function image()
+    {
+        return $this->belongsTo(Image::class, 'image_id', 'id');
+    }
 
 }
 

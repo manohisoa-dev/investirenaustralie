@@ -343,9 +343,9 @@
               window.alert('Geocoder failed due to: ' + status);
             }
         });
-    }
-	<?php */?>
+    }<?php */?>
+	
 </script>
-<?php /*?><script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzqATs_wp3WXAVlt9iPVS9GcRFPGcIZZw&callback=initMap" type="text/javascript"></script><?php */?>
+<?php /*?><script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA&callback=initMap&libraries=&v=weekly" async></script><?php */?>
 @endsection
 

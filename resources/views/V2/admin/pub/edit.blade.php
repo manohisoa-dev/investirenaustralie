@@ -5,10 +5,10 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Pubs</h2>
+        <h2>Publicités</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Pubs</a>
+                <a href="#">Publicités</a>
             </li>
             <li class="breadcrumb-item">
                 <a href="{{ route('V2.admin.pub.index') }}">Listes</a>
@@ -29,7 +29,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Mise à jour Pub : {{$pub->title}}</h5>
+                <h5>Mise à jour Publicités : {{$pub->title}}</h5>
             </div>
             <div class="ibox-content">
                 <form action="{{ route('V2.admin.pub.index')}}/{{$pub->id}}" method="post">
@@ -40,8 +40,11 @@
                                                                                                 
                             {!! \Nvd\Crud\Form::input('title','text')->model($pub)->show() !!}
                                                                         
-                            {!! \Nvd\Crud\Form::input('content','text')->model($pub)->show() !!}
-                                                                        
+                            <?php /*?>{!! \Nvd\Crud\Form::input('content','text')->model($pub)->show() !!}<?php */?>
+                            <div class="form-group">
+								<label for="content">Content</label>
+								<textarea name="content" id="content">{{$pub->content}}</textarea>
+							</div>                                            
                             {!! \Nvd\Crud\Form::input('links','text')->model($pub)->show() !!}
                                                                         
                             {!! \Nvd\Crud\Form::input('author_id','text')->model($pub)->show() !!}
@@ -55,4 +58,13 @@
         </div>
     </div>
 </div>
+@endsection
+@section('custom-script')
+    <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            CKEDITOR.replace('content');
+        }) ;
+    </script>
 @endsection
