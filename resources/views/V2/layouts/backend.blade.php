@@ -30,7 +30,7 @@
                                 <a class="btn-select-apl m-btn m-btn-theme4rd" data-toggle="modal" data-target="#modal-select-apl" href="{{route('v2.member.select.apl')}}">@lang('member.select.apl')</a>
                             @endif
                             <div class="list-group list-group-flush">
-                                <a href="{{url('V2/'.\App\User::find(Auth::id())->roleUser->role_initial)}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                <a href="{{url(\App\User::find(Auth::id())->roleUser->role_initial)}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                     <div>
                                         <i class="fa fa-tachometer-alt m-10px-r"></i>
                                         <span>@lang('app.dashboard')</span>
@@ -217,7 +217,7 @@
                             @endif
 
                             @if(!Auth::user()->isAdmin())
-                              <a href="{{url('V2/'.\App\User::find(Auth::id())->roleUser->role_initial.'/favorites')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                              <a href="{{url(\App\User::find(Auth::id())->roleUser->role_initial.'/favorites')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
                                       <i class="fa fa-heart m-10px-r"></i>
                                       <span>@lang('app.favorites')</span>
@@ -226,7 +226,7 @@
                                       <i class="fas fa-chevron-right"></i>
                                   </div>
                               </a>
-                              <a href="{{url('V2/'.\App\User::find(Auth::id())->roleUser->role_initial.'/searches')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                              <a href="{{url(\App\User::find(Auth::id())->roleUser->role_initial.'/searches')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
                                       <i class="fa fa-search m-10px-r"></i>
                                       <span>@lang('app.searches')</span>

@@ -10,19 +10,19 @@
                     <div class="row counter">
                         <div class="col-6 col-md-6 col-lg-4 m-15px-tb text-center">
                             <div class="box-shadow white-bg p-20px border-bottom-5 border-color-theme2nd border-radius-5">
-                                <h2 class="count h1" data-to="650" data-speed="650">{{$count['favorites']}}</h2>
+                                <h2 class="count h1" data-to="{{$count['favorites']}}" data-speed="{{$count['favorites']}}">{{$count['favorites']}}</h2>
                                 <h6 class="font-w-500 m-0px">@lang('app.favorites')</h6>
                             </div>
                         </div>
                         <div class="col-6 col-md-6 col-lg-4 m-15px-tb text-center">
                             <div class="box-shadow white-bg p-20px border-bottom-5 border-color-theme2nd border-radius-5">
-                                <h2 class="count h1" data-to="987" data-speed="987">{{$count['orders']}}</h2>
+                                <h2 class="count h1" data-to="{{$count['orders']}}" data-speed="{{$count['orders']}}">{{$count['orders']}}</h2>
                                 <h6 class="font-w-500 m-0px">@lang('app.orders')</h6>
                             </div>
                         </div>
                         <div class="col-6 col-md-6 col-lg-4 m-15px-tb text-center">
                             <div class="box-shadow white-bg p-20px border-bottom-5 border-color-theme2nd border-radius-5">
-                                <h2 class="count h1" data-to="350" data-speed="350">{{$count['purchases']}}</h2>
+                                <h2 class="count h1" data-to="{{$count['purchases']}}" data-speed="{{$count['purchases']}}">{{$count['purchases']}}</h2>
                                 <h6 class="font-w-500 m-0px">@lang('app.purchases')</h6>
                             </div>
                         </div>

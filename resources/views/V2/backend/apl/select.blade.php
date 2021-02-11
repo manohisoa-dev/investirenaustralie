@@ -31,13 +31,6 @@
         <div class="border-bottom-1 border-color-dark-gray m-15px-b p-15px-b">
             <div class="row">
                 <div class="col-sm-12 col-xl-12 m-10px-tb">
-                    {{-- <div class="card">
-                        <div class="p-15px white-bg box-shadow">
-                            <div class="embed-responsive embed-responsive-21by9">
-                                <iframe class="embed-responsive-item" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3151.840107317064!2d144.955925!3d-37.817214!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb6899234e561db11!2sEnvato!5e0!3m2!1sen!2sin!4v1520156366883" allowfullscreen=""></iframe>
-                            </div>
-                        </div>
-                    </div> --}}
                     <div id="map"></div>
                 </div>
             </div>
@@ -74,6 +67,14 @@
 </div>
 
 @push('script')
+    <style type="text/css">
+        /* Always set the map height explicitly to define the size of the div
+        * element that contains the map. */
+        #map {
+        height: 25rem;
+        }
+
+    </style>
     
     <script>
         $('#apl-form-modal').submit(function(event){
@@ -96,13 +97,13 @@
         user: {
             icon: iconBase + '/images/map/user.png'
         },
-        member: {
+        5: {
             icon: iconBase + '/images/map/member.png'
         },
-        apl: {
+        4: {
             icon: iconBase + '/images/map/apl.png'
         },
-        afa: {
+        3: {
             icon: iconBase + '/images/map/afa.png'
         },
         product: {
@@ -158,21 +159,10 @@
         }
 
     </script>
-    <script>
-        let map;
-
-        function initMap() {
-            map = new google.maps.Map(document.getElementById("map"), {
-                center: { lat: -34.397, lng: 150.644 },
-                zoom: 8,
-            });
-        }
-    </script>
-     <script
-     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA&callback=initMap&libraries=&v=weekly"
-     async
-   ></script>
-    {{-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA&callback=initMap2"></script> --}}
+    <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA&callback=initMap&libraries=&v=weekly"
+    async
+    ></script>
     @endpush
 
 @endsection
