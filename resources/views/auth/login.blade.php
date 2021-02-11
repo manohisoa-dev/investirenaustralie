@@ -57,8 +57,12 @@
             </div>
             <div class="col-md-6">
                 @include('includes.alerts')
+                
+                {{ \Session::put('paths',"V1/login") }}
+
                 <form class="contact-form" method="POST" action="{{route('login')}}">
                     {{ csrf_field() }}
+
                     <p class="form-email common form-group {{ $errors->has('email') ? ' has-error' : '' }}"> 
                         <input name="email" type="email" placeholder="Votre email *" aria-required="true" required="required" value="{{ old('email') }}" autofocus>
                     </p>

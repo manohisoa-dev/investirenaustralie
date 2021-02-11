@@ -16,10 +16,6 @@
                             <form action="{{route('login')}}" method="post">
                                 {{ csrf_field() }}
 
-                                
-                                {{ \Session::put('paths',"V2/login") }}
-
-
                                 <div class="form-group">
                                     <label class="form-control-label">Email address</label>
                                     <input type="email" name="email" class="form-control" placeholder="Votre email *" required="required" value="{{ old('email') }}" autofocus>

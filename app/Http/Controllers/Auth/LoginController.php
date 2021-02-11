@@ -52,8 +52,8 @@ class LoginController extends Controller
         }
 
 
-        if(session('paths') != "V2/login"){
-            $link="V2/";
+        if(session('paths') == "V1/login"){
+            $link="V1/";
         }  
 
 
@@ -68,6 +68,8 @@ class LoginController extends Controller
     public function showLoginForm()
     {
 
+        // http://investirenaustralie.loc/admin/pub/1
+
         $latitude = option(\App\Models\Config::$APP_LATITUDE, -25.647467468105795);
         $longitude = option(\App\Models\Config::$APP_LONGITUDE, 146.89921517372136);
         
@@ -78,11 +80,11 @@ class LoginController extends Controller
         $contact = \App\Models\Config::login()->get_meta_array('contact', $locale);
         
 
-        $current_url = url()->current();
-        $vers = explode('/', $current_url);
+        $previous_url = url()->previous();
+        $prev = explode('/', $previous_url);
 
-        if(explode('/', $current_url)[3] == "V1"){
-            return \Redirect::to('V1/login');
+        if($prev[3] != "V1"){
+            return \Redirect::to('login');
         }
 
         return view('auth.login')
@@ -175,8 +177,8 @@ class LoginController extends Controller
 
         $link="/";
 
-        if(session('paths') != "V2/login"){
-            $link= "/V2";
+        if(session('paths') == "V1/login"){
+            $link= "/V1";
             \Session::forget('paths');
         }
         

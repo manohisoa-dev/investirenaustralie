@@ -98,7 +98,7 @@ class LoginController extends Controller
             ->with('title', $title)
             ->with('content', $content)
             ->with('address', $address)
-            ->with('contact', $contact);
+            ->with('contact', $contact)
             ->with('lapls', $lapls);
     }
     
