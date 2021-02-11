@@ -25,7 +25,9 @@ Route::prefix('')->namespace('V2')->as('V2.')->group(function(){
 
         Route::resource('country','CountryController');
         Route::resource('state','StateController');
+        
         Route::resource('category','CategoryController');
+        
         Route::resource('pub','PubController');
         Route::resource('badword','BadwordController');
         Route::resource('postalcode','PostalcodeController');
