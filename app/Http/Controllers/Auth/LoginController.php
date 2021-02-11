@@ -52,8 +52,8 @@ class LoginController extends Controller
         }
 
 
-        if(session('paths') == "V2/login"){
-            $link="V2/";        
+        if(session('paths') != "V2/login"){
+            $link="V2/";
         }  
 
 
@@ -78,11 +78,11 @@ class LoginController extends Controller
         $contact = \App\Models\Config::login()->get_meta_array('contact', $locale);
         
 
-        $prev_url = url()->previous();
-        $vers = explode('/', $prev_url);
+        $current_url = url()->current();
+        $vers = explode('/', $current_url);
 
-        if(explode('/', $prev_url)[3] == "V2"){
-            return \Redirect::to('V2/login');            
+        e0696772453ab4cc9fc2c7c65b7d2ace63eb9c79.php        if(explode('/', $current_url)[3] == "V1"){
+            return \Redirect::to('V1/login');
         }
 
         return view('auth.login')
@@ -175,7 +175,7 @@ class LoginController extends Controller
 
         $link="/";
 
-        if(session('paths') == "V2/login"){
+        if(session('paths') != "V2/login"){
             $link= "/V2";
             \Session::forget('paths');
         }

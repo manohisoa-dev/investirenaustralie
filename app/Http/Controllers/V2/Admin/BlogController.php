@@ -60,6 +60,7 @@ class BlogController extends Controller {
      * @return  \Illuminate\Http\Response
      */
     public function edit(Request $request, Blog $blog) {
+        dd($blog) ;
         return $this->view("edit", ['blog' => $blog]);
     }
 
