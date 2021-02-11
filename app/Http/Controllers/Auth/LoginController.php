@@ -67,9 +67,6 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-
-        // http://investirenaustralie.loc/admin/pub/1
-
         $latitude = option(\App\Models\Config::$APP_LATITUDE, -25.647467468105795);
         $longitude = option(\App\Models\Config::$APP_LONGITUDE, 146.89921517372136);
         
