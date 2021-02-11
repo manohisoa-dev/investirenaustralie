@@ -81,7 +81,7 @@ class LoginController extends Controller
         $current_url = url()->current();
         $vers = explode('/', $current_url);
 
-        e0696772453ab4cc9fc2c7c65b7d2ace63eb9c79.php        if(explode('/', $current_url)[3] == "V1"){
+        if(explode('/', $current_url)[3] == "V1"){
             return \Redirect::to('V1/login');
         }
 
