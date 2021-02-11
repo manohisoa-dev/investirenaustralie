@@ -91,8 +91,8 @@
 <li class="{{Request::is('*/category/*') || Request::is('*/category') ? 'active' : ''}}">
     <a href="#"><i class="fa fa-list-ul" title="Catégories"></i> <span class="nav-label">Catégories</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
+		<li><a href="{{route('V2.admin.category.create')}}">Ajouter une catégorie</a></li>
         <li><a href="{{route('V2.admin.category.index')}}">Liste des catégories</a></li>
-        <li><a href="{{route('V2.admin.category.create')}}">Ajouter une catégorie</a></li>
     </ul>
 </li>
 <li class="{{Request::is('*/pub/*') || Request::is('*/pub') ? 'active' : ''}}">
