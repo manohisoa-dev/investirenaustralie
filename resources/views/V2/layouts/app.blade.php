@@ -306,7 +306,7 @@
     <script type="text/javascript">
         $('#apl_list').on('click','.apl_item',function(){
             var val = $(this).attr('value');
-            var uri = '{{ URL::to("V2/getApl") }}'+'/'+val;
+            var uri = '{{ URL::to("getApl") }}'+'/'+val;
             var envoi = $.get( uri );
 
             envoi.done( function(data) {

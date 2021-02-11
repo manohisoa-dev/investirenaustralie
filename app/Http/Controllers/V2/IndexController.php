@@ -67,6 +67,12 @@ class IndexController extends Controller
             ->has('location')
             ->with('location')
             ->get();
+
+        $lapls_footer = Localisation::select('localizations.*')
+            ->join('users','users.location_id','=','localizations.id')
+            ->where('users.role','=','4')
+            ->groupBy('localizations.locality')
+            ->get();
         
         $data = [];
         foreach($lapls as $item){
@@ -84,6 +90,7 @@ class IndexController extends Controller
         
     	return view('V2.index.apl')
             ->with('items', $lapls)
+            ->with('lapls', $lapls_footer)
             ->with(['data' => json_encode($data)]);
     }
 
