@@ -62,7 +62,7 @@ class IndexController extends Controller
      */
     public function apl(Request $request)
     {
-        $lapls = User::ofRole('apl')
+        $lapls = User::ofRole(4)
             ->isActive()
             ->has('location')
             ->with('location')
@@ -76,7 +76,7 @@ class IndexController extends Controller
         
         $data = [];
         foreach($lapls as $item){
-            $html = view('user.map')->with('item', $item)->render();
+            $html = view('V2.user.map')->with('item', $item)->render();
             $data[] = [
               'id' => $item->id,
               'lat' => $item->location?$item->location->latitude:0,

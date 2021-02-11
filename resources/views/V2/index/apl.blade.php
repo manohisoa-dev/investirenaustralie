@@ -12,12 +12,9 @@
         <div>
           <h2 class="font-15 m-10px-b">@lang('app.select_apl')</h2>
         </div>
-
           <div class="col-12 m-30px-t">
               <div class="p-15px white-bg box-shadow">
-                  <div class="embed-responsive embed-responsive-21by9">
-                      <iframe class="embed-responsive-item" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3151.840107317064!2d144.955925!3d-37.817214!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb6899234e561db11!2sEnvato!5e0!3m2!1sen!2sin!4v1520156366883" allowfullscreen=""></iframe>
-                  </div>
+                  <div id="map"></div>
               </div>
           </div>
       </div>
@@ -52,7 +49,12 @@
 </div>
 @endsection
 
-@section('script')
+@push('script')
+<style>
+  #map{
+    height: 25rem;
+  }
+</style>
 <script>
     $('#apl-form-modal').submit(function(event){
         if(!$('#check-confirm-modal').is(":checked"))
@@ -72,20 +74,20 @@
       user: {
         icon: iconBase + '/images/map/user.png'
       },
-      member: {
+      5: {
         icon: iconBase + '/images/map/member.png'
       },
-      apl: {
+      4: {
         icon: iconBase + '/images/map/apl.png'
       },
-      afa: {
+      3: {
         icon: iconBase + '/images/map/afa.png'
       },
       product: {
         icon: iconBase + '/images/map/product.png'
       }
     };
-    
+
     
     var datas = {!!$data!!};
     var markers = [];
@@ -121,5 +123,5 @@
     }
 
 </script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtRuDbjjrHacZ6EqZySofNueLBLkrNxwI&callback=initMap"></script>
-@endsection
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA&callback=initMap"></script>
+@endpush

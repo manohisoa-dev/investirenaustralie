@@ -223,7 +223,7 @@ class MemberController extends Controller
         
         $data = [];
         
-        $apls = User::ofRole('apl')
+        $apls = User::ofRole(4)
             ->isActive()
             ->has('location')
             ->with('location')
@@ -239,7 +239,7 @@ class MemberController extends Controller
         $selected = null;
         
         foreach($apls as $item){
-            $html = view('backend.apl.html')->with('item', $item)->render();
+            $html = view('V2.backend.apl.html')->with('item', $item)->render();
             $dataTemp = [
               'id' => $item->id,
               'lat' => $item->location?$item->location->latitude:0,

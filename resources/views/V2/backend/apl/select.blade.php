@@ -97,13 +97,13 @@
         user: {
             icon: iconBase + '/images/map/user.png'
         },
-        member: {
+        5: {
             icon: iconBase + '/images/map/member.png'
         },
-        apl: {
+        4: {
             icon: iconBase + '/images/map/apl.png'
         },
-        afa: {
+        3: {
             icon: iconBase + '/images/map/afa.png'
         },
         product: {
