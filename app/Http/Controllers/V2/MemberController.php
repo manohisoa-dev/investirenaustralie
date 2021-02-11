@@ -228,6 +228,11 @@ class MemberController extends Controller
             ->has('location')
             ->with('location')
             ->get();
+        $lapls = Localisation::select('localizations.*')
+            ->join('users','users.location_id','=','localizations.id')
+            ->where('users.role','=','4')
+            ->groupBy('localizations.locality')
+            ->get();
         
         $userApl = Auth::user()->apl;
         
@@ -253,11 +258,12 @@ class MemberController extends Controller
         }
         
         $action = route('member.select.apl');
-    	return view('backend.apl.select')
+    	return view('V2.backend.apl.select')
             ->with('location', Auth::user()->location)
             ->with('action', $action)
             ->with('items', $apls)
             ->with('distance', $distance)
+            ->with('lapls', $lapls)
             ->with('distances', $this->distances)
             ->with('selected', json_encode($selected))
             ->with('data', json_encode($data));
