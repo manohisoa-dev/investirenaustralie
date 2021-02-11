@@ -5,10 +5,10 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Categories</h2>
+        <h2>Catégories</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('V2.admin.category.index') }}">Categories</a>
+                <a href="{{ route('V2.admin.category.index') }}">Catégories</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Listes</strong>
@@ -41,22 +41,18 @@
 						{!!\Nvd\Crud\Html::sortableTh('title','V2.admin.category.index','Titre')!!}
 						{!!\Nvd\Crud\Html::sortableTh('created_at','V2.admin.category.index','Créer le')!!}
 						<th>Produits/SubProduits<span class="column-sorter"></span></th>
-						<!--{!!\Nvd\Crud\Html::sortableTh('slug','V2.admin.category.index','Slug')!!}	-->					
-						{!!\Nvd\Crud\Html::sortableTh('content','V2.admin.category.index','Content')!!}
+						<th>Blogs</th>
 						{!!\Nvd\Crud\Html::sortableTh('author_id','V2.admin.category.index','Auteur')!!}
-						{!!\Nvd\Crud\Html::sortableTh('updated_at','V2.admin.category.index','Mise à jour le')!!}
 						<th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">
 							<td style="width:5%"><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
 							<td><input type="text" class="form-control" name="title" value="{{Request::input("title")}}"></td>
-							<td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>
-							<?php /*?><td><input type="text" class="form-control" name="slug" value="{{Request::input("slug")}}"></td><?php */?>
-							<td><input type="text" class="form-control" name="content" value="{{Request::input("content")}}"></td>
-							<td><input type="text" class="form-control" name="author_id" value="{{Request::input("author_id")}}"></td>
-							
-							<td><input type="text" class="form-control" name="updated_at" value="{{Request::input("updated_at")}}"></td>
+							<td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>						
+							<td></td>		
+							<td></td>					
+							<td><input type="text" class="form-control" name="author_id" value="{{Request::input("author_id")}}"></td>		
 							<td style="min-width: 6em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>
                         </form>
                     </tr>
@@ -77,40 +73,34 @@
                                 </td>
 								<td>
 									{{ $record->created_at ? $record->created_at->diffForHumans() : '' }}
-                                </td>
-                                <?php /*?><td>
-                                    <span class="editable"
-                                          data-type="text"
-                                          data-name="slug"
-                                          data-value="{{ $record->slug }}"
-                                          data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('V2.admin.category.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->slug }}</span>
-                                </td><?php */?>
-                                
-                                <td>
-                                    <span class="editable"
-                                          data-type="text"
-                                          data-name="content"
-                                          data-value="{{ $record->content }}"
-                                          data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('V2.admin.category.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{count($record->blogs)}}<br />{{ $record->content }}</span>
-                               </td>
-                                                                <td>
-                                                                        <span class="editable"
+                                </td>                                
+                                <td>{{count($record->products)}} / {{count($record->subProducts)}}</td>
+								<td>{{count($record->blogs)}}</td>
+                               <td>
+                                   <span class="editable"
                                           data-type="text"
                                           data-name="author_id"
                                           data-value="{{ $record->author_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
                                           data-url="{{ route('V2.admin.category.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->author->name }}</span>
-                                                                    </td>
-                                                                
-                                                                <td>
-                                                                            {{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}
-                                                                    </td>
-                                                                @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('V2.admin.category.index'), 'record' => $record ] )
+                               </td>
+							   <td class="actions-cell text-center" width="12%">
+									<form class="form-inline" action="{{route('V2.admin.category.index')}}/{{$record->id}}" method="POST">
+										<a href="{{route('V2.admin.category.index')}}/{{$record->id}}" title="Détail" class="btn btn-default btn-circle">
+											<i class="fa fa-eye"></i>
+										</a>&nbsp;&nbsp;									
+										<a href="{{route('V2.admin.category.index')}}/{{$record->id}}/edit" title="Modification" class="btn btn-default btn-circle">
+											<i class="fa fa-pencil-square-o"></i>
+										</a>&nbsp;&nbsp;								
+										{{ csrf_field() }}
+										{{ method_field('DELETE') }}
+										<button class="btn btn-default btn-circle"
+												onclick="return confirm('Vous êtes sur?')"
+												type="submit" title="Suppression"><i class="fa fa-times text-danger"></i></button>
+									</form>
+								</td>
+                               <?php /*?>@include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('V2.admin.category.index'), 'record' => $record ] )<?php */?>
                             </tr>
                         @empty
                             @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 8])

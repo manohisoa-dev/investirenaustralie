@@ -68,8 +68,7 @@
                                     </select>
                                 </li>
                                 @else
-                                <li class="small m-10px-l"><i class="fas fa-user"></i> <a href="{{ url(\App\User::find(Auth::id())->roleUser->role_initial)}}">{{Auth::user()->name}} </a>
-                                </li>
+                                <li class="small m-10px-l"><i class="fas fa-user"></i> <a href="{{ url(\App\User::find(Auth::id())->roleUser->role_initial)}}">{{Auth::user()->name}} </a>                                </li>
                                 @endif
                                 <li class="small m-10px-l"><i class="fas fa-globe"></i> @lang('app.language') : 
                                     <div class="dropdown pull-right">

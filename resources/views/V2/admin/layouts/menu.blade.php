@@ -91,15 +91,15 @@
 <li class="{{Request::is('*/category/*') || Request::is('*/category') ? 'active' : ''}}">
     <a href="#"><i class="fa fa-list-ul" title="Catégories"></i> <span class="nav-label">Catégories</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
+		<li><a href="{{route('V2.admin.category.create')}}">Ajouter une catégorie</a></li>
         <li><a href="{{route('V2.admin.category.index')}}">Liste des catégories</a></li>
-        <li><a href="{{route('V2.admin.category.create')}}">Ajouter une catégorie</a></li>
     </ul>
 </li>
 <li class="{{Request::is('*/pub/*') || Request::is('*/pub') ? 'active' : ''}}">
     <a href="#"><i class="fa fa-money" title="Publicités"></i> <span class="nav-label">Publicités</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
+		<li><a href="{{route('V2.admin.pub.create')}}">Ajouter une publicité</a></li>
         <li><a href="{{route('V2.admin.pub.index')}}">Liste des publicités</a></li>
-        <li><a href="{{route('V2.admin.pub.create')}}">Ajouter une publicité</a></li>
     </ul>
 </li>
 <li class="{{Request::is('*/page/*') || Request::is('*/page') ? 'active' : ''}}">
