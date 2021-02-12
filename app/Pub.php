@@ -36,8 +36,8 @@ class Pub extends Model {
             'title' => 'string|max:150',
             'content' => '',
             'links' => 'string|max:191',
-            'author_id' => 'required',
-            'image_id' => 'required',
+            'author_id' => '',
+            'image_id' => '',
         ];
 
         // no list is provided

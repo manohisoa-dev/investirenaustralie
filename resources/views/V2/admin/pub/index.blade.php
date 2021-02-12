@@ -83,7 +83,7 @@
                                           data-value="{{ $record->content }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
                                           data-url="{{ route('V2.admin.pub.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->content }}</span>
+                                          >{{ strip_tags($record->content) }}</span>
                                  </td>
                                  <td>
                                      <span class="editable"
