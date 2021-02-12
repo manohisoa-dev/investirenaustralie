@@ -28,7 +28,7 @@ class PubController extends Controller
     public function show(Request $request, Pub $pub)
     {
         $this->middleware('auth');
-        $this->middleware('role:admin');
+        $this->middleware('role:1');
         
         return view('admin.pub.index')
                 ->with('item', $pub); 
@@ -43,7 +43,7 @@ class PubController extends Controller
     public function create(Request $request)
     {
         $this->middleware('auth');
-        $this->middleware('role:admin');
+        $this->middleware('role:1');
         
         $item = new Pub();
         $pageIds = [];
@@ -72,7 +72,7 @@ class PubController extends Controller
     public function store(Request $request)
     {
         $this->middleware('auth');
-        $this->middleware('role:admin');
+        $this->middleware('role:1');
         
         // Validate request
         $datas = $request->all();
@@ -125,7 +125,7 @@ class PubController extends Controller
     public function edit(Request $request, Pub $pub)
     {
         $this->middleware('auth');
-        $this->middleware('role:admin');
+        $this->middleware('role:1');
 
         $pageIds = [];
         foreach($pub->pages as $page){
@@ -156,7 +156,7 @@ class PubController extends Controller
     public function update(Request $request, Pub $pub)
     {
         $this->middleware('auth');
-        $this->middleware('role:admin');
+        $this->middleware('role:1');
         
         // Validate request
         $validator = Validator::make($request->all(),[
@@ -210,7 +210,7 @@ class PubController extends Controller
     public function allAdmin(Request $request, $filter='all')
     {
         $this->middleware('auth');
-        $this->middleware('role:admin');
+        $this->middleware('role:1');
         
         $title = __('app.admin.pub.list');
         
@@ -249,7 +249,7 @@ class PubController extends Controller
     public function detach(Request $request,Pub $pub, Page $page)
     {
         $this->middleware('auth');
-        $this->middleware('role:admin');
+        $this->middleware('role:1');
         
         PubPage::where('pub_id', $pub->id)
             ->where('page_id', $page->id)
@@ -268,7 +268,7 @@ class PubController extends Controller
     public function delete(Request $request,Pub $pub)
     {
         $this->middleware('auth');
-        $this->middleware('role:admin');
+        $this->middleware('role:1');
         
         $pub->delete();
         

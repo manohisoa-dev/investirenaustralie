@@ -5,10 +5,10 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Pubs</h2>
+        <h2>Publicités</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Pubs</a>
+                <a href="#">Publicités</a>
             </li>
             <li class="breadcrumb-item">
                 <a href="{{ route('V2.admin.pub.index') }}">Listes</a>
@@ -25,14 +25,17 @@
 @endsection
 
 @section('content')
+<style>
+.fileupload-preview img{width:100%}
+</style>
 <div class="row">
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Mise à jour Pub : {{$pub->title}}</h5>
+                <h5>Mise à jour Publicités : {{$pub->title}}</h5>
             </div>
             <div class="ibox-content">
-                <form action="{{ route('V2.admin.pub.index')}}/{{$pub->id}}" method="post">
+                <form action="{{ route('V2.admin.pub.index')}}/{{$pub->id}}" method="post" enctype="multipart/form-data">
 
                     {{ csrf_field() }}
 
@@ -40,13 +43,40 @@
                                                                                                 
                             {!! \Nvd\Crud\Form::input('title','text')->model($pub)->show() !!}
                                                                         
-                            {!! \Nvd\Crud\Form::input('content','text')->model($pub)->show() !!}
-                                                                        
+                            <?php /*?>{!! \Nvd\Crud\Form::input('content','text')->model($pub)->show() !!}<?php */?>
+                            <div class="form-group">
+								<label for="content">Content</label>
+								<textarea name="content" id="content">{{$pub->content}}</textarea>
+							</div>                                            
                             {!! \Nvd\Crud\Form::input('links','text')->model($pub)->show() !!}
                                                                         
                             {!! \Nvd\Crud\Form::input('author_id','text')->model($pub)->show() !!}
                                                                         
                             {!! \Nvd\Crud\Form::input('image_id','text')->model($pub)->show() !!}
+							<div class="form-group">
+								<div class="row">
+									<div class="col-md-6">
+										<div class="well well-nice inline">
+											<div class="fileupload fileupload-new" data-provides="fileupload">
+												<div class="fileupload-preview thumbnail" style="width: 200px; height: 120px;">
+													<img src="{{$pub->imageUrl()}}" style="width:100%">
+												</div>
+												<div> 
+													<span class="btn btn-file"> 
+														<span class="fileupload-new">@lang('app.admin.file.select')</span> 
+														<span class="fileupload-exists">@lang('app.admin.file.change')</span>
+														<input type="file" name="image" id="file">
+													</span> 
+													<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">@lang('app.admin.file.remove')</a> 
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+									
+									</div>
+								</div>
+							</div>
                                                                                                                                                 
                     <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Enregistrer</button>
 
@@ -55,4 +85,13 @@
         </div>
     </div>
 </div>
+@endsection
+@section('custom-script')
+    <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+	<script src="{{asset('administrator/plugins/bootstrap-fileupload/js/bootstrap-fileupload.js')}}"></script>
+    <script>
+        $(document).ready(function(){
+            CKEDITOR.replace('content');
+        }) ;
+    </script>
 @endsection

@@ -2,8 +2,12 @@
 namespace App\Http\Controllers\V2\Admin;
 
 use App\Pub;
+use App\Page;
+use App\PubPage;
+use App\Image;
 use Illuminate\Http\Request;
 
+use Auth;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Jleon\LaravelPnotify\Notify;
@@ -37,12 +41,24 @@ class PubController extends Controller
     public function store( Request $request )
     {
         $this->validate($request, Pub::validationRules());
-
-        Pub::create($request->all());
-
+    
+        //Pub::create($request->all());
+        $pub = new Pub();
+        
+        if($file=$request->file('image')){
+            $image = Image::storeAndSave($file);
+            $pub->image_id = $image->id;
+        }
+        
+        $pub->title = $request->title;
+        $pub->content = $request->content;
+        $pub->links = $request->links;
+        $pub->author_id = Auth::user()->id;
+        $pub->save();
+        
         # notification
         Notify::success('Pub a été créer avec succès');
-        return redirect(route('v2.adminpub.index'));
+        return redirect(route('V2.admin.pub.index'));
     }
 
     /**
@@ -84,12 +100,18 @@ class PubController extends Controller
         }
 
         $this->validate($request, Pub::validationRules());
-
-        $pub->update($request->all());
+        if($file=$request->file('image')){
+            $image = Image::storeAndSave($file);
+            $pub->image_id = $image->id;
+        }
+        $pub->title = $request->title;
+        $pub->content = $request->content;
+        $pub->links = $request->links;
+        $pub->save();
 
         # notification
         Notify::success('Pub a été mise à jour avec succès');
-        return redirect(route('v2.adminpub.index'));
+        return redirect(route('V2.admin.pub.index'));
     }
 
     /**
@@ -103,7 +125,7 @@ class PubController extends Controller
 
         # notification
         Notify::success('Pub a été supprimer avec succès');
-        return redirect(route('v2.adminpub.index'));
+        return redirect(route('V2.admin.pub.index'));
     }
 
     protected function view($view, $data = [])
