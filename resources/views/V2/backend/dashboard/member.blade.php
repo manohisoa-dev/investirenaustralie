@@ -38,7 +38,7 @@
             <div class="row align-items-center">
                 @if(sizeOf($recent['purchases']) != 0)
                     @foreach($recent['purchases'] as $product)
-                        @include('backend.product.item', ['product'=>$product], ['type'=>'purchases'])
+                        @include('V2.backend.product.item', ['product'=>$product], ['type'=>'purchases'])
                     @endforeach
                 @else
                     <p class="m-20px-lr p-25px-t">@lang('app.txt.noinfo')</p>

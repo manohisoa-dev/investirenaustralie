@@ -38,33 +38,36 @@
     </div>
 </div>
 
-
-<!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-          <h4 class="modal-title" id="title">@lang('app.apl')</h4>
-      </div>
-      <div class="modal-body">
-        <p id="content">@lang('app.select_apl')</p>
-      </div>
-      <div class="modal-footer">
-        <form id="apl-form-modal" class="form-horizontal" role="form" method="post" action="{{$action}}">
-            <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-            <input type="hidden" id="apl-modal"  name="apl">
-            <div class="pull-left hidden row-confirm-modal" style="margin-bottom: 20px;">
-                <input id="check-confirm-modal" type="checkbox" name="confirm" value="1"><span style="color:red;"> {!!__('member.accept_term_and_condition_apl')!!}</span>
+<!-- modal -->
+<div class="container">
+    <div class="modal left fade" id="myModal" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content dark-bg">
+                <div class="modal-header" style="background-color: #AE4435 !important;">
+                    <h4 class="modal-title  white-color" id="title">@lang('app.apl')</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="nav flex-sm-column flex-row  white-color">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <form id="apl-form-modal" class="form-horizontal" role="form" method="post" action="{{$action}}">
+                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                        <input type="hidden" id="apl-modal"  name="apl">
+                        <div class="pull-left hidden row-confirm-modal" style="margin-bottom: 20px;">
+                            <input id="check-confirm-modal" type="checkbox" name="confirm" value="1"><span style="color:red;"> {!!__('member.accept_term_and_condition_apl')!!}</span>
+                        </div>
+                        <div class="col-md-12">
+                            <button class="m-btn m-btn-theme pull-right" data-dismiss="modal" aria-hidden="true">@lang('app.btn.cancel')</button>
+                            <button id="submit" type="submit" class="m-btn m-btn-theme3rd pull-left">@lang('member.select')</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="col-md-12">
-                <button class="btn btn-default pull-right" data-dismiss="modal" aria-hidden="true">@lang('app.btn.cancel')</button>
-                <button id="submit" type="submit" class="btn btn-success pull-left">@lang('member.select')</button>
-            </div>
-        </form>
-      </div>
+        </div>
     </div>
-  </div>
 </div>
+<!-- Fin modal -->
 
 @push('script')
     <style type="text/css">
@@ -148,7 +151,7 @@
                 icon: icons[data.type].icon,
             });
             
-            if(data.type == 'apl'){
+            if(data.type == 4){
                 google.maps.event.addListener(markers[data.id], 'click', function() {
                     $('#apl-modal').attr("value", data.id);
                     $('#title').html(data.title);

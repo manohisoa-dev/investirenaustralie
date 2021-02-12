@@ -355,4 +355,29 @@ Route::prefix('')->namespace('V2')->as('v2.')->group(function(){
         });
 
     });
+
+    Route::prefix('apl')->middleware(["auth","role:4"])->group(function(){
+
+        Route::get('/', 'BackendController@dashboard');
+        Route::get('favorites', 'BackendController@favorites');
+        Route::get('pins', 'BackendController@pins');
+        Route::get('searches', 'BackendController@searches');
+
+        Route::get('orders', 'AplController@orders')->name('apl.orders');
+        Route::get('sales', 'AplController@sales')->name('apl.sales');
+        Route::get('customers', 'AplController@customers')->name('apl.customers');
+        Route::get('commissions/{filter?}', 'AplController@commissions')->name('apl.commissions');
+        Route::get('cartitem/{cartitem}', 'CartItemController@show')->name('apl.cartitem.show');
+
+        Route::get('contact/{user}' , 'BackendController@contact')->name('apl.user.contact');
+        Route::post('contact/{user}', 'BackendController@postContact');
+
+        // Mail Controller Groups
+        Route::get('mails/{filter?}', 'MailController@all')->name('apl.mail.list');
+        Route::prefix('mail')->group(function(){
+            Route::get('{mail}', 'MailController@view')->name('apl.mail.index');
+            Route::get('delete/{mail}', 'MailController@delete')->name('apl.mail.delete');
+        });
+
+    });
 });

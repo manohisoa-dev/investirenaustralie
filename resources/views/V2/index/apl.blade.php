@@ -21,6 +21,42 @@
   </div>
 </section>
 
+<!-- modal -->
+<div class="container">
+  <div class="modal left fade" id="myModal" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content dark-bg">
+              <div class="modal-header" style="background-color: #AE4435 !important;">
+                <h4 class="modal-title white-color" id="title">@lang('app.apl')</h4>
+              </div>
+              <div class="modal-body">
+                  <div class="nav flex-sm-column flex-row">
+                    <p id="content" class="white-color">@lang('app.select_apl')</p>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <form id="apl-form-modal" class="form-horizontal" role="form" method="post" action="{{route('v2.member.select.apl')}}">
+                  <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                  <input type="hidden" id="apl-modal"  name="apl">
+                  <div class="pull-left hidden row-confirm-modal" style="margin-bottom: 20px;">
+                      <input id="check-confirm-modal" type="checkbox" name="confirm" value="1"><span style="color:red;"> {!!__('member.accept_term_and_condition_apl')!!}</span>
+                  </div>
+                  <div class="row col-md-12">
+                    <div class="col-md-5">
+                      <button class="m-btn m-btn-theme" data-dismiss="modal" aria-hidden="true">@lang('app.btn.cancel')</button>
+                    </div>
+                    <div class="col-md-5">
+                      <button id="submit" type="submit" class="m-btn m-btn-theme4rd">@lang('member.select')</button>
+                    </div>  
+                  </div>
+              </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Fin modal -->
+
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog">
@@ -57,10 +93,13 @@
 </style>
 <script>
     $('#apl-form-modal').submit(function(event){
-        if(!$('#check-confirm-modal').is(":checked"))
+        if($('#check-confirm-modal').is(":checked"))
         {
             $('.row-confirm-modal').removeClass('hidden');
-            event.preventDefault();
+        }
+        else{
+          alert('Veuillez accepter les termes et les conditions APL !');
+          event.preventDefault();
         }
     });
 </script>
@@ -111,8 +150,9 @@
             title: data.title,
             icon: icons[data.type].icon,
         });
-        
-        if(data.type == 'apl'){
+
+
+        if(data.type == 4){
             google.maps.event.addListener(markers[data.id], 'click', function() {
                 $('#apl-modal').attr("value", data.id);
                 $('#title').html(data.title);
