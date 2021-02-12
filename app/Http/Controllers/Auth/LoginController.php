@@ -175,8 +175,8 @@ class LoginController extends Controller
         $link="/";
 
         if(session('paths') == "V1/login"){
-            $link= "/V1";
             \Session::forget('paths');
+            $link= "/V1";
         }
         
 

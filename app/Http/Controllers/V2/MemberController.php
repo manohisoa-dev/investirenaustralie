@@ -97,7 +97,7 @@ class MemberController extends Controller
             ->get();
         
         if(($role=='apl') && !Auth::user()->apl){
-            return redirect()->route('member.select.apl')
+            return redirect()->route('v2.member.select.apl')
                 ->with('error', 'Vous devez choisir un APL d\'abord.');
         }
         

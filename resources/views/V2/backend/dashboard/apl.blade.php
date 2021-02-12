@@ -22,8 +22,11 @@
                         </div>
                         <div class="col-6 col-md-6 col-lg-4 m-15px-tb text-center">
                             <div class="box-shadow white-bg p-20px border-bottom-5 border-color-theme2nd border-radius-5">
-                                <h2 class="count h1" data-to="{{$count['orders']}}" data-speed="{{$count['orders']}}">{{$count['orders']}}</h2>
-                                /<h2 class="count h1" data-to="{{$count['sales']}}" data-speed="{{$count['sales']}}">{{$count['sales']}}</h2>
+                                <h2>
+                                    <span class="count h1" data-to="{{$count['orders']}}" data-speed="{{$count['orders']}}">{{$count['orders']}}</span>
+                                    <span class="h1">/</span>
+                                    <span class="count h1" data-to="{{$count['sales']}}" data-speed="{{$count['sales']}}">{{$count['sales']}}</span>
+                                </h2>
                                 <h6 class="font-w-500 m-0px">@lang('app.orders')/@lang('app.sales')</h6>
                             </div>
                         </div>
@@ -40,6 +43,36 @@
                 @if(sizeOf($recent['orders']) != 0)
                     @foreach($recent['orders'] as $product)
                         @include('V2.backend.product.item', ['product'=>$product], ['type'=>'orders'])
+                    @endforeach
+                @else
+                    <p class="m-20px-lr p-25px-t">@lang('app.txt.noinfo')</p>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-content-area m-40px-tb card card-body">
+        <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
+            <h3 class="title">@lang('app.sales')</h3>
+            <div class="row align-items-center">
+                @if(sizeOf($recent['sales']) != 0)
+                    @foreach($recent['sales'] as $product)
+                        @include('V2.backend.product.item', ['product'=>$product], ['type'=>'sales'])
+                    @endforeach
+                @else
+                    <p class="m-20px-lr p-25px-t">@lang('app.txt.noinfo')</p>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-content-area m-40px-tb card card-body">
+        <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
+            <h3 class="title">@lang('app.customers')</h3>
+            <div class="row align-items-center">
+                @if(sizeOf($recent['customers']) != 0)
+                    @foreach($recent['customers'] as $product)
+                        @include('V2.backend.user.item', ['product'=>$product], ['type'=>'customers'])
                     @endforeach
                 @else
                     <p class="m-20px-lr p-25px-t">@lang('app.txt.noinfo')</p>
@@ -79,55 +112,6 @@
             </div>
         </div>
         </div>
-    </div>
-</div>
-
-
-
-<div id="property-sidebar">
-    <div class="col-sm-6">
-        <section class="widget recent-properties clearfix">
-            <h5 class="title">@lang('app.orders')</h5>
-            @foreach($recent['orders'] as $product)
-                @include('backend.product.item', ['product'=>$product])
-            @endforeach
-        </section>
-    </div>
-    <div class="col-sm-6">
-        <section class="widget recent-properties clearfix">
-            <h5 class="title">@lang('app.sales')</h5>
-            @foreach($recent['sales'] as $product)
-                @include('backend.product.item', ['product'=>$product])
-            @endforeach
-        </section>
-    </div>
-</div>
-<div id="property-sidebar">
-    <div class="col-sm-12">
-        <section class="widget recent-properties clearfix">
-            <h5 class="title">@lang('app.customers')</h5>
-            @foreach($recent['customers'] as $user)
-                @include('backend.user.item', ['user'=>$user])
-            @endforeach
-        </section>
-    </div>
-</div>
-<div id="property-sidebar">
-    <div class="col-sm-6">
-        <section class="widget recent-properties clearfix">
-            <h5 class="title">@lang('app.favorites')</h5>
-            @foreach($recent['favorites'] as $product)
-                @include('backend.product.item', ['product'=>$product])
-            @endforeach
-        </section>
-    </div>
-    <div class="col-sm-6">
-        <section class="widget recent-properties clearfix">
-            <h5 class="title">@lang('app.pins')</h5>
-            @foreach($recent['pins'] as $product)
-                @include('backend.product.item', ['product'=>$product])
-            @endforeach
-        </section>
     </div>
 </div>
 @endsection

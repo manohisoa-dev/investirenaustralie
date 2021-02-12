@@ -20,7 +20,9 @@
                                 <h6 class="font-w-500 m-15px-t m-0px"><span class="font-w-700">{{ Auth::user()->name }}</span></h6>
                                 <span class="font-small">{{ \App\User::find(Auth::id())->roleUser->role_initial }}</span>
                                 <div class="p-10px-t">
-                                    <a class="m-btn m-btn-sm m-btn-theme-light m-btn-radius" href="{{route('v2.'.App\Role::find(Auth::user()->role)->role_initial.'.mail.list',['filter'=>'inbox'])}}"><i class="far fa-envelope"></i> @lang('app.txt.sendmessage') </a>
+                                    @if(App\User::find(Auth::id())->role == 5)
+                                        <a class="m-btn m-btn-sm m-btn-theme-light m-btn-radius" href="{{ route('v2.member.contact', ['role'=>'admin']) }}"><i class="far fa-envelope"></i> @lang('app.txt.sendmessage') </a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -120,7 +122,7 @@
                               </a>
                               <a href="{{route('v2.apl.customers')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
-                                      <i class="far fa-users m-10px-r"></i>
+                                      <i class="fa fa-users m-10px-r"></i>
                                       <span>@lang('apl.customers')</span>
                                   </div>
                                   <div>
@@ -189,7 +191,7 @@
                             @If(Auth::user()->hasRole(2))
                               <a href="{{route('v2.seller.products')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
-                                      <i class="far fa-paperclip m-10px-r"></i>
+                                      <i class="fa fa-paperclip m-10px-r"></i>
                                       <span>@lang('seller.products')</span>
                                   </div>
                                   <div>
@@ -198,7 +200,7 @@
                               </a>
                               <a href="{{route('v2.seller.orders')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
-                                      <i class="far fa-cart-plus m-10px-r"></i>
+                                      <i class="fa fa-cart-plus m-10px-r"></i>
                                       <span>@lang('seller.orders')</span>
                                   </div>
                                   <div>
@@ -207,7 +209,7 @@
                               </a>
                               <a href="{{route('v2.seller.sales')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
-                                      <i class="far fa-chart-line m-10px-r"></i>
+                                      <i class="fa fa-chart-line m-10px-r"></i>
                                       <span>@lang('seller.sales')</span>
                                   </div>
                                   <div>
