@@ -45,15 +45,15 @@
 							<div class="row">
 								<div class="col-sm-6">
 									<div class="form-group">
-										<label>@lang('app.form.login')</label> 
+										<label>@lang('app.form.login')</label>
 										<input class="form-control" value="{{$item->name}}" placeholder="@lang('app.form.login')" disabled>
 									</div>
 									<div class="form-group">
-										<label>@lang('app.form.email')</label> 
+										<label>@lang('app.form.email')</label>
 										<input name="email" class="form-control" value="{{$item->email}}" placeholder="@lang('app.form.email')">
 									</div>
 									<div class="form-group">
-										<label>@lang('app.form.language')</label> 
+										<label>@lang('app.form.language')</label>
 										<select name="language" class="form-control" id="language">
 											<option value="fr" {{$item->language=='fr'?'selected':''}}>Français</option>
 											<option value="en" {{$item->language=='en'?'selected':''}}>English</option>
@@ -62,15 +62,15 @@
 								</div>
 								<div class="col-sm-6">
 									<div class="form-group">
-										<label>@lang('app.form.first_name')</label> 
+										<label>@lang('app.form.first_name')</label>
 										<input class="form-control" value="{{old('first_name', $item->meta('first_name', ''))}}" name="first_name" placeholder="@lang('app.form.first_name')">
 									</div>
 									<div class="form-group">
-										<label>@lang('app.form.last_name')</label> 
+										<label>@lang('app.form.last_name')</label>
 										<input class="form-control" value="{{old('last_name', $item->meta('last_name', ''))}}" name="last_name" placeholder="@lang('app.form.last_name')">
 									</div>
 									<div class="form-group">
-										<label>Avatar</label> 
+										<label>Avatar</label>
 										<input type="file" class="form-control" id="image" name="image" accept=".png, .jpg, .jpeg">
 									</div>
 								</div>
@@ -103,19 +103,19 @@
 					<div class="row">
 						<div class="col-sm-4">
 							<div class="form-group">
-								<label>@lang('app.last.password')</label> 
+								<label>@lang('app.last.password')</label>
 								<input name="old_password" type="password" class="form-control" id="old_password">
 							</div>
 						</div>
 						<div class="col-sm-4">
 							<div class="form-group">
-								<label>@lang('app.new.password')</label> 
+								<label>@lang('app.new.password')</label>
 								<input name="password" type="password" class="form-control" id="password">
 							</div>
 						</div>
 						<div class="col-sm-4">
 							<div class="form-group">
-								<label>@lang('app.confirm.password')</label> 
+								<label>@lang('app.confirm.password')</label>
 								<input name="password_confirmation" type="password" class="form-control" id="password_confirmation">
 							</div>
 						</div>
@@ -149,17 +149,17 @@
 				<div class="row">
 					<div class="col-sm-3">
 						<div class="form-group">
-							<label>@lang('app.latitude')</label> 
+							<label>@lang('app.latitude')</label>
 							<input type="text" name="latitude" class="form-control" id="latitude" placeholder="Latitude" value="{{old('latitude')?old('latitude'):$location?$location->latitude:''}}">
 						</div>
 						<div class="form-group">
-							<label>@lang('app.longitude')</label> 
+							<label>@lang('app.longitude')</label>
 							<input type="text" name="longitude" class="form-control" id="longitude" placeholder="Longitude" value="{{old('longitude')?old('longitude'):$location?$location->longitude:''}}">
 						</div>
 					</div>
 					<div class="col-sm-3">
 						<div class="form-group">
-							<label>@lang('app.country')</label> 
+							<label>@lang('app.country')</label>
 							<select class="form-control" name="country" id="country">
 								<option value="0">@lang('app.select_country')</option>
 								@foreach(\App\Country::all() as $country)
@@ -168,7 +168,7 @@
 							</select>
 						</div>
 						<div class="form-group">
-							<label>@lang('app.area_level_1')</label> 
+							<label>@lang('app.area_level_1')</label>
 							<select class="form-control" name="area_level_1" id="area_level_1">
 								<option value="0">@lang('app.select_country')</option>
 								@foreach(\App\State::all() as $state)
@@ -179,25 +179,25 @@
 					</div>
 					<div class="col-sm-3">
 						<div class="form-group">
-							<label>@lang('app.area_level_2')</label> 
+							<label>@lang('app.area_level_2')</label>
 							<input type="text" name="area_level_2" class="form-control" id="area_level_2" placeholder="@lang('app.region')" value="{{old('region')?old('region'):$location?$location->region:''}}">
 						</div>
 						<div class="form-group">
-							<label>@lang('app.locality')</label> 
+							<label>@lang('app.locality')</label>
 							 <input type="text" name="locality" class="form-control" id="locality" placeholder="@lang('app.locality')" value="{{old('locality')?old('locality'):$location?$location->locality:''}}">
 						</div>
 					</div>
 					<div class="col-sm-3">
 						<div class="form-group">
-							<label>@lang('app.route')</label> 
+							<label>@lang('app.route')</label>
 							<input type="text" name="route" class="form-control" id="route" placeholder="@lang('app.route')" value="{{old('route')?old('route'):$location?$location->route:''}}">
 						</div>
 						<div class="form-group">
-							<label>@lang('app.postalCode')</label> 
+							<label>@lang('app.postalCode')</label>
 							<input type="text" name="postalCode" class="form-control" id="postalCode" placeholder="@lang('app.postalCode')" value="{{old('postalCode')?old('postalCode'):$location?$location->postalCode:''}}">
 						</div>
 					</div>
-					<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">					
+					<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 					<input type="hidden" name="formatted" id="formatted">
 				</div>
 				<div class="hr-line-dashed"></div>
