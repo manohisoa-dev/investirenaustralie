@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\Localisation;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
-use App\User;
 use Session;
 
 class LoginController extends Controller
@@ -44,20 +45,32 @@ class LoginController extends Controller
         Auth::check();
         Session::put('locale',Auth::user()->language);
         Session::save();
-        $link="/";
         
+        /*
+        try{
+            // get current logged in customer
+            $customer = Auth::user();
+
+            // using your customer id we will create
+            // brain tree customer id with same id
+            $response = \Braintree_Customer::create([
+               'id' => $customer->id
+            ]);
+
+            // save your braintree customer id
+            if( $response->success) {
+                $customer->braintree_customer_id = $response->customer->id;
+                $customer->save();
+            }
+        }catch(\Exception $e){
+            
+        }
+        */
         
         if(Auth::user()->use_default_password==1){
             return '/profile/password';
         }
-
-
-        if(session('paths') == "V1/login"){
-            $link="V1/";
-        }  
-
-
-        return $link.(User::find(Auth::id())->roleUser->role_initial);
+        return '/'. Role::find(Auth::user()->role)->role_initial;
     }
     
     /**
@@ -75,23 +88,20 @@ class LoginController extends Controller
         $content = \App\Models\Config::login()->get_meta_array('content', $locale);
         $address = \App\Models\Config::login()->get_meta_array('address', $locale);
         $contact = \App\Models\Config::login()->get_meta_array('contact', $locale);
+        $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','4')
+                ->groupBy('localizations.locality')
+                ->get();
         
-
-        $previous_url = url()->previous();
-        $prev = explode('/', $previous_url);
-
-        if($prev[3] != "V1"){
-            return \Redirect::to('login');
-        }
-
         return view('auth.login')
             ->with('latitude', $latitude)
             ->with('longitude', $longitude)
             ->with('title', $title)
             ->with('content', $content)
             ->with('address', $address)
-            ->with('contact', $contact);
-        
+            ->with('contact', $contact)
+            ->with('lapls', $lapls);
     }
     
     
@@ -127,6 +137,7 @@ class LoginController extends Controller
         */
         if ($this->guard()->validate($this->credentials($request))) {
             $user = $this->guard()->getLastAttempted();
+            
             // Make sure the user is active
             if ($user->active() && $this->attemptLogin($request)) {
                 // Send the normal successful login response
@@ -156,36 +167,6 @@ class LoginController extends Controller
         // user surpasses their maximum number of attempts they will get locked out.
         $this->incrementLoginAttempts($request);
 
-
-
-
         return $this->sendFailedLoginResponse($request);
-    }
-
-
-    /**
-     * Log the user out of the application.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function logout(Request $request)
-    {
-
-        $link="/";
-
-        if(session('paths') == "V1/login"){
-            $link= "/V1";
-            \Session::forget('paths');
-        }
-        
-
-        $this->guard()->logout();
-
-        $request->session()->invalidate();
-
-        
-        return redirect($link);
-
     }
 }

@@ -1,8 +1,8 @@
-@extends('V2.layouts.app')
+@extends('layouts.app')
 
 @section('content')
 
-@php $lapls = App\Http\Controllers\V2\IndexController::getListApls() @endphp
+@php $lapls = App\Http\Controllers\IndexController::getListApls() @endphp
 
     <!-- Home Slider -->
     <section class="white-bg" style="padding-top:8%;padding-bottom:5%;">
@@ -12,10 +12,10 @@
                     <h5 class="display-3 dark-color m-15px-b">404 - Page Not Found..</h5>
                     <p class="h4">Whoops, it looks like the page you request wasn't found.</p>
                     <div class="m-30px-tb">
-                        <img src="{{ asset('static/img/effect/404-page.svg') }}" title="" alt="">
+                        <img src="{{ asset('img/effect/404-page.svg') }}" title="" alt="">
                     </div>
                     <div>
-                        <a class="m-btn m-btn-theme2nd" href="{{ route('v2.home') }}">Back to Home</a>
+                        <a class="m-btn m-btn-theme2nd" href="{{ route('home') }}">Back to Home</a>
                     </div>
                 </div>
             </div>

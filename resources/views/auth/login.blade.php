@@ -1,98 +1,63 @@
 @extends('layouts.app')
 
-@section('content')
-<div id="contact-page" class="contact-page-var-two" style="margin-top: 160px;">
-    <div class="container">
-        <h3 class="entry-title">{{$title}}</h3>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="contact-form-wrapper">
-                    <div class="contents">
-                        <p>
-                            @if(empty($content))
-                                Sed perspiciatis unde natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae.
-                            @else
-                                {!!$content!!}
-                            @endif
-                        </p>
-                    </div>
-                    <div class="contact-page-contents clearfix">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <i class="fa fa-map-marker"></i>
-                                <div class="contents">
-                                    <h6 class="title">@lang('app.form.login.address')</h6>
-                                    <address>
-                                        @if(empty($address))
-                                            95 Amphitheatre Parkway
-                                            Mountain View CA,
-                                            United States
-                                        @else
-                                            {!!$address!!}
-                                        @endif
-                                    </address>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <i class="fa fa-phone"></i>
-                                <div class="contents">
-                                    <h5 class="title">@lang('app.form.login.contact')</h5>
-                                    @if(empty($contact))
-                                        <ul>
-                                            <li>Phone: (123) 45678910</li>
-                                            <li>Mail: company@domain.com</li>
-                                            <li>Fax: +84 962 216 601</li>
-                                        </ul>
-                                    @else
-                                        {!!$contact!!}
-                                    @endif
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
 
+@section('content')
+    <!-- Main -->
+    <main>
+        <section style="background-image: url({{ asset('images/slider/1.jpg') }});">
+            <div class="container">
+                <div class="row align-items-center justify-content-center min-vh-100">
+                    <div class="col-md-6 col-xl-5 p-40px-tb">
+                        <div class="p-40px white-bg box-shadow border-radius-10" style="margin-top: 20%;">
+                            <div class="p-20px-b text-center">
+                                <h3 class="font-w-600 dark-color m-10px-b">@lang('app.login')</h3>
+                                <p>@lang('app.txt.login.libelle')</p>
+                            </div>
+                            <form action="{{route('login')}}" method="post">
+                                {{ csrf_field() }}
+
+                                <div class="form-group">
+                                    <label class="form-control-label">Email address</label>
+                                    <input type="email" name="email" class="form-control" placeholder="Votre email *" required="required" value="{{ old('email') }}" autofocus>
+                                    <span>{{ $errors->has('email') ? ' has-error' : '' }}</span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-control-label">Password</label>
+                                    <input name="password"  type="password" placeholder="Votre mot de passe *" class="form-control" placeholder="***********" required="required">
+                                    <span>{{ $errors->has('password') ? ' has-error' : '' }}</span>
+                                </div>
+                                <div class="form-group">
+                                    <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> @lang('app.form.login.remember')
+                                </div>
+                                <div class="p-10px-t">
+                                    <button type="submit" class="m-btn m-btn-theme w-100">@lang('app.btn.login')</button>
+                                </div>
+                                <div class="m-20px-t text-center">
+                                    <a href="{{ route('password.request')}}" class="small font-weight-bold">@lang('app.form.login.forgot')</a> 
+                                    <div class="dropdown pull-right">
+                                      <a href="#" class="small font-weight-bold dropdown-toggle" type="button" data-toggle="dropdown">
+                                          @lang('app.form.login.not_registered')</a>
+                                          <ul class="dropdown-menu form-control-label">
+                                            <li><a href="{{route('register', ['member'])}}">@lang('app.member')</a></li>
+                                            <li><a href="{{route('register', ['seller'])}}">@lang('app.seller')</a></li>
+                                            <li><a href="{{route('register', ['afa'])}}">@lang('app.afa')</a></li>
+                                            <li><a href="{{route('register', ['apl'])}}">@lang('app.apl')</a></li>
+                                          </ul>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                @include('includes.alerts')
-                
-                {{ \Session::put('paths',"V1/login") }}
+        </section>
+    </main>
+    <!-- main end -->
 
-                <form class="contact-form" method="POST" action="{{route('login')}}">
-                    {{ csrf_field() }}
-
-                    <p class="form-email common form-group {{ $errors->has('email') ? ' has-error' : '' }}"> 
-                        <input name="email" type="email" placeholder="Votre email *" aria-required="true" required="required" value="{{ old('email') }}" autofocus>
-                    </p>
-                    <p class="form-author common form-group {{ $errors->has('email') ? ' has-error' : '' }}">
-                         <input name="password"  type="password" placeholder="Votre mot de passe *" aria-required="true" required="required">
-                    </p>
-                    <p>
-                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> @lang('app.form.login.remember')
-                    </p>
-                    <div>
-                        <a href="{{ route('password.request')}}" class="pull-left" style="margin-right:10px;">@lang('app.form.login.forgot')</a>
-                        <div class="dropdown pull-left">
-                          <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown">
-                              @lang('app.form.login.not_registered')
-                              <span class="caret"></span></button>
-                          <ul class="dropdown-menu">
-                            <li><a href="{{route('register', ['member'])}}">@lang('app.member')</a></li>
-                            <li><a href="{{route('register', ['seller'])}}">@lang('app.seller')</a></li>
-                            <li><a href="{{route('register', ['afa'])}}">@lang('app.afa')</a></li>
-                            <li><a href="{{route('register', ['apl'])}}">@lang('app.apl')</a></li>
-                          </ul>
-                        </div>
-                    </div>
-                    <p class="form-submit">
-                        
-                        <button type="submit" class="pull-right btn btn-default btn-lg" data-hover="Connexion">@lang('app.btn.login')</button>
-                    </p>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 @endsection
+
+@section('script')
+
+</script>
+@endsection
+

@@ -7,7 +7,7 @@
 namespace App{!! $gen->getModelDir() !!};
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Config;
+
 
 class <?=$gen->modelClassName()?> extends Model {
 
@@ -31,7 +31,7 @@ class <?=$gen->modelClassName()?> extends Model {
         \Request::input("sort") and $query->orderBy(\Request::input("sort"),\Request::input("sortType","asc"));
 
         // paginate results
-        return $query->paginate(Config::get('constants.perpage.admin'));
+        return $query->paginate(15);
     }
 
     public static function validationRules( $attributes = null )

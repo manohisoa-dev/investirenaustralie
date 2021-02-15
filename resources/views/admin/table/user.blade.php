@@ -38,7 +38,7 @@
          <td>
              <a href="{{route('admin.user.list', ['filter'=>$item->status])}}">
              @if($item->status=='active')
-             <span class="label label-success">{{$item->status}}</span>
+             <span class="label label-primary">{{$item->status}}</span>
              @else
              <span class="label label-warning">{{$item->status}}</span>
              @endif
@@ -46,12 +46,12 @@
          </td>
          <td>
              @if($item->status=='active')
-                <a href="{{route('admin.user.disable', $item)}}" class="btn btn-small btn-success">@lang('app.btn.disable')</a>
+                <a href="{{route('admin.user.disable', $item)}}" class="btn btn-sm btn-danger">@lang('app.btn.disable')</a>
              @else
-                <a href="{{route('admin.user.active', $item)}}" class="btn btn-small btn-info">@lang('app.btn.active')</a>
+                <a href="{{route('admin.user.active', $item)}}" class="btn btn-sm btn-primary">@lang('app.btn.active')</a>
              @endif
-             <a href="{{route('admin.user.delete', $item)}}" class="btn btn-small btn-warning">@lang('app.btn.delete')</a>
-             <a href="{{route('admin.user.contact', $item)}}" class="btn btn-small btn-default">@lang('app.btn.contact')</a>
+             <a href="{{route('admin.user.delete', $item)}}" class="btn btn-sm btn-warning">@lang('app.btn.delete')</a>
+             <a href="{{route('admin.user.contact', $item)}}" class="btn btn-sm btn-default">@lang('app.btn.contact')</a>
          </td>
      </tr>
      @endforeach

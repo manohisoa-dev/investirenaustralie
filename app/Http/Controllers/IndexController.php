@@ -13,6 +13,7 @@ use App\Models\Category;
 use App\Models\Blog;
 use App\Models\Type;
 use App\Models\State;
+use App\Models\Localisation;
 use Session;
 use View;
 
@@ -61,14 +62,20 @@ class IndexController extends Controller
      */
     public function apl(Request $request)
     {
-        $apls = User::ofRole('apl')
+        $lapls = User::ofRole(4)
             ->isActive()
             ->has('location')
             ->with('location')
             ->get();
+
+        $lapls_footer = Localisation::select('localizations.*')
+            ->join('users','users.location_id','=','localizations.id')
+            ->where('users.role','=','4')
+            ->groupBy('localizations.locality')
+            ->get();
         
         $data = [];
-        foreach($apls as $item){
+        foreach($lapls as $item){
             $html = view('user.map')->with('item', $item)->render();
             $data[] = [
               'id' => $item->id,
@@ -82,7 +89,8 @@ class IndexController extends Controller
         }
         
     	return view('index.apl')
-            ->with('items', $apls)
+            ->with('items', $lapls)
+            ->with('lapls', $lapls_footer)
             ->with(['data' => json_encode($data)]);
     }
 
@@ -97,6 +105,51 @@ class IndexController extends Controller
     }
 
     /**
+     * Show the service's page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function services_v2(Request $request)
+    {
+        $id_page = 3;
+        $page = Page::findOrFail($id_page);
+        $blogs = Blog::ofStatus('published')
+            ->orderBy('created_at', 'desc')
+            ->take(6)->get();
+        
+        $page->load(['childs', 'childs.pubs', 'pubs']);
+        
+        $products = Product::orderBy('created_at','desc')
+            ->ofStatus('published')
+            ->take($this->recentSize)
+            ->get();
+        
+        $categories = Category::orderBy('created_at', 'desc')
+            ->has('products')
+            ->withCount('products')
+            ->take($this->recentSize)
+            ->get();
+        
+        $page->load(['childs', 'childs.pubs', 'pubs']);
+
+        $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','4')
+                ->groupBy('localizations.locality')
+                ->get();
+        
+        if($page){$pubs = $page->pubs;}else{$pubs = [];}
+
+        return view('index.service')
+            ->with('item', $page)
+            ->with('pubs', $page->pubs)
+            ->with('products', $products)
+            ->with('lapls', $lapls)
+            ->with('categories', $categories);
+    }
+
+
+    /**
      * Show the publicity's page.
      *
      * @return \Illuminate\Http\Response
@@ -107,13 +160,103 @@ class IndexController extends Controller
     }
 
     /**
+     * Show the publicity's page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function publicities_v2(Request $request)
+    {
+        $id_page = 5;
+        $page = Page::findOrFail($id_page);
+        $blogs = Blog::ofStatus('published')
+            ->orderBy('created_at', 'desc')
+            ->take(6)->get();
+        
+        $page->load(['childs', 'childs.pubs', 'pubs']);
+        
+        $products = Product::orderBy('created_at','desc')
+            ->ofStatus('published')
+            ->take($this->recentSize)
+            ->get();
+        
+        $categories = Category::orderBy('created_at', 'desc')
+            ->has('products')
+            ->withCount('products')
+            ->take($this->recentSize)
+            ->get();
+        
+        $page->load(['childs', 'childs.pubs', 'pubs']);
+
+        $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','4')
+                ->groupBy('localizations.locality')
+                ->get();
+        
+        if($page){$pubs = $page->pubs;}else{$pubs = [];}
+
+        return view('index.publicite')
+            ->with('item', $page)
+            ->with('pubs', $page->pubs)
+            ->with('products', $products)
+            ->with('lapls', $lapls)
+            ->with('categories', $categories);
+    }
+
+    /**
      * Show the term and condition page.
      *
      * @return \Illuminate\Http\Response
      */
     public function terms(Request $request)
-    {
+    {                
+
         return $this->render($request, 6);
+
+    }
+
+    /**
+     * Show the term and condition page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function terms_v2(Request $request)
+    {      
+        $id_page = 6;
+        $page = Page::findOrFail($id_page);
+        $blogs = Blog::ofStatus('published')
+            ->orderBy('created_at', 'desc')
+            ->take(6)->get();
+        
+        $page->load(['childs', 'childs.pubs', 'pubs']);
+        
+        $products = Product::orderBy('created_at','desc')
+            ->ofStatus('published')
+            ->take($this->recentSize)
+            ->get();
+        
+        $categories = Category::orderBy('created_at', 'desc')
+            ->has('products')
+            ->withCount('products')
+            ->take($this->recentSize)
+            ->get();
+        
+        $page->load(['childs', 'childs.pubs', 'pubs']);
+
+        $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','4')
+                ->groupBy('localizations.locality')
+                ->get();
+        
+        if($page){$pubs = $page->pubs;}else{$pubs = [];}
+
+        return view('index.term')
+            ->with('item', $page)
+            ->with('pubs', $page->pubs)
+            ->with('products', $products)
+            ->with('lapls', $lapls)
+            ->with('categories', $categories);
     }
 
     /**
@@ -127,6 +270,50 @@ class IndexController extends Controller
     }
 
     /**
+     * Show the guide's page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function help_v2(Request $request)
+    {
+        $id_page = 8;
+        $page = Page::findOrFail($id_page);
+        $blogs = Blog::ofStatus('published')
+            ->orderBy('created_at', 'desc')
+            ->take(6)->get();
+        
+        $page->load(['childs', 'childs.pubs', 'pubs']);
+        
+        $products = Product::orderBy('created_at','desc')
+            ->ofStatus('published')
+            ->take($this->recentSize)
+            ->get();
+        
+        $categories = Category::orderBy('created_at', 'desc')
+            ->has('products')
+            ->withCount('products')
+            ->take($this->recentSize)
+            ->get();
+        
+        $page->load(['childs', 'childs.pubs', 'pubs']);
+
+        $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','4')
+                ->groupBy('localizations.locality')
+                ->get();
+        
+        if($page){$pubs = $page->pubs;}else{$pubs = [];}
+
+        return view('index.help')
+            ->with('item', $page)
+            ->with('pubs', $page->pubs)
+            ->with('products', $products)
+            ->with('lapls', $lapls)
+            ->with('categories', $categories);
+    }
+
+    /**
      * Show the confidentiality's page.
      *
      * @return \Illuminate\Http\Response
@@ -134,6 +321,50 @@ class IndexController extends Controller
     public function confidentialities(Request $request)
     {
         return $this->render($request, 7);
+    }
+
+    /**
+     * Show the confidentiality's page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function confidentialities_v2(Request $request)
+    {
+        $id_page = 7;
+        $page = Page::findOrFail($id_page);
+        $blogs = Blog::ofStatus('published')
+            ->orderBy('created_at', 'desc')
+            ->take(6)->get();
+        
+        $page->load(['childs', 'childs.pubs', 'pubs']);
+        
+        $products = Product::orderBy('created_at','desc')
+            ->ofStatus('published')
+            ->take($this->recentSize)
+            ->get();
+        
+        $categories = Category::orderBy('created_at', 'desc')
+            ->has('products')
+            ->withCount('products')
+            ->take($this->recentSize)
+            ->get();
+        
+        $page->load(['childs', 'childs.pubs', 'pubs']);
+
+        $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','4')
+                ->groupBy('localizations.locality')
+                ->get();
+        
+        if($page){$pubs = $page->pubs;}else{$pubs = [];}
+
+        return view('index.confidentialite')
+            ->with('item', $page)
+            ->with('pubs', $page->pubs)
+            ->with('products', $products)
+            ->with('lapls', $lapls)
+            ->with('categories', $categories);
     }
 
     /**
@@ -173,5 +404,37 @@ class IndexController extends Controller
         
 
         // return view('editlangue', compact('json'));
+    }
+
+    public function login()
+    {
+        $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','4')
+                ->groupBy('localizations.locality')
+                ->get();
+
+        return view('auth.login')
+            ->with('lapls',$lapls);
+    }
+    
+    public function getApl($apl)
+    {
+        $lapls = Localisation::select('users.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('localizations.locality', '=', $apl)
+                ->where('users.role','=','4')
+                ->get();
+
+        return response()->json(['res'=>$lapls]);
+    }
+
+    public static function getListApls()
+    {
+        return $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','4')
+                ->groupBy('localizations.locality')
+                ->get();
     }
 }

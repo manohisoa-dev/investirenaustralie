@@ -35,7 +35,7 @@ class UserController extends Controller
     public function contact(Request $request, User $user)
     {
         $this->middleware('auth');
-        $this->middleware('auth:1');
+        $this->middleware('auth:admin');
         
         $mail = new Mail();
         if($value = $request->old('subject'))    $mail->subject = $value;
@@ -53,7 +53,7 @@ class UserController extends Controller
     public function postContact(Request $request, User $user)
     {
         $this->middleware('auth');
-        $this->middleware('auth:1');
+        $this->middleware('auth:admin');
             
         // Validate request
         $datas = $request->all();
@@ -122,7 +122,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         $this->middleware('auth');
-        $this->middleware('role:1');
+        $this->middleware('role:admin');
         if(!in_array($user->role, ['admin', 'member', 'afa', 'apl', 'seller'])){
             return back()->with('error', 'Un probleme a survenu');
         }
@@ -147,7 +147,7 @@ class UserController extends Controller
     public function all(Request $request, $filter='all')
     {
         $this->middleware('auth');
-        $this->middleware('role:1');
+        $this->middleware('role:admin');
         
         $items = new User();
         
@@ -228,6 +228,7 @@ class UserController extends Controller
             ->with('state', $state)
             ->with('states', $states)
             ->with('title', $title)
+            ->with('bloc_mn','users')
             ->with('breadcrumbs', $title);
     }
     
@@ -275,6 +276,7 @@ class UserController extends Controller
         if($user->id==1){
             return back()->with('error',"Cette action ne peut pas etre réalisée.");
         }
+        
         $status = $user->status;
         
         $user->status = 'disabled';

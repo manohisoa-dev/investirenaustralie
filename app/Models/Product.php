@@ -1,52 +1,122 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use AstritZeqiri\Metadata\Traits\HasManyMetaDataTrait;
-use Auth;
 
-// Eloquent\Model to manage Product and Service to sell
-class Product extends BaseModel
-{
-    use HasManyMetaDataTrait;
-    
-   /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'products';
-    
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'title', 'content', 'reference', 'slug', 'price', 'tma', 'image_id', 'location_id', 'status',
-    ];
-    
-    /**
-     * The attributes that are in meta table.
-     *
-     * @var array
-     */
-    protected $metas = [
-        'title', 'content', 'reference', 'slug', 'price', 'tma', 'image_id', 'location_id', 'status',
-    ];
-    
-    
-    /**
-     * Create a new model instance.
-     *
-     * @return void
-     */
-    public function __construct()
+
+class Product extends Model {
+
+
+    public $guarded = ["id","created_at","updated_at"];
+
+    public static function findRequested()
     {
-        $this->author_id = (Auth::check()?Auth::user()->id:0);
+        $query = Product::query();
+
+        // search results based on user input
+        \Request::input('id') and $query->where('id',\Request::input('id'));
+        \Request::input('reference') and $query->where('reference','like','%'.\Request::input('reference').'%');
+        \Request::input('slug') and $query->where('slug','like','%'.\Request::input('slug').'%');
+        \Request::input('title') and $query->where('title','like','%'.\Request::input('title').'%');
+        \Request::input('content') and $query->where('content',\Request::input('content'));
+        \Request::input('quantity') and $query->where('quantity',\Request::input('quantity'));
+        \Request::input('is_new') and $query->where('is_new',\Request::input('is_new'));
+        \Request::input('view_count') and $query->where('view_count',\Request::input('view_count'));
+        \Request::input('area') and $query->where('area',\Request::input('area'));
+        \Request::input('carport_spaces') and $query->where('carport_spaces',\Request::input('carport_spaces'));
+        \Request::input('garage_spaces') and $query->where('garage_spaces',\Request::input('garage_spaces'));
+        \Request::input('off_street_spaces') and $query->where('off_street_spaces',\Request::input('off_street_spaces'));
+        \Request::input('bathrooms') and $query->where('bathrooms',\Request::input('bathrooms'));
+        \Request::input('bedrooms') and $query->where('bedrooms',\Request::input('bedrooms'));
+        \Request::input('ensuite') and $query->where('ensuite',\Request::input('ensuite'));
+        \Request::input('land_area') and $query->where('land_area',\Request::input('land_area'));
+        \Request::input('floor_area') and $query->where('floor_area',\Request::input('floor_area'));
+        \Request::input('number_of_floors') and $query->where('number_of_floors',\Request::input('number_of_floors'));
+        \Request::input('new_construction') and $query->where('new_construction',\Request::input('new_construction'));
+        \Request::input('year_built') and $query->where('year_built','like','%'.\Request::input('year_built').'%');
+        \Request::input('display_address') and $query->where('display_address','like','%'.\Request::input('display_address').'%');
+        \Request::input('price') and $query->where('price',\Request::input('price'));
+        \Request::input('currency') and $query->where('currency','like','%'.\Request::input('currency').'%');
+        \Request::input('tma') and $query->where('tma',\Request::input('tma'));
+        \Request::input('commision') and $query->where('commision',\Request::input('commision'));
+        \Request::input('commision_edited') and $query->where('commision_edited',\Request::input('commision_edited'));
+        \Request::input('status') and $query->where('status','like','%'.\Request::input('status').'%');
+        \Request::input('type_id') and $query->where('type_id',\Request::input('type_id'));
+        \Request::input('location_type_id') and $query->where('location_type_id',\Request::input('location_type_id'));
+        \Request::input('category_id') and $query->where('category_id',\Request::input('category_id'));
+        \Request::input('buyer_id') and $query->where('buyer_id',\Request::input('buyer_id'));
+        \Request::input('seller_id') and $query->where('seller_id',\Request::input('seller_id'));
+        \Request::input('author_id') and $query->where('author_id',\Request::input('author_id'));
+        \Request::input('postalCode') and $query->where('postalCode','like','%'.\Request::input('postalCode').'%');
+        \Request::input('state_id') and $query->where('state_id',\Request::input('state_id'));
+        \Request::input('location_id') and $query->where('location_id',\Request::input('location_id'));
+        \Request::input('image_id') and $query->where('image_id',\Request::input('image_id'));
+        \Request::input('created_at') and $query->where('created_at',\Request::input('created_at'));
+        \Request::input('updated_at') and $query->where('updated_at',\Request::input('updated_at'));
+        
+        // sort results
+        \Request::input("sort") and $query->orderBy(\Request::input("sort"),\Request::input("sortType","asc"));
+
+        // paginate results
+        return $query->paginate(15);
     }
-    
+
+    public static function validationRules( $attributes = null )
+    {
+        $rules = [
+            'reference' => 'required|string|max:150',
+            'slug' => 'required|string|max:150',
+            'title' => 'string|max:150',
+            'content' => '',
+            'quantity' => 'required',
+            'is_new' => 'required|integer',
+            'view_count' => 'required',
+            'area' => '',
+            'carport_spaces' => 'required|integer',
+            'garage_spaces' => 'required|integer',
+            'off_street_spaces' => 'required|integer',
+            'bathrooms' => 'required|integer',
+            'bedrooms' => 'required|integer',
+            'ensuite' => 'required|integer',
+            'land_area' => 'required|integer',
+            'floor_area' => 'required|integer',
+            'number_of_floors' => 'required|integer',
+            'new_construction' => 'required',
+            'year_built' => 'string|max:10',
+            'display_address' => 'string|max:191',
+            'price' => '',
+            'currency' => 'string|max:10',
+            'tma' => '',
+            'commision' => '',
+            'commision_edited' => 'required|integer',
+            'status' => 'required|string|max:20',
+            'type_id' => 'required',
+            'location_type_id' => 'required',
+            'category_id' => 'required',
+            'buyer_id' => 'required',
+            'seller_id' => 'required',
+            'author_id' => 'required',
+            'postalCode' => 'string|max:191',
+            'state_id' => 'required',
+            'location_id' => 'required',
+            'image_id' => 'required',
+        ];
+
+        // no list is provided
+        if(!$attributes)
+            return $rules;
+
+        // a single attribute is provided
+        if(!is_array($attributes))
+            return [ $attributes => $rules[$attributes] ];
+
+        // a list of attributes is provided
+        $newRules = [];
+        foreach ( $attributes as $attr )
+            $newRules[$attr] = $rules[$attr];
+        return $newRules;
+    }
+
     /**
      * Scope a query to only include products of a given $status.
      *
@@ -58,7 +128,7 @@ class Product extends BaseModel
     {
         return $query->where('status', $status);
     }
-    
+
     /**
      * Check if product is disponible (quantity>0)
      *
@@ -68,7 +138,7 @@ class Product extends BaseModel
     {
         return ($this->quantity>0 && $this->status=='published');
     }
-    
+
     /**
      * Excerpt
      *
@@ -79,7 +149,7 @@ class Product extends BaseModel
     {
         return substr($this->content, 0, $length);
     }
-    
+
     /**
      * Get Url of Attached Image OR Default Image
      *
@@ -92,10 +162,10 @@ class Product extends BaseModel
         if($this->image){
             if($thumb) return thumbnail($this->image->filepath);
             return storage($this->image->filepath);
-        } 
+        }
         return asset('images/product.png');
     }
-    
+
     /**
      * Get the type record associated with the product.
      */
@@ -104,7 +174,7 @@ class Product extends BaseModel
         return $this->belongsTo(Type::class, 'type_id', 'id')
             ->ofObject('type');
     }
-    
+
     /**
      * Get the location type record associated with the product.
      */
@@ -113,7 +183,7 @@ class Product extends BaseModel
         return $this->belongsTo(Type::class, 'type_id', 'id')
             ->ofObject('location');
     }
-    
+
     /**
      * Get the image record associated with the product.
      */
@@ -121,7 +191,7 @@ class Product extends BaseModel
     {
         return $this->belongsTo(Image::class, 'image_id', 'id');
     }
-    
+
     /**
      * A product can have many images
      *
@@ -129,9 +199,9 @@ class Product extends BaseModel
      */
     public function images()
     {
-      return $this->belongsToMany(Image::class, 'products_images', 'product_id', 'image_id');
+        return $this->belongsToMany(Image::class, 'products_images', 'product_id', 'image_id');
     }
-    
+
     /**
      * Get the buyer record associated with the product.
      */
@@ -139,7 +209,7 @@ class Product extends BaseModel
     {
         return $this->belongsTo(User::class, 'buyer_id', 'id');
     }
-    
+
     /**
      * Get the seller record associated with the product.
      */
@@ -147,7 +217,7 @@ class Product extends BaseModel
     {
         return $this->belongsTo(User::class, 'seller_id', 'id');
     }
-    
+
     /**
      * Get the author record associated with the product.
      */
@@ -155,7 +225,7 @@ class Product extends BaseModel
     {
         return $this->belongsTo(User::class, 'author_id', 'id');
     }
-    
+
     /**
      * A product can have one category
      *
@@ -163,9 +233,9 @@ class Product extends BaseModel
      */
     public function category()
     {
-      return $this->hasOne(Category::class, 'id', 'category_id');
+        return $this->hasOne(Category::class, 'id', 'category_id');
     }
-    
+
     /**
      * A product can have many categories
      *
@@ -173,11 +243,11 @@ class Product extends BaseModel
      */
     public function categories()
     {
-      return $this->belongsToMany(Category::class, 'objects_categories', 'object_id', 'category_id')
-          ->wherePivot('object_type', Product::class);
+        return $this->belongsToMany(Category::class, 'objects_categories', 'object_id', 'category_id')
+            ->wherePivot('object_type', Product::class);
     }
-    
-    
+
+
     /**
      * A product can have one location
      *
@@ -185,7 +255,8 @@ class Product extends BaseModel
      */
     public function location()
     {
-      return $this->hasOne(Localisation::class, 'id', 'location_id');
+        return $this->hasOne(Localisation::class, 'id', 'location_id');
     }
-    
+
 }
+

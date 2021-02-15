@@ -9,10 +9,11 @@ use Validator;
 use App\Notifications\NewMail;
 use App\Notifications\AplChanged;
 
-use App\Models\Order;
-use App\Models\User;
-use App\Models\Mail;
-use App\Models\MailUser;
+use App\Order;
+use App\User;
+use App\Mail;
+use App\MailUser;
+use App\Localisation;
 
 class MemberController extends Controller
 {
@@ -53,9 +54,15 @@ class MemberController extends Controller
         $items = Auth::user()->orders()
             ->where('status', 'ordered')
             ->paginate($this->pageSize);
+        $lapls = Localisation::select('localizations.*')
+        ->join('users','users.location_id','=','localizations.id')
+        ->where('users.role','=','4')
+        ->groupBy('localizations.locality')
+        ->get();
         
-        return view('backend.sale.all')
+        return view('V2.backend.sale.all')
             ->with('title', __('member.orders'))
+            ->with('lapls', $lapls)
             ->with('items', $items);
     }
 
@@ -69,14 +76,25 @@ class MemberController extends Controller
         $items = Auth::user()->orders()
             ->where('status', 'paid')
             ->paginate($this->pageSize);
+        $lapls = Localisation::select('localizations.*')
+            ->join('users','users.location_id','=','localizations.id')
+            ->where('users.role','=','4')
+            ->groupBy('localizations.locality')
+            ->get();
         
         return view('backend.sale.all')
             ->with('title', __('member.purchases'))
+            ->with('lapls', $lapls)
             ->with('items', $items);
     }
 
     public function contact(Request $request, $role){
         $action = route('member.contact', ['role'=>$role]);
+        $lapls = Localisation::select('localizations.*')
+            ->join('users','users.location_id','=','localizations.id')
+            ->where('users.role','=','4')
+            ->groupBy('localizations.locality')
+            ->get();
         
         if(($role=='apl') && !Auth::user()->apl){
             return redirect()->route('member.select.apl')
@@ -85,6 +103,7 @@ class MemberController extends Controller
         
         return view('backend.contact.member')
             ->with('action', $action)
+            ->with('lapls', $lapls)
             ->with('title', __('app.contact_'.$role));
     }
 
@@ -204,10 +223,15 @@ class MemberController extends Controller
         
         $data = [];
         
-        $apls = User::ofRole('apl')
+        $apls = User::ofRole(4)
             ->isActive()
             ->has('location')
             ->with('location')
+            ->get();
+        $lapls = Localisation::select('localizations.*')
+            ->join('users','users.location_id','=','localizations.id')
+            ->where('users.role','=','4')
+            ->groupBy('localizations.locality')
             ->get();
         
         $userApl = Auth::user()->apl;
@@ -215,7 +239,7 @@ class MemberController extends Controller
         $selected = null;
         
         foreach($apls as $item){
-            $html = view('backend.apl.html')->with('item', $item)->render();
+            $html = view('V2.backend.apl.html')->with('item', $item)->render();
             $dataTemp = [
               'id' => $item->id,
               'lat' => $item->location?$item->location->latitude:0,
@@ -234,11 +258,12 @@ class MemberController extends Controller
         }
         
         $action = route('member.select.apl');
-    	return view('backend.apl.select')
+    	return view('V2.backend.apl.select')
             ->with('location', Auth::user()->location)
             ->with('action', $action)
             ->with('items', $apls)
             ->with('distance', $distance)
+            ->with('lapls', $lapls)
             ->with('distances', $this->distances)
             ->with('selected', json_encode($selected))
             ->with('data', json_encode($data));

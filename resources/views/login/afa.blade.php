@@ -1,17 +1,14 @@
 @extends('layouts.app')
 
-@section('style')
-<style>
-.modal {
-    display: none;
-    overflow: scroll;
-    position: fixed;
-    top: 0px;
-}
-</style>
-@endsection
 
 @section('content')
+
+<!-- Page Title -->
+@component('includes.breadcrumb')
+    @lang('inscriptionafa')
+@endcomponent
+<!-- Section -->
+
 <div class="main-slider-wrapper clearfix content corps">
     <div class="container">
         <div class="row">
@@ -49,7 +46,7 @@
                                             <label for="language" class="col-sm-3 control-label" for="language">Langage *</label>
                                             <div class="col-sm-9">
                                                 <select class="form-control" id="language" name="language">
-                                                    <option value="fr">Français</option>
+                                                    <option value="fr">Franï¿½ais</option>
                                                     <option value="en">Anglais</option>
                                                 </select>
                                             </div>

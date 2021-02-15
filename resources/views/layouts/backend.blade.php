@@ -1,75 +1,274 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="content corps" style="margin-top: 160px;">
-    <div class="container">
-        <div class="row">
-          <div class="col-md-3">
-            <div class="sidebar content-box" style="display: block; background: #fff; margin-bottom: 10px;">
-                <ul class="nav nav-side">
 
-                    @if(Auth::user()->hasRole(5))
-                        <li><a class="btn-select-apl btn btn-success" href="{{route('member.select.apl')}}">@lang('member.select.apl')</a></li>
-                    @endif
-                    
-                    <li><a href="{{url(App\Role::find(Auth::user()->role)->role_initial)}}"><i class="fa fa-tachometer" aria-hidden="true"></i> @lang('app.dashboard')</a></li>
-                    <li><a href="{{route('profile')}}"><i class="fa fa-pencil-square" aria-hidden="true"></i> @lang('app.profile')</a></li>
-                    
-                    @if(Auth::user()->hasRole(5))
-                        <li><a href="{{route('shop.order.last')}}"><i class="fa fa-shopping-cart" aria-hidden="true"></i> @lang('member.cart')</a></li>
-                        <li><a href="{{route('member.orders')}}"><i class="fa fa-shopping-basket" aria-hidden="true"></i> @lang('member.orders')</a></li>
-                        <li><a href="{{route('member.purchases')}}"><i class="fa fa-shopping-bag" aria-hidden="true"></i> @lang('member.purchases')</a></li>
-                    
-                        <li><a href="{{route('member.contact', ['role'=>'admin'])}}"><i class="fa fa-envelope" aria-hidden="true"></i> @lang('member.contact_admin')</a></li>
-                        @if(Auth::user()->hasApl())
-                            <li><a href="{{route('member.contact', ['role'=>'apl'])}}"><i class="fa fa-envelope" aria-hidden="true"></i> @lang('member.contact_apl')</a></li>
-                        @endif
-                    @endif
-                    
-                    @If(Auth::user()->hasRole(4))
-                        <li><a href="{{route('apl.orders')}}"><i class="fa fa-paperclip" aria-hidden="true"></i> @lang('apl.orders')</a></li>
-                        <li><a href="{{route('apl.sales')}}"><i class="fa fa-paperclip" aria-hidden="true"></i> @lang('apl.sales')</a></li>
-                        <li><a href="{{route('apl.customers')}}"><i class="fa fa-users" aria-hidden="true"></i> @lang('apl.customers')</a></li>
-                    
-                        <li><a href="{{route('apl.commissions', ['filter'=>'not-paid'])}}"><i class="fa fa-paperclip" aria-hidden="true"></i> @lang('app.commissions.not_paid')</a></li>
-                        <li><a href="{{route('apl.commissions', ['filter'=>'paid'])}}"><i class="fa fa-paperclip" aria-hidden="true"></i> @lang('app.commissions.paid')</a></li>
-                    @endif
-                    
-                    @If(Auth::user()->hasRole(3))
-                        <li><a href="{{route('afa.orders')}}"><i class="fa fa-paperclip" aria-hidden="true"></i> @lang('afa.orders')</a></li>
-                        <li><a href="{{route('afa.sales')}}"><i class="fa fa-paperclip" aria-hidden="true"></i> @lang('afa.sales')</a></li>
-                    
-                        <li><a href="{{route('afa.commissions', ['filter'=>'paid'])}}"><i class="fa fa-paperclip" aria-hidden="true"></i> @lang('app.commissions.paid')</a></li>
-                        <li><a href="{{route('afa.commissions', ['filter'=>'not-paid'])}}"><i class="fa fa-paperclip" aria-hidden="true"></i> @lang('app.commissions.not_paid')</a></li>
-                    @endif
-                    
-                    @If(Auth::user()->hasRole(2))
-                        <li><a href="{{route('seller.products')}}"><i class="fa fa-paperclip" aria-hidden="true"></i> @lang('seller.products')</a></li>
-                        <li><a href="{{route('seller.orders')}}"><i class="fa fa-paperclip" aria-hidden="true"></i> @lang('seller.orders')</a></li>
-                        <li><a href="{{route('seller.sales')}}"><i class="fa fa-paperclip" aria-hidden="true"></i> @lang('seller.sales')</a></li>
-                    @endif
-                    
-                    @if(!Auth::user()->isAdmin())
-                        <li><a href="{{url(App\Role::find(Auth::user()->role)->role_initial.'/favorites')}}"><i class="fa fa-gratipay" aria-hidden="true"></i> @lang('app.favorites')</a></li>
-                        <li><a href="{{url(App\Role::find(Auth::user()->role)->role_initial.'/searches')}}"><i class="fa fa-search" aria-hidden="true"></i> @lang('app.saved_searches')</a></li>
-                        <li>
-                             <a href="{{route(App\Role::find(Auth::user()->role)->role_initial.'.mail.list',['filter'=>'inbox'])}}">
-                                <i class="fa fa-envelope"></i> @lang('app.mails')
-                             </a>
-                        </li>
-                    @endif
-                    
-                    <li><a href="{{route('logout')}}"><i class="fa fa-sign-out" aria-hidden="true"></i> @lang('app.logout')</a></li>
-                </ul>
-             </div>
-          </div>
-          <div class="col-md-9">
-              @include('includes.alerts')
-              @yield('subcontent')
-          </div>
-      </div>
-  </div>
-</div>
+<!-- Main -->
+<main>
+    <section class="profile-bg-section parallax" style="background-image: url({{ asset('images/slider/2.jpg') }});">
+    </section>
+    <section class="profile-container gray-bg">
+        <div class="container">
+            <div class="row align-items-start">
+                <div class="col-lg-4 col-xl-3">
+                    <div class="profile-aside">
+                        <div class="card m-20px-b">
+                            <div class="p-25px text-center">
+                                <div class="avatar-80 border-radius-50 d-inline-block">
+                                    <img src="{{ \App\User::find(Auth::id())->imageUrl() }}" title="" alt="">
+                                </div>
+
+                                <h6 class="font-w-500 m-15px-t m-0px"><span class="font-w-700">{{ Auth::user()->name }}</span></h6>
+                                <span class="font-small">{{ \App\User::find(Auth::id())->roleUser->role_initial }}</span>
+                                <div class="p-10px-t">
+                                    <a class="m-btn m-btn-sm m-btn-theme-light m-btn-radius" href="{{route(''.App\Role::find(Auth::user()->role)->role_initial.'.mail.list',['filter'=>'inbox'])}}"><i class="far fa-envelope"></i> @lang('app.txt.sendmessage') </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card m-20px-b">
+                            @if(Auth::user()->hasRole(5))
+                                <a class="btn-select-apl m-btn m-btn-theme4rd" data-toggle="modal" data-target="#modal-select-apl" href="{{route('member.select.apl')}}">@lang('member.select.apl')</a>
+                            @endif
+                            <div class="list-group list-group-flush">
+                                <a href="{{url(\App\User::find(Auth::id())->roleUser->role_initial)}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                    <div>
+                                        <i class="fa fa-tachometer-alt m-10px-r"></i>
+                                        <span>@lang('app.dashboard')</span>
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-chevron-right"></i>
+                                    </div>
+                                </a>
+                                <a href="{{route('profile')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                    <div>
+                                        <i class="fa fa-edit m-10px-r"></i>
+                                        <span>@lang('app.profile')</span>
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-chevron-right"></i>
+                                    </div>
+                                </a>
+
+                            @if(Auth::user()->hasRole(5))
+                                <a href="{{route('shop.order.last')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                    <div>
+                                        <i class="fa fa-cart-arrow-down m-10px-r"></i>
+                                        <span>@lang('member.cart')</span>
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-chevron-right"></i>
+                                    </div>
+                                </a>
+                                <a href="{{route('member.orders')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                    <div>
+                                        <i class="fa fa-cart-plus m-10px-r"></i>
+                                        <span>@lang('member.orders')</span>
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-chevron-right"></i>
+                                    </div>
+                                </a>
+                                <a href="{{route('member.purchases')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                    <div>
+                                        <i class="far fa-credit-card m-10px-r"></i>
+                                        <span>@lang('member.purchases')</span>
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-chevron-right"></i>
+                                    </div>
+                                </a>
+                                <a href="{{route('member.contact', ['role'=>'admin'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                    <div>
+                                        <i class="far fa-envelope m-10px-r"></i>
+                                        <span>@lang('member.contact_admin')</span>
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-chevron-right"></i>
+                                    </div>
+                                </a>
+                                @if(Auth::user()->hasApl())
+                                  <a href="{{route('member.contact', ['role'=>'apl'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                      <div>
+                                          <i class="far fa-envelope m-10px-r"></i>
+                                          <span>@lang('member.contact_apl')</span>
+                                      </div>
+                                      <div>
+                                          <i class="fas fa-chevron-right"></i>
+                                      </div>
+                                  </a>
+                                @endif
+                            @endif
+
+                            @If(Auth::user()->hasRole(4))
+                              <a href="{{route('apl.orders')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                  <div>
+                                      <i class="fa fa-cart-plus m-10px-r"></i>
+                                      <span>@lang('apl.orders')</span>
+                                  </div>
+                                  <div>
+                                      <i class="fas fa-chevron-right"></i>
+                                  </div>
+                              </a>
+                              <a href="{{route('apl.sales')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                  <div>
+                                      <i class="fa fa-chart-line m-10px-r"></i>
+                                      <span>@lang('apl.sales')</span>
+                                  </div>
+                                  <div>
+                                      <i class="fas fa-chevron-right"></i>
+                                  </div>
+                              </a>
+                              <a href="{{route('apl.customers')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                  <div>
+                                      <i class="far fa-users m-10px-r"></i>
+                                      <span>@lang('apl.customers')</span>
+                                  </div>
+                                  <div>
+                                      <i class="fas fa-chevron-right"></i>
+                                  </div>
+                              </a>
+                              <a href="{{route('apl.commissions', ['filter'=>'not-paid'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                  <div>
+                                      <i class="fa fa-hand-holding-usd m-10px-r"></i>
+                                      <span>@lang('app.commissions.not_paid')</span>
+                                  </div>
+                                  <div>
+                                      <i class="fas fa-chevron-right"></i>
+                                  </div>
+                              </a>
+                              <a href="{{route('apl.commissions', ['filter'=>'paid'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                  <div>
+                                      <i class="far fa-money-bill-alt m-10px-r"></i>
+                                      <span>@lang('app.commissions.paid')</span>
+                                  </div>
+                                  <div>
+                                      <i class="fas fa-chevron-right"></i>
+                                  </div>
+                              </a>
+                            @endif
+
+                            @If(Auth::user()->hasRole(3))
+                              <a href="{{route('afa.orders')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                  <div>
+                                      <i class="fa fa-cart-plus m-10px-r"></i>
+                                      <span>@lang('afa.orders')</span>
+                                  </div>
+                                  <div>
+                                      <i class="fas fa-chevron-right"></i>
+                                  </div>
+                              </a>
+                              <a href="{{route('afa.sales')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                  <div>
+                                      <i class="far fa-chart-line m-10px-r"></i>
+                                      <span>@lang('afa.sales')</span>
+                                  </div>
+                                  <div>
+                                      <i class="fas fa-chevron-right"></i>
+                                  </div>
+                              </a>
+                              <a href="{{route('afa.commissions', ['filter'=>'paid'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                  <div>
+                                      <i class="fa fa-money-bill-alt m-10px-r"></i>
+                                      <span>@lang('app.commissions.paid')</span>
+                                  </div>
+                                  <div>
+                                      <i class="fas fa-chevron-right"></i>
+                                  </div>
+                              </a>
+                              <a href="{{route('afa.commissions', ['filter'=>'not-paid'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                  <div>
+                                      <i class="fa fa-hand-holding-usd m-10px-r"></i>
+                                      <span>@lang('app.commissions.not_paid')</span>
+                                  </div>
+                                  <div>
+                                      <i class="fas fa-chevron-right"></i>
+                                  </div>
+                              </a>
+                            @endif
+
+                            @If(Auth::user()->hasRole(2))
+                              <a href="{{route('seller.products')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                  <div>
+                                      <i class="far fa-paperclip m-10px-r"></i>
+                                      <span>@lang('seller.products')</span>
+                                  </div>
+                                  <div>
+                                      <i class="fas fa-chevron-right"></i>
+                                  </div>
+                              </a>
+                              <a href="{{route('seller.orders')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                  <div>
+                                      <i class="far fa-cart-plus m-10px-r"></i>
+                                      <span>@lang('seller.orders')</span>
+                                  </div>
+                                  <div>
+                                      <i class="fas fa-chevron-right"></i>
+                                  </div>
+                              </a>
+                              <a href="{{route('seller.sales')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                  <div>
+                                      <i class="far fa-chart-line m-10px-r"></i>
+                                      <span>@lang('seller.sales')</span>
+                                  </div>
+                                  <div>
+                                      <i class="fas fa-chevron-right"></i>
+                                  </div>
+                              </a>
+                            @endif
+
+                            @if(!Auth::user()->isAdmin())
+                              <a href="{{url(\App\User::find(Auth::id())->roleUser->role_initial.'/favorites')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                  <div>
+                                      <i class="fa fa-heart m-10px-r"></i>
+                                      <span>@lang('app.favorites')</span>
+                                  </div>
+                                  <div>
+                                      <i class="fas fa-chevron-right"></i>
+                                  </div>
+                              </a>
+                              <a href="{{url(\App\User::find(Auth::id())->roleUser->role_initial.'/searches')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                  <div>
+                                      <i class="fa fa-search m-10px-r"></i>
+                                      <span>@lang('app.searches')</span>
+                                  </div>
+                                  <div>
+                                      <i class="fas fa-chevron-right"></i>
+                                  </div>
+                              </a>
+                              <a href="{{route(''.\App\User::find(Auth::id())->roleUser->role_initial.'.mail.list',['filter'=>'inbox'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                  <div>
+                                      <i class="far fa-envelope m-10px-r"></i>
+                                      <span>@lang('app.mails')</span>
+                                  </div>
+                                  <div>
+                                      <i class="fas fa-chevron-right"></i>
+                                  </div>
+                              </a>
+                            @endif
+
+                            <a href="{{route('logout')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                  <div>
+                                      <i class="fa fa-sign-out-alt m-10px-r"></i>
+                                      <span>@lang('app.logout')</span>
+                                  </div>
+                                  <div>
+                                      <i class="fas fa-chevron-right"></i>
+                                  </div>
+                              </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- subcontent -->
+                @include('includes.alerts')
+                @yield('subcontent')
+                <!-- end subcontent -->
+            </div>
+        </div>
+    </section>
+</main>
+<!-- main end -->
+
 
 @if(Auth::user()->hasRole(5))
 <!-- Modal -->
@@ -87,11 +286,11 @@
           @endif
       </div>
       <div class="modal-footer">
-          <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">@lang('app.btn.cancel')</button>
+          <button class="m-btn m-btn-theme" data-dismiss="modal" aria-hidden="true">@lang('app.btn.cancel')</button>
           @if(Auth::user()->hasAPl())
-            <a href="{{route('member.select.apl')}}" class="btn btn-success" type="submit">@lang('app.btn.next')</a>
+            <a href="{{route('member.select.apl')}}" class="m-btn m-btn-theme" type="submit">@lang('app.btn.next')</a>
           @else
-            <a href="{{route('member.select.apl')}}" class="btn btn-success" type="submit">@lang('member.select.apl')</a>
+              <a href="{{route('member.select.apl')}}" class="m-btn m-btn-theme4rd" type="submit">@lang('member.select.apl')</a>
           @endif
       </div>
     </div>

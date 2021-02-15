@@ -33,11 +33,18 @@ class ProfileController extends Controller
         if(Auth::user()->isAdmin()){
             $view = view('admin.user.profile');
         }else{
-            $view = view('backend.user.profile');
+            $view = view('V2.backend.user.profile');
         }
+
+        $lapls = Localisation::select('localizations.*')
+            ->join('users','users.location_id','=','localizations.id')
+            ->where('users.role','=','4')
+            ->groupBy('localizations.locality')
+            ->get();
         
         return $view->with('title', __('app.profile'))
             ->with('item', Auth::user())
+            ->with('lapls', $lapls)
             ->with('breadcrumbs', __('app.profile'));
     }
 

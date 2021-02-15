@@ -1,37 +1,34 @@
-@extends('layouts.admin')
-
-@section('content')
-<div id="main-content" class="main-content container-fluid">
-    <form class="form-horizontal" role="form" method="post" action="{{route('password.edit')}}">
-        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-        @include('includes.alerts')
-        <fieldset>
-            <legend>Modification de mot de passe</legend>
-            <div class="form-group">
-                <label class="col-sm-4 control-label" for="old_password">Ancien mot de passe *</label>
-                <div class="col-sm-8">
-                    <input name="old_password" type="password" class="form-control" id="old_password" placeholder="Ancien mot de passe" required>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-4 control-label" for="password">Nouveau mot de passe *</label>
-                <div class="col-sm-8">
-                    <input name="password" type="password" class="form-control" id="password" placeholder="Nouveau mot de passe" required>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-4 control-label" for="password_confirmation">Confirmer nouveau mot de passe *</label>
-                <div class="col-sm-8">
-                    <input name="password_confirmation" type="password" class="form-control" id="password_confirmation" placeholder="Confirmer nouveau mot de passe" required>
-                </div>
-            </div>
-        </fieldset>
-        <div class="form-group">
-            <div class="col-sm-offset-4 col-sm-8">
-                <button type="submit" class="btn btn-primary">Enregistrer</button>
-            </div>
-        </div>
-    </form>
-</div>
+@extends('admin.layouts.app')
+@section('breadcrumb')
+   @include('layouts.breadcrumbs')
 @endsection
 
+@section('content')
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="ibox ">
+			<div class="ibox-title">
+				<h5>@lang('app.title.password')</h5>
+			</div>
+			<div class="ibox-content">
+				 @include('includes.alerts')
+				 <form class="form-horizontal" role="form" method="post" action="{{route('admin.password.edit')}}">
+				 	 <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+					 <div class="form-group">
+						<label>@lang('app.last.password')</label> 
+						<input name="old_password" type="password" class="form-control" id="old_password" placeholder="@lang('app.last.password')">
+					</div>
+					<div class="form-group">
+						<label>@lang('app.new.password')</label> 
+						<input name="password" type="password" class="form-control" id="password" placeholder="@lang('app.new.password')">
+					</div>
+					<div class="form-group">
+						<label>@lang('app.confirm.password')</label> 
+						<input name="password_confirmation" type="password" class="form-control" id="password_confirmation" placeholder="@lang('app.confirm.password')">
+					</div>
+					<div class="hr-line-dashed"></div>
+					<button type="submit" class="btn btn-danger">Enregistrer</button>
+				 </form>
+			</div>
+		</div>
+	</div>
+@endsection

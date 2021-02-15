@@ -1,17 +1,13 @@
 @extends('layouts.app')
 
-@section('style')
-<style>
-.modal {
-    display: none;
-    overflow: scroll;
-    position: fixed;
-    top: 0px;
-}
-</style>
-@endsection
 
 @section('content')
+
+<!-- Page Title -->
+@component('includes.breadcrumb')
+    @lang('inscriptionapl')
+@endcomponent
+<!-- Section -->
 <div class="main-slider-wrapper clearfix content corps">
     <div class="container">
         <div class="row">

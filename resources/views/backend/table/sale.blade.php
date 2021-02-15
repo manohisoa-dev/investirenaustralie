@@ -1,17 +1,17 @@
 <table class="shop_table shop_table_responsive cart table table-striped table-hover">
     <thead>
         <tr>
-            <th colspan="2">Produits</th>
+            <th colspan="2">@lang('app.products')</th>
             
-            @if(\Auth::check()&&\Auth::user()->hasRole('apl'))
-            <th colspan="2">User</th>
+            @if(\Auth::check()&&\Auth::user()->hasRole(4))
+            <th colspan="2">@lang('app.user')</th>
             @endif
             
-            <th>Price</th>
-            <th>Reservation</th>
+            <th>@lang('app.txt.price')</th>
+            <th>@lang('app.txt.reservation')</th>
             
             @if($sales[0]->status == 'pinged')
-            <th>Action</th>
+            <th>@lang('app.txt.action')</th>
             @endif
         </tr>
     </thead>
@@ -19,23 +19,27 @@
         @foreach($sales as $sale)
         <tr>
             <td class="product-thumbnail" width="100">
-                <a href="{{route('product.index', $sale->product)}}">
-                    <img width="100" height="100" src="{{$sale->product->imageUrl()}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail wp-post-image" alt="" />
-                </a>
+                <div class="pt-icon">
+                    <a href="{{route('product.index', $sale->product->slug)}}">
+                        <img src="{{$sale->product->imageUrl()}}" title="" alt="">
+                    </a>
+                </div>
             </td>
-            <td class="product-name"> <a href="{{route('product.index', $sale->product)}}">{{$sale->product->title}}</a></td>
+            <td class="product-name"> <a href="{{route('product.index', $sale->product->slug)}}">{{$sale->product->title}}</a></td>
             
-            @if(\Auth::check()&&\Auth::user()->hasRole('apl'))
+            @if(\Auth::check()&&\Auth::user()->hasRole(4))
                 <td class="product-thumbnail" width="100">
                     @if($sale->author)
-                    <a href="{{route(\Auth::user()->role.'.user.contact', $sale->author)}}">
-                        <img width="100" height="100" src="{{$sale->author->imageUrl()}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail wp-post-image" alt="" />
-                    </a>
+                    <div class="pt-icon">
+                        <a href="{{route('v2.'.\Role::find(\Auth::user()->role)->role_initial.'.user.contact', $sale->author)}}">
+                            <img src="{{$sale->author->imageUrl()}}" title="" alt="">
+                        </a>
+                    </div>
                     @endif
                 </td>
                 <td>
                      @if($sale->author)
-                     <a href="{{route(\Auth::user()->role.'.user.contact', $sale->author)}}">{{$sale->author->email}}</a>
+                     <a href="{{route('v2.'.\Role::find(\Auth::user()->role)->role_initial.'.user.contact', $sale->author)}}">{{$sale->author->email}}</a>
                      @endif
                 </td>
             @endif

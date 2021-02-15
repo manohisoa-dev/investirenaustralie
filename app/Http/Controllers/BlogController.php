@@ -12,6 +12,7 @@ use App\Models\ObjectCategory;
 use App\Models\Image;
 use App\Models\Product;
 use App\Models\Page;
+use App\Models\Localisation;
 
 class BlogController extends Controller
 {
@@ -68,6 +69,12 @@ class BlogController extends Controller
                 
                 $page = Page::where('path', '=', '/blogs*')
                     ->first();
+
+                $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','4')
+                ->groupBy('localizations.locality')
+                ->get();
                 
                 if($page){$pubs = $page->pubs;}else{$pubs = [];}
 
@@ -75,6 +82,7 @@ class BlogController extends Controller
                     ->with('item', $blog)
                     ->with('pubs', $pubs)
                     ->with('products', $products)
+                    ->with('lapls', $lapls)
                     ->with('categories', $categories);
             }
         }else{
@@ -102,6 +110,12 @@ class BlogController extends Controller
             ->withCount('products')
             ->take($this->recentSize)
             ->get();
+
+        $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','4')
+                ->groupBy('localizations.locality')
+                ->get();
         
         $page = Page::where('path', '=', '/blogs*')
             ->first();
@@ -112,6 +126,7 @@ class BlogController extends Controller
                 ->with('item', $blog)
                 ->with('pubs', $pubs)
                 ->with('products', $products)
+                ->with('lapls', $lapls)
                 ->with('categories', $categories); 
     }
 
@@ -152,7 +167,7 @@ class BlogController extends Controller
             ->orderBy('created_at','desc')
             ->take($this->recentSize)
             ->get();
-
+        
         $categories = Category::orderBy('created_at', 'desc')
             ->has('products')
             ->withCount(['products'])
@@ -161,6 +176,12 @@ class BlogController extends Controller
         
         $page2 = Page::where('path', '=', '/blogs*')
             ->first();
+
+        $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','4')
+                ->groupBy('localizations.locality')
+                ->get();
         
         if($page2){$pubs = $page->pubs;}else{$pubs = [];}
 
@@ -172,6 +193,7 @@ class BlogController extends Controller
                 ->with('page', $page)
                 ->with('pubs', $pubs)
                 ->with('products', $products)
+                ->with('lapls', $lapls)
                 ->with('categories', $categories); 
     }
 

@@ -24,7 +24,7 @@ class AdminController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:1');
+        $this->middleware('role:admin');
     }
 
     /**
@@ -34,21 +34,22 @@ class AdminController extends Controller
      */
     public function dashboard()
     {
+        $count = [];
         $count['users'] = User::count();
         $count['products'] = Product::count();
         $count['orders'] = Product::ofStatus('ordered')->count();
         $count['sales'] = Product::ofStatus('paid')->count();
-        
+
         $data = [];
         $data['products'] = \DB::table('products')
-          ->select(\DB::raw('DATE(created_at) as date'), \DB::raw('count(*) as count'))
-          ->groupBy('date')
-          ->get();
+            ->select(\DB::raw('DATE(created_at) as date'), \DB::raw('count(*) as count'))
+            ->groupBy('date')
+            ->get();
         $data['users'] = \DB::table('users')
-          ->select(\DB::raw('DATE(created_at) as date'), \DB::raw('count(*) as count'))
-          ->groupBy('date')
-          ->get();
-        
+            ->select(\DB::raw('DATE(created_at) as date'), \DB::raw('count(*) as count'))
+            ->groupBy('date')
+            ->get();
+
         $recent = [];
         $recent['users'] = User::orderBy('created_at', 'desc')
             ->take($this->recentSize)
@@ -68,7 +69,7 @@ class AdminController extends Controller
         $recent['mails'] = Mail::orderBy('created_at', 'desc')
             ->take($this->recentSize)
             ->get();
-        
+
         return view('admin.dashboard.index')
             ->with('recent', $recent)
             ->with('count', $count)
@@ -99,10 +100,10 @@ class AdminController extends Controller
                 return view('admin.dashboard.cart');
             default:
                 abort(404);
-                
+
         }
     }
-    
+
     /*
     *
     *
@@ -111,20 +112,20 @@ class AdminController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('auth:admin');
-        
+
         if(!$mail || !$mail->id){
             $mail = new Mail();
         }
-        
+
         $users = User::isActive()
             ->where('id', '<>', \Auth::user()->id)
             ->get();
-        
+
         return view('admin.mail.compose')
             ->with('item', $mail)
             ->with('users', $users);
     }
-    
+
     /*
     *
     */
@@ -132,10 +133,10 @@ class AdminController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('auth:admin');
-        
+
         //echo var_dump($request->request);
         //exit;
-            
+
         // Validate request
         $datas = $request->all();
         $validator = Validator::make($datas,[
@@ -146,9 +147,9 @@ class AdminController extends Controller
 
         if ($validator->fails()) {
             return back()->withErrors($validator)
-                        ->withInput();
+                ->withInput();
         }
-        
+
         if(!$mail || !$mail->id){
             $item = new Mail();
         }else{
@@ -159,25 +160,25 @@ class AdminController extends Controller
                 $item->copied_from = $mail->id;
             }
         }
-        
+
         $item->subject = $request->subject;
         $item->content = $request->content;
-        
+
         switch($request->method){
             case 'model':
                 $item->status = 'model';
                 $item->save();
-            return back()->with('success', 'Message enregistré au model.');
+                return back()->with('success', 'Message enregistré au model.');
             case 'draft':
                 $item->status = 'draft';
                 $item->save();
-            return back()->with('success', 'Message enregistré au brouillon.');
+                return back()->with('success', 'Message enregistré au brouillon.');
             case 'send':
                 $item->status = 'send';
                 $item->save();
-            break;
+                break;
         }
-        
+
 
         $receiverIds = [];
         if($request->has('role')){
@@ -185,27 +186,27 @@ class AdminController extends Controller
                 ->ofRole($request->role)
                 ->where('id', '<>', \Auth::user()->id)
                 ->get();
-            
+
             foreach($users as $user){
                 if(in_array($user->id, $receiverIds)){
                     continue;
                 }
                 $receiverIds[] = $user->id;
-                
+
                 $mailItem = new MailUser();
                 $mailItem->mail_id = $item->id;
                 $mailItem->user_id = $user->id;
                 $mailItem->is_sent = 1;
                 $mailItem->read    = 0;
                 $mailItem->save();
-                
+
                 $sent = true;
                 try{
                     $data = array('name'=>"Virat Gandhi");
                     \Mail::send('mail', $data, function($message) use($mailItem, $user, $item) {
                         $message->to($user->email, $user->name)
-                                ->subject($item->subject)
-                                ->from($user->email, $user->name);
+                            ->subject($item->subject)
+                            ->from($user->email, $user->name);
                     });
                 }catch(\Exception $e){
                     $mailItem->is_sent = 0;
@@ -213,33 +214,33 @@ class AdminController extends Controller
                 }
             }
         }
-        
+
         if($request->has('users')&&is_array($request->users)){
             foreach($request->users as $id){
                 if(in_array($id, $receiverIds)){
                     continue;
                 }
-                
+
                 $user = User::find($id);
                 if(!$user){
                     continue;
                 }
-                
+
                 $receiverIds[] = $id;
-                
+
                 $mailItem = new MailUser();
                 $mailItem->mail_id = $item->id;
                 $mailItem->user_id = $user->id;
                 $mailItem->is_sent = 1;
                 $mailItem->read    = 0;
                 $mailItem->save();
-                
+
                 try{
                     $data = array('name'=>"Virat Gandhi");
                     \Mail::send('mail', $data, function($message) use($mailItem, $user, $item) {
                         $message->to($user->email, $user->name)
-                                ->subject($item->subject)
-                                ->from($user->email, $user->name);
+                            ->subject($item->subject)
+                            ->from($user->email, $user->name);
                     });
                 }catch(\Exception $e){
                     $mailItem->is_sent = 0;
@@ -247,7 +248,7 @@ class AdminController extends Controller
                 }
             }
         }
-        
+
         return back()->with('success', 'Messages envoyés avec succes. '.count($receiverIds));
     }
 

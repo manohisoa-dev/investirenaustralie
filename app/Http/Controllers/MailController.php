@@ -9,6 +9,7 @@ use Validator;
 use App\Models\User;
 use App\Models\Mail;
 use App\Notifications\NewMail;
+use App\Models\Localisation;
 use App\Role;
 
 class MailController extends Controller
@@ -68,11 +69,18 @@ class MailController extends Controller
         $content = \App\Models\Config::login()->get_meta_array('content', $locale);
         $address = \App\Models\Config::login()->get_meta_array('address', $locale);
         $contact = \App\Models\Config::login()->get_meta_array('contact', $locale);
+        $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','4')
+                ->groupBy('localizations.locality')
+                ->get();
+
         return view('index.contact')
             ->with('title', __('app.send_mail'))
             ->with('content', $content)
             ->with('address', $address)
             ->with('contact', $contact)
+            ->with('lapls', $lapls)
             ->with('breadcrumbs', __('app.send_mail'));
     }
 
@@ -104,6 +112,11 @@ class MailController extends Controller
         $this->middleware('auth');
         
         $mail->load('sender')->load('receiver');
+        $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','4')
+                ->groupBy('localizations.locality')
+                ->get();
         
         if(\Auth::user()->isAdmin()){
             return view('admin.mail.index')
@@ -111,6 +124,7 @@ class MailController extends Controller
         }
         
         return view('backend.mail.index')
+                ->with('lapls', $lapls) 
                 ->with('item', $mail); 
     }
 
@@ -125,6 +139,11 @@ class MailController extends Controller
         $user = Auth::user();
         
         $title = __('app.admin.mail.list');
+        $lapls = Localisation::select('localizations.*')
+            ->join('users','users.location_id','=','localizations.id')
+            ->where('users.role','=','4')
+            ->groupBy('localizations.locality')
+            ->get();
         
         switch($filter){
             case "inbox":
@@ -194,8 +213,8 @@ class MailController extends Controller
             $view->with('users', User::all());
             
         }else{
-            $view = view('backend.mail.all');
-            
+            $view = view('V2.backend.mail.all');
+
             switch(Role::find(Auth::user()->role)->role_initial){
                 case 'apl':
                     $view->with('users', User::isActive()->get());
@@ -225,12 +244,14 @@ class MailController extends Controller
         }
         
         $items = $items->paginate($record);
+
         
         return $view->with('items', $items)
             ->with('q', $q) 
             ->with('record', $record) 
             ->with('title', $title)
             ->with('receiver', $receiver)
+            ->with('lapls', $lapls)
             ->with('breadcrumbs', $title);
     }
 

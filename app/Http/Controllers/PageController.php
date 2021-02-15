@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Validator;
 use Auth;
 
@@ -12,6 +11,8 @@ use App\Models\Page;
 use App\Models\PubPage;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Localisation;
+use App\Models\User;
 
 class PageController extends Controller
 {
@@ -45,6 +46,12 @@ class PageController extends Controller
             ->take(6)->get();
         
         $page->load(['childs', 'childs.pubs', 'pubs']);
+
+        $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','4')
+                ->groupBy('localizations.locality')
+                ->get();
         
         return view('page.index')
             ->with('item', $page)
@@ -52,8 +59,10 @@ class PageController extends Controller
             ->with('products', $products)
             ->with('blogs', $blogs)
             ->with('recentProducts', $recentProducts)
-            ->with('categories', $categories);
+            ->with('categories', $categories)
+            ->with('lapls', $lapls);
     }
+    
 
     /**
      * Show a page

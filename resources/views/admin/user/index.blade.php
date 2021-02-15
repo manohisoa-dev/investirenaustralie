@@ -1,152 +1,241 @@
-@extends('layouts.admin')
+@extends('admin.layouts.app')
 
-@section('content')
-<div id="main-content" class="main-content container-fluid">
-    <!-- // page head -->
-    <div id="page-content" class="page-content tab-content overflow-y">
-        <div id="TabTop1" class="tab-pane padding-bottom30 active fade in">
-            @include('includes.alerts')
-            <div>
-                 @if($item->status=='active')
-                    <a href="{{route('admin.user.disable', $item)}}" class="btn btn-small btn-success">@lang('app.btn.disable')</a>
-                 @else
-                    <a href="{{route('admin.user.active', $item)}}" class="btn btn-small btn-info">@lang('app.btn.active')</a>
-                 @endif
-                    <a href="{{route('admin.user.delete', $item)}}" class="btn btn-small btn-warning">@lang('app.btn.delete')</a>
-                    <a href="{{route('admin.user.contact', $item)}}" class="btn btn-small btn-default">@lang('app.btn.contact')</a>
-            </div>
-            <div class="page-header">
-                <h3>
-                    @if(isset($title))
-                        {{$title}}
-                    @else
-                        @lang('app.user')
-                    @endif
-                </h3>
-            </div>
-            <div class="row-fluid">
-                <div class="grider">
-                    @include('admin.user.info.login',    ['item'=>$item])
-                    
-                    @if($item->hasRole('member') && $item->type=='person')
-                        @include('admin.user.info.person',   ['item'=>$item])
-                    @else
-                        @include('admin.user.info.orga',     ['item'=>$item])
-                        @include('admin.user.info.contact',  ['item'=>$item])
-                    @endif
-                    
-                    @include('admin.user.info.location', ['location'=>$item->location])
-                    
-                    <div class="widget widget-simple">
-                        <div class="widget-header">
-                            <h4><small>@lang('app.observations')</small></h4>
-                        </div>
-                        @include('admin.table.observation',['item'=>$item])
-                    </div>
-                    
-                    @if($item->role=='member')
-                        @if($item->apl)
-                            @include('admin.user.info.apl',    ['item'=>$item->apl])
-                        @endif
-                        <div class="widget widget-simple">
-                            <div class="widget-header">
-                                <h4><small>@lang('app.orders')</small></h4>
-                            </div>
-                            @include('admin.table.product',[
-                                'products'=>$item->purchases()->wherePivot('status', 'ordered')
-                            ])
-                        </div>
-                        <div class="widget widget-simple">
-                            <div class="widget-header">
-                                <h4><small>@lang('app.purchases')</small></h4>
-                            </div>
-                            @include('admin.table.product',[
-                                'products'=>$item->purchases()->wherePivot('status', 'paid')
-                            ])
-                        </div>
-                        <div class="widget widget-simple">
-                            <div class="widget-header">
-                                <h4><small>@lang('app.favorites')</small></h4>
-                            </div>
-                            @include('admin.table.product',['products'=>$item->favorites])
-                        </div>
-                    @endif
-                    
-                    @if($item->role=='apl')
-                        <div class="widget widget-simple">
-                            <div class="widget-header">
-                                <h4><small>@lang('app.customers')</small></h4>
-                            </div>
-                            @include('admin.table.user',['users'=>$item->customers])
-                        </div>
-                        <div class="widget widget-simple">
-                            <div class="widget-header">
-                                <h4><small>@lang('app.orders')</small></h4>
-                            </div>
-                            @include('admin.table.product',[
-                                'products'=>$item->sales()->wherePivot('status', 'ordered')
-                            ])
-                        </div>
-                        <div class="widget widget-simple">
-                            <div class="widget-header">
-                                <h4><small>@lang('app.sales')</small></h4>
-                            </div>
-                            @include('admin.table.product',[
-                                'products'=>$item->sales()->wherePivot('status', 'paid')
-                            ])
-                        </div>
-                    @endif
-                    
-                    @if($item->role=='seller')
-                        <div class="widget widget-simple">
-                            <div class="widget-header">
-                                <h4><small>@lang('app.products')</small></h4>
-                            </div>
-                            @include('admin.table.product',[
-                                'products'=>$item->products
-                            ])
-                        </div>
-                        <div class="widget widget-simple">
-                            <div class="widget-header">
-                                <h4><small>@lang('app.orders')</small></h4>
-                            </div>
-                            @include('admin.table.product',[
-                                'products'=>$item->products()->where('products.status', 'ordered')
-                            ])
-                        </div>
-                        <div class="widget widget-simple">
-                            <div class="widget-header">
-                                <h4><small>@lang('app.sales')</small></h4>
-                            </div>
-                            @include('admin.table.product',[
-                                'products'=>$item->products()->where('products.status', 'paid')
-                            ])
-                        </div>
-                    @endif
-                    
-                    @if($item->role=='afa')
-                        <div class="widget widget-simple">
-                            <div class="widget-header">
-                                <h4><small>@lang('app.orders')</small></h4>
-                            </div>
-                            @include('admin.table.product',[
-                                'products'=>$item->sales()->wherePivot('status', 'ordered')
-                            ])
-                        </div>
-                        <div class="widget widget-simple">
-                            <div class="widget-header">
-                                <h4><small>@lang('app.sales')</small></h4>
-                            </div>
-                            @include('admin.table.product',[
-                                'products'=>$item->sales()->wherePivot('status', 'paid')
-                            ])
-                        </div>
-                    @endif
-                    
-                </div>
-            </div>
+@section('title', 'Users - Listes ')
+
+@section('breadcrumb')
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
+        <h2>Utilisateurs</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{{ route('admin.user.index') }}">Utilisateurs {{app()->getLocale()}}</a>
+            </li>
+            <li class="breadcrumb-item active">
+                <strong>Listes</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <div class="title-action">
+            <!--<a href="{{ route('admin.user.create') }}" type="button" class="btn btn-primary btn-block">
+                <i class="fa fa-plus"></i> Ajouter un nouveau User            
+			</a>-->
         </div>
     </div>
 </div>
+
 @endsection
 
+@section('content')
+<div class="row">
+	<div class="col-lg-12">
+		<div class="ibox float-e-margins">
+			<div class="ibox-title">
+				<h5>Liste des utilisateurs</h5>
+			</div>
+			<div class="ibox-content">
+				<div class="ibox float-e-margins">
+					<div class="ibox-title">
+						<h5><i class="fa fa-search"></i> Filtre de recherche</h5>
+						<div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+					</div>
+					<div class="ibox-content">
+						<form class="search-form">
+							<div class="row">
+								<div class="col-md-2">
+									<div class="form-group">
+										<label>@lang('app.select_role')</label> 
+										<select class="form-control" name="role" id="role">
+											<option value="">Tous</option>
+											@foreach($roles as $role)
+											<option value="{{$role->id}}" {{@$_GET['role']==$role->id?'selected':''}}>{{$role->role_name}}</option>
+											@endforeach
+										</select>
+									</div>
+								</div>
+								<div class="col-md-2">
+									<label>@lang('app.select_country')</label> 
+									<select class="form-control" name="country_id" id="country_id">
+										<option value="">Tous</option>
+										@foreach($countries as $c)
+										<option value="{{$c->id}}" {{@$_GET['country_id']==$c->id?'selected':''}}>{{$c->content}}</option>
+										@endforeach
+									</select>
+								</div>
+								<div class="col-md-2">
+									<label>@lang('app.select_state')</label> 
+									<select class="form-control" name="state_id" id="state_id">
+										<option value="">Tous</option>
+										@foreach($states as $stateItem)
+										<option value="{{$stateItem->id}}" {{@$_GET['state_id']==$stateItem->id?'selected':''}}>{{$stateItem->content}}</option>
+										@endforeach
+									</select>
+								</div>
+								<div class="col-md-2">
+									<label>Nom</label> 
+									<input type="text" name="name" value="{{@$_GET['name']}}" class="form-control" />
+								</div>
+								<div class="col-md-2">
+									<label>Type</label> 
+									<select class="form-control" name="type_users_id" id="type_users_id">
+										<option value="">Tous</option>
+										@foreach($typeUser as $type)
+										<option value="{{$type->id}}" {{@$_GET['type_users_id']==$type->id?'selected':''}}>{{$type->type_user_name}}</option>
+										@endforeach
+									</select>
+								</div>
+								<div class="col-md-2">
+									<label>Status</label> 
+									<select class="form-control" name="status">
+										<option value="">Tous</option>
+										@foreach($statuts as $st)
+										<option value="{{$st}}" {{@$_GET['status']==$st?'selected':''}}>{{$st}}</option>
+										@endforeach
+									</select>
+								</div>
+							</div>
+							<div class="hr-line-dashed"></div>
+							<button type="submit" class="btn btn-primary btn-sm pull-right"><i class="fa fa-search"></i> Filtrer</button>
+							<div style="clear:both"></div>
+						</form>
+					</div>
+				</div>
+				
+                <table class="table table-striped grid-view-tbl">
+                <thead>
+                    <tr class="header-row">
+						{!!\Nvd\Crud\Html::sortableTh('id','admin.user.index','Id')!!}
+						{!!\Nvd\Crud\Html::sortableTh('image_id','admin.user.index','Photo')!!}
+						{!!\Nvd\Crud\Html::sortableTh('name','admin.user.index','Nom')!!}
+                        {!!\Nvd\Crud\Html::sortableTh('email','admin.user.index','Email')!!}
+						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.user.index','Date')!!}
+						{!!\Nvd\Crud\Html::sortableTh('role','admin.user.index','Rôle')!!}
+						{!!\Nvd\Crud\Html::sortableTh('type_users_id','admin.user.index','Type')!!}
+						{!!\Nvd\Crud\Html::sortableTh('status','admin.user.index','Statuts')!!}
+						<th><a href="javascript:void(0)">Actions</a></th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+					@forelse ( $records as $record )
+						<tr>
+							<td>{{ $record->id }}</td>
+							<td>
+								<a href="{{route('admin.user.show', $record)}}">
+									<img class="img-responsive" src="{{$record->imageUrl()}}" width="50">
+								</a>
+							</td>
+							<td>
+								<span class="editable"
+								data-type="text"
+								data-name="name"
+								data-value="{{ $record->name }}"
+								data-pk="{{ $record->{$record->getKeyName()} }}"
+								data-url="{{ route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
+								>{{ $record->name }}</span>
+							</td>
+							<td>
+								<span class="editable"
+								data-type="email"
+								data-name="email"
+								data-value="{{ $record->email }}"
+								data-pk="{{ $record->{$record->getKeyName()} }}"
+								data-url="{{ route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
+								>{{ $record->email }}</span>
+							</td>
+							<td>{{$record->created_at->diffForHumans()}}</td>
+							<td>
+								<span class="editable"
+								data-type="text"
+								data-name="role"
+								data-value="{{ $record->role }}"
+								data-pk="{{ $record->{$record->getKeyName()} }}"
+								data-url="{{ route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
+								><a href=""><span class="label label-warning">{{$record->roleUser['role_initial']}}</span></a></span>
+							</td>
+							<td>
+								<span class="editable"
+								data-type="text"
+								data-name="type_users_id"
+								data-value="{{ $record->type_users_id }}"
+								data-pk="{{ $record->{$record->getKeyName()} }}"
+								data-url="{{ route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
+								>
+								@if($record->type_users_id == 2)
+								<a href="">
+									<span class="label label-success">{{$record->typeUser['type_user_name']}}</span>
+								</a>
+								@else
+								<a href="">
+									<span class="label label-primary">{{$record->typeUser['type_user_name']}}</span>
+								</a>
+								@endif
+								</span>
+							</td>
+							<td>
+								<span class="editable"
+								data-type="text"
+								data-name="status"
+								data-value="{{ $record->status }}"
+								data-pk="{{ $record->{$record->getKeyName()} }}"
+								data-url="{{ route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
+								>
+									<a href="#">
+									@if($record->status=='active')
+									<span class="label label-primary">{{$record->status}}</span>
+									@else
+									<span class="label label-warning">{{$record->status}}</span>
+									@endif
+									</a>
+								</span>
+							</td>
+							<td>
+								@if($record->status=='active')
+								<a href="{{route('admin.user.desactiver', ['user_id' => $record->id])}}" class="btn btn-default btn-circle" title="@lang('app.btn.disable')">
+									<i class="fa fa-eye-slash"></i>
+								</a>&nbsp;&nbsp;
+								@else
+								<a href="#" class="btn btn-default btn-circle" title="@lang('app.btn.active')">
+									<i class="fa fa-eye text-info"></i>
+								</a>&nbsp;&nbsp;
+								@endif
+								<a href="#" class="btn btn-default btn-circle" title="@lang('app.btn.contact')">
+									<i class="fa fa-address-book-o" aria-hidden="true"></i>
+								</a>&nbsp;&nbsp;
+								<a href="#" class="btn btn-default btn-circle" title="@lang('app.btn.delete')">
+									<i class="fa fa-trash-o text-danger"></i>
+								</a>
+								
+							</td>
+						</tr>
+					@empty
+						@include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 33])
+					@endforelse
+                    </tbody>
+
+                </table>
+
+                @include('vendor.crud.single-page-templates.common.pagination', [ 'records' => $records ] )
+
+				<script>
+					$(".editable").editable({ajaxOptions:{method:'PUT'}});
+				</script>
+			</div>
+		</div>
+	</div>
+</div>
+@endsection
+@section('custom-script')
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#role").select2();
+		$("#country_id").select2();
+		$("#state_id").select2();
+		$("#type_users_id").select2();
+	});
+</script>
+@endsection

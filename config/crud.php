@@ -25,6 +25,6 @@ $config = [
 /*
  * Layout template used when generating views
  * */
-$config['layout'] = 'V2.admin.layouts.app';
+$config['layout'] = 'admin.layouts.app';
 
 return $config;

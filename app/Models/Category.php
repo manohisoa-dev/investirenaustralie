@@ -1,44 +1,64 @@
 <?php
-
 namespace App\Models;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
-use Auth;
 
-// Eloquent Model to manage Category
-class Category extends BaseModel
-{
-   /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'categories';
-    
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'slug', 'title', 'content', 'author_id',
-    ];
-    
-    /**
-     * Create a new model instance.
-     *
-     * @return void
-     */
-    public function __construct()
+
+class Category extends Model {
+
+
+    public $guarded = ["id","created_at","updated_at"];
+
+    public static function findRequested()
     {
-        $this->author_id = (Auth::check()?Auth::user()->id:0);
+        $query = Category::query();
+
+        // search results based on user input
+        \Request::input('id') and $query->where('id',\Request::input('id'));
+        \Request::input('slug') and $query->where('slug','like','%'.\Request::input('slug').'%');
+        \Request::input('title') and $query->where('title','like','%'.\Request::input('title').'%');
+        \Request::input('content') and $query->where('content',\Request::input('content'));
+        \Request::input('author_id') and $query->where('author_id',\Request::input('author_id'));
+        \Request::input('created_at') and $query->where('created_at',\Request::input('created_at'));
+        \Request::input('updated_at') and $query->where('updated_at',\Request::input('updated_at'));
+        
+        // sort results
+        \Request::input("sort") and $query->orderBy(\Request::input("sort"),\Request::input("sortType","asc"));
+
+        // paginate results
+        return $query->paginate(15);
     }
-    
+
+    public static function validationRules( $attributes = null )
+    {
+        $rules = [
+            'slug' => 'required|string|max:150',
+            'title' => 'required|string|max:150',
+            'content' => '',
+            'author_id' => 'required',
+        ];
+
+        // no list is provided
+        if(!$attributes)
+            return $rules;
+
+        // a single attribute is provided
+        if(!is_array($attributes))
+            return [ $attributes => $rules[$attributes] ];
+
+        // a list of attributes is provided
+        $newRules = [];
+        foreach ( $attributes as $attr )
+            $newRules[$attr] = $rules[$attr];
+        return $newRules;
+    }
+
     public function getRouteKeyName()
     {
-      return 'slug';
+        return 'slug';
     }
-    
+
     /**
      * Get the author record associated with the blog.
      */
@@ -46,7 +66,7 @@ class Category extends BaseModel
     {
         return $this->belongsTo(User::class, 'author_id', 'id');
     }
-    
+
     /**
      * A category can have many products
      *
@@ -54,9 +74,9 @@ class Category extends BaseModel
      */
     public function products()
     {
-      return $this->hasMany(Product::class, 'category_id', 'id');
+        return $this->hasMany(Product::class, 'category_id', 'id');
     }
-    
+
     /**
      * A category can have many subProducts
      *
@@ -64,10 +84,10 @@ class Category extends BaseModel
      */
     public function subProducts()
     {
-      return $this->belongsToMany(Product::class, 'objects_categories', 'category_id', 'object_id')
-          ->wherePivot('object_type', Product::class);
+        return $this->belongsToMany(Product::class, 'objects_categories', 'category_id', 'object_id')
+            ->wherePivot('object_type', Product::class);
     }
-    
+
     /**
      * A category can have many blogs
      *
@@ -75,8 +95,9 @@ class Category extends BaseModel
      */
     public function blogs()
     {
-      return $this->belongsToMany(Product::class, 'objects_categories', 'category_id', 'object_id')
-          ->wherePivot('object_type', Blog::class);
+        return $this->belongsToMany(Product::class, 'objects_categories', 'category_id', 'object_id')
+            ->wherePivot('object_type', Blog::class);
     }
 
 }
+
