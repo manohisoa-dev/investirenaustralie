@@ -1,10 +1,10 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
-use App\Pub;
-use App\Page;
-use App\PubPage;
-use App\Image;
+use App\Models\Pub;
+use App\Models\Page;
+use App\Models\PubPage;
+use App\Models\Image;
 use Illuminate\Http\Request;
 
 use Auth;

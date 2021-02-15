@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
-use App\State;
+use App\Models\State;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;

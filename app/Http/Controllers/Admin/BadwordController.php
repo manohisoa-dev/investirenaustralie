@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
-use App\Badword;
+use App\Models\Badword;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;

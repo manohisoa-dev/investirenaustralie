@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Blog;
-use App\Category;
+use App\Models\Blog;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Sale;
-use App\Product;
+use App\Models\Sale;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;

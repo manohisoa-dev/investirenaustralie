@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
-use App\Product;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use Jleon\LaravelPnotify\Notify;
 
 use App\Models\Image;
-use App\User;
+use App\Models\User;
 
 class ProductController extends Controller
 {

@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers\admin;
 
-use App\TypeUser;
+use App\Models\TypeUser;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
