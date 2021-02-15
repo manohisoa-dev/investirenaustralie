@@ -3,8 +3,10 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use AstritZeqiri\Metadata\Traits\HasManyMetaDataTrait;
 
 class User extends Authenticatable{
+    use HasManyMetaDataTrait;
 
     /**
      * The attributes that are mass assignable.

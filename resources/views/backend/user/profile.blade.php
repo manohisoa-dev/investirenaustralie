@@ -160,7 +160,7 @@
                         </div>
                         <div class="media-body p-15px-l lh-normal">
                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessname') </div>
-                            <span>{{$item->orga_name?$item->get_meta('orga_name')->value:trans('app.txt.noinfo')}}</span>
+                            <span>{{$item->get_meta('orga_name')?$item->get_meta('orga_name')->value:trans('app.txt.noinfo')}}</span>
                         </div>
                     </div>
                 </div>
@@ -171,7 +171,7 @@
                         </div>
                         <div class="media-body p-15px-l lh-normal">
                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessemail') </div>
-                            <a class="body-color" href="#">{{$item->last_names?$item->get_meta('last_name')->value:trans('app.txt.noinfo')}}</a>
+                            <a class="body-color" href="#">{{$item->get_meta('last_name')?$item->get_meta('last_name')->value:trans('app.txt.noinfo')}}</a>
                         </div>
                     </div>
                 </div>
@@ -182,7 +182,7 @@
                         </div>
                         <div class="media-body p-15px-l lh-normal">
                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessphone')</div>
-                            <span>{{$item->phone?$item->get_meta('phone')->value:trans('app.txt.noinfo')}}</span>
+                            <span>{{$item->get_meta('phone')?$item->get_meta('phone')->value:trans('app.txt.noinfo')}}</span>
                         </div>
                     </div>
                 </div>
@@ -193,7 +193,7 @@
                         </div>
                         <div class="media-body p-15px-l lh-normal">
                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businesspresentation')</div>
-                            <p>{{$item->orga_presentation?$item->get_meta('orga_presentation')->value:trans('app.txt.noinfo')}}</p>
+                            <p>{{$item->get_meta('orga_presentation')?$item->get_meta('orga_presentation')->value:trans('app.txt.noinfo')}}</p>
                         </div>
                     </div>
                 </div>
@@ -286,7 +286,7 @@
                         </div>
                         <div class="media-body p-15px-l lh-normal">
                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.contactname') </div>
-                            <span>{{$item->orga_website?$item->get_meta('orga_website')->value:trans('app.txt.noinfo')}}</span>
+                            <span>{{$item->get_meta('orga_website')?$item->get_meta('orga_website')->value:trans('app.txt.noinfo')}}</span>
                         </div>
                     </div>
                 </div>
@@ -297,7 +297,7 @@
                         </div>
                         <div class="media-body p-15px-l lh-normal">
                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.contactemail') </div>
-                            <a class="body-color" href="#">{{$item->contact_email?$item->get_meta('contact_email')->value:trans('app.txt.noinfo')}}</a>
+                            <a class="body-color" href="#">{{$item->get_meta('contact_email')?$item->get_meta('contact_email')->value:trans('app.txt.noinfo')}}</a>
                         </div>
                     </div>
                 </div>
@@ -308,7 +308,7 @@
                         </div>
                         <div class="media-body p-15px-l lh-normal">
                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.contactphone')</div>
-                            <span>{{$item->contact_phone?$item->get_meta('contact_phone')->value:trans('app.txt.noinfo')}}</span>
+                            <span>{{$item->get_meta('contact_phone')?$item->get_meta('contact_phone')->value:trans('app.txt.noinfo')}}</span>
                         </div>
                     </div>
                 </div>
@@ -325,7 +325,7 @@
                         </div>
                         <div class="media-body p-15px-l lh-normal">
                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.crmprovidername') </div>
-                            <span>{{$item->crm_name?$item->get_meta('crm_name')->value:trans('app.txt.noinfo')}}</span>
+                            <span>{{$item->get_meta('crm_name')?$item->get_meta('crm_name')->value:trans('app.txt.noinfo')}}</span>
                         </div>
                     </div>
                 </div>
@@ -336,7 +336,7 @@
                         </div>
                         <div class="media-body p-15px-l lh-normal">
                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.crmprovideremail') </div>
-                            <a class="body-color" href="#">{{$item->v?$item->get_meta('crm_email')->value:trans('app.txt.noinfo')}}</a>
+                            <a class="body-color" href="#">{{$item->get_meta('crm_email')?$item->get_meta('crm_email')->value:trans('app.txt.noinfo')}}</a>
                         </div>
                     </div>
                 </div>
