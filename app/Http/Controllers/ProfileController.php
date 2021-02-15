@@ -33,7 +33,7 @@ class ProfileController extends Controller
         if(Auth::user()->isAdmin()){
             $view = view('admin.user.profile');
         }else{
-            $view = view('V2.backend.user.profile');
+            $view = view('backend.user.profile');
         }
 
         $lapls = Localisation::select('localizations.*')

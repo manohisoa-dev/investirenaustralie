@@ -10,7 +10,7 @@ use App\Models\User;
 use App\Models\Mail;
 use App\Notifications\NewMail;
 use App\Models\Localisation;
-use App\Role;
+use App\Models\Role;
 
 class MailController extends Controller
 {
@@ -213,7 +213,7 @@ class MailController extends Controller
             $view->with('users', User::all());
             
         }else{
-            $view = view('V2.backend.mail.all');
+            $view = view('backend.mail.all');
 
             switch(Role::find(Auth::user()->role)->role_initial){
                 case 'apl':

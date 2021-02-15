@@ -9,11 +9,11 @@ use Validator;
 use App\Notifications\NewMail;
 use App\Notifications\AplChanged;
 
-use App\Order;
-use App\User;
-use App\Mail;
-use App\MailUser;
-use App\Localisation;
+use App\Models\Order;
+use App\Models\User;
+use App\Models\Mail;
+use App\Models\MailUser;
+use App\Models\Localisation;
 
 class MemberController extends Controller
 {
@@ -60,7 +60,7 @@ class MemberController extends Controller
         ->groupBy('localizations.locality')
         ->get();
         
-        return view('V2.backend.sale.all')
+        return view('backend.sale.all')
             ->with('title', __('member.orders'))
             ->with('lapls', $lapls)
             ->with('items', $items);
@@ -239,7 +239,7 @@ class MemberController extends Controller
         $selected = null;
         
         foreach($apls as $item){
-            $html = view('V2.backend.apl.html')->with('item', $item)->render();
+            $html = view('backend.apl.html')->with('item', $item)->render();
             $dataTemp = [
               'id' => $item->id,
               'lat' => $item->location?$item->location->latitude:0,
@@ -258,7 +258,7 @@ class MemberController extends Controller
         }
         
         $action = route('member.select.apl');
-    	return view('V2.backend.apl.select')
+    	return view('backend.apl.select')
             ->with('location', Auth::user()->location)
             ->with('action', $action)
             ->with('items', $apls)

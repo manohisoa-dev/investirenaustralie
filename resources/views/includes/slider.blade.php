@@ -16,7 +16,7 @@
                 <button type="button" class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">
                     <span class="icon-bar"></span>
                 </button>
-                <div class="d-none d-md-block h-btn m-35px-l col-lg-11">
+                <div class="d-md-block h-btn m-35px-l col-lg-11">
                     <form class="d-flex flex-row m-5px-b p-1 white-bg input-group" action="{{route('search')}}" method="get">
                         {{csrf_field()}}
                         <input type="email" class="form-control border-radius-0 border-0" placeholder="@lang('app.input.etat')" name="q" value="{{isset($q)?$q:''}}">
@@ -29,18 +29,18 @@
         </div>
         <div class="collapse" id="collapseSearch">
           <div class="card card-body">
-            <div class="search-toggle tab-content m-100px-l p-15px-tb">
-                <a class="m-btn m-btn-theme m-100px-l" data-toggle="collapse" href="#residentiel" role="button" aria-expanded="false" aria-controls="residentiel">
+            <div class="search-toggle tab-content p-15px-tb row col-lg-12" style="margin:auto;">
+                <a class="m-btn m-btn-theme col-lg-3 col-md-12 border" data-toggle="collapse" href="#residentiel" role="button" aria-expanded="false" aria-controls="residentiel">
                 <i class="fa fa-home" aria-hidden="true">&nbsp;@lang('app.btn.residentiel')</i></a>
-                <a class="m-btn m-btn-theme m-10px-l" data-toggle="collapse" href="#foncier" role="button" aria-expanded="false" aria-controls="foncier">
+                <a class="m-btn m-btn-theme col-lg-3 col-md-12 border" data-toggle="collapse" href="#foncier" role="button" aria-expanded="false" aria-controls="foncier">
                 <i class="fas fa-map" aria-hidden="true">&nbsp;@lang('app.btn.foncier')</i></a>
-                <a class="m-btn m-btn-theme m-10px-l" data-toggle="collapse" href="#industriel" role="button" aria-expanded="false" aria-controls="industriel">
+                <a class="m-btn m-btn-theme col-lg-3 col-md-12 border" data-toggle="collapse" href="#industriel" role="button" aria-expanded="false" aria-controls="industriel">
                 <i class="fa fa-industry" aria-hidden="true">&nbsp;@lang('app.btn.industriel')</i></a>
-                <a class="m-btn m-btn-theme m-10px-l" data-toggle="collapse" href="#commercial" role="button" aria-expanded="false" aria-controls="commercial">
+                <a class="m-btn m-btn-theme col-lg-3 col-md-12 border" data-toggle="collapse" href="#commercial" role="button" aria-expanded="false" aria-controls="commercial">
                 <i class="fa fa-building" aria-hidden="true">&nbsp;@lang('app.btn.commercial')</i></a>
             </div>
             <!-- residentiel -->
-            <div class="collapse m-150px-lr p-25px-tb" id="residentiel">
+            <div class="collapse m-150px-lr p-25px-tb" id="residentiel" style="margin:auto;">
                 <div class="col-lg-12 row">
                     <div class="form-group mar-r-20 col-lg-6">
                         <select id="basic" class="form-control" name="type">
@@ -52,7 +52,7 @@
                             @endif
                         </select>
                     </div>
-                    <div class="form-group mar-r-20 col-lg-6">
+                    <div class="form-group mar-r-20 col-lg-6 col-md-12">
                         <select id="basic" class="form-control" name="location_type">
                             <option value="">@lang('app.input.localisation')</option>
                             @if(isset($locationTypes))

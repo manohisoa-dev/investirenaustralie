@@ -155,3 +155,51 @@ Route::prefix('apl')->middleware(["auth","role:4"])->group(function(){
     });
 
 });
+
+Route::prefix('afa')->middleware(["auth","role:3"])->group(function(){
+
+    Route::get('/', 'BackendController@dashboard');
+    Route::get('favorites', 'BackendController@favorites');
+    Route::get('pins', 'BackendController@pins');
+    Route::get('searches', 'BackendController@searches');
+
+    Route::get('orders', 'AfaController@orders')->name('afa.orders');
+    Route::get('sales', 'AfaController@sales')->name('afa.sales');
+    Route::get('commissions/{filter?}', 'AfaController@commissions')->name('afa.commissions');
+    Route::get('cartitem/{cartitem}', 'CartItemController@show')->name('afa.cartitem.show');
+
+    Route::get('contact/{user}' , 'BackendController@contact')->name('afa.user.contact');
+    Route::post('contact/{user}', 'BackendController@postContact');
+
+    // Mail Controller Groups
+    Route::get('mails/{filter?}', 'MailController@all')->name('afa.mail.list');
+    Route::prefix('mail')->group(function(){
+        Route::get('{mail}', 'MailController@view')->name('afa.mail.index');
+        Route::get('delete/{mail}', 'MailController@delete')->name('afa.mail.delete');
+    });
+
+});
+
+Route::prefix('seller')->middleware(["auth","role:2"])->group(function(){
+
+    Route::get('/', 'BackendController@dashboard');
+    Route::get('favorites', 'BackendController@favorites');
+    Route::get('pins', 'BackendController@pins');
+    Route::get('searches', 'BackendController@searches');
+
+    Route::get('products', 'SellerController@products')->name('seller.products');
+    Route::get('sales', 'SellerController@sales')->name('seller.sales');
+    Route::get('orders', 'SellerController@orders')->name('seller.orders');
+    Route::get('cartitem/{cartitem}', 'CartItemController@show')->name('seller.cartitem.show');
+
+    Route::get('contact/{user}' , 'BackendController@contact')->name('seller.user.contact');
+    Route::post('contact/{user}', 'BackendController@postContact');
+
+    // Mail Controller Groups
+    Route::get('mails/{filter?}', 'MailController@all')->name('seller.mail.list');
+    Route::prefix('mail')->group(function(){
+        Route::get('{mail}', 'MailController@view')->name('seller.mail.index');
+        Route::get('delete/{mail}', 'MailController@delete')->name('seller.mail.delete');
+    });
+
+});

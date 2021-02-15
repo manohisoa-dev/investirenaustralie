@@ -32,7 +32,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12 p-10px-t">
-                                        <button class="m-btn m-btn-theme m-btn-radius w-100" type="submit" name="send" data-hover="@lang('app.btn.send')">@lang('app.btn.send')</button>
+                                        <button class="m-btn m-btn-theme w-100" type="submit" name="send" data-hover="@lang('app.btn.send')">@lang('app.btn.send')</button>
                                         {{-- <span id="ajax-loader"><i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span></span> --}}
                                         <div class="snackbars" id="form-output-global"></div>
                                     </div>

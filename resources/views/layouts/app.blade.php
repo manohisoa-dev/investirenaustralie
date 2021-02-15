@@ -297,6 +297,7 @@
     <!-- end -->
     <!-- carousel js -->
     <script src="{{ asset('plugin/owl-carousel/js/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('plugin/counter/jquery.countTo.js') }}"></script>
     <!-- bootstrap-slider.js -->
     <script src="{{ asset('js/bootstrap-slider.js') }}"></script>
     <!-- Bootstrap 3 slider -->

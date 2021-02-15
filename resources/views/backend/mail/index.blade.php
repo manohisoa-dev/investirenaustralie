@@ -8,7 +8,7 @@
                 <div class="col-md-12 m-10px-tb">
                     <div class="media">
                         <div class="media-body p-15px-l lh-normal">
-                            <a href="{{route(App\Role::find(Auth::user()->role)->role_initial.'.mail.delete', $item)}}" class="pull-right submit-btn btn btn-default btn-lg" data-hover="@lang('app.btn.delete')" title="@lang('app.btn.delete')"><i class="fa fa-trash-alt"></i></a>
+                            <a href="{{route(App\Models\Role::find(Auth::user()->role)->role_initial.'.mail.delete', $item)}}" class="pull-right submit-btn btn btn-default btn-lg" data-hover="@lang('app.btn.delete')" title="@lang('app.btn.delete')"><i class="fa fa-trash-alt"></i></a>
                             <section class="widget property-contents common">
                                 <h3 class="entry-title">{{$item->subject}}</h3>
                                 <p>{{$item->content}}</p>

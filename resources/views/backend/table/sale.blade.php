@@ -31,7 +31,7 @@
                 <td class="product-thumbnail" width="100">
                     @if($sale->author)
                     <div class="pt-icon">
-                        <a href="{{route('v2.'.\Role::find(\Auth::user()->role)->role_initial.'.user.contact', $sale->author)}}">
+                        <a href="{{route(App\Models\Role::find(\Auth::user()->role)->role_initial.'.user.contact', $sale->author)}}">
                             <img src="{{$sale->author->imageUrl()}}" title="" alt="">
                         </a>
                     </div>
@@ -39,7 +39,7 @@
                 </td>
                 <td>
                      @if($sale->author)
-                     <a href="{{route('v2.'.\Role::find(\Auth::user()->role)->role_initial.'.user.contact', $sale->author)}}">{{$sale->author->email}}</a>
+                     <a href="{{route(App\Models\Role::find(\Auth::user()->role)->role_initial.'.user.contact', $sale->author)}}">{{$sale->author->email}}</a>
                      @endif
                 </td>
             @endif

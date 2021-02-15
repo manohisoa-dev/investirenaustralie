@@ -12,7 +12,7 @@ use App\Models\Image;
 use App\Models\Mail;
 use App\Models\MailUser;
 use App\Models\User;
-use App\Role;
+use App\Models\Role;
 use App\Models\Localisation;
 
 class BackendController extends Controller
@@ -165,7 +165,7 @@ class BackendController extends Controller
             ->groupBy('localizations.locality')
             ->get();
         
-        return view('V2.backend.product.all')
+        return view('backend.product.all')
             ->with('title', __('app.favorites'))
             ->with('lapls', $lapls)
             ->with('items', $items);
@@ -187,7 +187,7 @@ class BackendController extends Controller
             ->groupBy('localizations.locality')
             ->get();
         
-        return view('V2.backend.search.all')
+        return view('backend.search.all')
             ->with('title', __('app.searches'))
             ->with('lapls', $lapls)
             ->with('items', $items);

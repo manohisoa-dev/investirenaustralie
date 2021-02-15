@@ -11,7 +11,7 @@
         <tr>
             <td class="product-thumbnail" width="100">
                 <div class="pt-icon">
-                    <a href="{{route('product.index', $sale->product->slug)}}">
+                    <a href="{{route('product.index', $product->slug)}}">
                         <img src="{{$product->imageUrl()}}" title="" alt="">
                     </a>
                 </div>

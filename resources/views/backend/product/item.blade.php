@@ -31,6 +31,25 @@
             </div>
         </div>
     </div> <!-- col -->
+@elseif($type == 'products')
+    <div class="col-sm-6 col-lg-4 m-15px-tb">
+        <div class="box-shadow-hover hover-top white-bg our-team-hover-icon border-radius-3">
+            <div class="p-10px team-img">
+                <img src="{{$product->imageUrl(false)}}" alt="{{$product->title}}">
+            </div>
+            <div class="p-5px-t p-20px-b text-center">
+                <small><i class="fa fa-map-marker"></i></small>
+                <h6 class="m-10px-b font-w-600"><a class="dark-color" href="{{route('product.index',['product'=>$product])}}">{{$product->title}}</a></h6>
+            </div>
+            <div class="font-small p-5px-t p-20px-b text-center border-top-1 border-color-dark-gray">
+                <a class="m-15px-r body-color font-w-500" href="#"><i class="fa fa-arrows-alt"></i> @lang('app.num.area', ['num'=>number_format($product->area, 0)])</a>
+                <a class="body-color font-w-500" href="#"><i class="fa fa-bed"></i> @lang('app.num.bed', ['num'=>$product->bedrooms])</a>
+                <a class="body-color font-w-500" href="#"><i class="fa fa-bath"></i> @lang('app.num.bath', ['num'=>$product->bathrooms])</a>
+                <a class="body-color font-w-500" href="#"><i class="fa fa-car"></i> {{$product->garage_spaces?__('app.yes'):__('app.no')}}</a>
+            </div>
+            <button type="button" class="m-btn m-btn-theme2nd font-w-500 ml-auto">{{$product->currency}} {{number_format($product->price, 0, '.', ' ')}}</button>
+        </div>
+    </div>
 @elseif($type == 'favorites')
     <div class="col-sm-6 col-xl-4 m-10px-tb">
         <div class="card">
