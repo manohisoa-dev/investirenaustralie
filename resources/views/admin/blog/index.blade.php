@@ -139,7 +139,7 @@
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
                                           data-url="{{ route('admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >
-										  <a href="{{route('admin.blog.list', ['filter'=>$record->status])}}">
+										  <a href="">
 											 @if($record->status=='published')
 											 <span class="label label-success">{{$record->status}}</span>
 											 @else

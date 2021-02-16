@@ -45,6 +45,7 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
 
     Route::resource('user','UserController');
     Route::get('desactiver/{user}', 'UserController@desactiver')->name('user.desactiver');
+    Route::get('active/{user}', 'UserController@active')->name('user.active');
     Route::get('show/{user}', 'UserController@show')->name('user.show');
 
     Route::resource('sale','SaleController');

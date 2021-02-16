@@ -62,21 +62,18 @@
 								</div>
 								<div class="col-sm-6">
 									<div class="form-group">
-<<<<<<< HEAD
 										<label>@lang('app.form.first_name')</label> 
-										<?php /*?><input class="form-control" value="{{old('first_name', $item->meta('first_name', ''))}}" name="first_name" placeholder="@lang('app.form.first_name')"><?php */?>
+										<input class="form-control" value="{{old('first_name', $item->meta('first_name', ''))}}" name="first_name" placeholder="@lang('app.form.first_name')">
 									</div>
 									<div class="form-group">
 										<label>@lang('app.form.last_name')</label> 
-										<?php /*?><input class="form-control" value="{{old('last_name', $item->meta('last_name', ''))}}" name="last_name" placeholder="@lang('app.form.last_name')"><?php */?>
-=======
+										<input class="form-control" value="{{old('last_name', $item->meta('last_name', ''))}}" name="last_name" placeholder="@lang('app.form.last_name')">
 										<label>@lang('app.form.first_name')</label>
 										<input class="form-control" value="{{old('first_name', $item->meta('first_name', ''))}}" name="first_name" placeholder="@lang('app.form.first_name')">
 									</div>
 									<div class="form-group">
 										<label>@lang('app.form.last_name')</label>
 										<input class="form-control" value="{{old('last_name', $item->meta('last_name', ''))}}" name="last_name" placeholder="@lang('app.form.last_name')">
->>>>>>> 9e7cf50294204b366b3a3891e5ada86f6969993b
 									</div>
 									<div class="form-group">
 										<label>Avatar</label>

@@ -199,7 +199,7 @@
 									<i class="fa fa-eye-slash"></i>
 								</a>&nbsp;&nbsp;
 								@else
-								<a href="#" class="btn btn-default btn-circle" title="@lang('app.btn.active')">
+								<a href="{{route('admin.user.active', ['user_id' => $record->id])}}" class="btn btn-default btn-circle" title="@lang('app.btn.active')">
 									<i class="fa fa-eye text-info"></i>
 								</a>&nbsp;&nbsp;
 								@endif

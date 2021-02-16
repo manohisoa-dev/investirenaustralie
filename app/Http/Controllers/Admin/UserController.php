@@ -22,16 +22,17 @@ class UserController extends Controller {
     public function index() {
         $this->middleware('auth');
         $this->middleware('role:1');
-        
+
         $role = Role::all();
         $statuts = User::groupBy('status')->pluck('status', 'status');
         $countries = Country::all();
         $states = State::all();
         $typeUser = TypeUser::all();
-        $records = User::findRequested();        
-        
-        return $this->view("index", ['records' => $records, 'roles' => $role, 'countries' =>
-            $countries,'states'=>$states,'typeUser' => $typeUser,'statuts'=>$statuts]);
+        $records = User::findRequested();
+
+        return $this->view("index", ['records' => $records, 'roles' => $role,
+            'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
+            'statuts' => $statuts]);
     }
 
     /**
@@ -129,13 +130,13 @@ class UserController extends Controller {
     public function desactiver(Request $request, User $user) {
 
         if ($user->id == 1) {
-            echo 'ato';
-            //return back()->with('error',"Cette action ne peut pas etre réalisée.");
+            Notify::error("Cette action ne peut pas etre réalisée.");
+            return redirect(route('admin.user.index'));
         }
 
         $user->status = 'disabled';
         $user->save();
-        Notify::error("L'utilsateur a été desactivé avec succés");
+        Notify::success("L'utilsateur a été desactivé avec succés");
         return redirect(route('admin.user.index'));
 
 
@@ -154,6 +155,21 @@ class UserController extends Controller {
         
         Notify::error("L'utilsateur a été desactivé avec succés");
         return redirect(route('admin.user.index'));*/
+    }
+
+    public function active(Request $request, User $user) {
+
+        if ($user->id == 1) {
+            Notify::error("Cette action ne peut pas etre réalisée.");
+            return redirect(route('admin.user.index'));
+        }
+        if($user->status == 'pinged'){
+            $user->trial_ends_at = \Carbon\Carbon::now()->addDays(option('payment.trial_delay', 14));
+        }
+        $user->status = 'active';
+        $user->save();
+        Notify::success("L'utilsateur a été activé avec succés");
+        return redirect(route('admin.user.index'));
     }
 
 }
