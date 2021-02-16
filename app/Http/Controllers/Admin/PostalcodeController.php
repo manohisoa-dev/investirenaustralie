@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
-use App\Postalcode;
+use App\Models\Postalcode;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;

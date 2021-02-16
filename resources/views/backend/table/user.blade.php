@@ -2,7 +2,7 @@
     <thead>
         <tr>
             <th colspan="2">User</th>
-            @if(\Auth::check()&&\Auth::user()->hasRole('apl'))
+            @if(\Auth::check()&&\Auth::user()->hasRole(4))
             <th>Date d'éxpiration</th>
             @endif
             <th class="pull-right">Action</th>
@@ -18,12 +18,12 @@
                 {{$user->name}}<br>
                 {{$user->email}}
             </td>
-            @if(\Auth::check()&&\Auth::user()->hasRole('apl'))
+            @if(\Auth::check()&&\Auth::user()->hasRole(4))
             <td>
                 {{$user->apl_ends_at?ucfirst($user->apl_ends_at->diffForHumans()):''}}
             </td>
             <td class="product-action">
-                <a class="btn btn-default pull-right"  href="{{route(\Auth::user()->role.'.user.contact', $user)}}">@lang('apl.contact_customer')</a>
+                <a class="btn btn-default pull-right"  href="{{route(\App\Models\Role::find(Auth::user()->role)->role_initial.'.user.contact', $user)}}">@lang('apl.contact_customer')</a>
             </td>
             @endif
         </tr>

@@ -17,8 +17,10 @@ use App\Models\Localisation;
 use Session;
 use View;
 
+
 class IndexController extends Controller
 {
+
     /**
      * Create a new controller instance.
      *

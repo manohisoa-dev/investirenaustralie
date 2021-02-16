@@ -14,13 +14,13 @@
     <div class="profile-content-area m-40px-tb card card-body">
         <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
         <h5>@lang('app.txt.logininfo')</h5>
-            <!-- <div class="col-md-3 m-15px-tb m-100px-l">
+            {{-- <div class="col-md-3 m-15px-tb m-100px-l">
                 <div class="media">
                     <section class="widget">
                         <img src="{{$item->imageUrl(false)}}" alt="{{$item->name}}"  width="100%">
                     </section>
                 </div>
-            </div> -->
+            </div> --}}
             <div class="row">
                 <div class="col-md-4 m-10px-tb">
                     <div class="media">
@@ -69,7 +69,7 @@
             </div>
         </div>
 
-        @if($item->apl && $item->hasRole('member'))
+        @if($item->apl && $item->hasRole(5))
         <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
         <h5>@lang('app.txt.aplinformation')</h5>
             <div class="row">
@@ -110,7 +110,7 @@
         </div>
         @endif
 
-        @if($item->hasRole('member') && $item->type == 'person')
+        @if($item->hasRole(5) && $item->type == 'person')
         <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
         <h5>@lang('app.txt.persondetail')</h5>
             <div class="row">
@@ -197,7 +197,7 @@
                         </div>
                     </div>
                 </div>
-                @if($item->hasRole('afa'))
+                @if($item->hasRole(3))
                 <div class="col-md-4 m-10px-tb">
                     <div class="media">
                         <div class="only-icon-20">
@@ -336,7 +336,7 @@
                         </div>
                         <div class="media-body p-15px-l lh-normal">
                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.crmprovideremail') </div>
-                            <a class="body-color" href="#">{{$item->get_meta('v')?$item->get_meta('crm_email')->value:trans('app.txt.noinfo')}}</a>
+                            <a class="body-color" href="#">{{$item->get_meta('crm_email')?$item->get_meta('crm_email')->value:trans('app.txt.noinfo')}}</a>
                         </div>
                     </div>
                 </div>

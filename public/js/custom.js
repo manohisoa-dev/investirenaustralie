@@ -7,7 +7,7 @@
 (function($){
 	"use strict";
 	var THE = {};
-	var plugin_track = 'static/plugin/';
+	var plugin_track = './plugin/';
 	$.fn.exists = function () {
         return this.length > 0;
     };

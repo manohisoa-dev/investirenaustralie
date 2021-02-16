@@ -4,7 +4,7 @@
 
 <!-- Main -->
 <main>
-    <section class="profile-bg-section parallax" style="background-image: url({{ asset('images/slider/2.jpg') }});">
+    <section class="profile-bg-section parallax" style="background-image: url({{ asset('images/slider/1.jpg') }});">
     </section>
     <section class="profile-container gray-bg">
         <div class="container">
@@ -14,13 +14,14 @@
                         <div class="card m-20px-b">
                             <div class="p-25px text-center">
                                 <div class="avatar-80 border-radius-50 d-inline-block">
-                                    <img src="{{ \App\User::find(Auth::id())->imageUrl() }}" title="" alt="">
+                                    <img src="{{ \App\Models\User::find(Auth::id())->imageUrl() }}" title="" alt="">
                                 </div>
-
                                 <h6 class="font-w-500 m-15px-t m-0px"><span class="font-w-700">{{ Auth::user()->name }}</span></h6>
-                                <span class="font-small">{{ \App\User::find(Auth::id())->roleUser->role_initial }}</span>
+                                <span class="font-small">{{ \App\Models\User::find(Auth::id())->roleUser->role_initial }}</span>
                                 <div class="p-10px-t">
-                                    <a class="m-btn m-btn-sm m-btn-theme-light m-btn-radius" href="{{route(''.App\Role::find(Auth::user()->role)->role_initial.'.mail.list',['filter'=>'inbox'])}}"><i class="far fa-envelope"></i> @lang('app.txt.sendmessage') </a>
+                                    @if(App\Models\User::find(Auth::id())->role == 5)
+                                        <a class="m-btn m-btn-sm m-btn-theme-light m-btn-radius" href="{{ route('member.contact', ['role'=>'admin']) }}"><i class="far fa-envelope"></i> @lang('app.txt.sendmessage') </a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -30,7 +31,7 @@
                                 <a class="btn-select-apl m-btn m-btn-theme4rd" data-toggle="modal" data-target="#modal-select-apl" href="{{route('member.select.apl')}}">@lang('member.select.apl')</a>
                             @endif
                             <div class="list-group list-group-flush">
-                                <a href="{{url(\App\User::find(Auth::id())->roleUser->role_initial)}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                                <a href="{{url(\App\Models\User::find(Auth::id())->roleUser->role_initial)}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                     <div>
                                         <i class="fa fa-tachometer-alt m-10px-r"></i>
                                         <span>@lang('app.dashboard')</span>
@@ -120,7 +121,7 @@
                               </a>
                               <a href="{{route('apl.customers')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
-                                      <i class="far fa-users m-10px-r"></i>
+                                      <i class="fa fa-users m-10px-r"></i>
                                       <span>@lang('apl.customers')</span>
                                   </div>
                                   <div>
@@ -159,7 +160,7 @@
                               </a>
                               <a href="{{route('afa.sales')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
-                                      <i class="far fa-chart-line m-10px-r"></i>
+                                      <i class="fa fa-chart-line m-10px-r"></i>
                                       <span>@lang('afa.sales')</span>
                                   </div>
                                   <div>
@@ -189,7 +190,7 @@
                             @If(Auth::user()->hasRole(2))
                               <a href="{{route('seller.products')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
-                                      <i class="far fa-paperclip m-10px-r"></i>
+                                      <i class="fa fa-paperclip m-10px-r"></i>
                                       <span>@lang('seller.products')</span>
                                   </div>
                                   <div>
@@ -198,7 +199,7 @@
                               </a>
                               <a href="{{route('seller.orders')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
-                                      <i class="far fa-cart-plus m-10px-r"></i>
+                                      <i class="fa fa-cart-plus m-10px-r"></i>
                                       <span>@lang('seller.orders')</span>
                                   </div>
                                   <div>
@@ -207,7 +208,7 @@
                               </a>
                               <a href="{{route('seller.sales')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
-                                      <i class="far fa-chart-line m-10px-r"></i>
+                                      <i class="fa fa-chart-line m-10px-r"></i>
                                       <span>@lang('seller.sales')</span>
                                   </div>
                                   <div>
@@ -217,7 +218,7 @@
                             @endif
 
                             @if(!Auth::user()->isAdmin())
-                              <a href="{{url(\App\User::find(Auth::id())->roleUser->role_initial.'/favorites')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                              <a href="{{url(\App\Models\User::find(Auth::id())->roleUser->role_initial.'/favorites')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
                                       <i class="fa fa-heart m-10px-r"></i>
                                       <span>@lang('app.favorites')</span>
@@ -226,7 +227,7 @@
                                       <i class="fas fa-chevron-right"></i>
                                   </div>
                               </a>
-                              <a href="{{url(\App\User::find(Auth::id())->roleUser->role_initial.'/searches')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                              <a href="{{url(\App\Models\User::find(Auth::id())->roleUser->role_initial.'/searches')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
                                       <i class="fa fa-search m-10px-r"></i>
                                       <span>@lang('app.searches')</span>
@@ -235,7 +236,7 @@
                                       <i class="fas fa-chevron-right"></i>
                                   </div>
                               </a>
-                              <a href="{{route(''.\App\User::find(Auth::id())->roleUser->role_initial.'.mail.list',['filter'=>'inbox'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+                              <a href="{{route(''.\App\Models\User::find(Auth::id())->roleUser->role_initial.'.mail.list',['filter'=>'inbox'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                                   <div>
                                       <i class="far fa-envelope m-10px-r"></i>
                                       <span>@lang('app.mails')</span>

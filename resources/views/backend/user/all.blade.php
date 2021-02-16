@@ -1,27 +1,25 @@
 @extends('layouts.backend')
 
 @section('subcontent')
-<section>
-    <div class="page-header">
-        <h3>{{$title}}</h3>
-    </div>
-    <div class="row-fluid">
-        <div class="col-md-12">
-            @if(count($items)>0)
-                @include('backend.table.user', ['users'=>$items])
-            @else
-            <div class="panel panel-default">
-                <div class="panel-body">
-                  <ul class="list-group">
-                      <li class="list-group-item clearfix">
-                          <h4>@lang('apl.empty')</h4>
-                      </li>
-                    </ul>
+<div class="col-lg-8 col-xl-9">
+    <div class="profile-content-area m-40px-tb card card-body">
+        <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
+            <h5>{{$title}}</h5>
+            <div class="row">
+                <div class="col-md-12 m-10px-tb">
+                    <div class="media">
+                        <div class="media-body p-15px-l lh-normal">
+                            @if(count($items)>0)
+                                @include('backend.table.user', ['users'=>$items])
+                            @else
+                                <span>@lang('member.empty')</span>
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </div>
-            @endif
         </div>
     </div>
-</section>
+</div>
 @endsection
 
