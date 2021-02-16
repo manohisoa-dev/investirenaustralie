@@ -4,7 +4,7 @@
         <img alt="image" class="rounded-circle" src="{{Auth::user()->imageUrl()}}" width="50"/>
         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
             <span class="block m-t-xs font-bold">{{ucfirst(Auth::user()->name)}}</span>
-            <span class="text-muted text-xs block">{{\App\User::find(Auth::id())->roleUser->role_name}}<b class="caret"></b></span>
+            <span class="text-muted text-xs block">{{\App\Models\User::find(Auth::id())->roleUser->role_name}}<b class="caret"></b></span>
         </a>
         <ul class="dropdown-menu animated fadeInRight m-t-xs">
             <li><a class="dropdown-item" href="{{route('admin.profile')}}">Profile</a></li>

@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Jleon\LaravelPnotify\Notify;
 
-use App\Mail;
+use App\Models\Mail;
 use App\Models\MailUser;
-use App\Country;
-use App\State;
-use App\Role;
-use App\TypeUser;
+use App\Models\Country;
+use App\Models\State;
+use App\Models\Role;
+use App\Models\TypeUser;
 
 class UserController extends Controller {
     public $viewDir = "admin.user";
