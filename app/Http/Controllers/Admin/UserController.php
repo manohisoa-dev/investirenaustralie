@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Auth;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -66,7 +67,10 @@ class UserController extends Controller {
      * @return  \Illuminate\Http\Response
      */
     public function show(Request $request, User $user) {
-        return $this->view("show", ['user' => $user]);
+        if(Auth::user()->id == $user->id){
+            return redirect()->route('admin.profile');
+        }
+        return $this->view("info", ['user' => $user]);
     }
 
     /**
@@ -170,6 +174,13 @@ class UserController extends Controller {
         $user->save();
         Notify::success("L'utilsateur a été activé avec succés");
         return redirect(route('admin.user.index'));
+    }
+    
+    public function contact(Request $request, User $user){
+        $mail = new Mail();
+        if($value = $request->old('subject'))    $mail->subject = $value;
+        if($value = $request->old('content'))    $mail->content = $value;
+        return $this->view("contact", ['user' => $user,'mail'=>$mail]);
     }
 
 }

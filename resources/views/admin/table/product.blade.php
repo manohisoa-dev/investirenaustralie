@@ -26,7 +26,7 @@
          <td>{{$product->currency}} {{$product->price}} / {{$product->tma}}</td>
          <td>{{$product->created_at->diffForHumans()}}</td>
          <td>
-             <a href="{{route('admin.product.list', ['filter'=>$product->status])}}">
+             <a href="<?php /*?>{{route('admin.product.list', ['filter'=>$product->status])}}<?php */?>">
                  @if($product->status=='published')
                  <span class="label label-success">{{$product->status}}</span>
                  @else
@@ -55,7 +55,7 @@
             <a href="{{route('admin.product.archive', $product)}}" class="btn btn-small btn-default  btn-archive">@lang('app.btn.archive')</a>
             <a href="{{route('admin.product.trash', $product)}}" class="btn btn-small btn-info btn-trash">@lang('app.btn.trash')</a>
          @endif
-            <a href="{{route('admin.product.delete', $product)}}" class="btn btn-small btn-warning btn-delete">@lang('app.btn.delete')</a>
+            <a href="<?php /*?>{{route('admin.product.delete', $product)}}<?php */?>" class="btn btn-small btn-warning btn-delete">@lang('app.btn.delete')</a>
          </td>
      </tr>
      @endforeach

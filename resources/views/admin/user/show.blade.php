@@ -5,10 +5,10 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Users</h2>
+        <h2>Parties prenantes</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Users</a>
+                <a href="#">Parties prenantes</a>
             </li>
             <li class="breadcrumb-item">
                 <a href="{{ route('admin.user.index') }}">Listes</a>
