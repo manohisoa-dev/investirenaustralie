@@ -261,7 +261,6 @@
                     </div>
                 </div>
                 <!-- subcontent -->
-                @include('includes.alerts')
                 @yield('subcontent')
                 <!-- end subcontent -->
             </div>

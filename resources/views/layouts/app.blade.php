@@ -136,7 +136,7 @@
                             <!-- // add this dropdown // -->
                             <li class="mm-in px-dropdown">
                                 <a id="notifications" aria-haspopup="true" aria-expanded="true">
-                                    <span class="fa fa-user"></span>
+                                    <span class="fa fa-bell"></span>
                                     <span id="notificationsCount" class="badge badge-info hidden" hidden="true" style="margin-left:-5px; margin-top:-10px; background-color: red;">&nbsp;</span>
                                 </a>
                                 <i class="fa fa-angle-down px-nav-toggle"></i>

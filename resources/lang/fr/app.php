@@ -791,6 +791,7 @@ return [
     'txt.youremail' =>  'Votre e-mail',
     'txt.yourcomment' =>  'Votre Commentaire ?',
     'txt.saveinfo' =>  "Enregistrez mon nom, mon adresse e-mail et mon site Web dans ce navigateur pour la prochaine fois que je commenterai.",
+    'txt.probleme.survenu' => "Oups! Un problème est survenu!",
 
     'dernierprod'           =>'Derniers Produits',
     'dernierart'           =>'Derniers Articles',

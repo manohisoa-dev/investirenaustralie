@@ -366,6 +366,7 @@ return [
     'txt.youremail' =>  'Your Email',
     'txt.yourcomment' =>  'Your Comment ?',
     'txt.saveinfo' =>  'Save my name, email, and website in this browser for the next time I comment.',
+    'txt.probleme.survenu' => "Whoops! Something went wrong!",
 
 
     'num.area' => ':num m2',
