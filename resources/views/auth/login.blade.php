@@ -17,12 +17,12 @@
                                 {{ csrf_field() }}
 
                                 <div class="form-group">
-                                    <label class="form-control-label">Email address</label>
+                                    <label class="form-control-label">@lang('app.txt.email')</label>
                                     <input type="email" name="email" class="form-control" placeholder="Votre email *" required="required" value="{{ old('email') }}" autofocus>
                                     <span>{{ $errors->has('email') ? ' has-error' : '' }}</span>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-control-label">Password</label>
+                                    <label class="form-control-label">@lang('app.txt.password')</label>
                                     <input name="password"  type="password" placeholder="Votre mot de passe *" class="form-control" placeholder="***********" required="required">
                                     <span>{{ $errors->has('password') ? ' has-error' : '' }}</span>
                                 </div>

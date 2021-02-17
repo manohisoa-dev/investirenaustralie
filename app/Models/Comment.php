@@ -20,7 +20,7 @@ class Comment extends BaseModel
      *
      * @var array
      */
-   protected $fillable = ['content','votes','spam','reply_id','blog_id','user_id'];
+    protected $fillable = ['content','votes','spam','reply_id','blog_id','user_id'];
     
     /**
      * Create a new model instance.

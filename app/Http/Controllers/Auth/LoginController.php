@@ -70,6 +70,12 @@ class LoginController extends Controller
         if(Auth::user()->use_default_password==1){
             return '/profile/password';
         }
+
+
+        if(Session('comment')!==null){
+            return url(url()->previous());
+        }
+
         return '/'. Role::find(Auth::user()->role)->role_initial;
     }
     

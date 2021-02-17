@@ -624,8 +624,11 @@ return [
     'txt.reservation'      =>"Réservation",
     'txt.action'      =>"Action",
     'txt.motcle'        =>"Mot clé",
+    'txt.password'      =>"Mot de passe",
+    'txt.logintocomment'      =>"Veuillez vous connecter pour commenter.",
+    'txt.yourcomment'      =>"Votre Commentaire",
+    'txt.pub.comment.success'      =>"Votre commentaire a été publié avec succès.",
     
-
     
     
     'childs' => 'Fils',
@@ -672,6 +675,7 @@ return [
     'btn.abandonner'    => "Abandonner",
     'btn.continuer'    => "Continuer",
     'btn.validerinscription'    => "Valider mon inscription",
+    'btn.close'      =>"Fermer",
     
     'contact_admin'  => "Contacter l'administrateur",
     'contact_apl'    => "Contacter l'APL",

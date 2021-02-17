@@ -210,6 +210,7 @@ return [
     'btn.abandonner'    => "To Abandon",
     'btn.continuer'    => "Continue",
     'btn.validerinscription'    => "Confirm my registration",
+    'btn.close'      =>"Close",
     
     'contact_admin'  => "Contacter l'administrateur",
     'contact_apl'    => "Contacter l'APL",
@@ -341,6 +342,10 @@ return [
     'txt.reservation'      =>"Reservation",
     'txt.action'      =>"Action",
     'txt.motcle'        =>"Key word",
+    'txt.password'      =>"Password",
+    'txt.logintocomment'      =>"Please login to comment.",
+    'txt.yourcomment'      =>"Your Comment",
+    'txt.pub.comment.success'      =>"Your comment has been successfully published.",
 
 
     'table.title'  => "Title",

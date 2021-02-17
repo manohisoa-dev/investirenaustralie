@@ -85,6 +85,7 @@ Route::middleware(["auth"])->group(function(){
 
     Route::post('search', 'SearchController@edit')->name('search.edit');
     Route::post('search/delete', 'SearchController@delete')->name('search.delete');
+    Route::post('comment/store', 'BlogController@storeComment')->name('comment.store');
 
 });
 

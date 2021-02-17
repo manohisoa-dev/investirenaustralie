@@ -13,6 +13,8 @@ use App\Models\Image;
 use App\Models\Product;
 use App\Models\Page;
 use App\Models\Localisation;
+use App\Models\Comment;
+use Jleon\LaravelPnotify\Notify;
 
 class BlogController extends Controller
 {
@@ -551,4 +553,40 @@ class BlogController extends Controller
         return redirect()->route('admin.dashboard')
             ->with('success',"L'article a été supprimé avec succés");
     }
+
+    /**
+     * Store a blog
+     *
+     * @param  Illuminate\Http\Request  $request
+     * @return Illuminate\Http\Response
+     */
+    public function storeComment(Request $request)
+    {
+        $this->middleware('auth');
+
+        // Validate request
+        $datas = $request->all();
+        $validator = Validator::make($datas,[
+                            'content' => 'required',
+                            'reply_id' => 'required',
+                            'blog_id' => 'required',
+                            'user_id' => 'required',
+                        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)
+                        ->withInput();
+        }
+
+        $comment = new Comment();
+        $comment->content = $request->content;
+        $comment->reply_id = $request->reply_id;
+        $comment->blog_id = $request->blog_id;
+        $comment->user_id = $request->user_id;
+        $comment->save();
+
+        Session()->flash('success',trans('app.txt.pub.comment.success'));
+        return back();
+    }
+
 }

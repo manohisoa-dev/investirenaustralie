@@ -58,7 +58,7 @@
 <!-- Fin modal -->
 
 <!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+{{-- <div id="myModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -69,7 +69,7 @@
       </div>
       <div class="modal-footer">
         <form id="apl-form-modal" class="form-horizontal" role="form" method="post" action="{{route('member.select.apl')}}">
-            <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+            <input type="hidden" name="_token" value="{{ csrf_token(); }}">
             <input type="hidden" id="apl-modal"  name="apl">
             <div class="pull-left hidden row-confirm-modal" style="margin-bottom: 20px;">
                 <input id="check-confirm-modal" type="checkbox" name="confirm" value="1"><span style="color:red;"> {!!__('member.accept_term_and_condition_apl')!!}</span>
@@ -82,7 +82,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> --}}
 @endsection
 
 @push('script')
