@@ -17,7 +17,7 @@
                 </div>
             </td>
             <td class="product-name"><a href="{{route('product.index', $product)}}">{{$product->title}}</a></td>
-            <td class="product-price"><span>{{$product->currency}}</span> {{$product->price}}</td>
+            <td class="product-price"><span>{{$product->currency}}</span> {{number_format($product->price, 0, '.', ' ')}}</td>
             <td class="product-action">
             </td>
         </tr>

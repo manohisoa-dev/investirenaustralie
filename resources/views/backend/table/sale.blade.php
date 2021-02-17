@@ -44,8 +44,8 @@
                 </td>
             @endif
             
-            <td class="product-price"><span>{{$sale->currency}}</span> {{$sale->price}}</td>
-            <td class="product-price"><span>{{$sale->currency}}</span> {{$sale->tma}}</td>
+            <td class="product-price"><span>{{$sale->currency}}</span> {{number_format($sale->price, 0, '.', ' ')}}</td>
+            <td class="product-price"><span>{{$sale->currency}}</span> {{number_format($sale->tma, 0, '.', ' ')}}</td>
             
             <td class="product-action">
                 @if($sale->status == 'pinged')

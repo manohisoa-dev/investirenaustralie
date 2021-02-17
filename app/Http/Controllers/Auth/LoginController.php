@@ -43,6 +43,7 @@ class LoginController extends Controller
     protected function redirectTo()
     {
         Auth::check();
+        Session::put('page_locale',app()->getLocale());
         Session::put('locale',Auth::user()->language);
         Session::save();
         
@@ -174,5 +175,25 @@ class LoginController extends Controller
         $this->incrementLoginAttempts($request);
 
         return $this->sendFailedLoginResponse($request);
+    }
+
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        $link="/";
+        $page_locale= Session::get('page_locale');
+        
+        $this->guard()->logout();
+        $request->session()->invalidate();
+
+        Session::put('locale',$page_locale);
+        Session::save();
+        
+        return redirect($link);
     }
 }
