@@ -62,6 +62,12 @@
 								</div>
 								<div class="col-sm-6">
 									<div class="form-group">
+										<label>@lang('app.form.first_name')</label> 
+										<input class="form-control" value="{{old('first_name', $item->meta('first_name', ''))}}" name="first_name" placeholder="@lang('app.form.first_name')">
+									</div>
+									<div class="form-group">
+										<label>@lang('app.form.last_name')</label> 
+										<input class="form-control" value="{{old('last_name', $item->meta('last_name', ''))}}" name="last_name" placeholder="@lang('app.form.last_name')">
 										<label>@lang('app.form.first_name')</label>
 										<input class="form-control" value="{{old('first_name', $item->meta('first_name', ''))}}" name="first_name" placeholder="@lang('app.form.first_name')">
 									</div>
@@ -162,7 +168,7 @@
 							<label>@lang('app.country')</label>
 							<select class="form-control" name="country" id="country">
 								<option value="0">@lang('app.select_country')</option>
-								@foreach(\App\Country::all() as $country)
+								@foreach(\App\Models\Country::all() as $country)
 									<option value="{{$country->id}}" {{ ( $country->content == $location->country) ? 'selected' : '' }}> {{$country->content}}</option>
 								@endforeach
 							</select>
@@ -171,7 +177,7 @@
 							<label>@lang('app.area_level_1')</label>
 							<select class="form-control" name="area_level_1" id="area_level_1">
 								<option value="0">@lang('app.select_country')</option>
-								@foreach(\App\State::all() as $state)
+								@foreach(\App\Models\State::all() as $state)
 									<option value="{{$state->id}}" {{ ( $country->states == $location->state) ? 'selected' : '' }}> {{$state->content}}</option>
 								@endforeach
 							</select>
@@ -241,111 +247,7 @@
 		$("#country").select2();
 		$("#area_level_1").select2();
 	});
-	<?php /*?>
-	var _map;
-    var _geocoder;
-    var _marker;
-    var _lat = {{$location?floatval($location->latitude):-25.647467468105795}};
-    var _long = {{$location?floatval($location->longitude):146.89921517372136}};
-    var _longInput = document.getElementById("longitude");
-    var _latInput = document.getElementById("latitude");
-    
-    var _formattedInput = document.getElementById("formatted");
-    var _countryInput = document.getElementById("country");
-    var _level_1Input = document.getElementById("area_level_1");
-    var _level_2Input = document.getElementById("area_level_2");
-    var _localityInput = document.getElementById("locality");
-    var _routeInput = document.getElementById("route");
-    var _postalInput = document.getElementById("postalCode");
-    
-    
-    function initMap() {
-        
-        _map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: _lat, lng:  _long},
-            zoom: 2
-        });
-        
-        _marker = new google.maps.Marker({
-          position: {lat: _lat, lng: _long},
-          draggable:true,
-          map: _map
-        });
-
-        google.maps.event.addListener(_map, 'click', function(event) {
-             var lat = _latInput.value = event.latLng.lat();
-             var lng = _longInput.value = event.latLng.lng();
-             placeMarkerAndPanTo(event.latLng);
-             loadGeocode(event.latLng);
-        });
-
-        _marker.addListener('dragend', function() {
-             var lat = _latInput.value = _marker.getPosition().lat();
-             var lng = _longInput.value = _marker.getPosition().lng();
-             loadGeocode(_marker.getPosition());
-        });
-        
-        _geocoder = new google.maps.Geocoder();
-        loadGeocode({lat: _lat, lng: _long});
-    }
-
-    function placeMarkerAndPanTo(latLng) {
-        _marker.setMap(null);
-        _marker = new google.maps.Marker({
-            position: latLng,
-            draggable:true,
-            map: _map
-        });
-        _map.panTo(latLng);
-    }
-
-    function loadGeocode(latLng) {
-        _geocoder.geocode({'location': latLng}, function(results, status){
-            console.log(results);
-            if (status === 'OK') {
-                if (results[0]) {
-                    _formattedInput.value = results[0].formatted_address;
-                    for(var i = 0; i< results[0].address_components.length; i++){
-                        var info = results[0].address_components[i];
-                        var label = info.long_name;
-                        var types = info.types;
-                        for(var j = 0; j<types.length; j++){
-                            if(types[j]=='country'){
-                                _countryInput.value = label;
-                                break;
-                            }
-                            if(types[j]=='administrative_area_level_1'){
-                                _level_1Input.value = label;
-                                break;
-                            }
-                            if(types[j]=='administrative_area_level_2'){
-                                _level_2Input.value = label;
-                                break;
-                            }
-                            if(types[j]=='route'){
-                                _routeInput.value = label;
-                                break;
-                            }
-                            if(types[j]=='locality'){
-                                _localityInput.value = label;
-                                break;
-                            }
-                            if(types[j]=='postal_code'){
-                                _postalInput.value = label;
-                                break;
-                            }
-                        }
-                    }
-                } else {
-                    window.alert('No results found');
-                }
-            } else {
-              window.alert('Geocoder failed due to: ' + status);
-            }
-        });
-    }<?php */?>
 	
 </script>
-<?php /*?><script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA&callback=initMap&libraries=&v=weekly" async></script><?php */?>
 @endsection
 
