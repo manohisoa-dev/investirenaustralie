@@ -33,6 +33,11 @@
         <li><a href="graph_peity.html">Carts</a></li>
     </ul>
 </li>
+<li class="{{Request::is('*/menu/*') || Request::is('*/menu') ? 'active' : ''}}">
+	<a href="{{route('admin.menu.index')}}">
+		<i class="fa fa-sitemap"></i> <span class="nav-label">Menus</span>
+	</a>
+</li>
 <li class="{{Request::is('*/user/*') || Request::is('*/user') || Request::is('*/role/*') || Request::is('*/role') || Request::is('*/type-user/*') || Request::is('*/type-user') ? 'active' : ''}}">
     <a href="#">
 		<i class="fa fa-users" title="Parties prenantes"></i> 

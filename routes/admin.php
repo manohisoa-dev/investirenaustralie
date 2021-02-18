@@ -21,6 +21,8 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::post('info', 'ProfileController@editProfile')->name('profile.info');
     Route::post('update', 'ProfileController@updateLocation')->name('location.edit');
     Route::post('password', 'ProfileController@updatePassword')->name('password');
+    
+    Route::resource('menu','MenuController');
 
     Route::resource('country','CountryController');
     Route::resource('state','StateController');

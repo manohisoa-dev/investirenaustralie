@@ -60,7 +60,7 @@
 						<label for="title">@lang('app.admin.category')</label>
 						<select class="form-control" name="category[]" id="category" multiple="multiple">
 							@foreach($categories as $category)
-								<option value="{{$category->id}}"> {{$category->title}}</option>
+								<option value="{{$category->id}}" {{in_array($category->id, $categoryIds)?'selected="selected"':''}}> {{$category->title}}</option>
 							@endforeach
 						</select>
 					</div>    
@@ -85,19 +85,7 @@
 							</div>
 							<div class="col-md-6"></div>
 						</div>
-					</div>                                                                                       
-					<?php /*?>{!! \Nvd\Crud\Form::input('slug','text')->model($blog)->show() !!}                                                                        
-					{!! \Nvd\Crud\Form::input('title','text')->model($blog)->show() !!}                                                                        
-					{!! \Nvd\Crud\Form::input('content','text')->model($blog)->show() !!}                                                                        
-					{!! \Nvd\Crud\Form::input('meta_tag','text')->model($blog)->show() !!}                                                                        
-					{!! \Nvd\Crud\Form::input('meta_description','text')->model($blog)->show() !!}                                                                        
-					{!! \Nvd\Crud\Form::input('view_count','text')->model($blog)->show() !!}                                                                        
-					{!! \Nvd\Crud\Form::input('status','text')->model($blog)->show() !!}                                                                        
-					{!! \Nvd\Crud\Form::input('starred','text')->model($blog)->show() !!}                                                                        
-					{!! \Nvd\Crud\Form::input('post_type','text')->model($blog)->show() !!}                                                                        
-					{!! \Nvd\Crud\Form::input('image_id','text')->model($blog)->show() !!}                                                                        
-					{!! \Nvd\Crud\Form::input('author_id','text')->model($blog)->show() !!}<?php */?>
-                                                                                                                                                
+					</div>                                                                                                                                                 
                     <button type="submit" class="btn btn-primary btn-lg pull-right">
 						<i class="fa fa-save"></i> @lang('app.btn.save')
 					</button>

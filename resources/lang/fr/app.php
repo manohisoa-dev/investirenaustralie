@@ -804,6 +804,11 @@ return [
     'confirm.password' => 'Confirmer nouveau mot de passe',
     'location' => 'Modification Localisation',
     'password' => 'Mot de passe',
+    
+    //menu Menu dans l'admin
+    'admin.menu.createBtn' => 'Ajouter un nouveau Menu',
+    'admin.menu.libMenuParent' => 'Menu parent',
+    'admin.menu.photoBack' => 'Photo de fond',
 
 ];
 

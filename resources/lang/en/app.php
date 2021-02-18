@@ -433,6 +433,9 @@ return [
     'location' => 'Upadate location',
     'password' => 'Password',
 
-
+    //menu Menu dans l'admin
+    'admin.menu.createBtn' => 'Add a new menu',
+    'admin.menu.libMenuParent' => 'Parent menu',
+    'admin.menu.photoBack' => 'Background photo',
 ];
 

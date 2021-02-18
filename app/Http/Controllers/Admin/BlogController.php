@@ -61,7 +61,12 @@ class BlogController extends Controller {
      */
     public function edit(Request $request, Blog $blog) {
         $categories = Category::all();
-        return $this->view("edit", ['blog' => $blog, 'categories' => $categories]);
+        $categoryIds = [];
+        foreach ($blog->categories as $category) {
+            $categoryIds[] = $category->id;
+        }
+        return $this->view("edit", ['blog' => $blog, 'categories' => $categories,
+            'categoryIds' => $categoryIds]);
     }
 
     /**
