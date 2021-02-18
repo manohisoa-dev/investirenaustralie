@@ -15,8 +15,8 @@ class BlogController extends Controller {
 
     public function index() {
         $records = Blog::findRequested();
-        $status = Blog::groupBy('status')->pluck('status', 'status');      
-        return $this->view("index", ['records' => $records,'status' => $status]);
+        $status = Blog::groupBy('status')->pluck('status', 'status');
+        return $this->view("index", ['records' => $records, 'status' => $status]);
     }
 
     /**
@@ -60,7 +60,8 @@ class BlogController extends Controller {
      * @return  \Illuminate\Http\Response
      */
     public function edit(Request $request, Blog $blog) {
-        return $this->view("edit", ['blog' => $blog]);
+        $categories = Category::all();
+        return $this->view("edit", ['blog' => $blog, 'categories' => $categories]);
     }
 
     /**

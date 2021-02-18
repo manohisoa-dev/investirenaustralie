@@ -1,41 +1,56 @@
-@extends('layouts.admin')
+@extends('admin.layouts.app')
+
+@section('title', 'Users - Détail ')
+
+@section('breadcrumb')
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
+        <h2>Parties prenantes</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">Liste des parties prenantes</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ route('admin.user.index') }}">Listes</a>
+            </li>
+            <li class="breadcrumb-item active">
+                <strong>Contacter</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+
+    </div>
+</div>
+@endsection
 
 @section('content')
-<div id="main-content" class="main-content container-fluid">
-    <div class="row-fluid page-head">
-        <h2 class="page-title">{{$title}}</h2>
-    </div>
-    @include('includes.alerts')
-    <div class="">
-        <div class="widget widget-simple">
-            <div class="widget-content">
-                <div class="widget-body">
-                    <form action="{{route('admin.user.contact', $item)}}" method="post" id="commentform" class="contact-form" >
-                        {{ csrf_field() }}
-                        <ul class="form-list label-left list-bordered dotted" style="padding:0px;">
-                            <li class="control-group">
-                                <label for="subject" class="control-label">@lang('app.subject')</label>
-                                <div class="controls">
-                                    <input id="subject" class="input-block-level" name="subject" type="text" placeholder="@lang('app.subject') *" aria-required="true" required="required" value="{{$mail->subject}}">
-                                </div>
-                            </li>
-                            <li class="control-group">
-                                <label for="message">@lang('app.message')</label>
-                                <div class="controls">
-                                    <textarea id="message" class="input-block-level ckeditor" rows="10" name="content" placeholder="@lang('app.message')" >{{$mail->content}}</textarea>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="form-actions no-margin-bootom">
-                            <button type="submit" class="btn btn-green" name="method" value="send">@lang('app.btn.send')</button>
-                            <button type="submit" class="btn pull-right" name="method" value="draft">@lang('app.btn.draft')</button>
-                            <button type="submit" class="btn btn-blue pull-right" name="method" value="model">@lang('app.btn.save_as_model')</button>
-                        </div> 
-                    </form>
-                </div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Contacter {{$user->name}} ({{$user->email}})</h5>
             </div>
-        </div>
-        <!-- // Widget -->
-    </div>
+            <div class="ibox-content">
+				<form action="{{route('admin.user.contact', $user)}}" method="post" id="commentform" class="contact-form" >
+					{{ csrf_field() }}
+					<div class="form-group">
+						<label for="title">@lang('app.subject')</label>
+						<input id="subject" class="form-control" name="subject" type="text" placeholder="@lang('app.subject') *" aria-required="true" required="required" value="{{$mail->subject}}">
+					</div>
+					<div class="form-group">
+						<label for="title">@lang('app.message')</label>
+						<textarea id="message" class="form-control" rows="10" name="content" placeholder="@lang('app.message')" >{{$mail->content}}</textarea>
+					</div>
+					<div class="hr-line-dashed"></div>
+					<div>
+						<button type="submit" class="btn btn-w-m btn-primary" name="method" value="send">@lang('app.btn.send')</button>
+                        <button type="submit" class="btn btn-w-m btn-warning pull-right" name="method" value="draft">@lang('app.btn.draft')</button>
+                        <button type="submit" class="btn btn-w-m btn-info pull-right" name="method" value="model" style="margin-right:10px">@lang('app.btn.save_as_model')</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 </div>
 @endsection

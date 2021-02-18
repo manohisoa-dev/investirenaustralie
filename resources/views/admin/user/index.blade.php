@@ -5,10 +5,10 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Utilisateurs</h2>
+        <h2>Parties prenantes</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.user.index') }}">Utilisateurs {{app()->getLocale()}}</a>
+                <a href="{{ route('admin.user.index') }}">Parties prenantes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Listes</strong>
@@ -31,7 +31,7 @@
 	<div class="col-lg-12">
 		<div class="ibox float-e-margins">
 			<div class="ibox-title">
-				<h5>Liste des utilisateurs</h5>
+				<h5>Liste des parties prenantes</h5>
 			</div>
 			<div class="ibox-content">
 				<div class="ibox float-e-margins">
@@ -194,6 +194,7 @@
 								</span>
 							</td>
 							<td>
+							<form class="form-inline" action="{{route('admin.user.index')}}/{{$record->id}}" method="POST">
 								@if($record->status=='active')
 								<a href="{{route('admin.user.desactiver', ['user_id' => $record->id])}}" class="btn btn-default btn-circle" title="@lang('app.btn.disable')">
 									<i class="fa fa-eye-slash"></i>
@@ -203,13 +204,15 @@
 									<i class="fa fa-eye text-info"></i>
 								</a>&nbsp;&nbsp;
 								@endif
-								<a href="#" class="btn btn-default btn-circle" title="@lang('app.btn.contact')">
+								<a href="{{route('admin.user.contact', ['user_id' => $record->id])}}" class="btn btn-default btn-circle" title="@lang('app.btn.contact')">
 									<i class="fa fa-address-book-o" aria-hidden="true"></i>
 								</a>&nbsp;&nbsp;
-								<a href="#" class="btn btn-default btn-circle" title="@lang('app.btn.delete')">
-									<i class="fa fa-trash-o text-danger"></i>
-								</a>
-								
+								{{ csrf_field() }}
+								{{ method_field('DELETE') }}
+								<button class="btn btn-default btn-circle"
+									onclick="return confirm('Vous êtes sur?')"
+									type="submit" title="Suppression"><i class="fa fa-times text-danger"></i></button>
+							</form>	
 							</td>
 						</tr>
 					@empty
