@@ -194,6 +194,7 @@
 								</span>
 							</td>
 							<td>
+							<form class="form-inline" action="{{route('admin.user.index')}}/{{$record->id}}" method="POST">
 								@if($record->status=='active')
 								<a href="{{route('admin.user.desactiver', ['user_id' => $record->id])}}" class="btn btn-default btn-circle" title="@lang('app.btn.disable')">
 									<i class="fa fa-eye-slash"></i>
@@ -206,10 +207,12 @@
 								<a href="{{route('admin.user.contact', ['user_id' => $record->id])}}" class="btn btn-default btn-circle" title="@lang('app.btn.contact')">
 									<i class="fa fa-address-book-o" aria-hidden="true"></i>
 								</a>&nbsp;&nbsp;
-								<a href="#" class="btn btn-default btn-circle" title="@lang('app.btn.delete')">
-									<i class="fa fa-trash-o text-danger"></i>
-								</a>
-								
+								{{ csrf_field() }}
+								{{ method_field('DELETE') }}
+								<button class="btn btn-default btn-circle"
+									onclick="return confirm('Vous êtes sur?')"
+									type="submit" title="Suppression"><i class="fa fa-times text-danger"></i></button>
+							</form>	
 							</td>
 						</tr>
 					@empty

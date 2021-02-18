@@ -113,10 +113,17 @@ class UserController extends Controller {
      * @return  \Illuminate\Http\Response
      */
     public function destroy(Request $request, User $user) {
+        $this->middleware('auth');
+        $this->middleware('role:1');
+        
+        if($user->id==1){
+            Notify::error("Cette action ne peut pas etre réalisée.");
+            return redirect(route('admin.user.index'));
+        }
         $user->delete();
 
         # notification
-        Notify::success('User a été supprimer avec succès');
+        Notify::success('Utilisateur a été supprimer avec succès');
         return redirect(route('admin.user.index'));
     }
 

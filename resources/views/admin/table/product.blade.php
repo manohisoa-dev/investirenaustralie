@@ -45,17 +45,23 @@
              @endif
          </td>
          <td>
+		 <form class="form-inline" action="{{route('admin.product.index')}}/{{$product->id}}" method="POST">
          @if($product->status=='pinged' || $product->status=='archived')
-            <a href="{{route('admin.product.publish', $product)}}" class="btn btn-small btn-success btn-publish">@lang('app.btn.publish')</a>
-            <a href="{{route('admin.product.trash', $product)}}" class="btn btn-small btn-info btn-trash">@lang('app.btn.trash')</a>
+            <a href="{{route('admin.product.publish', $product)}}" class="btn btn-default btn-circle" title="@lang('app.btn.publish')"><i class="fa fa-check"></i></a>&nbsp;&nbsp;
+            <a href="{{route('admin.product.trash', $product)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')"><i class="fa fa-trash-o"></i></a>&nbsp;&nbsp;
          @elseif($product->status=='trashed')
-            <a href="{{route('admin.product.restore', $product)}}" class="btn btn-small btn-info btn-restore">Restore</a>
+            <a href="{{route('admin.product.restore', $product)}}" class="btn btn-default btn-circle" title="Restore"><i class="fa fa-window-restore"></i></a>&nbsp;&nbsp;
          @endif
          @if($product->status=='published')
-            <a href="{{route('admin.product.archive', $product)}}" class="btn btn-small btn-default  btn-archive">@lang('app.btn.archive')</a>
-            <a href="{{route('admin.product.trash', $product)}}" class="btn btn-small btn-info btn-trash">@lang('app.btn.trash')</a>
+            <a href="{{route('admin.product.archive', $product)}}" class="btn btn-default btn-circle" title="@lang('app.btn.archive')"><i class="fa fa-archive"></i></a>&nbsp;&nbsp;
+            <a href="{{route('admin.product.trash', $product)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')"><i class="fa fa-trash-o"></i></a>&nbsp;&nbsp;
          @endif
-            <a href="<?php /*?>{{route('admin.product.delete', $product)}}<?php */?>" class="btn btn-small btn-warning btn-delete">@lang('app.btn.delete')</a>
+			{{ csrf_field() }}
+			{{ method_field('DELETE') }}
+			<button onclick="return confirm('Vous êtes sur?')"
+				type="submit" class="btn btn-default btn-circle" title="Suppression"><i class="fa fa-times text-danger"></i>
+			</button>
+		 </form>
          </td>
      </tr>
      @endforeach
