@@ -312,7 +312,7 @@ class SearchController extends Controller
         $search->content = serialize($request->all());
         $search->save();
 
-        dd($search);
+        // dd($search);
         
     	return view('search.index')
             ->with('lapls', $lapls)
