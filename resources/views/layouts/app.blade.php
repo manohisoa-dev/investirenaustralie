@@ -171,14 +171,14 @@
         <div class="footer-top site-footer">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-4 col-sm-12 m-15px-tb mr-auto">
+                    <div class="col-lg-2 col-sm-12 m-15px-tb mr-auto">
                         <div class="m-20px-b">
                             <a class="footer-logo" href="{{route('home')}}">
                                 <img src="{{ asset('images/logos.png') }}" title="Logo IEA" alt="Logo IEA">
                             </a>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-sm-5 m-15px-tb">
+                    <div class="col-lg-3 col-sm-5 m-15px-tb">
                         <h6 class="white-color">
                             {{ Illuminate\Support\Str::upper(trans('app.rapid_link')) }}
                         </h6>
@@ -191,7 +191,7 @@
                             <li><a href="{{route('contact')}}">@lang('app.contact')</a></li>
                         </ul>
                     </div>
-                    <div class="col-lg-2 col-sm-5 m-15px-tb">
+                    <div class="col-lg-3 col-sm-5 m-15px-tb">
                         <h6 class="white-color">
                             {{ Illuminate\Support\Str::upper(trans('app.txt.aboutus')) }}
                         </h6>
@@ -205,7 +205,7 @@
                             @endif
                         </ul>
                     </div>
-                    <div class="col-lg-2 col-sm-5 m-15px-tb" id="apl_list">
+                    {{-- <div class="col-lg-2 col-sm-5 m-15px-tb" id="apl_list">
                         <h6 class="white-color">
                             {{ Illuminate\Support\Str::upper(trans('app.apls')) }}
                         </h6>
@@ -216,8 +216,8 @@
                                 <li></li>
                             @endforelse
                         </ul>
-                    </div>
-                    <div class="col-lg-2 col-sm-5 m-15px-tb">
+                    </div> --}}
+                    <div class="col-lg-3 col-sm-5 m-15px-tb">
                         <h6 class="white-color">
                             {{ Illuminate\Support\Str::upper(trans('app.txt.information')) }}
                         </h6>
@@ -238,16 +238,30 @@
             </div>
         </div>
 
-        <div class="footer-bottom footer-border-light">
+        <div class="footer-bottom footer-border-light ">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-6 text-center text-md-right">
-                        <ul class="nav justify-content-center justify-content-md-start m-5px-tb links-white footer-link-1">
-                            <li><a href="#">@lang('app.footer_description')</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-6 text-center text-md-right">
-                        <p class="m-0px">{!!trans('app.copyright', ['year'=>date('Y'), 'app'=>trans('app.app_name')])!!}</p>
+                <div class="col-md-12 text-center" id="apl_list">
+                    <ul class="nav justify-content-center justify-content-md-start p-25px-b links-white footer-link-1">
+                        <li style="margin:auto;">
+                            <a href="{{route('apls')}}">@lang('app.apls')</a> : 
+                            @foreach($lapls as $apl)
+                                <a class="apl_item" href="#" value="{{ $apl->locality }}" data-toggle="modal" data-target="#listAplModal">{{ $apl->locality }}</a> - 
+                            @endforeach
+                        </li>
+                        <li></li>
+                    </ul>
+                </div>
+                <div class="footer-border-light m-auto col-lg-3"></div>
+                <div class="container p-25px-t">
+                    <div class="row">
+                        <div class="col-md-6 text-center text-md-right">
+                            <ul class="nav justify-content-center justify-content-md-start m-5px-tb links-white footer-link-1">
+                                <li><a href="#">@lang('app.footer_description')</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 text-center text-md-right">
+                            <p class="m-0px">{!!trans('app.copyright', ['year'=>date('Y'), 'app'=>trans('app.app_name')])!!}</p>
+                        </div>
                     </div>
                 </div>
             </div>

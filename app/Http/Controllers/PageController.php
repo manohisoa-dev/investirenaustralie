@@ -13,6 +13,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Localisation;
 use App\Models\User;
+use App\Models\State;
 
 class PageController extends Controller
 {
@@ -52,6 +53,8 @@ class PageController extends Controller
                 ->where('users.role','=','4')
                 ->groupBy('localizations.locality')
                 ->get();
+
+        $states = State::all();
         
         return view('page.index')
             ->with('item', $page)
@@ -60,6 +63,7 @@ class PageController extends Controller
             ->with('blogs', $blogs)
             ->with('recentProducts', $recentProducts)
             ->with('categories', $categories)
+            ->with('states', $states)
             ->with('lapls', $lapls);
     }
     

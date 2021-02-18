@@ -6,7 +6,7 @@ return [
     'app_name'            => 'Investir en Australie',
     
     'footer_description'  => 'Investir en Australie est un e-marketplace.',
-    'copyright'           => '© Copyright :year : ":app" - Tout droit réservé',
+    'copyright'           => '© Copyright :year : ":app" - Tous droits réservés',
     
     'last_update'         => 'Derniere Modification, :date',
     'contact_user'        => 'Contacter: :name (:email)',
@@ -628,6 +628,7 @@ return [
     'txt.logintocomment'      =>"Veuillez vous connecter pour commenter.",
     'txt.yourcomment'      =>"Votre Commentaire",
     'txt.pub.comment.success'      =>"Votre commentaire a été publié avec succès.",
+    'txt.search'    => 'Recherche',
     
     
     

@@ -21,14 +21,20 @@
     <div class="container m-60px-nt">
         <div class="white-bg box-shadow-lg p-20px position-relative border-radius-5">
             <div class="extra-menu d-flex align-items-center">
-                <button type="button" class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">
+                <button type="button" class="navbar-toggler collapsed " type="button" data-toggle="collapse" data-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch" style="height:3.1rem;margin-top:-0.3rem;">
                     <span class="icon-bar"></span>
                 </button>
-                <div class="d-none d-md-block h-btn m-35px-l col-lg-11">
-                    <form class="d-flex flex-row m-5px-b p-1 white-bg input-group" action="{{route('shop.index')}}" method="get">
-                        <input type="email" class="form-control border-radius-0 border-0" placeholder="@lang('app.input.etat')" name="q" value="{{isset($q)?$q:''}}">
-                        <input type="email" class="form-control border-radius-0 border-0" placeholder="@lang('app.input.ville')" name="q" value="{{isset($q)?$q:''}}">
-                        <input type="email" class="form-control border-radius-0 border-0" placeholder="@lang('app.input.suburb')" name="q" value="{{isset($q)?$q:''}}">
+                <div class="d-md-block h-btn m-35px-l col-lg-11">
+                    <form class="d-flex flex-row m-5px-b p-1 white-bg input-group" action="{{route('c.search')}}" method="POST">
+                        {{csrf_field()}}
+                        <select id="administrative_area_level_1" class="form-control border-radius-0 border-1 m-15px-r" name="state">
+                            <option value="{{isset($q)?$q:''}}" selected disabled>@lang('app.input.etat')</option>
+                            @foreach (App\Models\State::all() as $state)
+                                <option value="{{ $state->content }}">{{ $state->content }}</option>
+                            @endforeach
+                        </select>
+                        <input type="text" id="locality" name="city" class="form-control border-radius-0 border-1 m-15px-r" onFocus="geolocate()" placeholder="@lang('app.input.ville')" value="{{isset($q)?$q:''}}">
+                        <input type="text" id="administrative_area_level_2" name="suburb" class="form-control border-radius-0 border-1 m-60px-r" placeholder="@lang('app.input.suburb')" value="{{isset($q)?$q:''}}">
                         <button class="m-btn m-btn-theme2nd flex-shrink-0" type="submit">@lang('app.input.recherche')</button>
                     </form>
                 </div>
@@ -501,5 +507,84 @@
         }); 
         // fin superficie range slider
 
+    </script>
+
+    {{-- Autocompletion google map --}}
+    <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA&callback=initAutocomplete&libraries=places&v=weekly"
+    defer
+    ></script>
+    <script>
+    // This sample uses the Autocomplete widget to help the user select a
+    // place, then it retrieves the address components associated with that
+    // place, and then it populates the form fields with those details.
+    // This sample requires the Places library. Include the libraries=places
+    // parameter when you first load the API. 
+    let placeSearch;
+    let autocomplete;
+    const componentForm = {
+        locality: "long_name",
+        administrative_area_level_1: "short_name",
+        administrative_area_level_2: "short_name",
+    };
+
+    function initAutocomplete() {
+        // Create the autocomplete object, restricting the search predictions to
+        // geographical location types.
+        autocomplete = new google.maps.places.Autocomplete(
+        // document.getElementById("autocomplete"),
+        document.getElementById("locality"),
+        { types: ["geocode"] }
+        );
+        // Avoid paying for data that you don't need by restricting the set of
+        // place fields that are returned to just the address components.
+        autocomplete.setFields(["address_component"]);
+        // When the user selects an address from the drop-down, populate the
+        // address fields in the form.
+        autocomplete.addListener("place_changed", fillInAddress);
+    }
+
+    function fillInAddress() {
+        // Get the place details from the autocomplete object.
+        const place = autocomplete.getPlace();
+
+        for (const component in componentForm) {
+        document.getElementById(component).value = "";
+        document.getElementById(component).disabled = false;
+        }
+
+        // Get each component of the address from the place details,
+        // and then fill-in the corresponding field on the form.
+        for (const component of place.address_components) {
+        const addressType = component.types[0];
+
+        if (componentForm[addressType]) {
+            const val = component[componentForm[addressType]];
+            if(addressType !== "administrative_area_level_1"){
+            document.getElementById(addressType).value = val;
+            }else{
+            $('#administrative_area_level_1 option[value="'+val+'"]').prop('selected', true);
+            }
+        }
+        }
+    }
+
+    // Bias the autocomplete object to the user's geographical location,
+    // as supplied by the browser's 'navigator.geolocation' object.
+    function geolocate() {
+        if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+            const geolocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+            };
+            const circle = new google.maps.Circle({
+            center: geolocation,
+            radius: position.coords.accuracy,
+            });
+            autocomplete.setBounds(circle.getBounds());
+        });
+        }
+    }
     </script>
 @endpush

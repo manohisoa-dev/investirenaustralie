@@ -88,7 +88,7 @@ class ProductController extends Controller
                     ->groupBy('localizations.locality')
                     ->get();
                 
-                return view('V2.product.index')
+                return view('product.index')
                     ->with('item', $product)
                     ->with('location', $product->location)
                     ->with('pubs', $pubs)
@@ -155,7 +155,7 @@ class ProductController extends Controller
         $states = State::orderBy('content', 'asc')
             ->get();
         
-        return view('V2.product.index')
+        return view('product.index')
             ->with('item', $product)
             ->with('location', $product->location)
             ->with('pubs', $pubs)
