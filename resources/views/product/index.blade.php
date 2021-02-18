@@ -57,7 +57,7 @@
                             </form>
                         </div>
                         <div class="col-sm-3">
-                          <a href="{{route('v2.label.store', ['product'=>$item,'type'=>'starred'])}}" class="m-btn btn-warning dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>
+                          <a href="{{route('label.store', ['product'=>$item,'type'=>'starred'])}}" class="m-btn btn-warning dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>
                         </div>
                     </div>
                   </section>

@@ -346,6 +346,7 @@ return [
     'txt.logintocomment'      =>"Please login to comment.",
     'txt.yourcomment'      =>"Your Comment",
     'txt.pub.comment.success'      =>"Your comment has been successfully published.",
+    'txt.search'    => 'Search',
 
 
     'table.title'  => "Title",

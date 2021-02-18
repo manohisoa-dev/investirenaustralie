@@ -1,27 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container" style="margin-top: 160px;">
+
+@component('includes.breadcrumb2', isset($category->slug) ? ['cat'=>$category->slug] : ['cat'=>'search'])
+    @lang('all_products')
+@endcomponent
+
+
+<div class="container" style="margin-top: 50px;">
     <div class="row">
         <div class="col-lg-12 col-md-12">
-            <header class="section-header text-center">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h3 class="pull-left">@lang('app.search')</h3>
-                    </div>
-                </div>
-            </header>
-
-            <!-- breadcrumb     -->
-            <div class="row">
-                <div class="col-md-12">
-                    <ol class="breadcrumb">
-                      <li class="breadcrumb-item"><a href="{{route('home')}}">@lang('app.home')</a></li>
-                        <li class="breadcrumb-item active">@lang('app.search')</li>
-                    </ol>
-                </div>
-            </div>
-            
             <div class="product-data"> 
                 @php $i = 0; @endphp
                 @foreach($items as $item)

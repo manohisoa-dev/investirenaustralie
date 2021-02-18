@@ -628,6 +628,7 @@ return [
     'txt.logintocomment'      =>"Veuillez vous connecter pour commenter.",
     'txt.yourcomment'      =>"Votre Commentaire",
     'txt.pub.comment.success'      =>"Votre commentaire a été publié avec succès.",
+    'txt.search'    => 'Recherche',
     
     
     
