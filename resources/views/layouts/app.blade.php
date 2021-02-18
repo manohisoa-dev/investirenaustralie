@@ -245,7 +245,7 @@
                         <li style="margin:auto;">
                             <a href="{{route('apls')}}">@lang('app.apls')</a> : 
                             @foreach($lapls as $apl)
-                                <a class="apl_item" href="#" value="{{ $apl->locality }}" data-toggle="modal" data-target="#listAplModal">{{ $apl->locality }}</a> - 
+                                <a class="apl_item" href="#" value="{{ $apl->locality }}" data-toggle="modal" data-target="#listAplModal">{{ $apl->locality }}</a> @if(!$loop->last) - @endif
                             @endforeach
                         </li>
                         <li></li>
