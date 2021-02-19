@@ -6,12 +6,12 @@
                 <i class="fas fa-check"></i>
             </div>
             <div class="pt-body">
-                <a href="{{route('product.index',['product'=>$product])}}">
+                <a href="{{route('product.index',['product'=>$product->slug])}}">
 			        <img  class="feature-image" src="{{$product->imageUrl(false)}}" alt="{{$product->title}}">
 			    </a>
             </div>
             <div class="pt-footer">
-                <h5><a href="{{route('product.index',['product'=>$product])}}">{{$product->title}}</a></h5>
+                <h5><a href="{{route('product.index',['product'=>$product->slug])}}">{{$product->title}}</a></h5>
             </div>
         </div>
     </div> <!-- col -->
@@ -22,12 +22,12 @@
                 <p class="white-color font-15"><span>$</span>{{number_format($product->price, 0, '.', ' ')}}</p>
             </div>
             <div class="pt-body">
-                <a href="{{route('product.index',['product'=>$product])}}">
+                <a href="{{route('product.index',['product'=>$product->slug])}}">
 			        <img  class="feature-image" src="{{$product->imageUrl(false)}}" alt="{{$product->title}}">
 			    </a>
             </div>
             <div class="pt-footer">
-                <h5><a href="{{route('product.index',['product'=>$product])}}">{{$product->title}}</a></h5>
+                <h5><a href="{{route('product.index',['product'=>$product->slug])}}">{{$product->title}}</a></h5>
             </div>
         </div>
     </div> <!-- col -->
@@ -53,7 +53,7 @@
 @elseif($type == 'favorites')
     <div class="col-sm-6 col-xl-4 m-10px-tb">
         <div class="card">
-            <a href="{{route('product.index',['product'=>$product])}}" class="media align-items-center lh-normal p-10px gray-bg">
+            <a href="{{route('product.index',['product'=>$product->slug])}}" class="media align-items-center lh-normal p-10px gray-bg">
                 <div class="avatar-50 border-radius-50">
                     <img src="{{$product->imageUrl(false)}}" title="{{$product->title}}" alt="{{$product->title}}">
                 </div>
