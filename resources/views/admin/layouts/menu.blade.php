@@ -19,18 +19,18 @@
 
 {{--    MENU LIST   --}}
 <li class="{{Request::is('*/admin') ? 'active' : ''}}">
-    <a href="{{url('V2/admin')}}"><i class="fa fa-tachometer" title="Tableau de bord"></i> <span class="nav-label">Tableau de bord</span></a>
+    <a href="{{url('/admin')}}"><i class="fa fa-tachometer" title="Tableau de bord"></i> <span class="nav-label">Tableau de bord</span></a>
 </li>
 <li>
     <a href="#"><i class="fa fa-bar-chart-o" title="Statistiques"></i> <span class="nav-label">Statistiques</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
-        <li><a href="graph_flot.html">Produits</a></li>
-        <li><a href="graph_morris.html">Utilisateurs</a></li>
-        <li><a href="graph_rickshaw.html">Membres</a></li>
-        <li><a href="graph_chartjs.html">Agence Francophone Australienne</a></li>
-        <li><a href="graph_chartist.html">Agence Partenaire Locale</a></li>
-        <li><a href="c3.html">Vendeur</a></li>
-        <li><a href="graph_peity.html">Carts</a></li>
+        <li><a href="#">Produits</a></li>
+        <li><a href="#">Utilisateurs</a></li>
+        <li><a href="#">Membres</a></li>
+        <li><a href="#">Agence Francophone Australienne</a></li>
+        <li><a href="#">Agence Partenaire Locale</a></li>
+        <li><a href="#">Vendeur</a></li>
+        <li><a href="#">Carts</a></li>
     </ul>
 </li>
 <li class="{{Request::is('*/menu/*') || Request::is('*/menu') ? 'active' : ''}}">

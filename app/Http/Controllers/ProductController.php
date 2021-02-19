@@ -35,12 +35,14 @@ class ProductController extends Controller
         if(sizeof($products) != 0){
             foreach ($products as $key => $product) {
 
-                if($product->status != 'published'){
-                    abort(404);
+//                if($product->status != 'published'){
+//                    abort(404);
+//                }
+
+                if($product->status == 'published'){
+                    $product->view_count++;
+                    $product->save();
                 }
-                
-                $product->view_count++;
-                $product->save();
                 
                 $products = Product::orderBy('created_at','desc')
                     ->ofStatus('published')
