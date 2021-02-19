@@ -27,7 +27,7 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
         
-    public function index(Request $request, String $slug)
+    public function index(Request $request, $slug)
     {
         $products = Product::where('slug','=', $slug)
             ->get();
@@ -175,9 +175,9 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, Product $product)
+    public function show(Request $request, $product)
     {
-        return view('admin.product.index')
+        return view('product.index')
             ->with('item', $product)
             ->with('breadcrumbs', __('app.product'));
     }
