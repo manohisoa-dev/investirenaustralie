@@ -10,9 +10,12 @@
 <div class="container" style="margin-top: 50px;">
     <div class="row">
         <div class="col-lg-12 col-md-12">
+            <div class="border-bottom-1 border-color-light-gray">
+                <h5>{{ count($items) }} {{ count($items)<1?trans('app.txt.resultat'):trans('app.txt.resultats') }}</h5>
+            </div>
             <div class="product-data"> 
                 @php $i = 0; @endphp
-                @foreach($items as $item)
+                @forelse($items as $item)
                     @if($i%3 === 0)
                         <div class="row" id="txtHint">
                     @endif
@@ -23,7 +26,11 @@
                     @if($i%3 === 0)
                         </div>
                     @endif
-                @endforeach
+                @empty
+                    <div class="m-75px-tb">
+                        @lang('app.txt.noinfo')
+                    </div>
+                @endforelse
                 @if((($i%3) > 0))
                 </div>
                 @endif

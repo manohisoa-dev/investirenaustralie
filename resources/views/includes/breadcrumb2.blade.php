@@ -47,7 +47,7 @@ if(Request::segment(2) != ''){
                         <select id="administrative_area_level_1" class="form-control border-radius-0 border-1 m-15px-r" name="state">
                             <option value="{{isset($q)?$q:''}}" selected disabled>@lang('app.input.etat')</option>
                             @foreach (App\Models\State::all() as $state)
-                                <option value="{{ $state->content }}">{{ $state->content }}</option>
+                                <option value="{{ $state->content }}">{{ trans('app.txt.'.$state->content) }} ({{ $state->content }})</option>
                             @endforeach
                         </select>
                         <input type="text" id="locality" name="city" class="form-control border-radius-0 border-1 m-15px-r" onFocus="geolocate()" placeholder="@lang('app.input.ville')" value="{{isset($q)?$q:''}}">

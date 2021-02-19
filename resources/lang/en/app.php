@@ -347,7 +347,16 @@ return [
     'txt.yourcomment'      =>"Your Comment",
     'txt.pub.comment.success'      =>"Your comment has been successfully published.",
     'txt.search'    => 'Search',
-
+    'txt.resultat'    => 'Result',
+    'txt.resultats'    => 'Results',
+    'txt.ACT'    => 'Australian Capital Territory',
+    'txt.NSW'    => 'New South Wales',
+    'txt.NT'    => 'Northern Territory',
+    'txt.QLD'    => 'Queensland',
+    'txt.SA'    => 'South Australia',
+    'txt.TAS'    => 'Tasmania',
+    'txt.VIC'    => 'Victoria',
+    'txt.WA'    => 'Western Australia',
 
     'table.title'  => "Title",
     'table.titles'  => "Titles",
