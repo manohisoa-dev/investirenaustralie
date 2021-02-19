@@ -17,9 +17,9 @@
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ route('admin.menu.create') }}" type="button" class="btn btn-primary btn-block">
+            <?php /*?><a href="{{ route('admin.menu.create') }}" type="button" class="btn btn-primary btn-block">
                 <i class="fa fa-plus"></i> @lang('app.admin.menu.createBtn')            
-			</a>
+			</a><?php */?>
         </div>
     </div>
 </div>
@@ -93,11 +93,11 @@
 										  </span>
                                   </td>
                                   <td>{{ $record->created_at ? $record->created_at->diffForHumans() : '' }}</td>
-								  <td class="actions-cell text-center" width="12%">
+								  <td class="actions-cell text-center" width="7%">
 									<form class="form-inline" action="{{route('admin.menu.index')}}/{{$record->id}}" method="POST">
-									<a href="{{route('admin.menu.index')}}/{{$record->id}}" title="Détail" class="btn btn-default btn-circle">
+									<?php /*?><a href="{{route('admin.menu.index')}}/{{$record->id}}" title="Détail" class="btn btn-default btn-circle">
 										<i class="fa fa-eye"></i>
-									</a>&nbsp;&nbsp;
+									</a>&nbsp;&nbsp;<?php */?>
 									
 									<a href="{{route('admin.menu.index')}}/{{$record->id}}/edit" title="Modification" class="btn btn-default btn-circle">
 										<i class="fa fa-pencil-square-o"></i>
@@ -105,9 +105,9 @@
 									
 									{{ csrf_field() }}
 									{{ method_field('DELETE') }}
-									<button class="btn btn-default btn-circle text-danger" 
+									<?php /*?><button class="btn btn-default btn-circle text-danger" 
 											onclick="return confirm('Vous êtes sur?')"
-											type="submit" title="Suppression"><i class="fa fa-times text-danger"></i></button>
+											type="submit" title="Suppression"><i class="fa fa-times text-danger"></i></button><?php */?>
 									</form>
 								  </td>
                                   

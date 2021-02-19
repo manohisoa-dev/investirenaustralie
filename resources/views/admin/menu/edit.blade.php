@@ -36,7 +36,10 @@
 
                     {{ csrf_field() }}
                     {{ method_field("PUT") }}
-                    {!! \Nvd\Crud\Form::input('libelle','text')->model($menu)->show() !!}
+					<div class="form-group">
+						<label for="libelle">Libelle</label>
+						<input name="libelle" id="libelle" class="form-control" type="text" value="{{$menu->libelle}}" readonly="">
+					</div>
                     <div class="form-group">
 						<div class="row">
 							<div class="col-md-2">

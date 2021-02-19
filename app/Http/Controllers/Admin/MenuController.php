@@ -95,7 +95,6 @@ class MenuController extends Controller {
             $image->move($destinationPath, $input['imagename']);
             $menu->photo = $input['imagename'];            
         } 
-        $menu->libelle = $request->libelle;
         $menu->parent_id = $request->parent_id;
         $menu->save();
         /*$this->validate($request, Menu::validationRules());
