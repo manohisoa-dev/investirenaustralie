@@ -14,6 +14,7 @@ use App\Models\Blog;
 use App\Models\Type;
 use App\Models\State;
 use App\Models\Localisation;
+use App\Models\Menu;
 use Session;
 use View;
 

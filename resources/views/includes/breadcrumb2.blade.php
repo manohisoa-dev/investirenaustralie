@@ -1,5 +1,22 @@
 <!-- Page Title -->
-<section class="section bg-center bg-cover bg-fixed effect-section" style="background-image: url({{ asset('images/slider/1.jpg') }});">
+@php
+if(Request::segment(2) != ''){
+	$menuInfo = \App\Models\Menu::where('libelle', Request::segment(2))->first();
+	if(!empty($menuInfo)){
+		$photo_base = $menuInfo->photo;
+		if($photo_base != ''){
+			$image_fond = asset('images/slider/'.$photo_base);
+		}else{
+			$image_fond = asset('images/slider/1.jpg');
+		}
+	}else{
+		$image_fond = asset('images/slider/1.jpg');
+	}
+}else{
+	$image_fond = asset('images/slider/1.jpg');
+}
+@endphp
+<section class="section bg-center bg-cover bg-fixed effect-section" style="background-image: url({{ $image_fond }});">
     <div class="mask theme-bg opacity-5"></div>
     <div class="container">
         <div class="row justify-content-center p-50px-t">
