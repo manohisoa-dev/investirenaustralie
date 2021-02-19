@@ -46,7 +46,7 @@ class ProductController extends Controller
 
         # notification
         Notify::success('Product a été créer avec succès');
-        return redirect(route('V2.adminproduct.index'));
+        return redirect(route('admin.product.index'));
     }
 
     /**

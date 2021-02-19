@@ -243,10 +243,12 @@
                 <div class="col-md-12 text-center" id="apl_list">
                     <ul class="nav justify-content-center justify-content-md-start p-25px-b links-white footer-link-1">
                         <li style="margin:auto;">
-                            <a href="{{route('apls')}}">@lang('app.apls')</a> : 
-                            @foreach($lapls as $apl)
-                                <a class="apl_item" href="#" value="{{ $apl->locality }}" data-toggle="modal" data-target="#listAplModal">{{ $apl->locality }}</a> @if(!$loop->last) - @endif
-                            @endforeach
+                            <a href="{{route('apls')}}">@lang('app.apls')</a> :
+                            @if(isset($lapls))
+                                @foreach($lapls as $apl)
+                                    <a class="apl_item" href="#" value="{{ $apl->locality }}" data-toggle="modal" data-target="#listAplModal">{{ $apl->locality }}</a> @if(!$loop->last) - @endif
+                                @endforeach
+                            @endif
                         </li>
                         <li></li>
                     </ul>

@@ -76,10 +76,10 @@
                           <img src="static/img/500x500.jpg" title="" alt="">
                       </div>
                       <div class="media-body p-20px-l">
-                          <h5 class="m-10px-b">{{$item->created_at->diffForHumans()}}</h5>
+                          <h5 class="m-10px-b">{{isset($item->created_at) ? $item->created_at->diffForHumans() : ''}}</h5>
                           <p class="m-0px"><span>@lang('app.reference'):</span> {{$item->reference}}</p>
                           <p class="m-0px"><span>@lang('app.txt.price'):</span>{{$item->price}}</p>
-                          @if($location)
+                          @if(isset($location))
                             <p class="m-0px"><span>@lang('app.txt.product_location'):</span> {{$location?$location->formatted:'Localisation inconnue'}}</p>
                           @endif
                           <p class="m-0px"><span>@lang('app.txt.area'):</span> {{$item->area}}</p>
@@ -136,7 +136,9 @@
             </div>
             <div class="row">
                 <!-- start section products -->
-                @include('product.all', ['items'=>$products])
+                @if(isset($products))
+                    @include('product.all', ['items'=>$products])
+                @endif
                 <!-- end section products -->
             </div>
         </div>
@@ -153,8 +155,8 @@
     var _geocoder;
     var _marker;
     var _circle;
-    var _lat = {{$location?$location->latitude:-25.647467468105795}};
-    var _long = {{$location?$location->longitude:146.89921517372136}};
+    var _lat = {{isset($location)?$location->latitude:-25.647467468105795}};
+    var _long = {{isset($location)?$location->longitude:146.89921517372136}};
     var _btnSubmit = document.getElementById("submit");
     var _inputApl = document.getElementById("apl");
     var _contentApl = document.getElementById("apl-content");
@@ -179,7 +181,7 @@
       }
     };
     
-    var data = {!!$data!!};
+    var data = {!!(isset($data) ? $data : '')!!};
     
     function initMap() {
         

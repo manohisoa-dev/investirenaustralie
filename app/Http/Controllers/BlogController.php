@@ -43,7 +43,7 @@ class BlogController extends Controller
      * @return Illuminate\Http\Response
      */
 
-    public function index(Request $request, String $slug)
+    public function index(Request $request, $slug)
     {
         $blogs = Blog::where('slug','=', $slug)
             ->withCount('comments')
