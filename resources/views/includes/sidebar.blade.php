@@ -27,7 +27,7 @@
                 </div>
                 <div class="p-15px-l">
                     <p class="m-0px">{{$product->title}}</p>
-                    <span class="btn btn-price">{{number_format($product->price, 0, '.', ' ')}}</span>
+                    <span class="btn btn-price">{{number_format($product->price, 0, '.', ' ')}} $</span>
                 </div>
             </a>
             <div class="social-icon si-30 theme2nd radius nav justify-content-center p-10px-t" style="padding-bottom: 7px;padding-top: 5px;">

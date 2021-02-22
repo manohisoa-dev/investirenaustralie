@@ -166,7 +166,6 @@
     
     @yield('content')
 
-
     <footer class="grey-bg footer border-top-1 border-color-dark-gray">
         <div class="footer-top site-footer">
             <div class="container">
@@ -241,12 +240,12 @@
         <div class="footer-bottom footer-border-light ">
             <div class="container">
                 <div class="col-md-12 text-center" id="apl_list">
-                    <ul class="nav justify-content-center justify-content-md-start p-25px-b links-white footer-link-1">
+                    <ul class="nav justify-content-center justify-content-md-start p-25px-b links-white footer-link-1 font-color-theme4rd">
                         <li style="margin:auto;">
-                            <a href="{{route('apls')}}">@lang('app.apls')</a> :
+                            <a href="{{route('apls')}}" style="color:#008A3E;">@lang('app.apls')</a> :
                             @if(isset($lapls))
                                 @foreach($lapls as $apl)
-                                    <a class="apl_item" href="#" value="{{ $apl->locality }}" data-toggle="modal" data-target="#listAplModal">{{ $apl->locality }}</a> @if(!$loop->last) - @endif
+                                    <a class="apl_item" href="#" value="{{ $apl->locality }}" data-toggle="modal" data-target="#listAplModal" style="color:#008A3E;">{{ $apl->locality }}</a> @if(!$loop->last) - @endif
                                 @endforeach
                             @endif
                         </li>

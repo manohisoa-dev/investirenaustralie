@@ -639,6 +639,7 @@ return [
     'txt.TAS'    => 'Tasmanie',
     'txt.VIC'    => 'Victoria',
     'txt.WA'    => 'Australie Occidentale',
+    'txt.nodata'    => 'Aucune données à afficher',
     
     
     
@@ -771,6 +772,7 @@ return [
     'input.nbchambre'        =>'Nombre de chambre',
     'input.nbtoilette'        =>'Nombre de toilette',
     'input.nbgarage'        =>'Nombre de garage',
+    'input.nbetage'        =>"Nombre d'étage",
     'input.menuindustriel'        =>'Menu Industriel',
     'input.menucommercial'        =>'Menu Commercial',
 

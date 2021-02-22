@@ -2,7 +2,7 @@
     <div class="col-md-6 col-lg-4 m-15px-tb">
         <div class="price-table-01 active">
             <div class="pt-head">
-                <p class="white-color font-15"><span>$</span>{{number_format($product->price, 0, '.', ' ')}}</p>
+                <p class="white-color font-15"><span>$</span> {{number_format($product->price, 0, '.', ' ')}}</p>
                 <i class="fas fa-check"></i>
             </div>
             <div class="pt-body">
@@ -19,7 +19,7 @@
     <div class="col-md-6 col-lg-4 m-15px-tb">
         <div class="price-table-01">
             <div class="pt-head">
-                <p class="white-color font-15"><span>$</span>{{number_format($product->price, 0, '.', ' ')}}</p>
+                <p class="white-color font-15"><span>$</span> {{number_format($product->price, 0, '.', ' ')}}</p>
             </div>
             <div class="pt-body">
                 <a href="{{route('product.index',['product'=>$product->slug])}}">
@@ -59,7 +59,7 @@
                 </div>
                 <div class="media-body p-10px-l">
                     <h6 class="font-w-600 m-0px">{{$product->title}}</h6>
-                    <span class="font-small body-color"><span>$</span>{{number_format($product->price, 0, '.', ' ')}}</span>
+                    <span class="font-small body-color"><span>$</span> {{number_format($product->price, 0, '.', ' ')}}</span>
                 </div>
             </a>
         </div>
@@ -73,7 +73,7 @@
                 </div>
 	            <div class="media-body p-15px-l">
 	                <h6 class="m-0px">{{$product->title}}</h6>
-	                <p class="m-0px"><span>$</span>{{number_format($product->price, 0, '.', ' ')}}</p>
+	                <p class="m-0px"><span>$</span> {{number_format($product->price, 0, '.', ' ')}}</p>
 	            </div>
 	        </div>
 	    </div>
@@ -82,7 +82,7 @@
 	<div class="col-sm-6 m-15px-tb">
         <div class="card p-15px">
             <div class="media align-items-center">
-                <p>Aucune données à afficher</p>
+                <p>@lang('app.txt.nodata')</p>
             </div>
         </div>
     </div>

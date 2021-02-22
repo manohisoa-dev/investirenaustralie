@@ -60,32 +60,29 @@ if(Request::segment(2) != ''){
 
         <div class="collapse" id="collapseSearch">
           <div class="card card-body">
-            <div class="search-toggle tab-content m-100px-l p-15px-tb">
-                <a class="m-btn m-btn-theme m-100px-l" data-toggle="collapse" href="#residentiel" role="button" aria-expanded="false" aria-controls="residentiel">
+            <div class="search-toggle tab-content p-15px-tb row col-lg-12" style="margin:auto;">
+                <a class="m-btn m-btn-theme col-lg-3 col-md-12 border" data-toggle="collapse" href="#residentiel" role="button" aria-expanded="false" aria-controls="residentiel">
                 <i class="fa fa-home" aria-hidden="true">&nbsp;@lang('app.btn.residentiel')</i></a>
-                <a class="m-btn m-btn-theme m-10px-l" data-toggle="collapse" href="#foncier" role="button" aria-expanded="false" aria-controls="foncier">
+                <a class="m-btn m-btn-theme col-lg-3 col-md-12 border" data-toggle="collapse" href="#foncier" role="button" aria-expanded="false" aria-controls="foncier">
                 <i class="fas fa-map" aria-hidden="true">&nbsp;@lang('app.btn.foncier')</i></a>
-                <a class="m-btn m-btn-theme m-10px-l" data-toggle="collapse" href="#industriel" role="button" aria-expanded="false" aria-controls="industriel">
+                <a class="m-btn m-btn-theme col-lg-3 col-md-12 border" data-toggle="collapse" href="#industriel" role="button" aria-expanded="false" aria-controls="industriel">
                 <i class="fa fa-industry" aria-hidden="true">&nbsp;@lang('app.btn.industriel')</i></a>
-                <a class="m-btn m-btn-theme m-10px-l" data-toggle="collapse" href="#commercial" role="button" aria-expanded="false" aria-controls="commercial">
+                <a class="m-btn m-btn-theme col-lg-3 col-md-12 border" data-toggle="collapse" href="#commercial" role="button" aria-expanded="false" aria-controls="commercial">
                 <i class="fa fa-building" aria-hidden="true">&nbsp;@lang('app.btn.commercial')</i></a>
             </div>
             <!-- residentiel -->
-            <div class="collapse m-150px-lr p-25px-tb" id="residentiel">
+            <div class="collapse m-20px-l p-25px-tb" id="residentiel">
                 <div class="col-lg-12 row">
                     <div class="form-group mar-r-20 col-lg-6">
                         <select id="basic" class="form-control" name="type">
-                            <option value="">@lang('app.input.type')</option>
-                            @if(isset($types))
-                                @foreach($types as $type)
-                                    <option value="{{$type->id}}">{{$type->title.' ('.$type->products()->where('products.status', 'published')->count().')'}}</option>
-                                @endforeach
-                            @endif
+                            <option value="" selected disabled>@lang('app.input.type')</option>
+                            <option value="residentiel">@lang('app.txt.residentiel')</option>
+                            <option value="foncier">@lang('app.txt.foncier')</option>
                         </select>
                     </div>
                     <div class="form-group mar-r-20 col-lg-6">
                         <select id="basic" class="form-control" name="location_type">
-                            <option value="">@lang('app.input.localisation')</option>
+                            <option value="" selected disabled>@lang('app.input.localisation')</option>
                             @if(isset($locationTypes))
                                 @foreach($locationTypes as $locationType)
                                     <option value="{{$locationType->id}}">{{$locationType->title.' ('.$locationType->products()->where('products.status', 'published')->count().')'}}</option>
@@ -94,7 +91,7 @@ if(Request::segment(2) != ''){
                         </select>
                     </div>
                 </div>
-                
+
                 <div class="col-lg-12 row">
                     <div class="form-group mar-r-20 col-lg-6">
                         <label for="price-range">@lang('app.input.prix') ( Australia Dollar AUD ) :</label>
@@ -123,7 +120,7 @@ if(Request::segment(2) != ''){
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-lg-12 row">
                     <div class="form-group mar-r-20 col-lg-6">
                         <label for="bathrooms">@lang('app.input.nbsalledebain') :</label>
@@ -155,15 +152,15 @@ if(Request::segment(2) != ''){
 
                 <div class="col-lg-12 row">
                     <div class="form-group mar-r-20 col-lg-6">
-                        <label for="toillet">@lang('app.input.nbtoilette') :</label>
-                        <div class="pmd-range-slider" id="toillet"></div>
+                        <label for="etage">@lang('app.input.nbetage') :</label>
+                        <div class="pmd-range-slider" id="etage"></div>
                         <!-- Values -->                                     
                         <div class="row">
                             <div class="range-value col-sm-6 col-6">
-                                <b><span id="toillet-value-min"></span></b>
+                                <b><span id="etage-value-min"></span></b>
                             </div>
                             <div class="range-value col-sm-6 col-6 text-right">
-                                <b><span id="toillet-value-max"></span></b>
+                                <b><span id="etage-value-max"></span></b>
                             </div>
                         </div>
                     </div>
@@ -185,7 +182,7 @@ if(Request::segment(2) != ''){
             <!-- fin residentiel -->
 
             <!-- foncier --> 
-            <div class="collapse m-100px-l p-25px-tb" id="foncier">
+            <div class="collapse m-20px-l p-25px-tb" id="foncier">
                 <div class="col-lg-12 row">
                     <div class="form-group mar-r-20 col-lg-6">
                         <label for="prix">@lang('app.input.prix') ( Australia Dollar AUD ) :</label>
@@ -287,12 +284,12 @@ if(Request::segment(2) != ''){
         // price range slider
         var priceRange = document.getElementById('price-range1');
         noUiSlider.create(priceRange, {
-            start: [100000, 10000000],
+            start: [{{ $min_price_residentiel }}, {{ $max_price_residentiel }}],
             connect: true,
             tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
             range: {
-                'min': 100000,
-                'max': 10000000
+                'min': {{ $min_price_residentiel }},
+                'max': {{ $max_price_residentiel }}
             },
                 format: wNumb({
                 decimals: 0,
@@ -317,12 +314,12 @@ if(Request::segment(2) != ''){
         // property geo range slider
         var propertyGeo = document.getElementById('property-geo');
         noUiSlider.create(propertyGeo, {
-            start: [50, 450],
+            start: [{{ $min_land_area_residentiel }}, {{ $max_land_area_residentiel }}],
             connect: true,
             tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
             range: {
-                'min': 50,
-                'max': 1000
+                'min': {{ $min_land_area_residentiel }},
+                'max': {{ $max_land_area_residentiel }}
             },
                 format: wNumb({
                 decimals: 0,
@@ -347,12 +344,12 @@ if(Request::segment(2) != ''){
         // bathrooms range slider
         var bathrooms = document.getElementById('bathrooms');
         noUiSlider.create(bathrooms, {
-            start: [2, 5],
+            start: [{{ $min_bathrooms_residentiel }}, {{ $max_bathrooms_residentiel }}],
             connect: true,
             tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
             range: {
-                'min': 1,
-                'max': 10
+                'min': {{ $min_bathrooms_residentiel }},
+                'max': {{ $max_bathrooms_residentiel }}
             },
                 format: wNumb({
                 decimals: 0,
@@ -377,12 +374,12 @@ if(Request::segment(2) != ''){
         // bedrooms range slider
         var bedrooms = document.getElementById('bedrooms');
         noUiSlider.create(bedrooms, {
-            start: [2, 5],
+            start: [{{ $min_bedrooms_residentiel }}, {{ $max_bedrooms_residentiel }}],
             connect: true,
             tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
             range: {
-                'min': 1,
-                'max': 10
+                'min': {{ $min_bedrooms_residentiel }},
+                'max': {{ $max_bedrooms_residentiel }}
             },
                 format: wNumb({
                 decimals: 0,
@@ -404,15 +401,15 @@ if(Request::segment(2) != ''){
         }); 
         // fin bedrooms range slider
 
-        // toillet range slider
-        var toillet = document.getElementById('toillet');
-        noUiSlider.create(toillet, {
-            start: [2, 5],
+        // etage range slider
+        var etage = document.getElementById('etage');
+        noUiSlider.create(etage, {
+            start: [{{ $min_number_of_floors_residentiel }}, {{ $max_number_of_floors_residentiel }}],
             connect: true,
             tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
             range: {
-                'min': 1,
-                'max': 10
+                'min': {{ $min_number_of_floors_residentiel }},
+                'max': {{ $max_number_of_floors_residentiel }}
             },
                 format: wNumb({
                 decimals: 0,
@@ -421,28 +418,28 @@ if(Request::segment(2) != ''){
             }),
         }); 
 
-        var toilletValueMax = document.getElementById('toillet-value-max'),
-        toilletValueMin = document.getElementById('toillet-value-min');
+        var etageValueMax = document.getElementById('etage-value-max'),
+        etageValueMin = document.getElementById('etage-value-min');
     
         // When the slider value changes, update the input and span
-        toillet.noUiSlider.on('update', function( values, handle ) {
+        etage.noUiSlider.on('update', function( values, handle ) {
             if ( handle ) {
-                toilletValueMax.innerHTML = values[handle];
+                etageValueMax.innerHTML = values[handle];
             } else {
-                toilletValueMin.innerHTML = values[handle];
+                etageValueMin.innerHTML = values[handle];
             }
         }); 
-        // fin toillet range slider
+        // fin etage range slider
 
         // park range slider
         var park = document.getElementById('park');
         noUiSlider.create(park, {
-            start: [2, 5],
+            start: [{{ $min_garage_space_residentiel }}, {{ $max_garage_space_residentiel }}],
             connect: true,
             tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
             range: {
-                'min': 1,
-                'max': 10
+                'min': {{ $min_garage_space_residentiel }},
+                'max': {{ $max_garage_space_residentiel }}
             },
                 format: wNumb({
                 decimals: 0,
@@ -467,12 +464,12 @@ if(Request::segment(2) != ''){
         // prix slider
         var prix = document.getElementById('prix');
         noUiSlider.create(prix, {
-            start: [100000, 10000000],
+            start: [{{ $min_price_foncier }}, {{ $max_price_foncier }}],
             connect: true,
             tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
             range: {
-                'min': 100000,
-                'max': 10000000
+                'min': {{ $min_price_foncier }},
+                'max': {{ $max_price_foncier }}
             },
                 format: wNumb({
                 decimals: 0,
@@ -497,12 +494,12 @@ if(Request::segment(2) != ''){
         // superficie range slider
         var propertyGeo = document.getElementById('superficie');
         noUiSlider.create(superficie, {
-            start: [50, 450],
+            start: [{{ $min_land_area_foncier }}, {{ $max_land_area_foncier }}],
             connect: true,
             tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
             range: {
-                'min': 50,
-                'max': 1000
+                'min': {{ $min_land_area_foncier }},
+                'max': {{ $max_land_area_foncier }}
             },
                 format: wNumb({
                 decimals: 0,

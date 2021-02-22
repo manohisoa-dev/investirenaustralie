@@ -107,12 +107,12 @@
                   <div class="card gray-bg">
                       <div class="card-body">
                           <h4 class="m-30px-b">@lang('app.txt.product_location')</h4>
-                          <!-- <div id="map"></div> -->
-                          <div class="p-15px white-bg box-shadow">
+                          <div id="map"></div>
+                          {{-- <div class="p-15px white-bg box-shadow">
                             <div class="embed-responsive embed-responsive-21by9">
                                 <iframe class="embed-responsive-item" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3151.840107317064!2d144.955925!3d-37.817214!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb6899234e561db11!2sEnvato!5e0!3m2!1sen!2sin!4v1520156366883" allowfullscreen=""></iframe>
                             </div>
-                          </div>
+                          </div> --}}
                       </div>
                   </div>
                 </div>
@@ -149,72 +149,89 @@
 
 @endsection
     
-@section('script')
-<script>
-    var _map;
-    var _geocoder;
-    var _marker;
-    var _circle;
-    var _lat = {{isset($location)?$location->latitude:-25.647467468105795}};
-    var _long = {{isset($location)?$location->longitude:146.89921517372136}};
-    var _btnSubmit = document.getElementById("submit");
-    var _inputApl = document.getElementById("apl");
-    var _contentApl = document.getElementById("apl-content");
-    var _titleApl = document.getElementById("apl-title");
-    
-    var iconBase = "{{url('')}}";
-    var icons = {
-      user: {
-        icon: iconBase + '/images/map/user.png'
-      },
-      member: {
-        icon: iconBase + '/images/map/member.png'
-      },
-      apl: {
-        icon: iconBase + '/images/map/apl.png'
-      },
-      afa: {
-        icon: iconBase + '/images/map/afa.png'
-      },
-      product: {
-        icon: iconBase + '/images/map/product.png'
-      }
-    };
-    
-    var data = {!!(isset($data) ? $data : '')!!};
-    
-    function initMap() {
-        
-        _map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: _lat, lng:  _long},
-            zoom: 10
-        });
-        
-        _marker = new google.maps.Marker({
-          position: {lat: _lat, lng: _long},
-          icon: icons['product'].icon,
-          map: _map,
-          title: data.title
-        });
-
-        _marker.addListener('dragend', function() {
-             var lat = _marker.getPosition().lat();
-             var lng = _marker.getPosition().lng();
-        });
-        
-        _circle = new google.maps.Circle({
-          strokeColor: '#358bbc',
-          strokeOpacity: 0.8,
-          strokeWeight: 2,
-          fillColor: '#358bbc',
-          fillOpacity: 0.35,
-          map: _map,
-          center: {lat:parseFloat(data.lat), lng:parseFloat(data.lng)},
-          radius: data.area
-        });
-    
+@push('script')
+  <style>
+    #map{
+      height: 25rem;
     }
+  </style>
+  <script>
+      $('#apl-form-modal').submit(function(event){
+          if($('#check-confirm-modal').is(":checked"))
+          {
+              $('.row-confirm-modal').removeClass('hidden');
+          }
+          else{
+            alert('Veuillez accepter les termes et les conditions APL !');
+            event.preventDefault();
+          }
+      });
+  </script>
+  <script>
+      var _map;
+      var _geocoder;
+      var _marker;
+      var _circle;
+      var _lat = {{isset($location)?$location->latitude:-25.647467468105795}};
+      var _long = {{isset($location)?$location->longitude:146.89921517372136}};
+      var _btnSubmit = document.getElementById("submit");
+      var _inputApl = document.getElementById("apl");
+      var _contentApl = document.getElementById("apl-content");
+      var _titleApl = document.getElementById("apl-title");
+      
+      var iconBase = "{{url('')}}";
+      var icons = {
+        user: {
+          icon: iconBase + '/images/map/user.png'
+        },
+        member: {
+          icon: iconBase + '/images/map/member.png'
+        },
+        apl: {
+          icon: iconBase + '/images/map/apl.png'
+        },
+        afa: {
+          icon: iconBase + '/images/map/afa.png'
+        },
+        product: {
+          icon: iconBase + '/images/map/product.png'
+        }
+      };
+      
+      var data = {!!(isset($data) ? $data : '')!!};
+      
+      function initMap() {
+          
+          _map = new google.maps.Map(document.getElementById('map'), {
+              center: {lat: _lat, lng:  _long},
+              zoom: 10
+          });
+          
+          _marker = new google.maps.Marker({
+            position: {lat: _lat, lng: _long},
+            icon: icons['product'].icon,
+            map: _map,
+            title: data.title
+          });
 
-</script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtRuDbjjrHacZ6EqZySofNueLBLkrNxwI&callback=initMap"></script>
-@endsection
+          _marker.addListener('dragend', function() {
+              var lat = _marker.getPosition().lat();
+              var lng = _marker.getPosition().lng();
+          });
+          
+          _circle = new google.maps.Circle({
+            strokeColor: '#358bbc',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#358bbc',
+            fillOpacity: 0.35,
+            map: _map,
+            center: {lat:parseFloat(data.lat), lng:parseFloat(data.lng)},
+            radius: data.area
+          });
+      
+      }
+
+  </script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA&callback=initMap"></script>
+@endpush

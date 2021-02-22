@@ -156,6 +156,7 @@ return [
     'input.nbchambre'        =>'Room number',
     'input.nbtoilette'        =>'Number of toilets',
     'input.nbgarage'        =>'Number of garage',
+    'input.nbetage'        =>"Number of floors",
     'input.menuindustriel'        =>'Industrial menu',
     'input.menuindustriel.content'        =>'Waiting for information from Agentpoint',
     'input.menucommercial'        =>'Commercial menu',
@@ -357,6 +358,7 @@ return [
     'txt.TAS'    => 'Tasmania',
     'txt.VIC'    => 'Victoria',
     'txt.WA'    => 'Western Australia',
+    'txt.nodata'    => 'No data to display',
 
     'table.title'  => "Title",
     'table.titles'  => "Titles",
