@@ -35,16 +35,28 @@
                 <h5>Ajouter un nouveau Pub</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-validation form-padding" action="{{ route('admin.pub.store') }}" method="post" enctype="multipart/form-data">
-
+                <form class="form-validation form-padding" id="pubForm" action="{{ route('admin.pub.store') }}" method="post" enctype="multipart/form-data">
                     {{ csrf_field() }}
-                                                        
-                    {!! \Nvd\Crud\Form::input('title','text')->show() !!}                                            
                     <div class="form-group">
-						<label for="content">Content</label>
+						<label for="links">@lang('app.admin.title')</label>
+						<input name="title" id="title" class="form-control" type="text" value="">
+					</div>    
+					<div class="form-group">
+						<label for="links">@lang('app.admin.link')</label>
+						<input name="links" id="links" class="form-control" type="text" value="">
+					</div>                                          
+                    <div class="form-group">
+						<label for="content">@lang('app.admin.content')</label>
 						<textarea name="content" id="content"></textarea>
-					</div>                                    
-                    {!! \Nvd\Crud\Form::input('links','text')->show() !!}    
+					</div>
+					<div class="form-group">
+						<label for="title">@lang('app.admin.page')</label>
+						<select class="form-control" name="page[]" id="page" multiple="multiple">
+							@foreach($pages as $page)
+								<option value="{{$page->id}}"> {{$page->title}}</option>
+							@endforeach
+						</select>
+					</div>
                     <div class="form-group">
 						<div class="row">
 							<div class="col-md-6">
@@ -69,7 +81,9 @@
 							</div>
 						</div>
 					</div>                                                               
-                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Créer</button>
+                    <button type="submit" class="btn btn-primary btn-lg">
+						<i class="fa fa-save"></i> @lang('app.btn.save')
+					</button>
 
                 </form>
             </div>
@@ -84,6 +98,32 @@
     <script>
         $(document).ready(function(){
             CKEDITOR.replace('content');
+			$("#page").select2();
+			
+			$('#pubForm').validate({
+				rules: {
+					title: {
+						required: true
+					},
+					links: {
+						required: true
+					},
+					content: {
+						required: true
+					}
+				},
+				messages: {
+					title: {
+						required: "@lang('app.txt.champobligatoire')"
+					},
+					links: {
+						required: "@lang('app.txt.champobligatoire')"
+					},
+					content: {
+						required: "@lang('app.txt.champobligatoire')"
+					}
+				}
+			});
         }) ;
     </script>
 @endsection
