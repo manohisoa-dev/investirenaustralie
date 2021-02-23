@@ -3,14 +3,14 @@
 @section('subcontent')
 
 <div class="col-lg-8 col-xl-9">
-    <div class="profile-content-area m-40px-tb card card-body">
+    {{-- <div class="profile-content-area m-40px-tb card card-body">
         <div class="form-group">
             <a href="{{route('profile.edit')}}" class="btn btn-info">Modifier Profile</a>
             <a href="{{route('avatar.edit')}}"  class="btn btn-warning">Modifier Avatar</a>
             <a href="{{route('password.edit')}}"  class="btn btn-success">Modifier Mot de passe</a>
             <a href="{{route('location.edit')}}" class="btn btn-info">Modifier Localisation</a>
         </div>
-    </div>
+    </div> --}}
     <div class="profile-content-area m-40px-tb card card-body">
         <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
         <h5>@lang('app.txt.logininfo')</h5>
@@ -29,7 +29,7 @@
                         </div>
                         <div class="media-body p-15px-l lh-normal">
                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.login') </div>
-                            <span>{{$item->name}}</span>
+                            <input type="text" class="form-controler" value="{{$item->name}}" name="name" id="name" disabled>
                         </div>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                         </div>
                         <div class="media-body p-15px-l lh-normal">
                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.email') </div>
-                            <a class="body-color" href="#">{{$item->email}}</a>
+                            <input type="text" name="email" id="email" class="form-controler" value="{{$item->email}}" disabled>
                         </div>
                     </div>
                 </div>
@@ -51,7 +51,7 @@
                         </div>
                         <div class="media-body p-15px-l lh-normal">
                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.typemembre')</div>
-                            <span>{{$item->type?$item->type:trans('app.txt.noinfo')}}</span>
+                            <input type="text" name="email" id="email" class="form-controler" value="{{$item->type?$item->type:trans('app.txt.noinfo')}}" disabled>
                         </div>
                     </div>
                 </div>
@@ -62,7 +62,11 @@
                         </div>
                         <div class="media-body p-15px-l lh-normal">
                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.langage') </div>
-                            <span>{{$item->language=='en'?'Anglais':'Français'}}</span>
+                            <select name="language" class="form-control" id="language">
+                                <option value="fr" {{$item->language=='fr'?'selected':''}}>Français</option>
+                                <option value="en" {{$item->language=='en'?'selected':''}}>English</option>
+                            </select>
+                            <span></span>
                         </div>
                     </div>
                 </div>
@@ -80,7 +84,8 @@
                         </div>
                         <div class="media-body p-15px-l lh-normal">
                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.login') </div>
-                            <span>{{$item->name}}</span>
+                            <input type="text" name="apl_name" id="apl_name" class="form-controler" value="{{$item->apl->name?$item->apl->name:trans('app.txt.noinfo')}}" disabled>
+                            <span></span>
                         </div>
                     </div>
                 </div>
@@ -91,7 +96,7 @@
                         </div>
                         <div class="media-body p-15px-l lh-normal">
                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.email') </div>
-                            <a class="body-color" href="#">{{$item->email}}</a>
+                            <input type="text" name="apl_email" id="apl_email" class="form-controler" value="{{$item->apl->email?$item->apl->email:trans('app.txt.noinfo')}}" disabled>
                         </div>
                     </div>
                 </div>
@@ -102,7 +107,7 @@
                         </div>
                         <div class="media-body p-15px-l lh-normal">
                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.typemembre')</div>
-                            <span>{{$item->type}}</span>
+                            <input type="text" name="apl_type" id="apl_type" class="form-controler" value="{{$item->apl->type?$item->apl->type:trans('app.txt.noinfo')}}" disabled>
                         </div>
                     </div>
                 </div>
@@ -121,7 +126,7 @@
                         </div>
                         <div class="media-body p-15px-l lh-normal">
                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.prenom') </div>
-                            <span>{{$item->get_meta('first_name')?$item->get_meta('first_name')->value:trans('app.txt.noinfo')}}</span>
+                            <input type="text" class="form-control" name="first_name" id="first_name" value="{{$item->get_meta('first_name')?$item->get_meta('first_name')->value:trans('app.txt.noinfo')}}" disabled>
                         </div>
                     </div>
                 </div>
@@ -132,7 +137,7 @@
                         </div>
                         <div class="media-body p-15px-l lh-normal">
                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.nom') </div>
-                            <a class="body-color" href="#">{{$item->get_meta('last_name')?$item->get_meta('last_name')->value:trans('app.txt.noinfo')}}</a>
+                            <input type="text" class="form-control" id="last_name" name="last_name" value="{{$item->get_meta('last_name')?$item->get_meta('last_name')->value:trans('app.txt.noinfo')}}" disabled>
                         </div>
                     </div>
                 </div>
@@ -143,7 +148,7 @@
                         </div>
                         <div class="media-body p-15px-l lh-normal">
                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.phone')</div>
-                            <span>{{$item->get_meta('phone')?$item->get_meta('phone')->value:trans('app.txt.noinfo')}}</span>
+                            <input type="text" class="form-control" value="{{$item->get_meta('phone')?$item->get_meta('phone')->value:trans('app.txt.noinfo')}}" name="phone" id="phone" disabled>
                         </div>
                     </div>
                 </div>
@@ -160,7 +165,7 @@
                         </div>
                         <div class="media-body p-15px-l lh-normal">
                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessname') </div>
-                            <span>{{$item->get_meta('orga_name')?$item->get_meta('orga_name')->value:trans('app.txt.noinfo')}}</span>
+                            <input type="text" class="form-control" name="orga_name" id="orga_name" value="{{$item->get_meta('orga_name')?$item->get_meta('orga_name')->value:trans('app.txt.noinfo')}}">
                         </div>
                     </div>
                 </div>
@@ -171,7 +176,7 @@
                         </div>
                         <div class="media-body p-15px-l lh-normal">
                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessemail') </div>
-                            <a class="body-color" href="#">{{$item->get_meta('last_name')?$item->get_meta('last_name')->value:trans('app.txt.noinfo')}}</a>
+                            <input type="text" class="form-control" name="orga_email" id="orga_email" value="{{$item->get_meta('orga_email')?$item->get_meta('orga_email')->value:trans('app.txt.noinfo')}}">
                         </div>
                     </div>
                 </div>
@@ -182,7 +187,18 @@
                         </div>
                         <div class="media-body p-15px-l lh-normal">
                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessphone')</div>
-                            <span>{{$item->get_meta('phone')?$item->get_meta('phone')->value:trans('app.txt.noinfo')}}</span>
+                            <input type="text" class="form-control" name="orga_phone" id="orga_phone" value="{{$item->get_meta('orga_phone')?$item->get_meta('orga_phone')->value:trans('app.txt.noinfo')}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 m-10px-tb">
+                    <div class="media">
+                        <div class="only-icon-20">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="media-body p-15px-l lh-normal">
+                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businesswebsite')</div>
+                            <input type="text" name="orga_website" id="orga_website" >
                         </div>
                     </div>
                 </div>

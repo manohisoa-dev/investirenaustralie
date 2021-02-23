@@ -52,7 +52,7 @@
 <!-- Section -->
 <div class="gray-bg">
     <div class="container m-60px-nt">
-        <div class="white-bg box-shadow-lg p-20px position-relative border-radius-5">
+        <div class="white-bg box-shadow-lg p-20px position-relative border-radius-0" style="margin-top:-155px;" >
             <div class="extra-menu d-flex align-items-center">
                 <button type="button" class="navbar-toggler collapsed " type="button" data-toggle="collapse" data-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch" style="height:3.1rem;margin-top:-0.3rem;">
                     <span class="icon-bar"></span>

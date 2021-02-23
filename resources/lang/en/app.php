@@ -359,6 +359,8 @@ return [
     'txt.VIC'    => 'Victoria',
     'txt.WA'    => 'Western Australia',
     'txt.nodata'    => 'No data to display',
+    'txt.businesswebsite'  => 'Web Site',
+    
 
     'table.title'  => "Title",
     'table.titles'  => "Titles",
