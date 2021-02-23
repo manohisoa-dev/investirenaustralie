@@ -2072,7 +2072,7 @@ mark {
 .effect-section {
   position: relative;
   overflow: hidden;
-  height: 35rem;
+  height: 42rem;
 }
 .effect-section .effect {
   pointer-events: none;
