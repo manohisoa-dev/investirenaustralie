@@ -308,6 +308,7 @@ return [
     'txt.champobligatoire'      =>"Required Field",
     'txt.inscrirenews'      =>"Subscribe to the newsletter",
     'txt.autorisation.commercial'      =>"I authorize the sharing and marketing of my information with the partners of the site www.investirenaustral.com.",
+    'txt.logo'      =>"Logo",
     'txt.logo.organisation'      =>"Organization logo",
     'txt.logo.organisation.libelle'      =>"Choose your organization's logo",
     'txt.nom.organisation'      =>"Organization name",
@@ -359,6 +360,10 @@ return [
     'txt.VIC'    => 'Victoria',
     'txt.WA'    => 'Western Australia',
     'txt.nodata'    => 'No data to display',
+    'txt.businesswebsite'  => 'Web Site',
+    'txt.stateoflegaloperation' => 'State of legal operation of your present office',
+    'txt.rangeofoperation' => 'Range of operation of your present office',
+    
 
     'table.title'  => "Title",
     'table.titles'  => "Titles",

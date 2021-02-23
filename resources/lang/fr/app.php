@@ -589,6 +589,7 @@ return [
     'txt.champobligatoire'      =>"Champ obligatoire",
     'txt.inscrirenews'      =>"M'inscrire à la Newsletter",
     'txt.autorisation.commercial'      =>"J'autorise le partage et la commercialisation de mes information avec les partenaires du site www.investirenaustralie.com.",
+    'txt.logo'      =>"Logo",
     'txt.logo.organisation'      =>"Logo de l'organisation",
     'txt.logo.organisation.libelle'      =>"Choisissez le logo de votre organisation",
     'txt.nom.organisation'      =>"Nom de l'organisation",
@@ -640,6 +641,8 @@ return [
     'txt.VIC'    => 'Victoria',
     'txt.WA'    => 'Australie Occidentale',
     'txt.nodata'    => 'Aucune données à afficher',
+    'txt.stateoflegaloperation' => 'État de fonctionnement légal de votre bureau actuel',
+    'txt.rangeofoperation' => "Gamme d'opérations de votre bureau actuel",
     
     
     
@@ -805,6 +808,7 @@ return [
     'txt.yourcomment' =>  'Votre Commentaire ?',
     'txt.saveinfo' =>  "Enregistrez mon nom, mon adresse e-mail et mon site Web dans ce navigateur pour la prochaine fois que je commenterai.",
     'txt.probleme.survenu' => "Oups! Un problème est survenu!",
+    'txt.businesswebsite'  => 'Site Web',
 
     'dernierprod'           =>'Derniers Produits',
     'dernierart'           =>'Derniers Articles',
