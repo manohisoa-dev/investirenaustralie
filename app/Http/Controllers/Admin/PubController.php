@@ -54,6 +54,17 @@ class PubController extends Controller {
         $pub->author_id = Auth::user()->id;
         $pub->save();
 
+        // Add Publicity to the selected page
+        if ($pages = $request->page) {
+            foreach ($pages as $pageId) {
+                $row = new PubPage();
+                $row->page_id = $pageId;
+                $row->pub_id = $pub->id;
+                $row->author_id = Auth::user()->id;
+                $row->save();
+            }
+        }
+
         # notification
         Notify::success('Pub a été créer avec succès');
         return redirect(route('admin.pub.index'));
