@@ -110,7 +110,9 @@
 										  {{str_limit(strip_tags($record->excerpt()),"100","...")}}
 									</span>
                                 </td>
-								<td><a href="#">{{$record->comments_count}}</a></td>
+								<td style="text-align:center">
+									<a href="#">{{count($record->comments)}}</a>
+								</td>
 								<td>
                                      <span class="editable"
                                           data-type="text"
@@ -155,14 +157,14 @@
 											<i class="fa fa-pencil-square-o"></i>
 										</a>&nbsp;&nbsp;
 										@if($record->status=='pinged' || $record->status=='archived')
-											<a href="#" class="btn btn-default btn-circle" title="@lang('app.btn.publish')">
+											<a href="{{route('admin.blog.publish', $record)}}" class="btn btn-default btn-circle" title="@lang('app.btn.publish')">
 												<i class="fa fa-check"></i>
 											</a>&nbsp;
-											<a href="#" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
+											<a href="{{route('admin.blog.trash', $record)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
 												<i class="fa fa-trash-o"></i>
 											</a>&nbsp;&nbsp;
 										 @elseif($record->status=='trashed')
-											<a href="#" class="btn btn-default btn-circle" title="Restore">
+											<a href="{{route('admin.blog.restore', $record)}}" class="btn btn-default btn-circle" title="Restore">
 												<i class="fa fa-window-restore"></i>
 											</a>&nbsp;&nbsp;
 										 @endif
@@ -170,14 +172,14 @@
 										 	<a href="{{route('admin.blog.archive',$record)}}" class="btn btn-default btn-circle" title="@lang('app.btn.archive')">
 												<i class="fa fa-archive"></i>
 											</a>&nbsp;&nbsp;
-											<a href="#" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
+											<a href="{{route('admin.blog.trash', $record)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
 												<i class="fa fa-trash-o"></i>
 											</a>&nbsp;&nbsp;
 										 @endif
 										{{ csrf_field() }}
 										{{ method_field('DELETE') }}
 										<button class="btn btn-default btn-circle"
-												onclick="return confirm('Vous �tes sur?')"
+												onclick="return confirm('Vous êtes sur?')"
 												type="submit" title="Suppression"><i class="fa fa-times text-danger"></i></button>
 									</form>
 									</td>

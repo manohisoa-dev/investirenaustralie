@@ -32,8 +32,7 @@
                 <h5>Mise à jour Blog : {{$blog->slug}}</h5>
             </div>
             <div class="ibox-content">
-                <form action="{{ route('admin.blog.index')}}/{{$blog->id}}" method="post">
-
+                <form action="{{ route('admin.blog.index')}}/{{$blog->id}}" id="formBlog" method="post" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     {{ method_field("PUT") }}
 					<div class="form-group">
@@ -66,24 +65,29 @@
 					</div>    
 					<div class="form-group">
 						<div class="row">
-							<div class="col-md-6">
+							<div class="col-md-8">
 								<div class="well well-nice inline">
 									<div class="fileupload fileupload-new" data-provides="fileupload">
-										<div class="fileupload-preview thumbnail" style="width: 200px; height: 120px;">
-											<img src="{{$blog->imageUrl()}}" style="width:100%">
-										</div>
-										<div> 
-											<span class="btn btn-file"> 
-												<span class="fileupload-new">@lang('app.admin.file.select')</span> 
-												<span class="fileupload-exists">@lang('app.admin.file.change')</span>
-												<input type="file" name="image" id="file">
-											</span> 
-											<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">@lang('app.admin.file.remove')</a>
+										<div class="row">
+											<div class="col-md-4">
+												<div class="fileupload-preview thumbnail">
+													<img src="{{$blog->imageUrl()}}" style="width:100% !important">
+												</div>
+												<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">@lang('app.admin.file.remove')</a>
+											</div>
+											<div class="col-md-8">
+												<div class="input-group">
+													<div class="custom-file">
+														<input id="inputGroupFile01" type="file" name="image" class="custom-file-input" accept="image/*">
+														<label class="custom-file-label" for="inputGroupFile01">@lang('app.admin.file.select')</label>														
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div class="col-md-6"></div>
+							<div class="col-md-4"></div>
 						</div>
 					</div>                                                                                                                                                 
                     <button type="submit" class="btn btn-primary btn-lg pull-right">
@@ -103,6 +107,25 @@
         $(document).ready(function(){
             CKEDITOR.replace('content');
 			$("#category").select2();
+			
+			$('#formBlog').validate({
+				rules: {
+					title: {
+						required: true
+					},
+					category: {
+						required: true
+					}
+				},
+				messages: {
+					title: {
+						required: "@lang('app.txt.champobligatoire')"
+					},
+					category: {
+						required: "@lang('app.txt.champobligatoire')"
+					}
+				}
+			});
         }) ;
     </script>
 @endsection

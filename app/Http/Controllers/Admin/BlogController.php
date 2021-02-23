@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Blog;
 use App\Models\Category;
+use App\Models\ObjectCategory;
+use App\Models\Image;
+use App\Models\Comment;
+use Auth;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -12,6 +16,7 @@ use Jleon\LaravelPnotify\Notify;
 
 class BlogController extends Controller {
     public $viewDir = "admin.blog";
+    protected $post_type = 'blog';
 
     public function index() {
         $records = Blog::findRequested();
@@ -36,12 +41,47 @@ class BlogController extends Controller {
      * @return  \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        $this->validate($request, Blog::validationRules());
-
-        Blog::create($request->all());
+        $this->middleware('auth');
+        $this->middleware('role:1');
+        
+        
+        //$this->validate($request, Blog::validationRules());
+        $blog = new Blog();
+        if($file=$request->file('image')){
+            $image = Image::storeAndSave($file);
+            $blog->image_id = $image->id;
+        }
+        $slug = $slugOriginal = generateSlug($request->title);
+        $i = 1;
+        while(Blog::where('slug', $slug)->exists()){
+            $slug = $slugOriginal + '-' + $i++;
+        }
+        
+        $blog->slug = $slug;
+        $blog->title = $request->title;
+        $blog->content = $request->content;
+        $blog->meta_tag = $request->meta_tag;
+        $blog->meta_description = $request->meta_description;
+        $blog->post_type = $this->post_type;
+        $blog->status = 'published';
+        $blog->save();
+        
+        // Add Blog to the selected category
+        if($categories = $request->category){
+            foreach($categories as $categoryId){
+                $row = new ObjectCategory();
+                $row->category_id = $categoryId;
+                $row->object_id = $blog->id;
+                $row->object_type = get_class($blog);
+                $row->author_id = Auth::user()->id;
+                $row->save();
+            }
+        }
+        
+        //Blog::create($request->all());
 
         # notification
-        Notify::success('Blog a été créer avec succès');
+        Notify::success("L'article a été bien enregistré.");
         return redirect(route('admin.blog.index'));
     }
 
@@ -85,9 +125,41 @@ class BlogController extends Controller {
             return "Record updated";
         }
 
-        $this->validate($request, Blog::validationRules());
+        if ($file = $request->file('image')) {
+            $image = Image::storeAndSave($file);
+            $blog->image_id = $image->id;
+        }
 
-        $blog->update($request->all());
+        $slug = $slugOriginal = generateSlug($request->title);
+        $i = 1;
+        while (Blog::where('slug', $slug)->where('id', '<>', $blog->id)->exists()) {
+            $slug = $slugOriginal + '-' + $i++;
+        }
+
+        $blog->slug = $slug;
+        $blog->title = $request->title;
+        $blog->content = $request->content;
+        $blog->meta_tag = $request->meta_tag;
+        $blog->meta_description = $request->meta_description;
+        $blog->post_type = $this->post_type;
+        $blog->status = 'published';
+        $blog->save();
+
+        // Delete Old Category
+        ObjectCategory::where('object_id', '=', $blog->id)->where('object_type', '=',
+            get_class($blog))->delete();
+            
+        // Add Blog to the selected category
+        if($categories = $request->category){
+            foreach($categories as $categoryId){
+                $row = new ObjectCategory();
+                $row->category_id = $categoryId;
+                $row->object_id = $blog->id;
+                $row->object_type = get_class($blog);
+                $row->author_id = Auth::user()->id;
+                $row->save();
+            }
+        }
 
         # notification
         Notify::success('Blog a été mise à jour avec succès');
@@ -100,6 +172,9 @@ class BlogController extends Controller {
      * @return  \Illuminate\Http\Response
      */
     public function destroy(Request $request, Blog $blog) {
+        $this->middleware('auth');
+        $this->middleware('role:1');
+        
         $blog->delete();
 
         # notification
@@ -119,20 +194,70 @@ class BlogController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function archive(Request $request, Blog $blog) {
-        $requestData = json_decode($request->getContent(), true);
-        dd($blog);
+        $this->middleware('auth');
+        $this->middleware('role:1');
+
         $blog->status = "archived";
         $blog->save();
         Notify::success('L\'article a été achivé avec succés');
         return redirect(route('admin.blog.index'));
-        /*$this->middleware('auth');
-        $this->middleware('role:admin');
+    }
+    
+    /**
+    * Publish Blog
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @param  \App\Models\Blog  $blog
+    * @return \Illuminate\Http\Response
+    */
+    public function publish(Request $request,Blog $blog)
+    {
+        $this->middleware('auth');
+        $this->middleware('role:1');
 
-        $blog->status = "archived";
+        $blog->status = "published";
         $blog->save();
-        # notification
-        Notify::success('L\'article a été achivé avec succés');
-        return redirect(route('v2.admin.blog.index'));*/
+        
+        Notify::success("L'article a été publié avec succés");
+        return redirect(route('admin.blog.index'));
+    }
+    
+    /**
+    * Trash Blog
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @param  \App\Models\Blog  $blog
+    * @return \Illuminate\Http\Response
+    */
+    public function trash(Request $request,Blog $blog)
+    {
+        $this->middleware('auth');
+        $this->middleware('role:1');
+
+        $blog->status = "trashed";
+        $blog->save();
+        
+        Notify::success("L'article a été ajouté aux corbeilles avec succés");
+        return redirect(route('admin.blog.index'));
+    }
+    
+    /**
+    * Restore Blog
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @param  \App\Models\Blog  $blog
+    * @return \Illuminate\Http\Response
+    */
+    public function restore(Request $request,Blog $blog)
+    {
+        $this->middleware('auth');
+        $this->middleware('role:1');
+
+        $blog->status = "pinged";
+        $blog->save();
+        
+        Notify::success("L'article a été restoré avec succés");
+        return redirect(route('admin.blog.index'));
     }
 
 }

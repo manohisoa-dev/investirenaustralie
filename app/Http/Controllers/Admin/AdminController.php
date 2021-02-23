@@ -71,7 +71,7 @@ class AdminController extends Controller
         $recent['mails'] = Mail::orderBy('created_at', 'desc')
             ->take($this->recentSize)
             ->get();
-
+        
         return view('admin.dashboard.index')
             ->with('recent', $recent)
             ->with('count', $count)

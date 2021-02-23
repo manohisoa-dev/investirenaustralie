@@ -32,21 +32,30 @@
                 <h5>Ajouter un nouveau Blog</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-validation form-padding" action="{{ route('admin.blog.store') }}" method="post">
+                <form class="form-validation form-padding" action="{{ route('admin.blog.store') }}" id="formBlog" method="post" enctype="multipart/form-data">
 
                     {{ csrf_field() }}
                                                         
-                    <!--{!! \Nvd\Crud\Form::input('slug','text')->show() !!}
-					{!! \Nvd\Crud\Form::input('view_count','text')->show() !!}
-					{!! \Nvd\Crud\Form::input('status','text')->show() !!}
-					{!! \Nvd\Crud\Form::input('starred','text')->show() !!}
-					{!! \Nvd\Crud\Form::input('author_id','text')->show() !!}
-					{!! \Nvd\Crud\Form::input('post_type','text')->show() !!}-->
-                                            
-                    {!! \Nvd\Crud\Form::input('title','text')->show() !!}                                            
-                    {!! \Nvd\Crud\Form::input('content','text')->show() !!}                                            
-                    {!! \Nvd\Crud\Form::input('meta_tag','text')->show() !!}                                            
-                    {!! \Nvd\Crud\Form::input('meta_description','text')->show() !!}   
+                    <div class="form-group">
+						<label for="title">@lang('app.admin.title')</label>
+						<input name="title" id="title" class="form-control" type="text">
+					</div> 
+					<div class="form-group">
+						<label for="title">@lang('app.admin.content')</label>
+						<textarea id="ckeditor" class="form-control" name="content" placeholder="@lang('app.admin.content.desc')"></textarea>
+					</div>
+					<div class="form-group">
+						<div class="row">
+							<div class="col-md-6">  
+								<label for="title">@lang('app.admin.metatag')</label>
+								<textarea class="form-control" style="height: 120px" name="meta_tag" placeholder="@lang('app.admin.metatag.desc')"></textarea>
+							</div>
+							<div class="col-md-6">  
+								<label for="title">@lang('app.admin.metadesc')</label>
+								<textarea id="wysiBooEditor" class="form-control" style="height: 120px" name="meta_description" placeholder="@lang('app.admin.metadesc.desc')"></textarea>
+							</div>
+						</div>
+					</div> 
 					<div class="form-group">
 						<label>@lang('app.admin.category')</label> 
 						<select class="form-control" name="category[]" id="category" multiple="multiple">
@@ -54,11 +63,32 @@
 								<option value="{{$category->id}}"> {{$category->title}}</option>
 							@endforeach
 						</select>
-					</div>                 
-					{!! \Nvd\Crud\Form::input('image_id','file')->show() !!}  
+					</div>
+					<div class="form-group">
+						<div class="well well-nice">
+							<div class="fileupload fileupload-new" data-provides="fileupload">
+								<div class="row">									
+									<div class="col-md-8">
+										<label>@lang('app.admin.file.select')</label> 
+										<div class="input-group">
+											<div class="custom-file">
+												<label class="custom-file-label" for="inputGroupFile01">@lang('app.admin.file.select')</label>	
+												<input id="inputGroupFile01" type="file" name="image" class="custom-file-input" accept="image/*">																									
+											</div>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="fileupload-preview thumbnail"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>            
 					<div class="hr-line-dashed"></div>
-                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Créer</button>
-
+                    <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-save"></i> @lang('app.btn.save')</button>
+					<a href="{{ route('admin.blog.index') }}" class="btn btn-outline btn-default btn-lg pull-right" type="submit">
+						<i class="fa fa-chevron-circle-left"></i> @lang('app.btn.back')
+					</a>
                 </form>
             </div>
         </div>
@@ -68,12 +98,44 @@
 @endsection
 @section('custom-script')
     <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
-
+	<script src="{{asset('administrator/plugins/bootstrap-fileupload/js/bootstrap-fileupload.js')}}"></script>
     <script>
         $(document).ready(function(){
             CKEDITOR.replace( 'content' );
-			CKEDITOR.replace( 'meta_description' );
 			$("#category").select2();
-        }) ;
+			
+			$('#formBlog').validate({
+			    ignore: [],
+				rules: {
+					title: {
+						required: true
+					},
+					"category[]": {
+						required: true
+					},
+					image: {
+						required: true
+					}
+				},
+				messages: {
+					title: {
+						required: "@lang('app.txt.champobligatoire')"
+					},
+					"category[]": {
+						required: "@lang('app.txt.champobligatoire')"
+					},
+					image: {
+						required: "@lang('app.txt.champobligatoire')"
+					}
+				},
+				errorPlacement: function ( error, element ) {
+					if(element.parent().hasClass('input-group')){
+						error.insertBefore( element.parent() );
+					}else{
+						error.insertAfter( element );
+					}
+				},
+			});
+        });
     </script>
 @endsection
