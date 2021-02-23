@@ -97,7 +97,71 @@ class ShopController extends Controller
                 ->where('users.role','=','4')
                 ->groupBy('localizations.locality')
                 ->get();
+                
+        $min_price_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->min('price');
+
+        $max_price_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->max('price');
         
+        $min_land_area_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->min('land_area');
+
+        $max_land_area_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->max('land_area');
+        
+        $min_garage_space_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->min('garage_spaces');
+
+        $max_garage_space_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->max('garage_spaces');
+
+        $min_bathrooms_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->min('bathrooms');
+
+        $max_bathrooms_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->max('bathrooms');
+
+        $min_bedrooms_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->min('bedrooms');
+
+        $max_bedrooms_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->max('bedrooms');
+        
+        $min_number_of_floors_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->min('number_of_floors');
+
+        $max_number_of_floors_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->max('number_of_floors');
+        
+        $min_price_foncier = Product::groupBy('category_id')
+            ->where('category_id','=',2)
+            ->min('price');
+
+        $max_price_foncier = Product::groupBy('category_id')
+            ->where('category_id','=',2)
+            ->max('price');
+        
+        $min_land_area_foncier = Product::groupBy('category_id')
+            ->where('category_id','=',2)
+            ->min('land_area');
+
+        $max_land_area_foncier = Product::groupBy('category_id')
+            ->where('category_id','=',2)
+            ->max('land_area');
+
         return view('shop.index')
             ->with('items', $items)
             ->with('search', $search)
@@ -112,6 +176,22 @@ class ShopController extends Controller
             ->with('states', $states)
             ->with('category', $category)
             ->with('lapls', $lapls)
+            ->with('min_price_residentiel',$min_price_residentiel)
+            ->with('max_price_residentiel',$max_price_residentiel)
+            ->with('min_land_area_residentiel',$min_land_area_residentiel)
+            ->with('max_land_area_residentiel',$max_land_area_residentiel)
+            ->with('min_garage_space_residentiel',$min_garage_space_residentiel)
+            ->with('max_garage_space_residentiel',$max_garage_space_residentiel)
+            ->with('min_bathrooms_residentiel',$min_bathrooms_residentiel)
+            ->with('max_bathrooms_residentiel',$max_bathrooms_residentiel)
+            ->with('min_bedrooms_residentiel',$min_bedrooms_residentiel)
+            ->with('max_bedrooms_residentiel',$max_bedrooms_residentiel)
+            ->with('min_number_of_floors_residentiel',$min_number_of_floors_residentiel)
+            ->with('max_number_of_floors_residentiel',$max_number_of_floors_residentiel)
+            ->with('min_price_foncier',$min_price_foncier)
+            ->with('max_price_foncier',$max_price_foncier)
+            ->with('min_land_area_foncier',$min_land_area_foncier)
+            ->with('max_land_area_foncier',$max_land_area_foncier)
             ->with('categories', $categories); 
     }
     

@@ -629,6 +629,17 @@ return [
     'txt.yourcomment'      =>"Votre Commentaire",
     'txt.pub.comment.success'      =>"Votre commentaire a été publié avec succès.",
     'txt.search'    => 'Recherche',
+    'txt.resultat'    => 'Résultat',
+    'txt.resultats'    => 'Résultats',
+    'txt.ACT'    => 'Territoire de la Capitale Australienne',
+    'txt.NSW'    => 'Nouvelle Galles du Sud',
+    'txt.NT'    => 'Territoire du Nord',
+    'txt.QLD'    => 'Queensland',
+    'txt.SA'    => 'Australie du Sud',
+    'txt.TAS'    => 'Tasmanie',
+    'txt.VIC'    => 'Victoria',
+    'txt.WA'    => 'Australie Occidentale',
+    'txt.nodata'    => 'Aucune données à afficher',
     
     
     
@@ -761,6 +772,7 @@ return [
     'input.nbchambre'        =>'Nombre de chambre',
     'input.nbtoilette'        =>'Nombre de toilette',
     'input.nbgarage'        =>'Nombre de garage',
+    'input.nbetage'        =>"Nombre d'étage",
     'input.menuindustriel'        =>'Menu Industriel',
     'input.menucommercial'        =>'Menu Commercial',
 

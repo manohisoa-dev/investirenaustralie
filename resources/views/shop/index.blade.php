@@ -2,7 +2,42 @@
 
 @section('content')
 
-@component('includes.breadcrumb2', $category->slug ? ['cat'=>$category->slug] : ['cat'=>'shop'])
+@component('includes.breadcrumb2', 
+    $category->slug ? [
+        'cat'=>$category->slug,
+        'max_price_residentiel'=>$max_price_residentiel,
+        'min_price_residentiel'=>$min_price_residentiel,
+        'min_land_area_residentiel'=>$min_land_area_residentiel,
+        'max_land_area_residentiel'=>$max_land_area_residentiel,
+        'min_garage_space_residentiel'=>$min_garage_space_residentiel,
+        'max_garage_space_residentiel'=>$max_garage_space_residentiel,
+        'min_bathrooms_residentiel'=>$min_bathrooms_residentiel,
+        'max_bathrooms_residentiel'=>$max_bathrooms_residentiel,
+        'min_bedrooms_residentiel'=>$min_bedrooms_residentiel,
+        'max_bedrooms_residentiel'=>$max_bedrooms_residentiel,
+        'min_number_of_floors_residentiel'=>$min_number_of_floors_residentiel,
+        'max_number_of_floors_residentiel'=>$max_number_of_floors_residentiel,
+        'min_price_foncier'=>$min_price_foncier,
+        'max_price_foncier'=>$max_price_foncier,
+        'min_land_area_foncier'=>$min_land_area_foncier,
+        'max_land_area_foncier'=>$max_land_area_foncier,] 
+        : [
+        'cat'=>'shop','max_price_residentiel'=>$max_price_residentiel,
+        'min_price_residentiel'=>$min_price_residentiel,
+        'min_land_area_residentiel'=>$min_land_area_residentiel,
+        'max_land_area_residentiel'=>$max_land_area_residentiel,
+        'min_garage_space_residentiel'=>$min_garage_space_residentiel,
+        'max_garage_space_residentiel'=>$max_garage_space_residentiel,
+        'min_bathrooms_residentiel'=>$min_bathrooms_residentiel,
+        'max_bathrooms_residentiel'=>$max_bathrooms_residentiel,
+        'min_bedrooms_residentiel'=>$min_bedrooms_residentiel,
+        'max_bedrooms_residentiel'=>$max_bedrooms_residentiel,
+        'min_number_of_floors_residentiel'=>$min_number_of_floors_residentiel,
+        'max_number_of_floors_residentiel'=>$max_number_of_floors_residentiel,
+        'min_price_foncier'=>$min_price_foncier,
+        'max_price_foncier'=>$max_price_foncier,
+        'min_land_area_foncier'=>$min_land_area_foncier,
+        'max_land_area_foncier'=>$max_land_area_foncier,])
     @lang('all_products')
 @endcomponent
 
