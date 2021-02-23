@@ -2,7 +2,7 @@
 {{-- <section id="home" class="effect-section parallax" style="background-image: url({{ asset('images/slider/1.jpg') }});height: 42rem;">
 </section> --}}
 
-<section id="home" class="effect-section parallax">
+<section id="home" class="effect-section parallax" >
     <!--Carousel Wrapper-->
     <div id="carousel-example-1z" class="carousel slide carousel-fade" data-ride="carousel" style="z-index: 0;">
         <!--Indicators-->
@@ -52,7 +52,7 @@
 <!-- Section -->
 <div class="gray-bg">
     <div class="container m-60px-nt">
-        <div class="white-bg box-shadow-lg p-20px position-relative border-radius-0" style="margin-top:-155px;" >
+        <div class="white-bg box-shadow-lg p-20px position-relative border-radius-0" >
             <div class="extra-menu d-flex align-items-center">
                 <button type="button" class="navbar-toggler collapsed " type="button" data-toggle="collapse" data-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch" style="height:3.1rem;margin-top:-0.3rem;">
                     <span class="icon-bar"></span>
@@ -92,8 +92,11 @@
                     <div class="form-group mar-r-20 col-lg-6">
                         <select id="basic" class="form-control" name="type">
                             <option value="" selected disabled>@lang('app.input.type')</option>
-                            <option value="residentiel">@lang('app.txt.residentiel')</option>
-                            <option value="foncier">@lang('app.txt.foncier')</option>
+                            @if(isset($types))
+                                @foreach($types as $type)
+                                    <option value="{{$type->id}}">{{$type->title.' ('.$type->products()->where('products.status', 'published')->count().')'}}</option>
+                                @endforeach
+                            @endif
                         </select>
                     </div>
                     <div class="form-group mar-r-20 col-lg-6">

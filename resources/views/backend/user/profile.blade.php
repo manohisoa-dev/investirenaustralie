@@ -198,7 +198,7 @@
                         </div>
                         <div class="media-body p-15px-l lh-normal">
                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businesswebsite')</div>
-                            <input type="text" name="orga_website" id="orga_website" >
+                            <input type="text" class="form-control" name="orga_website" value="{{$item->get_meta('orga_website')?$item->get_meta('orga_website')->value:trans('app.txt.noinfo')}}">
                         </div>
                     </div>
                 </div>
@@ -209,7 +209,49 @@
                         </div>
                         <div class="media-body p-15px-l lh-normal">
                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businesspresentation')</div>
-                            <p>{{$item->get_meta('orga_presentation')?$item->get_meta('orga_presentation')->value:trans('app.txt.noinfo')}}</p>
+                            <input type="text" name="orga_presentation" id="orga_presentation" class="form-control" value="{{$item->get_meta('orga_presentation')?$item->get_meta('orga_presentation')->value:trans('app.txt.noinfo')}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 m-10px-tb">
+                    <div class="media">
+                        <div class="only-icon-20">
+                            <i class="fas fa-icon"></i>
+                        </div>
+                        <div class="media-body p-15px-l lh-normal">
+                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.logo')</div>
+                            <input type="file" class="form-control" id="image" name="image" >
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 m-10px-tb">
+                    <div class="media">
+                        <div class="only-icon-20">
+                            <i class="fas fa-icon"></i>
+                        </div>
+                        <div class="col-sm-9">
+                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.stateoflegaloperation')*</div>
+                            <select class="form-control" name="orga_operation_state" id="orga_operation_state">
+                                <option value="south"> South Australia</option>
+                                <option value="western"> Western Australia</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 m-10px-tb">
+                    <div class="media">
+                        <div class="only-icon-20">
+                            <i class="fas fa-icon"></i>
+                        </div>
+                        <div class="col-sm-9">
+                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.rangeofoperation')*</div>
+                            <select class="form-control" name="orga_operation_range" id="orga_operation_range">
+                                <option value="10"> 10km</option>
+                                <option value="25"> 25km</option>
+                                <option value="50"> 50km</option>
+                                <option value="100"> 100km</option>
+                                <option value="250"> 250km</option>
+                            </select>
                         </div>
                     </div>
                 </div>
