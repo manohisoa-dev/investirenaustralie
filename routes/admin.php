@@ -28,6 +28,7 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::resource('state','StateController');
 
     Route::resource('category','CategoryController');
+    Route::get('edit_category/{category}', 'CategoryController@edit')->name('category.edit'); 
 
     Route::resource('pub','PubController');
     Route::resource('badword','BadwordController');
@@ -44,6 +45,11 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
 
     Route::resource('blog','BlogController');
     Route::get('archive_blog/{blog}', 'BlogController@archive')->name('blog.archive');
+    Route::get('publish_blog/{blog}', 'BlogController@publish')->name('blog.publish');  
+    Route::get('trash_blog/{blog}', 'BlogController@trash')->name('blog.trash');  
+    Route::get('restore_blog/{blog}', 'BlogController@restore')->name('blog.restore');
+    Route::post('save_blog', 'BlogController@store')->name('blog.store');
+    
 
     Route::resource('user','UserController');
     Route::get('desactiver/{user}', 'UserController@desactiver')->name('user.desactiver');

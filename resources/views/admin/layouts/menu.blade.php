@@ -18,7 +18,7 @@
 </li>
 
 {{--    MENU LIST   --}}
-<li class="{{Request::is('*/admin') ? 'active' : ''}}">
+<li class="{{Request::is('*/admin/*') || Request::is('*/admin') ? 'active' : ''}}">
     <a href="{{url('/admin')}}"><i class="fa fa-tachometer" title="Tableau de bord"></i> <span class="nav-label">Tableau de bord</span></a>
 </li>
 <li>

@@ -36,50 +36,55 @@
             </div>
             <div class="ibox-content">
                 <form action="{{ route('admin.pub.index')}}/{{$pub->id}}" method="post" enctype="multipart/form-data">
-
                     {{ csrf_field() }}
-
                     {{ method_field("PUT") }}
-                                                                                                
-                            {!! \Nvd\Crud\Form::input('title','text')->model($pub)->show() !!}
-                                                                        
-                            <?php /*?>{!! \Nvd\Crud\Form::input('content','text')->model($pub)->show() !!}<?php */?>
-                            <div class="form-group">
-								<label for="content">Content</label>
-								<textarea name="content" id="content">{{$pub->content}}</textarea>
-							</div>                                            
-                            {!! \Nvd\Crud\Form::input('links','text')->model($pub)->show() !!}
-                                                                        
-                            {!! \Nvd\Crud\Form::input('author_id','text')->model($pub)->show() !!}
-                                                                        
-                            {!! \Nvd\Crud\Form::input('image_id','text')->model($pub)->show() !!}
-							<div class="form-group">
-								<div class="row">
-									<div class="col-md-6">
-										<div class="well well-nice inline">
-											<div class="fileupload fileupload-new" data-provides="fileupload">
-												<div class="fileupload-preview thumbnail" style="width: 200px; height: 120px;">
-													<img src="{{$pub->imageUrl()}}" style="width:100%">
-												</div>
-												<div> 
-													<span class="btn btn-file"> 
-														<span class="fileupload-new">@lang('app.admin.file.select')</span> 
-														<span class="fileupload-exists">@lang('app.admin.file.change')</span>
-														<input type="file" name="image" id="file">
-													</span> 
-													<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">@lang('app.admin.file.remove')</a> 
-												</div>
-											</div>
+					<div class="form-group">
+						<label for="links">@lang('app.admin.title')</label>
+						<input name="title" id="title" class="form-control" type="text" value="{{$pub->title}}">
+					</div>                                            
+					<div class="form-group">
+						<label for="links">@lang('app.admin.link')</label>
+						<input name="links" id="links" class="form-control" type="text" value="{{$pub->links}}">
+					</div>
+					<div class="form-group">
+						<label for="content">@lang('app.admin.content')</label>
+						<textarea name="content" id="content">{{$pub->content}}</textarea>
+					</div>  
+					<div class="form-group">
+						<label for="title">@lang('app.admin.page')</label>
+						<select class="form-control" name="page[]" id="page" multiple="multiple">
+							@foreach($pages as $page)
+								<option value="{{$page->id}}" {{in_array($page->id, $pageIds)?'selected="selected"':''}}> {{$page->title}}</option>
+							@endforeach
+						</select>
+					</div>
+					<div class="form-group">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="well well-nice inline">
+									<div class="fileupload fileupload-new" data-provides="fileupload">
+										<div class="fileupload-preview thumbnail" style="width: 200px; height: 120px;">
+											<img src="{{$pub->imageUrl()}}" style="width:100%">
 										</div>
-									</div>
-									<div class="col-md-6">
-									
+										<div> 
+											<span class="btn btn-file"> 
+												<span class="fileupload-new">@lang('app.admin.file.select')</span> 
+												<span class="fileupload-exists">@lang('app.admin.file.change')</span>
+												<input type="file" name="image" id="file">
+											</span> 
+											<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">@lang('app.admin.file.remove')</a> 
+										</div>
 									</div>
 								</div>
 							</div>
-                                                                                                                                                
-                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Enregistrer</button>
-
+							<div class="col-md-6">
+							
+							</div>
+						</div>
+					</div>                                                                                                                                                
+                    <button type="submit" class="btn btn-primary btn-lg">
+						<i class="fa fa-save"></i> @lang('app.btn.save')
+					</button>
                 </form>
             </div>
         </div>
@@ -92,6 +97,7 @@
     <script>
         $(document).ready(function(){
             CKEDITOR.replace('content');
+			$("#page").select2();
         }) ;
     </script>
 @endsection
