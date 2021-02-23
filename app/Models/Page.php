@@ -41,7 +41,7 @@ class Page extends Model {
             'content' => '',
             'path' => 'string|max:191',
             'page_order' => 'integer',
-            'is_pub' => 'required|integer',
+            'is_pub' => 'integer',
             'language' => 'required|string|max:2',
             'parent_id' => 'required',
             'author_id' => 'required',

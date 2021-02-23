@@ -90,7 +90,7 @@
 										<a href="{{route('admin.category.index')}}/{{$record->id}}" title="Détail" class="btn btn-default btn-circle">
 											<i class="fa fa-eye"></i>
 										</a>&nbsp;&nbsp;									
-										<a href="{{route('admin.category.edit',$record)}}" title="Modification" class="btn btn-default btn-circle">
+										<a href="#" title="Modification" class="btn btn-default btn-circle">
 											<i class="fa fa-pencil-square-o"></i>
 										</a>&nbsp;&nbsp;								
 										{{ csrf_field() }}

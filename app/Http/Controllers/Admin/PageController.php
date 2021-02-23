@@ -36,9 +36,21 @@ class PageController extends Controller
      */
     public function store( Request $request )
     {
-        $this->validate($request, Page::validationRules());
-
-        Page::create($request->all());
+        $this->middleware('auth');
+        $this->middleware('role:1');
+        
+        // Create page
+        $page = new Page();
+        $page->title = $request->title;
+        $page->content = $request->content;
+        $page->parent_id = $request->parent_id;
+        $page->page_order = $request->page_order;
+        $page->path = $request->path;
+        $page->language = $request->language;
+        $page->author_id = $request->author_id;
+        $page->save();
+        //$this->validate($request, Page::validationRules());
+        //Page::create($request->all());
 
         # notification
         Notify::success('Page a été créer avec succès');
