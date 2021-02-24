@@ -94,7 +94,7 @@ class ProfileController extends Controller
         $datas = $request->all();
         
         // Validate type Only
-        if($role=='member'){
+        if($role==5){
             $validator = Validator::make($datas, ['type' => 'required|max:100',]);
             if ($validator->fails()) {
                 return back()->withErrors($validator)
@@ -103,14 +103,14 @@ class ProfileController extends Controller
         }
         
         $default = [
-            'name'     => 'required|unique:users,name|max:100',
-            'email'    => 'required|unique:users,email|max:100',
+            'nom'     => 'required|max:100',
+            'email'    => 'required|email|max:100',
             'language' => 'required|max:100',
             'image'    => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
         
         switch($role){
-            case 'member':
+            case 5:
                 $type=$request->input('type');
                 if($type=='person'){
                     $rules = [
@@ -119,15 +119,15 @@ class ProfileController extends Controller
                     ];
                 }else{
                     $rules = [
-                        'prefixPhone' => 'required|max:100',
-                        'phone'       => 'required|max:100',
-
                         'orga_name'         => 'required|max:100',
+                        'orga_email'         => 'required|email|max:100',
+                        'orga_phone' => 'required|max:100',
                         'orga_presentation' => 'required|max:100',
+                        'orga_website'      => 'required|url|max:100'
                     ];
                 }
                 break;
-            case 'afa':
+            case 3:
                 $rules = [
                     'orga_name'         => 'required|max:100',
                     'orga_presentation' => 'required|max:100',
@@ -146,7 +146,7 @@ class ProfileController extends Controller
                     'crm_email'  => 'required|max:100',
                 ];
                 break;
-            case 'apl':
+            case 4:
                 $rules = [
                     'orga_name'         => 'required|max:100',
                     'orga_presentation' => 'required|max:100',
@@ -164,7 +164,7 @@ class ProfileController extends Controller
                     'bank_bic' => 'max:100',
                 ];
                 break;
-            case 'seller':
+            case 2:
                 $rules = [
                     'orga_name'         => 'required|max:100',
                     'orga_presentation' => 'required|max:100',
@@ -181,7 +181,7 @@ class ProfileController extends Controller
 
                 ];
                 break;
-            case 'admin':
+            case 1:
                 $rules = [
                     'email'    => 'required|unique:users,email|max:100',
                     'language'   => 'required|max:100',
@@ -223,7 +223,7 @@ class ProfileController extends Controller
             
         }catch (\Exception $exception) {
             logger()->error($exception);
-            return back()->with('info', 'Unable to edit your profile.');
+            return back()->with('info', "Impossible d'editer votre profile.");
         }
     
         // Success

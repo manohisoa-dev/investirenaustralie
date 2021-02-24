@@ -2,6 +2,65 @@
 
 @section('content')
 
+@push('script')
+    <style>
+        #avatar {
+            position: relative;
+            z-index: 1;
+        }
+        #btn_edit_avatar {
+            position: absolute;
+            z-index: 2; /* .boite-doree sera au-dessus de .boite-verte et .boite-tirets */
+            background:gray;
+            margin-left: -80px;
+            opacity: 0;
+            transition: 2s;
+        }
+
+        #btn_edit_avatar:hover{
+            opacity: 0.7;
+            cursor: pointer;
+        }
+    </style>
+    
+    <script>
+        $('#btn_edit_avatar').click(function(){
+            $('#editAvatarModal').modal('show');
+        });
+
+        $('#btn_close_edit_avatar').click(function(){
+            location.reload();
+        });
+
+        $('#btn_save_edit_avatar').click(function(){
+            $('#form_edit_avatar').submit();
+        });
+
+        // $('#upload_avatar').on('change',function(e){
+        //     var file = $(this).val();
+            
+        //     readImage(file);
+
+        //     // $('#image_avatar').attr('src',tmppath);
+
+        // })
+
+        function readImage(file) {
+            // Check if the file is an image.
+            if (file.type && file.type.indexOf('image') === -1) {
+                console.log('File is not an image.', file.type, file);
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.addEventListener('load', (event) => {
+                img.src = event.target.result;
+            });
+            reader.readAsDataURL(file);
+        }
+    </script>
+@endpush
+
 <!-- Main -->
 <main>
     <section class="profile-bg-section parallax" style="background-image: url({{ asset('images/slider/1.jpg') }});">
@@ -14,7 +73,8 @@
                         <div class="card m-20px-b">
                             <div class="p-25px text-center">
                                 <div class="avatar-80 border-radius-50 d-inline-block">
-                                    <img src="{{ \App\Models\User::find(Auth::id())->imageUrl() }}" title="" alt="">
+                                    <img id="avatar" src="{{ \App\Models\User::find(Auth::id())->imageUrl() }}" title="" alt="">
+                                    <span id="btn_edit_avatar" class="avatar-80 border-radius-50" title="@lang('app.txt.editavatar')"><i style="margin-top:30px;color:white;" class="fa fa-edit"></i></span>
                                 </div>
                                 <h6 class="font-w-500 m-15px-t m-0px"><span class="font-w-700">{{ Auth::user()->name }}</span></h6>
                                 <span class="font-small">{{ \App\Models\User::find(Auth::id())->roleUser->role_initial }}</span>
@@ -25,7 +85,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="card m-20px-b">
                             @if(Auth::user()->hasRole(5))
                                 <a class="btn-select-apl m-btn m-btn-theme4rd" data-toggle="modal" data-target="#modal-select-apl" href="{{route('member.select.apl')}}">@lang('member.select.apl')</a>
@@ -269,6 +329,48 @@
 </main>
 <!-- main end -->
 
+<!-- Edit avatar Modal -->
+<div class="modal fade" id="editAvatarModal" tabindex="-1" role="dialog" aria-labelledby="editAvatarModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="editAvatarModalTitle">@lang('app.txt.editavatar')</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form id="form_edit_avatar" class="form-horizontal" role="form" method="post" action="{{route('avatar.edit')}}" 
+                enctype="multipart/form-data">
+                    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                    <fieldset>
+                        <div class="col-sm-12 text-center">
+                            <div class="fileupload fileupload-new" data-provides="fileupload">
+                                <div class="fileupload-preview thumbnail" style="width: 200px; height: 120px;">
+                                    <img src="{{Auth::user()->imageUrl()}}">
+                                </div>
+                                <div> 
+                                    <span class="btn btn-file"> 
+                                        <span class="m-btn m-btn-theme fileupload-new"><i class="fa fa-upload"></i> @lang('app.admin.file.select')</span> 
+                                        <span class="fileupload-exists" title="@lang('app.admin.file.change')"><i class="fa fa-edit"></i></span>
+                                        <input type="file" name="image" id="file">
+                                    </span> 
+                                    <a href="javascript:void(0)" class="btn fileupload-exists" data-dismiss="fileupload" title="@lang('app.admin.file.remove')"><i class="fa fa-trash-alt"></i></a> 
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary border-radius-0" data-dismiss="modal" id="btn_close_edit_avatar">@lang('app.btn.cancel')</button>
+                <button type="submit" class="btn btn-primary border-radius-0" id="btn_save_edit_avatar">@lang('app.btn.save')</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin edit avatar modal -->
+
 
 @if(Auth::user()->hasRole(5))
 <!-- Modal -->
@@ -299,3 +401,8 @@
 @endif
 
 @endsection
+
+@push('script')
+    <link rel="stylesheet" href="{{asset('administrator/plugins/bootstrap-fileupload/css/bootstrap-fileupload.css')}}">
+    <script src="{{asset('administrator/plugins/bootstrap-fileupload/js/bootstrap-fileupload.js')}}"></script>
+@endpush

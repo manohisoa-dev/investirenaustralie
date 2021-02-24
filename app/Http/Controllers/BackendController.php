@@ -124,7 +124,6 @@ class BackendController extends Controller
                 $count['products']  = $user->products()->count();
                 $recent['products'] = $user->products()
                     ->orderBy('products.created_at', 'desc')
-                    ->take($this->recentSize)
                     ->get();
                 
                 $count['orders']  = $user->products()->where('products.status', 'ordered')->count();
