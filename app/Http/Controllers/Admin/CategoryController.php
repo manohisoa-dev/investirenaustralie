@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Auth;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -36,9 +37,22 @@ class CategoryController extends Controller
      */
     public function store( Request $request )
     {
-        $this->validate($request, Category::validationRules());
+        $this->middleware('auth');
+        $this->middleware('role:1');
+        
+        $category = new Category();
 
-        Category::create($request->all());
+        $slug = $slugOriginal = generateSlug($request->title);
+        $i = 1;
+        while(Category::where('slug', $slug)->exists()){
+            $slug = $slugOriginal + '-' + $i++;
+        }
+        
+        $category->slug = $slug;
+        $category->title = $request->title;
+        $category->content = $request->content;
+        $category->author_id = Auth::user()->id;
+        $category->save();
 
         # notification
         Notify::success('Category a été créer avec succès');
@@ -52,7 +66,8 @@ class CategoryController extends Controller
      */
     public function show(Request $request, Category $category)
     {
-        return $this->view("show",['category' => $category]);
+        dd($category);
+        //return $this->view("show",['category' => $category]);
     }
 
     /**

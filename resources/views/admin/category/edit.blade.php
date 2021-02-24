@@ -32,25 +32,35 @@
                 <h5>Mise à jour catégorie: {{$category->slug}}</h5>
             </div>
             <div class="ibox-content">
-                <form action="{{ route('v2.category.index')}}/{{$category->id}}" method="post">
+                <form action="{{ route('admin.category.update',$category)}}" method="post">
 
                     {{ csrf_field() }}
 
                     {{ method_field("PUT") }}
-                                                                                                
-                            {!! \Nvd\Crud\Form::input('slug','text')->model($category)->show() !!}
-                                                                        
-                            {!! \Nvd\Crud\Form::input('title','text')->model($category)->show() !!}
-                                                                        
-                            {!! \Nvd\Crud\Form::input('content','text')->model($category)->show() !!}
-                                                                        
-                            {!! \Nvd\Crud\Form::input('author_id','text')->model($category)->show() !!}
+					<input name="slug" id="slug" class="form-control" type="hidden" value="{{$category->slug}}">
+					<div class="form-group">
+						<label for="title">Titre</label>
+						<input name="title" id="title" class="form-control" type="text" value="{{$category->title}}">
+					</div>
+					<div class="form-group">
+						<label for="title">@lang('app.admin.content')</label>
+						<textarea id="ckeditor" class="form-control" name="content" placeholder="@lang('app.admin.content.desc')">{!!$category->content!!}</textarea>
+					</div>
+					<input name="author_id" id="author_id" class="form-control" type="hidden" value="{{$category->author_id}}">
                                                                                                                                                 
-                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Enregistrer</button>
+                    <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-save"></i> Enregistrer</button>
 
                 </form>
             </div>
         </div>
     </div>
 </div>
+@endsection
+@section('custom-script')
+    <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+    <script>
+        $(document).ready(function(){
+            CKEDITOR.replace('content');
+        }) ;
+    </script>
 @endsection
