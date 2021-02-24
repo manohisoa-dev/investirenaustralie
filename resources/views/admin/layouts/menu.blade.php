@@ -33,11 +33,6 @@
         <li><a href="#">Carts</a></li>
     </ul>
 </li>
-<li class="{{Request::is('*/menu/*') || Request::is('*/menu') ? 'active' : ''}}">
-	<a href="{{route('admin.menu.index')}}">
-		<i class="fa fa-sitemap"></i> <span class="nav-label">Menus</span>
-	</a>
-</li>
 <li class="{{Request::is('*/user/*') || Request::is('*/user') || Request::is('*/role/*') || Request::is('*/role') || Request::is('*/type-user/*') || Request::is('*/type-user') ? 'active' : ''}}">
     <a href="#">
 		<i class="fa fa-users" title="Parties prenantes"></i> 
@@ -153,14 +148,18 @@
         {{--<li><a href="{{route('admin.plan.create')}}">Ajouter un plan</a></li>--}}
     {{--</ul>--}}
 {{--</li>--}}
-<li class="{{Request::is('*/config/*') ? 'active' : ''}}">
+<li class="{{Request::is('*/config/*') || Request::is('*/menu/*') || Request::is('*/menu') ? 'active' : ''}}">
     <a href="#"><i class="fa fa-wrench" title="Configurations"></i> <span class="nav-label">Configurations</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
         <li><a href="{{route('admin.config.site')}}">Information du site</a></li>
         <li><a href="{{route('admin.config.login')}}">Ecran de connexion</a></li>
         <li><a href="{{route('admin.config.social')}}">Réseaux sociaux</a></li>
-        <li><a href="{{route('admin.config.payment')}}">Paiement</a></li>
-
+        {{--<li><a href="{{route('admin.config.payment')}}">Paiement</a></li>--}}
+		<li>
+			<a href="{{route('admin.menu.index')}}">
+				<span class="nav-label">Menus</span>
+			</a>
+		</li>
     </ul>
 </li>
 <li class="special_link">

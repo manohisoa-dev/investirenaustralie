@@ -32,19 +32,34 @@
                 <h5>Ajouter un nouveau Page</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-validation form-padding" action="{{ route('admin.page.store') }}" method="post">
-
+                <form class="form-validation form-padding" action="{{ route('admin.page.store') }}" method="post" id="formPage">
                     {{ csrf_field() }}
-
                     <input type="hidden" name="author_id" value="{{Auth::id()}}">
                                                         
-                    {!! \Nvd\Crud\Form::input('title','text')->show() !!}
-                                            
-                    {!! \Nvd\Crud\Form::input('content','text')->show() !!}
-                                            
-                    {!! \Nvd\Crud\Form::input('path','text')->show() !!}
-                                            
-                    {!! \Nvd\Crud\Form::input('page_order','number')->show() !!}
+					<div class="form-group">
+						<label for="title">@lang('app.admin.title')</label>
+						<input name="title" id="title" class="form-control" type="text" value="">
+					</div>
+                    <div class="form-group">
+						<label for="title">@lang('app.admin.content')</label>
+						<textarea id="ckeditor" class="form-control" name="content" placeholder="@lang('app.admin.content.desc')"></textarea>
+					</div> 
+                    <div class="form-group">
+						<label for="path">@lang('app.admin.path')</label>
+						<input name="path" id="path" class="form-control" type="text" value="" placeholder="@lang('app.admin.path.desc')">
+					</div>
+					<div class="form-group">
+                        <label for="parent_id">@lang('app.admin.parent')</label>
+                        <select name="parent_id" id="parent_id" class="form-control">
+                            @foreach(\App\Models\Page::all() as $page)
+                                <option value="{{$page->id}}">{{$page->title}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+					<div class="form-group">
+						<label for="page_order">@lang('app.admin.page_order')</label>
+						<input name="page_order" id="page_order" class="form-control" type="number" value="" placeholder="@lang('app.admin.page_order.desc')">
+					</div>
                                             
                     <div class="form-group">
                         <label for="language">Est un pub</label>
@@ -55,23 +70,18 @@
                     </div>
                                             
                     <div class="form-group">
-                        <label for="language">Langue</label>
+                        <label for="language">@lang('app.admin.language')</label>
                         <select name="language" id="language" class="form-control">
                             <option value="fr">Fr</option>
                             <option value="en">En</option>
                         </select>
                     </div>
                                             
-                    <div class="form-group">
-                        <label for="parent_id">Parent</label>
-                        <select name="parent_id" id="parent_id" class="form-control">
-                            @foreach(\App\Page::all() as $page)
-                                <option value="{{$page->id}}">{{$page->title}}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    
                                             
-                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Créer</button>
+                    <button type="submit" class="btn btn-primary btn-lg">
+						<i class="fa fa-save"></i> @lang('app.btn.save')
+					</button>
 
                 </form>
             </div>
@@ -87,6 +97,38 @@
     <script>
         $(document).ready(function(){
             CKEDITOR.replace( 'content' );
+			
+			$('#formPage').validate({
+			    ignore: [],
+				rules: {
+					title: {
+						required: true
+					},
+					content: {
+						required: true
+					},
+					path: {
+						required: true
+					},
+					page_order: {
+						required: true
+					}
+				},
+				messages: {
+					title: {
+						required: "@lang('app.txt.champobligatoire')"
+					},
+					content: {
+						required: "@lang('app.txt.champobligatoire')"
+					},
+					path: {
+						required: "@lang('app.txt.champobligatoire')"
+					},
+					page_order: {
+						required: "@lang('app.txt.champobligatoire')"
+					}
+				}
+			});
         }) ;
     </script>
 @endsection

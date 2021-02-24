@@ -28,7 +28,6 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::resource('state','StateController');
 
     Route::resource('category','CategoryController');
-    Route::get('edit_category/{category}', 'CategoryController@edit')->name('category.edit'); 
 
     Route::resource('pub','PubController');
     Route::resource('badword','BadwordController');
