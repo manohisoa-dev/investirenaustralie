@@ -363,6 +363,7 @@ return [
     'txt.businesswebsite'  => 'Web Site',
     'txt.stateoflegaloperation' => 'State of legal operation of your present office',
     'txt.rangeofoperation' => 'Range of operation of your present office',
+    'txt.editavatar' => 'Edit Avatar',
     
 
     'table.title'  => "Title",

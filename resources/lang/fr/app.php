@@ -643,6 +643,7 @@ return [
     'txt.nodata'    => 'Aucune données à afficher',
     'txt.stateoflegaloperation' => 'État de fonctionnement légal de votre bureau actuel',
     'txt.rangeofoperation' => "Gamme d'opérations de votre bureau actuel",
+    'txt.editavatar' => 'Modifier Avatar',
     
     
     
