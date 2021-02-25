@@ -7,6 +7,8 @@
     <div class="profile-content-area m-40px-tb card card-body">
         <form action="{{route('profile.edit')}}" method="POST" enctype="multipart/form-data" id="form_profil">
             {{ csrf_field() }}
+            <input type="hidden" name="role" value="{{ $item->role }}">
+            <input type="hidden" name="userinfos_id" value="{{ $item->userinfos->id }}">
             <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
                 <h5>@lang('app.txt.logininfo')</h5>
                 <div class="row">
@@ -72,7 +74,7 @@
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.login') </div>
-                                <input type="text" name="apl_name" id="apl_name" class="form-control" value="{{$item->apl->name?$item->apl->name:trans('app.txt.noinfo')}}" readonly>
+                                <input type="text" name="apl_name" id="apl_name" class="form-control" value="{{$item->apl->name?$item->apl->name:''}}" placeholder="@lang('app.txt.login')" readonly>
                                 <span></span>
                             </div>
                         </div>
@@ -84,7 +86,7 @@
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.email') </div>
-                                <input type="text" name="apl_email" id="apl_email" class="form-control" value="{{$item->apl->email?$item->apl->email:trans('app.txt.noinfo')}}" readonly>
+                                <input type="text" name="apl_email" id="apl_email" class="form-control" value="{{$item->apl->email?$item->apl->email:''}}" placeholder="@lang('app.txt.email')" readonly>
                             </div>
                         </div>
                     </div>
@@ -95,7 +97,7 @@
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.typemembre')</div>
-                                <input type="text" name="apl_type" id="apl_type" class="form-control" value="{{$item->apl->type?$item->apl->type:trans('app.txt.noinfo')}}" readonly>
+                                <input type="text" name="apl_type" id="apl_type" class="form-control" placeholder="@lang('app.txt.typemembre')" value="{{$item->apl->type?$item->apl->type:''}}" readonly>
                             </div>
                         </div>
                     </div>
@@ -114,7 +116,7 @@
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.prenom') </div>
-                                <input type="text" class="form-control" name="first_name" id="first_name" value="{{$item->get_meta('first_name')?$item->get_meta('first_name')->value:trans('app.txt.noinfo')}}" readonly>
+                                <input type="text" class="form-control" name="first_name" id="first_name" value="{{$item->userinfos->first_name?$item->userinfos->first_name:trans('app.txt.noinfo')}}" readonly>
                             </div>
                         </div>
                     </div>
@@ -125,7 +127,7 @@
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.nom') </div>
-                                <input type="text" class="form-control" id="last_name" name="last_name" value="{{$item->get_meta('last_name')?$item->get_meta('last_name')->value:trans('app.txt.noinfo')}}" readonly>
+                                <input type="text" class="form-control" id="last_name" name="last_name" value="{{$item->userinfos->last_name?$item->userinfos->last_name:trans('app.txt.noinfo')}}" readonly>
                             </div>
                         </div>
                     </div>
@@ -136,120 +138,119 @@
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.phone')</div>
-                                <input type="text" class="form-control" value="{{$item->get_meta('phone')?$item->get_meta('phone')->value:trans('app.txt.noinfo')}}" name="phone" id="phone" readonly>
+                                <input type="text" class="form-control" value="{{$item->userinfos->phone?$item->userinfos->phone:trans('app.txt.noinfo')}}" name="phone" id="phone" readonly>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             @else
-            <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
-                <h5>@lang('app.txt.businessdetail')</h5>
-                <div class="row">
-                    <div class="col-md-4 m-10px-tb">
-                        <div class="media">
-                            <div class="only-icon-20">
-                                <i class="fas fa-building"></i>
-                            </div>
-                            <div class="media-body p-15px-l lh-normal">
-                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessname') </div>
-                                <input type="text" class="form-control" placeholder="@lang('app.txt.businessname')" name="orga_name" id="orga_name" value="{{$item->get_meta('orga_name')?$item->get_meta('orga_name')->value:old('orga_name')}}">
-                                <span class="text-danger">{{ $errors->first('orga_name') }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 m-10px-tb">
-                        <div class="media">
-                            <div class="only-icon-20">
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div class="media-body p-15px-l lh-normal">
-                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessemail') </div>
-                                <input type="text" class="form-control" name="orga_email" id="orga_email" placeholder="@lang('app.txt.businessemail')" value="{{$item->get_meta('orga_email')?$item->get_meta('orga_email')->value:old('orga_email')}}" >
-                                <span class="text-danger">{{ $errors->first('orga_email') }}</span>
+                <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
+                    <h5>@lang('app.txt.businessdetail')</h5>
+                    <div class="row">
+                        <div class="col-md-4 m-10px-tb">
+                            <div class="media">
+                                <div class="only-icon-20">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                                <div class="media-body p-15px-l lh-normal">
+                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessname') </div>
+                                    <input type="text" class="form-control" placeholder="@lang('app.txt.businessname')" name="orga_name" id="orga_name" value="{{$item->userinfos->orga_name?$item->userinfos->orga_name:old('orga_name')}}">
+                                    <span class="text-danger">{{ $errors->first('orga_name') }}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-4 m-10px-tb">
-                        <div class="media">
-                            <div class="only-icon-20">
-                                <i class="fas fa-phone"></i>
-                            </div>
-                            <div class="media-body p-15px-l lh-normal">
-                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessphone')</div>
-                                <input type="text" class="form-control" name="orga_phone" id="orga_phone" placeholder="@lang('app.txt.businessphone')" value="{{$item->get_meta('orga_phone')?$item->get_meta('orga_phone')->value:old('orga_phone')}}">
-                                <span class="text-danger">{{ $errors->first('orga_phone') }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 m-10px-tb">
-                        <div class="media">
-                            <div class="only-icon-20">
-                                <i class="fas fa-phone"></i>
-                            </div>
-                            <div class="media-body p-15px-l lh-normal">
-                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businesswebsite')</div>
-                                <input type="text" class="form-control" name="orga_website" placeholder="@lang('app.txt.businesswebsite')" value="{{$item->get_meta('orga_website')?$item->get_meta('orga_website')->value:old('orga_website')}}">
-                                <span class="text-danger">{{ $errors->first('orga_website') }}</span>
+                        <div class="col-md-4 m-10px-tb">
+                            <div class="media">
+                                <div class="only-icon-20">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="media-body p-15px-l lh-normal">
+                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessemail') </div>
+                                    <input type="text" class="form-control" name="orga_email" id="orga_email" placeholder="@lang('app.txt.businessemail')" value="{{$item->userinfos->orga_email?$item->userinfos->orga_email:old('orga_email')}}" >
+                                    <span class="text-danger">{{ $errors->first('orga_email') }}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-4 m-10px-tb">
-                        <div class="media">
-                            <div class="only-icon-20">
-                                <i class="fas fa-info"></i>
-                            </div>
-                            <div class="media-body p-15px-l lh-normal">
-                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businesspresentation')</div>
-                                <input type="text" name="orga_presentation" id="orga_presentation" class="form-control" placeholder="@lang('app.txt.businesspresentation')" value="{{$item->get_meta('orga_presentation')?$item->get_meta('orga_presentation')->value:old('orga_presentation')}}">
-                                <span class="text-danger">{{ $errors->first('orga_presentation') }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 m-10px-tb">
-                        <div class="media">
-                            <div class="only-icon-20">
-                                <i class="fas fa-icon"></i>
-                            </div>
-                            <div class="media-body p-15px-l lh-normal">
-                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.logo')</div>
-                                <input type="file" class="form-control" id="image" name="image" >
+                        <div class="col-md-4 m-10px-tb">
+                            <div class="media">
+                                <div class="only-icon-20">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div class="media-body p-15px-l lh-normal">
+                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessphone')</div>
+                                    <input type="text" class="form-control" name="orga_phone" id="orga_phone" placeholder="@lang('app.txt.businessphone')" value="{{$item->userinfos->orga_phone?$item->userinfos->orga_phone:old('orga_phone')}}">
+                                    <span class="text-danger">{{ $errors->first('orga_phone') }}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    @if($item->hasRole(3))
-                    <div class="col-md-4 m-10px-tb">
-                        <div class="media">
-                            <div class="only-icon-20">
-                                <i class="fas fa-phone"></i>
-                            </div>
-                            <div class="media-body p-15px-l lh-normal">
-                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.stateoflegaloperation')</div>
-                                <input type="text" class="form-control" placeholder="@lang('app.txt.stateoflegaloperation')" value="{{$item->get_meta('orga_operation_state')?$item->get_meta('orga_operation_state')->value:''}}" name="orga_operation_state">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 m-10px-tb">
-                        <div class="media">
-                            <div class="only-icon-20">
-                                <i class="fas fa-phone"></i>
-                            </div>
-                            <div class="media-body p-15px-l lh-normal">
-                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.rangeofoperation')</div>
-                                <input type="text" class="form-control" placeholder="@lang('app.txt.rangeofoperation')" value="{{$item->get_meta('orga_operation_range')?$item->get_meta('orga_operation_range')->value:''}}" name="orga_operation_range">
+                        <div class="col-md-4 m-10px-tb">
+                            <div class="media">
+                                <div class="only-icon-20">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div class="media-body p-15px-l lh-normal">
+                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businesswebsite')</div>
+                                    <input type="text" class="form-control" name="orga_website" placeholder="@lang('app.txt.businesswebsite')" value="{{$item->userinfos->orga_website?$item->userinfos->orga_website:old('orga_website')}}">
+                                    <span class="text-danger">{{ $errors->first('orga_website') }}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    @endif
-
-                </div>
-            </div>
+                        <div class="col-md-4 m-10px-tb">
+                            <div class="media">
+                                <div class="only-icon-20">
+                                    <i class="fas fa-item->userinfos"></i>
+                                </div>
+                                <div class="media-body p-15px-l lh-normal">
+                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businesspresentation')</div>
+                                    <input type="text" name="orga_presentation" id="orga_presentation" class="form-control" placeholder="@lang('app.txt.businesspresentation')" value="{{$item->userinfos->orga_presentation?$item->userinfos->orga_presentation:old('orga_presentation')}}">
+                                    <span class="text-danger">{{ $errors->first('orga_presentation') }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 m-10px-tb">
+                            <div class="media">
+                                <div class="only-icon-20">
+                                    <i class="fas fa-icon"></i>
+                                </div>
+                                <div class="media-body p-15px-l lh-normal">
+                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.logo')</div>
+                                    <input type="file" class="form-control" id="image" name="image" >
+                                </div>
+                            </div>
+                        </div>
+                        
+                        @if($item->hasRole(3))
+                        <div class="col-md-4 m-10px-tb">
+                            <div class="media">
+                                <div class="only-icon-20">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div class="media-body p-15px-l lh-normal">
+                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.stateoflegaloperation')</div>
+                                    <input type="text" class="form-control" placeholder="@lang('app.txt.stateoflegaloperation')" value="{{$item->userinfos->orga_operation_state?$item->userinfos->orga_operation_state:''}}" name="orga_operation_state">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 m-10px-tb">
+                            <div class="media">
+                                <div class="only-icon-20">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div class="media-body p-15px-l lh-normal">
+                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.rangeofoperation')</div>
+                                    <input type="text" class="form-control" placeholder="@lang('app.txt.rangeofoperation')" value="{{$item->userinfos->orga_operation_range?$item->userinfos->orga_operation_range:''}}" name="orga_operation_range">
+                                </div>
+                            </div>
+                        </div>
+                        @endif
     
+                    </div>
+                </div>
             @endif
     
             <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
-                <h5>@lang('app.txt.localityinformation')</h5>
+                <h5>@lang('app.locality')</h5>
                 <div class="row">
                     <div class="col-md-4 m-10px-tb">
                         <div class="media">
@@ -308,7 +309,7 @@
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.contactname') </div>
-                                <input type="text" class="form-control" name="contact_name" id="contact_name" placeholder="@lang('app.txt.contactname')" value="{{$item->get_meta('contact_name')?$item->get_meta('contact_name')->value:''}}">
+                                <input type="text" class="form-control" name="contact_name" id="contact_name" placeholder="@lang('app.txt.contactname')" value="{{$item->userinfos->contact_name?$item->userinfos->contact_name:''}}">
                             </div>
                         </div>
                     </div>
@@ -319,7 +320,7 @@
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.contactemail') </div>
-                                <input type="text" class="form-control" name="contact_email" id="contact_email" placeholder="@lang('app.txt.contactemail')" value="{{$item->get_meta('contact_email')?$item->get_meta('contact_email')->value:''}}">
+                                <input type="text" class="form-control" name="contact_email" id="contact_email" placeholder="@lang('app.txt.contactemail')" value="{{$item->userinfos->contact_email?$item->userinfos->contact_email:''}}">
                             </div>
                         </div>
                     </div>
@@ -330,7 +331,7 @@
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.contactphone')</div>
-                                <input type="text" name="contact_phone" id="contact_phone" placeholder="@lang('app.txt.contactphone')" value="{{$item->get_meta('contact_phone')?$item->get_meta('contact_phone')->value:''}}" class="form-control">
+                                <input type="text" name="contact_phone" id="contact_phone" placeholder="@lang('app.txt.contactphone')" value="{{$item->userinfos->contact_phone?$item->userinfos->contact_phone:''}}" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -347,7 +348,7 @@
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.crmprovidername') </div>
-                                <input type="text" class="form-control" name="crm_name" id="crm_name" placeholder="@lang('app.txt.crmprovidername')" value="{{$item->get_meta('crm_name')?$item->get_meta('crm_name')->value:''}}">
+                                <input type="text" class="form-control" name="crm_name" id="crm_name" placeholder="@lang('app.txt.crmprovidername')" value="{{$item->userinfos->crm_name?$item->userinfos->crm_name:''}}">
                             </div>
                         </div>
                     </div>
@@ -358,7 +359,7 @@
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.crmprovideremail') </div>
-                                <input type="text" name="crm_email" id="crm_email" placeholder="@lang('app.txt.crmprovideremail')" value="{{$item->get_meta('crm_email')?$item->get_meta('crm_email')->value:''}}" class="form-control">
+                                <input type="text" name="crm_email" id="crm_email" placeholder="@lang('app.txt.crmprovideremail')" value="{{$item->userinfos->crm_email?$item->userinfos->crm_email:''}}" class="form-control">
                             </div>
                         </div>
                     </div>

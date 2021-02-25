@@ -557,127 +557,148 @@ class User extends Authenticatable{
     {
         $user = $this;
         $role = $request->input('role');
+        $userinfos = Userinfo::whereId($request->input('userinfos_id'));
+
         switch($this->role){
-            case 'admin':
+            case 1:
                 if($value = $request->input('first_name'))
-                    $user->update_meta("first_name", $value);
+                    $userinfos->update(["first_name"=> $value]);
                 if($value = $request->input('last_name'))
-                    $user->update_meta("last_name", $value);
+                    $userinfos->update(["last_name"=> $value]);
                 break;
-            case 'member':
+            case 5:
                 $type=$request->input('type');
                 if($type=='person'){
                     // Update MetaData
                     if($value = $request->input('first_name'))
-                        $user->update_meta("first_name", $value);
+                        $userinfos->update(["first_name"=> $value]);
                     if($value = $request->input('last_name'))
-                        $user->update_meta("last_name", $value);
+                        $userinfos->update(["last_name"=> $value]);
                 }else{
                     // Update MetaData
                     if($value = $request->input('orga_name'))
-                        $user->update_meta("orga_name", $value);
+                        $userinfos->update(["orga_name"=> $value]);
+                    if($value = $request->input('orga_email'))
+                        $userinfos->update(["orga_email"=> $value]);
+                    if($value = $request->input('orga_phone'))
+                        $userinfos->update(["orga_phone"=> $value]);
+                    if($value = $request->input('orga_website'))
+                        $userinfos->update(["orga_website"=> $value]);
                     if($value = $request->input('orga_presentation'))
-                        $user->update_meta("orga_presentation", $value);
-                    if($value = $request->input('prefixPhone'))
-                        $user->update_meta("prefixPhone", $value);
-                    if($value = $request->input('phone'))
-                        $user->update_meta("phone", $value);
+                        $userinfos->update(["orga_presentation"=> $value]);
+                    // Create Contact MetaData
+                    if($value = $request->input('contact_name'))
+                        $userinfos->update(["contact_name"=> $value]);
+                    if($value = $request->input('contact_email'))
+                        $userinfos->update(["contact_email"=> $value]);
+                    if($value = $request->input('contact_phone'))
+                        $userinfos->update(["contact_phone"=> $value]);
                 }
                 break;
-            case 'afa':
+            case 3:
                 // Update MetaData
                 if($value = $request->input('orga_name'))
-                    $user->update_meta("orga_name", $value);
+                    $userinfos->update(["orga_name"=> $value]);
                 if($value = $request->input('orga_presentation'))
-                    $user->update_meta("orga_presentation", $value);
+                    $userinfos->update(["orga_presentation"=> $value]);
                 if($value = $request->input('orga_email'))
-                    $user->update_meta("orga_email", $value);
+                    $userinfos->update(["orga_email"=> $value]);
                 if($value = $request->input('orga_phone'))
-                    $user->update_meta("orga_phone", $value);
+                    $userinfos->update(["orga_phone"=> $value]);
                 if($value = $request->input('orga_website'))
-                    $user->update_meta("orga_website", $value);
+                    $userinfos->update(["orga_website"=> $value]);
                 if($value = $request->input('orga_operation_state'))
-                    $user->update_meta("orga_operation_state", $value);
+                    $userinfos->update(["orga_operation_state"=> $value]);
                 if($value = $request->input('orga_operation_range'))
-                    $user->update_meta("orga_operation_range", $value);
+                    $userinfos->update(["orga_operation_range"=> $value]);
 
                 // Create Contact MetaData
                 if($value = $request->input('contact_name'))
-                    $user->update_meta("contact_name", $value);
+                    $userinfos->update(["contact_name"=> $value]);
                 if($value = $request->input('contact_email'))
-                    $user->update_meta("contact_email", $value);
+                    $userinfos->update(["contact_email"=> $value]);
                 if($value = $request->input('contact_phone'))
-                    $user->update_meta("contact_phone", $value);
+                    $userinfos->update(["contact_phone"=> $value]);
 
                 // CRM Prodvider data
                 if($value = $request->input('crm_name'))
-                    $user->update_meta("crm_name", $value);
+                    $userinfos->update(["crm_name"=> $value]);
                 if($value = $request->input('crm_email'))
-                    $user->update_meta("crm_email", $value);
+                    $userinfos->update(["crm_email"=> $value]);
                 break;
-            case 'apl':
+            case 4:
                 // Update MetaData
                 if($value = $request->input('orga_name'))
-                    $user->update_meta("orga_name", $value);
+                    $userinfos->update(["orga_name"=> $value]);
                 if($value = $request->input('orga_presentation'))
-                    $user->update_meta("orga_presentation", $value);
+                    $userinfos->update(["orga_presentation"=> $value]);
                 if($value = $request->input('orga_email'))
-                    $user->update_meta("orga_email", $value);
+                    $userinfos->update(["orga_email"=> $value]);
                 if($value = $request->input('orga_phone'))
-                    $user->update_meta("orga_phone", $value);
+                    $userinfos->update(["orga_phone"=> $value]);
                 if($value = $request->input('orga_website'))
-                    $user->update_meta("orga_website", $value);
+                    $userinfos->update(["orga_website"=> $value]);
                 if($value = $request->input('orga_operation_range'))
-                    $user->update_meta("orga_operation_range", $value);
+                    $userinfos->update(["orga_operation_range"=> $value]);
 
                 // Create Contact MetaData
                 if($value = $request->input('contact_name'))
-                    $user->update_meta("contact_name", $value);
+                    $userinfos->update(["contact_name"=> $value]);
                 if($value = $request->input('contact_email'))
-                    $user->update_meta("contact_email", $value);
+                    $userinfos->update(["contact_email"=> $value]);
                 if($value = $request->input('contact_phone'))
-                    $user->update_meta("contact_phone", $value);
+                    $userinfos->update(["contact_phone"=> $value]);
 
                 // Bank data
                 if($value = $request->input('bank_iban'))
-                    $user->update_meta("bank_iban", $value);
+                    $userinfos->update(["bank_iban"=> $value]);
                 if($value = $request->input('bank_bic'))
-                    $user->update_meta("bank_bic", $value);
+                    $userinfos->update(["bank_bic"=> $value]);
                 break;
-            case 'seller':
+            case 2:
                 // Create Organisation MetaData
                 if($value = $request->input('orga_name'))
-                    $user->update_meta("orga_name", $value);
+                    $userinfos->update(["orga_name"=> $value]);
                 if($value = $request->input('orga_presentation'))
-                    $user->update_meta("orga_presentation", $value);
+                    $userinfos->update(["orga_presentation"=> $value]);
                 if($value = $request->input('orga_email'))
-                    $user->update_meta("orga_email", $value);
+                    $userinfos->update(["orga_email"=> $value]);
                 if($value = $request->input('orga_phone'))
-                    $user->update_meta("orga_phone", $value);
+                    $userinfos->update(["orga_phone"=> $value]);
                 if($value = $request->input('orga_website'))
-                    $user->update_meta("orga_website", $value);
+                    $userinfos->update(["orga_website"=> $value]);
 
                 // Create Contact MetaData
                 if($value = $request->input('contact_name'))
-                    $user->update_meta("contact_name", $value);
+                    $userinfos->update(["contact_name"=> $value]);
                 if($value = $request->input('contact_email'))
-                    $user->update_meta("contact_email", $value);
+                    $userinfos->update(["contact_email"=> $value]);
                 if($value = $request->input('contact_phone'))
-                    $user->update_meta("contact_phone", $value);
+                    $userinfos->update(["contact_phone"=> $value]);
 
                 // CRM Prodvider data
                 if($value = $request->input('crm_name'))
-                    $user->update_meta("crm_name", $value);
+                    $userinfos->update(["crm_name"=> $value]);
                 if($value = $request->input('crm_email'))
-                    $user->update_meta("crm_email", $value);
+                    $userinfos->update(["crm_email"=> $value]);
                 break;
         }
 
         // Common datas
         if($value = $request->input('newsletter')) 
-            $user->update_meta("newsletter", $value);
+            $userinfos->update(["newsletter"=> $value]);
         if($value = $request->input('allow_sharing')) 
-            $user->update_meta("allow_sharing", $value);
+            $userinfos->update(["allow_sharing"=> $value]);
+    }
+
+    /**
+     * An user can have any info
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function userinfos()
+    {
+        return $this->hasOne(Userinfo::class,'user_id','id');
     }
 
 }

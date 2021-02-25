@@ -216,11 +216,9 @@ class ProfileController extends Controller
         
         try{
 
-            // dd($datas);
-
             // Update user
-            $user->fill($datas);
-            $user->save();
+            // $user->fill($datas);
+            // $user->save();
             
             // Create OR Update MetaData
             $user->handles($request);
