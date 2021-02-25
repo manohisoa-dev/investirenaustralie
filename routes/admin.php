@@ -28,6 +28,9 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::resource('state','StateController');
 
     Route::resource('category','CategoryController');
+    Route::get('category/{category}/edit', 'CategoryController@edit')->name('category.edit');
+    Route::put('category/{category}', 'CategoryController@update')->name('category.update');
+    Route::delete('category/{category}', 'CategoryController@destroy')->name('category.destroy');
 
     Route::resource('pub','PubController');
     Route::resource('badword','BadwordController');

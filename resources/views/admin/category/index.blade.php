@@ -86,11 +86,8 @@
                                           >{{ $record->author->name }}</span>
                                </td>
 							   <td class="actions-cell text-center" width="12%">
-									<form class="form-inline" action="{{route('admin.category.index')}}/{{$record->id}}" method="POST">
-										<a href="{{route('admin.category.index')}}/{{$record->id}}" title="Détail" class="btn btn-default btn-circle">
-											<i class="fa fa-eye"></i>
-										</a>&nbsp;&nbsp;									
-										<a href="#" title="Modification" class="btn btn-default btn-circle">
+									<form class="form-inline" action="{{route('admin.category.destroy',$record)}}" method="POST">
+										<a href="{{route('admin.category.edit', $record)}}" title="Modification" class="btn btn-default btn-circle">
 											<i class="fa fa-pencil-square-o"></i>
 										</a>&nbsp;&nbsp;								
 										{{ csrf_field() }}
@@ -100,7 +97,7 @@
 												type="submit" title="Suppression"><i class="fa fa-times text-danger"></i></button>
 									</form>
 								</td>
-                               <?php /*?>@include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('admin.category.index'), 'record' => $record ] )<?php */?>
+                               {{--@include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('admin.category.index'), 'record' => $record ] )--}}
                             </tr>
                         @empty
                             @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 8])

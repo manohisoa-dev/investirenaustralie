@@ -41,7 +41,7 @@
                                             
                     {!! \Nvd\Crud\Form::input('title','text')->show() !!}                                            
                     {!! \Nvd\Crud\Form::input('content','text')->show() !!}                                           
-                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Créer</button>
+                    <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-save"></i> Créer</button>
 
                 </form>
             </div>
