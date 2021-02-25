@@ -27,6 +27,61 @@
 <link href="{{ asset('style/app.css') }}" rel="stylesheet">
 <!-- Fin Mombo -->
 
+<style>
+    .feedback {
+        background-color : #AE4435;
+        color: white;
+        padding: 10px 20px;
+        border-radius: none;
+        border-color: #AE4435;
+        width: 100px;
+        opacity: 0.5;
+        transition: 1s;
+    }
+
+    .feedback2 {
+        background-color : #000;
+        color: white;
+        padding: 10px 20px;
+        border-radius: none;
+        border-color: #000;
+        width: 175px;
+        opacity: 1;
+        transition: 1s;
+    }
+
+    .feedback:hover {
+        background-color : #AE4435;
+        color: white;
+        padding: 10px 20px;
+        border-radius: none;
+        border-color: #AE4435;
+        width: 175px;
+        opacity: 1;
+    }
+
+    #mybutton {
+        position: fixed;
+        bottom: -4px;
+        right: 10px;
+        z-index: 999;
+    }
+
+    #btn_devise2 {
+        position: relative;
+        z-index: 3;
+    }
+    #form_devise {
+        position: absolute;
+        z-index: 2; /* .boite-doree sera au-dessus de .boite-verte et .boite-tirets */
+        background:gray;
+        margin-left: -175px;
+        margin-top: -190px;
+        opacity: 0;
+        transition: 2s;
+    }
+</style>
+
 @yield('style')
     
 @yield('style-stripe')
@@ -165,6 +220,12 @@
     <!-- Header End -->
     
     @yield('content')
+
+    <div id="mybutton">
+        <button id="btn_devise" class="feedback">Devise</button>
+        <button id="btn_devise2" class="feedback2" hidden>Fermer</button>
+        <iframe id="form_devise" width="175" height="202" id="themoneyconverter-mini" src="https://themoneyconverter.com/MoneyConverter?from=AUD&amp;to=EUR" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" seamless="seamless" __idm_frm__="815"></iframe>
+    </div>
 
     <footer class="grey-bg footer border-top-1 border-color-dark-gray">
         <div class="footer-top site-footer">
@@ -339,28 +400,19 @@
                     $('#listAplModal .modal-body').append('<a href={{route("member.select.apl")}} class="nav-item nav-link white-color"><i class="fa fa-building"></i> '+value.name+'</a>');
                 });
             });
-
-
-            // var path = $('#page_id').val()==1?'V2/getApl':'../V2/getApl';
-            // $.ajax({
-            //     url : path+'/'+val,
-            //     method : 'get',
-            //     dataType: 'json',
-            //     success : function(data){
-            //         // set apl title
-            //         $('#listAplModal .modal-header').html('<h4 class="white-color">'+val+'</h4>');
-
-            //         // initialize apl items
-            //         $('#listAplModal .modal-body').html('');
-
-            //         // set apl items
-            //         $('#listAplModal .modal-body').append("<h6 class='white-color'>@lang('app.txt.aplfound') : "+data.res.length+"</h6>");
-            //         $.each(data.res,function(key,value){
-            //             $('#listAplModal .modal-body').append('<a href={{route("member.select.apl")}} class="nav-item nav-link white-color"><i class="fa fa-building"></i> '+value.name+'</a>');
-            //         });
-            //     }
-            // });
         });
+
+        $('#btn_devise').click(function(){
+            $('#form_devise').css('opacity', 1);
+            $(this).attr('hidden','true');
+            $('#btn_devise2').removeAttr('hidden');
+        });
+
+        $('#btn_devise2').click(function(){
+            $('#form_devise').css('opacity', 0);
+            $(this).attr('hidden','true');
+            $('#btn_devise').removeAttr('hidden');
+        })
     </script>
 
 

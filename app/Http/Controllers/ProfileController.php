@@ -103,7 +103,7 @@ class ProfileController extends Controller
         }
         
         $default = [
-            'nom'     => 'required|max:100',
+            'name'     => 'required|max:100',
             'email'    => 'required|email|max:100',
             'language' => 'required|max:100',
             'image'    => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -205,6 +205,7 @@ class ProfileController extends Controller
         }
         
         if(!$user->isAdmin()){
+
             // Store image file
             $datas['image_id'] = 0;
             if($file=$request->file('image')){
@@ -214,6 +215,9 @@ class ProfileController extends Controller
         }
         
         try{
+
+            // dd($datas);
+
             // Update user
             $user->fill($datas);
             $user->save();

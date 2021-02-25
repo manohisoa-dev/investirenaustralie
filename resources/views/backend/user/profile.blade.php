@@ -3,26 +3,12 @@
 @section('subcontent')
 
 <div class="col-lg-8 col-xl-9">
-    {{-- <div class="profile-content-area m-40px-tb card card-body">
-        <div class="form-group">
-            <a href="{{route('profile.edit')}}" class="btn btn-info">Modifier Profile</a>
-            <a href="{{route('avatar.edit')}}"  class="btn btn-warning">Modifier Avatar</a>
-            <a href="{{route('password.edit')}}"  class="btn btn-success">Modifier Mot de passe</a>
-            <a href="{{route('location.edit')}}" class="btn btn-info">Modifier Localisation</a>
-        </div>
-    </div> --}}
+    @include('includes.alerts')
     <div class="profile-content-area m-40px-tb card card-body">
         <form action="{{route('profile.edit')}}" method="POST" enctype="multipart/form-data" id="form_profil">
             {{ csrf_field() }}
             <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
                 <h5>@lang('app.txt.logininfo')</h5>
-                {{-- <div class="col-md-3 m-15px-tb m-100px-l">
-                    <div class="media">
-                        <section class="widget">
-                            <img src="{{$item->imageUrl(false)}}" alt="{{$item->name}}"  width="100%">
-                        </section>
-                    </div>
-                </div> --}}
                 <div class="row">
                     <div class="col-md-4 m-10px-tb">
                         <div class="media">
@@ -31,7 +17,7 @@
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.login') </div>
-                                <input type="text" class="form-control" value="{{$item->name}}" name="nom" id="nom" readonly>
+                                <input type="text" class="form-control" value="{{$item->name}}" name="name" id="name" readonly>
                             </div>
                         </div>
                     </div>
