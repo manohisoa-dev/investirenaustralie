@@ -87,7 +87,7 @@ class ProfileController extends Controller {
             'required|max:100', 'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', ];
 
         switch ($role) {
-            case 'member':
+            case 5:
                 $type = $request->input('type');
                 if ($type == 'person') {
                     $rules = ['first_name' => 'required|max:100', 'last_name' => 'required|max:100', ];
@@ -96,17 +96,7 @@ class ProfileController extends Controller {
                         'orga_name' => 'required|max:100', 'orga_presentation' => 'required|max:100', ];
                 }
                 break;
-            case 'afa':
-                $rules = ['orga_name' => 'required|max:100', 'orga_presentation' =>
-                    'required|max:100', 'orga_email' => 'required|unique:users,email,' . $user->id .
-                    '|max:100', 'orga_phone' => 'required|max:100', 'orga_website' =>
-                    'required|url|max:100', 'orga_operation_state' => 'required|max:100',
-                    'orga_operation_range' => 'required|max:100', 'contact_name' =>
-                    'required|max:100', 'contact_email' => 'required|max:100', 'contact_phone' =>
-                    'required|max:100', 'crm_name' => 'required|max:100', 'crm_email' =>
-                    'required|max:100', ];
-                break;
-            case 'apl':
+            case 4:
                 $rules = ['orga_name' => 'required|max:100', 'orga_presentation' =>
                     'required|max:100', 'orga_email' => 'required|unique:users,email,' . $user->id .
                     '|max:100', 'orga_phone' => 'required|max:100', 'orga_website' =>
@@ -115,7 +105,17 @@ class ProfileController extends Controller {
                     'required|unique:users,email,' . $user->id . '|max:100', 'contact_phone' =>
                     'required|max:100', 'bank_iban' => 'max:100', 'bank_bic' => 'max:100', ];
                 break;
-            case 'seller':
+            case 3:
+                $rules = ['orga_name' => 'required|max:100', 'orga_presentation' =>
+                    'required|max:100', 'orga_email' => 'required|unique:users,email,' . $user->id .
+                    '|max:100', 'orga_phone' => 'required|max:100', 'orga_website' =>
+                    'required|url|max:100', 'orga_operation_state' => 'required|max:100',
+                    'orga_operation_range' => 'required|max:100', 'contact_name' =>
+                        'required|max:100', 'contact_email' => 'required|max:100', 'contact_phone' =>
+                        'required|max:100', 'crm_name' => 'required|max:100', 'crm_email' =>
+                        'required|max:100', ];
+                break;
+            case 2:
                 $rules = ['orga_name' => 'required|max:100', 'orga_presentation' =>
                     'required|max:100', 'orga_email' => 'required|unique:users,email,' . $user->id .
                     '|max:100', 'orga_phone' => 'required|max:100', 'orga_website' =>
@@ -123,7 +123,7 @@ class ProfileController extends Controller {
                     'required|max:100', 'contact_phone' => 'required|max:100', 'crm_name' =>
                     'required|max:100', 'crm_email' => 'required|max:100', ];
                 break;
-            case 'admin':
+            case 1:
                 $rules = ['email' => 'required|unique:users,email,' . $user->id . '|max:100',
                     'language' => 'required|max:100', 'first_name' => 'required|max:100',
                     'last_name' => 'required|max:100', ];
