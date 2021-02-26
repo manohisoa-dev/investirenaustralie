@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Userinfo;
 use Illuminate\Http\Request;
 use Session;
 use Auth;
@@ -110,7 +111,7 @@ class ProfileController extends Controller
         ];
         
         switch($role){
-            case 5:
+            case 5:  //Membre
                 $type=$request->input('type');
                 if($type=='person'){
                     $rules = [
@@ -127,7 +128,7 @@ class ProfileController extends Controller
                     ];
                 }
                 break;
-            case 3:
+            case 3:  //AFA
                 $rules = [
                     'orga_name'         => 'required|max:100',
                     'orga_presentation' => 'required|max:100',
@@ -146,7 +147,7 @@ class ProfileController extends Controller
                     'crm_email'  => 'required|max:100',
                 ];
                 break;
-            case 4:
+            case 4:  // APL
                 $rules = [
                     'orga_name'         => 'required|max:100',
                     'orga_presentation' => 'required|max:100',
@@ -154,7 +155,7 @@ class ProfileController extends Controller
                     'orga_phone'        => 'required|max:100',
                     'orga_website'      => 'required|url|max:100',
                     
-                    'orga_operation_range' => 'required|max:100',
+//                    'orga_operation_range' => 'required|max:100',
 
                     'contact_name'  => 'required|max:100',
                     'contact_email' => 'required|email|max:100',
@@ -164,7 +165,7 @@ class ProfileController extends Controller
                     'bank_bic' => 'max:100',
                 ];
                 break;
-            case 2:
+            case 2:  // Vendeur
                 $rules = [
                     'orga_name'         => 'required|max:100',
                     'orga_presentation' => 'required|max:100',
@@ -181,7 +182,7 @@ class ProfileController extends Controller
 
                 ];
                 break;
-            case 1:
+            case 1:   // Administrateur
                 $rules = [
                     'email'    => 'required|unique:users,email|max:100',
                     'language'   => 'required|max:100',
@@ -221,7 +222,18 @@ class ProfileController extends Controller
             // $user->save();
             
             // Create OR Update MetaData
-            $user->handles($request);
+            $userInfo = Userinfo::where('user_id' , Auth::id())->first() ;
+            if(isset($userInfo)){
+                $user->handles($request);
+            }
+            else{
+                $userInfo = Userinfo::create(['user_id' => Auth::id()]) ;
+
+                $request->merge([
+                    'userinfos_id' => $userInfo->id,
+                ]);
+                $user->handles($request);
+            }
             
         }catch (\Exception $exception) {
             logger()->error($exception);

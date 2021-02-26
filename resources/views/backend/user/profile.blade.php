@@ -8,7 +8,7 @@
         <form action="{{route('profile.edit')}}" method="POST" enctype="multipart/form-data" id="form_profil">
             {{ csrf_field() }}
             <input type="hidden" name="role" value="{{ $item->role }}">
-            <input type="hidden" name="userinfos_id" value="{{ $item->userinfos->id }}">
+            <input type="hidden" name="userinfos_id" value="{{ $item->userinfos ? $item->userinfos->id : ''}}">
             <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
                 <h5>@lang('app.txt.logininfo')</h5>
                 <div class="row">
@@ -155,7 +155,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessname') </div>
-                                    <input type="text" class="form-control" placeholder="@lang('app.txt.businessname')" name="orga_name" id="orga_name" value="{{$item->userinfos->orga_name?$item->userinfos->orga_name:old('orga_name')}}">
+                                    <input type="text" class="form-control" placeholder="@lang('app.txt.businessname')" name="orga_name" id="orga_name" value="{{ $item->userinfos ?$item->userinfos->orga_name:old('orga_name')}}">
                                     <span class="text-danger">{{ $errors->first('orga_name') }}</span>
                                 </div>
                             </div>
@@ -167,7 +167,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessemail') </div>
-                                    <input type="text" class="form-control" name="orga_email" id="orga_email" placeholder="@lang('app.txt.businessemail')" value="{{$item->userinfos->orga_email?$item->userinfos->orga_email:old('orga_email')}}" >
+                                    <input type="text" class="form-control" name="orga_email" id="orga_email" placeholder="@lang('app.txt.businessemail')" value="{{$item->userinfos ?$item->userinfos->orga_email:old('orga_email')}}" >
                                     <span class="text-danger">{{ $errors->first('orga_email') }}</span>
                                 </div>
                             </div>
@@ -179,7 +179,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessphone')</div>
-                                    <input type="text" class="form-control" name="orga_phone" id="orga_phone" placeholder="@lang('app.txt.businessphone')" value="{{$item->userinfos->orga_phone?$item->userinfos->orga_phone:old('orga_phone')}}">
+                                    <input type="text" class="form-control" name="orga_phone" id="orga_phone" placeholder="@lang('app.txt.businessphone')" value="{{$item->userinfos ?$item->userinfos->orga_phone:old('orga_phone')}}">
                                     <span class="text-danger">{{ $errors->first('orga_phone') }}</span>
                                 </div>
                             </div>
@@ -191,7 +191,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businesswebsite')</div>
-                                    <input type="text" class="form-control" name="orga_website" placeholder="@lang('app.txt.businesswebsite')" value="{{$item->userinfos->orga_website?$item->userinfos->orga_website:old('orga_website')}}">
+                                    <input type="text" class="form-control" name="orga_website" placeholder="@lang('app.txt.businesswebsite')" value="{{$item->userinfos ?$item->userinfos->orga_website:old('orga_website')}}">
                                     <span class="text-danger">{{ $errors->first('orga_website') }}</span>
                                 </div>
                             </div>
@@ -203,7 +203,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businesspresentation')</div>
-                                    <input type="text" name="orga_presentation" id="orga_presentation" class="form-control" placeholder="@lang('app.txt.businesspresentation')" value="{{$item->userinfos->orga_presentation?$item->userinfos->orga_presentation:old('orga_presentation')}}">
+                                    <input type="text" name="orga_presentation" id="orga_presentation" class="form-control" placeholder="@lang('app.txt.businesspresentation')" value="{{$item->userinfos ?$item->userinfos->orga_presentation:old('orga_presentation')}}">
                                     <span class="text-danger">{{ $errors->first('orga_presentation') }}</span>
                                 </div>
                             </div>
@@ -228,7 +228,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.stateoflegaloperation')</div>
-                                    <input type="text" class="form-control" placeholder="@lang('app.txt.stateoflegaloperation')" value="{{$item->userinfos->orga_operation_state?$item->userinfos->orga_operation_state:''}}" name="orga_operation_state">
+                                    <input type="text" class="form-control" placeholder="@lang('app.txt.stateoflegaloperation')" value="{{$item->userinfos ?$item->userinfos->orga_operation_state:''}}" name="orga_operation_state">
                                 </div>
                             </div>
                         </div>
@@ -239,7 +239,8 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.rangeofoperation')</div>
-                                    <input type="text" class="form-control" placeholder="@lang('app.txt.rangeofoperation')" value="{{$item->userinfos->orga_operation_range?$item->userinfos->orga_operation_range:''}}" name="orga_operation_range">
+                                    <input type="text" class="form-control" placeholder="@lang('app.txt.rangeofoperation')" value="{{$item->userinfos ?$item->userinfos->orga_operation_range:''}}" name="orga_operation_range">
+                                    <span class="text-danger">{{ $errors->first('orga_operation_range') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -309,7 +310,8 @@
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.contactname') </div>
-                                <input type="text" class="form-control" name="contact_name" id="contact_name" placeholder="@lang('app.txt.contactname')" value="{{$item->userinfos->contact_name?$item->userinfos->contact_name:''}}">
+                                <input type="text" class="form-control" name="contact_name" id="contact_name" placeholder="@lang('app.txt.contactname')" value="{{$item->userinfos ?$item->userinfos->contact_name : old('contact_name') }}">
+                                <span class="text-danger">{{ $errors->first('contact_name') }}</span>
                             </div>
                         </div>
                     </div>
@@ -320,7 +322,8 @@
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.contactemail') </div>
-                                <input type="text" class="form-control" name="contact_email" id="contact_email" placeholder="@lang('app.txt.contactemail')" value="{{$item->userinfos->contact_email?$item->userinfos->contact_email:''}}">
+                                <input type="text" class="form-control" name="contact_email" id="contact_email" placeholder="@lang('app.txt.contactemail')" value="{{$item->userinfos ?$item->userinfos->contact_email : old('contact_email') }}">
+                                <span class="text-danger">{{ $errors->first('contact_email') }}</span>
                             </div>
                         </div>
                     </div>
@@ -331,7 +334,8 @@
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.contactphone')</div>
-                                <input type="text" name="contact_phone" id="contact_phone" placeholder="@lang('app.txt.contactphone')" value="{{$item->userinfos->contact_phone?$item->userinfos->contact_phone:''}}" class="form-control">
+                                <input type="text" name="contact_phone" id="contact_phone" placeholder="@lang('app.txt.contactphone')" value="{{$item->userinfos ?$item->userinfos->contact_phone : old('contact_phone')}}" class="form-control">
+                                <span class="text-danger">{{ $errors->first('contact_phone') }}</span>
                             </div>
                         </div>
                     </div>
@@ -348,7 +352,7 @@
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.crmprovidername') </div>
-                                <input type="text" class="form-control" name="crm_name" id="crm_name" placeholder="@lang('app.txt.crmprovidername')" value="{{$item->userinfos->crm_name?$item->userinfos->crm_name:''}}">
+                                <input type="text" class="form-control" name="crm_name" id="crm_name" placeholder="@lang('app.txt.crmprovidername')" value="{{$item->userinfos ?$item->userinfos->crm_name:''}}">
                             </div>
                         </div>
                     </div>
@@ -359,7 +363,7 @@
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.crmprovideremail') </div>
-                                <input type="text" name="crm_email" id="crm_email" placeholder="@lang('app.txt.crmprovideremail')" value="{{$item->userinfos->crm_email?$item->userinfos->crm_email:''}}" class="form-control">
+                                <input type="text" name="crm_email" id="crm_email" placeholder="@lang('app.txt.crmprovideremail')" value="{{$item->userinfos ?$item->userinfos->crm_email:''}}" class="form-control">
                             </div>
                         </div>
                     </div>
