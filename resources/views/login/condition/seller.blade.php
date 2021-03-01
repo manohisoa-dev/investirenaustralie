@@ -39,9 +39,9 @@
       </div>
     </div>
     <div class="container">
+        @include('includes.alerts')
         <div class="row">
             <div class="col-md-12">
-
                 <div class="col-md-12">
                     <h4 class="title wow slideInLeft" style="visibility: hidden; animation-name: none;">
                         SELLER'S AGREEMENT</h4>

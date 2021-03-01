@@ -54,6 +54,8 @@
                                     </div>
                                 </div>
                                 <br>
+
+                                {{-- Form for particulier --}}
                                 <form class="form-horizontal" role="form" id="particulierForm" action="{{$action}}" method="post" enctype="multipart/form-data">
                                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                                     <input type="hidden" name="type" value="person">
@@ -63,12 +65,14 @@
                                             <label class="col-sm-3 control-label" for="name">@lang('app.txt.login') *</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control" id="name" name="name" placeholder="Votre nom d'utilisateur" required>
+                                                <span class="text-danger">{{ $errors->first('name') }}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label" for="email">@lang('app.txt.email') *</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control" id="email" name="email" placeholder="you@exemple.com" required>
+                                                <span class="text-danger">{{ $errors->first('email') }}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -107,12 +111,14 @@
                                             <label for="first_name" class="col-sm-3 control-label">@lang('app.txt.nom') *</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control" name="first_name">
+                                                <span class="text-danger">{{ $errors->first('first_name') }}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label" for="last_name">@lang('app.txt.prenom') *</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control"  name="last_name" required>
+                                                <span class="text-danger">{{ $errors->first('last_name') }}</span>
                                             </div>
                                         </div>
                                     </fieldset>
@@ -125,7 +131,7 @@
                                             </div>
                                             <div class="checkbox">
                                                 <div class="custom-control custom-switch">
-                                                    <input type="checkbox" name="newsletter" class="custom-control-input" id="shop-notification-1" checked="checked">
+                                                    <input type="checkbox" name="newsletter" class="custom-control-input" id="shop-notification-1" >
                                                     <label class="custom-control-label" for="shop-notification-1">@lang('app.form.register.newsletter')</label>
                                                 </div>
                                             </div>
@@ -144,7 +150,8 @@
                                     </div>
                                 </form>
 
-                                <form class="form-horizontal" role="form" action="{{$action}}" id="organisationForm" method="post" enctype="multipart/form-data">
+                                {{-- Form for organisation --}}
+                                <form hidden class="form-horizontal" role="form" action="{{$action}}" id="organisationForm" method="post" enctype="multipart/form-data">
                                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                                     <input type="hidden" name="type" value="organization">
                                     <fieldset>
@@ -152,13 +159,15 @@
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label" for="name">@lang('app.txt.login') *</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="name" name="name" placeholder="Votre nom d'utilisateur" required>
+                                                <input type="text" class="form-control" name="name" placeholder="Votre nom d'utilisateur" required>
+                                                <span class="text-danger">{{ $errors->first('name') }}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label" for="email">@lang('app.txt.email') *</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="email" name="email" placeholder="you@exemple.com" required>
+                                                <input type="text" class="form-control" name="email" placeholder="you@exemple.com" required>
+                                                <span class="text-danger">{{ $errors->first('email') }}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -186,12 +195,35 @@
                                             <label for="orga_name" class="col-sm-3 control-label"> @lang('app.txt.nom.organisation') </label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control" name="orga_name" required>
+                                                <span class="text-danger">{{ $errors->first('orga_name') }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="orga_email" class="col-sm-3 control-label"> @lang('app.txt.email') </label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="orga_email" required>
+                                                <span class="text-danger">{{ $errors->first('orga_email') }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="orga_phone" class="col-sm-3 control-label"> @lang('app.txt.phone') </label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="orga_phone" required>
+                                                <span class="text-danger">{{ $errors->first('orga_phone') }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="orga_website" class="col-sm-3 control-label"> @lang('app.txt.websiteurl') </label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="orga_website" required>
+                                                <span class="text-danger">{{ $errors->first('orga_website') }}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label" for="orga_presentation" >@lang('app.txt.presentation.organisation') *</label>
                                             <div class="col-sm-9">
                                                 <textarea  class="form-control" name="orga_presentation" rows="10" required></textarea>
+                                                <span class="text-danger">{{ $errors->first('orga_presentation') }}</span>
                                             </div>
                                         </div>
                                     </fieldset>
@@ -214,37 +246,57 @@
                                             <label class="col-sm-3 control-label" for="state">@lang('app.txt.etat') (@lang('app.txt.etat.libelle'))</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control" name="area_level_1" >
+                                                <span class="text-danger">{{ $errors->first('area_level_1') }}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label" for="locality">@lang('app.txt.ville') *</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control" name="locality" required>
+                                                <span class="text-danger">{{ $errors->first('locality') }}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label" for="postalCode">@lang('app.txt.codepostal') *</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control" name="postalCode" required>
+                                                <span class="text-danger">{{ $errors->first('postalCode') }}</span>
                                             </div>
                                         </div>
                                     </fieldset>
-                                    <fieldset>
+                                    <fieldset class="border-bottom-1 border-color-gray p-15px-b">
                                         <legend>@lang('app.txt.contactinfo')</legend>
                                         <div class="form-group">
-                                            <label for="prefixPhone" class="col-sm-3 control-label">@lang('app.txt.contact.mobile') *</label>
-                                            <div class="col-md-3">
-                                                <select class="form-control" name="prefixPhone">
-                                                    <option value="0">@lang('app.select_phone')</option>
-                                                    @foreach($countries as $country)
-                                                        @if($country->prefixPhone)
-                                                        <option value="{{$country->prefixPhone}}"> {{$country->prefixPhone}}</option>
-                                                        @endif
-                                                    @endforeach
-                                                </select>
+                                            <label for="contact_name" class="col-sm-3 control-label"> @lang('app.txt.nom') </label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="contact_name" required>
+                                                <span class="text-danger">{{ $errors->first('contact_name') }}</span>
                                             </div>
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control"  name="phone" placeholder="3-333-333" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="contact_email" class="col-sm-3 control-label"> @lang('app.txt.email') </label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="contact_email" required>
+                                                <span class="text-danger">{{ $errors->first('contact_email') }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="prefixPhone" class="col-sm-3 control-label">@lang('app.txt.contact.mobile') *</label>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <select class="form-control" name="prefixPhone">
+                                                        <option value="0">@lang('app.select_phone')</option>
+                                                        @foreach($countries as $country)
+                                                            @if($country->prefixPhone)
+                                                            <option value="{{$country->prefixPhone}}"> {{$country->prefixPhone}}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control"  name="contact_phone" placeholder="3-333-333" required>
+                                                    <span class="text-danger">{{ $errors->first('contact_phone') }}</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </fieldset>
@@ -316,6 +368,18 @@
                     return false;
                 }
             }
+        });
+    </script>
+    <script>
+        $('#type').change(function(){
+            var val = $(this).val();
+            if(val!='person'){
+                $('#organisationForm').removeAttr('hidden');
+                $('#particulierForm').attr('hidden','hidden');
+            }else{
+                $('#organisationForm').attr('hidden','hidden');
+                $('#particulierForm').removeAttr('hidden');
+            }            
         });
     </script>
 @endpush

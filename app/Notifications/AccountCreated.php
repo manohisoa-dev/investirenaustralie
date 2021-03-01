@@ -32,7 +32,7 @@ class AccountCreated extends Notification
      * @return array
      */
     public function via($notifiable)
-    {
+    {   
         return ['mail'];
     }
 

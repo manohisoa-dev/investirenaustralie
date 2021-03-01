@@ -9,6 +9,7 @@
                 <div class="row align-items-center justify-content-center min-vh-100">
                     <div class="col-md-6 col-xl-5 p-40px-tb">
                         <div class="p-40px white-bg box-shadow border-radius-10" style="margin-top: 20%;">
+                            @include('includes.alerts')
                             <div class="p-20px-b text-center">
                                 <h3 class="font-w-600 dark-color m-10px-b">@lang('app.login')</h3>
                                 <p>@lang('app.txt.login.libelle')</p>

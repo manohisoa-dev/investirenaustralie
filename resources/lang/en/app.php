@@ -364,6 +364,7 @@ return [
     'txt.stateoflegaloperation' => 'State of legal operation of your present office',
     'txt.rangeofoperation' => 'Range of operation of your present office',
     'txt.editavatar' => 'Edit Avatar',
+    'txt.errorcreateuser' => 'Unable to create new user',
     
 
     'table.title'  => "Title",

@@ -18,6 +18,7 @@ class User extends Authenticatable{
         'activation_code', 
         'use_default_password',
         'trial_ends_at',
+        'type_users_id'
     ];
 
     /**

@@ -644,6 +644,7 @@ return [
     'txt.stateoflegaloperation' => 'État de fonctionnement légal de votre bureau actuel',
     'txt.rangeofoperation' => "Gamme d'opérations de votre bureau actuel",
     'txt.editavatar' => 'Modifier Avatar',
+    'txt.errorcreateuser' => 'Impossible de créer un nouvel utilisateur',
     
     
     

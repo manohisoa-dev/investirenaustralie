@@ -17,6 +17,9 @@ use App\Models\Image;
 use App\Models\Page;
 use App\Models\Country;
 use App\Models\State;
+use App\Models\Role;
+use App\Models\TypeUser;
+use App\Models\Userinfo;
 
 class RegisterController extends Controller
 {
@@ -258,6 +261,7 @@ class RegisterController extends Controller
     */
     private function storeByRole(Request $request, $role)
     {    
+
         // Get post datas
         $datas = $request->all();
         
@@ -284,18 +288,17 @@ class RegisterController extends Controller
                     $rules = [
                         'first_name' => 'required|max:100',
                         'last_name'  => 'required|max:100',
-
                         'country'      => 'required|max:100',
-                        'area_level_1' => 'nullable|max:100',
-                        'area_level_2' => 'nullable|max:100',
-                        'locality'     => 'nullable|max:100',
-                        'route'        => 'nullable|max:100',
-                        'postalCode'   => 'nullable|max:100',
                     ];
                 }else{
                     $rules = [
                         'prefixPhone' => 'required|max:100',
-                        'phone'       => 'required|max:100',
+                        'first_name' => 'nullable|max:100',
+                        'last_name'  => 'nullable|max:100',
+
+                        'contact_name'       => 'required|max:100',
+                        'contact_email'        => 'required|email|max:100',
+                        'contact_phone'       => 'required|max:100',
 
                         'orga_name'         => 'required|max:100',
                         'orga_presentation' => 'required|max:100',
@@ -395,6 +398,7 @@ class RegisterController extends Controller
 
         // Validate request
         $rules = array_merge($default, $rules);
+
         $validator = Validator::make($datas, $rules);
         if ($validator->fails()) {
             return back()->withErrors($validator)
@@ -415,21 +419,29 @@ class RegisterController extends Controller
         }
         
         // More info
-        $datas['role'] = $role;
+        $datas['role'] = (Role::where('role_initial',$role)->first())->id;
         $datas['password'] = $password = str_random(10);
         $datas['activation_code'] = md5(str_random(30).(time()*32));
         $datas['use_default_password'] = 1;
+        $datas['type_users_id'] = (TypeUser::where('type_user_name',$datas['type'])->first())->id;
+
 
         try{
+                        
             // Create user
-            $user = $this->create($datas);
-            
-            // Create OR Update MetaData
+            unset($datas['type']);
+            $user = User::create($datas);
+
+            // Create user info
+            $userInfo = Userinfo::create(['user_id' => $user->id]) ;
+            $request->merge([
+                'userinfos_id' => $userInfo->id,
+            ]);
             $user->handles($request);
             
         }catch (\Exception $exception) {
             logger()->error($exception);
-            return back()->with('info', 'Unable to create new user.');
+            return back()->with('info', trans('app.txt.errorcreateuser'));
         }
 
         $request->session()->forget("step");
