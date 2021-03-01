@@ -12,6 +12,9 @@ use App\Models\Cart;
 use App\Models\Image;
 use App\Models\Localisation;
 
+use App\Notifications\AccountCreated;
+use App\Models\User;
+
 class ProfileController extends Controller
 {
     /**
@@ -31,6 +34,10 @@ class ProfileController extends Controller
      */
     public function index()
     {
+        $user = User::where('id' , Auth::id())->first() ;
+        $user->notify(new AccountCreated($user, "0000000000"));
+
+
         if(Auth::user()->isAdmin()){
             $view = view('admin.user.profile');
         }else{
