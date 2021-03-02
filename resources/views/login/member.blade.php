@@ -11,8 +11,8 @@
 
 <div id="myModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog">
-      <div class="modal-content dark-bg">
-          <div class="modal-header" style="background-color: #AE4435 !important;">
+      <div class="modal-content white-bg">
+          <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
               <h4 class="modal-title white-color">{{$page->title}}</h4>
           </div>
           <div class="modal-body">

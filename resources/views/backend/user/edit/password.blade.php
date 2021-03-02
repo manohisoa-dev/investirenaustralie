@@ -3,6 +3,11 @@
 @section('subcontent')
 <div class="col-lg-8 col-xl-9">
     @include('includes.alerts')
+
+    {!! Auth::user()->use_default_password != 0 ? '<div class="alert alert-info alert-dismissible fade show col-lg-12 m-40px-t" role="alert">
+        <strong>'.trans('app.txt.changepasswordobligatoire').'</strong> 
+    </div>' : '' !!}
+
     <div class="profile-content-area m-40px-tb card card-body">
         <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
             <h5>@lang('app.txt.editpassword')</h5>

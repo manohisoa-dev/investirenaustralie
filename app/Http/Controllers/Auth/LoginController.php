@@ -137,13 +137,13 @@ class LoginController extends Controller
                     return redirect()
                         ->route('login')
                         ->withInput($request->only($this->username(), 'remember'))
-                        ->with('error', 'Your account is desactivated. An email is sent to your address email.');
+                        ->with('error', trans('app.txt.accountdesactivated'));
                 }
                 
                 return redirect()
                     ->route('login')
                     ->withInput($request->only($this->username(), 'remember'))
-                    ->with('error', 'You must be confirm your account.');
+                    ->with('error', trans('app.txt.mustconfirmaccount'));
             }
         }
 

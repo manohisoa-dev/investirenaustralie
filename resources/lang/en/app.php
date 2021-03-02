@@ -369,6 +369,17 @@ return [
     'txt.oldpassword' =>'Ancien mot de passe',
     'txt.newpassword' =>'New Password',
     'txt.confirmpassword' =>'Confirm new password',
+    'txt.createuser.success' =>'Successfully created a new account. Please check your email and activate your account.',
+    'txt.resendcode' => 'Resend code',
+    'txt.mustagreeterme' => 'You must agree the term and condition',
+    'txt.accountdesactivated' => 'Your account is desactivated. An email is sent to your address email.',
+    'txt.mustconfirmaccount' => 'You must be confirm your account.',
+    'txt.codedoesnotexist' => "The code does not exist for any user in our system.",
+    'txt.accountactivated' => "Your account is activated. You can login now with your default password.",
+    'txt.useractived' => "User already active. Operation not allowed.",
+    'txt.activationcodesent' => "Activation code sent. Please check your email and activate your account.",
+    'txt.changepasswordobligatoire' => "Password change required !",
+    
     
 
     'table.title'  => "Title",
@@ -390,6 +401,7 @@ return [
     'txt.yourcomment' =>  'Your Comment ?',
     'txt.saveinfo' =>  'Save my name, email, and website in this browser for the next time I comment.',
     'txt.probleme.survenu' => "Whoops! Something went wrong!",
+    
 
 
     'num.area' => ':num m2',

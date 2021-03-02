@@ -10,20 +10,20 @@
 
 <!-- Section -->
 <div id="myModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog">
-      <div class="modal-content dark-bg">
-          <div class="modal-header" style="background-color: #AE4435 !important;">
+    <div class="modal-dialog">
+        <div class="modal-content white-bg">
+            <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
               <h4 class="modal-title white-color">{{$page->title}}</h4>
-          </div>
-          <div class="modal-body">
-              <p class="text-justify">{{$page->content}}</p>
-          </div>
-          <div class="modal-footer">
-              <a type="button" class="pull-left m-btn m-btn-theme" href="javascript:history.back()">@lang('app.btn.abandonner')</a>
-              <a type="button" class="m-btn m-btn-theme2nd" href="#section1" id="custom-close">@lang('app.btn.continuer')</a>
-          </div>
-      </div>
-  </div>
+            </div>
+            <div class="modal-body">
+                <p class="text-justify">{{$page->content}}</p>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="pull-left m-btn m-btn-theme" href="javascript:history.back()">@lang('app.btn.abandonner')</a>
+                <a type="button" class="m-btn m-btn-theme2nd" href="#section1" id="custom-close">@lang('app.btn.continuer')</a>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div id="section1" class="p-100px-tb">

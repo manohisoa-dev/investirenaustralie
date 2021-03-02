@@ -585,7 +585,7 @@ return [
     'txt.avatar.libelle'      =>"Choisissez un avatar pour représenter votre profil",
     'txt.userinfo'      =>"Informations de l'Utilisateur",
     'txt.nom'      =>"Nom",
-    'txt.prenom'      =>"Prémon",
+    'txt.prenom'      =>"Prénom",
     'txt.champobligatoire'      =>"Champ obligatoire",
     'txt.inscrirenews'      =>"M'inscrire à la Newsletter",
     'txt.autorisation.commercial'      =>"J'autorise le partage et la commercialisation de mes information avec les partenaires du site www.investirenaustralie.com.",
@@ -815,6 +815,18 @@ return [
     'txt.saveinfo' =>  "Enregistrez mon nom, mon adresse e-mail et mon site Web dans ce navigateur pour la prochaine fois que je commenterai.",
     'txt.probleme.survenu' => "Oups! Un problème est survenu!",
     'txt.businesswebsite'  => 'Site Web',
+    'txt.createuser.success' =>'Un nouveau compte a bien été créé. Veuillez vérifier votre messagerie et activer votre compte.',
+    'txt.resendcode' => 'Renvoyer le code',
+    'txt.mustagreeterme' => 'Vous devez accepter les termes et conditions',
+    'txt.accountdesactivated' => 'Votre compte est désactivé. Un e-mail est envoyé à votre adresse e-mail.',
+    'txt.mustconfirmaccount' => 'Vous devez confirmer votre compte.',
+    'txt.codedoesnotexist' => "Le code n'existe pour aucun utilisateur de notre système.",
+    'txt.accountactivated' => "Votre compte est activé. Vous pouvez vous connecter maintenant avec votre mot de passe par défaut.",
+    'txt.useractived' => "Utilisateur déjà actif. Opération non autorisée.",
+    'txt.activationcodesent' => "Code d'activation envoyé. Veuillez vérifier votre messagerie et activer votre compte.",
+    'txt.changepasswordobligatoire' => "Changement du mot de passe obligatoire !",
+
+
 
     'dernierprod'           =>'Derniers Produits',
     'dernierart'           =>'Derniers Articles',
