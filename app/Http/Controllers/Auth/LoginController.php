@@ -47,31 +47,9 @@ class LoginController extends Controller
         Session::put('locale',Auth::user()->language);
         Session::save();
         
-        /*
-        try{
-            // get current logged in customer
-            $customer = Auth::user();
-
-            // using your customer id we will create
-            // brain tree customer id with same id
-            $response = \Braintree_Customer::create([
-               'id' => $customer->id
-            ]);
-
-            // save your braintree customer id
-            if( $response->success) {
-                $customer->braintree_customer_id = $response->customer->id;
-                $customer->save();
-            }
-        }catch(\Exception $e){
-            
-        }
-        */
-        
         if(Auth::user()->use_default_password==1){
             return '/profile/password';
         }
-
 
         if(Session('comment')!==null){
             return url(url()->previous());
@@ -159,7 +137,7 @@ class LoginController extends Controller
                     return redirect()
                         ->route('login')
                         ->withInput($request->only($this->username(), 'remember'))
-                        ->with('error', 'Your account is deactivated. An email is sent to your address email.');
+                        ->with('error', 'Your account is desactivated. An email is sent to your address email.');
                 }
                 
                 return redirect()

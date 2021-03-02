@@ -34,10 +34,6 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        $user = User::where('id' , Auth::id())->first() ;
-        $user->notify(new AccountCreated($user, "0000000000"));
-
-
         if(Auth::user()->isAdmin()){
             $view = view('admin.user.profile');
         }else{
@@ -277,6 +273,7 @@ class ProfileController extends Controller
             ],
             
         ];
+        
         return $view->with('title', __('app.password'))
             ->with('breadcrumbs', $breadcrumbs);
     }
@@ -291,7 +288,8 @@ class ProfileController extends Controller
         // Validate request
         $validator = Validator::make($request->all(),[
                             'old_password' => 'required|max:100',
-                            'password' => 'confirmed|max:100',
+                            'password' => 'required|max:100',
+                            'password_confirmation' => 'required|max:100|same:password',
                         ]);
         
         if ($validator->fails()) {
@@ -299,10 +297,11 @@ class ProfileController extends Controller
                         ->withErrors($validator);
         }
         
-        $old = bcrypt($request->old_password);
-        if($old == Auth::user()->password){
+        $old = $request->old_password;
+        if(password_verify($old,Auth::user()->password)){
             Auth::user()->password = bcrypt($request->password);
             Auth::user()->use_default_password = 0;
+            Auth::user()->save();
         }
         
         // Success

@@ -131,7 +131,7 @@
                                             </div>
                                             <div class="checkbox">
                                                 <div class="custom-control custom-switch">
-                                                    <input type="checkbox" name="newsletter" class="custom-control-input" id="shop-notification-1" >
+                                                    <input type="checkbox" name="newsletter" class="custom-control-input" id="shop-notification-1" checked="checked">
                                                     <label class="custom-control-label" for="shop-notification-1">@lang('app.form.register.newsletter')</label>
                                                 </div>
                                             </div>

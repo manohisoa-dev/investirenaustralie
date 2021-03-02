@@ -365,6 +365,10 @@ return [
     'txt.rangeofoperation' => 'Range of operation of your present office',
     'txt.editavatar' => 'Edit Avatar',
     'txt.errorcreateuser' => 'Unable to create new user',
+    'txt.editpassword' =>'Change Password',
+    'txt.oldpassword' =>'Ancien mot de passe',
+    'txt.newpassword' =>'New Password',
+    'txt.confirmpassword' =>'Confirm new password',
     
 
     'table.title'  => "Title",

@@ -59,6 +59,6 @@
 
 @section('script')
 
-</script>
+
 @endsection
 

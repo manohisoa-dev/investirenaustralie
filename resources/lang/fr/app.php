@@ -645,6 +645,10 @@ return [
     'txt.rangeofoperation' => "Gamme d'opérations de votre bureau actuel",
     'txt.editavatar' => 'Modifier Avatar',
     'txt.errorcreateuser' => 'Impossible de créer un nouvel utilisateur',
+    'txt.editpassword' =>'Modification de mot de passe',
+    'txt.oldpassword' =>'Ancien mot de passe',
+    'txt.newpassword' =>'Nouveau mot de passe',
+    'txt.confirmpassword' =>'Confirmer nouveau mot de passe',
     
     
     

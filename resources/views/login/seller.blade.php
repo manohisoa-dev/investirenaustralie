@@ -42,12 +42,14 @@
                                                 <label class="col-sm-3 control-label" for="name">Login *</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" class="form-control" id="name" name="name" placeholder="Votre nom d'utilisateur" required>
+                                                    <span class="text-danger">{{ $errors->first('name') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label" for="email">Adresse Email *</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" class="form-control" id="email" name="email" placeholder="you@exemple.com" required>
+                                                    <span class="text-danger">{{ $errors->first('email') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -75,36 +77,42 @@
                                                 <label for="orga_name" class="col-sm-3 control-label">Business Name *</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" class="form-control" id="orga_name" name="orga_name" placeholder="Business Name" required>
+                                                    <span class="text-danger">{{ $errors->first('orga_name') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="orga_email" class="col-sm-3 control-label">Business Email *</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" class="form-control" id="orga_email" name="orga_email" placeholder="Business Email" required>
+                                                    <span class="text-danger">{{ $errors->first('orga_email') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="orga_phone" class="col-sm-3 control-label">Business Phone *</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" class="form-control" id="orga_phone" name="orga_phone" placeholder="Business Phone" required>
+                                                    <span class="text-danger">{{ $errors->first('orga_phone') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="orga_website" class="col-sm-3 control-label">Website URL *</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" class="form-control" id="orga_website" name="orga_website" placeholder="Business Website" required>
+                                                    <span class="text-danger">{{ $errors->first('orga_website') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="orga_presentation" class="col-sm-3 control-label">Business Presentation *</label>
                                                 <div class="col-sm-9">
                                                     <textarea class="form-control" id="orga_presentation" name="orga_presentation" placeholder="Business Presentation" rows="5"></textarea>
+                                                    <span class="text-danger">{{ $errors->first('orga_presentation') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="image" class="col-sm-3 control-label">Logo *</label>
                                                 <div class="col-md-3">
                                                     <input type="file" class="btn btn-default" id="image" name="image" >
+                                                    <span class="text-danger">{{ $errors->first('image') }}</span>
                                                 </div>
                                             </div>
                                         </fieldset>
@@ -119,30 +127,35 @@
                                                         <option value="{{$state->id}}"> {{$state->content}}</option>
                                                         @endforeach
                                                     </select>
+                                                    <span class="text-danger">{{ $errors->first('area_level_1') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="area_level_2" class="col-sm-3 control-label">Suburb *</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" class="form-control" id="area_level_2" name="area_level_2" placeholder="Suburb" required>
+                                                    <span class="text-danger">{{ $errors->first('area_level_2') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="locality" class="col-sm-3 control-label">City *</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" class="form-control" id="locality" name="locality" placeholder="City" required>
+                                                    <span class="text-danger">{{ $errors->first('locality') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="route" class="col-sm-3 control-label">Street Address *</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" class="form-control" id="route" name="route" placeholder="Street Address" required>
+                                                    <span class="text-danger">{{ $errors->first('route') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="postalCode" class="col-sm-3 control-label">Post Code *</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" class="form-control" id="postalCode" name="postalCode" placeholder="Post Code" required>
+                                                    <span class="text-danger">{{ $errors->first('postalCode') }}</span>
                                                 </div>
                                             </div>
                                         </fieldset>
@@ -152,33 +165,38 @@
                                                 <label for="contact_name" class="col-sm-3 control-label">Contact Name *</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" class="form-control" id="contact_name" name="contact_name" placeholder="Contact Name" required>
+                                                    <span class="text-danger">{{ $errors->first('contact_name') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="contact_email" class="col-sm-3 control-label">Contact Email *</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" class="form-control" id="contact_email" name="contact_email" placeholder="Contact Email" required>
+                                                    <span class="text-danger">{{ $errors->first('contact_email') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="contact_phone" class="col-sm-3 control-label">Contact Phone *</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" class="form-control" id="contact_phone" name="contact_phone" placeholder="Contact Phone" required>
+                                                    <span class="text-danger">{{ $errors->first('contact_phone') }}</span>
                                                 </div>
                                             </div>
                                         </fieldset>
                                         <fieldset>
                                             <legend>CRM Provider</legend>
                                             <div class="form-group">
-                                                <label for="crm_name" class="col-sm-3 control-label">CRM Provider Name</label>
+                                                <label for="crm_name" class="col-sm-3 control-label">CRM Provider Name *</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" class="form-control" id="crm_name" name="crm_name" placeholder="CRM Provider Name" required>
+                                                    <span class="text-danger">{{ $errors->first('crm_name') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="crm_email" class="col-sm-3 control-label">CRM Provider Email</label>
+                                                <label for="crm_email" class="col-sm-3 control-label">CRM Provider Email *</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" class="form-control" id="crm_email" name="crm_email" placeholder="CRM Provider Email" required>
+                                                    <span class="text-danger">{{ $errors->first('crm_email') }}</span>
                                                 </div>
                                             </div>
                                         </fieldset>

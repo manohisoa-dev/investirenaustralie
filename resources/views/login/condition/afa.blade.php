@@ -28,6 +28,7 @@
 
 <!-- content -->
 <div id="section1" class="p-100px-tb">
+    @include('includes.alerts')
 <div id="property-single"> 
     <div class="main-slider-wrapper clearfix content corps"> 
         <div id="slider"> 

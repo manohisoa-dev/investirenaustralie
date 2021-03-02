@@ -1,36 +1,46 @@
 @extends('layouts.backend')
 
 @section('subcontent')
-<div class="row">
-    <form class="form-horizontal" role="form" method="post" action="{{route('password.edit')}}">
-        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-        <fieldset>
-            <legend>Modification de mot de passe</legend>
-            <div class="form-group">
-                <label class="col-sm-4 control-label" for="old_password">Ancien mot de passe *</label>
-                <div class="col-sm-8">
-                    <input name="old_password" type="password" class="form-control" id="old_password" placeholder="Ancien mot de passe" required>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-4 control-label" for="password">Nouveau mot de passe *</label>
-                <div class="col-sm-8">
-                    <input name="password" type="password" class="form-control" id="password" placeholder="Nouveau mot de passe" required>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-4 control-label" for="password_confirmation">Confirmer nouveau mot de passe *</label>
-                <div class="col-sm-8">
-                    <input name="password_confirmation" type="password" class="form-control" id="password_confirmation" placeholder="Confirmer nouveau mot de passe" required>
-                </div>
-            </div>
-        </fieldset>
-        <div class="form-group">
-            <div class="col-sm-offset-4 col-sm-8">
-                <button type="submit" class="btn btn-primary">Enregistrer</button>
+<div class="col-lg-8 col-xl-9">
+    @include('includes.alerts')
+    <div class="profile-content-area m-40px-tb card card-body">
+        <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
+            <h5>@lang('app.txt.editpassword')</h5>
+            <div class="row border-top-1 border-color-dark-gray p-25px-t">
+                <form class="form-horizontal col-lg-12" role="form" method="post" action="{{route('password.update')}}">
+                    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="col-sm-12 control-label" for="old_password">@lang('app.txt.oldpassword') *</label>
+                            <div class="col-sm-12">
+                                <input name="old_password" type="password" class="form-control" id="old_password" placeholder="@lang('app.txt.oldpassword')" value="{{ old('old_password')?old('old_password'):'' }}" required>
+                                <span class="text-danger">{{ $errors->first('old_password') }}</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-12 control-label" for="password">@lang('app.txt.newpassword') *</label>
+                            <div class="col-sm-12">
+                                <input name="password" type="password" class="form-control" id="password" placeholder="@lang('app.txt.newpassword')" value="{{ old('password')?old('password'):'' }}" required>
+                                <span class="text-danger">{{ $errors->first('password') }}</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-12 control-label" for="password_confirmation">@lang('app.txt.confirmpassword') *</label>
+                            <div class="col-sm-12">
+                                <input name="password_confirmation" type="password" class="form-control" id="password_confirmation" placeholder="@lang('app.txt.confirmpassword')" value="{{ old('password_confirmation')?old('password_confirmation'):'' }}" required>
+                                <span class="text-danger">{{ $errors->first('password_confirmation') }}</span>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="form-group p-15px-t">
+                        <div class="col-sm-offset-12 col-sm-12 text-right">
+                            <button type="submit" class="m-btn m-btn-theme">@lang('app.btn.save')</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
-    </form>
+    </div>
 </div>
 @endsection
 

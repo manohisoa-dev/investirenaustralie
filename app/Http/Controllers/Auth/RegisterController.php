@@ -10,6 +10,7 @@ use Auth;
 use Event;
 
 use App\Notifications\AccountCreated;
+use Illuminate\Support\Facades\Hash;
 
 use App\Models\User;
 use App\Models\Localisation;
@@ -420,7 +421,7 @@ class RegisterController extends Controller
         
         // More info
         $datas['role'] = (Role::where('role_initial',$role)->first())->id;
-        $datas['password'] = $password = str_random(10);
+        $datas['password'] = Hash::make($password = str_random(10));
         $datas['activation_code'] = md5(str_random(30).(time()*32));
         $datas['use_default_password'] = 1;
         $datas['type_users_id'] = (TypeUser::where('type_user_name',$datas['type'])->first())->id;
