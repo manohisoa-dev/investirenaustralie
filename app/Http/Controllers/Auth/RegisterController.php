@@ -420,11 +420,14 @@ class RegisterController extends Controller
         }
         
         // More info
-        $datas['role'] = (Role::where('role_initial',$role)->first())->id;
+        $oRole = Role::where('role_initial',$role)->first() ;
+        $typeUser = TypeUser::where('type_user_name',$datas['type'])->first() ;
+        
+        $datas['role'] = isset($oRole) ? $oRole->id : '';
         $datas['password'] = Hash::make($password = str_random(10));
         $datas['activation_code'] = md5(str_random(30).(time()*32));
         $datas['use_default_password'] = 1;
-        $datas['type_users_id'] = (TypeUser::where('type_user_name',$datas['type'])->first())->id;
+        $datas['type_users_id'] = isset($typeUser) ? $typeUser->id : '';
 
 
         try{
