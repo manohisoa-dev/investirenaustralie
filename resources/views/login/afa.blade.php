@@ -9,196 +9,234 @@
 @endcomponent
 <!-- Section -->
 
-<div class="main-slider-wrapper clearfix content corps">
+<div class="main-slider-wrapper clearfix content corps p-100px-tb">
     <div class="container">
         <div class="row">
-            <div class="col-md-8">
-                <h3 class="page-title aligncenter">@lang('app.form.register.afa.title')</h3>
-                <div id="content">
-                    <div role="main">
-                        <div id="breadcrumbs" class="group font-size-14">
-                            <div class="breadcrumb">
-                                <a href="{{route('home')}}">@lang('app.home')</a>
-                                <span class="aquo">&gt;</span> @lang('app.form.register.title')</div>
-                            </div>
-                            <div id="entry" class="group">
-                                <div class="hasfloat aligncenter">
-                                    <b>@lang('app.form.register.afa.desc')</b>
+            <div class="col-md-12">
+                <div class="content-box-large">
+                    <div class="main-slider-wrapper clearfix content corps gery"> 
+                        <div id="slider"> 
+                            <div class="container text-center"> 
+                                <div class="jumbotron"> 
+                                    <h2>@lang('app.form.register.afa.title')</h2> 
+                                </div>                     
+                            </div>                 
+                        </div>             
+                    </div>
+                    <div id="content">
+                        <div role="main">
+                            <div id="breadcrumbs" class="group font-size-14">
+                                <div id="entry" class="group">
+                                    <div class="hasfloat aligncenter">
+                                        <b>@lang('app.form.register.afa.desc')</b>
+                                    </div>
+                                    <div class="hasfloat">
+                                    <form class="form-horizontal" role="form" method="post" action="{{route('register', ['role'=>'afa'])}}" enctype="multipart/form-data">
+                                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                                        <input type="hidden" name="type" value="organization">
+                                        <fieldset>
+                                            <legend>Login Information</legend>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label" for="name">Login *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="name" name="name" placeholder="Votre nom d'utilisateur" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label" for="email">Adresse Email *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="email" name="email" placeholder="you@exemple.com" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="language" class="col-sm-3 control-label" for="language">Langage *</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" id="language" name="language">
+                                                        <option value="fr">@lang('app.txt.fr')</option>
+                                                        <option value="en">@lang('app.txt.en')</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset>
+                                            <legend>Business Details</legend>
+                                            <div class="form-group">
+                                                <label for="image" class="col-sm-3 control-label">Logo *</label>
+                                                <div class="col-md-3">
+                                                    <input type="file" class="btn btn-default" id="image" name="image" >
+                                                    <span class="text-danger">{{ $errors->first('image') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="orga_name" class="col-sm-3 control-label">Business Name *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="orga_name" name="orga_name" placeholder="Business Name" required>
+                                                    <span class="text-danger">{{ $errors->first('orga_name') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="orga_email" class="col-sm-3 control-label">Business Email *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="orga_email" name="orga_email" placeholder="Business Email" required>
+                                                    <span class="text-danger">{{ $errors->first('orga_email') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="orga_phone" class="col-sm-3 control-label">Business Phone *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="orga_phone" name="orga_phone" placeholder="Business Phone" required>
+                                                    <span class="text-danger">{{ $errors->first('orga_phone') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="orga_website" class="col-sm-3 control-label">Website URL *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="orga_website" name="orga_website" placeholder="Business Website" required>
+                                                    <span class="text-danger">{{ $errors->first('orga_website') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="orga_presentation" class="col-sm-3 control-label">Business Presentation *</label>
+                                                <div class="col-sm-9">
+                                                    <textarea class="form-control" id="orga_presentation" name="orga_presentation" placeholder="Business Presentation" rows="5"></textarea>
+                                                    <span class="text-danger">{{ $errors->first('orga_presentation') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="orga_operation_state" class="col-sm-3 control-label">State of legal operation of your present office *</label>
+                                                <div class="col-md-9">
+                                                    <select class="form-control" name="orga_operation_state">
+                                                        <option value="0">@lang('app.select_state')</option>
+                                                        @foreach($states as $state)
+                                                        <option value="{{$state->id}}"> {{$state->content}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="text-danger">{{ $errors->first('orga_operation_state') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="orga_operation_range" class="col-sm-3 control-label">Range of operation of your present office *</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" name="orga_operation_range" id="orga_operation_range">
+                                                        <option value="10"> 10km</option>
+                                                        <option value="25"> 25km</option>
+                                                        <option value="50"> 50km</option>
+                                                        <option value="100"> 100km</option>
+                                                        <option value="250"> 250km</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset>
+                                            <legend>Locality Information</legend>
+                                            <div class="form-group">
+                                                <label for="country" class="col-sm-3 control-label">Pays *</label>
+                                                <div class="col-md-9">
+                                                    <select class="form-control" name="country">
+                                                        <option value="0">@lang('app.select_country')</option>
+                                                        @foreach($countries as $country)
+                                                            @if($country->prefixPhone)
+                                                                <option value="{{$country->id}}"> {{$country->content}}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="text-danger">{{ $errors->first('country') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="area_level_1" class="col-sm-3 control-label">State *</label>
+                                                <div class="col-md-9">
+                                                    <select class="form-control" name="area_level_1">
+                                                        <option value="0">@lang('app.select_state')</option>
+                                                        @foreach($states as $state)
+                                                        <option value="{{$state->id}}"> {{$state->content}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="text-danger">{{ $errors->first('area_level_1') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="area_level_2" class="col-sm-3 control-label">Suburb *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="area_level_2" name="area_level_2" placeholder="Suburb" required>
+                                                    <span class="text-danger">{{ $errors->first('area_level_2') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="locality" class="col-sm-3 control-label">City *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="locality" name="locality" placeholder="City" required>
+                                                    <span class="text-danger">{{ $errors->first('locality') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="route" class="col-sm-3 control-label">Street Address *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="route" name="route" placeholder="Street Address" required>
+                                                    <span class="text-danger">{{ $errors->first('route') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="postalCode" class="col-sm-3 control-label">Post Code *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="postalCode" name="postalCode" placeholder="Post Code" required>
+                                                    <span class="text-danger">{{ $errors->first('postalCode') }}</span>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset>
+                                            <legend>Contact Details</legend>
+                                            <div class="form-group">
+                                                <label for="contact_name" class="col-sm-3 control-label">Contact Name *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="contact_name" name="contact_name" placeholder="Contact Name" required>
+                                                    <span class="text-danger">{{ $errors->first('contact_name') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="contact_email" class="col-sm-3 control-label">Contact Email *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="contact_email" name="contact_email" placeholder="Contact Email" required>
+                                                    <span class="text-danger">{{ $errors->first('contact_email') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="contact_phone" class="col-sm-3 control-label">Contact Phone *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="contact_phone" name="contact_phone" placeholder="Contact Phone" required>
+                                                    <span class="text-danger">{{ $errors->first('contact_phone') }}</span>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset>
+                                            <legend>CRM Provider</legend>
+                                            <div class="form-group">
+                                                <label for="crm_name" class="col-sm-3 control-label">CRM Provider Name *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="crm_name" name="crm_name" placeholder="CRM Provider Name" required>
+                                                    <span class="text-danger">{{ $errors->first('crm_name') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="crm_email" class="col-sm-3 control-label">CRM Provider Email *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="crm_email" name="crm_email" placeholder="CRM Provider Email" required>
+                                                    <span class="text-danger">{{ $errors->first('crm_email') }}</span>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-3 col-sm-9">
+                                                <em class="help-block">@lang('app.form.required')</em>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-3 col-sm-9 p-25px-b">
+                                                <button type="submit" class="m-btn m-btn-theme" id="btn_register">@lang('app.btn.register')</button>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="hasfloat">
-                                <form class="form-horizontal" role="form" method="post" action="{{route('register', ['role'=>'afa'])}}" enctype="multipart/form-data">
-                                    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                                    <fieldset>
-                                        <legend>Login Information</legend>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label" for="name">Login *</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="name" name="name" placeholder="Votre nom d'utilisateur" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label" for="email">Adresse Email *</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="email" name="email" placeholder="you@exemple.com" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="language" class="col-sm-3 control-label" for="language">Langage *</label>
-                                            <div class="col-sm-9">
-                                                <select class="form-control" id="language" name="language">
-                                                    <option value="fr">Fran�ais</option>
-                                                    <option value="en">Anglais</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                    <fieldset>
-                                        <legend>Business Details</legend>
-                                        <div class="form-group">
-                                            <label for="image" class="col-sm-3 control-label">Logo *</label>
-                                            <div class="col-md-3">
-                                                <input type="file" class="btn btn-default" id="image" name="image" >
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="orga_name" class="col-sm-3 control-label">Business Name *</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="orga_name" name="orga_name" placeholder="Business Name" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="orga_email" class="col-sm-3 control-label">Business Email *</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="orga_email" name="orga_email" placeholder="Business Email" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="orga_phone" class="col-sm-3 control-label">Business Phone *</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="orga_phone" name="orga_phone" placeholder="Business Phone" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="orga_website" class="col-sm-3 control-label">Website URL *</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="orga_website" name="orga_website" placeholder="Business Website" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="orga_presentation" class="col-sm-3 control-label">Business Presentation *</label>
-                                            <div class="col-sm-9">
-                                                <textarea class="form-control" id="orga_presentation" name="orga_presentation" placeholder="Business Presentation" rows="5"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="orga_operation_state" class="col-sm-3 control-label">State of legal operation of your present office *</label>
-                                            <div class="col-md-9">
-                                                <select class="form-control" name="orga_operation_state">
-                                                    <option value="0">@lang('app.select_state')</option>
-                                                    @foreach($states as $state)
-                                                    <option value="{{$state->id}}"> {{$state->content}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="orga_operation_range" class="col-sm-3 control-label">Range of operation of your present office *</label>
-                                            <div class="col-sm-9">
-                                                <select class="form-control" name="orga_operation_range" id="orga_operation_range">
-                                                    <option value="10"> 10km</option>
-                                                    <option value="25"> 25km</option>
-                                                    <option value="50"> 50km</option>
-                                                    <option value="100"> 100km</option>
-                                                    <option value="250"> 250km</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                    <fieldset>
-                                        <legend>Locality Information</legend>
-                                        <div class="form-group">
-                                            <label for="area_level_1" class="col-sm-3 control-label">State *</label>
-                                            <div class="col-md-9">
-                                                <select class="form-control" name="area_level_1">
-                                                    <option value="0">@lang('app.select_state')</option>
-                                                    @foreach($states as $state)
-                                                    <option value="{{$state->id}}"> {{$state->content}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="area_level_2" class="col-sm-3 control-label">Suburb *</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="area_level_2" name="area_level_2" placeholder="Suburb" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="locality" class="col-sm-3 control-label">City *</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="locality" name="locality" placeholder="City" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="route" class="col-sm-3 control-label">Street Address *</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="route" name="route" placeholder="Street Address" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="postalCode" class="col-sm-3 control-label">Post Code *</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="postalCode" name="postalCode" placeholder="Post Code" required>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                    <fieldset>
-                                        <legend>Contact Details</legend>
-                                        <div class="form-group">
-                                            <label for="contact_name" class="col-sm-3 control-label">Contact Name *</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="contact_name" name="contact_name" placeholder="Contact Name" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="contact_email" class="col-sm-3 control-label">Contact Email *</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="contact_email" name="contact_email" placeholder="Contact Email" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="contact_phone" class="col-sm-3 control-label">Contact Email *</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="contact_phone" name="contact_phone" placeholder="Contact Phone" required>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                    <fieldset>
-                                        <legend>CRM Provider</legend>
-                                        <div class="form-group">
-                                            <label for="crm_name" class="col-sm-3 control-label">CRM Provider Name</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="crm_name" name="crm_name" placeholder="CRM Provider Name" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="crm_email" class="col-sm-3 control-label">CRM Provider Email</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="crm_email" name="crm_email" placeholder="CRM Provider Email" required>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                    <div class="form-group">
-                                        <div class="col-sm-offset-3 col-sm-9">
-                                            <em class="help-block">@lang('app.form.required')</em>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-sm-offset-3 col-sm-9">
-                                            <button type="submit" class="btn btn-primary">@lang('app.btn.register')</button>
-                                        </div>
-                                    </div>
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -237,5 +275,6 @@
             }
         }
     });
+
 </script>
 @endsection

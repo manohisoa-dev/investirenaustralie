@@ -32,7 +32,7 @@ class AccountCreated extends Notification
      * @return array
      */
     public function via($notifiable)
-    {
+    {   
         return ['mail'];
     }
 
@@ -52,6 +52,7 @@ class AccountCreated extends Notification
         
         return (new MailMessage)
             ->from(env('ADMIN_MAIL'))
+            ->cc('iea.dev.v2@gmail.com')
             ->subject(__('mail.created.subject', ['app'=>app_name()]))
             ->greeting(__('mail.greeting', ['name'=>$user->name]))
             ->subject(__('mail.created.content.1'))

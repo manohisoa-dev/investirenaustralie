@@ -279,7 +279,7 @@ class MemberController extends Controller
      */
     public function updateApl(Request $request){
         $this->middleware('auth');
-        $this->middleware('role:member');
+        $this->middleware('role:5');
 
         $apl = null;
         if($request->has('apl')){

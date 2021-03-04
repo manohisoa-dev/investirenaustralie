@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Userinfo;
 use Illuminate\Http\Request;
 use Session;
 use Auth;
@@ -10,6 +11,9 @@ use Validator;
 use App\Models\Cart;
 use App\Models\Image;
 use App\Models\Localisation;
+
+use App\Notifications\AccountCreated;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -103,14 +107,14 @@ class ProfileController extends Controller
         }
         
         $default = [
-            'nom'     => 'required|max:100',
+            'name'     => 'required|max:100',
             'email'    => 'required|email|max:100',
             'language' => 'required|max:100',
             'image'    => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
         
         switch($role){
-            case 5:
+            case 5:  //Membre
                 $type=$request->input('type');
                 if($type=='person'){
                     $rules = [
@@ -127,7 +131,7 @@ class ProfileController extends Controller
                     ];
                 }
                 break;
-            case 3:
+            case 3:  //AFA
                 $rules = [
                     'orga_name'         => 'required|max:100',
                     'orga_presentation' => 'required|max:100',
@@ -146,7 +150,7 @@ class ProfileController extends Controller
                     'crm_email'  => 'required|max:100',
                 ];
                 break;
-            case 4:
+            case 4:  // APL
                 $rules = [
                     'orga_name'         => 'required|max:100',
                     'orga_presentation' => 'required|max:100',
@@ -154,7 +158,7 @@ class ProfileController extends Controller
                     'orga_phone'        => 'required|max:100',
                     'orga_website'      => 'required|url|max:100',
                     
-                    'orga_operation_range' => 'required|max:100',
+//                    'orga_operation_range' => 'required|max:100',
 
                     'contact_name'  => 'required|max:100',
                     'contact_email' => 'required|email|max:100',
@@ -164,7 +168,7 @@ class ProfileController extends Controller
                     'bank_bic' => 'max:100',
                 ];
                 break;
-            case 2:
+            case 2:  // Vendeur
                 $rules = [
                     'orga_name'         => 'required|max:100',
                     'orga_presentation' => 'required|max:100',
@@ -181,7 +185,7 @@ class ProfileController extends Controller
 
                 ];
                 break;
-            case 1:
+            case 1:   // Administrateur
                 $rules = [
                     'email'    => 'required|unique:users,email|max:100',
                     'language'   => 'required|max:100',
@@ -205,6 +209,7 @@ class ProfileController extends Controller
         }
         
         if(!$user->isAdmin()){
+
             // Store image file
             $datas['image_id'] = 0;
             if($file=$request->file('image')){
@@ -214,20 +219,32 @@ class ProfileController extends Controller
         }
         
         try{
+
             // Update user
-            $user->fill($datas);
-            $user->save();
+            // $user->fill($datas);
+            // $user->save();
             
             // Create OR Update MetaData
-            $user->handles($request);
+            $userInfo = Userinfo::where('user_id' , Auth::id())->first() ;
+            if(isset($userInfo)){
+                $user->handles($request);
+            }
+            else{
+                $userInfo = Userinfo::create(['user_id' => Auth::id()]) ;
+
+                $request->merge([
+                    'userinfos_id' => $userInfo->id,
+                ]);
+                $user->handles($request);
+            }
             
         }catch (\Exception $exception) {
             logger()->error($exception);
-            return back()->with('info', "Impossible d'editer votre profile.");
+            return back()->with('info', trans('app.txt.editprofil_unable'));
         }
     
         // Success
-        return back()->with('success',"Votre profile a été bien modifié.");
+        return back()->with('success',trans('app.txt.profil_modified'));
         
     }
 
@@ -256,6 +273,7 @@ class ProfileController extends Controller
             ],
             
         ];
+        
         return $view->with('title', __('app.password'))
             ->with('breadcrumbs', $breadcrumbs);
     }
@@ -270,7 +288,8 @@ class ProfileController extends Controller
         // Validate request
         $validator = Validator::make($request->all(),[
                             'old_password' => 'required|max:100',
-                            'password' => 'confirmed|max:100',
+                            'password' => 'required|min:6|max:100',
+                            'password_confirmation' => 'required|max:100|same:password',
                         ]);
         
         if ($validator->fails()) {
@@ -278,14 +297,15 @@ class ProfileController extends Controller
                         ->withErrors($validator);
         }
         
-        $old = bcrypt($request->old_password);
-        if($old == Auth::user()->password){
+        $old = $request->old_password;
+        if(password_verify($old,Auth::user()->password)){
             Auth::user()->password = bcrypt($request->password);
             Auth::user()->use_default_password = 0;
+            Auth::user()->save();
         }
         
         // Success
-        return back()->with('success',"Votre mot de passe a été bien modifié.");
+        return back()->with('success',trans('app.txt.password_update'));
     }
 
     /**
@@ -347,7 +367,7 @@ class ProfileController extends Controller
         }
         
         // Success
-        return back()->with('success',"Votre photo a été bien modifiée.");
+        return back()->with('success',trans('app.txt.avatar_update'));
     }
 
     /**
@@ -416,7 +436,7 @@ class ProfileController extends Controller
             $location->fill($datas);
             
             // Success
-            return back()->with('success',"Votre location a été bien modifiée.");
+            return back()->with('success',trans('app.txt.location_update'));
         }else if($location = Localisation::create($datas)){
             $user->location_id = $location->id>0?$location->id:0;
         }
@@ -428,7 +448,7 @@ class ProfileController extends Controller
         }
         
         // Success
-        return back()->with('success',"Votre location a été bien ajoutée.");
+        return back()->with('success',trans('app.txt.location_added'));
     }
 
 }

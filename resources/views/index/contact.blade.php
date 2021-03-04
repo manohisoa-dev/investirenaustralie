@@ -31,30 +31,34 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-control-label">Email</label>
-                                    <input id="email" type="email" name="email" placeholder="Votre email *" required="required" data-constraints="@Required" class="form-control">
+                                    <label class="form-control-label">@lang('app.txt.email')</label>
+                                    <input id="email" type="email" name="email" placeholder="@lang('app.txt.your.email') *" required="required" data-constraints="@Required" class="form-control">
+                                    <span class="text-danger">{{ $errors->has('email') ? $errors->first('email') : '' }}</span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-control-label">Nom</label>
-                                    <input id="name" type="text" name="name" placeholder="Votre nom *" data-constraints="@Required" class="form-control" required="required">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-control-label">Sujet</label>
-                                    <input id="subject" type="text" name="subject" placeholder="Sujet *" data-constraints="@Required" class="form-control" required="required">
+                                    <label class="form-control-label">@lang('app.txt.nom')</label>
+                                    <input id="name" type="text" name="name" placeholder="@lang('app.txt.your.name') *" data-constraints="@Required" class="form-control" required="required">
+                                    <span class="text-danger">{{ $errors->has('name') ? $errors->first('name') : '' }}</span>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-control-label">Comment</label>
-                                    <textarea class="form-control" id="content" name="content" rows="3" placeholder="Votre message *" data-constraints="@Required" required="required"></textarea>
+                                    <label class="form-control-label">@lang('app.subject')</label>
+                                    <input id="subject" type="text" name="subject" placeholder="@lang('app.txt.your.subject') *" data-constraints="@Required" class="form-control" required="required">
+                                    <span class="text-danger">{{ $errors->has('subject') ? $errors->first('subject') : '' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-control-label">@lang('app.message')</label>
+                                    <textarea class="form-control" id="content" name="content" rows="3" placeholder="@lang('app.txt.your.message') *" data-constraints="@Required" required="required"></textarea>
+                                    <span class="text-danger">{{ $errors->has('content') ? $errors->first('content') : '' }}</span>
                                 </div>
                             </div>
                             <div class="col-md-12 p-10px-t">
-                                <button class="m-btn m-btn-theme m-btn-radius w-100" type="submit" name="send">@lang('app.btn.send')</button>
+                                <button class="m-btn m-btn-theme border-radius-0 w-100" type="submit" name="send">@lang('app.btn.send')</button>
                                 <div class="snackbars" id="form-output-global"></div>
                             </div>
                             <div id="error-container"></div>

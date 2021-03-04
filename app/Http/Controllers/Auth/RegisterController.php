@@ -10,6 +10,7 @@ use Auth;
 use Event;
 
 use App\Notifications\AccountCreated;
+use Illuminate\Support\Facades\Hash;
 
 use App\Models\User;
 use App\Models\Localisation;
@@ -17,6 +18,9 @@ use App\Models\Image;
 use App\Models\Page;
 use App\Models\Country;
 use App\Models\State;
+use App\Models\Role;
+use App\Models\TypeUser;
+use App\Models\Userinfo;
 
 class RegisterController extends Controller
 {
@@ -92,7 +96,7 @@ class RegisterController extends Controller
             $user = User::where('activation_code', $code)->first();
             if (!$user) {
                 return redirect()->route('login')
-                    ->with('error',"The code does not exist for any user in our system.");
+                    ->with('error',trans('app.txt.codedoesnotexist'));
             }
             $user->status = 'active';
             $user->activation_code = null;
@@ -101,10 +105,10 @@ class RegisterController extends Controller
         } catch (\Exception $exception) {
             logger()->error($exception);
             return redirect()->route('login')
-                ->with('error',"Whoops! something went wrong.");
+                ->with('error', trans('app.txt.probleme.survenu'));
         }
         return redirect()->route('login')
-                ->with('success',"Your account is activated. You can login now with your default password.");
+                ->with('success',trans('app.txt.accountactivated'));
     }
     
     
@@ -117,7 +121,7 @@ class RegisterController extends Controller
     {
         if($user->isActive()){
             return back()
-                ->with('error',"User already active. Operation not allowed");
+                ->with('error',trans('app.txt.useractived'));
         }
         
         try {
@@ -128,15 +132,15 @@ class RegisterController extends Controller
         } catch (\Exception $exception) {
             logger()->error($exception);
             return redirect()->route('login')
-                ->with('error',"Whoops! something went wrong.");
+                ->with('error',trans('app.txt.probleme.survenu'));
         }
         
         // Notify User
         $user->notify(new AccountCreated($user, $password));
         
         return redirect()->route('login')
-            ->with('success', 'Activation code sent. Please check your email and activate your account..<br>'
-                  .'<a class="btn btn-default" href="'.route('resend_code', $user).'">Resend code</a>');
+            ->with('success', trans('app.txt.activationcodesent').'<br>'
+                  .'<a class="btn btn-default" href="'.route('resend_code', $user).'">'.trans('app.txt.resendcode').'</a>');
         
     }
     
@@ -227,7 +231,7 @@ class RegisterController extends Controller
             }
             
             if($count!=$conditionCount){
-                return back()->with('error', 'You must agree the term and condition');
+                return back()->with('error', trans('app.txt.mustagreeterme'));
             }
 
             $request->session()->put("step", "register");
@@ -258,6 +262,7 @@ class RegisterController extends Controller
     */
     private function storeByRole(Request $request, $role)
     {    
+
         // Get post datas
         $datas = $request->all();
         
@@ -284,18 +289,17 @@ class RegisterController extends Controller
                     $rules = [
                         'first_name' => 'required|max:100',
                         'last_name'  => 'required|max:100',
-
                         'country'      => 'required|max:100',
-                        'area_level_1' => 'nullable|max:100',
-                        'area_level_2' => 'nullable|max:100',
-                        'locality'     => 'nullable|max:100',
-                        'route'        => 'nullable|max:100',
-                        'postalCode'   => 'nullable|max:100',
                     ];
                 }else{
                     $rules = [
                         'prefixPhone' => 'required|max:100',
-                        'phone'       => 'required|max:100',
+                        'first_name' => 'nullable|max:100',
+                        'last_name'  => 'nullable|max:100',
+
+                        'contact_name'       => 'required|max:100',
+                        'contact_email'        => 'required|email|max:100',
+                        'contact_phone'       => 'required|max:100',
 
                         'orga_name'         => 'required|max:100',
                         'orga_presentation' => 'required|max:100',
@@ -395,6 +399,7 @@ class RegisterController extends Controller
 
         // Validate request
         $rules = array_merge($default, $rules);
+
         $validator = Validator::make($datas, $rules);
         if ($validator->fails()) {
             return back()->withErrors($validator)
@@ -415,21 +420,29 @@ class RegisterController extends Controller
         }
         
         // More info
-        $datas['role'] = $role;
-        $datas['password'] = $password = str_random(10);
+        $datas['role'] = (Role::where('role_initial',$role)->first())->id;
+        $datas['password'] = Hash::make($password = str_random(10));
         $datas['activation_code'] = md5(str_random(30).(time()*32));
         $datas['use_default_password'] = 1;
+        $datas['type_users_id'] = (TypeUser::where('type_user_name',$datas['type'])->first())->id;
+
 
         try{
+                        
             // Create user
-            $user = $this->create($datas);
-            
-            // Create OR Update MetaData
+            unset($datas['type']);
+            $user = User::create($datas);
+
+            // Create user info
+            $userInfo = Userinfo::create(['user_id' => $user->id]) ;
+            $request->merge([
+                'userinfos_id' => $userInfo->id,
+            ]);
             $user->handles($request);
             
         }catch (\Exception $exception) {
             logger()->error($exception);
-            return back()->with('info', 'Unable to create new user.');
+            return back()->with('info', trans('app.txt.errorcreateuser'));
         }
 
         $request->session()->forget("step");
@@ -441,8 +454,8 @@ class RegisterController extends Controller
 
         // Success
         return redirect()->route('login')
-            ->with('success', 'Successfully created a new account. Please check your email and activate your account.<br>'
-                  .'<a class="btn btn-default" href="'.route('resend_code', $user).'">Resend code</a>');
+            ->with('success', trans('app.txt.createuser.success').'<br>'
+                  .'<a class="btn btn-default" href="'.route('resend_code', $user).'">'.trans('app.txt.resendcode').'</a>');
         
     }
 

@@ -42,7 +42,7 @@ return [
     |
     */
 
-    'port' => env('MAIL_PORT', 465),
+    'port' => env('MAIL_PORT', 587),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,8 +56,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'twistmacg@gmail.com'),
-        'name' => env('MAIL_FROM_NAME', 'twistmacg'),
+        'address' => env('MAIL_FROM_ADDRESS', 'iea.dev.v2@gmail.com'),
+        'name' => env('MAIL_FROM_NAME', 'iea.dev.v2@gmail.com'),
     ],
 
     /*
@@ -84,9 +84,9 @@ return [
     |
     */
 
-    'username' => env('MAIL_USERNAME', 'twistmacg@gmail.com'),
+    'username' => env('MAIL_USERNAME', 'iea.dev.v2@gmail.com'),
 
-    'password' => env('MAIL_PASSWORD', 'aNQRvYdNLyP3'),
+    'password' => env('MAIL_PASSWORD', 'ieadevv2easydata'),
 
     /*
     |--------------------------------------------------------------------------
