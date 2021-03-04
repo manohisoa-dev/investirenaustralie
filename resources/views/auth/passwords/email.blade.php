@@ -20,6 +20,9 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8 m-15px-tb">
+                
+                @include('includes.alerts')
+
                 <div class="white-bg box-shadow p-30px">
                     <div class="p-20px-b">
                         <h5 class="m-0px">@lang('app.txt.send_email')</h5>
@@ -32,7 +35,7 @@
                                 <label for="email" class="col-md-4 control-label">@lang('app.txt.email')</label>
         
                                 <div class="col-md-12">
-                                    <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                                    <input id="email" type="email" class="form-control" name="email" value="{{ session('reset_email') ? session('reset_email') : ''}}" required>
         
                                     @if ($errors->has('email'))
                                         <span class="help-block text-danger">

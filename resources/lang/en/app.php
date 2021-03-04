@@ -382,6 +382,8 @@ return [
     'txt.reset_password' => "Reset password",
     'txt.send_email' => "Send email",
     'txt.send_password_reset_link' => "Send Password Reset Link",
+    'txt.password_reset_link_sent' => "Password reset link sent in your email. Please check your email box!",
+    'txt.password_reset_link_notsent' => "Error: Password reset link not sent.",
     'txt.your.email' => "Your email",
     'txt.your.name' => "Your name",
     'txt.your.subject' => "Your subject",
@@ -396,6 +398,8 @@ return [
     'txt.message_sent' => "Message sent successfully.",
     'txt.connect_with_new_password' => "Password changed. Please log in with your new password.",
     'txt.langue_changed' =>'Language changed.',
+    'txt.trouble_link' =>'If you\'re having trouble clicking the ":link" button, copy and paste the URL below into your web browser: :url',
+    
     
     
 
