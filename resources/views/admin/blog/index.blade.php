@@ -111,7 +111,7 @@
 									</span>
                                 </td>
 								<td style="text-align:center">
-									<a href="#">{{count($record->comments)}}</a>
+									<a href="{{route('admin.comment.index').'?blog_id='.$record->id}}">{{count($record->comments)}}</a>
 								</td>
 								<td>
                                      <span class="editable"
