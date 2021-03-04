@@ -828,6 +828,8 @@ return [
     'txt.reset_password' => "Réinitialiser le mot de passe",
     'txt.send_email' => "Envoyer email",
     'txt.send_password_reset_link' => "Envoyer le lien",
+    'txt.password_reset_link_sent' => " Lien de réinitialisation du mot de passe envoyé dans votre email. Veuillez consulter votre boîte email !",
+    'txt.password_reset_link_notsent' => "Erreur: lien de réinitialisation du mot de passe non envoyé.",
     'txt.your.email' => "Votre email",
     'txt.your.name' => "Votre nom",
     'txt.your.subject' => "Votre sujet",
@@ -842,6 +844,8 @@ return [
     'txt.message_sent' => "Message envoyé avec succes.",
     'txt.connect_with_new_password' => "Mot de passe modifié. Veuillez-vous connecter avec votre nouveau mot de passe.",
     'txt.langue_changed' =>'Langue modifié.',
+    'txt.trouble_link' =>'Si vous ne parvenez pas à cliquer sur le bouton ":link", copiez et collez l\'URL ci-dessous dans votre navigateur Web: :url',
+
 
 
 
