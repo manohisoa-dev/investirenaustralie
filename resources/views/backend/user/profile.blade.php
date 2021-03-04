@@ -60,10 +60,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 m-10px-tb">
+                    <div class="col-md-8 m-10px-tb">
                         <div class="media">
                             <div class="media-body p-15px-l lh-normal p-40px-t">
-                                <i class="fas fa-key"></i> <a href="{{ route('password.edit') }}">@lang('app.txt.editpassword')</a>
+                                <i class="fas fa-key"></i> <a style="color: #AE4435;" href="{{ route('password.edit') }}">@lang('app.txt.editpassword')</a>
                             </div>
                         </div>
                     </div>

@@ -60,9 +60,9 @@ class MailController extends Controller
                 });
 
             }catch(\Exception $e){
-                return back()->with('error', 'Message non envoyé. ' .$e->getMessage());
+                return back()->with('error', trans('app.txt.message_notsent').' '.$e->getMessage());
             }
-            return back()->with('success', 'Message envoyé avec succes.');
+            return back()->with('success', trans('app.txt.message_sent'));
         }
         
         $locale = \App::getLocale();

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 
 use App\Models\Page;
+use App\Models\Localisation;
 
 class ForgotPasswordController extends Controller
 {
@@ -44,7 +45,21 @@ class ForgotPasswordController extends Controller
         $page = Page::where('path', '/login')
             ->locale()
             ->first();
+
+        $lapls = Localisation::select('localizations.*')
+            ->join('users','users.location_id','=','localizations.id')
+            ->where('users.role','=','4')
+            ->groupBy('localizations.locality')
+            ->get();
+
+        $locale = \App::getLocale();
+        $address = \App\Models\Config::login()->get_meta_array('address', $locale);
+        $contact = \App\Models\Config::login()->get_meta_array('contact', $locale);
+
         return view('auth.passwords.email')
-            ->with('item', $page);
+            ->with('item', $page)
+            ->with('address', $address)
+            ->with('contact', $contact)
+            ->with('lapls', $lapls);
     }
 }

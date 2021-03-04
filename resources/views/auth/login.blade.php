@@ -9,7 +9,9 @@
                 <div class="row align-items-center justify-content-center min-vh-100">
                     <div class="col-md-6 col-xl-5 p-40px-tb">
                         <div class="p-40px white-bg box-shadow border-radius-10" style="margin-top: 20%;">
+                            
                             @include('includes.alerts')
+
                             <div class="p-20px-b text-center">
                                 <h3 class="font-w-600 dark-color m-10px-b">@lang('app.login')</h3>
                                 <p>@lang('app.txt.login.libelle')</p>
@@ -20,12 +22,12 @@
                                 <div class="form-group">
                                     <label class="form-control-label">@lang('app.txt.email')</label>
                                     <input type="email" name="email" class="form-control" placeholder="Votre email *" required="required" value="{{ old('email') }}" autofocus>
-                                    <span>{{ $errors->has('email') ? ' has-error' : '' }}</span>
+                                    <span class="text-danger">{{ $errors->has('email') ? $errors->first('email') : '' }}</span>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-control-label">@lang('app.txt.password')</label>
                                     <input name="password"  type="password" placeholder="Votre mot de passe *" class="form-control" placeholder="***********" required="required">
-                                    <span>{{ $errors->has('password') ? ' has-error' : '' }}</span>
+                                    <span class="text-danger">{{ $errors->has('password') ? $errors->first('password') : '' }}</span>
                                 </div>
                                 <div class="form-group">
                                     <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> @lang('app.form.login.remember')

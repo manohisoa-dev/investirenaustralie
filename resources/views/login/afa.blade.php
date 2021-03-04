@@ -232,7 +232,7 @@
                                         </div>
                                         <div class="form-group">
                                             <div class="col-sm-offset-3 col-sm-9 p-25px-b">
-                                                <button type="submit" class="m-btn m-btn-theme">@lang('app.btn.register')</button>
+                                                <button type="submit" class="m-btn m-btn-theme" id="btn_register">@lang('app.btn.register')</button>
                                             </div>
                                         </div>
                                     </form>
@@ -275,5 +275,6 @@
             }
         }
     });
+
 </script>
 @endsection

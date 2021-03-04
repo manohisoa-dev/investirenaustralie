@@ -96,7 +96,7 @@ class RegisterController extends Controller
             $user = User::where('activation_code', $code)->first();
             if (!$user) {
                 return redirect()->route('login')
-                    ->with('error',"The code does not exist for any user in our system.");
+                    ->with('error',trans('app.txt.codedoesnotexist'));
             }
             $user->status = 'active';
             $user->activation_code = null;
@@ -105,10 +105,10 @@ class RegisterController extends Controller
         } catch (\Exception $exception) {
             logger()->error($exception);
             return redirect()->route('login')
-                ->with('error',"Whoops! something went wrong.");
+                ->with('error', trans('app.txt.probleme.survenu'));
         }
         return redirect()->route('login')
-                ->with('success',"Your account is activated. You can login now with your default password.");
+                ->with('success',trans('app.txt.accountactivated'));
     }
     
     
@@ -121,7 +121,7 @@ class RegisterController extends Controller
     {
         if($user->isActive()){
             return back()
-                ->with('error',"User already active. Operation not allowed");
+                ->with('error',trans('app.txt.useractived'));
         }
         
         try {
@@ -132,15 +132,15 @@ class RegisterController extends Controller
         } catch (\Exception $exception) {
             logger()->error($exception);
             return redirect()->route('login')
-                ->with('error',"Whoops! something went wrong.");
+                ->with('error',trans('app.txt.probleme.survenu'));
         }
         
         // Notify User
         $user->notify(new AccountCreated($user, $password));
         
         return redirect()->route('login')
-            ->with('success', 'Activation code sent. Please check your email and activate your account..<br>'
-                  .'<a class="btn btn-default" href="'.route('resend_code', $user).'">Resend code</a>');
+            ->with('success', trans('app.txt.activationcodesent').'<br>'
+                  .'<a class="btn btn-default" href="'.route('resend_code', $user).'">'.trans('app.txt.resendcode').'</a>');
         
     }
     
@@ -231,7 +231,7 @@ class RegisterController extends Controller
             }
             
             if($count!=$conditionCount){
-                return back()->with('error', 'You must agree the term and condition');
+                return back()->with('error', trans('app.txt.mustagreeterme'));
             }
 
             $request->session()->put("step", "register");
@@ -457,8 +457,8 @@ class RegisterController extends Controller
 
         // Success
         return redirect()->route('login')
-            ->with('success', 'Successfully created a new account. Please check your email and activate your account.<br>'
-                  .'<a class="btn btn-default" href="'.route('resend_code', $user).'">Resend code</a>');
+            ->with('success', trans('app.txt.createuser.success').'<br>'
+                  .'<a class="btn btn-default" href="'.route('resend_code', $user).'">'.trans('app.txt.resendcode').'</a>');
         
     }
 
