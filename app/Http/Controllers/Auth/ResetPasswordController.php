@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 
 use App\Models\Page;
+use App\Models\Localisation;
 
 class ResetPasswordController extends Controller
 {
@@ -57,8 +58,17 @@ class ResetPasswordController extends Controller
         $page = Page::where('path', '/login')
             ->locale()
             ->first();
+        $locale = \App::getLocale();
+        $address = \App\Models\Config::login()->get_meta_array('address', $locale);
+        $contact = \App\Models\Config::login()->get_meta_array('contact', $locale);
+        $lapls = Localisation::select('localizations.*')
+            ->join('users','users.location_id','=','localizations.id')
+            ->where('users.role','=','4')
+            ->groupBy('localizations.locality')
+            ->get();
+
         return view('auth.passwords.reset')->with(
-            ['token' => $token, 'email' => $request->email, 'item'=>$page]
+            ['token' => $token, 'email' => $request->email, 'item'=>$page, 'locale'=>$locale, 'address'=>$address, 'contact'=>$contact, 'lapls'=>$lapls]
         );
     }
     
@@ -85,7 +95,7 @@ class ResetPasswordController extends Controller
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
         return $response == Password::PASSWORD_RESET
-                    ? $this->sendResetResponse($response)
+                    ? $this->sendResetResponse($response)->with('info',trans('app.txt.connect_with_new_password'))
                     : $this->sendResetFailedResponse($request, $response);
     }
 

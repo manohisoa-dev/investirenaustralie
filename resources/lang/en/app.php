@@ -379,6 +379,23 @@ return [
     'txt.useractived' => "User already active. Operation not allowed.",
     'txt.activationcodesent' => "Activation code sent. Please check your email and activate your account.",
     'txt.changepasswordobligatoire' => "Password change required !",
+    'txt.reset_password' => "Reset password",
+    'txt.send_email' => "Send email",
+    'txt.send_password_reset_link' => "Send Password Reset Link",
+    'txt.your.email' => "Your email",
+    'txt.your.name' => "Your name",
+    'txt.your.subject' => "Your subject",
+    'txt.your.message' => "Your message",
+    'txt.password_update' => "Your password has been correctly changed.",
+    'txt.avatar_update' => "Your photo has been well edited.",
+    'txt.location_update' => "Your location has been changed.",
+    'txt.location_added' => "Your rental has been successfully added.",
+    'txt.editprofil_unable' => "Unable to edit your profile.",
+    'txt.profil_modified' => "Your profile has been modified.",
+    'txt.message_notsent' => "Message not sent.",
+    'txt.message_sent' => "Message sent successfully.",
+    'txt.connect_with_new_password' => "Password changed. Please log in with your new password.",
+    'txt.langue_changed' =>'Language changed.',
     
     
 

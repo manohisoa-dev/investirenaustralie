@@ -240,11 +240,11 @@ class ProfileController extends Controller
             
         }catch (\Exception $exception) {
             logger()->error($exception);
-            return back()->with('info', "Impossible d'editer votre profile.");
+            return back()->with('info', trans('app.txt.editprofil_unable'));
         }
     
         // Success
-        return back()->with('success',"Votre profile a été bien modifié.");
+        return back()->with('success',trans('app.txt.profil_modified'));
         
     }
 
@@ -288,7 +288,7 @@ class ProfileController extends Controller
         // Validate request
         $validator = Validator::make($request->all(),[
                             'old_password' => 'required|max:100',
-                            'password' => 'required|max:100',
+                            'password' => 'required|min:6|max:100',
                             'password_confirmation' => 'required|max:100|same:password',
                         ]);
         
@@ -305,7 +305,7 @@ class ProfileController extends Controller
         }
         
         // Success
-        return back()->with('success',"Votre mot de passe a été bien modifié.");
+        return back()->with('success',trans('app.txt.password_update'));
     }
 
     /**
@@ -367,7 +367,7 @@ class ProfileController extends Controller
         }
         
         // Success
-        return back()->with('success',"Votre photo a été bien modifiée.");
+        return back()->with('success',trans('app.txt.avatar_update'));
     }
 
     /**
@@ -436,7 +436,7 @@ class ProfileController extends Controller
             $location->fill($datas);
             
             // Success
-            return back()->with('success',"Votre location a été bien modifiée.");
+            return back()->with('success',trans('app.txt.location_update'));
         }else if($location = Localisation::create($datas)){
             $user->location_id = $location->id>0?$location->id:0;
         }
@@ -448,7 +448,7 @@ class ProfileController extends Controller
         }
         
         // Success
-        return back()->with('success',"Votre location a été bien ajoutée.");
+        return back()->with('success',trans('app.txt.location_added'));
     }
 
 }

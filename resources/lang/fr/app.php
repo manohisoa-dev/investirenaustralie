@@ -824,7 +824,25 @@ return [
     'txt.accountactivated' => "Votre compte est activé. Vous pouvez vous connecter maintenant avec votre mot de passe par défaut.",
     'txt.useractived' => "Utilisateur déjà actif. Opération non autorisée.",
     'txt.activationcodesent' => "Code d'activation envoyé. Veuillez vérifier votre messagerie et activer votre compte.",
-    'txt.changepasswordobligatoire' => "Changement du mot de passe obligatoire !",
+    'txt.changepasswordobligatoire' => "Changement de mot de passe obligatoire !",
+    'txt.reset_password' => "Réinitialiser le mot de passe",
+    'txt.send_email' => "Envoyer email",
+    'txt.send_password_reset_link' => "Envoyer le lien",
+    'txt.your.email' => "Votre email",
+    'txt.your.name' => "Votre nom",
+    'txt.your.subject' => "Votre sujet",
+    'txt.your.message' => "Votre message",
+    'txt.password_update' => "Votre mot de passe a été bien modifié.",
+    'txt.avatar_update' => "Votre photo a été bien modifiée.",
+    'txt.location_update' => "Votre location a été bien modifiée.",
+    'txt.location_added' => "Votre location a été bien ajoutée.",
+    'txt.editprofil_unable' => "Impossible d'editer votre profile.",
+    'txt.profil_modified' => "Votre profile a été bien modifié.",
+    'txt.message_notsent' => "Message non envoyé.",
+    'txt.message_sent' => "Message envoyé avec succes.",
+    'txt.connect_with_new_password' => "Mot de passe modifié. Veuillez-vous connecter avec votre nouveau mot de passe.",
+    'txt.langue_changed' =>'Langue modifié.',
+
 
 
 

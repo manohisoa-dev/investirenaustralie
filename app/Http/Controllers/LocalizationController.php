@@ -17,7 +17,7 @@ class LocalizationController extends Controller
     {
         Session::put('locale',$locale);
         Session::save();
-        return back()->with('success', 'Langue modifié');
+        return back()->with('success', trans('app.txt.langue_changed'));
     }
 
 }
