@@ -1,0 +1,61 @@
+@extends('admin.layouts.app')
+
+@section('title', 'Comments - Ajout ')
+
+@section('breadcrumb')
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
+        <h2>Comments</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">Comments</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ route('admin.comment.index') }}">Listes</a>
+            </li>
+            <li class="breadcrumb-item active">
+                <strong>Ajout</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+
+    </div>
+</div>
+@endsection
+
+@section('content')
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Ajouter un nouveau Comment</h5>
+            </div>
+            <div class="ibox-content">
+                <form class="form-validation form-padding" action="{{ route('admin.comment.store') }}" method="post">
+
+                    {{ csrf_field() }}
+                                                        
+                    {!! \Nvd\Crud\Form::input('content','text')->show() !!}
+                                            
+                    {!! \Nvd\Crud\Form::input('status','text')->show() !!}
+                                            
+                    {!! \Nvd\Crud\Form::input('votes','text')->show() !!}
+                                            
+                    {!! \Nvd\Crud\Form::input('spam','text')->show() !!}
+                                            
+                    {!! \Nvd\Crud\Form::input('reply_id','text')->show() !!}
+                                            
+                    {!! \Nvd\Crud\Form::input('blog_id','text')->show() !!}
+                                            
+                    {!! \Nvd\Crud\Form::input('user_id','text')->show() !!}
+                                                                                    
+                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Créer</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@endsection

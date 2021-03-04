@@ -52,6 +52,8 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::get('restore_blog/{blog}', 'BlogController@restore')->name('blog.restore');
     Route::post('save_blog', 'BlogController@store')->name('blog.store');
     
+    Route::resource('comment','CommentController');
+    //Route::get('comments/{blog}/{filter?}', 'CommentController@all')->name('comment.list');
 
     Route::resource('user','UserController');
     Route::get('desactiver/{user}', 'UserController@desactiver')->name('user.desactiver');
