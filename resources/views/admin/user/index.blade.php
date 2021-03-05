@@ -186,9 +186,13 @@
 								>
 									<a href="#">
 									@if($record->status=='active')
-									<span class="label label-primary">{{$record->status}}</span>
+									<span class="label label-primary">{{$record->status == 'active' ? 'Actif' : ''}}</span>
 									@else
-									<span class="label label-warning">{{$record->status}}</span>
+										@if($record->status == 'disabled')
+											<span class="label label-warning">Suspendu</span>
+										@elseif($record->status == 'pinged')
+											<span class="label label-warning">{{ucfirst($record->status)}}</span>
+										@endif
 									@endif
 									</a>
 								</span>

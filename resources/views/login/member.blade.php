@@ -90,7 +90,7 @@
                                                 <select class="form-control" name="country">
                                                     <option value="0">@lang('app.select_country')</option>
                                                     @foreach($countries as $country)
-                                                    <option value="{{$country->id}}"> {{$country->content}}</option>
+                                                    <option value="{{$country->id}}"> {{$country->content}} ({{$country->code}})</option>
                                                     @endforeach
                                                 </select>
                                             </div>

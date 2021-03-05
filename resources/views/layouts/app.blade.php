@@ -123,7 +123,12 @@
                                     </select>
                                 </li>
                                 @else
-                                <li class="small m-10px-l"><i class="fas fa-user"></i> <a href="{{ url(\App\Models\User::find(Auth::id())->roleUser->role_initial)}}">{{Auth::user()->name}} </a>                                </li>
+                                    <li class="small m-10px-l"><i class="fas fa-user"></i>
+                                        <a href="{{ url(\App\Models\User::find(Auth::id())->roleUser->role_initial)}}">
+                                            {{Auth::user()->name}}
+                                        </a>
+                                        , vous êtes connecté(e) en qualité de {{\App\Models\User::find(Auth::id())->roleUser->role_name}}
+                                    </li>
                                 @endif
                                 <li class="small m-10px-l"><i class="fas fa-globe"></i> @lang('app.language') : 
                                     <div class="dropdown pull-right">

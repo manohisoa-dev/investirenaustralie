@@ -577,7 +577,7 @@ return [
     'txt.logininfo'      =>"Information de connexion",
     'txt.login'      =>"Login",
     'txt.email'      =>"Adresse Email",
-    'txt.langage'      =>"Language",
+    'txt.langage'      =>"Sélectionnez votre langue",
     'txt.francais'      =>"Français",
     'txt.anglais'      =>"Anglais",
     'txt.pays'      =>"Pays",
