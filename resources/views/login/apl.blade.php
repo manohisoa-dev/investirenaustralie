@@ -48,7 +48,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="language" class="col-sm-3 control-label" for="language">Langage *</label>
+                                                <label for="language" class="col-sm-3 control-label" for="language">@lang('app.txt.langage') *</label>
                                                 <div class="col-sm-9">
                                                     <select class="form-control" id="language" name="language">
                                                         <option value="fr">Français</option>

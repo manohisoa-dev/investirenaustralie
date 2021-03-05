@@ -113,11 +113,11 @@
     <a href="#"><i class="fa fa-envelope" title="Liste des mails"></i> <span class="nav-label">Liste des mails</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
         <li><a href="{{route('admin.mail.index')}}">Liste des mails</a></li>
-        <li><a href="icons.html">Boite de reception</a></li>
-        <li><a href="icons.html">Boite d'envoie</a></li>
-        <li><a href="buttons.html">Brouillon</a></li>
-        <li><a href="video.html">Spam</a></li>
-        <li><a href="tabs_panels.html">Messages enregistrees</a></li>
+        <li><a href="#">Boite de reception</a></li>
+        <li><a href="#">Boite d'envoie</a></li>
+        <li><a href="#">Brouillon</a></li>
+        <li><a href="#">Spam</a></li>
+        <li><a href="#">Messages enregistrees</a></li>
     </ul>
 </li>
 <li class="{{Request::is('*/badword/*') || Request::is('*/badword') ? 'active' : ''}}">

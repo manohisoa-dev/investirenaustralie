@@ -13,3 +13,4 @@ yarn-error.log
 iea.sql
 composer.lock
 /storage
+/public/uploads
