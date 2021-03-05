@@ -7,7 +7,7 @@
             </a>
         </div>
         <div class="p-20px">
-            <label class="font-small">@lang('app.txt.postepar') : <a href="#">{{$item->author->name}}</a> – {{$item->created_at->diffForHumans()}}</label>
+            <label class="font-small">@lang('app.txt.postepar') : <a href="#">{{$item->author ? $item->author->name : ''}}</a> – {{$item->created_at ? $item->created_at->diffForHumans() : ''}}</label>
             <h5 class="m-10px-b font-w-600"><a class="dark-color" href="{{route('blog.index',$item->slug)}}">{{str_limit($item->title, 50, '...')}}</a></h5>
             <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod.</p> -->
             <div class="nav font-small border-top-1 border-color-dark-gray p-15px-t">
