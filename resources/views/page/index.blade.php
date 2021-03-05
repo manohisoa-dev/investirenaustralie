@@ -255,8 +255,8 @@
                             <div class="blog-gird-info">
                                 <a class="overlay-link" href="{{route('blog.index',$blog->slug)}}"></a>
                                 <div class="b-meta">
-                                    <span class="date">{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $blog->created_at)->format('d F')}}, {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $blog->created_at)->year }}</span>
-                                    <p class="meta">@lang('app.txt.postepar') : {{$blog->author->name}} – {{$blog->created_at->diffForHumans()}}</label> </p>
+                                    <span class="date">{{ $blog->created_at ? Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $blog->created_at)->format('d F') : ""}}, {{$blog->created_at ? Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $blog->created_at)->year : ''}}</span>
+                                    <p class="meta">@lang('app.txt.postepar') : {{$blog->author ? $blog->author->name : ''}} – {{$blog->created_at ? $blog->created_at->diffForHumans() : ''}}</label> </p>
                                 </div>
                                 <h5 style="height: 100px;">{{$blog->title}}</h5>
                                 <!-- <p>{{ substr(strip_tags($blog->excerpt()),0,0) }} ...</p> -->

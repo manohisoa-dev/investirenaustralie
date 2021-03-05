@@ -5,7 +5,7 @@ return [
 
     'app_name'            => 'Investir en Australie',
     
-    'footer_description'  => 'Investir en Australie est un e-marketplace.',
+    'footer_description'  => '"Investir En Australie" est un portail immobilier et d\'affaires.',
     'copyright'           => '© Copyright :year : ":app" - Tous droits réservés',
     
     'last_update'         => 'Derniere Modification, :date',

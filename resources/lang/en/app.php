@@ -4,7 +4,7 @@ return [
 
     'app_name'          => 'Investir en Australie',
     'rapid_link'      => 'Quick access',
-    'footer_description'  => 'Investir en Australie is an e-marketplace.',
+    'footer_description'  => '"Invest In Australia" is a real estate and business portal.',
     'copyright'           => '© Copyright :year : ":app" - All rights reserved',
     'last_update'       => 'Last modification, :date',
     
