@@ -2,7 +2,8 @@
     {{-- Header --}}
     @slot('header')
         @component('mail::header', ['url' => config('app.url')])
-            {{ config('app.name') }}
+            IEA
+            <img src="{{ asset('images/logo.png') }}" alt="">
         @endcomponent
     @endslot
 
@@ -21,7 +22,7 @@
     {{-- Footer --}}
     @slot('footer')
         @component('mail::footer')
-            &copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.
+            @lang('app.copyright', ['year'=>date('Y'), 'app'=>'IEA'])
         @endcomponent
     @endslot
 @endcomponent

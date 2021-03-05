@@ -845,6 +845,9 @@ return [
     'txt.connect_with_new_password' => "Mot de passe modifié. Veuillez-vous connecter avec votre nouveau mot de passe.",
     'txt.langue_changed' =>'Langue modifié.',
     'txt.trouble_link' =>'Si vous ne parvenez pas à cliquer sur le bouton ":link", copiez et collez l\'URL ci-dessous dans votre navigateur Web: :url',
+    'txt.whoops' =>'Oups!',
+    'txt.hello' =>'Bonjour!',
+    'txt.regards' =>'Salutations',
 
 
 

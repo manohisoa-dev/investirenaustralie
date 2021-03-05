@@ -399,6 +399,9 @@ return [
     'txt.connect_with_new_password' => "Password changed. Please log in with your new password.",
     'txt.langue_changed' =>'Language changed.',
     'txt.trouble_link' =>'If you\'re having trouble clicking the ":link" button, copy and paste the URL below into your web browser: :url',
+    'txt.whoops' =>'Whoops!',
+    'txt.hello' =>'Hello!',
+    'txt.regards' =>'Regards',
     
     
     

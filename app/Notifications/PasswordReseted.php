@@ -12,14 +12,22 @@ class PasswordReseted extends Notification
     use Queueable;
 
     /**
+     * The password reset token
+     * @var string
+     */
+    public $token;
+
+    /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($user, $token)
     {
-        //
+        $this->user = $user;
+        $this->token = $token;
     }
+
 
     /**
      * Get the notification's delivery channels.
@@ -40,13 +48,16 @@ class PasswordReseted extends Notification
      */
     public function toMail($notifiable)
     {
+        /** @var User $user */
+        $user = $this->user;
+        
         return (new MailMessage)
             ->from(env('ADMIN_MAIL'))
+            ->cc('iea.dev.v2@gmail.com')
             ->subject(__('mail.reseted.subject', ['app'=>app_name()]))
             ->greeting(__('mail.greeting', ['name'=>$user->name]))
             ->line(__('mail.reseted.content'))
-            ->action('Notification Action', url('/'))
-            ->line(__('mail.thank'));
+            ->action(trans('mail.btn.reset.password'), url(config('app.url').route('password.reset', $this->token, false)));
     }
 
     /**

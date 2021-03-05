@@ -5,6 +5,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use AstritZeqiri\Metadata\Traits\HasManyMetaDataTrait;
+use App\Notifications\PasswordReseted;
 
 class User extends Authenticatable{
     use Notifiable;
@@ -702,6 +703,12 @@ class User extends Authenticatable{
     public function userinfos()
     {
         return $this->hasOne(Userinfo::class,'user_id','id');
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $user = $this;
+        $this->notify(new PasswordReseted($user,$token));
     }
 
 }

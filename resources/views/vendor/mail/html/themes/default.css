@@ -240,6 +240,14 @@ img {
     border-left: 18px solid #bf5329;
 }
 
+.button-garnet {
+    background-color: #AE4435;
+    border-top: 10px solid #AE4435;
+    border-right: 18px solid #AE4435;
+    border-bottom: 10px solid #AE4435;
+    border-left: 18px solid #AE4435;
+}
+
 /* Panels */
 
 .panel {

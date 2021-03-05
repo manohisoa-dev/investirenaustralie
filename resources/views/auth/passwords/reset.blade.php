@@ -34,7 +34,7 @@
                             <label for="email" class="col-md-12 control-label">@lang('app.txt.email')</label>
     
                             <div class="col-md-12">
-                                <input id="email" placeholder="@lang('app.txt.email')" type="email" class="form-control" name="email" value="{{ $email or old('email') }}" required autofocus>
+                                <input id="email" placeholder="@lang('app.txt.email')" type="email" class="form-control" name="email" value="{{ session('reset_email')?session('reset_email'):''  }}" required autofocus>
                                 
                                 @if ($errors->has('email')) 
                                     <span class="help-block text-danger">

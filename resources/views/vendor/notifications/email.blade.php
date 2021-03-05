@@ -4,16 +4,15 @@
 # {{ $greeting }}
 @else
 @if ($level == 'error')
-# Whoops!
+# @lang('app.txt.whoops')
 @else
-# Hello!
+# @lang('app.txt.hello')
 @endif
 @endif
 
 {{-- Intro Lines --}}
 @foreach ($introLines as $line)
 {{ $line }}
-
 @endforeach
 
 {{-- Action Button --}}
@@ -27,7 +26,7 @@
             $color = 'red';
             break;
         default:
-            $color = 'blue';
+            $color = 'garnet';
     }
 ?>
 @component('mail::button', ['url' => $actionUrl, 'color' => $color])
@@ -45,7 +44,7 @@
 @if (! empty($salutation))
 {{ $salutation }}
 @else
-Regards,<br>{{ config('app.name') }}
+@lang('app.txt.regards'), <br> IEA
 @endif
 
 {{-- Subcopy --}}

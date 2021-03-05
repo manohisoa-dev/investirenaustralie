@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
+use App\Notifications\PasswordReseted;
+
 
 use App\Models\Page;
 use App\Models\Localisation;
@@ -82,7 +84,7 @@ class ForgotPasswordController extends Controller
         );
 
         return $response == Password::RESET_LINK_SENT
-                    ? $this->sendResetLinkResponse($response)->with('success', trans('passwords.sent') )
+                    ? $this->sendResetLinkResponse($response)->with(['success'=> trans('passwords.sent')] )
                     : $this->sendResetLinkFailedResponse($request, $response);
     }
 }

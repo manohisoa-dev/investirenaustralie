@@ -34,8 +34,8 @@ return [
     'amount' => 'Valeur :value',
     'tma' => 'TMA :value',
     
-    'greeting' => 'Hello :Name',
-    'thank' => 'Thank you for using our application.',
+    'greeting' => 'Bonjour :Name',
+    'thank' => "Merci d'utiliser notre application.",
     
     'created.subject' => '[:app] Compte créé',
     'created.content.1' => "Quelqu'un a créé un compte á cette adresse email.",
@@ -44,8 +44,8 @@ return [
     'activated.subject' => '[:app] Inscription confirmée',
     'activated.content' => 'Votre inscription a été bien confirmée.',
     
-    'reseted.subject' => '[:app] Demande nouveau mot de passe',
-    'reseted.content' => "Quelqu'un a demandé un nouveau mot de passe.",
+    'reseted.subject' => "[:app] Demande d'un nouveau mot de passe",
+    'reseted.content' => "Nous avons reçu une demande de réinitialisation de votre mot de passe. Si vous n'avez pas fait la demande, ignorez simplement cet e-mail. Sinon, vous pouvez réinitialiser votre mot de passe en utilisant ce lien :",
     
     'subscribed.subject' => '[:app] Nouvelle inscription (:plan)',
     'subscribed.content' => "Quelqu'un a souscrit au \":plan\" (:count jours).",
@@ -63,5 +63,7 @@ return [
     'registration.title' => 'Felicitation, votre inscription a été approuvé, voici les informations concernants votre compte',
     'registration.foot' => 'Veuillez suivre ce lien pour vous connecter.',
     'registration.clic_here' => 'Cliquez ici',
+
+    'btn.reset.password' => 'Cliquez ici pour réinitialiser votre mot de passe',
 
 ];
