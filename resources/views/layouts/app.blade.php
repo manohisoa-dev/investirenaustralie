@@ -116,10 +116,10 @@
                                 <li class="small m-10px-l"><i class="fas fa-sign-in-alt"></i> @lang('app.sinscrire') : 
                                     <select id="currency-dropdown" onChange="location.href=''+this.options[this.selectedIndex].value;" class="white-bg-alt border-color-dark-gray border-radius-0 white-color">
                                         <option class="dark-color" value="#" selected="true" disabled="disabled">@lang('app.as')</option>
-                                        <option class="dark-color" value="{{route('register', ['role'=>'member'])}}">@lang('app.member')</option>
-                                        <option class="dark-color" value="{{route('register', ['role'=>'seller'])}}">@lang('app.seller')</option>
-                                        <option class="dark-color" value="{{route('register', ['role'=>'afa'])}}">@lang('app.afa')</option>
-                                        <option class="dark-color" value="{{route('register', ['role'=>'apl'])}}">@lang('app.apl')</option>
+                                        <option class="dark-color" value="{{route('register', ['role'=>'member'])}}" {{ session('as_role')==trans('app.member')?'selected':'' }}>@lang('app.member')</option>
+                                        <option class="dark-color" value="{{route('register', ['role'=>'seller'])}}" {{ session('as_role')==trans('app.seller')?'selected':'' }}>@lang('app.seller')</option>
+                                        <option class="dark-color" value="{{route('register', ['role'=>'afa'])}}" {{ session('as_role')==trans('app.afa')?'selected':'' }}>@lang('app.afa')</option>
+                                        <option class="dark-color" value="{{route('register', ['role'=>'apl'])}}" {{ session('as_role')==trans('app.apl')?'selected':'' }}>@lang('app.apl')</option>
                                     </select>
                                 </li>
                                 @else
@@ -127,7 +127,7 @@
                                         <a href="{{ url(\App\Models\User::find(Auth::id())->roleUser->role_initial)}}">
                                             {{Auth::user()->name}}
                                         </a>
-                                        , vous êtes connecté(e) en qualité de {{\App\Models\User::find(Auth::id())->roleUser->role_name}}
+                                        @lang('app.txt.connected_role', ['role'=>\App\Models\User::find(Auth::id())->roleUser->role_name])
                                     </li>
                                 @endif
                                 <li class="small m-10px-l"><i class="fas fa-globe"></i> @lang('app.language') : 

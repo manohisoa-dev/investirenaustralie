@@ -136,7 +136,7 @@
                                                         <option value="0">@lang('app.select_country')</option>
                                                         @foreach($countries as $country)
                                                             @if($country->prefixPhone)
-                                                                <option value="{{$country->id}}"> {{$country->content}}</option>
+                                                                <option value="{{$country->id}}"> {{$country->content}} ({{$country->code}})</option>
                                                             @endif
                                                         @endforeach
                                                     </select>

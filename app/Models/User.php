@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use AstritZeqiri\Metadata\Traits\HasManyMetaDataTrait;
 use App\Notifications\PasswordReseted;
+use Session;
 
 class User extends Authenticatable{
     use Notifiable;
@@ -562,6 +563,12 @@ class User extends Authenticatable{
         $user = $this;
         $role = $request->input('role');
         $userinfos = Userinfo::whereId($request->input('userinfos_id'));
+
+        // update language
+        if($lang = $request->input('language')){
+            User::whereId($user->id)->update(["language"=> $lang]);
+            Session::put('locale',$lang);
+        }
 
         switch($this->role){
             case 1:

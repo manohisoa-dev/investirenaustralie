@@ -21,6 +21,7 @@ use App\Models\State;
 use App\Models\Role;
 use App\Models\TypeUser;
 use App\Models\Userinfo;
+use Session;
 
 class RegisterController extends Controller
 {
@@ -153,6 +154,9 @@ class RegisterController extends Controller
      */
     public function index(Request $request, $role)
     {
+        $roles = trans('app.'.$role);
+        Session::put('as_role',$roles);
+
         $action = route('register',['role'=>$role]);
         $page = Page::where('path', '/register/'.$role)
             ->locale()
@@ -453,6 +457,10 @@ class RegisterController extends Controller
         // Notify User
         try{
             $user->notify(new AccountCreated($user, $password));
+            
+            // forget as role session
+            session()->forget('as_role');
+
         }catch(\Exception $e){}
 
         // Success
