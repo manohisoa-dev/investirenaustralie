@@ -237,7 +237,7 @@ return [
     'compte'            => 'Compte',
     'account'            => 'Compte',
     'confidential'      => 'Confidentialité',
-    'user_guide'        => "Guide de l'utilisateur",
+    'user_guide'        => "Guide de l'investisseur",
     
     'search'       => 'Recherche',
     'search_result' => 'Resultat de recherche ":q"',
