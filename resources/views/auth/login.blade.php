@@ -21,12 +21,12 @@
 
                                 <div class="form-group">
                                     <label class="form-control-label">@lang('app.txt.email')</label>
-                                    <input type="email" name="email" class="form-control" placeholder="Votre email *" required="required" value="{{ old('email') }}" autofocus>
+                                    <input type="email" name="email" class="form-control" placeholder="@lang('app.txt.your.email') *" required="required" value="{{ old('email') }}" autofocus>
                                     <span class="text-danger">{{ $errors->has('email') ? $errors->first('email') : '' }}</span>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-control-label">@lang('app.txt.password')</label>
-                                    <input name="password"  type="password" placeholder="Votre mot de passe *" class="form-control" placeholder="***********" required="required">
+                                    <input name="password"  type="password" placeholder="@lang('app.txt.your.password') *" class="form-control" placeholder="***********" required="required">
                                     <span class="text-danger">{{ $errors->has('password') ? $errors->first('password') : '' }}</span>
                                 </div>
                                 <div class="form-group">

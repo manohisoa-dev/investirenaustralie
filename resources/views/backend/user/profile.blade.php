@@ -206,23 +206,23 @@
                         <div class="col-md-4 m-10px-tb">
                             <div class="media">
                                 <div class="only-icon-20">
-                                    <i class="fas fa-item->userinfos"></i>
-                                </div>
-                                <div class="media-body p-15px-l lh-normal">
-                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businesspresentation')</div>
-                                    <input type="text" name="orga_presentation" id="orga_presentation" class="form-control" placeholder="@lang('app.txt.businesspresentation')" value="{{$item->userinfos ?$item->userinfos->orga_presentation:old('orga_presentation')}}">
-                                    <span class="text-danger">{{ $errors->first('orga_presentation') }}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 m-10px-tb">
-                            <div class="media">
-                                <div class="only-icon-20">
                                     <i class="fas fa-icon"></i>
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.logo')</div>
                                     <input type="file" class="form-control" id="image" name="image" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 m-10px-tb">
+                            <div class="media">
+                                <div class="only-icon-20">
+                                    <i class="fas fa-item->userinfos"></i>
+                                </div>
+                                <div class="media-body p-15px-l lh-normal">
+                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businesspresentation')</div>
+                                    <textarea class="form-control" placeholder="@lang('app.txt.businesspresentation')" name="orga_presentation" id="orga_presentation" cols="30" rows="5">{{$item->userinfos ?$item->userinfos->orga_presentation:old('orga_presentation')}}</textarea>
+                                    <span class="text-danger">{{ $errors->first('orga_presentation') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -236,6 +236,7 @@
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.stateoflegaloperation')</div>
                                     <input type="text" class="form-control" placeholder="@lang('app.txt.stateoflegaloperation')" value="{{$item->userinfos ?$item->userinfos->orga_operation_state:''}}" name="orga_operation_state">
+                                    <span class="text-danger">{{ $errors->first('orga_operation_state') }}</span>
                                 </div>
                             </div>
                         </div>

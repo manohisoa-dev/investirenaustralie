@@ -831,6 +831,7 @@ return [
     'txt.password_reset_link_sent' => " Lien de réinitialisation du mot de passe envoyé dans votre email. Veuillez consulter votre boîte email !",
     'txt.password_reset_link_notsent' => "Erreur: lien de réinitialisation du mot de passe non envoyé.",
     'txt.your.email' => "Votre email",
+    'txt.your.password' => "Votre mot de passe",
     'txt.your.name' => "Votre nom",
     'txt.your.subject' => "Votre sujet",
     'txt.your.message' => "Votre message",
@@ -848,6 +849,7 @@ return [
     'txt.whoops' =>'Oups!',
     'txt.hello' =>'Bonjour!',
     'txt.regards' =>'Salutations',
+    'txt.connected_role' =>', vous êtes connecté(e) en qualité de :role',
 
 
 

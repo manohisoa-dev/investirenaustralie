@@ -2,8 +2,7 @@
     {{-- Header --}}
     @slot('header')
         @component('mail::header', ['url' => config('app.url')])
-            IEA
-            <img src="{{ asset('images/logo.png') }}" alt="">
+            
         @endcomponent
     @endslot
 

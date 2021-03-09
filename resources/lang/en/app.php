@@ -21,6 +21,16 @@ return [
     'description'           => 'Description',
     'select_one'            => 'Select one',
     'i_want_buy_this_item'  => 'I want to buy',
+    'select_state'          => 'Select a State',
+    'select_country'        => 'Select a country',
+    'select_phone'          => 'Select a code',
+    'select_role'           => 'Select the role',
+    'select_category'       => 'Select the category',
+    'select_user'           => 'Select a user',
+    'select_seller'         => 'Select a seller',
+    'select_apl'            => 'Select a local partner agency',
+    'select_admin'          => 'Select an administrator',
+    'select_frequency'     => 'Select the frequency',
 
     'immobilier'        => 'Real estate',
     'residentiel'       => 'Residential',
@@ -366,7 +376,7 @@ return [
     'txt.editavatar' => 'Edit Avatar',
     'txt.errorcreateuser' => 'Unable to create new user',
     'txt.editpassword' =>'Change Password',
-    'txt.oldpassword' =>'Ancien mot de passe',
+    'txt.oldpassword' =>'Old Password',
     'txt.newpassword' =>'New Password',
     'txt.confirmpassword' =>'Confirm new password',
     'txt.createuser.success' =>'Successfully created a new account. Please check your email and activate your account.',
@@ -385,6 +395,7 @@ return [
     'txt.password_reset_link_sent' => "Password reset link sent in your email. Please check your email box!",
     'txt.password_reset_link_notsent' => "Error: Password reset link not sent.",
     'txt.your.email' => "Your email",
+    'txt.your.password' => "Your password",
     'txt.your.name' => "Your name",
     'txt.your.subject' => "Your subject",
     'txt.your.message' => "Your message",
@@ -402,6 +413,7 @@ return [
     'txt.whoops' =>'Whoops!',
     'txt.hello' =>'Hello!',
     'txt.regards' =>'Regards',
+    'txt.connected_role' =>', you are logged in as :role',
     
     
     
