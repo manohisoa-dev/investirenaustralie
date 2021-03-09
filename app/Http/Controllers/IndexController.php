@@ -221,6 +221,11 @@ class IndexController extends Controller
                 ->where('users.role','=','4')
                 ->groupBy('localizations.locality')
                 ->get();
+
+        $apls = User::select('users.*')
+            ->where('users.role','=','4')
+            ->where('users.status','=','active')
+            ->get();
         
         if($page){$pubs = $page->pubs;}else{$pubs = [];}
 
@@ -229,6 +234,7 @@ class IndexController extends Controller
             ->with('pubs', $page->pubs)
             ->with('products', $products)
             ->with('lapls', $lapls)
+            ->with('apls', $apls)
             ->with('categories', $categories);
     }
 

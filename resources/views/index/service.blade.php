@@ -37,9 +37,23 @@
                                 </div>
                                 <div class="media-body p-20px-l">
                                     <h6>{{$child->title}}</h6>
-                                    <p class="p-35px-t">{!! Auth::check() ? $child->content.'<div><i class="far fa-envelope"></i> <a href="javascript.void(0)" data-toggle="modal" data-target="#formContactModal">'.trans('app.btn.contact').'</a></div>' : '<a data-toggle="modal" data-target="#loginFormModal" href="javascript:void(0)" class="more pull-right">'.trans("app.btn.view_more").'</a>' !!}</p>
-                                </div>
-                                <div>
+                                    {{-- <p class="p-35px-t">{!! Auth::check() ? $child->content.'<div class="border-bottom-2 border-coler-gray p-10px-b prestataire"><b>Prestataires</b> : <span class="theme4rd-bg p-5px-tb p-10px-lr border-radius-15 white-color small">APL-1</span> <span class="theme4rd-bg p-5px-tb p-10px-lr border-radius-15 white-color small">APL-2</span></div><div class="float-right border-color-gray"><i class="far fa-envelope"></i> <a href="javascript.void(0)" data-toggle="modal" data-target="#formContactModal">'.trans('app.btn.contact').'</a></div>' : '<a data-toggle="modal" data-target="#loginFormModal" href="javascript:void(0)" class="more pull-right">'.trans("app.btn.view_more").'</a>' !!}</p> --}}
+                                    {{-- <p class="p-35px-t">{!! Auth::check() ? $child->content.'<div class="border-top-2 border-coler-gray m-35px-t p-10px-tb prestataire"><b>Prestataires</b> : <span class="theme4rd-bg p-5px-tb p-10px-lr border-radius-15 white-color small"><a class="white-color" href="javascript.void(0)" data-toggle="modal" data-target="#contactFormModal" title="Contacter APL-1">APL-1</a></span> <span class="theme4rd-bg p-5px-tb p-10px-lr border-radius-15 white-color small"><a class="white-color" href="javascript.void(0)" data-toggle="modal" data-target="#contactFormModal" title="Contacter APL-2">APL-2</a></span></div>' : '<a data-toggle="modal" data-target="#loginFormModal" href="javascript:void(0)" class="more pull-right">'.trans("app.btn.view_more").'</a>' !!}</p> --}}
+                                    <p class="p-35px-t text-justify">{!! Auth::check() ? $child->content : '<a data-toggle="modal" data-target="#loginFormModal" href="javascript:void(0)" class="more pull-right">'.trans("app.btn.view_more").'</a>' !!}</p>
+                                    
+                                    @if (Auth::check() && $child->page_order==8)
+                                        <div class="border-top-2 border-coler-gray m-35px-t p-10px-tb prestataire">
+                                            <b>Prestataires</b> : 
+                                            @forelse ($apls as $apls_item)
+                                                <span class="theme4rd-bg m-5px-r p-5px-tb p-10px-lr border-radius-15 white-color small">
+                                                    <a class="white-color" href="javascript.void(0)" data-toggle="modal" data-target="#contactFormModal" title="Contacter APL-1">{{ $apls_item->name }}</a>
+                                                </span> 
+                                            @empty
+                                                @lang('app.txt.noinfo')
+                                            @endforelse
+                                        </div>
+                                    @endif
+                                    
                                     @if(Auth::check()&&Auth::user()->isAdmin())
                                         <a href="{{route('admin.page.update',$child)}}" class="more pull-right" title="@lang('app.txt.edit')"><i class="fa fa-edit"></i></a> 
                                     @endif
@@ -108,7 +122,7 @@
     <!-- End Section -->
 </main>
 
-<!-- Modal -->
+<!-- Modal login form -->
 <div id="loginFormModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -119,7 +133,7 @@
             <div class="modal-body">
                 <form action="{{route('login')}}" method="post">
                     {{ csrf_field() }}
-                    {{-- {{ Session()->put('service','login_service') }} --}}
+                    {{ Session()->put('login_service','login_service') }}
 
                     <div class="form-group">
                         <label class="form-control-label">@lang('app.txt.email')</label>
@@ -128,7 +142,7 @@
                     </div>
                     <div class="form-group">
                         <label class="form-control-label">@lang('app.txt.password')</label>
-                        <input name="password"  type="password" placeholder="@lang('app.txt.your.password') *" class="form-control" placeholder="***********" required="required">
+                        <input name="password"  type="password" placeholder="@lang('app.txt.your.password') *" class="form-control" required="required">
                         <span class="text-danger">{{ $errors->has('password') ? $errors->first('password') : '' }}</span>
                     </div>
                     <div class="form-group">
@@ -156,8 +170,62 @@
     </div>
 </div>
 
-@endsection
+<!-- Modal contact form -->
+<div id="contactFormModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="title">@lang('app.contact_prestataire')</h4>
+                {{-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> --}}
+            </div>
+            <div class="modal-body">
+                <form action="{{route('member.contact', ['role'=>'apl'])}}" method="post" id="contactForm">
+                    {{ csrf_field() }}
 
-@section('script')
-<script src="{{ asset('js/app.js') }}"></script>
+                    <div class="form-group">
+                        <label class="form-control-label">@lang('app.txt.prestataire') : <span class="theme4rd-bg p-5px-tb p-10px-lr border-radius-15 white-color small" id="name_prest"></span></label>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label">@lang('app.txt.your.subject')</label>
+                        <input name="subject"  type="text" class="form-control" id="subject" placeholder="@lang('app.txt.your.subject') *" required>
+                        <span class="text-danger">{{ $errors->has('subject') ? $errors->first('subject') : '' }}</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label">@lang('app.txt.your.email')</label>
+                        <input type="email" name="email" class="form-control" placeholder="@lang('app.txt.your.email') *" required="required" value="{{ old('email') }}" autofocus>
+                        <span class="text-danger">{{ $errors->has('email') ? $errors->first('email') : '' }}</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label">@lang('app.txt.your.message')</label>
+                        <textarea name="message" id="message" cols="30" rows="5" class="form-control" required="required"></textarea>
+                        <span class="text-danger">{{ $errors->has('message') ? $errors->first('message') : '' }}</span>
+                    </div>
+                    <div class="p-10px-t row col-lg-10">
+                        <div class="col-lg-4">
+                            <button type="reset" class="m-btn m-btn-theme" id="btn_cancel">@lang('app.btn.cancel')</button>
+                        </div>
+                        <div class="col-lg-4">
+                            <button type="submit" class="m-btn m-btn-theme2nd">@lang('app.btn.send')</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('script')
+{{-- <script src="{{ asset('js/app.js') }}"></script> --}}
+<script type="text/javascript">
+    $('.prestataire').on('click','span a',function(){
+        var prest = $(this).text();
+        $('#name_prest').html(prest);
+    });
+
+    $('#btn_cancel').click(function(){
+        $('#contactFormModal').modal('hide');
+    });
+</script>
+@endpush
+
 @endsection

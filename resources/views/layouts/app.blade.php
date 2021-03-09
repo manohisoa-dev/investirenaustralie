@@ -73,12 +73,12 @@
     }
     #form_devise {
         position: absolute;
-        z-index: 2; /* .boite-doree sera au-dessus de .boite-verte et .boite-tirets */
+        z-index: -999; /* .boite-doree sera au-dessus de .boite-verte et .boite-tirets */
         background:gray;
         margin-left: -175px;
-        margin-top: -190px;
-        /* opacity: 0; */
-        display: none;
+        /* margin-top: -190px; */
+        margin-top: 50px;
+        opacity: 1;
         transition: 2s;
     }
 </style>
@@ -228,7 +228,7 @@
     @yield('content')
 
     <div id="mybutton">
-        <button id="btn_devise" class="feedback">Devise</button>
+        <button id="btn_devise" class="feedback"><img src="{{ asset('images/ico/devise.png') }}" alt=""> </button>
         <button id="btn_devise2" class="feedback2" hidden>Fermer</button>
         <iframe id="form_devise" width="175" height="202" id="themoneyconverter-mini" src="https://themoneyconverter.com/MoneyConverter?from=EUR&amp;to=AUD" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" seamless="seamless" __idm_frm__="815"></iframe>
     </div>
@@ -409,13 +409,13 @@
         });
 
         $('#btn_devise').click(function(){
-            $('#form_devise').css('display','');
+            $('#form_devise').css({'opacity': 1, 'margin-top':'-190px'});
             $(this).attr('hidden','true');
             $('#btn_devise2').removeAttr('hidden');
         });
 
         $('#btn_devise2').click(function(){
-            $('#form_devise').css('display', 'none');
+            $('#form_devise').css({'opacity': 1, 'margin-top':'50px'});
             $(this).attr('hidden','true');
             $('#btn_devise').removeAttr('hidden');
         })

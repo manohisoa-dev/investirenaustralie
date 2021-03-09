@@ -10,6 +10,7 @@ return [
     
     'last_update'         => 'Derniere Modification, :date',
     'contact_user'        => 'Contacter: :name (:email)',
+    'contact_prestataire'        => 'Contacter prestataire ',
     'contact_us_phone'    => 'Contactez-nous: :phone',
     'list_apl'    => 'Lister les APL',
     'read_more'    => 'Continuer de lire',
@@ -650,6 +651,8 @@ return [
     'txt.newpassword' =>'Nouveau mot de passe',
     'txt.confirmpassword' =>'Confirmer nouveau mot de passe',
     'txt.edit' => "Modifier",
+    'txt.name.prestataire'        => 'Nom du préstataire',
+    'txt.prestataire'        => 'Préstataire',
     
     
     

@@ -223,8 +223,9 @@ return [
     'btn.validerinscription'    => "Confirm my registration",
     'btn.close'      =>"Close",
     
-    'contact_admin'  => "Contacter l'administrateur",
-    'contact_apl'    => "Contacter l'APL",
+    'contact_admin'  => "Contact Administrateur",
+    'contact_apl'    => "Contact APL",
+    'contact_prestataire'        => 'Contact provider',
     'attachment'     => "Attachement",
     'attachments'    => "Attachements",
 
@@ -416,6 +417,8 @@ return [
     'txt.regards' =>'Regards',
     'txt.connected_role' =>', you are logged in as :role',
     'txt.edit' => "Edit",
+    'txt.name.prestataire'        => 'Prestataire name',
+    'txt.prestataire'        => 'Service provider',
     
     
     

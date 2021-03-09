@@ -422,6 +422,7 @@ a:hover {
   background: #008A3E;
   color: #ffffff;
 }
+
 .m-btn.m-btn-theme4rd.active, .m-btn.m-btn-theme4rd:focus, .m-btn.m-btn-theme4rd:hover {
   background: black;
   color: #ffffff;
@@ -1139,7 +1140,7 @@ figcaption {
 }
 
 .theme4rd-bg {
-  background-color: #051b35;
+  background-color: #008A3E;
 }
 
 .theme4rd-after:after {
