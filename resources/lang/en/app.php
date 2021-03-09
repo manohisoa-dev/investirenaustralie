@@ -45,7 +45,7 @@ return [
     'condition'         => 'Condition',
     'compte'            => 'Compte',
     'confidential'      => 'Confidentiality',
-    'user_guide'        => "User guide",
+    'user_guide'        => "Investisor's guide",
     
     'publicities'   => 'Advertising',
     'Publicite'     => 'Publicity',
