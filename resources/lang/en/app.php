@@ -399,6 +399,7 @@ return [
     'txt.your.name' => "Your name",
     'txt.your.subject' => "Your subject",
     'txt.your.message' => "Your message",
+    'txt.our.service' => "Our services",
     'txt.password_update' => "Your password has been correctly changed.",
     'txt.avatar_update' => "Your photo has been well edited.",
     'txt.location_update' => "Your location has been changed.",
@@ -414,6 +415,7 @@ return [
     'txt.hello' =>'Hello!',
     'txt.regards' =>'Regards',
     'txt.connected_role' =>', you are logged in as :role',
+    'txt.edit' => "Edit",
     
     
     

@@ -191,14 +191,14 @@
 
         @endif
 
-        <!-- @foreach($child->pubs as $pub)
+        {{-- @foreach($child->pubs as $pub)
         <section class="widget property-meta-wrapper clearfix">
             <h2 class="title wow slideInLeft">{{$pub->title}}</h2>
             <div class="content-box-large box-with-header">
                 <a target="_blank" href="{{$pub->links?$pub->links:'#'}}"><img src="{{$pub->imageUrl()}}" class="img-rounded" alt="Cinque Terre" width="604" height="236"></a>
             </div>
         </section>
-        @endforeach -->
+        @endforeach --}}
     @endforeach
 
     <!-- Section -->
@@ -222,7 +222,7 @@
         </div>
     </section>
     <!--End Section -->
-    <!-- Section -->
+    <!-- Section produit-->
     <section class="section gray-bg overflow-hidden">
         <div class="container">
             <div class="row md-m-25px-b m-45px-b justify-content-center text-center">
@@ -239,7 +239,7 @@
         </div>
     </section>
     <!-- End Section -->
-    <!-- Section -->
+    <!-- Section blog-->
     <section id="blog" class="section white-bg">
         <div class="container">
             <div class="row justify-content-center sm-m-20px-b m-40px-b">

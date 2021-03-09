@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Session;
+use Cookie;
 
 class LoginController extends Controller
 {
@@ -51,7 +52,7 @@ class LoginController extends Controller
             return '/profile/password';
         }
 
-        if(Session('comment')!==null){
+        if(Session('comment')!==null || Session('service')!==null){
             return url(url()->previous());
         }
 
@@ -108,6 +109,7 @@ class LoginController extends Controller
             $this->fireLockoutEvent($request);
 
             return $this->sendLockoutResponse($request);
+
         }
 
         /*
@@ -153,6 +155,28 @@ class LoginController extends Controller
         $this->incrementLoginAttempts($request);
 
         return $this->sendFailedLoginResponse($request);
+    }
+
+    protected function sendLoginResponse(Request $request)
+    {
+        // set remember me expire time ~ 3 months
+        $rememberTokenExpireMinutes = 131400;
+
+        // first we need to get the "remember me" cookie's key, this key is generate by laravel randomly
+        // it looks like: remember_web_59ba36addc2b2f9401580f014c7f58ea4e30989d
+        $rememberTokenName = Auth::getRecallerName();
+
+        // reset that cookie's expire time
+        Cookie::queue($rememberTokenName, Cookie::get($rememberTokenName), $rememberTokenExpireMinutes);
+
+
+        // the code below is just copy from AuthenticatesUsers
+        $request->session()->regenerate();
+
+        $this->clearLoginAttempts($request);
+
+        return $this->authenticated($request, $this->guard()->user())
+            ?: redirect()->intended($this->redirectPath());
     }
 
     /**

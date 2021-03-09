@@ -649,6 +649,7 @@ return [
     'txt.oldpassword' =>'Ancien mot de passe',
     'txt.newpassword' =>'Nouveau mot de passe',
     'txt.confirmpassword' =>'Confirmer nouveau mot de passe',
+    'txt.edit' => "Modifier",
     
     
     
@@ -835,6 +836,7 @@ return [
     'txt.your.name' => "Votre nom",
     'txt.your.subject' => "Votre sujet",
     'txt.your.message' => "Votre message",
+    'txt.our.service' => "Nos services",
     'txt.password_update' => "Votre mot de passe a été bien modifié.",
     'txt.avatar_update' => "Votre photo a été bien modifiée.",
     'txt.location_update' => "Votre location a été bien modifiée.",

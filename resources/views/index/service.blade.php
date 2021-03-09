@@ -8,57 +8,153 @@
         @lang('service')
     @endcomponent
     <!-- Section -->
-    <section class="section">
+    <section class="section gray-bg">
         <div class="container">
-            <div class="row">
+            <div class="row md-m-25px-b m-45px-b justify-content-center text-center">
                 <div class="col-lg-8">
-
-                    @if(!empty($item->content))
-                        <div class="nav p-25px-b">
-                            <span class="h2 dark-color font-w-600">{{ $item->title }}</span>
-                        </div>
-                    
-                        {!! $item->content !!}
-
-                        @if(Auth::check()&&Auth::user()->isAdmin())
-                            <a href="{{route('admin.page.update',$item)}}" class="more pull-right"><i class="fa fa-pencil"></i> @lang('app.btn.edit')</a> 
-                        @endif
-                    @endif
-                    @foreach($item->childs as $child)
-                        <div class="nav p-25px-b">
-                            <span class="h2 dark-color font-w-600">{{$child->title}}</span>
-                        </div>
-                    
-                        {!! $child->content !!}
-
-                        @if(Auth::check()&&Auth::user()->isAdmin())
-                            <a href="{{route('admin.page.update',$child)}}" class="more pull-right"><i class="fa fa-pencil"></i> @lang('app.btn.edit')</a> 
-                        @endif
-                    
-                        @foreach($child->pubs as $pub)
-                        <div class="nav p-25px-b">
-                            <span class="h2 dark-color font-w-600">{{$pub->title}}</span>
-                        </div>
-                    
-                        <div class="content-box-large box-with-header">
-                            <a target="_blank" href="{{$pub->links?$pub->links:'#'}}"><img src="{{$pub->imageUrl()}}" class="img-rounded" alt="Cinque Terre" width="604" height="236"></a>
-                        </div>
-
-                        @endforeach
-                    @endforeach
-
-                    
-                    
+                    <h3 class="h1 m-20px-b p-20px-b theme-after after-50px">@lang('app.txt.our.service')</h3>
                 </div>
-                <!-- Sidebar -->
-                    @include('includes.sidebar')
-                <!-- fin sidebar -->
+            </div>
+            <div class="row">  
+                @if(!empty($item->content))
+                    <div class="nav p-25px-b">
+                        <span class="h2 dark-color font-w-600">{{ $item->title }}</span>
+                    </div>
+                
+                    {!! $item->content !!}
 
+                    @if(Auth::check()&&Auth::user()->isAdmin())
+                        <a href="{{route('admin.page.update',$item)}}" class="more pull-right"><i class="fa fa-edit"></i></a> 
+                    @endif
+                @endif
+                @forelse ($item->childs as $child)
+                    @if($child->is_pub ==0)
+                        <div class="col-md-6 m-15px-tb">
+                            <div class="media p-40px-tb p-20px-lr box-shadow hover-top white-bg border-radius-5">
+                                <div class="icon-80 gray-bg dots-icon border-radius-50 theme-color d-inline-block m-15px-b">
+                                    <i class="icon-desktop"></i>
+                                    <span class="dots"><i class="dot dot1"></i><i class="dot dot2"></i><i class="dot dot3"></i></span>
+                                </div>
+                                <div class="media-body p-20px-l">
+                                    <h6>{{$child->title}}</h6>
+                                    <p class="p-35px-t">{!! Auth::check() ? $child->content.'<div><i class="far fa-envelope"></i> <a href="javascript.void(0)" data-toggle="modal" data-target="#formContactModal">'.trans('app.btn.contact').'</a></div>' : '<a data-toggle="modal" data-target="#loginFormModal" href="javascript:void(0)" class="more pull-right">'.trans("app.btn.view_more").'</a>' !!}</p>
+                                </div>
+                                <div>
+                                    @if(Auth::check()&&Auth::user()->isAdmin())
+                                        <a href="{{route('admin.page.update',$child)}}" class="more pull-right" title="@lang('app.txt.edit')"><i class="fa fa-edit"></i></a> 
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+            
+                    {{-- @foreach($child->pubs as $pub)
+                    <div class="nav p-25px-b">
+                        <span class="h2 dark-color font-w-600">{{$pub->title}}</span>
+                    </div>
+                
+                    <div class="content-box-large box-with-header">
+                        <a target="_blank" href="{{$pub->links?$pub->links:'#'}}"><img src="{{$pub->imageUrl()}}" class="img-rounded" alt="Cinque Terre" width="604" height="236"></a>
+                    </div>
+
+                    @endforeach --}}
+                @empty
+                    <p class="font-2 m-40px-b">@lang('app.txt.noinfo')</p>
+                @endforelse
+            </div>
+        </div>
+    </section>
+    <!-- End Section -->
+
+    <!-- Section catégorie -->
+    <section class="section theme-bg">
+        <div class="container">
+            <div class="row md-m-25px-b m-45px-b justify-content-center text-center">
+                <div class="col-lg-8">
+                    <h3 class="h1 white-color m-20px-b p-20px-b white-after after-50px">@lang('app.recent.category')</h3>
+                </div>
+            </div>
+            <div class="row">
+                @foreach($categories as $category)
+                    <div class="col-lg-3 col-sm-6 m-15px-tb">
+                        <div class="p-20px p-50px-r border-all-1 border-color-white arrow-hover">
+                            <a class="overlay-link" href="{{route('shop.index',$category)}}"></a>
+                            <div class="arrow-icon white-color"></div>
+                            <h5 class="font-1 font-w-600 white-color m-0px"><span class="theme2nd-bg p-5px-tb p-10px-lr border-radius-15 white-color small">{{$category->products_count}}</span> <span> {{ trans('app.txt.'.$category->title) }} </span></h5>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+    <!-- End Section -->
+
+    <!-- Section produit-->
+    <section class="section white-bg overflow-hidden">
+        <div class="container">
+            <div class="row md-m-25px-b m-45px-b justify-content-center text-center">
+                <div class="col-lg-8">
+                    <h3 class="h1 m-10px-b p-20px-b theme-after after-50px">@lang('app.dernierprod')</h3>
+                </div>
+            </div>
+
+            <div class="owl-carousel owl-no-overflow" data-items="3" data-nav-dots="true" data-md-items="2" data-sm-items="2" data-xs-items="1" data-xx-items="1" data-space="30" data-center="true" data-stage="50">
+                @foreach($products as $product)
+                    @include('product.single', ['item'=>$product, 'page_id'=>$item->id])
+                @endforeach
             </div>
         </div>
     </section>
     <!-- End Section -->
 </main>
+
+<!-- Modal -->
+<div id="loginFormModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="title">@lang('app.login')</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <form action="{{route('login')}}" method="post">
+                    {{ csrf_field() }}
+                    {{-- {{ Session()->put('service','login_service') }} --}}
+
+                    <div class="form-group">
+                        <label class="form-control-label">@lang('app.txt.email')</label>
+                        <input type="email" name="email" class="form-control" placeholder="@lang('app.txt.your.email') *" required="required" value="{{ old('email') }}" autofocus>
+                        <span class="text-danger">{{ $errors->has('email') ? $errors->first('email') : '' }}</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label">@lang('app.txt.password')</label>
+                        <input name="password"  type="password" placeholder="@lang('app.txt.your.password') *" class="form-control" placeholder="***********" required="required">
+                        <span class="text-danger">{{ $errors->has('password') ? $errors->first('password') : '' }}</span>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> @lang('app.form.login.remember')
+                    </div>
+                    <div class="p-10px-t">
+                        <button type="submit" class="m-btn m-btn-theme w-100">@lang('app.btn.login')</button>
+                    </div>
+                    <div class="m-20px-t text-center">
+                        <a href="{{ route('password.request')}}" class="small font-weight-bold">@lang('app.form.login.forgot')</a> 
+                        <div class="dropdown pull-right">
+                        <a href="#" class="small font-weight-bold dropdown-toggle" type="button" data-toggle="dropdown">
+                            @lang('app.form.login.not_registered')</a>
+                            <ul class="dropdown-menu form-control-label">
+                                <li><a href="{{route('register', ['member'])}}">@lang('app.member')</a></li>
+                                <li><a href="{{route('register', ['seller'])}}">@lang('app.seller')</a></li>
+                                <li><a href="{{route('register', ['afa'])}}">@lang('app.afa')</a></li>
+                                <li><a href="{{route('register', ['apl'])}}">@lang('app.apl')</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 @endsection
 

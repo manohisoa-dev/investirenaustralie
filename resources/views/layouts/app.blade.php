@@ -77,7 +77,8 @@
         background:gray;
         margin-left: -175px;
         margin-top: -190px;
-        opacity: 0;
+        /* opacity: 0; */
+        display: none;
         transition: 2s;
     }
 </style>
@@ -408,13 +409,13 @@
         });
 
         $('#btn_devise').click(function(){
-            $('#form_devise').css('opacity', 1);
+            $('#form_devise').css('display','');
             $(this).attr('hidden','true');
             $('#btn_devise2').removeAttr('hidden');
         });
 
         $('#btn_devise2').click(function(){
-            $('#form_devise').css('opacity', 0);
+            $('#form_devise').css('display', 'none');
             $(this).attr('hidden','true');
             $('#btn_devise').removeAttr('hidden');
         })
