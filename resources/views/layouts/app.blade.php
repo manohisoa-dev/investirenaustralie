@@ -403,7 +403,17 @@
                 // set apl items
                 $('#listAplModal .modal-body').append("<h6 class='white-color'>@lang('app.txt.aplfound') : "+data.res.length+"</h6>");
                 $.each(data.res,function(key,value){
-                    $('#listAplModal .modal-body').append('<a href={{route("member.select.apl")}} class="nav-item nav-link white-color"><i class="fa fa-building"></i> '+value.name+'</a>');
+                    console.log(value.id);
+                    var id= value.id;
+                    var uri = '{{ URL::to("get/show/apl") }}'+'/'+id;
+                    var envoi = $.get( uri );
+
+                    envoi.done( function(url) {
+                        $('#listAplModal .modal-body').append('<a href="'+url.res+'" target="_blank" class="nav-item nav-link white-color"><i class="fa fa-map-marker"></i> '+value.name+'</a>');    
+                    });
+
+                    
+                    // $('#listAplModal .modal-body').append('<a href={{route("member.select.apl")}} class="nav-item nav-link white-color"><i class="fa fa-building"></i> '+value.name+'</a>');
                 });
             });
         });

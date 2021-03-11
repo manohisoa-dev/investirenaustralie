@@ -47,7 +47,12 @@
                                             @forelse ($apls as $apls_item)
                                                 <span class="theme4rd-bg m-5px-r p-5px-tb p-10px-lr border-radius-15 white-color small">
                                                     <a class="white-color" href="javascript.void(0)" data-toggle="modal" data-target="#contactFormModal" title="Contacter APL-1">{{ $apls_item->name }}</a>
-                                                </span> 
+                                                </span>
+                                                @if($loop->last) 
+                                                    <span class="theme4rd-bg m-5px-r p-5px-tb p-10px-lr border-radius-15 white-color small">
+                                                        <a class="white-color" href="{{route('apls')}}" title="@lang('app.txt.show.all')"><i class="fa fa-plus"></i></a> 
+                                                    </span>
+                                                @endif
                                             @empty
                                                 @lang('app.txt.noinfo')
                                             @endforelse

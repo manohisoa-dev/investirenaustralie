@@ -12,10 +12,31 @@
         <div>
           <h2 class="font-15 m-10px-b">@lang('app.select_apl')</h2>
         </div>
-          <div class="col-12 m-30px-t">
-              <div class="p-15px white-bg box-shadow">
-                  <div id="map"></div>
+          <div class="row col-lg-12 m-30px-t">
+              <div class="col-lg-3 m-8px-l">
+                  <span class="m-font m-font-theme4rd flex-shrink-0 col-md-12" style="margin-bottom: 20px;">@lang('app.list_apl')</span>
+                  <div class="accordion accordion-05 m-40px-b">
+                    @forelse ($lapls_sidebar as $item)
+                    <div class="acco-group white-bg">
+                        <a href="#" class="acco-heading">{{ $item->country }}</a>
+                        <div class="acco-des">
+                            @forelse (App\Models\User::where('location_id','=',$item->id)->get() as $apl)
+                            <p><a href="{{ route('show.apl',['id'=>$apl->id]) }}" target="_blank"><i class="fa fa-map-marker"></i> {{ $apl->name }}</a></p>
+                            @empty
+                                <p>@lang('app.txt.noinfo')</p>
+                            @endforelse
+                        </div>
+                    </div>
+                    @empty
+                    <div class="acco-group white-bg">
+                        <p><i class="fa fa-map-marker"></i> @lang('app.txt.noinfo')</p>
+                    </div>
+                    @endforelse
+                  </div>
               </div>
+              <div class="col-lg-9 p-15px white-bg box-shadow">
+                <div id="map"></div>
+            </div>
           </div>
       </div>
   </div>
@@ -57,32 +78,6 @@
 </div>
 <!-- Fin modal -->
 
-<!-- Modal -->
-{{-- <div id="myModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-          <h4 class="modal-title" id="title">@lang('app.apl')</h4>
-      </div>
-      <div class="modal-body">
-        <p id="content">@lang('app.select_apl')</p>
-      </div>
-      <div class="modal-footer">
-        <form id="apl-form-modal" class="form-horizontal" role="form" method="post" action="{{route('member.select.apl')}}">
-            <input type="hidden" name="_token" value="{{ csrf_token(); }}">
-            <input type="hidden" id="apl-modal"  name="apl">
-            <div class="pull-left hidden row-confirm-modal" style="margin-bottom: 20px;">
-                <input id="check-confirm-modal" type="checkbox" name="confirm" value="1"><span style="color:red;"> {!!__('member.accept_term_and_condition_apl')!!}</span>
-            </div>
-            <div class="col-md-12">
-                <button class="btn btn-default pull-right" data-dismiss="modal" aria-hidden="true">@lang('app.btn.cancel')</button>
-                <button id="submit" type="submit" class="btn btn-success pull-left">@lang('member.select')</button>
-            </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div> --}}
 @endsection
 
 @push('script')
@@ -154,10 +149,19 @@
 
         if(data.type == 4){
             google.maps.event.addListener(markers[data.id], 'click', function() {
-                $('#apl-modal').attr("value", data.id);
-                $('#title').html(data.title);
-                $('#content').html(data.html);
-                $('#myModal').modal('show'); 
+                // $('#apl-modal').attr("value", data.id);
+                // $('#title').html(data.title);
+                // $('#content').html(data.html);
+                // $('#myModal').modal('show'); 
+
+                var id= data.id;
+                var uri = '{{ URL::to("get/show/apl") }}'+'/'+id;
+                var envoi = $.get( uri );
+
+                envoi.done( function(url) {
+                  window.open(url.res, '_blank');
+                });
+
             });
         }
     }

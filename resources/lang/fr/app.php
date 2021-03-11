@@ -653,6 +653,9 @@ return [
     'txt.edit' => "Modifier",
     'txt.name.prestataire'        => 'Nom du préstataire',
     'txt.prestataire'        => 'Préstataire',
+    'txt.info.apl'        => 'Information de :apl',
+    'txt.presentation'        => 'Présentation',
+    'txt.show.all'        => 'Afficher tous',
     
     
     

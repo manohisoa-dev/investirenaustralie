@@ -419,6 +419,9 @@ return [
     'txt.edit' => "Edit",
     'txt.name.prestataire'        => 'Prestataire name',
     'txt.prestataire'        => 'Service provider',
+    'txt.info.apl'        => ' :apl Information',
+    'txt.presentation'        => 'Presentation',
+    'txt.show.all'        => 'Show all',
     
     
     

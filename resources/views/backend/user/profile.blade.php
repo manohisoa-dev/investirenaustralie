@@ -194,7 +194,7 @@
                         <div class="col-md-4 m-10px-tb">
                             <div class="media">
                                 <div class="only-icon-20">
-                                    <i class="fas fa-phone"></i>
+                                    <i class="fas fa-globe"></i>
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businesswebsite')</div>
@@ -264,7 +264,7 @@
                     <div class="col-md-4 m-10px-tb">
                         <div class="media">
                             <div class="only-icon-20">
-                                <i class="fas fa-building"></i>
+                                <i class="fas fa-road"></i>
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.streetaddress') </div>
@@ -275,7 +275,7 @@
                     <div class="col-md-4 m-10px-tb">
                         <div class="media">
                             <div class="only-icon-20">
-                                <i class="fas fa-envelope"></i>
+                                <i class="fas fa-city"></i>
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.suburb') </div>
@@ -286,7 +286,7 @@
                     <div class="col-md-4 m-10px-tb">
                         <div class="media">
                             <div class="only-icon-20">
-                                <i class="fas fa-phone"></i>
+                                <i class="fas fa-flag"></i>
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.etat')</div>
@@ -314,7 +314,7 @@
                     <div class="col-md-4 m-10px-tb">
                         <div class="media">
                             <div class="only-icon-20">
-                                <i class="fas fa-building"></i>
+                                <i class="fas fa-user"></i>
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.contactname') </div>

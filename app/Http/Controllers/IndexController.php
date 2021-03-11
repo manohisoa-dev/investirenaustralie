@@ -157,6 +157,12 @@ class IndexController extends Controller
             ->where('users.role','=','4')
             ->groupBy('localizations.locality')
             ->get();
+
+        $lapls_sidebar = Localisation::select('localizations.*')
+            ->join('users','users.location_id','=','localizations.id')
+            ->where('users.role','=','4')
+            ->groupBy('localizations.country')
+            ->get();
         
         $data = [];
         foreach($lapls as $item){
@@ -175,6 +181,7 @@ class IndexController extends Controller
     	return view('index.apl')
             ->with('items', $lapls)
             ->with('lapls', $lapls_footer)
+            ->with('lapls_sidebar', $lapls_sidebar)
             ->with(['data' => json_encode($data)]);
     }
 
@@ -225,6 +232,7 @@ class IndexController extends Controller
         $apls = User::select('users.*')
             ->where('users.role','=','4')
             ->where('users.status','=','active')
+            ->limit(4)
             ->get();
         
         if($page){$pubs = $page->pubs;}else{$pubs = [];}
@@ -455,6 +463,58 @@ class IndexController extends Controller
             ->with('products', $products)
             ->with('lapls', $lapls)
             ->with('categories', $categories);
+    }
+
+    public function getShowApl($id){
+        $url = url('show/apl/'.$id);
+        return response()->json(['res'=>$url]);
+    }
+
+    public function showApl($id){
+        $apl = User::where('id','=',$id)
+            ->has('location')
+            ->with('location')
+            ->with('userinfos')
+            ->get();
+
+        $lapls = User::ofRole(4)
+            ->isActive()
+            ->has('location')
+            ->with('location')
+            ->get();
+
+        $lapls_footer = Localisation::select('localizations.*')
+            ->join('users','users.location_id','=','localizations.id')
+            ->where('users.role','=','4')
+            ->groupBy('localizations.locality')
+            ->get();
+
+        $lapls_sidebar = Localisation::select('localizations.*')
+            ->join('users','users.location_id','=','localizations.id')
+            ->where('users.role','=','4')
+            ->groupBy('localizations.country')
+            ->get();
+        
+        $data = [];
+        foreach($apl as $item){
+            $html = view('user.map')->with('item', $item)->render();
+            $data[] = [
+              'id' => $item->id,
+              'lat' => $item->location?$item->location->latitude:0,
+              'lng' => $item->location?$item->location->longitude:0,
+              'title' => $item->name,
+              'content' => $item->get_meta('orga_description')?$item->get_meta('orga_description')->value:'',
+              'type' => $item->role,
+              'html' => $html,
+            ];
+        }
+        
+    	return view('apl.show')
+            ->with('items', $lapls)
+            ->with('aplDatas', $apl)
+            ->with('lapls', $lapls_footer)
+            ->with('lapls_sidebar', $lapls_sidebar)
+            ->with(['data' => json_encode($data)]);
     }
 
     /**
