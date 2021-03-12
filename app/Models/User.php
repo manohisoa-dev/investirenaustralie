@@ -670,8 +670,7 @@ class User extends Authenticatable{
                     $userinfos->update(["bank_iban"=> $value]);
                 if($value = $request->input('bank_bic'))
                     $userinfos->update(["bank_bic"=> $value]);
-                break;
-
+                
                 // CRM Prodvider data
                 if($value = $request->input('crm_name'))
                     $userinfos->update(["crm_name"=> $value]);
