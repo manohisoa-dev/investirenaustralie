@@ -419,15 +419,20 @@
         });
 
         $('#btn_devise').click(function(){
-            $('#form_devise').css({'opacity': 1, 'margin-top':'-190px'});
+            $('#form_devise').show();
+            $('#form_devise').css({'opacity': 1, 'margin-top':'-185px'});
             $(this).attr('hidden','true');
             $('#btn_devise2').removeAttr('hidden');
         });
 
         $('#btn_devise2').click(function(){
-            $('#form_devise').css({'opacity': 1, 'margin-top':'50px'});
+            $('#form_devise').css({'opacity': 0, 'margin-top':'50px'});
+            setTimeout(function(){
+                $("#form_devise").hide(25, "linear", function(){
+                    $('#btn_devise').removeAttr('hidden');
+                });
+            },1000);
             $(this).attr('hidden','true');
-            $('#btn_devise').removeAttr('hidden');
         })
     </script>
 
