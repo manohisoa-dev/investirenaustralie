@@ -671,6 +671,13 @@ class User extends Authenticatable{
                 if($value = $request->input('bank_bic'))
                     $userinfos->update(["bank_bic"=> $value]);
                 break;
+
+                // CRM Prodvider data
+                if($value = $request->input('crm_name'))
+                    $userinfos->update(["crm_name"=> $value]);
+                if($value = $request->input('crm_email'))
+                    $userinfos->update(["crm_email"=> $value]);
+                break;
             case 2:
                 // Create Organisation MetaData
                 if($value = $request->input('orga_name'))
