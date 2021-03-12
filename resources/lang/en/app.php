@@ -422,6 +422,8 @@ return [
     'txt.info.apl'        => ' :apl Information',
     'txt.presentation'        => 'Presentation',
     'txt.show.all'        => 'Show all',
+    'txt.product.favoris'        => 'Product added to :type',
+    'txt.favoris'        => 'Favorites',
     
     
     

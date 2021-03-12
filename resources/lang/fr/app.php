@@ -858,6 +858,8 @@ return [
     'txt.hello' =>'Bonjour!',
     'txt.regards' =>'Salutations',
     'txt.connected_role' =>', vous êtes connecté(e) en qualité de :role',
+    'txt.product.favoris'        => 'Produit ajouté dans :type',
+    'txt.favoris'        => 'Favoris',
 
 
 

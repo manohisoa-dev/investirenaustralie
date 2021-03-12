@@ -11,6 +11,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
+                  @include('includes.alerts')
                   @if(count($item->images))
                   <div id="myCarousel" class="carousel slide" data-ride="carousel">
                       <!-- Indicators -->
