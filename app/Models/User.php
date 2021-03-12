@@ -604,6 +604,11 @@ class User extends Authenticatable{
                         $userinfos->update(["contact_email"=> $value]);
                     if($value = $request->input('contact_phone'))
                         $userinfos->update(["contact_phone"=> $value]);
+                    // Create CRM MetaData
+                    if($value = $request->input('crm_name'))
+                    $userinfos->update(["crm_name"=> $value]);
+                    if($value = $request->input('crm_email'))
+                    $userinfos->update(["crm_email"=> $value]);
                 }
                 break;
             case 3:
