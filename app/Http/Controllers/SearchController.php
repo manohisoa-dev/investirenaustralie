@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Search;
 use App\Models\Localisation;
 use App\Models\State;
+use App\Models\Type;
 class SearchController extends Controller
 {
     /**
@@ -208,7 +209,7 @@ class SearchController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function search(Request $request)
+    public function search_old(Request $request)
     {
         $search = new Search();
 
@@ -336,5 +337,147 @@ class SearchController extends Controller
     	return view('search.index')
             ->with('lapls', $lapls)
             ->with('items', $items);
+    }
+
+    /**
+     * Perform global search.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $search = new Search();
+
+        $lapls = Localisation::select('localizations.*')
+            ->join('users','users.location_id','=','localizations.id')
+            ->where('users.role','=','4')
+            ->groupBy('localizations.locality')
+            ->get();
+
+        $city = $request->city;
+        $state_id = $request->state?((State::where('content','=',$request->state))->get())[0]->id:'';
+        $suburb = $request->suburb;
+        
+        $items = Product::ofStatus('published');
+
+        $items = $items->join('localizations','localizations.id','=','products.location_id')
+                ->where('products.state_id','!=',0);
+
+        if($state_id){
+            $items = $items->where('state_id','=',$state_id);
+        }
+
+        if($city){
+            $items = $items->where('localizations.locality','=',$city);
+        }
+
+        if($suburb){
+            $items = $items->where('localizations.area_level_2','=',$suburb);
+        }
+            
+
+        $items = $items->paginate(20);
+        
+        $search->content = serialize($request->all());
+        $search->save();
+
+        $types = Type::orderBy('title', 'asc')
+            ->where('object_type', 'type')
+            ->get();
+        
+        $locationTypes = Type::orderBy('title', 'asc')
+            ->where('object_type', 'location')
+            ->get();
+        
+        $states = State::orderBy('content', 'asc')
+            ->get();
+
+        $min_price_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->min('price');
+
+        $max_price_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->max('price');
+        
+        $min_land_area_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->min('land_area');
+
+        $max_land_area_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->max('land_area');
+        
+        $min_garage_space_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->min('garage_spaces');
+
+        $max_garage_space_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->max('garage_spaces');
+
+        $min_bathrooms_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->min('bathrooms');
+
+        $max_bathrooms_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->max('bathrooms');
+
+        $min_bedrooms_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->min('bedrooms');
+
+        $max_bedrooms_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->max('bedrooms');
+        
+        $min_number_of_floors_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->min('number_of_floors');
+
+        $max_number_of_floors_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->max('number_of_floors');
+        
+        $min_price_foncier = Product::groupBy('category_id')
+            ->where('category_id','=',2)
+            ->min('price');
+
+        $max_price_foncier = Product::groupBy('category_id')
+            ->where('category_id','=',2)
+            ->max('price');
+        
+        $min_land_area_foncier = Product::groupBy('category_id')
+            ->where('category_id','=',2)
+            ->min('land_area');
+
+        $max_land_area_foncier = Product::groupBy('category_id')
+            ->where('category_id','=',2)
+            ->max('land_area');
+
+        return view('search.index')
+        ->with('states',$states)
+        ->with('locationTypes',$locationTypes)
+        ->with('min_price_residentiel',$min_price_residentiel)
+        ->with('max_price_residentiel',$max_price_residentiel)
+        ->with('min_land_area_residentiel',$min_land_area_residentiel)
+        ->with('max_land_area_residentiel',$max_land_area_residentiel)
+        ->with('min_garage_space_residentiel',$min_garage_space_residentiel)
+        ->with('max_garage_space_residentiel',$max_garage_space_residentiel)
+        ->with('min_bathrooms_residentiel',$min_bathrooms_residentiel)
+        ->with('max_bathrooms_residentiel',$max_bathrooms_residentiel)
+        ->with('min_bedrooms_residentiel',$min_bedrooms_residentiel)
+        ->with('max_bedrooms_residentiel',$max_bedrooms_residentiel)
+        ->with('min_number_of_floors_residentiel',$min_number_of_floors_residentiel)
+        ->with('max_number_of_floors_residentiel',$max_number_of_floors_residentiel)
+        ->with('min_price_foncier',$min_price_foncier)
+        ->with('max_price_foncier',$max_price_foncier)
+        ->with('min_land_area_foncier',$min_land_area_foncier)
+        ->with('max_land_area_foncier',$max_land_area_foncier)
+        ->with('types',$types)
+        ->with('lapls', $lapls)
+        ->with('items', $items);
+            
     }
 }
