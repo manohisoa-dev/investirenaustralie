@@ -81,12 +81,44 @@ class ShopController extends Controller
         if($page2){$pubs = $page2->pubs;}else{$pubs=[];}
 
         
-        $types = Type::orderBy('title', 'asc')
+        $typesRes = Type::orderBy('title', 'asc')
             ->where('object_type', 'type')
+            ->where('categories_id', 1)
+            ->get();
+        
+        $typesFonc = Type::orderBy('title', 'asc')
+            ->where('object_type', 'type')
+            ->where('categories_id', 2)
+            ->get();
+
+        $typesInd = Type::orderBy('title', 'asc')
+            ->where('object_type', 'type')
+            ->where('categories_id', 3)
+            ->get();
+        
+        $typesComm = Type::orderBy('title', 'asc')
+            ->where('object_type', 'type')
+            ->where('categories_id', 4)
             ->get();
         
         $locationTypes = Type::orderBy('title', 'asc')
             ->where('object_type', 'location')
+            ->get();
+
+        $anciennetes = Type::orderBy('title', 'asc')
+            ->where('object_type', 'anciennete')
+            ->get();
+
+        $agricoles = Type::orderBy('title', 'asc')
+            ->where('object_type', 'agricole')
+            ->get();
+
+        $industriels = Type::orderBy('title', 'asc')
+            ->where('object_type', 'industriel')
+            ->get();
+
+        $commercials = Type::orderBy('title', 'asc')
+            ->where('object_type', 'commercial')
             ->get();
         
         $states = State::orderBy('content', 'asc')
@@ -161,6 +193,30 @@ class ShopController extends Controller
         $max_land_area_foncier = Product::groupBy('category_id')
             ->where('category_id','=',2)
             ->max('land_area');
+        
+        $min_price_industriel = Product::groupBy('category_id')
+            ->where('category_id','=',3)
+            ->min('price');
+
+        $max_price_industriel = Product::groupBy('category_id')
+            ->where('category_id','=',3)
+            ->max('price');
+
+        $min_price_commercial = Product::groupBy('category_id')
+            ->where('category_id','=',4)
+            ->min('price');
+
+        $max_price_commercial = Product::groupBy('category_id')
+            ->where('category_id','=',4)
+            ->max('price');
+        
+        $min_area_commercial = Product::groupBy('category_id')
+            ->where('category_id','=',4)
+            ->min('land_area');
+
+        $max_area_commercial = Product::groupBy('category_id')
+            ->where('category_id','=',4)
+            ->max('land_area');
 
         return view('shop.index')
             ->with('items', $items)
@@ -171,8 +227,15 @@ class ShopController extends Controller
             ->with('page', $page)
             ->with('pubs', $pubs)
             ->with('products', $products)
-            ->with('types', $types)
+            ->with('typesRes',$typesRes)
+            ->with('typesFonc',$typesFonc)
+            ->with('typesInd',$typesInd)
+            ->with('typesComm',$typesComm)
             ->with('locationTypes', $locationTypes)
+            ->with('anciennetes', $anciennetes)
+            ->with('agricoles', $agricoles)
+            ->with('industriels',$industriels)
+            ->with('commercials',$commercials)
             ->with('states', $states)
             ->with('category', $category)
             ->with('lapls', $lapls)
@@ -192,6 +255,12 @@ class ShopController extends Controller
             ->with('max_price_foncier',$max_price_foncier)
             ->with('min_land_area_foncier',$min_land_area_foncier)
             ->with('max_land_area_foncier',$max_land_area_foncier)
+            ->with('min_price_industriel',$min_price_industriel)
+            ->with('max_price_industriel',$max_price_industriel)
+            ->with('min_price_commercial',$min_price_commercial)
+            ->with('max_price_commercial',$max_price_commercial)
+            ->with('min_area_commercial',$min_area_commercial)
+            ->with('max_area_commercial',$max_area_commercial)
             ->with('categories', $categories); 
     }
     

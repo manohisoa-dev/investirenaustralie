@@ -5,6 +5,15 @@
 @component('includes.breadcrumb2', 
     isset($category->slug) ? [
         'cat'=>$category->slug,
+        'typesRes'=>$typesRes,
+        'typesFonc'=>$typesFonc,
+        'typesInd'=>$typesInd,
+        'typesComm'=>$typesComm,
+        'anciennetes'=>$anciennetes,
+        'locationTypes'=>$locationTypes,
+        'agricoles'=>$agricoles,
+        'industriels'=>$industriels,
+        'commercials'=>$commercials,
         'max_price_residentiel'=>$max_price_residentiel,
         'min_price_residentiel'=>$min_price_residentiel,
         'min_land_area_residentiel'=>$min_land_area_residentiel,
@@ -20,9 +29,24 @@
         'min_price_foncier'=>$min_price_foncier,
         'max_price_foncier'=>$max_price_foncier,
         'min_land_area_foncier'=>$min_land_area_foncier,
-        'max_land_area_foncier'=>$max_land_area_foncier,] 
+        'max_land_area_foncier'=>$max_land_area_foncier,
+        'min_price_industriel'=>$min_price_industriel,
+        'max_price_industriel'=>$max_price_industriel,
+        'min_price_commercial'=>$min_price_commercial,
+        'max_price_commercial'=>$max_price_commercial,
+        'min_area_commercial'=>$min_area_commercial,
+        'max_area_commercial'=>$max_area_commercial] 
         : [
         'cat'=>'search',
+        'typesRes'=>$typesRes,
+        'typesFonc'=>$typesFonc,
+        'typesInd'=>$typesInd,
+        'typesComm'=>$typesComm,
+        'anciennetes'=>$anciennetes,
+        'locationTypes'=>$locationTypes,
+        'agricoles'=>$agricoles,
+        'industriels'=>$industriels,
+        'commercials'=>$commercials,
         'max_price_residentiel'=>$max_price_residentiel,
         'min_price_residentiel'=>$min_price_residentiel,
         'min_land_area_residentiel'=>$min_land_area_residentiel,
@@ -38,7 +62,13 @@
         'min_price_foncier'=>$min_price_foncier,
         'max_price_foncier'=>$max_price_foncier,
         'min_land_area_foncier'=>$min_land_area_foncier,
-        'max_land_area_foncier'=>$max_land_area_foncier,])
+        'max_land_area_foncier'=>$max_land_area_foncier,
+        'min_price_industriel'=>$min_price_industriel,
+        'max_price_industriel'=>$max_price_industriel,
+        'min_price_commercial'=>$min_price_commercial,
+        'max_price_commercial'=>$max_price_commercial,
+        'min_area_commercial'=>$min_area_commercial,
+        'max_area_commercial'=>$max_area_commercial])
     @lang('all_products')
 @endcomponent
 
