@@ -81,7 +81,7 @@ if(Request::segment(2) != ''){
                 <div class="col-lg-12 row">
                     <div class="form-group mar-r-20 col-lg-6">
                         <select id="type" class="form-control" name="type">
-                            <option value="" selected disabled>@lang('app.input.type_de_bien')</option>
+                            <option value="0" selected disabled>@lang('app.input.type_de_bien')</option>
                             @if(isset($typesRes))
                                 @foreach($typesRes as $type)
                                     <option value="{{$type->id}}">{{$type->title.' ('.$type->products()->where('products.status', 'published')->count().')'}}</option>
@@ -91,7 +91,7 @@ if(Request::segment(2) != ''){
                     </div>
                     <div class="form-group mar-r-20 col-lg-6">
                         <select id="anciennete" class="form-control" name="anciennete">
-                            <option value="" selected disabled>@lang('app.input.anciennete')</option>
+                            <option value="0" selected disabled>@lang('app.input.anciennete')</option>
                             @if(isset($anciennetes))
                                 @foreach($anciennetes as $anciennete)
                                     <option value="{{$anciennete->id}}">{{$anciennete->title.' ('.$anciennete->products()->where('products.status', 'published')->count().')'}}</option>
@@ -104,7 +104,7 @@ if(Request::segment(2) != ''){
                 <div class="col-lg-12 row">
                     <div class="form-group mar-r-20 col-lg-6">
                         <select id="localisation" class="form-control" name="localisation">
-                            <option value="" selected disabled>@lang('app.input.localisation')</option>
+                            <option value="0" selected disabled>@lang('app.input.localisation')</option>
                             @if(isset($locationTypes))
                                 @foreach($locationTypes as $locationType)
                                     <option value="{{$locationType->id}}">{{$locationType->title.' ('.$locationType->products()->where('products.status', 'published')->count().')'}}</option>
@@ -153,7 +153,7 @@ if(Request::segment(2) != ''){
                 <div class="col-lg-12 row">
                     <div class="form-group mar-r-20 col-lg-6">
                         <select id="typeFonc" class="form-control" name="typeFonc">
-                            <option value="" selected disabled>@lang('app.input.type_de_bien')</option>
+                            <option value="0" selected disabled>@lang('app.input.type_de_bien')</option>
                             @if(isset($typesFonc))
                                 @foreach($typesFonc as $type)
                                     <option value="{{$type->id}}">{{$type->title.' ('.$type->products()->where('products.status', 'published')->count().')'}}</option>
@@ -163,7 +163,7 @@ if(Request::segment(2) != ''){
                     </div>
                     <div class="form-group mar-r-20 col-lg-6">
                         <select id="localisationFonc" class="form-control" name="localisationFonc">
-                            <option value="" selected disabled>@lang('app.input.localisation')</option>
+                            <option value="0" selected disabled>@lang('app.input.localisation')</option>
                             @if(isset($locationTypes))
                                 @foreach($locationTypes as $locationType)
                                     <option value="{{$locationType->id}}">{{$locationType->title.' ('.$locationType->products()->where('products.status', 'published')->count().')'}}</option>
@@ -175,8 +175,8 @@ if(Request::segment(2) != ''){
 
                 <div class="col-lg-12 row">
                     <div class="form-group mar-r-20 col-lg-6">
-                        <select id="agricole" class="form-control" name="agricole">
-                            <option value="" selected disabled>@lang('app.input.secteur_agricole')</option>
+                        <select id="agricole" class="form-control" name="agricole" disabled>
+                            <option value="0" selected disabled>@lang('app.input.secteur_agricole')</option>
                             @if(isset($agricoles))
                                 @foreach($agricoles as $agricole)
                                     <option value="{{$agricole->id}}">{{$agricole->title.' ('.$agricole->products()->where('products.status', 'published')->count().')'}}</option>
@@ -186,9 +186,9 @@ if(Request::segment(2) != ''){
                     </div>
                     <div class="form-group mar-r-20 col-lg-6">
                         <select id="unite" class="form-control" name="unite">
-                            <option value="" selected disabled>@lang('app.input.unite_de_mesure')</option>
-                            <option value="m²">m²</option>
-                            <option value="m²">Hectare(s)</option>
+                            <option value="0" selected disabled>@lang('app.input.unite_de_mesure')</option>
+                            <option value="1">m²</option>
+                            <option value="2">Hectare(s)</option>
                         </select>
                     </div>
                 </div>
@@ -197,46 +197,11 @@ if(Request::segment(2) != ''){
                     <div class="form-group mar-r-20 col-lg-6">
                         <select id="unite_min" class="form-control" name="unite_min" disabled>
                             <option value="0" selected disabled>@lang('app.input.superficie') (min)</option>
-                            <option value="50">50 m²</option>
-                            <option value="100">100 m²</option>
-                            <option value="150">150 m²</option>
-                            <option value="200">200 m²</option>
-                            <option value="250">250 m²</option>
-                            <option value="300">300 m²</option>
-                            <option value="350">350 m²</option>
-                            <option value="400">400 m²</option>
-                            <option value="500">500 m²</option>
-                            <option value="750">750 m²</option>
-                            <option value="1000">{{ number_format('1000', 0, '.', ' ') }} m²</option>
-                            <option value="1500">{{ number_format('1500', 0, '.', ' ') }} m²</option>
-                            <option value="2000">{{ number_format('2000', 0, '.', ' ') }} m²</option>
-                            <option value="3000">{{ number_format('3000', 0, '.', ' ') }} m²</option>
-                            <option value="5000">{{ number_format('5000', 0, '.', ' ') }} m²</option>
-                            <option value="10000">{{ number_format('10000', 0, '.', ' ') }} m²</option>
-                            <option value="20000">{{ number_format('20000', 0, '.', ' ') }} m²</option>
                         </select>
                     </div>
                     <div class="form-group mar-r-20 col-lg-6">
                         <select id="unite_max" class="form-control" name="unite_max" disabled>
-                            <option value="" selected disabled>@lang('app.input.superficie') (max)</option>
-                            <option value="0" selected disabled>@lang('app.input.superficie') (min)</option>
-                            <option value="50">50 m²</option>
-                            <option value="100">100 m²</option>
-                            <option value="150">150 m²</option>
-                            <option value="200">200 m²</option>
-                            <option value="250">250 m²</option>
-                            <option value="300">300 m²</option>
-                            <option value="350">350 m²</option>
-                            <option value="400">400 m²</option>
-                            <option value="500">500 m²</option>
-                            <option value="750">750 m²</option>
-                            <option value="1000">{{ number_format('1000', 0, '.', ' ') }} m²</option>
-                            <option value="1500">{{ number_format('1500', 0, '.', ' ') }} m²</option>
-                            <option value="2000">{{ number_format('2000', 0, '.', ' ') }} m²</option>
-                            <option value="3000">{{ number_format('3000', 0, '.', ' ') }} m²</option>
-                            <option value="5000">{{ number_format('5000', 0, '.', ' ') }} m²</option>
-                            <option value="10000">{{ number_format('10000', 0, '.', ' ') }} m²</option>
-                            <option value="20000">{{ number_format('20000', 0, '.', ' ') }} m²</option>
+                            <option value="0" selected disabled>@lang('app.input.superficie') (max)</option>
                         </select>
                     </div>
                 </div>
@@ -264,7 +229,7 @@ if(Request::segment(2) != ''){
                 <div class="col-lg-12 row">
                     <div class="form-group mar-r-20 col-lg-6">
                         <select id="typeInd" class="form-control" name="typeInd">
-                            <option value="" selected disabled>@lang('app.input.type_de_bien')</option>
+                            <option value="0" selected disabled>@lang('app.input.type_de_bien')</option>
                             @if(isset($typesInd))
                                 @foreach($typesInd as $type)
                                     <option value="{{$type->id}}">{{$type->title.' ('.$type->products()->where('products.status', 'published')->count().')'}}</option>
@@ -274,7 +239,7 @@ if(Request::segment(2) != ''){
                     </div>
                     <div class="form-group mar-r-20 col-lg-6">
                         <select id="localisationInd" class="form-control" name="localisationInd">
-                            <option value="" selected disabled>@lang('app.input.secteur_industriel')</option>
+                            <option value="0" selected disabled>@lang('app.input.secteur_industriel')</option>
                             @if(isset($industriels))
                                 @foreach($industriels as $industriel)
                                     <option value="{{$industriel->id}}">{{$industriel->title.' ('.$industriel->products()->where('products.status', 'published')->count().')'}}</option>
@@ -306,7 +271,7 @@ if(Request::segment(2) != ''){
                 <div class="col-lg-12 row">
                     <div class="form-group mar-r-20 col-lg-6">
                         <select id="typeComm" class="form-control" name="typeComm">
-                            <option value="" selected disabled>@lang('app.input.type_de_bien')</option>
+                            <option value="0" selected disabled>@lang('app.input.type_de_bien')</option>
                             @if(isset($typesComm))
                                 @foreach($typesComm as $type)
                                     <option value="{{$type->id}}">{{$type->title.' ('.$type->products()->where('products.status', 'published')->count().')'}}</option>
@@ -316,7 +281,7 @@ if(Request::segment(2) != ''){
                     </div>
                     <div class="form-group mar-r-20 col-lg-6">
                         <select id="secteurComm" class="form-control" name="secteurComm">
-                            <option value="" selected disabled>@lang('app.input.secteur_commercial')</option>
+                            <option value="0" selected disabled>@lang('app.input.secteur_commercial')</option>
                             @if(isset($commercials))
                                 @foreach($commercials as $commercial)
                                     <option value="{{$commercial->id}}">{{$commercial->title.' ('.$commercial->products()->where('products.status', 'published')->count().')'}}</option>
@@ -329,7 +294,7 @@ if(Request::segment(2) != ''){
                 <div class="col-lg-12 row">
                     <div class="form-group mar-r-20 col-lg-6">
                         <select id="parkingClient" class="form-control" name="parkingClient">
-                            <option value="" selected disabled>@lang('app.input.parking_client')</option>
+                            <option value="0" selected disabled>@lang('app.input.parking_client')</option>
                             <option value="yes">@lang('app.yes')</option>
                             <option value="no">@lang('app.no')</option>
                         </select>
@@ -706,6 +671,49 @@ if(Request::segment(2) != ''){
    $('#administrative_area_level_1').on('change',function(){
         $('input[name=city').val('');
         $('input[name=suburb').val('');
+    });
+
+    // function select typeFonc
+    $('#foncier').on('change','#typeFonc',function(){
+        var type_id = $(this).val();
+        var select_agri = $('#agricole');   
+
+        if(type_id==16){
+            return select_agri.removeAttr('disabled');
+        }
+
+        return select_agri.attr('disabled','disabled');
     })
+
+    // function select unit of measure
+    $('#foncier').on('change','#unite',function(){
+        var val = $(this).val();
+        var area_m = new Array('50','100','150','200','250','300','350','400','500','750','1000','1500','2000','3000','5000','10000','20000');
+        var area_hect = new Array('1','5','10','25','50','100','200','300','400','500','1000','5000','5000+');
+        var unite_min = $('#unite_min');
+        var unite_max = $('#unite_max');
+
+        // enabled area select
+        $('#unite_min').removeAttr('disabled');
+        $('#unite_max').removeAttr('disabled');
+        
+        // dont remove first option on select 
+        unite_min.find('option').not(':first').remove();
+        unite_max.find('option').not(':first').remove();
+        
+        if(val==1){
+            for(var i=0;i<area_m.length;i++){
+                unite_min.append('<option>'+area_m[i]+'</option>');
+                unite_max.append('<option>'+area_m[i]+'</option>');
+            }
+        }else{
+            for(var i=0;i<area_hect.length;i++){
+                unite_min.append('<option>'+area_hect[i]+'</option>');
+                unite_max.append('<option>'+area_hect[i]+'</option>');
+            }
+        }
+    })
+    
+
    </script>
 @endpush
