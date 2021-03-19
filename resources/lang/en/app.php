@@ -438,6 +438,11 @@ return [
     'txt.search.viewing'        => 'Viewing :min - :max',
     'txt.au'        => 'Australia',
     'txt.any'        => 'any',
+    'txt.immobilier_residentiel'        => 'Real estate residential',
+    'txt.immobilier_foncier'        => 'Real estate land',
+    'txt.business_industriel'        => 'Business industrial',
+    'txt.business_commercial'        => 'Business commercial',
+    'txt.agence_publicite'        => 'Advertising company',
     
     
     

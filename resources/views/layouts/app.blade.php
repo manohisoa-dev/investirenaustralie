@@ -250,8 +250,10 @@
                         </h6>
                         <ul class="list-unstyled links-white footer-link-1">
                             <li><a href="{{route('home')}}">@lang('app.home')</a></li>
-                            <li><a href="{{route('shop.index')}}">@lang('app.immobilier')</a></li>
-                            <li><a href="{{route('shop.index')}}">@lang('app.business')</a></li>
+                            <li><a href="{{route('shop.index', \App\Models\Category::find(1))}}">@lang('app.txt.immobilier_residentiel')</a></li>
+                            <li><a href="{{route('shop.index', \App\Models\Category::find(2))}}">@lang('app.txt.immobilier_foncier')</a></li>
+                            <li><a href="{{route('shop.index', \App\Models\Category::find(3))}}">@lang('app.txt.business_industriel')</a></li>
+                            <li><a href="{{route('shop.index', \App\Models\Category::find(4))}}">@lang('app.txt.business_commercial')</a></li>
                             <li><a href="{{route('services')}}">@lang('app.services')</a></li>
                             <li><a href="{{route('blog.all')}}">@lang('app.blog')</a></li>
                             <li><a href="{{route('contact')}}">@lang('app.contact')</a></li>
@@ -265,7 +267,7 @@
                             <li><a href="{{route('terms')}}">@lang('app.terms')</a></li>
                             <li><a href="{{route('confidentialities')}}">@lang('app.confidential')</a></li>
                             <li><a href="{{route('help')}}">@lang('app.user_guide')</a></li>
-                            <li><a href="{{route('publicities')}}">@lang('app.pubs')</a></li>
+                            <li><a href="{{route('publicities')}}">@lang('app.txt.agence_publicite')</a></li>
                             @if(Auth::check())
                                 <li><a href="{{route('profile')}}">@lang('app.account')</a></li>
                             @endif
