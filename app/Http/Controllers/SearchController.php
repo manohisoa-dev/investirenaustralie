@@ -9,6 +9,7 @@ use App\Models\Search;
 use App\Models\Localisation;
 use App\Models\State;
 use App\Models\Type;
+use App\Models\Page;
 class SearchController extends Controller
 {
     /**
@@ -351,6 +352,20 @@ class SearchController extends Controller
             ->where('users.role','=','4')
             ->groupBy('localizations.locality')
             ->get();
+        
+        $page2 = Page::where('path', '=', '/products*')->first();
+        if($page2){$pubs = $page2->pubs;}else{$pubs=[];}
+
+        $products = Product::orderBy('created_at','desc')
+            ->ofStatus('published')
+            ->take($this->recentSize)
+            ->get();
+        
+        $categories = Category::orderBy('created_at', 'desc')
+            ->has('products')
+            ->withCount('products')
+            ->take($this->recentSize)
+            ->get();
 
         $city = $request->city;
         $state_id = $request->state?((State::where('content','=',$request->state))->get())[0]->id:'';
@@ -649,6 +664,9 @@ class SearchController extends Controller
         ->with('typesInd',$typesInd)
         ->with('typesComm',$typesComm)
         ->with('lapls', $lapls)
+        ->with('pubs', $pubs)
+        ->with('products', $products)
+        ->with('categories', $categories)
         ->with('items', $items);
             
     }
