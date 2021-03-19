@@ -221,7 +221,7 @@ class SearchController extends Controller
             ->get();
 
         $city = $request->city;
-        $state_id = $request->state?((State::where('content','=',$request->state))->get())[0]->id:'';
+//        $state_id = $request->state?((State::where('content','=',$request->state))->get())[0]->id:'';
         $suburb = $request->suburb;
         
         $items = Product::ofStatus('published');
@@ -229,9 +229,9 @@ class SearchController extends Controller
         $items = $items->join('localizations','localizations.id','=','products.location_id')
                 ->where('products.state_id','!=',0);
 
-        if($state_id){
-            $items = $items->where('state_id','=',$state_id);
-        }
+//        if($state_id){
+//            $items = $items->where('state_id','=',$state_id);
+//        }
 
         if($city){
             $items = $items->where('localizations.locality','=',$city);
@@ -368,7 +368,7 @@ class SearchController extends Controller
             ->get();
 
         $city = $request->city;
-        $state_id = $request->state?((State::where('content','=',$request->state))->get())[0]->id:'';
+//        $state_id = $request->state?((State::where('content','=',$request->state))->get())[0]->id:'';
         $suburb = $request->suburb;
         $prod = $request->prod;
         
@@ -377,9 +377,9 @@ class SearchController extends Controller
         $items = $items->join('localizations','localizations.id','=','products.location_id')
                 ->where('products.state_id','!=',0);
 
-        if($state_id){
-            $items = $items->where('state_id','=',$state_id);
-        }
+//        if($state_id){
+//            $items = $items->where('state_id','=',$state_id);
+//        }
 
         if($city){
             $items = $items->where('localizations.locality','=',$city);
