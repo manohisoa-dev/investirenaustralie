@@ -331,8 +331,6 @@ class SearchController extends Controller
         
         $search->content = serialize($request->all());
         $search->save();
-
-        // dd($search);
         
     	return view('search.index')
             ->with('lapls', $lapls)
@@ -357,6 +355,7 @@ class SearchController extends Controller
         $city = $request->city;
         $state_id = $request->state?((State::where('content','=',$request->state))->get())[0]->id:'';
         $suburb = $request->suburb;
+        $prod = $request->prod;
         
         $items = Product::ofStatus('published');
 
@@ -374,8 +373,112 @@ class SearchController extends Controller
         if($suburb){
             $items = $items->where('localizations.area_level_2','=',$suburb);
         }
-            
 
+        if($prod){
+            switch ($prod) {
+                case 'residentiel':
+                    $items = $items->where('category_id', 1);
+
+                    if($request->typeRes){
+                        $items = $items->where('type_id', $request->typeRes);
+                    }
+
+                    if($request->anciennete){
+                        $items = $items->where('type_id', $request->typeRes);
+                    }
+
+                    if($request->localisation){
+                        $items = $items->where('location_type_id', $request->location_type);
+                    }
+
+                    if($request->residentiel_price_min && $request->residentiel_price_max){
+                        $items = $items->whereBetween('price', [$request->residentiel_price_min, $request->residentiel_price_max]);
+                    }
+
+                    if($request->residentiel_bedrooms_min && $request->residentiel_bedrooms_max){
+                        $items = $items->whereBetween('bedrooms', [$request->residentiel_bedrooms_min, $request->residentiel_bedrooms_max]);
+                    }
+
+                    break;
+                
+                case 'foncier':
+                    $items = $items->where('category_id', 2);
+
+                    if($request->typeFonc){
+                        $items = $items->where('type_id', $request->typeFonc);
+                    }
+
+                    if($request->localisationFonc){
+                        $items = $items->where('location_type_id', $request->localisationFonc);
+                    }
+
+                    if($request->agricoleFonc){
+                        $items = $items->where('type_id', $request->agricoleFonc);
+                    }
+
+                    if($request->foncier_area_min && $request->foncier_area_max){
+                        $items = $items->whereBetween('land_area', [$request->foncier_area_min, $request->foncier_area_max]);
+                    }
+
+                    if($request->foncier_price_min && $request->foncier_price_max){
+                        $items = $items->whereBetween('price', [$request->foncier_price_min, $request->foncier_price_max]);
+                    }
+
+                    break;
+                
+                case 'industriel':
+                    $items = $items->where('category_id', 3);
+
+                    if($request->typeInd){
+                        $items = $items->where('type_id', $request->typeInd);
+                    }
+
+                    if($request->typeSectInd){
+                        $items = $items->where('type_id', $request->typeSectInd);
+                    }
+
+                    if($request->industriel_price_min && $request->industriel_price_max){
+                        $items = $items->whereBetween('price', [$request->industriel_price_min, $request->industriel_price_max]);
+                    }
+
+                    break;
+
+                case 'commercial':
+                    $items = $items->where('category_id', 4);
+
+                    if($request->typeComm){
+                        $items = $items->where('type_id', $request->typeComm);
+                    }
+
+                    if($request->typeSectComm){
+                        $items = $items->where('type_id', $request->typeSectComm);
+                    }
+
+                    if($request->parkingComm){
+                        $items = $items->where('carport_spaces', $request->parkingComm);
+                    }
+
+                    if($request->commercial_price_min && $request->commercial_price_max){
+                        $items = $items->whereBetween('price', [$request->commercial_price_min, $request->commercial_price_max]);
+                    }
+
+                    if($request->commercial_area_min && $request->commercial_area_max){
+                        $items = $items->whereBetween('land_area', [$request->commercial_area_min, $request->commercial_area_max]);
+                    }
+
+                    break;
+                
+                default:
+                    # code...
+                    break;
+            }
+        }
+    
+        // if($request->q){
+        //     $items = $items->where('title', 'LIKE', '%'.$request->q.'%');
+        //     $search->keyword = $request->q;
+        // }
+            
         $items = $items->paginate(20);
         
         $search->content = serialize($request->all());

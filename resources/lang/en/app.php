@@ -433,6 +433,11 @@ return [
     'txt.show.all'        => 'Show all',
     'txt.product.favoris'        => 'Product added to :type',
     'txt.favoris'        => 'Favorites',
+    'txt.search.title'        => 'Commercial Properties in :state',
+    'txt.search.title2'        => 'Commercial Properties For Sale in :state',
+    'txt.search.viewing'        => 'Viewing :min - :max',
+    'txt.au'        => 'Australia',
+    'txt.any'        => 'any',
     
     
     

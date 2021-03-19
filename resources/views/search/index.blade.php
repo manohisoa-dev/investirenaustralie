@@ -5,6 +5,7 @@
 @component('includes.breadcrumb2', 
     isset($category->slug) ? [
         'cat'=>$category->slug,
+        'states'=>$states,
         'typesRes'=>$typesRes,
         'typesFonc'=>$typesFonc,
         'typesInd'=>$typesInd,
@@ -38,6 +39,7 @@
         'max_area_commercial'=>$max_area_commercial] 
         : [
         'cat'=>'search',
+        'states'=>$states,
         'typesRes'=>$typesRes,
         'typesFonc'=>$typesFonc,
         'typesInd'=>$typesInd,
@@ -76,8 +78,9 @@
 <div class="container" style="margin-top: 50px;">
     <div class="row">
         <div class="col-lg-12 col-md-12">
-            <div class="border-bottom-1 border-color-light-gray">
-                <h5>{{ count($items) }} {{ count($items)<1?trans('app.txt.resultat'):trans('app.txt.resultats') }}</h5>
+            <div>
+                <h5 class="border-bottom-1 border-color-light-gray p-15px-b">{{ request()->get('state')?trans('app.txt.search.title', ['state'=>request()->get('state')]):trans('app.txt.search.title2', ['state'=>trans('app.txt.au')]) }}</h5>
+                <p class="font-1"><span class="p-25px-r">{{ count($items) }} {{ count($items)>1?trans('app.txt.resultats'):trans('app.txt.resultat') }}</span> | <span class="p-25px-l">{{ trans('app.txt.search.viewing',['min'=>count($items)<1?0:1,'max'=>count($items)>20?20:count($items)]) }}</span></p>
             </div>
             <div class="product-data"> 
                 @php $i = 0; @endphp

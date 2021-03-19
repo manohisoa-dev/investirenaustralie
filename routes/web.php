@@ -35,6 +35,7 @@ Route::get('getApl/{apl}', 'IndexController@getApl')->name('getapl');
 
 // Shop and Product
 Route::post('shop/search', 'SearchController@search')->name('c.search');
+Route::get('shop/search', 'SearchController@search')->name('cg.search');
 Route::post('shop/{category?}', 'SearchController@index')->name('search');
 Route::get('shop/{category?}', 'ShopController@index')->name('shop.index');// List product by Category OR no
 Route::get('product/{slug}', 'ProductController@index')->name('product.index');// View Product

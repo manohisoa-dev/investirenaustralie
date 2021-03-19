@@ -5,6 +5,7 @@
 @component('includes.breadcrumb2', 
     $category->slug ? [
         'cat'=>$category->slug,
+        'states'=>$states,
         'typesRes'=>$typesRes,
         'typesFonc'=>$typesFonc,
         'typesInd'=>$typesInd,
@@ -39,6 +40,7 @@
         : [
         'cat'=>'shop',
         'typesRes'=>$typesRes,
+        'states'=>$states,
         'typesFonc'=>$typesFonc,
         'typesInd'=>$typesInd,
         'typesComm'=>$typesComm,

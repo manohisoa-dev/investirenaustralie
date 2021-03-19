@@ -656,6 +656,11 @@ return [
     'txt.info.apl'        => 'Information de :apl',
     'txt.presentation'        => 'Présentation',
     'txt.show.all'        => 'Afficher tous',
+    'txt.search.title'        => 'Propriétés commerciales à :state',
+    'txt.search.title2'        => 'Propriétés commerciales à vendre en :state',
+    'txt.search.viewing'        => 'Visualisation :min - :max',
+    'txt.au'        => 'Australie',
+    'txt.any'        => 'tous',
     
     
     
