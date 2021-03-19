@@ -10,6 +10,7 @@ return [
     
     'last_update'         => 'Derniere Modification, :date',
     'contact_user'        => 'Contacter: :name (:email)',
+    'contact_prestataire'        => 'Contacter prestataire ',
     'contact_us_phone'    => 'Contactez-nous: :phone',
     'list_apl'    => 'Lister les APL',
     'read_more'    => 'Continuer de lire',
@@ -237,7 +238,7 @@ return [
     'compte'            => 'Compte',
     'account'            => 'Compte',
     'confidential'      => 'Confidentialité',
-    'user_guide'        => "Guide de l'utilisateur",
+    'user_guide'        => "Guide de l'investisseur",
     
     'search'       => 'Recherche',
     'search_result' => 'Resultat de recherche ":q"',
@@ -649,6 +650,17 @@ return [
     'txt.oldpassword' =>'Ancien mot de passe',
     'txt.newpassword' =>'Nouveau mot de passe',
     'txt.confirmpassword' =>'Confirmer nouveau mot de passe',
+    'txt.edit' => "Modifier",
+    'txt.name.prestataire'        => 'Nom du préstataire',
+    'txt.prestataire'        => 'Préstataire',
+    'txt.info.apl'        => 'Information de :apl',
+    'txt.presentation'        => 'Présentation',
+    'txt.show.all'        => 'Afficher tous',
+    'txt.search.title'        => 'Propriétés commerciales à :state',
+    'txt.search.title2'        => 'Propriétés commerciales à vendre en :state',
+    'txt.search.viewing'        => 'Visualisation :min - :max',
+    'txt.au'        => 'Australie',
+    'txt.any'        => 'tous',
     
     
     
@@ -774,6 +786,14 @@ return [
     'input.suburb'        =>'Suburb',
     'input.suburbs'        =>'Suburbs',
     'input.type'            =>'Type',
+    'input.type_de_bien'            =>'Type de bien',
+    'input.surround_suburbs'            =>'Suburbs environnants',
+    'input.anciennete'            =>'Ancienneté',
+    'input.secteur_agricole'            =>'Secteur agricole',
+    'input.unite_de_mesure'            =>'Unité de mesure',
+    'input.secteur_industriel'            =>'Secteur industriel',
+    'input.secteur_commercial'            =>'Secteur commercial',
+    'input.parking_client'            =>'Parking client',
     'input.localisation'        =>'Localisation',
     'input.prix'        =>'Prix',
     'input.superficie'        =>'Superficie',
@@ -784,6 +804,7 @@ return [
     'input.nbetage'        =>"Nombre d'étage",
     'input.menuindustriel'        =>'Menu Industriel',
     'input.menucommercial'        =>'Menu Commercial',
+    'input.area_comm'        =>'Surface commerciale',
 
     'input.menuindustriel.content'        =>"En attente d'information venant d'Agentpoint",
     'input.menucommercial.content'        =>"En attente d'information venant d'Agentpoint",
@@ -835,6 +856,7 @@ return [
     'txt.your.name' => "Votre nom",
     'txt.your.subject' => "Votre sujet",
     'txt.your.message' => "Votre message",
+    'txt.our.service' => "Nos services",
     'txt.password_update' => "Votre mot de passe a été bien modifié.",
     'txt.avatar_update' => "Votre photo a été bien modifiée.",
     'txt.location_update' => "Votre location a été bien modifiée.",
@@ -850,6 +872,8 @@ return [
     'txt.hello' =>'Bonjour!',
     'txt.regards' =>'Salutations',
     'txt.connected_role' =>', vous êtes connecté(e) en qualité de :role',
+    'txt.product.favoris'        => 'Produit ajouté dans :type',
+    'txt.favoris'        => 'Favoris',
 
 
 

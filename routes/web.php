@@ -27,11 +27,15 @@ Route::get('help', 'IndexController@help_v2')->name('help');
 Route::get('publicities', 'IndexController@publicities_v2')->name('publicities');
 Route::get('confidentialities', 'IndexController@confidentialities_v2')->name('confidentialities');
 Route::get('apls', 'IndexController@apl')->name('apls');
+// Shop each apl
+Route::get('get/show/apl/{id}', 'IndexController@getShowApl')->name('get.show.apl');
+Route::get('show/apl/{id}', 'IndexController@showApl')->name('show.apl');
 // Get APL footer
 Route::get('getApl/{apl}', 'IndexController@getApl')->name('getapl');
 
 // Shop and Product
 Route::post('shop/search', 'SearchController@search')->name('c.search');
+Route::get('shop/search', 'SearchController@search')->name('cg.search');
 Route::post('shop/{category?}', 'SearchController@index')->name('search');
 Route::get('shop/{category?}', 'ShopController@index')->name('shop.index');// List product by Category OR no
 Route::get('product/{slug}', 'ProductController@index')->name('product.index');// View Product

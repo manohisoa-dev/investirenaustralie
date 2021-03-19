@@ -73,11 +73,12 @@
     }
     #form_devise {
         position: absolute;
-        z-index: 2; /* .boite-doree sera au-dessus de .boite-verte et .boite-tirets */
+        z-index: -999; /* .boite-doree sera au-dessus de .boite-verte et .boite-tirets */
         background:gray;
         margin-left: -175px;
-        margin-top: -190px;
-        opacity: 0;
+        /* margin-top: -190px; */
+        margin-top: 50px;
+        opacity: 1;
         transition: 2s;
     }
 </style>
@@ -227,7 +228,7 @@
     @yield('content')
 
     <div id="mybutton">
-        <button id="btn_devise" class="feedback">Devise</button>
+        <button id="btn_devise" class="feedback"><img src="{{ asset('images/ico/devise.png') }}" alt=""> </button>
         <button id="btn_devise2" class="feedback2" hidden>Fermer</button>
         <iframe id="form_devise" width="175" height="202" id="themoneyconverter-mini" src="https://themoneyconverter.com/MoneyConverter?from=EUR&amp;to=AUD" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" seamless="seamless" __idm_frm__="815"></iframe>
     </div>
@@ -402,21 +403,36 @@
                 // set apl items
                 $('#listAplModal .modal-body').append("<h6 class='white-color'>@lang('app.txt.aplfound') : "+data.res.length+"</h6>");
                 $.each(data.res,function(key,value){
-                    $('#listAplModal .modal-body').append('<a href={{route("member.select.apl")}} class="nav-item nav-link white-color"><i class="fa fa-building"></i> '+value.name+'</a>');
+                    console.log(value.id);
+                    var id= value.id;
+                    var uri = '{{ URL::to("get/show/apl") }}'+'/'+id;
+                    var envoi = $.get( uri );
+
+                    envoi.done( function(url) {
+                        $('#listAplModal .modal-body').append('<a href="'+url.res+'" target="_blank" class="nav-item nav-link white-color"><i class="fa fa-map-marker"></i> '+value.name+'</a>');    
+                    });
+
+                    
+                    // $('#listAplModal .modal-body').append('<a href={{route("member.select.apl")}} class="nav-item nav-link white-color"><i class="fa fa-building"></i> '+value.name+'</a>');
                 });
             });
         });
 
         $('#btn_devise').click(function(){
-            $('#form_devise').css('opacity', 1);
+            $('#form_devise').show();
+            $('#form_devise').css({'opacity': 1, 'margin-top':'-185px'});
             $(this).attr('hidden','true');
             $('#btn_devise2').removeAttr('hidden');
         });
 
         $('#btn_devise2').click(function(){
-            $('#form_devise').css('opacity', 0);
+            $('#form_devise').css({'opacity': 0, 'margin-top':'50px'});
+            setTimeout(function(){
+                $("#form_devise").hide(25, "linear", function(){
+                    $('#btn_devise').removeAttr('hidden');
+                });
+            },1000);
             $(this).attr('hidden','true');
-            $('#btn_devise').removeAttr('hidden');
         })
     </script>
 

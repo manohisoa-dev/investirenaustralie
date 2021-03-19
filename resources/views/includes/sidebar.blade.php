@@ -64,15 +64,15 @@
                     <i class="ti-angle-right"></i>
                 </div>
             </a>
-            <!-- <span class="row justify-content-sm-between align-items-sm-center">
+            {{-- <span class="row justify-content-sm-between align-items-sm-center">
                     <span class="col-sm-6 m-5px-tb dark-color">
                         Business 
                     </span>
                     <span class="col-sm-6 m-5px-tb text-sm-right">
                         <span class="theme2nd-bg p-5px-tb p-10px-lr border-radius-15 white-color small">Chicago, US<i class="fas fa-arrow-right small m-5px-l"></i></span>
                     </span>
-                </span> -->
-                    <!-- <span> {{ trans('app.txt.'.$category->title) }} </span><span class="theme2nd-bg p-5px-tb p-10px-lr border-radius-15 white-color small">{{$category->products_count}}<i class="fas fa-arrow-right small m-5px-l"></i></span> -->
+                </span>
+            <span> {{ trans('app.txt.'.$category->title) }} </span><span class="theme2nd-bg p-5px-tb p-10px-lr border-radius-15 white-color small">{{$category->products_count}}<i class="fas fa-arrow-right small m-5px-l"></i></span> --}}
             @endforeach
         </div>
     </div>

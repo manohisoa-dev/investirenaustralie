@@ -42,10 +42,13 @@ class LabelController extends Controller
         $label->label = $type;
         $label->product_id = $product->id;
         $label->save();
+
+        if($type=='starred'){
+            $type=trans('app.txt.favoris');
+        }
         
-        //return response()->json(array('msg'=>'Product $type'),200);
         
-        return back()->with('success', 'Product '+$type);
+        return back()->with('success', trans('app.txt.product.favoris', ['type'=>$type]));
     }
     
     /**
