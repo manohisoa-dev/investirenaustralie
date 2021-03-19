@@ -1,21 +1,33 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Mail;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Jleon\LaravelPnotify\Notify;
+use Auth;
 
-class MailController extends Controller
-{
+class MailController extends Controller {
     public $viewDir = "admin.mail";
 
-    public function index()
-    {
+    public function index() {
         $records = Mail::findRequested();
-        return $this->view( "index", ['records' => $records] );
+        return $this->view("index", ['records' => $records]);
+    }
+
+    /**
+     * Show all conversation in admin panel
+     *
+     * @param  Request $request
+     * @return Response
+     */
+    public function all(Request $request, $filter = 'all') {
+        $records = Mail::findRequested1();
+        return $this->view("all", ['records' => $records]);
     }
 
     /**
@@ -23,8 +35,7 @@ class MailController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         return $this->view("create");
     }
 
@@ -34,8 +45,7 @@ class MailController extends Controller
      * @param    \Illuminate\Http\Request  $request
      * @return  \Illuminate\Http\Response
      */
-    public function store( Request $request )
-    {
+    public function store(Request $request) {
         $this->validate($request, Mail::validationRules());
 
         Mail::create($request->all());
@@ -50,9 +60,8 @@ class MailController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function show(Request $request, Mail $mail)
-    {
-        return $this->view("show",['mail' => $mail]);
+    public function show(Request $request, Mail $mail) {
+        return $this->view("show", ['mail' => $mail]);
     }
 
     /**
@@ -60,9 +69,8 @@ class MailController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function edit(Request $request, Mail $mail)
-    {
-        return $this->view( "edit", ['mail' => $mail] );
+    public function edit(Request $request, Mail $mail) {
+        return $this->view("edit", ['mail' => $mail]);
     }
 
     /**
@@ -71,14 +79,12 @@ class MailController extends Controller
      * @param    \Illuminate\Http\Request  $request
      * @return  \Illuminate\Http\Response
      */
-    public function update(Request $request, Mail $mail)
-    {
-        if( $request->isXmlHttpRequest() )
-        {
-            $data = [$request->name  => $request->value];
-            $validator = \Validator::make( $data, Mail::validationRules( $request->name ) );
-            if($validator->fails())
-                return response($validator->errors()->first( $request->name),403);
+    public function update(Request $request, Mail $mail) {
+        if ($request->isXmlHttpRequest()) {
+            $data = [$request->name => $request->value];
+            $validator = \Validator::make($data, Mail::validationRules($request->name));
+            if ($validator->fails())
+                return response($validator->errors()->first($request->name), 403);
             $mail->update($data);
             return "Record updated";
         }
@@ -97,8 +103,7 @@ class MailController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Mail $mail)
-    {
+    public function destroy(Request $request, Mail $mail) {
         $mail->delete();
 
         # notification
@@ -106,9 +111,8 @@ class MailController extends Controller
         return redirect(route('v2.admin.mail.index'));
     }
 
-    protected function view($view, $data = [])
-    {
-        return view($this->viewDir.".".$view, $data);
+    protected function view($view, $data = []) {
+        return view($this->viewDir . "." . $view, $data);
     }
 
 }

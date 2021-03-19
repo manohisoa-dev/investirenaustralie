@@ -21,10 +21,10 @@
 <li class="{{Request::is('*/admin/*') || Request::is('*/admin') ? 'active' : ''}}">
     <a href="{{url('/admin')}}"><i class="fa fa-tachometer" title="Tableau de bord"></i> <span class="nav-label">Tableau de bord</span></a>
 </li>
-<li>
+<li class="{{Request::is('*/chart/*') || Request::is('*/chart') ? 'active' : ''}}">
     <a href="#"><i class="fa fa-bar-chart-o" title="Statistiques"></i> <span class="nav-label">Statistiques</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
-        <li><a href="#">Produits</a></li>
+        <li><a href="{{route('admin.chart', ['type'=>'produit'])}}">Produits</a></li>
         <li><a href="#">Utilisateurs</a></li>
         <li><a href="#">Membres</a></li>
         <li><a href="#">Agence Francophone Australienne</a></li>
@@ -109,11 +109,11 @@
         <li><a href="{{route('admin.page.create')}}">Ajouter une page</a></li>
     </ul>
 </li>
-<li class="{{Request::is('*/mail/*') || Request::is('*/mail') ? 'active' : ''}}">
+<li class="{{Request::is('*/mails/*') || Request::is('*/mails') ? 'active' : ''}}">
     <a href="#"><i class="fa fa-envelope" title="Liste des mails"></i> <span class="nav-label">Liste des mails</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
         <li><a href="{{route('admin.mail.index')}}">Liste des mails</a></li>
-        <li><a href="#">Boite de reception</a></li>
+        <li><a href="{{route('admin.mail.list')}}">Boite de reception</a></li>
         <li><a href="#">Boite d'envoie</a></li>
         <li><a href="#">Brouillon</a></li>
         <li><a href="#">Spam</a></li>

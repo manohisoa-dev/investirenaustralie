@@ -15,6 +15,11 @@ use Illuminate\Support\Facades\Storage;
 /* ---------- ROUTE V2 ------------------*/
 Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","role:1"])->group(function(){
     Route::get('/', 'AdminController@dashboard')->name('dashboard');
+    Route::get('/chart/{type}', 'ChartController@chart')->name('chart');
+    Route::get('api/chart/categories', 'ChartController@categories')->name('chart.categories');
+    Route::get('api/chart/locations/{type?}', 'ChartController@locations')->name('chart.locations');
+    Route::get('api/chart/prices', 'ChartController@prices')->name('chart.prices');
+    Route::get('api/chart/sellers', 'ChartController@sellers')->name('chart.sellers');
     //profil
 
     Route::get('profile', 'ProfileController@index')->name('profile');
@@ -39,6 +44,8 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::resource('type','TypeController');
     Route::resource('page','PageController');
     Route::resource('mail','MailController');
+    Route::get('mails/{filter?}', 'MailController@all')->name('mail.list');
+    
     Route::resource('product','ProductController');
     Route::get('archive/{product}', 'ProductController@archive')->name('product.archive');
     Route::get('trash/{product}', 'ProductController@trash')->name('product.trash');

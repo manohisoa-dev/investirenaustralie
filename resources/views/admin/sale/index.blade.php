@@ -110,13 +110,13 @@
 										@if($record->status=='ordered')
 											@if(!$record->apl_paid_at)
 												<a href="{{route('admin.sale.pay', ['cartitem'=>$record, 'role'=>'apl'])}}" class="btn btn-default btn-circle" title="@lang('app.admin.sale.pay.apl')">
-													<i class="fa fa-handshake-o" aria-hidden="true"></i>
+													<i class="fa fa-credit-card" aria-hidden="true"></i>
 												</a>&nbsp;&nbsp;
 											@endif
 							
 											@if(!$record->afa_paid_at)
 												<a href="{{route('admin.sale.pay', ['cartitem'=>$record, 'role'=>'afa'])}}" class="btn btn-default btn-circle" title="@lang('app.admin.sale.pay.afa')">
-													<i class="fa fa-university"></i>
+													<i class="fa fa-cc-visa"></i>
 												</a>&nbsp;&nbsp;
 											@endif
 										@endif
