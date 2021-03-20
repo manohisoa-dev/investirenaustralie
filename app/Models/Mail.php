@@ -12,7 +12,6 @@ class Mail extends Model {
     public static function findRequested()
     {
         $query = Mail::query();
-
         // search results based on user input
         \Request::input('id') and $query->where('id',\Request::input('id'));
         \Request::input('subject') and $query->where('subject','like','%'.\Request::input('subject').'%');
@@ -27,6 +26,14 @@ class Mail extends Model {
         \Request::input("sort") and $query->orderBy(\Request::input("sort"),\Request::input("sortType","asc"));
 
         // paginate results
+        return $query->paginate(15);
+    }
+    
+    public static function findRequested1()
+    {
+        $query = Mail::query();        
+        $query->join('mails_users','mails_users.mail_id','=','mails.id');
+        $query->where('status','send');
         return $query->paginate(15);
     }
 

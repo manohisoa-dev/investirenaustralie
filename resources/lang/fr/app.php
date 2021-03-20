@@ -874,6 +874,12 @@ return [
     'txt.connected_role' =>', vous êtes connecté(e) en qualité de :role',
     'txt.product.favoris'        => 'Produit ajouté dans :type',
     'txt.favoris'        => 'Favoris',
+    'txt.immobilier_residentiel'        => 'Immobilier résidentiel',
+    'txt.immobilier_foncier'        => 'Immobilier foncier',
+    'txt.business_industriel'        => 'Business industriel',
+    'txt.business_commercial'        => 'Business commercial',
+    'txt.agence_publicite'        => 'Agence de publicité',
+    
 
 
 

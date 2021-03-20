@@ -78,34 +78,6 @@ class AdminController extends Controller
             ->with('data', json_encode($data));
     }
 
-    /**
-     * Show the dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function chart($type)
-    {
-        switch($type){
-            case "product":
-                return view('admin.dashboard.product');
-            case "user":
-                return view('admin.dashboard.user');
-            case "member":
-                return view('admin.dashboard.member');
-            case "afa":
-                return view('admin.dashboard.afa');
-            case "apl":
-                return view('admin.dashboard.apl');
-            case "seller":
-                return view('admin.dashboard.seller');
-            case "cart":
-                return view('admin.dashboard.cart');
-            default:
-                abort(404);
-
-        }
-    }
-
     /*
     *
     *
