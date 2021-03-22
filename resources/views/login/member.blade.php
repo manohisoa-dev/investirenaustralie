@@ -9,6 +9,24 @@
 @endcomponent
 <!-- Section -->
 
+<style>
+    #map{
+        height: 25rem;
+    }
+
+    #mapCanvas {
+        width: 500px;
+        height: 400px;
+        float: left;
+    }
+    #infoPanel {
+        float: left;
+    }
+    #infoPanel div {
+        margin-bottom: 5px;
+    }
+</style>
+
 <div id="myModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog">
       <div class="modal-content white-bg">
@@ -24,6 +42,32 @@
           </div>
       </div>
   </div>
+</div>
+
+<div id="countrySelectModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content white-bg">
+            <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
+                <h4 class="modal-title white-color">{{trans('app.txt.choose_position')}}</h4>
+            </div>
+            <div class="modal-body">
+                <div id="map"></div>                  
+                <div id="infoPanel"  class=" col-lg-12 border-top-1 border-color-gray m-25px-t p-15px-t">
+                    <b>@lang('app.txt.marker.status') :</b>
+                    <div id="markerStatus"><i>@lang('app.txt.marker.click_drag')</i></div>
+                    <b>@lang('app.txt.marker.current_position'):</b>
+                    <div id="info"></div>
+                    <b>@lang('app.txt.marker.matching_address') :</b>
+                    <div id="address"></div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="pull-left m-btn m-btn-theme" data-dismiss="modal">@lang('app.btn.close')</a>
+                <a type="button" class="pull-left m-btn m-btn-theme4rd" id="btn_save">@lang('app.btn.save')</a>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div id="section1" class="p-100px-tb">
@@ -232,7 +276,7 @@
                                         <div class="form-group">
                                             <label for="country" class="col-sm-3 control-label">@lang('app.txt.pays') *</label>
                                             <div class="col-md-9">
-                                                <select class="form-control" name="country">
+                                                <select class="form-control country-select" name="country">
                                                     <option value="0">@lang('app.select_country')</option>
                                                     @foreach($countries as $country)
                                                         @if($country->prefixPhone)
@@ -245,23 +289,27 @@
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label" for="state">@lang('app.txt.etat') (@lang('app.txt.etat.libelle'))</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control" name="area_level_1" >
+                                                <input type="text" class="form-control" name="area_level_1" id="area_level_1" >
                                                 <span class="text-danger">{{ $errors->first('area_level_1') }}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label" for="locality">@lang('app.txt.ville') *</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control" name="locality" required>
+                                                <input type="text" class="form-control" name="locality" id="locality" required>
                                                 <span class="text-danger">{{ $errors->first('locality') }}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label" for="postalCode">@lang('app.txt.codepostal') *</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control" name="postalCode" required>
+                                                <input type="text" class="form-control" name="postalCode" id="postalCode" required>
                                                 <span class="text-danger">{{ $errors->first('postalCode') }}</span>
                                             </div>
+                                        </div>
+                                        <div>
+                                            <input type="hidden" name="longitude" id="longitude">
+                                            <input type="hidden" name="latitude" id="latitude">
                                         </div>
                                     </fieldset>
                                     <fieldset class="border-bottom-1 border-color-gray p-15px-b">
@@ -339,7 +387,6 @@
 </div>
 @endsection
 
-
 @push('script')
     <script src="{{asset('js/myJs.js')}}"></script>
     <script type="text/javascript">
@@ -382,4 +429,82 @@
             }            
         });
     </script>
+    <script>
+        $('form').on('change','.country-select',function(){
+            var country_id = $(this).val();
+
+            if(country_id==12){
+                $('#countrySelectModal').modal('show');
+            }
+
+            // renitialise localization info input
+            $('#latitude').val('');
+            $('#longitude').val('');
+            $('#postalCode').val('');
+            $('#locality').val('');
+            $('#area_level_1').val('');
+        })
+    </script>
+    <script type="text/javascript" src="{{ asset('/js/select-location-gmap.js') }}"></script>
+    <script type="text/javascript">
+        $('#btn_save').click(function(){
+            var latLong = $('#info').text();
+            var adr = ($('#address').text()).split(',');
+            var lat=0;long = 0;
+            var state,postalCode,locality="";
+
+            switch (adr.length) {
+                case 3:
+                    var adrInfo = adr[1].split(' ');
+                    lat = latLong.split(',')[0];            
+                    long = latLong.split(',')[1];
+                    postalCode = adrInfo[(adrInfo.length)-1];
+                    state = adrInfo[(adrInfo.length)-2];
+
+                    // set locality
+                    for(var i=0;i<adrInfo.length-2;i++){
+                        if(adrInfo[i].length !== 0){
+                            locality+=adrInfo[i]+' ';
+                        }
+                    }
+
+                    $('#countrySelectModal').modal('hide');
+
+                    break;
+
+                case 2:
+                    var adrInfo = adr[0].split(' ');
+                    lat = latLong.split(',')[0];            
+                    long = latLong.split(',')[1];
+                    postalCode = adrInfo[(adrInfo.length)-1];
+                    state = adrInfo[(adrInfo.length)-2];
+
+                    // set locality
+                    for(var i=0;i<adrInfo.length-2;i++){
+                        if(adrInfo[i].length !== 0){
+                            locality+=adrInfo[i]+' ';
+                        }
+                    }
+
+                    $('#countrySelectModal').modal('hide');
+                    
+                    break;
+            
+                default:
+                    alert("{{ trans('app.txt.choose_position_exacte') }}");
+                    break;
+            }
+            
+            // set localisation input info
+            $('#latitude').val(lat);
+            $('#longitude').val(long);
+            $('#postalCode').val(postalCode);
+            $('#locality').val(locality);
+            $('#area_level_1').val(state);
+        });
+
+    </script>
+
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA&callback=initMap"></script>
 @endpush

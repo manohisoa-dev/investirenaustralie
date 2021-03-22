@@ -808,15 +808,34 @@
         return input = document.activeElement.id;
     }
 
+    var stateBounds={
+        cta: ["-35.473469","149.012375"],
+        nt: ["-19.491411","132.550964"],
+        vic: ["-37.020100","144.964600"],
+        sa: ["-30.000233","136.209152"],
+        wa: ["-25.042261","117.793221"],
+        qld: ["-20.917574","142.702789"],
+        nsw: ["-31.840233","145.612793"],
+    };
+
+    function getStateBounds(state) {
+        return new google.maps.LatLngBounds(
+          new google.maps.LatLng(stateBounds[state][0], 
+                                 stateBounds[state][1])
+        ); 
+    }
+
     function initAutocomplete() {
         var options = {
             types: ["(regions)"],
-            componentRestrictions: {country: "au"}
+            componentRestrictions: {country: "au"},
+            bounds: getStateBounds('vic'),              //à continuer
         };
         
         var options2 = {
             types: ["(cities)"],
-            componentRestrictions: {country: "au"}
+            componentRestrictions: {country: "au"},
+            bounds: getStateBounds('vic'),              //à continuer
         };
 
         // Create the autocomplete object, restricting the search predictions to
@@ -834,7 +853,7 @@
         autocomplete2.addListener("place_changed", fillInAddress);
 
         // delimite contry autocomplete
-        autocomplete.setComponentRestrictions({'country': ['au']});
+        // autocomplete.setComponentRestrictions({'country': ['au']});
         // autocomplete2.setComponentRestrictions({'country': ['au']});
     }
 
