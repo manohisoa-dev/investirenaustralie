@@ -28,47 +28,35 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>Détail Mail : {{$mail->subject}}</h5>
-            </div>
-            <div class="ibox-content">
-                <ul class="list-group">
-                                        <li class="list-group-item">
-                        <h4>Id</h4>
-                        <h5>{{$mail->id}}</h5>
-                    </li>
-                                        <li class="list-group-item">
-                        <h4>Subject</h4>
-                        <h5>{{$mail->subject}}</h5>
-                    </li>
-                                        <li class="list-group-item">
-                        <h4>Contenu</h4>
-                        <h5>{{$mail->content}}</h5>
-                    </li>
-                                        <li class="list-group-item">
-                        <h4>Copied From</h4>
-                        <h5>{{$mail->copied_from}}</h5>
-                    </li>
-                                        <li class="list-group-item">
-                        <h4>Status</h4>
-                        <h5>{{$mail->status}}</h5>
-                    </li>
-                                        <li class="list-group-item">
-                        <h4>Sender Id</h4>
-                        <h5>{{$mail->sender->name}}</h5>
-                    </li>
-                                        <li class="list-group-item">
-                        <h4>Créer le</h4>
-                        <h5>{{$mail->created_at ? $mail->created_at->diffForHumans() : ''}}</h5>
-                    </li>
-                                        <li class="list-group-item">
-                        <h4>Mise à jour le</h4>
-                        <h5>{{$mail->updated_at ? $mail->updated_at->diffForHumans() : ''}}</h5>
-                    </li>
-                                    </ul>
-            </div>
-        </div>
+        <!-- header -->
+		<div class="mail-box-header">
+			<div class="float-right">
+				<a href="{{route('admin.mail.compose', $mail)}}" class="btn btn-white btn-sm" title="@lang('app.reply')">
+					<i class="fa fa-reply"></i> @lang('app.reply')
+				</a>
+				<a href="#" class="btn btn-white btn-sm" title="@lang('app.btn.delete')">
+					<i class="fa fa-trash-o"></i> 
+				</a>
+			</div>
+			<div class="mail-tools tooltip-demo m-t-md">
+				<h3>
+					<span class="font-normal">@lang('app.etbl.sujetth'): </span>{{$mail->subject}}
+				</h3>
+				<h5>
+					<span class="float-right font-normal">{{$mail->created_at ? $mail->created_at->diffForHumans() : ''}}</span>
+					<span class="font-normal">From: </span>{{$mail->sender->email}}
+				</h5>
+			</div>
+		</div>
+		<!-- fin header -->
+		<!-- contenu -->
+		<div class="mail-box">
+			<div class="mail-body">
+				{!! $mail->content !!}
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<!--fin contenu-->
     </div>
 </div>
 

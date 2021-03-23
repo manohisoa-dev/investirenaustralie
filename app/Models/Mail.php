@@ -29,11 +29,40 @@ class Mail extends Model {
         return $query->paginate(15);
     }
     
-    public static function findRequested1()
+    public static function allEmail()
     {
         $query = Mail::query();        
         $query->join('mails_users','mails_users.mail_id','=','mails.id');
-        $query->where('status','send');
+        //$query->join('users','users.id','=','mails_users.user_id');
+        //$query->join('roles','roles.id','=','users.role');
+        \Request::input('id') and $query->where('id',\Request::input('id'));
+        \Request::input('subject') and $query->where('subject','like','%'.\Request::input('subject').'%');
+        \Request::input('content') and $query->where('content','like','%'.\Request::input('content').'%');
+        \Request::input('copied_from') and $query->where('copied_from',\Request::input('copied_from'));
+        \Request::input('status') and $query->where('status','like','%'.\Request::input('status').'%');
+        \Request::input('sender_id') and $query->where('sender_id',\Request::input('sender_id'));
+        \Request::input('created_at') and $query->where('created_at',\Request::input('created_at'));
+        \Request::input('updated_at') and $query->where('updated_at',\Request::input('updated_at'));
+        
+        // sort results
+        \Request::input("sort") and $query->orderBy(\Request::input("sort"),\Request::input("sortType","asc"));
+        // paginate results
+        return $query->paginate(15);
+    }
+    
+    public static function listeEmailByStatuts($status,$id_user)
+    {
+        $query = Mail::query(); 
+        $query->join('mails_users','mails_users.mail_id','=','mails.id');
+        if($status == 'send'){
+            $query->where("mails.sender_id","$id_user");
+        }elseif($status == 'inbox'){
+            $query->where("mails_users.user_id","$id_user");
+        }
+        
+        \Request::input('id') and $query->where('id',\Request::input('id'));
+        \Request::input('subject') and $query->where('subject','like','%'.\Request::input('subject').'%');
+        \Request::input('content') and $query->where('content','like','%'.\Request::input('content').'%');
         return $query->paginate(15);
     }
 

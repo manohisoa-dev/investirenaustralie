@@ -14,7 +14,7 @@
                 <a href="{{ route('admin.mail.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Ajout</strong>
+                <strong>Nouveau Mail </strong>
             </li>
         </ol>
     </div>
@@ -32,23 +32,38 @@
                 <h5>Ajouter un nouveau Mail</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-validation form-padding" action="{{ route('admin.mail.store') }}" method="post">
-
-                    {{ csrf_field() }}
-                                                        
-                    {!! \Nvd\Crud\Form::input( 'subject' )->show() !!}
-                                            
-                    {!! \Nvd\Crud\Form::textarea( 'content' )->show() !!}
-                                            
-                    {!! \Nvd\Crud\Form::input('copied_from','text')->show() !!}
-                                            
-                    {!! \Nvd\Crud\Form::input('status','text')->show() !!}
-                                            
-                    {!! \Nvd\Crud\Form::input('sender_id','text')->show() !!}
-                                                                                    
-                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Créer</button>
-
-                </form>
+                <form action="{{route('admin.mail.compose')}}" method="post" id="commentform" class="contact-form" >
+					{{ csrf_field() }}
+					<input type="hidden" name="sender_id" value="{{Auth::id()}}">
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">To:</label>
+						<div class="col-sm-10">
+							<select class="form-control" name="users[]" id="users" multiple="multiple">
+								<option value="0">@lang('app.select_user')</option>
+								@foreach($users as $user)
+									<option value="{{$user->id}}">{{$user->name}}&nbsp;[{{$user->email}}]</option>
+								@endforeach
+							</select>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">@lang('app.etbl.sujetth'):</label>
+						<div class="col-sm-10"><input type="text" name="subject" class="form-control" value=""></div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">Message:</label>
+						<div class="col-sm-10">
+							<textarea id="message" class="input-block-level ckeditor" rows="10" name="content" placeholder="@lang('app.message')" ></textarea>
+						</div>
+					</div>
+					
+				  
+					<div class="mail-body text-right tooltip-demo">
+						<button type="submit" class="btn btn-sm btn-primary pull-left" name="method" value="send"><i class="fa fa-reply"></i> @lang('app.btn.send')</button>
+						<button type="submit" class="btn btn-white btn-sm" name="method" value="draft"><i class="fa fa-pencil"></i> @lang('app.btn.draft')</button>
+						<button type="submit" class="btn btn-white btn-sm" name="method" value="model"><i class="fa fa-tag"></i> @lang('app.btn.save_as_model')</button>
+					</div> 
+				</form>
             </div>
         </div>
     </div>
@@ -62,6 +77,7 @@
     <script>
         $(document).ready(function(){
             CKEDITOR.replace( 'content' );
+			$("#users").select2();
         }) ;
     </script>
 @endsection

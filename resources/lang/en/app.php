@@ -553,6 +553,11 @@ return [
     'confirm.password' => 'Confirm password',
     'location' => 'Upadate location',
     'password' => 'Password',
+    //convert tableau email
+    'etbl.sujetth' => 'Subject',
+    'etbl.contentth' => 'Content',
+    'etbl.senderth' => 'Sender',
+    'etbl.statusth' => 'Status',
 
     //menu Menu dans l'admin
     'admin.menu.createBtn' => 'Add a new menu',
