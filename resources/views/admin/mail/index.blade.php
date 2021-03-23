@@ -11,7 +11,7 @@
                 <a href="{{ route('admin.mail.index') }}">Mails</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Listes</strong>
+                <strong>@lang('app.admin.mail.list')</strong>
             </li>
         </ol>
     </div>

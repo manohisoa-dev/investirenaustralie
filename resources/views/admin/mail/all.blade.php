@@ -11,14 +11,15 @@
                 <a href="{{ route('admin.mail.index') }}">Mails</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Listes</strong>
+                <strong>{{$title}}</strong>
             </li>
         </ol>
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
             <a href="{{ route('admin.mail.create') }}" type="button" class="btn btn-primary btn-block">
-                <i class="fa fa-plus"></i> Composer un nouveau Mail            </a>
+                <i class="fa fa-plus"></i> Composer un nouveau Mail            
+			</a>
         </div>
     </div>
 </div>
@@ -101,7 +102,23 @@
                                 <td>
                                 {{ $record->created_at ? $record->created_at->diffForHumans() : '' }}
                                 </td>
-                                @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('admin.mail.index'), 'record' => $record ] )
+                                <td width="10%">
+								<form class="form-inline" action="{{route('admin.mail.index')}}/{{$record->id}}" method="POST">
+									<a href="{{route('admin.mail.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="@lang('app.btn.view')">
+										<i class="fa fa-eye"></i>
+									</a>&nbsp;&nbsp;								
+									<a href="{{route('admin.mail.compose', $record)}}" class="btn btn-default btn-circle" title="@lang('app.btn.send')">
+										<i class="fa fa-reply"></i>
+									</a>&nbsp;&nbsp;
+								
+									{{ csrf_field() }}
+									{{ method_field('DELETE') }}
+									<button class="btn btn-default btn-circle"
+											onclick="return confirm('Are You Sure?')"
+											type="submit" class="fa fa-trash text-danger"><i class="fa fa-times text-danger"></i>
+									</button>
+								</form>
+								</td>
                             </tr>
                         @empty
                             @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 9])
