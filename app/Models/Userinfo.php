@@ -10,6 +10,7 @@ class Userinfo extends Model
         'id',
         'first_name',
         'last_name',
+        'sexe',
         'newsletter',
         'orga_name',
         'orga_presentation',

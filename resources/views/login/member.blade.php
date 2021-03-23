@@ -165,6 +165,17 @@
                                                 <span class="text-danger">{{ $errors->first('last_name') }}</span>
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <label for="sexe" class="col-sm-3 control-label">@lang('app.txt.sexe') *</label>
+                                            <div class="col-md-9">
+                                                <select class="form-control" name="sexe">
+                                                    <option value="0" selected disabled>@lang('app.txt.select_sexe')</option>
+                                                    <option value="M">@lang('app.txt.male')</option>
+                                                    <option value="F">@lang('app.txt.female')</option>
+                                                </select>
+                                                <span class="text-danger">{{ $errors->first('sexe') }}</span>
+                                            </div>
+                                        </div>
                                     </fieldset>
                                     <div class="form-group">
                                         <div class="col-sm-offset-3 col-sm-9">

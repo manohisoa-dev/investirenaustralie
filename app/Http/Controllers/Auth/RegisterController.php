@@ -119,7 +119,8 @@ class RegisterController extends Controller
      * @return String
      */
     public function resendActivation(User $user)
-    {
+    {   
+
         if($user->isActive()){
             return back()
                 ->with('error',trans('app.txt.useractived'));
@@ -293,7 +294,8 @@ class RegisterController extends Controller
                     $rules = [
                         'first_name' => 'required|max:100',
                         'last_name'  => 'required|max:100',
-                        'country'      => 'required|max:100',
+                        'sexe'       => 'required',
+                        'country'    => 'required|max:100',
                     ];
                 }else{
                     $rules = [
