@@ -44,7 +44,8 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::resource('type','TypeController');
     Route::resource('page','PageController');
     Route::resource('mail','MailController');
-    Route::get('mails/{filter?}', 'MailController@all')->name('mail.list');
+    Route::get('mailtype/{filter}', 'MailController@all')->name('mail.list');
+    Route::get('compose/{mail?}' , 'AdminController@compose')->name('mail.compose');
     
     Route::resource('product','ProductController');
     Route::get('archive/{product}', 'ProductController@archive')->name('product.archive');

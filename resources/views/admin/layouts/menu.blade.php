@@ -109,15 +109,15 @@
         <li><a href="{{route('admin.page.create')}}">Ajouter une page</a></li>
     </ul>
 </li>
-<li class="{{Request::is('*/mails/*') || Request::is('*/mails') ? 'active' : ''}}">
+<li class="{{Request::is('*/mail/*') || Request::is('*/mail') || Request::is('*/mailtype/*') ? 'active' : ''}}">
     <a href="#"><i class="fa fa-envelope" title="Liste des mails"></i> <span class="nav-label">Liste des mails</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
         <li><a href="{{route('admin.mail.index')}}">Liste des mails</a></li>
-        <li><a href="{{route('admin.mail.list')}}">Boite de reception</a></li>
-        <li><a href="#">Boite d'envoie</a></li>
-        <li><a href="#">Brouillon</a></li>
-        <li><a href="#">Spam</a></li>
-        <li><a href="#">Messages enregistrees</a></li>
+        <li><a href="{{route('admin.mail.list',['filter'=>'inbox'])}}">Boite de reception</a></li>
+        <li><a href="{{route('admin.mail.list',['filter'=>'send'])}}">Boite d'envoie</a></li>
+        <li><a href="{{route('admin.mail.list',['filter'=>'draft'])}}">Brouillon</a></li>
+        <li><a href="{{route('admin.mail.list',['filter'=>'spam'])}}">Spam</a></li>
+        <li><a href="{{route('admin.mail.list',['filter'=>'model'])}}">Messages enregistrees</a></li>
     </ul>
 </li>
 <li class="{{Request::is('*/badword/*') || Request::is('*/badword') ? 'active' : ''}}">

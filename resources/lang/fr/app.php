@@ -890,6 +890,12 @@ return [
     'confirm.password' => 'Confirmer nouveau mot de passe',
     'location' => 'Modification Localisation',
     'password' => 'Mot de passe',
+    //convert tableau email
+    'etbl.sujetth' => 'Sujet',
+    'etbl.contentth' => 'Contenu',
+    'etbl.senderth' => 'Expéditeur',
+    'etbl.statusth' => 'Statut',
+    
     
     //menu Menu dans l'admin
     'admin.menu.createBtn' => 'Ajouter un nouveau Menu',

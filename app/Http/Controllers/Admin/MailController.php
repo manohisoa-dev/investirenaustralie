@@ -25,8 +25,9 @@ class MailController extends Controller {
      * @param  Request $request
      * @return Response
      */
-    public function all(Request $request, $filter = 'all') {
-        $records = Mail::findRequested1();
+    public function all(Request $request, $filter) {
+        $user = Auth::user();
+        $records = Mail::listeEmailByStatuts($filter,$user->id);
         return $this->view("all", ['records' => $records]);
     }
 
