@@ -192,6 +192,17 @@ class User extends Authenticatable{
     {
         return $query->where('status', 'active');
     }
+
+    /**
+     * Scope a query to only include users is active
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function isActive()
+    {
+        return $this->status;
+    }
     
     /**
      * Scope a query to only include users has Location
@@ -585,6 +596,8 @@ class User extends Authenticatable{
                         $userinfos->update(["first_name"=> $value]);
                     if($value = $request->input('last_name'))
                         $userinfos->update(["last_name"=> $value]);
+                    if($value = $request->input('sexe'))
+                        $userinfos->update(["sexe"=> $value]);
                 }else{
                     // Update MetaData
                     if($value = $request->input('orga_name'))
