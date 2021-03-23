@@ -205,138 +205,138 @@ class SearchController extends Controller
         ]);
     }
 
-    // /**
-    //  * Perform global search.
-    //  *
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function search_old(Request $request)
-    // {
-    //     $search = new Search();
+    /**
+     * Perform global search.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search_old(Request $request)
+    {
+        $search = new Search();
 
-    //     $lapls = Localisation::select('localizations.*')
-    //         ->join('users','users.location_id','=','localizations.id')
-    //         ->where('users.role','=','4')
-    //         ->groupBy('localizations.locality')
-    //         ->get();
+        $lapls = Localisation::select('localizations.*')
+            ->join('users','users.location_id','=','localizations.id')
+            ->where('users.role','=','4')
+            ->groupBy('localizations.locality')
+            ->get();
 
-    //     $city = $request->city;
-    //     $state_id = $request->state?((State::where('content','=',$request->state))->get())[0]->id:'';
-    //     $suburb = $request->suburb;
+        $city = $request->city;
+//        $state_id = $request->state?((State::where('content','=',$request->state))->get())[0]->id:'';
+        $suburb = $request->suburb;
         
-    //     $items = Product::ofStatus('published');
+        $items = Product::ofStatus('published');
 
-    //     $items = $items->join('localizations','localizations.id','=','products.location_id')
-    //             ->where('products.state_id','!=',0);
+        $items = $items->join('localizations','localizations.id','=','products.location_id')
+                ->where('products.state_id','!=',0);
 
-    //     if($state_id){
-    //         $items = $items->where('state_id','=',$state_id);
-    //     }
+//        if($state_id){
+//            $items = $items->where('state_id','=',$state_id);
+//        }
 
-    //     if($city){
-    //         $items = $items->where('localizations.locality','=',$city);
-    //     }
+        if($city){
+            $items = $items->where('localizations.locality','=',$city);
+        }
 
-    //     if($suburb){
-    //         $items = $items->where('localizations.area_level_2','=',$suburb);
-    //     }
+        if($suburb){
+            $items = $items->where('localizations.area_level_2','=',$suburb);
+        }
             
         
         
 
-    //     // if($request->state){
-    //     //     $items = $items->where('state_id', $request->state);
-    //     // }
+        // if($request->state){
+        //     $items = $items->where('state_id', $request->state);
+        // }
         
-    //     // if($request->type){
-    //     //     $items = $items->where('type_id', $request->type);
-    //     // }
+        // if($request->type){
+        //     $items = $items->where('type_id', $request->type);
+        // }
         
-    //     // if($request->location_type){
-    //     //     $items = $items->where('location_type_id', $request->location_type);
-    //     // }
+        // if($request->location_type){
+        //     $items = $items->where('location_type_id', $request->location_type);
+        // }
         
-    //     // if($request->price){
-    //     //     switch($request->price){
-    //     //         case 1:
-    //     //             $sign = '<';
-    //     //             $price = 100000;
-    //     //             break;
-    //     //         case 2:
-    //     //             $sign = '<';
-    //     //             $price = 200000;
-    //     //             break;
-    //     //         case 3:
-    //     //             $sign = '<';
-    //     //             $price = 300000;
-    //     //             break;
-    //     //         case 4:
-    //     //             $sign = '>';
-    //     //             $price = 100000;
-    //     //             break;
-    //     //         case 5:
-    //     //             $sign = '>';
-    //     //             $price = 200000;
-    //     //             break;
-    //     //         case 6:
-    //     //             $sign = '>';
-    //     //             $price = 300000;
-    //     //             break;
-    //     //         default:
-    //     //             $sign = '>';
-    //     //             $price = 0;
-    //     //             break;
-    //     //     }
-    //     //     $items = $items->where('price', $sign, $price);
-    //     // }
+        // if($request->price){
+        //     switch($request->price){
+        //         case 1:
+        //             $sign = '<';
+        //             $price = 100000;
+        //             break;
+        //         case 2:
+        //             $sign = '<';
+        //             $price = 200000;
+        //             break;
+        //         case 3:
+        //             $sign = '<';
+        //             $price = 300000;
+        //             break;
+        //         case 4:
+        //             $sign = '>';
+        //             $price = 100000;
+        //             break;
+        //         case 5:
+        //             $sign = '>';
+        //             $price = 200000;
+        //             break;
+        //         case 6:
+        //             $sign = '>';
+        //             $price = 300000;
+        //             break;
+        //         default:
+        //             $sign = '>';
+        //             $price = 0;
+        //             break;
+        //     }
+        //     $items = $items->where('price', $sign, $price);
+        // }
         
-    //     // if($request->area){
-    //     //     switch($request->area){
-    //     //         case 1:
-    //     //             $sign = '<';
-    //     //             $area = 100;
-    //     //             break;
-    //     //         case 2:
-    //     //             $sign = '<';
-    //     //             $area = 250;
-    //     //             break;
-    //     //         case 3:
-    //     //             $sign = '<';
-    //     //             $area = 500;
-    //     //             break;
-    //     //         case 4:
-    //     //             $sign = '>';
-    //     //             $area = 100;
-    //     //             break;
-    //     //         case 5:
-    //     //             $sign = '>';
-    //     //             $area = 250;
-    //     //             break;
-    //     //         case 6:
-    //     //             $sign = '>';
-    //     //             $area = 500;
-    //     //             break;
-    //     //         default:
-    //     //             $sign = '>';
-    //     //             $area = 0;
-    //     //             break;
-    //     //     }
-    //     //     $items = $items->where('area', $sign, $area);
-    //     // }
+        // if($request->area){
+        //     switch($request->area){
+        //         case 1:
+        //             $sign = '<';
+        //             $area = 100;
+        //             break;
+        //         case 2:
+        //             $sign = '<';
+        //             $area = 250;
+        //             break;
+        //         case 3:
+        //             $sign = '<';
+        //             $area = 500;
+        //             break;
+        //         case 4:
+        //             $sign = '>';
+        //             $area = 100;
+        //             break;
+        //         case 5:
+        //             $sign = '>';
+        //             $area = 250;
+        //             break;
+        //         case 6:
+        //             $sign = '>';
+        //             $area = 500;
+        //             break;
+        //         default:
+        //             $sign = '>';
+        //             $area = 0;
+        //             break;
+        //     }
+        //     $items = $items->where('area', $sign, $area);
+        // }
         
-    //     // if($request->q){
-    //     //     $items = $items->where('title', 'LIKE', '%'.$request->q.'%');
-    //     //     $search->keyword = $request->q;
-    //     // }
-    //     $items = $items->paginate(20);
+        // if($request->q){
+        //     $items = $items->where('title', 'LIKE', '%'.$request->q.'%');
+        //     $search->keyword = $request->q;
+        // }
+        $items = $items->paginate(20);
         
-    //     $search->content = serialize($request->all());
-    //     $search->save();
+        $search->content = serialize($request->all());
+        $search->save();
         
-    // 	return view('search.index')
-    //         ->with('lapls', $lapls)
-    //         ->with('items', $items);
-    // }
+    	return view('search.index')
+            ->with('lapls', $lapls)
+            ->with('items', $items);
+    }
 
     /**
      * Perform global search.
@@ -368,18 +368,18 @@ class SearchController extends Controller
             ->get();
 
         $city = $request->city;
-        $state_id = $request->state?(State::where('content','=',$request->state)->get())[0]->id:0;
+//        $state_id = $request->state?((State::where('content','=',$request->state))->get())[0]->id:'';
         $suburb = $request->suburb;
         $prod = $request->prod;
-
+        
         $items = Product::ofStatus('published');
 
         $items = $items->join('localizations','localizations.id','=','products.location_id')
                 ->where('products.state_id','!=',0);
 
-        if($state_id!==0){
-            $items = $items->where('state_id','=',$state_id);
-        }
+//        if($state_id){
+//            $items = $items->where('state_id','=',$state_id);
+//        }
 
         if($city){
             $items = $items->where('localizations.locality','=',$city);

@@ -438,6 +438,20 @@ return [
     'txt.search.viewing'        => 'Viewing :min - :max',
     'txt.au'        => 'Australia',
     'txt.any'        => 'any',
+    'txt.immobilier_residentiel'        => 'Real estate residential',
+    'txt.immobilier_foncier'        => 'Real estate land',
+    'txt.business_industriel'        => 'Business industrial',
+    'txt.business_commercial'        => 'Business commercial',
+    'txt.agence_publicite'        => 'Advertising company',
+    'txt.choose_position'        => 'Choose your position',
+    'txt.marker.click_drag'        => 'Click and drag the marker.',
+    'txt.marker.status'        => 'Marker status',    
+    'txt.marker.current_position'        => 'Current position',    
+    'txt.marker.matching_address'        => 'Closest matching address',  
+    'txt.marker.dragging'        => 'Dragging',      
+    'txt.marker.drag_ended'        => 'Drag ended',      
+    'txt.marker.cannot_determine_address'        => 'Cannot determine address at this location.',      
+    'txt.choose_position_exacte'        => 'Please choose an exact position.',      
     
     
     

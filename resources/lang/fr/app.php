@@ -874,6 +874,20 @@ return [
     'txt.connected_role' =>', vous êtes connecté(e) en qualité de :role',
     'txt.product.favoris'        => 'Produit ajouté dans :type',
     'txt.favoris'        => 'Favoris',
+    'txt.immobilier_residentiel'        => 'Immobilier résidentiel',
+    'txt.immobilier_foncier'        => 'Immobilier foncier',
+    'txt.business_industriel'        => 'Business industriel',
+    'txt.business_commercial'        => 'Business commercial',
+    'txt.agence_publicite'        => 'Agence de publicité',
+    'txt.choose_position'        => 'Choisir votre position',
+    'txt.marker.click_drag'        => 'Cliquez et faites glisser le marqueur.',    
+    'txt.marker.status'        => 'Statut du marqueur',    
+    'txt.marker.current_position'        => 'Position actuelle',    
+    'txt.marker.matching_address'        => 'Adresse correspondante la plus proche',    
+    'txt.marker.dragging'        => 'Déplacement',    
+    'txt.marker.drag_ended'        => 'Fin du déplacement',      
+    'txt.marker.cannot_determine_address'        => "Impossible de déterminer l'adresse à cet emplacement.",  
+    'txt.choose_position_exacte'        => 'Veuillez choisir une position exacte.',      
 
 
 
