@@ -88,7 +88,7 @@
                                           data-value="{{ $record->sender_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
                                           data-url="{{ route('admin.mail.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->sender->name }}</span>
+                                          >{!! $record->sender->name !!}</span>
                                 </td>
                                 <td>
                                     <span class="editable"
@@ -117,8 +117,6 @@
 											onclick="return confirm('Are You Sure?')"
 											type="submit" class="fa fa-trash text-danger"><i class="fa fa-times text-danger"></i>
 									</button>
-									<!--<a href="">@lang('app.btn.send')</a>
-									<a href="">@lang('app.btn.delete')</a>-->
 								</form>
 								</td>
                             </tr>

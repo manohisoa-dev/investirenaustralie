@@ -35,6 +35,7 @@
             <div class="ibox-content">
 				<form action="{{route('admin.mail.compose')}}" method="post" id="commentform" class="contact-form" >
                         {{ csrf_field() }}
+						<input type="hidden" name="sender_id" value="{{Auth::id()}}">
 						<div class="form-group row">
 							<label class="col-sm-2 col-form-label">To:</label>
                             <div class="col-sm-10">
@@ -48,7 +49,7 @@
                         </div>
                         <div class="form-group row">
 							<label class="col-sm-2 col-form-label">@lang('app.etbl.sujetth'):</label>
-                            <div class="col-sm-10"><input type="text" class="form-control" value="{{$item->subject}}"></div>
+                            <div class="col-sm-10"><input type="text" name="subject" class="form-control" value="{{$item->subject}}"></div>
                         </div>
 						<div class="form-group row">
 							<label class="col-sm-2 col-form-label">Message:</label>
