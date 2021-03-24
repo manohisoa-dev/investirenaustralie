@@ -42,9 +42,9 @@ class MailController extends Controller {
      * @return  \Illuminate\Http\Response
      */
     public function create() {
-        $users = User::isActive()
+        $users = User::all()
             ->where('id', '<>', \Auth::user()->id)
-            ->get();
+            ->where('status', '=', 'active');
             
         return $this->view("create",['users'=>$users]);
     }
