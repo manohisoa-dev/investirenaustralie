@@ -73,6 +73,25 @@ class Mail extends Model {
         \Request::input('content') and $query->where('content','like','%'.\Request::input('content').'%');
         return $query->paginate(15);
     }
+    
+    public static function inboxcount($id_user)
+    {
+        $query = Mail::query();
+        $query->join('mails_users','mails.id','=','mails_users.mail_id');
+        $query->where("mails_users.user_id","$id_user");
+        $query->where("mails_users.read",0);
+        return $query->count();
+    }
+    
+    public static function inboxlist($id_user)
+    {
+        $query = Mail::query();
+        $query->join('mails_users','mails.id','=','mails_users.mail_id');
+        $query->where("mails_users.user_id","$id_user");
+        $query->where("mails_users.read",0);
+        $query->orderBy('mails_users.created_at','DESC');
+        return $query->paginate(5);
+    }
 
     public static function validationRules( $attributes = null )
     {
