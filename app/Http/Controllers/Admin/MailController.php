@@ -25,10 +25,15 @@ class MailController extends Controller {
      * @param  Request $request
      * @return Response
      */
-    public function all(Request $request, $filter) {
+    public function all(Request $request, $filter) {        
         $user = Auth::user();
         $records = Mail::listeEmailByStatuts($filter,$user->id);
-        return $this->view("all", ['records' => $records]);
+        if($filter == ''){
+            $title = __('app.admin.mail.list');
+        }else{
+            $title = __('app.admin.mail.'.$filter);
+        }
+        return $this->view("all", ['records' => $records,'title'=>$title]);
     }
 
     /**
@@ -37,9 +42,9 @@ class MailController extends Controller {
      * @return  \Illuminate\Http\Response
      */
     public function create() {
-        $users = User::isActive()
+        $users = User::all()
             ->where('id', '<>', \Auth::user()->id)
-            ->get();
+            ->where('status', '=', 'active');
             
         return $this->view("create",['users'=>$users]);
     }
@@ -57,7 +62,7 @@ class MailController extends Controller {
 
         # notification
         Notify::success('Mail a été créer avec succès');
-        return redirect(route('v2.admin.mail.index'));
+        return redirect(route('admin.mail.index'));
     }
 
     /**
@@ -100,7 +105,7 @@ class MailController extends Controller {
 
         # notification
         Notify::success('Mail a été mise à jour avec succès');
-        return redirect(route('v2.admin.mail.index'));
+        return redirect(route('admin.mail.index'));
     }
 
     /**
@@ -113,7 +118,7 @@ class MailController extends Controller {
 
         # notification
         Notify::success('Mail a été supprimer avec succès');
-        return redirect(route('v2.admin.mail.index'));
+        return redirect(route('admin.mail.index'));
     }
 
     protected function view($view, $data = []) {

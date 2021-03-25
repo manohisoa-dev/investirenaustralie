@@ -177,7 +177,7 @@ class User extends Authenticatable{
      * @param mixed $status
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeOfStatus($query, $status)
+    public static function scopeOfStatus($query, $status)
     {
         return $query->where('status', $status);
     }

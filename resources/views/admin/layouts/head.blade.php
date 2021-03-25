@@ -14,48 +14,22 @@
             </li>
             <li class="dropdown">
                 <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                    <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
+                    <i class="fa fa-envelope"></i>  
+					<span class="label label-warning">{{\App\Models\Mail::inboxcount(Auth::user()->id)}}</span>
                 </a>
-                <ul class="dropdown-menu dropdown-messages dropdown-menu-right">
+                <ul class="dropdown-menu dropdown-alerts">
+					@foreach(\App\Models\Mail::inboxlist(Auth::user()->id) as $mail)
                     <li>
-                        <div class="dropdown-messages-box">
-                            <a class="dropdown-item float-left" href="profile.html">
-                                <img alt="image" class="rounded-circle" src="{{ asset('administrator/img/a7.jpg') }}">
-                            </a>
-                            <div class="media-body">
-                                <small class="float-right">46h ago</small>
-                                <strong>Mike Loreipsum</strong> started following <strong>Monica Smith</strong>. <br>
-                                <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
+                        <a href="{{route('admin.mail.index')}}/{{$mail->id}}" class="dropdown-item">
+                            <div>
+                                <i class="fa fa-envelope fa-fw"></i> Vous avez reçu une message de la part de <strong>{{ $mail->sender->name }}</strong>
+                                <span class="float-right text-muted small">{{ $mail->created_at ? $mail->created_at->diffForHumans() : '' }}</span>
                             </div>
-                        </div>
+                        </a>
                     </li>
                     <li class="dropdown-divider"></li>
-                    <li>
-                        <div class="dropdown-messages-box">
-                            <a class="dropdown-item float-left" href="profile.html">
-                                <img alt="image" class="rounded-circle" src="{{ asset('administrator/img/a4.jpg') }}">
-                            </a>
-                            <div class="media-body ">
-                                <small class="float-right text-navy">5h ago</small>
-                                <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica Smith</strong>. <br>
-                                <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="dropdown-divider"></li>
-                    <li>
-                        <div class="dropdown-messages-box">
-                            <a class="dropdown-item float-left" href="profile.html">
-                                <img alt="image" class="rounded-circle" src="{{ asset('administrator/img/profile.jpg') }}">
-                            </a>
-                            <div class="media-body ">
-                                <small class="float-right">23h ago</small>
-                                <strong>Monica Smith</strong> love <strong>Kim Smith</strong>. <br>
-                                <small class="text-muted">2 days ago at 2:30 am - 11.06.2014</small>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="dropdown-divider"></li>
+					@endforeach
+					{{--    
                     <li>
                         <div class="text-center link-block">
                             <a href="mailbox.html" class="dropdown-item">
@@ -63,6 +37,7 @@
                             </a>
                         </div>
                     </li>
+					--}}
                 </ul>
             </li>
             <li class="dropdown">

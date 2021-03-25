@@ -52,18 +52,45 @@ class Mail extends Model {
     
     public static function listeEmailByStatuts($status,$id_user)
     {
-        $query = Mail::query(); 
-        $query->join('mails_users','mails_users.mail_id','=','mails.id');
-        if($status == 'send'){
-            $query->where("mails.sender_id","$id_user");
+        $query = Mail::query();
+        if($status == 'outbox'){
+            $query->where("sender_id","$id_user");
         }elseif($status == 'inbox'){
+            $query->join('mails_users','mails.id','=','mails_users.mail_id');
+            $query->where("mails_users.user_id","$id_user")->get(['mails.*','mails_users.user_id','mails_users.mail_id']);
+        }elseif($status == 'model'){
+            $query->where("status",'model');
+        }elseif($status == 'draft'){
+            $query->where("status",'draft');
+        }elseif($status == 'spam'){
+            $query->join('mails_users','mails.id','=','mails_users.mail_id');
             $query->where("mails_users.user_id","$id_user");
+            $query->where("mails_users.is_spam",1);
         }
         
         \Request::input('id') and $query->where('id',\Request::input('id'));
         \Request::input('subject') and $query->where('subject','like','%'.\Request::input('subject').'%');
         \Request::input('content') and $query->where('content','like','%'.\Request::input('content').'%');
         return $query->paginate(15);
+    }
+    
+    public static function inboxcount($id_user)
+    {
+        $query = Mail::query();
+        $query->join('mails_users','mails.id','=','mails_users.mail_id');
+        $query->where("mails_users.user_id","$id_user");
+        $query->where("mails_users.read",0);
+        return $query->count();
+    }
+    
+    public static function inboxlist($id_user)
+    {
+        $query = Mail::query();
+        $query->join('mails_users','mails.id','=','mails_users.mail_id');
+        $query->where("mails_users.user_id","$id_user");
+        $query->where("mails_users.read",0);
+        $query->orderBy('mails_users.created_at','DESC');
+        return $query->paginate(5);
     }
 
     public static function validationRules( $attributes = null )

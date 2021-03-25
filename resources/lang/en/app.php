@@ -463,7 +463,15 @@ return [
     
     
     
-
+    'admin.mail'           => 'Mail',
+    'admin.mails'          => 'Mails',
+    'admin.mail.list'      => 'Mail list',
+    'admin.mail.inbox'     => 'Mailbox',
+    'admin.mail.outbox'    => "Outbox",
+    'admin.mail.draft'     => "Draft",
+    'admin.mail.spam'      => "Spam",
+    'admin.mail.model'      => "Saved messages",
+    
     'table.title'  => "Title",
     'table.titles'  => "Titles",
 
