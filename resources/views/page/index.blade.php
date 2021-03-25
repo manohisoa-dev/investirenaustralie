@@ -131,7 +131,7 @@
                             <div class="tab-content">
                                 <div id="tab3_sec1" class="tab-pane fade in active show">
                                     <div class="row align-items-center p-25px-t lg-p-15px-t">
-                                        <div class="col-lg-6 text-center">^
+                                        <div class="col-lg-6 text-center">
                                             <img src="{{ asset('images/page/step1.png') }}" title="" alt="">
                                         </div>
                                         <div class="col-lg-6">

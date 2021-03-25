@@ -667,6 +667,8 @@ return [
     'txt.au'        => 'Australie',
     'txt.any'        => 'tous',
     'txt.advertisement' => "PUBLICITE",
+    'txt.service_iea' => 'Services proposés par "IEA"',
+    'txt.service_def' => 'En quoi consiste cette page Services.',
     
     
     'childs' => 'Fils',

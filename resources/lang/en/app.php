@@ -492,6 +492,8 @@ return [
     'txt.saveinfo' =>  'Save my name, email, and website in this browser for the next time I comment.',
     'txt.probleme.survenu' => "Whoops! Something went wrong!",
     'txt.advertisement' => "ADVERTISEMENT",
+    'txt.service_iea' => 'Services offered by "IEA"',
+    'txt.service_def' => 'What is this Services page.',
     
 
 
