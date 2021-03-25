@@ -27,38 +27,66 @@
             </div>
         </section>
     @endif
+
     @foreach($item->childs as $child)
-        @if($child->page_order == 1)
-            <!-- Section -->
-            <section id="about" class="section gray-bg">
-                <div class="container">
-                    <div class="row align-items-center justify-content-between">
-                        <div class="col-lg-6 text-center m-15px-tb">
-                            <img src="{{ asset('images/map-of-australia.jpg') }}" title="" alt="">
-                        </div>
-                        <div class="col-lg-5 m-15px-tb">
-                            <h2 class="h1 m-25px-b">{{$child->title}}</h2>
-                            <div class="text-justify">
-                                <p class="m-5px-b">{!!$child->content!!}</p>
-                            </div>
-                            @if(Auth::check()&&Auth::user()->isAdmin())
-                                <div class="btn-bar p-15px-t">
-                                    <a class="m-btn-theme" href="{{route('admin.page.update',$child)}}"><i class="icon-edit"></i> @lang('app.btn.edit')</a>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!--End Section -->
-            @elseif($child->page_order == 2)
-                <!-- Section -->
+        @if ($child->page_order%2 == 0 && $child->isPub($child->id))
+            <!-- Section show pubs pages -->
+            @forelse ($child->pubs as $item)
                 <section id="feature" class="section bg-cover bg-no-repeat parallax opacity-10" style="background-image: url(images/fond-grenat.jpg);">
                     <div class="container">
                         <div class="row md-m-25px-b m-45px-b justify-content-center text-center">
                             <div class="col-lg-8">
-                                <h3 class="h1 white-color m-20px-b p-20px-b white-after after-50px">{{$child->title}}</h3>
-                                <p class="m-0px font-2 white-color-light">{!!$child->content!!}</p>
+                                <p class="m-0px font-1 white-color-light">@lang('app.txt.advertisement')</p>
+                                <div id="ads" class="ads-section col-lg-12 p-15px-tb white-bg">
+                                    <div class="ads-header float-left p-20px-l p-10px-b">
+                                        <img src="{{ asset('images/ads-logo.png') }}" alt="logo_iea">
+                                    </div>
+                                    <div class="ads-content">
+                                        {{-- size 714x298px --}}
+                                        <a href="{{$item->links}}" target="_blank"><img src="{{ asset($item->image->filepath) }}" alt="{{$item->title}}"></a>
+                                    </div>
+                                    <div class="ads-footer p-15px-t">
+                                        <div class="row col-lg-12">
+                                            <div class="col-lg-8">
+                                                <p class="float-left">{{$item->title}}</p>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <a class="float-right m-btn m-btn-theme2nd-outline" href="{{$item->links}}" target="_blank">@lang('app.btn.read_more')</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            @empty
+                
+            @endforelse
+            <!--End Section show pubs pages -->
+        @else
+            @if($child->page_order == 1)
+                <!-- Section -->
+                <section id="about" class="section gray-bg">
+                    <div class="container">
+                        <div class="row align-items-center justify-content-between">
+                            <div class="col-lg-6 text-center m-15px-tb">
+                                @forelse ($child->images as $item)
+                                    <img src="{{ asset($item->filepath) }}" title="{{ $item->filename }}" alt="{{ $item->filename }}">
+                                @empty
+                                    <img src="{{ asset('images/page/default.png') }}" title="{{ asset('images/page/default.png') }}" alt="{{ asset('images/page/default.png') }}">
+                                @endforelse
+                            </div>
+                            <div class="col-lg-5 m-15px-tb">
+                                <h2 class="h1 m-25px-b">{{$child->title}}</h2>
+                                <div class="text-justify">
+                                    <p class="m-5px-b">{!!$child->content!!}</p>
+                                </div>
+                                @if(Auth::check()&&Auth::user()->isAdmin())
+                                    <div class="btn-bar p-15px-t">
+                                        <a class="m-btn-theme" href="{{route('admin.page.update',$child)}}"><i class="icon-edit"></i> @lang('app.btn.edit')</a>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -103,8 +131,8 @@
                             <div class="tab-content">
                                 <div id="tab3_sec1" class="tab-pane fade in active show">
                                     <div class="row align-items-center p-25px-t lg-p-15px-t">
-                                        <div class="col-lg-6 text-center">
-                                            <img src="{{ asset('images/step1.png') }}" title="" alt="">
+                                        <div class="col-lg-6 text-center">^
+                                            <img src="{{ asset('images/page/step1.png') }}" title="" alt="">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="p-70px-l lg-p-0px-l lg-m-30px-t">
@@ -123,14 +151,14 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-6 order-lg-2 order-first text-center">
-                                            <img src="{{ asset('images/step2.png') }}" title="" alt="">
+                                            <img src="{{ asset('images/page/step2.png') }}" title="" alt="">
                                         </div>
                                     </div>
                                 </div>
                                 <div id="tab3_sec3" class="tab-pane fade in">
                                     <div class="row align-items-center p-25px-t lg-p-15px-t">
                                         <div class="col-lg-6 text-center">
-                                            <img src="{{ asset('images/step3.png') }}" title="" alt="">
+                                            <img src="{{ asset('images/page/step3.png') }}" title="" alt="">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="p-70px-l lg-p-0px-l lg-m-30px-t">
@@ -149,7 +177,7 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-6 order-lg-2 order-first text-center">
-                                            <img src="{{ asset('images/step4.png') }}" title="" alt="">
+                                            <img src="{{ asset('images/page/step4.png') }}" title="" alt="">
                                         </div>
                                     </div>
                                 </div>
@@ -157,7 +185,7 @@
                         </div>
                     </div>
                 </section>
-            @elseif($child->page_order == 4)
+            @elseif($child->page_order == 5)
                 <section class="section theme-bg">
                     <div class="container">
                         <div class="row md-m-25px-b m-45px-b justify-content-center text-center">
@@ -188,7 +216,33 @@
                     </div>
                 </section>
             @else
-
+                <!-- Section -->
+                <section id="about" class="section gray-bg">
+                    <div class="container">
+                        <div class="row align-items-center justify-content-between">
+                            <div class="col-lg-6 text-center m-15px-tb">
+                                @forelse ($child->images as $item)
+                                    <img src="{{ asset($item->filepath) }}" title="{{ $item->filename }}" alt="{{ $item->filename }}">
+                                @empty
+                                    <img src="{{ asset('images/page/default.png') }}" title="{{ asset('images/page/default.png') }}" alt="{{ asset('images/page/default.png') }}">
+                                @endforelse
+                            </div>
+                            <div class="col-lg-5 m-15px-tb">
+                                <h2 class="h1 m-25px-b">{{$child->title}}</h2>
+                                <div class="text-justify">
+                                    <p class="m-5px-b">{!!$child->content!!}</p>
+                                </div>
+                                @if(Auth::check()&&Auth::user()->isAdmin())
+                                    <div class="btn-bar p-15px-t">
+                                        <a class="m-btn-theme" href="{{route('admin.page.update',$child)}}"><i class="icon-edit"></i> @lang('app.btn.edit')</a>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!--End Section -->
+            @endif    
         @endif
 
         {{-- @foreach($child->pubs as $pub)

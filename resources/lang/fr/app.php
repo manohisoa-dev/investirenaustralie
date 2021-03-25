@@ -666,7 +666,7 @@ return [
     'txt.search.viewing'        => 'Visualisation :min - :max',
     'txt.au'        => 'Australie',
     'txt.any'        => 'tous',
-    
+    'txt.advertisement' => "PUBLICITE",
     
     
     'childs' => 'Fils',
@@ -689,6 +689,7 @@ return [
     'btn.delete'         => 'Supprimer',
     'btn.view'           => 'Voir',
     'btn.view_more'      => 'Voir plus',
+    'btn.read_more'      => 'Lire plus',
     'btn.more'           => 'Plus',
     'btn.reset'          => 'Annuler',
     'btn.archive'        => 'Archiver',

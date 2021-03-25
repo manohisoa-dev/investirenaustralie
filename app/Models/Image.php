@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 // Eloquent Model to manage Page list
 class Image extends BaseModel
 {
@@ -45,5 +46,23 @@ class Image extends BaseModel
     public function products()
     {
       return $this->belongsToMany(Product::class, 'products_images', 'image_id', 'product_id');
+    }
+
+    /**
+     * An image can have many slider
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function sliders()
+    {
+        return $this->hasOne(Slider::class,'id','image_id');
+    }
+
+    /**
+     * The images that belong to the page.
+     */
+    public function pages()
+    {
+        return $this->belongsToMany(Page::class, 'page_images');
     }
 }

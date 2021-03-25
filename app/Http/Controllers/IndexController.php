@@ -171,6 +171,9 @@ class IndexController extends Controller
             ->where('category_id','=',4)
             ->max('land_area');
 
+        $page = Page::findOrFail(1);
+        $page->load(['childs', 'childs.pubs', 'pubs']);
+
         return $this->render($request, 1)
         ->with('states',$states)
         ->with('locationTypes',$locationTypes)
@@ -203,7 +206,8 @@ class IndexController extends Controller
         ->with('typesRes',$typesRes)
         ->with('typesFonc',$typesFonc)
         ->with('typesInd',$typesInd)
-        ->with('typesComm',$typesComm);
+        ->with('typesComm',$typesComm)
+        ->with('pubs',$page->pubs);
 
     }
 
@@ -407,8 +411,6 @@ class IndexController extends Controller
             ->withCount('products')
             ->take($this->recentSize)
             ->get();
-        
-        $page->load(['childs', 'childs.pubs', 'pubs']);
 
         $lapls = Localisation::select('localizations.*')
                 ->join('users','users.location_id','=','localizations.id')
