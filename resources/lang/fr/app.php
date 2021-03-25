@@ -143,6 +143,7 @@ return [
     
     'form.filterBy'      => 'Filtré par',
     'form.order'      => 'Ordre',
+    'form.show'      => 'Afficher par',
     'form.asc'      => 'Croissant',
     'form.desc'      => 'Décroissant',
     'form.vue'      => 'Vue',
@@ -665,10 +666,13 @@ return [
     'txt.search.title2'        => 'Propriétés commerciales à vendre en :state',
     'txt.search.viewing'        => 'Visualisation :min - :max',
     'txt.au'        => 'Australie',
-    'txt.any'        => 'tous',
+    'txt.any'        => 'Tous',
     'txt.advertisement' => "PUBLICITE",
-    'txt.service_iea' => 'Services proposés par "IEA"',
+    'txt.service_iea' => 'Services proposés par "Investir En Australie"',
     'txt.service_def' => 'En quoi consiste cette page Services.',
+    'txt.blog_iea' => 'Le Blog "Investir En Australie"',
+    'txt.blog_def' => 'En quoi consiste cette page Blog.',
+    'txt.no_ads' => 'Aucun Pubs.',
     
     
     'childs' => 'Fils',

@@ -150,12 +150,18 @@ class BlogController extends Controller
         
         $order = $request->get('order');
         if(!in_array($order, ['desc', 'asc'])) $order = 'desc';
+
+        $show = $request->get('show');
+        if(!in_array($show, ['10', '20', '50', '100'])) $show = ' ';
         
         $items = Blog::ofStatus('published')
             ->where('post_type','=', $this->post_type)
             ->orderBy($orderBy, $order)
             ->withCount('comments')
-            ->paginate($this->pageSize);
+            ->limit(2)
+            ->offset(0)
+            // ->paginate($this->pageSize);
+            ->paginate($show?(int)$show:$this->pageSize);
         
         if($request->ajax()){
             return response()->json(array(
@@ -191,6 +197,7 @@ class BlogController extends Controller
                 ->with('items', $items)
                 ->with('orderBy', $orderBy)
                 ->with('order', $order)
+                ->with('show', $show)
                 ->with('filter', $filter)
                 ->with('page', $page)
                 ->with('pubs', $pubs)

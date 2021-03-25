@@ -1,5 +1,5 @@
 @foreach($items as $item)
-<div class="col-md-6 col-lg-4 m-30px-b view-item">
+<div class="col-md-6 col-lg-6 m-30px-b view-item">
     <div class="hover-top card box-shadow-only-hover overflow-hidden">
         <div>
             <a href="#">
