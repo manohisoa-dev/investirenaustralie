@@ -86,7 +86,11 @@
                 </div>
                 <div class="ibox-content ibox-heading">
                     <h3><i class="fa fa-envelope-o"></i> Nouveaux messages</h3>
-                    <small><i class="fa fa-tim"></i> Vous avez 22 nouveaux messages et 16 en attente dans le dossier brouillon.</small>
+                    <small>
+						<i class="fa fa-tim"></i> 
+						Vous avez {{\App\Models\Mail::inboxcount(Auth::user()->id)}} 
+						nouveaux messages et {{\App\Models\Mail::draftCount(Auth::user()->id)}} en attente dans le dossier brouillon.
+					</small>
                 </div>
                 <div class="ibox-content">
                     <div class="feed-activity-list">
@@ -97,7 +101,7 @@
                                     <small class="float-right text-navy">{{Carbon\Carbon::now()->diffForHumans($mail->created_at)}}</small>
                                     <strong>{{$mail->subject}}</strong>
                                     <div>{{ strip_tags($mail->content)  }} </div>
-                                    <small class="text-muted">Today 5:60 pm - 12.06.2014</small>
+                                    <small class="text-muted">{{ \Carbon\Carbon::parse($mail->created_at)->format('l jS F Y')}}</small>
                                 </div>
                             </div>
                         @endforeach
@@ -279,7 +283,7 @@
                     <div class="row">
                         <div class="col-lg-9">
                             <div class="flot-chart">
-                                <div class="flot-chart-content" id="flot-dashboard-chart"></div>
+								<canvas id="canvas_user" height="60"></canvas>                                
                             </div>
                         </div>
                         <div class="col-lg-3">
@@ -334,7 +338,8 @@
                     <div class="row">
                         <div class="col-lg-9">
                             <div class="flot-chart">
-                                <div class="flot-chart-content" id="flot-line-chart"></div>
+                                <!--<div class="flot-chart-content" id="flot-line-chart"></div>-->
+								<canvas id="canvas_product" height="60"></canvas>    
                             </div>
                         </div>
                         <div class="col-lg-3">
@@ -373,92 +378,54 @@
     </div>
 @endsection
 
-@section('custom-script')
-    <script>
-        $(document).ready(function(){
-            var data1 = [
-                [0,4],[1,8],[2,5],[3,10],[4,4],[5,16],[6,5],[7,11],[8,6],[9,11],[10,30],[11,10],[12,13],[13,4],[14,3],[15,3],[16,6]
-            ];
-            var data2 = [
-                [0,1],[1,0],[2,2],[3,0],[4,1],[5,3],[6,1],[7,5],[8,2],[9,3],[10,2],[11,1],[12,0],[13,2],[14,8],[15,0],[16,0]
-            ];
-            $("#flot-dashboard-chart").length && $.plot($("#flot-dashboard-chart"), [
-                    data1, data2
-                ],
-                {
-                    series: {
-                        lines: {
-                            show: false,
-                            fill: true
-                        },
-                        splines: {
-                            show: true,
-                            tension: 0.4,
-                            lineWidth: 1,
-                            fill: 0.4
-                        },
-                        points: {
-                            radius: 0,
-                            show: true
-                        },
-                        shadowSize: 2
-                    },
-                    grid: {
-                        hoverable: true,
-                        clickable: true,
-                        tickColor: "#d5d5d5",
-                        borderWidth: 1,
-                        color: '#d5d5d5'
-                    },
-                    colors: ["#1ab394", "#1C84C6"],
-                    xaxis:{
-                    },
-                    yaxis: {
-                        ticks: 4
-                    },
-                    tooltip: false
-                }
-            );
+@section('custom-script')	
+	<script>
+        $(document).ready(function() {
+			var data = {!!$data!!};
+            var lineData = {
+                labels: data.label,
+                datasets: [
+                    {
+                        label: {{$count['users']}}+" Utilisateurs inscrit",
+                        backgroundColor: "rgba(26,179,148,0.5)",
+                        borderColor: "rgba(26,179,148,0.7)",
+                        pointBackgroundColor: "rgba(26,179,148,1)",
+                        pointBorderColor: "#fff",
+                        data: data.count
+                    }
+                ]
+            };
 
-            var doughnutData = {
-                labels: ["App","Software","Laptop" ],
-                datasets: [{
-                    data: [300,50,100],
-                    backgroundColor: ["#a3e1d4","#dedede","#9CC3DA"]
-                }]
-            } ;
-
-
-            var doughnutOptions = {
-                responsive: false,
-                legend: {
-                    display: false
-                }
+            var lineOptions = {
+                responsive: true
             };
 
 
-            var ctx4 = document.getElementById("doughnutChart").getContext("2d");
-            new Chart(ctx4, {type: 'doughnut', data: doughnutData, options:doughnutOptions});
+            var ctx = document.getElementById("canvas_user").getContext("2d");
+            new Chart(ctx, {type: 'line', data: lineData, options:lineOptions});
+			
+			<!-- chart product-->
+			var p_lineData = {
+                labels: data.p_label,
+                datasets: [
+                    {
+                        label: {{$count['products']}} +" Produits enregistrés",
+                        backgroundColor: "rgba(26,179,148,0.5)",
+                        borderColor: "rgba(26,179,148,0.7)",
+                        pointBackgroundColor: "rgba(26,179,148,1)",
+                        pointBorderColor: "#fff",
+                        data: data.p_count
+                    }
+                ]
+            };
 
-            var doughnutData = {
-                labels: ["App","Software","Laptop" ],
-                datasets: [{
-                    data: [70,27,85],
-                    backgroundColor: ["#a3e1d4","#dedede","#9CC3DA"]
-                }]
-            } ;
-
-
-            var doughnutOptions = {
-                responsive: false,
-                legend: {
-                    display: false
-                }
+            var p_lineOptions = {
+                responsive: true
             };
 
 
-            var ctx4 = document.getElementById("doughnutChart2").getContext("2d");
-            new Chart(ctx4, {type: 'doughnut', data: doughnutData, options:doughnutOptions});
-        }) ;
+            var p_ctx = document.getElementById("canvas_product").getContext("2d");
+            new Chart(p_ctx, {type: 'line', data: p_lineData, options:p_lineOptions});
+        });
     </script>
 @endsection

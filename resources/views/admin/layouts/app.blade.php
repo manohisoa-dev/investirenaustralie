@@ -529,7 +529,7 @@
 <script src="{{ asset('administrator/js/plugins/flot/jquery.flot.pie.js') }}"></script>
 
 <!-- Flot demo data -->
-<script src="{{ asset('administrator/js/demo/flot-demo.js') }}"></script>
+<?php /*?><script src="{{ asset('administrator/js/demo/flot-demo.js') }}"></script><?php */?>
 
 <!-- Peity -->
 <script src="{{ asset('administrator/js/plugins/peity/jquery.peity.min.js') }}"></script>

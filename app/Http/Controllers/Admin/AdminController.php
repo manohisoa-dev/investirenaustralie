@@ -52,7 +52,31 @@ class AdminController extends Controller {
         $recent['sales'] = Product::orderBy('created_at', 'desc')->ofStatus('paid')->take($this->recentSize)->get();
         $recent['orders'] = Product::orderBy('created_at', 'desc')->ofStatus('ordered')->take($this->recentSize)->get();
         $recent['mails'] = Mail::orderBy('created_at', 'desc')->take($this->recentSize)->get();
-
+        
+        $info = \DB::table('users')->select(\DB::raw('DATE(created_at) as date'), \DB::raw
+            ('count(*) as count'))->groupBy('date')->get();
+        $info_p = \DB::table('products')->select(\DB::raw('DATE(created_at) as date'), \DB::raw
+            ('count(*) as count'))->groupBy('date')->get();
+            
+        $lb = array();
+        $cnt = array();
+        $p_lb = array();
+        $p_cnt = array();
+        
+        foreach($info as $in){
+            $lb[] = $in->date;
+            $cnt[] = $in->count;
+        }
+        
+        foreach($info_p as $ip){
+            $p_lb[] = $ip->date;
+            $p_cnt[] = $ip->count;
+        }
+        $data['label'] = $lb;
+        $data['count'] = $cnt;
+        $data['p_label'] = $p_lb;
+        $data['p_count'] = $p_cnt;
+        
         return view('admin.dashboard.index')->with('recent', $recent)->with('count', $count)->with('data',
             json_encode($data));
     }

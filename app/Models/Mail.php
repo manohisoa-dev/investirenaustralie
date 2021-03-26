@@ -62,6 +62,7 @@ class Mail extends Model {
             $query->where("status",'model');
         }elseif($status == 'draft'){
             $query->where("status",'draft');
+            $query->where("sender_id","$id_user");
         }elseif($status == 'spam'){
             $query->join('mails_users','mails.id','=','mails_users.mail_id');
             $query->where("mails_users.user_id","$id_user");
@@ -80,6 +81,14 @@ class Mail extends Model {
         $query->join('mails_users','mails.id','=','mails_users.mail_id');
         $query->where("mails_users.user_id","$id_user");
         $query->where("mails_users.read",0);
+        return $query->count();
+    }
+    
+    public static function draftCount($id_user)
+    {
+        $query = Mail::query();
+        $query->where("status",'draft');
+        $query->where("sender_id","$id_user");
         return $query->count();
     }
     

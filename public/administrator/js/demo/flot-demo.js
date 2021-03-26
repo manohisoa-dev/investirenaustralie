@@ -92,7 +92,7 @@ $(function() {
             [3, 19],
             [4, 34],
             [5, 32],
-            [6, 44]
+            [6, 55]
         ]
     };
     $.plot($("#flot-line-chart"), [barData], barOptions);
