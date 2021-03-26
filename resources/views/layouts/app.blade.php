@@ -128,7 +128,7 @@
                                         <a href="{{ url(\App\Models\User::find(Auth::id())->roleUser->role_initial)}}">
                                             {{Auth::user()->name}}
                                         </a>
-                                        {{ trans('app.txt.connected_role', ['connect'=>Auth::user()->userinfos->sexe?(Auth::user()->userinfos->sexe=='M'?trans('app.txt.connecte'):trans('app.txt.connectee')):trans('app.txt.connected'), 'role'=>trans('app.'.str_replace(' ', '',\App\Models\User::find(Auth::id())->roleUser->role_name))]) }}
+                                        {{ trans('app.txt.connected_role', ['connect'=>isset(Auth::user()->userinfos) && Auth::user()->userinfos->sexe?(Auth::user()->userinfos->sexe=='M'?trans('app.txt.connecte'):trans('app.txt.connectee')):trans('app.txt.connected'), 'role'=>trans('app.'.str_replace(' ', '',\App\Models\User::find(Auth::id())->roleUser->role_name))]) }}
                                     </li>
                                 @endif
                                 <li class="small m-10px-l"><i class="fas fa-globe"></i> @lang('app.language') : 
