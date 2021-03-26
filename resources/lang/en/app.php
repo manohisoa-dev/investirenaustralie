@@ -205,6 +205,7 @@ return [
     'btn.delete'         => 'Delete',
     'btn.view'           => 'View',
     'btn.view_more'      => 'See more',
+    'btn.read_more'      => 'Read more',
     'btn.more'           => 'More',
     'btn.reset'          => 'Reset',
     'btn.archive'        => 'Archive',
@@ -490,6 +491,9 @@ return [
     'txt.yourcomment' =>  'Your Comment ?',
     'txt.saveinfo' =>  'Save my name, email, and website in this browser for the next time I comment.',
     'txt.probleme.survenu' => "Whoops! Something went wrong!",
+    'txt.advertisement' => "ADVERTISEMENT",
+    'txt.service_iea' => 'Services offered by "IEA"',
+    'txt.service_def' => 'What is this Services page.',
     
 
 

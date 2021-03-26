@@ -346,6 +346,20 @@ a:hover {
   background: #AE4435;
   color: #ffffff;
 }
+
+.m-btn.m-btn-theme2nd-outline {
+  background: #fff;
+  border: solid 1px #AE4435;
+  color: #AE4435;
+}
+
+.m-btn.m-btn-theme2nd-outline.active, .m-btn.m-btn-theme2nd-outline:focus, .m-btn.m-btn-theme2nd-outline:hover {
+  background: #fff;
+  border: solid 1px #555658;
+  color: #555658;
+  border-radius: 0px;
+}
+
 .m-btn.m-btn-theme2nd.active, .m-btn.m-btn-theme2nd:focus, .m-btn.m-btn-theme2nd:hover {
   background: #272727;
   color: #ffffff;

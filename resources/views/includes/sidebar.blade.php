@@ -2,16 +2,18 @@
 <div class="col-lg-4 md-m-15px-tb">
     <a href="{{route('apls')}}" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12" style="margin-bottom: 20px;">@lang('app.list_apl')</a>
 
-    <div class="card m-35px-t">
-        @foreach($pubs as $pub)
-        <section class="widget property-meta-wrapper clearfix">
-            <h2 class="title wow slideInLeft">{{$pub->title}}</h2>
-            <div class="content-box-large box-with-header">
-                <a target="_blank" href="{{$pub->links?$pub->links:'#'}}"><img src="{{$pub->imageUrl()}}" class="img-rounded" alt="Cinque Terre" width="604" height="236"></a>
-            </div>
-        </section>
-        @endforeach
-    </div>
+    @if ($pubs)
+        <div class="card m-35px-t">
+            @foreach($pubs as $pub)
+            <section class="widget property-meta-wrapper clearfix">
+                <h2 class="title wow slideInLeft">{{$pub->title}}</h2>
+                <div class="content-box-large box-with-header">
+                    <a target="_blank" href="{{$pub->links?$pub->links:'#'}}"><img src="{{$pub->imageUrl()}}" class="img-rounded" alt="Cinque Terre" width="604" height="236"></a>
+                </div>
+            </section>
+            @endforeach
+        </div>
+    @endif
 
     <div class="card m-35px-t">
         <div class="card-header bg-transparent">

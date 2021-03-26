@@ -666,7 +666,9 @@ return [
     'txt.search.viewing'        => 'Visualisation :min - :max',
     'txt.au'        => 'Australie',
     'txt.any'        => 'tous',
-    
+    'txt.advertisement' => "PUBLICITE",
+    'txt.service_iea' => 'Services proposés par "IEA"',
+    'txt.service_def' => 'En quoi consiste cette page Services.',
     
     
     'childs' => 'Fils',
@@ -689,6 +691,7 @@ return [
     'btn.delete'         => 'Supprimer',
     'btn.view'           => 'Voir',
     'btn.view_more'      => 'Voir plus',
+    'btn.read_more'      => 'Lire plus',
     'btn.more'           => 'Plus',
     'btn.reset'          => 'Annuler',
     'btn.archive'        => 'Archiver',

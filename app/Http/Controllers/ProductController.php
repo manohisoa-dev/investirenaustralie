@@ -57,6 +57,8 @@ class ProductController extends Controller
                 
                 $page = Page::where('path', '=', '/products*')
                     ->first();
+
+                    dd($page);
                 
                 if($page){$pubs = $page->pubs;}else{$pubs = [];}
                 

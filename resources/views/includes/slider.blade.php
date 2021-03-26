@@ -14,41 +14,40 @@
         <!--/.Indicators-->
         <!--Slides-->
         <div class="carousel-inner" role="listbox">
-            <!--First slide-->
-            <div class="carousel-item active">
-            <img class="d-block w-100" src="{{ asset('images/slider/1.jpg') }}"
-                alt="First slide">
-            </div>
-            <!--/First slide-->
-            <!--Second slide-->
-            <div class="carousel-item">
-            <img class="d-block w-100" src="{{ asset('images/slider/2.jpg') }}"
-                alt="Second slide">
-            </div>
-            <!--/Second slide-->
-            <!--Third slide-->
-            <div class="carousel-item">
-            <img class="d-block w-100" src="{{ asset('images/slider/3.jpg') }}"
-                alt="Third slide">
-            </div>
-            <!--/Third slide-->
+            @forelse (App\Models\Slider::where('type','image')->where('status',1)->get() as $item)
+                <div class="carousel-item  @if($loop->first) active @endif">
+                    <img class="d-block w-100" src="{{ asset($item->images->filepath) }}"
+                        alt="{{ asset($item->content) }}">
+                </div>
+            @empty
+                @forelse (App\Models\Slider::where('type','pub')->where('status',1)->get() as $item)
+                    <div class="carousel-item  @if($loop->first) active @endif">
+                        <a href="{{route('product.index',['product'=>$item->content])}}" target="_blank"><img class="d-block w-100" src="{{ asset($item->images->filepath) }}"
+                            alt="{{ asset($item->content) }}"></a>
+                    </div>
+                @empty
+                    <div class="carousel-item active">
+                        <img class="d-block w-100" src="{{ asset('images/slider/default.jpg') }}"
+                            alt="@lang('app.txt.au')">
+                    </div>
+                @endforelse
+            @endforelse
         </div>
         <!--/.Slides-->
         <!--Controls-->
         <a class="carousel-control-prev" href="#carousel-example-1z" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
+            <span class="sr-only">@lang('app.btn.perv')</span>
         </a>
         <a class="carousel-control-next" href="#carousel-example-1z" role="button" data-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
+            <span class="sr-only">@lang('app.btn.next')</span>
         </a>
         <!--/.Controls-->
     </div>
 <!--/.Carousel Wrapper-->
 </section>
 <!-- End Home Banner -->
-
 <!-- Section targeted research-->
     @include('includes.search')
 <!-- End Section -->

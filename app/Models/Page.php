@@ -75,6 +75,18 @@ class Page extends Model {
     }
 
     /**
+     * Want if page is pub.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param mixed $role
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function isPub($id)
+    {
+        return $this->where('id',$id)->where('is_pub',1)->get()->first();
+    }
+
+    /**
      * Excerpt
      *
      * @param int $length
@@ -126,6 +138,14 @@ class Page extends Model {
     public function pubs()
     {
         return $this->belongsToMany(Pub::class, 'pubs_pages', 'page_id', 'pub_id');
+    }
+
+    /**
+     * The images that belong to the page.
+     */
+    public function images()
+    {
+        return $this->belongsToMany(Image::class, 'page_images');
     }
 
 }

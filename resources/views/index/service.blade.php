@@ -12,7 +12,8 @@
         <div class="container">
             <div class="row md-m-25px-b m-45px-b justify-content-center text-center">
                 <div class="col-lg-8">
-                    <h3 class="h1 m-20px-b p-20px-b theme-after after-50px">@lang('app.txt.our.service')</h3>
+                    <h3 class="h1 m-20px-b p-20px-b theme-after after-50px">@lang('app.txt.service_iea')</h3>
+                    <p class="m-0px font-2">@lang('app.txt.service_def')</p>
                 </div>
             </div>
             <div class="row">  
