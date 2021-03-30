@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Mail;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\MailUser;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -71,6 +72,9 @@ class MailController extends Controller {
      * @return  \Illuminate\Http\Response
      */
     public function show(Request $request, Mail $mail) {
+        $mail_user = MailUser::where(['user_id' => Auth::id(), 'mail_id' => $mail->id])->first() ;
+        $mail_user->read = 1;
+        $mail_user->save();
         return $this->view("show", ['mail' => $mail]);
     }
 
