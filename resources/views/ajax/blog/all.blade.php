@@ -1,9 +1,17 @@
 @foreach($items as $item)
-<div class="col-md-6 col-lg-4 m-30px-b view-item">
+<div class="col-md-6 col-lg-6 m-30px-b view-item">
     <div class="hover-top card box-shadow-only-hover overflow-hidden">
         <div>
+            {{-- Show blog image --}}
             <a href="#">
-                <img src="{{$item->imageUrl()}}" alt="{{$item->title}}">
+                @php
+                    try {
+                        $img=file_get_contents($item->imageUrl());
+                    } catch (\Throwable $th) {
+                        $img=asset('images/iea.png');
+                    }   
+                @endphp
+                <img src="{{$img}}" alt="{{$item->title}}">
             </a>
         </div>
         <div class="p-20px">

@@ -3,15 +3,33 @@
     <a href="{{route('apls')}}" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12" style="margin-bottom: 20px;">@lang('app.list_apl')</a>
 
     @if ($pubs)
-        <div class="card m-35px-t">
-            @foreach($pubs as $pub)
-            <section class="widget property-meta-wrapper clearfix">
-                <h2 class="title wow slideInLeft">{{$pub->title}}</h2>
-                <div class="content-box-large box-with-header">
-                    <a target="_blank" href="{{$pub->links?$pub->links:'#'}}"><img src="{{$pub->imageUrl()}}" class="img-rounded" alt="Cinque Terre" width="604" height="236"></a>
-                </div>
-            </section>
-            @endforeach
+        <div class="m-35px-t">
+            <div class="card">
+                <p class="text-center" style="font-size: 11px;">@lang('app.txt.advertisement')</p>
+                @forelse ($pubs as $pub)
+                    <div id="ads" class="ads-section col-lg-12 p-15px-tb white-bg">
+                        <div class="ads-header col-lg-12 float-left p-5px-t p-20px-l p-10px-b border-top-1 border-color-gray">
+                            <div class="row col-lg-12">
+                                <div class="col-lg-6">
+                                    <img src="{{ asset('images/ads-logo.png') }}" alt="logo_iea">
+                                </div>
+                                <div class="col-lg-6">
+                                    <p class="text-right">{{$pub->title}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ads-content">
+                            <a href="{{ $pub->links?$item->links:'#' }}" target="_blank"><img src="{{$pub->imageUrl()}}" alt=""></a>
+                        </div>
+                    </div>
+                @empty
+                    <div id="ads" class="ads-section col-lg-12 p-15px-tb white-bg">
+                        <div class="p-5px-t p-10px-b border-top-1 border-color-gray">
+                            <p class="text-center">@lang('app.txt.no_ads')</p>
+                        </div>
+                    </div>
+                @endforelse
+            </div>
         </div>
     @endif
 

@@ -445,7 +445,7 @@ return [
     'txt.search.title2'        => 'Commercial Properties For Sale in :state',
     'txt.search.viewing'        => 'Viewing :min - :max',
     'txt.au'        => 'Australia',
-    'txt.any'        => 'any',
+    'txt.any'        => 'Any',
     'txt.immobilier_residentiel'        => 'Real estate residential',
     'txt.immobilier_foncier'        => 'Real estate land',
     'txt.business_industriel'        => 'Business industrial',
@@ -460,6 +460,7 @@ return [
     'txt.marker.drag_ended'        => 'Drag ended',      
     'txt.marker.cannot_determine_address'        => 'Cannot determine address at this location.',      
     'txt.choose_position_exacte'        => 'Please choose an exact position.',      
+    'txt.no_ads' => 'No Ads.',
     
     
     
@@ -492,8 +493,10 @@ return [
     'txt.saveinfo' =>  'Save my name, email, and website in this browser for the next time I comment.',
     'txt.probleme.survenu' => "Whoops! Something went wrong!",
     'txt.advertisement' => "ADVERTISEMENT",
-    'txt.service_iea' => 'Services offered by "IEA"',
+    'txt.service_iea' => 'Services offered by "Investir En Australie"',
     'txt.service_def' => 'What is this Services page.',
+    'txt.blog_iea' => 'The Blog "Investir En Australie"',
+    'txt.blog_def' => 'What is this Blog page.',
     
 
 
@@ -511,6 +514,7 @@ return [
 
     'form.filterBy'      => 'Filter by',
     'form.order'      => 'Order',
+    'form.show'      => 'Show by',
     'form.asc'      => 'Ascending',
     'form.desc'      => 'Descending',
     'form.vue'      => 'View',
