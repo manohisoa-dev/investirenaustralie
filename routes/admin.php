@@ -38,6 +38,7 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::delete('category/{category}', 'CategoryController@destroy')->name('category.destroy');
 
     Route::resource('pub','PubController');
+    Route::post('ajaxRequest', 'PubController@ajaxRequestPost')->name('ajaxRequest.post');
     Route::resource('badword','BadwordController');
     Route::resource('postalcode','PostalcodeController');
     Route::resource('plan','PlanController');

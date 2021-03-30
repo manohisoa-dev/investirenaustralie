@@ -82,7 +82,10 @@
                                           data-value="{{ $record->title }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
                                           data-url="{{ route('admin.page.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->title }}</span>
+                                          >{{ $record->title }}</span><br />
+										  @if($record->is_pub == 1)
+										  	<span class="label label-primary">PUB</span>
+										  @endif
                                 </td>
                                 <td>
                                     <span class="editable"

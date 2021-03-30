@@ -37,6 +37,26 @@
                     <input type="hidden" name="author_id" value="{{Auth::id()}}">
                                                         
 					<div class="form-group">
+                        <label for="language">Est un pub</label>
+                        <select name="is_pub" id="is_pub" class="form-control">
+                            <option value="0">Non</option>
+							<option value="1">Oui</option>
+                        </select>
+                    </div>
+					
+					<div id="liste_pub" style="display:none">
+						<div class="form-group">
+							<label for="language">Choisir pub</label>
+							<select name="pubid" id="pubid" class="form-control">
+								<option value="">Choisir...</option>
+								@foreach(\App\Models\Pub::all() as $pub)
+									<option value="{{$pub->id}}">{{$pub->title}}</option>
+								@endforeach
+							</select>
+						</div>
+					</div>
+					
+					<div class="form-group">
 						<label for="title">@lang('app.admin.title')</label>
 						<input name="title" id="title" class="form-control" type="text" value="">
 					</div>
@@ -60,25 +80,14 @@
 						<label for="page_order">@lang('app.admin.page_order')</label>
 						<input name="page_order" id="page_order" class="form-control" type="number" value="" placeholder="@lang('app.admin.page_order.desc')">
 					</div>
-                                            
-                    <div class="form-group">
-                        <label for="language">Est un pub</label>
-                        <select name="language" id="language" class="form-control">
-                            <option value="1">Oui</option>
-                            <option value="0">Non</option>
-                        </select>
-                    </div>
-                                            
+					              
                     <div class="form-group">
                         <label for="language">@lang('app.admin.language')</label>
                         <select name="language" id="language" class="form-control">
                             <option value="fr">Fr</option>
                             <option value="en">En</option>
                         </select>
-                    </div>
-                                            
-                    
-                                            
+                    </div>                                            
                     <button type="submit" class="btn btn-primary btn-lg">
 						<i class="fa fa-save"></i> @lang('app.btn.save')
 					</button>
@@ -97,6 +106,35 @@
     <script>
         $(document).ready(function(){
             CKEDITOR.replace( 'content' );
+			
+			$('#is_pub').change(function() {
+				var is_pub = $(this).val();
+				if(is_pub == 1){
+					$('#liste_pub').show();
+				}else{
+					$('#liste_pub').hide();
+					$('[name="title"]').val('');
+					CKEDITOR.instances['ckeditor'].setData('');
+					$('[name="path"]').val('');
+				}
+			});
+			
+			$('#pubid').change(function() {
+				var pubId = $(this).val();
+				if(pubId != 0){
+					$.ajax({
+					   type:'POST',
+					   url:"{{ route('admin.ajaxRequest.post') }}",
+					   data: {"_token": "{{ csrf_token() }}","pubId": pubId},
+					   success:function(data) {
+						  console.log(data.links);
+						  $('[name="title"]').val(data.title);
+						  CKEDITOR.instances['ckeditor'].setData(data.content);
+						  $('[name="path"]').val(data.links);
+					   }
+					});
+				}
+			});
 			
 			$('#formPage').validate({
 			    ignore: [],

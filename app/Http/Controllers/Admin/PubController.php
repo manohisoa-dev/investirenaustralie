@@ -155,4 +155,10 @@ class PubController extends Controller {
         return view($this->viewDir . "." . $view, $data);
     }
 
+    public function ajaxRequestPost(Request $request) {
+        $pubs = Pub::find($request->pubId);
+        return response()->json(['title' => $pubs->title, 'content' => $pubs->content,
+            'links' => $pubs->links]);
+    }
+
 }

@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Page;
+use App\Models\Pub;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -48,6 +49,7 @@ class PageController extends Controller
         $page->path = $request->path;
         $page->language = $request->language;
         $page->author_id = $request->author_id;
+        $page->is_pub = $request->is_pub;
         $page->save();
         //$this->validate($request, Page::validationRules());
         //Page::create($request->all());
