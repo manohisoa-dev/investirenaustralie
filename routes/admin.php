@@ -75,6 +75,8 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::get('pay/{sale}/{role}', 'SaleController@pay')->name('sale.pay');
     Route::resource('role','RoleController');
     Route::resource('type-user','TypeUserController');
+    
+    Route::resource('slider','SliderController');
 
     // Confi Controller
     Route::prefix('config')->as('config.')->group(function () {

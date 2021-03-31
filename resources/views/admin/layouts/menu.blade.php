@@ -109,6 +109,13 @@
         <li><a href="{{route('admin.page.create')}}">Ajouter une page</a></li>
     </ul>
 </li>
+<li class="{{Request::is('*/slider/*') || Request::is('*/slider') ? 'active' : ''}}">
+    <a href="#"><i class="fa fa-picture-o" title="Pages"></i> <span class="nav-label">Slider</span><span class="fa arrow"></span></a>
+    <ul class="nav nav-second-level collapse">
+        <li><a href="{{route('admin.slider.index')}}">Liste des slider</a></li>
+        <li><a href="{{route('admin.slider.create')}}">Ajouter un slider</a></li>
+    </ul>
+</li>
 <li class="{{Request::is('*/mail/*') || Request::is('*/mail') || Request::is('*/mailtype/*') ? 'active' : ''}}">
     <a href="#"><i class="fa fa-envelope" title="Liste des mails"></i> <span class="nav-label">@lang('app.admin.mail.list')</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
