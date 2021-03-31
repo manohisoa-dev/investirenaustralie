@@ -46,7 +46,7 @@
 					<div id="liste_pub" style="display:none">
 						<div class="form-group">
 							<label for="language">Choisir pub</label>
-							<select name="pubid" id="pubid" class="form-control">
+							<select name="pubid" id="pubid" class="form-control" style="width:100%">
 								<option value="">Choisir...</option>
 								@foreach(\App\Models\Pub::all() as $pub)
 									<option value="{{$pub->id}}">{{$pub->title}}</option>
@@ -105,6 +105,8 @@
     <script>
         $(document).ready(function(){
             CKEDITOR.replace( 'content' );
+			$("#pubid").select2();
+			
 			$('#is_pub').change(function() {
 				var is_pub = $(this).val();
 				if(is_pub == 1){
