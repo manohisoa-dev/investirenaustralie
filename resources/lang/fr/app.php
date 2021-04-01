@@ -539,6 +539,8 @@ return [
     'txt.load_more_product'  => "Chargement de plus de produit",
     'txt.load_more_blog'  => "Chargement de plus de blog",
     'txt.all_products'      =>'Tous les produits',
+    'txt.all_programmes'      =>'Tous les programmes',
+    'txt.programme'      =>'Programme',
     'txt.industriel'      =>'Industriel',
     'txt.commercial'      =>'Commercial',
     'txt.residentiel'      =>'Residentiel',
@@ -673,6 +675,8 @@ return [
     'txt.blog_iea' => 'Le Blog "Investir En Australie"',
     'txt.blog_def' => 'En quoi consiste cette page Blog.',
     'txt.no_ads' => 'Aucun Pubs.',
+    'txt.discover' => 'Découvrir',
+    'txt.no_product' => 'Aucun produit trouvé pour ce programme',
     
     
     'childs' => 'Fils',
@@ -906,7 +910,10 @@ return [
     'txt.marker.dragging'        => 'Déplacement',    
     'txt.marker.drag_ended'        => 'Fin du déplacement',      
     'txt.marker.cannot_determine_address'        => "Impossible de déterminer l'adresse à cet emplacement.",  
-    'txt.choose_position_exacte'        => 'Veuillez choisir une position exacte.',      
+    'txt.choose_position_exacte'        => 'Veuillez choisir une position exacte.',    
+    'txt.list_programme'        => 'Liste des Programmes',    
+    'txt.loc_geo'        => 'Localisation géographique',  
+    'txt.repr_mat'        => 'Représentation matérielle',   
 
 
 

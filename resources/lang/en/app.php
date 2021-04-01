@@ -272,6 +272,8 @@ return [
     'txt.products'      =>'Products',
     'txt.product'      =>'Product',
     'txt.all_products'      =>'All products',
+    'txt.all_programmes'      =>'All programs',
+    'txt.programme'      =>'Program',
     'txt.industriel'      =>'Industrial',
     'txt.commercial'      =>'Commercial',
     'txt.residentiel'      =>'Residential',
@@ -461,6 +463,11 @@ return [
     'txt.marker.cannot_determine_address'        => 'Cannot determine address at this location.',      
     'txt.choose_position_exacte'        => 'Please choose an exact position.',      
     'txt.no_ads' => 'No Ads.',
+    'txt.list_programme'        => 'List of Programs',   
+    'txt.loc_geo'        => 'Geographical location',   
+    'txt.repr_mat'        => 'Material representation',   
+    'txt.discover' => 'Discover',
+    'txt.no_product' => 'No products found for this program',
     
     
     

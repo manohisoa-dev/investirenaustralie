@@ -156,8 +156,6 @@ class RegisterController extends Controller
     public function index(Request $request, $role)
     {
         $roles = trans('app.'.$role);
-        Session::put('as_role',$roles);
-
         $action = route('register',['role'=>$role]);
         $page = Page::where('path', '/register/'.$role)
             ->locale()
@@ -172,6 +170,7 @@ class RegisterController extends Controller
                 $pays = $this->getPaysFromCsv();
                 $tels = $this->getTelsFromCsv();
                 return view('login.'.$role)
+                    ->with('role', $roles)
                     ->with('action', $action)
                     ->with('countries', Country::all())
                     ->with('page', $page)
@@ -180,18 +179,21 @@ class RegisterController extends Controller
             case "afa":
                 $request->session()->put("step", "condition");
                 return view('login.condition.afa')
+                    ->with('role', $roles)
                     ->with('page', $page)
                     ->with('lapls', $lapls);
                 break;
             case "apl":
                 $request->session()->put("step", "condition");
                 return view('login.condition.apl')
+                    ->with('role', $roles)
                     ->with('page', $page)
                     ->with('lapls', $lapls);
                 break;
             case "seller":
                 $request->session()->put("step", "condition");
                 return view('login.condition.seller')
+                    ->with('role', $roles)
                     ->with('page', $page)
                     ->with('lapls', $lapls);
                 break;

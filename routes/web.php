@@ -21,11 +21,11 @@ Route::get('localization/{locale}', 'LocalizationController@index')->name('local
 
 // Static pages
 Route::get('/', 'IndexController@index')->name('home');
-Route::get('services', 'IndexController@services_v2')->name('services');
-Route::get('terms', 'IndexController@terms_v2')->name('terms');
-Route::get('help', 'IndexController@help_v2')->name('help');
-Route::get('publicities', 'IndexController@publicities_v2')->name('publicities');
-Route::get('confidentialities', 'IndexController@confidentialities_v2')->name('confidentialities');
+Route::get('services', 'IndexController@services')->name('services');
+Route::get('terms', 'IndexController@terms')->name('terms');
+Route::get('help', 'IndexController@help')->name('help');
+Route::get('publicities', 'IndexController@publicities')->name('publicities');
+Route::get('confidentialities', 'IndexController@confidentialities')->name('confidentialities');
 Route::get('apls', 'IndexController@apl')->name('apls');
 // Shop each apl
 Route::get('get/show/apl/{id}', 'IndexController@getShowApl')->name('get.show.apl');
@@ -39,6 +39,10 @@ Route::get('shop/search', 'SearchController@search')->name('cg.search');
 Route::post('shop/{category?}', 'SearchController@index')->name('search');
 Route::get('shop/{category?}', 'ShopController@index')->name('shop.index');// List product by Category OR no
 Route::get('product/{slug}', 'ProductController@index')->name('product.index');// View Product
+Route::get('get/show/product/{slug}', 'ProductController@getShowProduct')->name('get.show.product');
+
+// Programme
+Route::get('programme/{category?}', 'ProgrammeController@show')->name('programme.show');// List product by Category OR no
 
 /// Blog
 Route::get('blogs/{filter?}', 'BlogController@all')->name('blog.all');
