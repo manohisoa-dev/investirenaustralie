@@ -17,27 +17,28 @@
                     <i class="fa fa-envelope"></i>  
 					<span class="label label-warning">{{\App\Models\Mail::inboxcount(Auth::user()->id)}}</span>
                 </a>
-                <ul class="dropdown-menu dropdown-alerts">
-					@foreach(\App\Models\Mail::inboxlist(Auth::user()->id) as $mail)
+                <ul class="dropdown-menu dropdown-messages dropdown-menu-right">
+                    @foreach(\App\Models\Mail::inboxlist(Auth::user()->id) as $mail)
                     <li>
-                        <a href="{{route('admin.mail.index')}}/{{$mail->id}}" class="dropdown-item">
-                            <div>
-                                <i class="fa fa-envelope fa-fw"></i> Vous avez reçu une message de la part de <strong>{{ $mail->sender->name }}</strong>
-                                <span class="float-right text-muted small">{{ $mail->created_at ? $mail->created_at->diffForHumans() : '' }}</span>
+                        <div class="dropdown-messages-box">
+                            <a class="dropdown-item float-left" href="profile.html">
+                                <img alt="image" class="rounded-circle" src="{{$mail->sender->imageUrl()}}">
+                            </a>
+                            <div class="media-body">
+                                Vous avez reçu une message de la part de <strong>{{ $mail->sender->name}}</strong>. <br>
+                                <small class="text-muted">{{ $mail->created_at ? $mail->created_at->diffForHumans() : '' }}</small>
                             </div>
-                        </a>
+                        </div>
                     </li>
                     <li class="dropdown-divider"></li>
-					@endforeach
-					{{--    
+                    @endforeach
                     <li>
                         <div class="text-center link-block">
                             <a href="mailbox.html" class="dropdown-item">
-                                <i class="fa fa-envelope"></i> <strong>Read All Messages</strong>
+                                <i class="fa fa-envelope"></i> <strong>Lire tous les messages</strong>
                             </a>
                         </div>
                     </li>
-					--}}
                 </ul>
             </li>
             <li class="dropdown">
