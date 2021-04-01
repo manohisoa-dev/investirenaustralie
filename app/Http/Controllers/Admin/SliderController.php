@@ -40,7 +40,7 @@ class SliderController extends Controller {
         } else {
             $slider = new Slider();
             if ($file = $request->file('image')) {
-                $image = Image::storeAndSave($file);
+                $image = Image::storeAndSave($file, 'slider');
                 $slider->image_id = $image->id;
             }
 
@@ -81,7 +81,24 @@ class SliderController extends Controller {
      * @return  \Illuminate\Http\Response
      */
     public function update(Request $request, Slider $slider) {
-        if ($request->isXmlHttpRequest()) {
+        if ($request->type == 'pub') {
+            $slider->content = $request->content;
+            $slider->type = $request->type;
+            $slider->status = $request->status;
+            $slider->image_id = $request->image_id;
+            $slider->update();
+        } else {
+            if ($file = $request->file('image')) {
+                $image = Image::storeAndSave($file, 'slider');
+                $slider->image_id = $image->id;
+            }
+            $slider->content = $request->content1;
+            $slider->type = $request->type;
+            $slider->status = $request->status;
+            $slider->update();
+        }
+
+        /*if ($request->isXmlHttpRequest()) {
             $data = [$request->name => $request->value];
             $validator = \Validator::make($data, Slider::validationRules($request->name));
             if ($validator->fails())
@@ -91,8 +108,7 @@ class SliderController extends Controller {
         }
 
         $this->validate($request, Slider::validationRules());
-
-        $slider->update($request->all());
+        $slider->update($request->all());*/
 
         # notification
         Notify::success('Slider a été mise à jour avec succès');

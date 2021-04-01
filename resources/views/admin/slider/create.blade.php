@@ -91,16 +91,21 @@
 	<script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
 	<script>
         $(document).ready(function(){
-			$("#productId").select2();
+			$("#product_id").select2();
+			
 			
 			$('#type').change(function() {
 				var type = $(this).val();
 				if(type == 'image'){
 					$('#slideImage').show();
+					$('#slideProduct').hide();
+					$('[name="content"]').val('');
 				}else if(type == 'pub'){
 					$('#slideProduct').show();
+					$('#slideImage').hide();
 				}else{
-				
+					$('#slideImage').hide();
+					$('#slideProduct').hide();
 				}
 			});
 			
