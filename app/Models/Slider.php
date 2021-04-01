@@ -38,8 +38,8 @@ class Slider extends Model
     {
         $rules = [
             'content' => 'string|max:191',
-            'type' => 'string|max:191',
-            'status' => 'required|integer',
+            'type' => 'required|string|max:191',
+            'status' => 'integer',
             'image_id' => 'required',
         ];
 

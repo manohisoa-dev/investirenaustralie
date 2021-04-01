@@ -176,5 +176,11 @@ class ProductController extends Controller
     {
         return view($this->viewDir.".".$view, $data);
     }
+    
+    public function ajaxRequestPost(Request $request) {
+        $product = Product::find($request->productId);
+        return response()->json(['slug' => $product->slug, 'id' => $product->id,
+            'image_id' => $product->image_id]);
+    }
 
 }

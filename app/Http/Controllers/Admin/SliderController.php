@@ -1,21 +1,21 @@
 <?php
+
 namespace App\Http\Controllers\admin;
 
 use App\Models\Slider;
+use App\Models\Image;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Jleon\LaravelPnotify\Notify;
 
-class SliderController extends Controller
-{
+class SliderController extends Controller {
     public $viewDir = "admin.slider";
 
-    public function index()
-    {
+    public function index() {
         $records = Slider::findRequested();
-        return $this->view( "index", ['records' => $records] );
+        return $this->view("index", ['records' => $records]);
     }
 
     /**
@@ -23,8 +23,7 @@ class SliderController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         return $this->view("create");
     }
 
@@ -34,11 +33,23 @@ class SliderController extends Controller
      * @param    \Illuminate\Http\Request  $request
      * @return  \Illuminate\Http\Response
      */
-    public function store( Request $request )
-    {
-        $this->validate($request, Slider::validationRules());
+    public function store(Request $request) {
+        if ($request->type == 'pub') {
+            $this->validate($request, Slider::validationRules());
+            Slider::create($request->all());
+        } else {
+            $slider = new Slider();
+            if ($file = $request->file('image')) {
+                $image = Image::storeAndSave($file);
+                $slider->image_id = $image->id;
+            }
 
-        Slider::create($request->all());
+            $slider->type = $request->type;
+            $slider->status = $request->status;
+            $slider->content = $request->content;
+            $slider->save();
+        }
+
 
         # notification
         Notify::success('Slider a été créer avec succès');
@@ -50,9 +61,8 @@ class SliderController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function show(Request $request, Slider $slider)
-    {
-        return $this->view("show",['slider' => $slider]);
+    public function show(Request $request, Slider $slider) {
+        return $this->view("show", ['slider' => $slider]);
     }
 
     /**
@@ -60,9 +70,8 @@ class SliderController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function edit(Request $request, Slider $slider)
-    {
-        return $this->view( "edit", ['slider' => $slider] );
+    public function edit(Request $request, Slider $slider) {
+        return $this->view("edit", ['slider' => $slider]);
     }
 
     /**
@@ -71,14 +80,12 @@ class SliderController extends Controller
      * @param    \Illuminate\Http\Request  $request
      * @return  \Illuminate\Http\Response
      */
-    public function update(Request $request, Slider $slider)
-    {
-        if( $request->isXmlHttpRequest() )
-        {
-            $data = [$request->name  => $request->value];
-            $validator = \Validator::make( $data, Slider::validationRules( $request->name ) );
-            if($validator->fails())
-                return response($validator->errors()->first( $request->name),403);
+    public function update(Request $request, Slider $slider) {
+        if ($request->isXmlHttpRequest()) {
+            $data = [$request->name => $request->value];
+            $validator = \Validator::make($data, Slider::validationRules($request->name));
+            if ($validator->fails())
+                return response($validator->errors()->first($request->name), 403);
             $slider->update($data);
             return "Record updated";
         }
@@ -97,8 +104,7 @@ class SliderController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Slider $slider)
-    {
+    public function destroy(Request $request, Slider $slider) {
         $slider->delete();
 
         # notification
@@ -106,9 +112,8 @@ class SliderController extends Controller
         return redirect(route('admin.slider.index'));
     }
 
-    protected function view($view, $data = [])
-    {
-        return view($this->viewDir.".".$view, $data);
+    protected function view($view, $data = []) {
+        return view($this->viewDir . "." . $view, $data);
     }
 
 }
