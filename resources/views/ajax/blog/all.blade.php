@@ -9,7 +9,7 @@
                         if(file_get_contents($item->imageUrl()));
                         $img=$item->imageUrl();
                     } catch (\Throwable $th) {
-                        $img=asset('images/iea.png');
+                        $img=asset('images/blog/iea.png');
                     }   
                 @endphp
                 <img src="{{$img}}" alt="{{$item->title}}">
