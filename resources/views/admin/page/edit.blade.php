@@ -36,6 +36,24 @@
 
                     {{ csrf_field() }}
                     {{ method_field("PUT") }}
+					<div class="form-group">
+                        <label for="language">Est un pub</label>
+                        <select name="is_pub" id="is_pub" class="form-control">
+							<option value="1" {{$page->is_pub == '1' ? 'selected' : ''}}>Oui</option>
+							<option value="0" {{$page->is_pub == '0' ? 'selected' : ''}}>Non</option>
+						</select>
+                    </div>
+					<div id="liste_pub" style="display:none">
+						<div class="form-group">
+							<label for="language">Choisir pub</label>
+							<select name="pubid" id="pubid" class="form-control" style="width:100%">
+								<option value="">Choisir...</option>
+								@foreach(\App\Models\Pub::all() as $pub)
+									<option value="{{$pub->id}}">{{$pub->title}}</option>
+								@endforeach
+							</select>
+						</div>
+					</div>
                     <div class="form-group">
 						<label for="title">@lang('app.admin.title')</label>
 						<input name="title" id="title" class="form-control" type="text" value="{{$page->title}}">
@@ -59,15 +77,7 @@
 					<div class="form-group">
 						<label for="page_order">@lang('app.admin.page_order')</label>
 						<input name="page_order" id="page_order" class="form-control" type="number" value="{{$page->page_order}}">
-					</div>
-                                            
-                    <div class="form-group">
-                        <label for="language">Est un pub</label>
-                        <select name="language" id="language" class="form-control">
-							<option value="1" {{$page->is_pub == '1' ? 'selected' : ''}}>Oui</option>
-							<option value="0" {{$page->is_pub == '0' ? 'selected' : ''}}>Non</option>
-						</select>
-                    </div>
+					</div>               
                                             
                     <div class="form-group">
                         <label for="language">@lang('app.admin.language')</label>
@@ -95,6 +105,36 @@
     <script>
         $(document).ready(function(){
             CKEDITOR.replace( 'content' );
+			$("#pubid").select2();
+			
+			$('#is_pub').change(function() {
+				var is_pub = $(this).val();
+				if(is_pub == 1){
+					$('#liste_pub').show();
+				}else{
+					$('#liste_pub').hide();
+					$('[name="title"]').val('');
+					CKEDITOR.instances['ckeditor'].setData('');
+					$('[name="path"]').val('');
+				}
+			});
+			
+			$('#pubid').change(function() {
+				var pubId = $(this).val();
+				if(pubId != 0){
+					$.ajax({
+					   type:'POST',
+					   url:"{{ route('admin.ajaxRequest.post') }}",
+					   data: {"_token": "{{ csrf_token() }}","pubId": pubId},
+					   success:function(data) {
+						  console.log(data.links);
+						  $('[name="title"]').val(data.title);
+						  CKEDITOR.instances['ckeditor'].setData(data.content);
+						  $('[name="path"]').val(data.links);
+					   }
+					});
+				}
+			});
 			
 			$('#formPage').validate({
 			    ignore: [],

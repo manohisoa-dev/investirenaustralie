@@ -38,6 +38,7 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::delete('category/{category}', 'CategoryController@destroy')->name('category.destroy');
 
     Route::resource('pub','PubController');
+    Route::post('ajaxRequest', 'PubController@ajaxRequestPost')->name('ajaxRequest.post');
     Route::resource('badword','BadwordController');
     Route::resource('postalcode','PostalcodeController');
     Route::resource('plan','PlanController');
@@ -74,6 +75,8 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::get('pay/{sale}/{role}', 'SaleController@pay')->name('sale.pay');
     Route::resource('role','RoleController');
     Route::resource('type-user','TypeUserController');
+    
+    Route::resource('slider','SliderController');
 
     // Confi Controller
     Route::prefix('config')->as('config.')->group(function () {

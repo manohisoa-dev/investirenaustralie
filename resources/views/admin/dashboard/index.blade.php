@@ -11,60 +11,60 @@
         <div class="col-lg-3">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <div class="ibox-tools">
-                        <span class="label label-success float-right">Monthly</span>
-                    </div>
+                    {{--<div class="ibox-tools">--}}
+                        {{--<span class="label label-success float-right">Monthly</span>--}}
+                    {{--</div>--}}
                     <h5>Utilisateurs</h5>
                 </div>
                 <div class="ibox-content">
                     <h1 class="no-margins">{{$count['users']}}</h1>
-                    <div class="stat-percent font-bold text-success">98% <i class="fa fa-bolt"></i></div>
-                    <small>Total income</small>
+                    {{--<div class="stat-percent font-bold text-success">98% <i class="fa fa-bolt"></i></div>--}}
+                    {{--<small>Total income</small>--}}
                 </div>
             </div>
         </div>
         <div class="col-lg-3">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <div class="ibox-tools">
-                        <span class="label label-info float-right">Annual</span>
-                    </div>
+                    {{--<div class="ibox-tools">--}}
+                        {{--<span class="label label-info float-right">Annual</span>--}}
+                    {{--</div>--}}
                     <h5>Produits</h5>
                 </div>
                 <div class="ibox-content">
                     <h1 class="no-margins">{{$count['products']}} </h1>
-                    <div class="stat-percent font-bold text-info">20% <i class="fa fa-level-up"></i></div>
-                    <small>New orders</small>
+                    {{--<div class="stat-percent font-bold text-info">20% <i class="fa fa-level-up"></i></div>--}}
+                    {{--<small>New orders</small>--}}
                 </div>
             </div>
         </div>
         <div class="col-lg-3">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <div class="ibox-tools">
-                        <span class="label label-primary float-right">Today</span>
-                    </div>
+                    {{--<div class="ibox-tools">--}}
+                        {{--<span class="label label-primary float-right">Today</span>--}}
+                    {{--</div>--}}
                     <h5>Commandes</h5>
                 </div>
                 <div class="ibox-content">
                     <h1 class="no-margins">{{$count['orders']}}</h1>
-                    <div class="stat-percent font-bold text-navy">44% <i class="fa fa-level-up"></i></div>
-                    <small>New visits</small>
+                    {{--<div class="stat-percent font-bold text-navy">44% <i class="fa fa-level-up"></i></div>--}}
+                    {{--<small>New visits</small>--}}
                 </div>
             </div>
         </div>
         <div class="col-lg-3">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <div class="ibox-tools">
-                        <span class="label label-danger float-right">Low value</span>
-                    </div>
+                    {{--<div class="ibox-tools">--}}
+                        {{--<span class="label label-danger float-right">Low value</span>--}}
+                    {{--</div>--}}
                     <h5>Ventes</h5>
                 </div>
                 <div class="ibox-content">
                     <h1 class="no-margins">{{$count['sales']}}</h1>
-                    <div class="stat-percent font-bold text-danger">38% <i class="fa fa-level-down"></i></div>
-                    <small>In first month</small>
+                    {{--<div class="stat-percent font-bold text-danger">38% <i class="fa fa-level-down"></i></div>--}}
+                    {{--<small>In first month</small>--}}
                 </div>
             </div>
         </div>
@@ -133,7 +133,6 @@
                                     <th>Status</th>
                                     <th>Date</th>
                                     <th>User</th>
-                                    <th>Value</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -142,7 +141,6 @@
                                         <td><small>Pending...</small></td>
                                         <td><i class="fa fa-clock-o"></i> 11:20pm</td>
                                         <td>{{$user->name}}</td>
-                                        <td class="text-navy"> <i class="fa fa-level-up"></i> 24% </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -167,7 +165,7 @@
                             <ul class="todo-list m-t small-list">
                                 @foreach($recent['products'] as $product)
                                     <li>
-                                        <span class="m-l-xs">{{$product->title}}</span>
+                                        <span class="m-l-xs">{{$product->title}} - ${{number_format($product->price, 0, ',',' ')}}</span>
                                     </li>
                                 @endforeach
                             </ul>
