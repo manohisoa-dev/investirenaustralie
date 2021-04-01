@@ -21,7 +21,7 @@
                     @foreach(\App\Models\Mail::inboxlist(Auth::user()->id) as $mail)
                     <li>
                         <div class="dropdown-messages-box">
-                            <a class="dropdown-item float-left" href="profile.html">
+                            <a class="dropdown-item float-left" href="{{route('admin.mail.index')}}/{{$mail->id}}">
                                 <img alt="image" class="rounded-circle" src="{{$mail->sender->imageUrl()}}">
                             </a>
                             <div class="media-body">
