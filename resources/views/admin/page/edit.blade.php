@@ -43,17 +43,20 @@
 							<option value="0" {{$page->is_pub == '0' ? 'selected' : ''}}>Non</option>
 						</select>
                     </div>
-					<div id="liste_pub" style="display:none">
+					@if($page->is_pub == 1)					
+					<div id="liste_pub">
 						<div class="form-group">
 							<label for="language">Choisir pub</label>
 							<select name="pubid" id="pubid" class="form-control" style="width:100%">
-								<option value="">Choisir...</option>
+								<option value="">Choisir...</option>								
 								@foreach(\App\Models\Pub::all() as $pub)
-									<option value="{{$pub->id}}">{{$pub->title}}</option>
+									<option value="{{$pub->id}}" {{$page->pubs->first()->id == $pub->id ? 'selected' : ''}}>{{$pub->title}}</option>
 								@endforeach
 							</select>
 						</div>
+						<input type="hidden" name="oldpubId" value="{{$page->pubs->first()->id}}" />
 					</div>
+					@endif
                     <div class="form-group">
 						<label for="title">@lang('app.admin.title')</label>
 						<input name="title" id="title" class="form-control" type="text" value="{{$page->title}}">

@@ -38,11 +38,11 @@
                     <tr class="header-row">
 						{!!\Nvd\Crud\Html::sortableTh('id','admin.slider.index','Id')!!}
 						{!!\Nvd\Crud\Html::sortableTh('image_id','admin.slider.index','Image')!!}
-						{!!\Nvd\Crud\Html::sortableTh('content','admin.slider.index','Content')!!}
+						{!!\Nvd\Crud\Html::sortableTh('content','admin.slider.index','Contenu')!!}
 						{!!\Nvd\Crud\Html::sortableTh('type','admin.slider.index','Type')!!}
-						{!!\Nvd\Crud\Html::sortableTh('status','admin.slider.index','Status')!!}						
-						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.slider.index','Created At')!!}
-						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.slider.index','Updated At')!!}
+						{!!\Nvd\Crud\Html::sortableTh('status','admin.slider.index','Statut')!!}						
+						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.slider.index','Créer le')!!}
+						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.slider.index','Mise à jour le')!!}
 						<th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
@@ -93,9 +93,21 @@
                                           data-url="{{ route('admin.slider.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->status }}</span>
                                  </td>
-                                 <td>{{ $record->created_at }}</td>
-                                 <td>{{ $record->updated_at }}</td>
-                                  @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('admin.slider.index'), 'record' => $record ] )
+                                 <td>{{ $record->created_at ? $record->created_at->diffForHumans() : ''}}</td>
+                                 <td>{{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}</td>
+								 <td class="actions-cell text-center" width="7%">
+									<form class="form-inline" action="{{route('admin.slider.index')}}/{{$record->id}}" method="POST">
+										<a href="{{route('admin.slider.index')}}/{{$record->id}}/edit" title="Modification" class="btn btn-default btn-circle">
+											<i class="fa fa-pencil-square-o"></i>
+										</a>&nbsp;&nbsp;
+										{{ csrf_field() }}
+										{{ method_field('DELETE') }}
+										<button class="btn btn-default btn-circle"
+											onclick="return confirm('Vous êtes sur?')"
+											type="submit" title="Suppression"><i class="fa fa-times text-danger"></i>
+										</button>
+									</form>
+								 </td>
                             </tr>
                         @empty
                             @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 8])

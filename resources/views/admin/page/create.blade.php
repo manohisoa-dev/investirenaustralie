@@ -37,7 +37,7 @@
                     <input type="hidden" name="author_id" value="{{Auth::id()}}">
                                                         
 					<div class="form-group">
-                        <label for="language">Est un pub</label>
+                        <label for="estunpub">Est un pub</label>
                         <select name="is_pub" id="is_pub" class="form-control">
                             <option value="0">Non</option>
 							<option value="1">Oui</option>
@@ -143,9 +143,6 @@
 					title: {
 						required: true
 					},
-					content: {
-						required: true
-					},
 					path: {
 						required: true
 					},
@@ -155,9 +152,6 @@
 				},
 				messages: {
 					title: {
-						required: "@lang('app.txt.champobligatoire')"
-					},
-					content: {
 						required: "@lang('app.txt.champobligatoire')"
 					},
 					path: {

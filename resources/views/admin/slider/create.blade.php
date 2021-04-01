@@ -32,18 +32,51 @@
                 <h5>Ajouter un nouveau Slider</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-validation form-padding" action="{{ route('admin.slider.store') }}" method="post">
+                <form class="form-validation form-padding" action="{{ route('admin.slider.store') }}" method="post" enctype="multipart/form-data">
 
                     {{ csrf_field() }}
-                                                        
-                    {!! \Nvd\Crud\Form::input('content','text')->show() !!}
-                                            
-                    {!! \Nvd\Crud\Form::input('type','text')->show() !!}
-                                            
-                    {!! \Nvd\Crud\Form::input('status','text')->show() !!}
-                                            
-                    {!! \Nvd\Crud\Form::input('image_id','text')->show() !!}
-                                                                                    
+                    <div class="form-group">
+                        <label for="Type">Type</label>
+                        <select name="type" id="type" class="form-control">
+							<option value="">Choisir...</option>
+                            <option value="image">Image</option>
+							<option value="pub">Pub</option>
+                        </select>
+                    </div>
+			
+					<div id="slideProduct" style="display:none">
+						<div class="form-group">
+							<label>Choisir produit</label>
+							<select name="product_id" id="product_id" class="form-control" style="width:100%">
+								<option value="">Choisir...</option>
+								@foreach(\App\Models\Product::all() as $prd)
+									<option value="{{$prd->id}}">{{$prd->title}}</option>
+								@endforeach
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="title">@lang('app.admin.content')</label>
+							<input type="text" name="content" id="content" class="form-control" readonly="" />
+						</div>
+						<input type="hidden" name="image_id" />
+					</div>    
+					<div id="slideImage" style="display:none">
+						<div class="form-group">
+							<label for="title">@lang('app.admin.content')</label>
+							<input type="text" name="content" id="content" class="form-control"/>
+						</div>
+						<div class="form-group">
+							<label for="title">Image</label>
+							<input type="file" name="image" class="form-control"/>
+						</div>
+					</div>
+                    <div class="form-group">
+                        <label for="Type">Status</label>
+                        <select name="status" id="status" class="form-control">
+                            <option value="0">Non actif</option>
+							<option value="1">Actif</option>
+                        </select>
+                    </div>                                                       
                     <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Créer</button>
 
                 </form>
@@ -52,4 +85,40 @@
     </div>
 </div>
 
+@endsection
+
+@section('custom-script')
+	<script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+	<script>
+        $(document).ready(function(){
+			$("#productId").select2();
+			
+			$('#type').change(function() {
+				var type = $(this).val();
+				if(type == 'image'){
+					$('#slideImage').show();
+				}else if(type == 'pub'){
+					$('#slideProduct').show();
+				}else{
+				
+				}
+			});
+			
+			$('#product_id').change(function() {
+				var productId = $(this).val();
+				if(productId != 0){
+					$.ajax({
+					   type:'POST',
+					   url:"{{ route('admin.ajaxRequestProduct.post') }}",
+					   data: {"_token": "{{ csrf_token() }}","productId": productId},
+					   success:function(data) {
+						  console.log(data.slug);
+						  $('[name="content"]').val(data.slug);
+						  $('[name="image_id"]').val(data.image_id);
+					   }
+					});
+				}
+			});
+		});
+	</script>
 @endsection

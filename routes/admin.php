@@ -50,6 +50,7 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::post('compose/{mail?}', 'AdminController@sendMail');
     
     Route::resource('product','ProductController');
+    Route::post('ajaxRequestProduct', 'ProductController@ajaxRequestPost')->name('ajaxRequestProduct.post');    
     Route::get('archive/{product}', 'ProductController@archive')->name('product.archive');
     Route::get('trash/{product}', 'ProductController@trash')->name('product.trash');
     Route::get('restore/{product}', 'ProductController@restore')->name('product.restore');
