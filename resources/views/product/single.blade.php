@@ -1,7 +1,15 @@
 <div class="col-sm-12 col-lg-12 m-15px-tb">
     <div class="box-shadow-hover hover-top white-bg our-team-hover-icon border-radius-3">
         <div class="p-10px team-img">
-            <img src="{{$item->imageUrl()}}" alt="{{$item->title}}">
+            @php
+                    try {
+                        if(file_get_contents($item->imageUrl()));
+                        $img=$item->imageUrl();
+                    } catch (\Throwable $th) {
+                        $img=asset('images/iea.png');
+                    }   
+                @endphp
+                <img src="{{$img}}" alt="{{$item->title}}">
         </div>
         <div class="p-5px-t p-20px-b text-center">
             <small><i class="fa fa-map-marker"></i> 

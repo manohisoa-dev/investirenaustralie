@@ -68,7 +68,6 @@ class ShopController extends Controller
         
         $products = Product::orderBy('created_at','desc')
             ->ofStatus('published')
-            ->take($this->recentSize)
             ->get();
         
         $categories = Category::orderBy('created_at', 'desc')
@@ -125,10 +124,10 @@ class ShopController extends Controller
             ->get();
 
         $lapls = Localisation::select('localizations.*')
-                ->join('users','users.location_id','=','localizations.id')
-                ->where('users.role','=','4')
-                ->groupBy('localizations.locality')
-                ->get();
+            ->join('users','users.location_id','=','localizations.id')
+            ->where('users.role','=','4')
+            ->groupBy('localizations.locality')
+            ->get();
                 
         $min_price_residentiel = Product::groupBy('category_id')
             ->where('category_id','=',1)
@@ -217,6 +216,27 @@ class ShopController extends Controller
         $max_area_commercial = Product::groupBy('category_id')
             ->where('category_id','=',4)
             ->max('land_area');
+        
+        $lapls = User::ofRole(4)
+            ->isActive()
+            ->has('location')
+            ->with('location')
+            ->get();
+
+        $data = [];
+        foreach($products as $item){
+            $data[] = [
+                'id' => $item->id,
+                'slug' => $item->slug,
+                'lat' => $item->location?$item->location->latitude:0,
+                'lng' => $item->location?$item->location->longitude:0,
+                'title' => $item->title,
+                'area' => $item->area,
+                'type' => 'product',
+            ];
+        }
+
+        
 
         return view('shop.index')
             ->with('items', $items)
@@ -261,7 +281,8 @@ class ShopController extends Controller
             ->with('max_price_commercial',$max_price_commercial)
             ->with('min_area_commercial',$min_area_commercial)
             ->with('max_area_commercial',$max_area_commercial)
-            ->with('categories', $categories); 
+            ->with('categories', $categories)
+            ->with(['data' => json_encode($data)]);
     }
     
     /**
@@ -584,5 +605,4 @@ class ShopController extends Controller
         
         return redirect()->route('shop.order.last')->with('success', "Votre commande a bien été annulée.");
     }
-
 }

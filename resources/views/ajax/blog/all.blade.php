@@ -6,7 +6,8 @@
             <a href="#">
                 @php
                     try {
-                        $img=file_get_contents($item->imageUrl());
+                        if(file_get_contents($item->imageUrl()));
+                        $img=$item->imageUrl();
                     } catch (\Throwable $th) {
                         $img=asset('images/iea.png');
                     }   

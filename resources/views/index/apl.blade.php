@@ -36,7 +36,7 @@
               </div>
               <div class="col-lg-9 p-15px white-bg box-shadow">
                 <div id="map"></div>
-            </div>
+              </div>
           </div>
       </div>
   </div>

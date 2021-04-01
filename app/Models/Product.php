@@ -130,6 +130,19 @@ class Product extends Model {
     }
 
     /**
+     * Scope a query to only include products of a given $parent_id.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param mixed $parent_id
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeIsParent($query, $parent_id)
+    {
+        return $query->where('parent_id', $parent_id);
+    }
+
+
+    /**
      * Check if product is disponible (quantity>0)
      *
      * @return Boolean

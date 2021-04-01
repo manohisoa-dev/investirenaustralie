@@ -360,4 +360,10 @@ class ProductController extends Controller
             ->with('success',"Le produit a été supprimé avec succés");
     }
 
+
+    public function getShowProduct($slug){
+        $url = url('product/'.$slug);
+        return response()->json(['res'=>$url]);
+    }
+
 }

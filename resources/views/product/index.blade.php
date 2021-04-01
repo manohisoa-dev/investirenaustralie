@@ -43,8 +43,17 @@
                       </a>
                   </div>
                   @else
-                  <figure class="figure"><img src="{{$item->imageUrl()}}" alt="{{$item->title}}" class="img-fluid shadow rounded">
-                      <figcaption class="m-15px-t dark-color"><h4>{{$item->title}}</h4></figcaption>
+                  <figure class="figure">
+                    @php
+                        try {
+                            if(file_get_contents($item->imageUrl()));
+                            $img=$item->imageUrl();
+                        } catch (\Throwable $th) {
+                            $img=asset('images/iea.png');
+                        }   
+                    @endphp
+                    <img src="{{$img}}" alt="{{$item->title}}" class="img-fluid shadow rounded">
+                    <figcaption class="m-15px-t dark-color"><h4>{{$item->title}}</h4></figcaption>
                   </figure> 
                   @endif
 

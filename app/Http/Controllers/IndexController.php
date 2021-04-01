@@ -258,22 +258,13 @@ class IndexController extends Controller
             ->with(['data' => json_encode($data)]);
     }
 
-    /**
-     * Show the service's page.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function services(Request $request)
-    {
-        return $this->render($request, 3);
-    }
 
     /**
      * Show the service's page.
      *
      * @return \Illuminate\Http\Response
      */
-    public function services_v2(Request $request)
+    public function services(Request $request)
     {
         $id_page = 3;
         $page = Page::findOrFail($id_page);
@@ -327,16 +318,6 @@ class IndexController extends Controller
      */
     public function publicities(Request $request)
     {
-        return $this->render($request, 5);
-    }
-
-    /**
-     * Show the publicity's page.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function publicities_v2(Request $request)
-    {
         $id_page = 5;
         $page = Page::findOrFail($id_page);
         $blogs = Blog::ofStatus('published')
@@ -374,24 +355,13 @@ class IndexController extends Controller
             ->with('categories', $categories);
     }
 
+
     /**
      * Show the term and condition page.
      *
      * @return \Illuminate\Http\Response
      */
     public function terms(Request $request)
-    {                
-
-        return $this->render($request, 6);
-
-    }
-
-    /**
-     * Show the term and condition page.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function terms_v2(Request $request)
     {      
         $id_page = 6;
         $page = Page::findOrFail($id_page);
@@ -428,22 +398,13 @@ class IndexController extends Controller
             ->with('categories', $categories);
     }
 
-    /**
-     * Show the guide's page.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function help(Request $request)
-    {
-        return $this->render($request, 8);
-    }
 
     /**
      * Show the guide's page.
      *
      * @return \Illuminate\Http\Response
      */
-    public function help_v2(Request $request)
+    public function help(Request $request)
     {
         $id_page = 8;
         $page = Page::findOrFail($id_page);
@@ -482,22 +443,13 @@ class IndexController extends Controller
             ->with('categories', $categories);
     }
 
-    /**
-     * Show the confidentiality's page.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function confidentialities(Request $request)
-    {
-        return $this->render($request, 7);
-    }
 
     /**
      * Show the confidentiality's page.
      *
      * @return \Illuminate\Http\Response
      */
-    public function confidentialities_v2(Request $request)
+    public function confidentialities(Request $request)
     {
         $id_page = 7;
         $page = Page::findOrFail($id_page);

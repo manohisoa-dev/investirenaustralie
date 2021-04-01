@@ -38,7 +38,7 @@
         'min_area_commercial'=>$min_area_commercial,
         'max_area_commercial'=>$max_area_commercial]
         : [
-        'cat'=>'shop',
+        'cat'=>'programme',
         'typesRes'=>$typesRes,
         'states'=>$states,
         'typesFonc'=>$typesFonc,
@@ -71,7 +71,7 @@
         'max_price_commercial'=>$max_price_commercial,
         'min_area_commercial'=>$min_area_commercial,
         'max_area_commercial'=>$max_area_commercial])
-    @lang('all_products')
+    @lang('all_programmes')
 @endcomponent
 
 <!-- Section -->
@@ -131,12 +131,13 @@
                 </section>
                 <!-- End Section show map -->
 
-                <!-- Section show product -->
+                <!-- Section show programme -->
                 <section class="section" id="show-mat" hidden>
                     <div class="container">
                         <div class="row w-100" >
-                            <div id="infinite-scroll" class="product-data"> 
-                                @include('ajax.product.all',['items'=>$items])
+                            <div id="infinite-scroll" class="product-data">
+                                {{-- @include('ajax.programme.all',['items'=>$items]) --}}
+                                @include('programme.all',['items'=>$items])
                             </div>
                             <div class="row">
                                 <div class="ajax-load text-center" style="display:none">
@@ -156,8 +157,6 @@
     </div>
 </section>
 <!-- End Section -->
-
-
 
 
 @if(isset($q)&&$q)

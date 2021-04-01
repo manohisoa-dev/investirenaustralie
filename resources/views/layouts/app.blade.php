@@ -114,13 +114,14 @@
                                 @if(!Auth::check())
                                 <li class="small m-10px-l"><i class="fas fa-mouse-pointer"></i> <a href="{{route('login')}}">@lang('app.connexion')</a>
                                 </li>
+
                                 <li class="small m-10px-l"><i class="fas fa-sign-in-alt"></i> @lang('app.sinscrire') : 
                                     <select id="currency-dropdown" onChange="location.href=''+this.options[this.selectedIndex].value;" class="white-bg-alt border-color-dark-gray border-radius-0 white-color">
                                         <option class="dark-color" value="#" selected="true" disabled="disabled">@lang('app.as')</option>
-                                        <option class="dark-color" value="{{route('register', ['role'=>'member'])}}" {{ session('as_role')==trans('app.member')?'selected':'' }}>@lang('app.member')</option>
-                                        <option class="dark-color" value="{{route('register', ['role'=>'seller'])}}" {{ session('as_role')==trans('app.seller')?'selected':'' }}>@lang('app.seller')</option>
-                                        <option class="dark-color" value="{{route('register', ['role'=>'afa'])}}" {{ session('as_role')==trans('app.afa')?'selected':'' }}>@lang('app.afa')</option>
-                                        <option class="dark-color" value="{{route('register', ['role'=>'apl'])}}" {{ session('as_role')==trans('app.apl')?'selected':'' }}>@lang('app.apl')</option>
+                                        <option class="dark-color" value="{{route('register', ['role'=>'member'])}}" @if(isset($role)) {{ $role==trans('app.member')?"selected":""  }}@endif>@lang('app.member')</option>
+                                        <option class="dark-color" value="{{route('register', ['role'=>'seller'])}}" @if(isset($role)) {{ $role==trans('app.seller')?"selected":""  }}@endif>@lang('app.seller')</option>
+                                        <option class="dark-color" value="{{route('register', ['role'=>'afa'])}}" @if(isset($role)) {{ $role==trans('app.afa')?"selected":""  }}@endif>@lang('app.afa')</option>
+                                        <option class="dark-color" value="{{route('register', ['role'=>'apl'])}}" @if(isset($role)) {{ $role==trans('app.apl')?"selected":""  }}@endif>@lang('app.apl')</option>
                                     </select>
                                 </li>
                                 @else
@@ -166,7 +167,7 @@
                     <div class="navbar-collapse justify-content-end collapse" id="navbar-collapse-toggle">
                         <ul class="nav navbar-nav m-auto">
                             <li class="mm-in px-dropdown">
-                                <a href="#home">@lang('app.immobilier')</a>
+                                <a href="{{route('programme.show')}}">@lang('app.immobilier')</a>
                                 <i class="fa fa-angle-down px-nav-toggle"></i>
                                 <ul class="px-dropdown-menu mm-dorp-in">
                                     <li><a href="{{route('shop.index', \App\Models\Category::find(1))}}">@lang('app.residentiel')</a></li>
@@ -174,7 +175,7 @@
                                 </ul>
                             </li>
                             <li class="mm-in px-dropdown">
-                                <a href="#home">@lang('app.business')</a>
+                                <a href="{{route('programme.show')}}">@lang('app.business')</a>
                                 <i class="fa fa-angle-down px-nav-toggle"></i>
                                 <ul class="px-dropdown-menu mm-dorp-in">
                                     <li><a href="{{route('shop.index', \App\Models\Category::find(3))}}">@lang('app.industrial')</a></li>
