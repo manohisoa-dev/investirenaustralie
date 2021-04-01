@@ -1,10 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
+
 <!-- Main -->
 <main>
     <!-- Page Title -->
-    <section class="bg-center bg-cover bg-fiexd effect-section" style="background-image: url({{$item->imageUrl()}});">
+    @php
+        try {
+            if(file_get_contents($item->imageUrl()));
+            $img=$item->imageUrl();
+        } catch (\Throwable $th) {
+            $img=asset('images/blog/iea.png');
+        }   
+    @endphp
+    <section class="bg-center bg-cover bg-fiexd effect-section" style="background-image: url({{ $img }});">
         <div class="mask dark-g-bg opacity-7"></div>
         <div class="container">
             <div class="row screen-65 justify-content-center align-items-center p-100px-tb">

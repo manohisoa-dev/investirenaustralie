@@ -102,7 +102,7 @@ class Blog extends Model {
             if($thumb) return thumbnail($this->image->filepath);
             return storage($this->image->filepath);
         } 
-        return asset('images/blog.png');
+        return asset('images/blog/iea.png');
     }
     
     /**
