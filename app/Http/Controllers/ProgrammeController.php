@@ -154,6 +154,7 @@ class ProgrammeController extends Controller
         $programmes = Product::orderBy('created_at','desc')
             ->isParent(0)
             ->ofStatus('published')
+            ->take($show?(int)$show:$this->recentSize)
             ->get();
         
         $categories = Category::orderBy('created_at', 'desc')
