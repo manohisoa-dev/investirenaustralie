@@ -90,26 +90,36 @@
                             <form id="filter-form" method="get" action="">
                                 <div  class="pull-left form-group col-lg-3 col-md-12">
                                     <label for="showBy"> @lang('app.form.show'):   </label>  
-                                    <select class="form-control" name="showBy" id="showBy"> 
-                                        <option value="map">@lang('app.txt.loc_geo')</option>  
-                                        <option value="mat">@lang('app.txt.repr_mat')</option>
+                                    <select class="form-control" name="showBy" id="showBy" onchange="document.getElementById('filter-form').submit();"> 
+                                        <option value="map" {{$showBy=='map'?'selected':''}}>@lang('app.txt.loc_geo')</option>  
+                                        <option value="mat" {{$showBy=='mat'?'selected':''}}>@lang('app.txt.repr_mat')</option>
+                                    </select>
+                                </div>
+                                <div  class="pull-left form-group col-lg-3 col-md-12">
+                                    <label for="show"> @lang('app.form.show'):   </label>  
+                                    <select class="form-control" name="show" id="show" onchange="document.getElementById('filter-form').submit();"> 
+                                        <option value="0" {{$show=='0'?'selected':''}}>@lang('app.txt.any')</option>
+                                        <option value="10" {{$show=='10'?'selected':''}} >10</option> 
+                                        <option value="20" {{$show=='25'?'selected':''}} >25</option> 
+                                        <option value="50" {{$show=='50'?'selected':''}} >50</option> 
+                                        <option value="100" {{$show=='100'?'selected':''}} >100</option> 
                                     </select>
                                 </div>
                                 <div  class="pull-left form-group col-lg-3 col-md-12">
                                     <label for="orderBy"> @lang('app.form.filterBy'):   </label>  
-                                    <select class="form-control" name="orderBy" id="orderBy" onchange="document.getElementById('filter-form').submit();" disabled> 
+                                    <select class="form-control" name="orderBy" id="orderBy" onchange="document.getElementById('filter-form').submit();" @if($showBy!=='mat') disabled @endif> 
                                         <option value="created_at" {{$orderBy=='created_at'?'selected':''}}>@lang('app.pub_date')</option>  
                                         <option value="view_count" {{$orderBy=='view_count'?'selected':''}}>@lang('app.most_view')</option>
                                     </select>
                                 </div>
                                 <div  class="pull-left form-group col-lg-3 col-md-12">
                                     <label for="order"> @lang('app.form.order'):   </label>  
-                                    <select class="form-control" name="order" id="order" onchange="document.getElementById('filter-form').submit();" disabled> 
+                                    <select class="form-control" name="order" id="order" onchange="document.getElementById('filter-form').submit();" @if($showBy!=='mat') disabled @endif> 
                                         <option value="asc" {{$order=='asc'?'selected':''}}>@lang('app.form.asc')</option> 
                                         <option value="desc" {{$order=='desc'?'selected':''}}>@lang('app.form.desc')</option> 
                                     </select>
                                 </div>
-                                <div  class="pull-right col-lg-2 col-md-12" id="showType" hidden>
+                                <div  class="pull-left col-lg-2 col-md-12 m-50px-t" id="showType" @if($showBy!=='mat') hidden @endif>
                                     <p class="layout-view"> @lang('app.form.vue'): <a href="javascript:void(0)" id="grid"><i class="fa fa-th-large selected" data-layout="6"></i></a> <a href="javascript:void(0)" id="list"><i class="fa fa-list-ul" data-layout="12"></i></a> </p>
                                 </div>
                             </form>
@@ -118,7 +128,7 @@
                 </section>
 
                 <!-- Section show map -->
-                <section class="section" id="show-map">
+                <section class="section" id="show-map" @if($showBy!=='map') hidden @endif>
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="row col-lg-12">
@@ -132,7 +142,7 @@
                 <!-- End Section show map -->
 
                 <!-- Section show programme -->
-                <section class="section" id="show-mat" hidden>
+                <section class="section" id="show-mat" @if($showBy!=='mat') hidden @endif>
                     <div class="container">
                         <div class="row w-100" >
                             <div id="infinite-scroll" class="product-data">
@@ -275,6 +285,8 @@
                 event.preventDefault();
                 $('.view-item').removeClass('col-lg-6');
                 $('.view-item').addClass('col-lg-12');
+                $('.carousel-item > div').removeClass('col-lg-12');
+                $('.carousel-item > div').addClass('col-lg-4');
             });
 
             // grid view
@@ -282,6 +294,8 @@
                 event.preventDefault();
                 $('.view-item').removeClass('col-lg-12');
                 $('.view-item').addClass('col-lg-6');
+                $('.carousel-item > div').removeClass('col-lg-4');
+                $('.carousel-item > div').addClass('col-lg-12');
             });
         });
     </script>
@@ -343,24 +357,5 @@
     </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA&callback=initMap"></script>
 
-    <script>
-        $('#showBy').change(function(){
-            var val = $(this).val();
-
-            if(val !== 'map'){
-                $('#show-map').attr('hidden','hidden');
-                $('#show-mat').removeAttr('hidden');
-                $('#orderBy').removeAttr('disabled');
-                $('#order').removeAttr('disabled');
-                $('#showType').removeAttr('hidden');
-            }else{
-                $('#show-map').removeAttr('hidden');
-                $('#show-mat').attr('hidden','hidden');
-                $('#orderBy').attr('disabled','disabled');
-                $('#order').attr('disabled','disabled');
-                $('#showType').attr('hidden','hidden');
-            }
-        });
-    </script>
 @endpush
 

@@ -119,6 +119,12 @@ class ProgrammeController extends Controller
         if($category&&$category->id>0){
             $items = $items->where("category_id", $category->id);
         }
+
+        $show = $request->get('show');
+        if(!in_array($show, ['10', '25', '50', '100'])) $show = ' ';
+
+        $showBy = $request->get('showBy');
+        if(!in_array($showBy, ['map', 'mat'])) $showBy = ' ';
         
         $search = new Search();
         $q = $request->q;
@@ -133,7 +139,7 @@ class ProgrammeController extends Controller
         
         $items = $items->orderBy($orderBy, $order);
 
-        $items = $items->paginate($this->pageSize);
+        $items = $items->paginate($show?(int)$show:$this->pageSize);
         
         if($request->ajax()){
             return response()->json(array(
@@ -361,6 +367,8 @@ class ProgrammeController extends Controller
             ->with('min_area_commercial',$min_area_commercial)
             ->with('max_area_commercial',$max_area_commercial)
             ->with('categories', $categories)
+            ->with('show', $show)
+            ->with('showBy', $showBy)
             ->with(['data' => json_encode($data)]);
     }
 

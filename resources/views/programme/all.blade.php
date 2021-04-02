@@ -40,7 +40,36 @@
                                     
                                     @forelse (App\Models\Product::where('parent_id','=',$item->id)->get() as $prod)
                                         <div class="carousel-item @if($loop->first) active @endif">
-                                            <div class="col-sm-3 col-md-6 col-lg-4">
+                                            <div class="col-lg-4 col-sm-12">
+                                                <div class="thumb-wrapper">
+                                                    <div class="img-box p-10px-b m-15px-b border-bottom-2 border-color-gray">
+                                                        @php
+                                                            try {
+                                                                if(file_get_contents($prod->imageUrl()));
+                                                                $img_prod=$prod->imageUrl();
+                                                            } catch (\Throwable $th) {
+                                                                $img_prod=asset('images/iea.png');
+                                                            }   
+                                                        @endphp
+                                                        <a href="{{route('product.index',['product'=>$prod->slug])}}" target="_blank"><img src="{{$img_prod}}" alt="{{$prod->title}}" class="img-fluid"></a>
+                                                        {{-- Badge type --}}
+                                                        <span class="type-badge btn-info">{{ App\Models\Type::find($prod->type_id)->title }}</span>
+                                                    </div>
+                                                    <div class="thumb-content">
+                                                        <p class="item-price"><span>$ {{number_format($prod->price, 0, '.', ' ')}}</span></p>
+                                                        <div class="star-rating">
+                                                            <ul class="list-inline">
+                                                                <a class="body-color font-w-500" href="#"><i class="fa fa-bed"></i> {{ $prod->bedrooms }}</a>
+                                                                <a class="body-color font-w-500" href="#"><i class="fa fa-bath"></i> {{ $prod->bathrooms }}</a>
+                                                                <a class="body-color font-w-500" href="#"><i class="fa fa-car"></i> {{$prod->garage_spaces?__('app.yes'):__('app.no')}}</a>
+                                                            </ul>
+                                                        </div>
+                                                    </div>						
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="carousel-item">
+                                            <div class="col-lg-4 col-sm-12">
                                                 <div class="thumb-wrapper">
                                                     <div class="img-box p-10px-b m-15px-b border-bottom-2 border-color-gray">
                                                         @php

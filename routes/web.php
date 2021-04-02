@@ -42,7 +42,7 @@ Route::get('product/{slug}', 'ProductController@index')->name('product.index');/
 Route::get('get/show/product/{slug}', 'ProductController@getShowProduct')->name('get.show.product');
 
 // Programme
-Route::get('programmes/{category?}', 'ProgrammeController@all')->name('programme.all');// List product by Category OR no
+Route::get('programmes/{filter?}', 'ProgrammeController@all')->name('programme.all');// List programme by filter OR no
 Route::get('get/show/programme/{slug}', 'ProgrammeController@getShowProgramme')->name('get.show.programme');
 Route::get('programme/{slug?}', 'ProgrammeController@show')->name('programme.show');// View single program
 

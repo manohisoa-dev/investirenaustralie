@@ -167,7 +167,7 @@
                     <div class="navbar-collapse justify-content-end collapse" id="navbar-collapse-toggle">
                         <ul class="nav navbar-nav m-auto">
                             <li class="mm-in px-dropdown">
-                                <a href="{{route('programme.show')}}">@lang('app.immobilier')</a>
+                                <a href="{{route('programme.all')}}">@lang('app.immobilier')</a>
                                 <i class="fa fa-angle-down px-nav-toggle"></i>
                                 <ul class="px-dropdown-menu mm-dorp-in">
                                     <li><a href="{{route('shop.index', \App\Models\Category::find(1))}}">@lang('app.residentiel')</a></li>
@@ -175,7 +175,7 @@
                                 </ul>
                             </li>
                             <li class="mm-in px-dropdown">
-                                <a href="{{route('programme.show')}}">@lang('app.business')</a>
+                                <a href="{{route('programme.all')}}">@lang('app.business')</a>
                                 <i class="fa fa-angle-down px-nav-toggle"></i>
                                 <ul class="px-dropdown-menu mm-dorp-in">
                                     <li><a href="{{route('shop.index', \App\Models\Category::find(3))}}">@lang('app.industrial')</a></li>

@@ -158,9 +158,6 @@ class BlogController extends Controller
             ->where('post_type','=', $this->post_type)
             ->orderBy($orderBy, $order)
             ->withCount('comments')
-            ->limit(2)
-            ->offset(0)
-            // ->paginate($this->pageSize);
             ->paginate($show?(int)$show:$this->pageSize);
         
         if($request->ajax()){
