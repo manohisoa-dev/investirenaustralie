@@ -136,7 +136,6 @@
                     <div class="container">
                         <div class="row w-100" >
                             <div id="infinite-scroll" class="product-data">
-                                {{-- @include('ajax.programme.all',['items'=>$items]) --}}
                                 @include('programme.all',['items'=>$items])
                             </div>
                             <div class="row">
@@ -330,7 +329,7 @@
             if(data.type == 'product'){
                 google.maps.event.addListener(markers[data.id], 'click', function() {
                     var slug= data.slug;
-                    var uri = '{{ URL::to("get/show/product/") }}'+'/'+slug;
+                    var uri = '{{ URL::to("get/show/programme/") }}'+'/'+slug;
                     var envoi = $.get( uri );
     
                     envoi.done( function(url) {

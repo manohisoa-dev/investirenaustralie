@@ -359,11 +359,4 @@ class ProductController extends Controller
         return redirect()->route('admin.dashboard')
             ->with('success',"Le produit a été supprimé avec succés");
     }
-
-
-    public function getShowProduct($slug){
-        $url = url('product/'.$slug);
-        return response()->json(['res'=>$url]);
-    }
-
 }

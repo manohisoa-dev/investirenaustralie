@@ -42,7 +42,9 @@ Route::get('product/{slug}', 'ProductController@index')->name('product.index');/
 Route::get('get/show/product/{slug}', 'ProductController@getShowProduct')->name('get.show.product');
 
 // Programme
-Route::get('programme/{category?}', 'ProgrammeController@show')->name('programme.show');// List product by Category OR no
+Route::get('programmes/{category?}', 'ProgrammeController@all')->name('programme.all');// List product by Category OR no
+Route::get('get/show/programme/{slug}', 'ProgrammeController@getShowProgramme')->name('get.show.programme');
+Route::get('programme/{slug?}', 'ProgrammeController@show')->name('programme.show');// View single program
 
 /// Blog
 Route::get('blogs/{filter?}', 'BlogController@all')->name('blog.all');

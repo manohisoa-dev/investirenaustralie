@@ -15,12 +15,14 @@
                     }   
                 @endphp
                 
-                <div class="hover-top transition blog-grid-overlay border-radius-0" style="background-image: url({{ $img }}); ">
-                    <div class="blog-gird-info">
-                        <h5>{{ $item->title?$item->title:'' }}</h5>
-                        <p>{{ $item->location ? Illuminate\Support\Str::upper($item->location->locality.' '.$item->location->area_level_2.', '.$item->location->area_level_1.' '.$item->location->postalCode) : '' }}</p>            
+                <a href="{{ route('programme.show', ['slug'=>$item->slug]) }}" target="_blank">
+                    <div class="hover-top transition blog-grid-overlay border-radius-0" style="background-image: url({{ $img }}); ">
+                        <div class="blog-gird-info">
+                            <h5>{{ $item->title?$item->title:'' }}</h5>
+                            <p>{{ $item->location ? Illuminate\Support\Str::upper($item->location->locality.' '.$item->location->area_level_2.', '.$item->location->area_level_1.' '.$item->location->postalCode) : '' }}</p>            
+                        </div>
                     </div>
-                </div>
+                </a>
         
                 <div class="p-5px-t p-20px-b text-center">
                     <h6>{{ $item->content? Illuminate\Support\Str::limit($item->content, 75) :''}}</h6>

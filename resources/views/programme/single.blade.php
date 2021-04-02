@@ -20,14 +20,8 @@
                 <div class="col-lg-10 text-center m-50px-t">
                     <h1 class="display-4 white-color m-25px-b">{{$item->title}}</h1>
                     <div class="d-flex align-items-center m-25px-t justify-content-center text-left">
-                        <div>
-                            <div class="avatar-50 border-radius-50">
-                                <img src="{{$item->imageUrl()}}" title="{{$item->title}}" alt="{{$item->title}}">
-                            </div>
-                        </div>
                         <div class="p-15px-l">
-                            <p class="h6 white-color m-0px">{{$item->author->name}}</p>
-                            <small class="white-color-light">Co-Founder</small>
+                            <p class="white-color m-0px">{{ $item->location ? Illuminate\Support\Str::upper($item->location->locality.' '.$item->location->area_level_2.', '.$item->location->area_level_1.' '.$item->location->postalCode) : '' }}</p>
                         </div>
                     </div>
                 </div>
@@ -39,126 +33,82 @@
     <section class="section">
         <div class="container">
             <div class="row">
-                @if (session('success'))
-                    <div class="alert alert-success alert-dismissible fade show col-lg-8" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                        {{ session('success') }}
-                    </div>
-                @endif
                 <div class="col-lg-8">
                     <div class="nav p-25px-b">
-                        <span class="dark-color font-w-600"><i class="fas fa-calendar-alt "></i> {{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $item->created_at)->format('d F')}},{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $item->created_at)->year }}</span>
-                        <!-- <a class="dark-color font-w-600 m-15px-l" href="#"><i class="far fa-folder-open"></i> Categories</a> -->
+                        <p class="h4 dark-color font-w-600">@lang('app.description')</p>
                     </div>
                     
                     <div class="text-justify">{!! $item->content !!}</div>
+
+                    
+                    <div class="comments-area m-40px-t m-50px-b">
+                        <div class="card-body">
+                            <p class="h6 m-30px-b">@lang('app.txt.loc_geo')</p>
+                            <div id="map"></div>
+                        </div>
+                    </div>
                     
                     <div class="p-25px-tb m-35px-tb border-top-1 border-bottom-1 border-color-gray">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <h5 class="m-0px">@lang('app.txt.sharepost')</h5>
-                            </div>
-                            <div>
-                                <div class="nav justify-content-center justify-content-md-end social-icon si-30 gray">
-                                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(URL::current()) }}"><i class="fab fa-facebook-f"></i></a>
-                                    <a target="_blank" href="https://twitter.com/intent/tweet?text={{ urlencode(URL::current()) }}"><i class="fab fa-twitter"></i></a>
-                                </div>
+                                <h5 class="m-0px">@lang('app.txt.all_products')</h5>
                             </div>
                         </div>
                     </div>
-                    <div class="media gray-bg p-20px">
-                        <div class="avatar-80 border-radius-50">
-                            <img src="{{$item->imageUrl()}}" title="" alt="">
-                        </div>
-                        <div class="media-body p-20px-l">
-                            <h5 class="m-10px-b">{{$item->author->name}}</h5>
-                            {{-- <p class="m-0px">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p> --}}
-                        </div>
-                    </div>
-                    <div class="comments-area m-40px-t m-50px-b">
-                        <div class="border-bottom-1 border-color-gray p-10px-b m-25px-b">
-                            <h4 class="m-0px">{{$item->comments_count}} {{ ($item->comments_count>1) ? trans('app.txt.commentaires') : trans('app.txt.commentaire') }}</h4>
-                        </div>
-                        <ul class="comment-list">
-                            @foreach ($item->comments as $comment)
-                                <li class="comment">
-                                    @if ($comment->reply_id == 0)
-                                        <article class="comment-body">
-                                            <div class="comment-meta d-flex align-items-center">
-                                                <div class="comment-author"><img src="{{ App\Models\User::find($comment->user_id)->imageUrl() }}" title="" alt=""></div>
-                                                <div class="comment-metadata">
-                                                    <div class="c-name">{{ App\Models\User::find($comment->user_id)->name }}</div>
-                                                    <span class="c-date">{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $comment->created_at)->format('d F')}},{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $comment->created_at)->year }}</span>
-                                                </div>
-                                            </div>
-                                            <div class="comment-content">
-                                                <p>{{ $comment->content }}.</p>
-                                            </div>
-                                            @if (Auth::id())
-                                                <div class="comment-reply">
-                                                    <a class="m-btn m-btn-t-theme m-btn-sm btn_reply" href="javascript:void(0)" value="{{ $comment->id }}">@lang('app.btn.reply')</a>
-                                                </div>
-                                            @endif
-                                        </article>
+                    <div class="media p-20px">
+                        <div class="container text-center">
+                            <div class="row mx-auto my-auto">
+                                <div id="myCarousel" class="carousel slide w-100" data-ride="carousel">
+                                    <div class="carousel-inner w-100" role="listbox">
                                         
-                                        @if ($comment->replies)
-                                            @foreach ($comment->replies as $repl)
-                                                <ul class="children">
-                                                    <li class="comment">
-                                                        <article class="comment-body">
-                                                            <div class="comment-meta d-flex align-items-center">
-                                                                <div class="comment-author"><img src="{{ App\Models\User::find($repl->user_id)->imageUrl() }}" title="" alt=""></div>
-                                                                <div class="comment-metadata">
-                                                                    <div class="c-name">{{ App\Models\User::find($repl->user_id)->name }}</div>
-                                                                    <span class="c-date">{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $repl->created_at)->format('d F')}},{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $repl->created_at)->year }}</span>
-                                                                </div>
+                                        @forelse (App\Models\Product::where('parent_id','=',$item->id)->get() as $prod)
+                                            <div class="carousel-item @if($loop->first) active @endif">
+                                                <div class="col-sm-3 col-md-6 col-lg-4">
+                                                    <div class="thumb-wrapper">
+                                                        <div class="img-box p-10px-b m-15px-b border-bottom-2 border-color-gray">
+                                                            @php
+                                                                try {
+                                                                    if(file_get_contents($prod->imageUrl()));
+                                                                    $img_prod=$prod->imageUrl();
+                                                                } catch (\Throwable $th) {
+                                                                    $img_prod=asset('images/iea.png');
+                                                                }   
+                                                            @endphp
+                                                            <a href="{{route('product.index',['product'=>$prod->slug])}}" target="_blank"><img src="{{$img_prod}}" alt="{{$prod->title}}" class="img-fluid"></a>
+                                                        </div>
+                                                        <div class="thumb-content">
+                                                            <p class="item-price"><span>$ {{number_format($prod->price, 0, '.', ' ')}}</span></p>
+                                                            <div class="star-rating">
+                                                                <ul class="list-inline">
+                                                                    <a class="body-color font-w-500" href="#"><i class="fa fa-bed"></i> {{ $prod->bedrooms }}</a>
+                                                                    <a class="body-color font-w-500" href="#"><i class="fa fa-bath"></i> {{ $prod->bathrooms }}</a>
+                                                                    <a class="body-color font-w-500" href="#"><i class="fa fa-car"></i> {{$prod->garage_spaces?__('app.yes'):__('app.no')}}</a>
+                                                                </ul>
                                                             </div>
-                                                            <div class="comment-content">
-                                                                <p>{{ $repl->content }}.</p>
-                                                            </div>
-                                                            @if (Auth::id())
-                                                                <div class="comment-reply">
-                                                                    <a class="m-btn m-btn-t-theme m-btn-sm btn_reply" href="javascript:void(0)" value="{{ $comment->id }}">@lang('app.btn.reply')</a>
-                                                                </div>
-                                                            @endif
-                                                        </article>
-                                                    </li>
-                                                </ul>
-                                            @endforeach
-                                        @endif
-                                    @endif
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    <div class="card gray-bg">
-                        <div class="card-body">
-                            @if (Auth::id())
-                                <h4 class="m-30px-b">@lang('app.txt.leavereply')</h4>
-                                <form action="{{ route('comment.store') }}" method="POST">
-                                    {{ csrf_field() }}
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label class="form-control-label">@lang('app.txt.yourcomment')</label>
-                                                <input type="hidden" name="user_id" value="{{ Auth::id() }}">
-                                                <input type="hidden" name="blog_id" value="{{ $item->id }}">
-                                                <input type="hidden" name="reply_id" value="0">
-                                                <textarea class="form-control" rows="6" name="content" placeholder="..." aria-label="How'd you hear about Front?" required="" data-msg="Please enter an answer." data-error-class="u-has-error" data-success-class="u-has-success"></textarea>
+                                                        </div>						
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <button class="m-btn m-btn-theme">@lang('app.btn.submit')</button>
-                                        </div>
+                                        @empty
+                                            <div>
+                                                <p>@lang('app.txt.no_product')</p>
+                                            </div>
+                                        @endforelse
+    
                                     </div>
-                                </form>
-                            @else
-                                <div class="col-md-12">
-                                    <button class="m-btn m-btn-theme col-md-12" type="button" id="btn_comment">@lang('app.txt.logintocomment')</button>
+                                    @if (sizeOf(App\Models\Product::where('parent_id','=',$item->id)->get())>3)
+                                        <a class="carousel-control-prev bg-dark w-auto" href="#myCarousel" role="button" data-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="carousel-control-next bg-dark w-auto" href="#myCarousel" role="button" data-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    @endif
+    
                                 </div>
-                            @endif
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -249,7 +199,11 @@
 
 @endsection
 
+
 @push('script')
+    <link rel="stylesheet" href="{{ asset('carousel/style.css') }}">
+    <script src="{{ asset('carousel/popper.min.js') }}"></script>
+    <script src="{{ asset('carousel/carousel.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script type="text/javascript">
         $('#btn_comment').click(function(){
@@ -276,5 +230,89 @@
             $('#comment_form').submit();
         });
     </script>
+    <style>
+        #map{
+          height: 25rem;
+        }
+      </style>
+      <script>
+          $('#apl-form-modal').submit(function(event){
+              if($('#check-confirm-modal').is(":checked"))
+              {
+                  $('.row-confirm-modal').removeClass('hidden');
+              }
+              else{
+                alert('Veuillez accepter les termes et les conditions APL !');
+                event.preventDefault();
+              }
+          });
+      </script>
+      <script>
+          var _map;
+          var _geocoder;
+          var _marker;
+          var _circle;
+          var _lat = {{isset($location)?$location->latitude:-25.647467468105795}};
+          var _long = {{isset($location)?$location->longitude:146.89921517372136}};
+          var _btnSubmit = document.getElementById("submit");
+          var _inputApl = document.getElementById("apl");
+          var _contentApl = document.getElementById("apl-content");
+          var _titleApl = document.getElementById("apl-title");
+          
+          var iconBase = "{{url('')}}";
+          var icons = {
+            user: {
+              icon: iconBase + '/images/map/user.png'
+            },
+            member: {
+              icon: iconBase + '/images/map/member.png'
+            },
+            apl: {
+              icon: iconBase + '/images/map/apl.png'
+            },
+            afa: {
+              icon: iconBase + '/images/map/afa.png'
+            },
+            product: {
+              icon: iconBase + '/images/map/product.png'
+            }
+          };
+          
+          var data = {!!(isset($data) ? $data : '')!!};
+          
+          function initMap() {
+              
+              _map = new google.maps.Map(document.getElementById('map'), {
+                  center: {lat: _lat, lng:  _long},
+                  zoom: 10
+              });
+              
+              _marker = new google.maps.Marker({
+                position: {lat: _lat, lng: _long},
+                icon: icons['product'].icon,
+                map: _map,
+                title: data.title
+              });
+    
+              _marker.addListener('dragend', function() {
+                  var lat = _marker.getPosition().lat();
+                  var lng = _marker.getPosition().lng();
+              });
+              
+              _circle = new google.maps.Circle({
+                strokeColor: '#358bbc',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#358bbc',
+                fillOpacity: 0.35,
+                map: _map,
+                center: {lat:parseFloat(data.lat), lng:parseFloat(data.lng)},
+                radius: data.area
+              });
+          
+          }
+    
+      </script>
+      <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA&callback=initMap"></script>
 @endpush('script')
 
