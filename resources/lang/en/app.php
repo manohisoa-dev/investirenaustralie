@@ -504,6 +504,7 @@ return [
     'txt.service_def' => 'What is this Services page.',
     'txt.blog_iea' => 'The Blog "Investir En Australie"',
     'txt.blog_def' => 'What is this Blog page.',
+    'txt.new' => 'New',
     
 
 

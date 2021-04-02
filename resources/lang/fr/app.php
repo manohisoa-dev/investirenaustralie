@@ -914,6 +914,7 @@ return [
     'txt.list_programme'        => 'Liste des Programmes',    
     'txt.loc_geo'        => 'Localisation géographique',  
     'txt.repr_mat'        => 'Représentation matérielle',   
+    'txt.new' => 'Nouveau',
 
 
 

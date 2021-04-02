@@ -16,12 +16,16 @@
                 @endphp
                 
                 <a href="{{ route('programme.show', ['slug'=>$item->slug]) }}" target="_blank">
-                    <div class="hover-top transition blog-grid-overlay border-radius-0" style="background-image: url({{ $img }}); ">
+                    <div class="transition blog-grid-overlay border-radius-0" style="background-image: url({{ $img }}); ">
                         <div class="blog-gird-info">
                             <h5>{{ $item->title?$item->title:'' }}</h5>
                             <p>{{ $item->location ? Illuminate\Support\Str::upper($item->location->locality.' '.$item->location->area_level_2.', '.$item->location->area_level_1.' '.$item->location->postalCode) : '' }}</p>            
                         </div>
                     </div>
+
+                    {{-- Badge --}}
+                    {{-- <div class="card-badge">@lang('app.txt.new')</div> --}} 
+                    <span class="notify-badge btn-success">@lang('app.txt.new')</span>
                 </a>
         
                 <div class="p-5px-t p-20px-b text-center">
@@ -48,6 +52,8 @@
                                                             }   
                                                         @endphp
                                                         <a href="{{route('product.index',['product'=>$prod->slug])}}" target="_blank"><img src="{{$img_prod}}" alt="{{$prod->title}}" class="img-fluid"></a>
+                                                        {{-- Badge type --}}
+                                                        <span class="type-badge btn-info">{{ App\Models\Type::find($prod->type_id)->title }}</span>
                                                     </div>
                                                     <div class="thumb-content">
                                                         <p class="item-price"><span>$ {{number_format($prod->price, 0, '.', ' ')}}</span></p>
@@ -103,6 +109,44 @@
     <link rel="stylesheet" href="{{ asset('carousel/style.css') }}">
     <script src="{{ asset('carousel/popper.min.js') }}"></script>
     <script src="{{ asset('carousel/carousel.js') }}"></script>
+    <style>
+        /* .card-badge {
+            position:absolute;
+            text-align: center;
+            width: 165px;
+            border-radius: 250% 250% 0px 0px;
+            top:15px;
+            left:-35px;
+            padding:5px;
+            background: #0DA600;
+            color:white;
+            transform:rotate(-40deg);
+          } */
+
+            .type-badge{
+                position: absolute;
+                right:15px;
+                top:5px;
+                text-align: center;
+                /* background: #0DA600; */
+                /* border-radius: 30px 30px 30px 30px; */
+                color:white;
+                padding:5px 10px;
+                font-size:10px;
+            }
+
+            .notify-badge{
+                position: absolute;
+                right:-20px;
+                top:-20px;
+                text-align: center;
+                /* background: #0DA600; */
+                border-radius: 30px 30px 30px 30px;
+                color:white;
+                padding:5px 10px;
+                font-size:18px;
+            }
+        </style>
 @endpush
 
 
