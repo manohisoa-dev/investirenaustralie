@@ -124,7 +124,7 @@ class ProgrammeController extends Controller
         if(!in_array($show, ['10', '25', '50', '100'])) $show = ' ';
 
         $showBy = $request->get('showBy');
-        if(!in_array($showBy, ['map', 'mat'])) $showBy = ' ';
+        if(!in_array($showBy, ['map', 'mat'])) $showBy = 'map';
         
         $search = new Search();
         $q = $request->q;

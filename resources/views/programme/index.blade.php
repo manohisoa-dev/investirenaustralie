@@ -98,7 +98,7 @@
                                 <div  class="pull-left form-group col-lg-3 col-md-12">
                                     <label for="show"> @lang('app.form.show'):   </label>  
                                     <select class="form-control" name="show" id="show" onchange="document.getElementById('filter-form').submit();"> 
-                                        <option value="0" {{$show=='0'?'selected':''}}>@lang('app.txt.any')</option>
+                                        <option value="any" {{$show=='any'?'selected':''}}>@lang('app.txt.any')</option>
                                         <option value="10" {{$show=='10'?'selected':''}} >10</option> 
                                         <option value="20" {{$show=='25'?'selected':''}} >25</option> 
                                         <option value="50" {{$show=='50'?'selected':''}} >50</option> 
