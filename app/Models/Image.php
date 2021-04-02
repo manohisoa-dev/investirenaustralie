@@ -22,9 +22,8 @@ class Image extends BaseModel
      */
     protected $fillable = ['filename', 'filemime', 'filepath'];
     
-    static function storeAndSave($file){
+    static function storeAndSave($file,$album='app'){
         $name = md5(time()).'.'.$file->getClientOriginalExtension();
-        $album = 'app';
         $dir = public_path('uploads/'.$album);
         
         $newFile = $file->move($dir, $name);
