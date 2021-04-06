@@ -320,5 +320,66 @@ class MemberController extends Controller
             ->with('success', 'Apl modifié!');
     }
 
+    /**
+     * Select afa
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Product
+     * @return \Illuminate\Http\Response
+     */
+    public function selectAfa(Request $request){
+        $this->middleware('auth');
+        $this->middleware('role:member');
+        
+        $distance = $request->get('distance');
+        if(empty($distance)) $distance = 100;
+        
+        $data = [];
+        
+        $apls = User::ofRole(4)
+            ->isActive()
+            ->has('location')
+            ->with('location')
+            ->get();
+        $lapls = Localisation::select('localizations.*')
+            ->join('users','users.location_id','=','localizations.id')
+            ->where('users.role','=','4')
+            ->groupBy('localizations.locality')
+            ->get();
+        
+        $userApl = Auth::user()->apl;
+        
+        $selected = null;
+        
+        foreach($apls as $item){
+            $html = view('backend.apl.html')->with('item', $item)->render();
+            $dataTemp = [
+              'id' => $item->id,
+              'lat' => $item->location?$item->location->latitude:0,
+              'lng' => $item->location?$item->location->longitude:0,
+              'title' => $item->name,
+              'content' => $item->get_meta('orga_description')?$item->get_meta('orga_description')->value:'',
+              'type' => $item->role,
+              'html' => $html,
+            ];
+            
+            $data[] = $dataTemp;
+            
+            if($userApl && ($item->id == $userApl->id)){
+                $selected = $dataTemp;
+            }
+        }
+        
+        $action = route('member.select.afa');
+    	return view('backend.afa.select')
+            ->with('location', Auth::user()->location)
+            ->with('action', $action)
+            ->with('items', $apls)
+            ->with('distance', $distance)
+            ->with('lapls', $lapls)
+            ->with('distances', $this->distances)
+            ->with('selected', json_encode($selected))
+            ->with('data', json_encode($data));
+    }
 
 }

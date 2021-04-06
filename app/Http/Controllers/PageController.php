@@ -33,6 +33,7 @@ class PageController extends Controller
         
         $recentProducts = Product::ofStatus('published')
             ->with('location')
+            ->isProduct()
             ->where('quantity', '>', 0)
             ->orderBy('created_at','desc')
             ->take(6)->get();

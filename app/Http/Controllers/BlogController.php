@@ -60,6 +60,7 @@ class BlogController extends Controller
                 
                 $products = Product::orderBy('created_at','desc')
                     ->ofStatus('published')
+                    ->isProduct()
                     ->take($this->recentSize)
                     ->get();
                 
@@ -104,6 +105,7 @@ class BlogController extends Controller
         
         $products = Product::orderBy('created_at','desc')
             ->ofStatus('published')
+            ->isProduct()
             ->take($this->recentSize)
             ->get();
         
@@ -168,6 +170,7 @@ class BlogController extends Controller
         
         $products = Product::ofStatus('published')
             ->with('location')
+            ->isProduct()
             ->where('quantity', '>', 0)
             ->orderBy('created_at','desc')
             ->take($this->recentSize)

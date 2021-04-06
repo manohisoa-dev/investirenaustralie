@@ -24,6 +24,25 @@
                             <p class="white-color m-0px">{{ $item->location ? Illuminate\Support\Str::upper($item->location->locality.' '.$item->location->area_level_2.', '.$item->location->area_level_1.' '.$item->location->postalCode) : '' }}</p>
                         </div>
                     </div>
+
+                    <div class="p-25px-t row col-lg-12">
+                        <div class="col-lg-6 col-sm-6">
+                            <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" class="m-btn m-btn-theme2nd dark-color flex-shrink-0 col-md-12"><i class="fa fa-envelope" aria-hidden="true"></i>  @lang('app.btn.contact_afa')</a>
+                        </div>
+                        <div class="col-lg-6 col-sm-6">
+
+                            @if (Auth::user())
+                                @if (isset(App\Models\Label::where('author_id',Auth::id())->where('product_id',$item->id)->where('label','starred')->first()->id))
+                                    <a href="{{route('label.remove', ['id'=>App\Models\Label::where('author_id',Auth::id())->where('product_id',$item->id)->where('label','starred')->first()->id])}}" title="@lang('app.txt.programme_in_favorites')" class="m-btn btn-warning dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>
+                                @else
+                                    <a href="{{route('label.store', ['product'=>$item,'type'=>'starred'])}}" title="@lang('app.txt.programme_favorites')" class="m-btn m-btn-theme5rd dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>
+                                @endif
+                            @else
+                                <a href="{{route('label.store', ['product'=>$item,'type'=>'starred'])}}" title="@lang('app.txt.programme_favorites')" class="m-btn m-btn-theme5rd dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>
+                            @endif
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -111,6 +130,9 @@
                             </div>
                         </div>
                     </div>
+                    <div>
+                        <a href="{{ url()->previous() }}" class="m-btn m-btn-theme"><i class="fa fa-arrow-left"></i> @lang('app.btn.return')</a>
+                    </div>
                 </div>
 
                 <!-- Sidebar -->
@@ -123,79 +145,39 @@
     <!-- End Section -->
 </main>
 
-{{-- Modal --}}
-<div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="commentModalLabel">@lang('app.txt.leavereply')</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <form action="{{ route('comment.store') }}" method="POST" id="comment_form">
-                {{ csrf_field() }}
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label class="form-control-label">@lang('app.txt.yourcomment')</label>
-                            <input type="hidden" name="user_id" value="{{ Auth::id() }}">
-                            <input type="hidden" name="blog_id" value="{{ $item->id }}">
-                            <input type="hidden" name="reply_id" id="reply_id">
-                            <textarea class="form-control" rows="6" name="content" placeholder="..." aria-label="How'd you hear about Front?" required="" data-msg="Please enter an answer." data-error-class="u-has-error" data-success-class="u-has-success"></textarea>
+
+<!-- modal -->
+<div class="container">
+    <div class="modal left fade" id="myModal" tabindex="" role="dialog" aria-labelledby="listAfaModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content dark-bg">
+                <div class="modal-header" style="background-color: #AE4435 !important;">
+                  <h4 class="modal-title white-color text-center" id="title">@lang('app.afa')</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="nav flex-sm-column flex-row">
+                        <div class="row col-lg-12">
+                            @forelse ($afas as $afa)
+                                <div class="col-lg-8"><p id="content" class="white-color"><i class="fa fa-building"></i> {{ $afa->name?$afa->name:'' }}</p></div>
+                                <div class="col-lg-4"><a class="white-color" href="{{route('member.select.afa', ['afa'=>$afa->name?$afa->name:''])}}" title="@lang('app.txt.contact_afa') ({{ $afa->name?$afa->name:'' }})"><i class="fa fa-envelope"></i></a></div>
+                            @empty
+                                <p>@lang('app.txt.no_afa_in_this_location')</p>
+                            @endforelse
                         </div>
                     </div>
                 </div>
-            </form>
+                <div class="modal-footer">
+                    @if (sizeOf($afas) !== 0)
+                        <div class="col-md-5">
+                            <button class="m-btn m-btn-theme" data-dismiss="modal" aria-hidden="true">@lang('app.btn.cancel')</button>
+                        </div>
+                    @endif
+                </div>
+            </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="m-btn m-btn-theme" data-dismiss="modal">@lang('app.btn.close')</button>
-          <button class="m-btn m-btn-theme" id="btn_reply_comment">@lang('app.btn.submit')</button>
-        </div>
-      </div>
     </div>
-</div>
-{{-- end modal --}}
-
-
-{{-- Modal --}}
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">@lang('app.txt.login')</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <form action="{{route('login')}}" id="login_form" method="post">
-                {{ csrf_field() }}
-                {{ Session()->put('comment','login_comment') }}
-                <div class="form-group">
-                    <label class="form-control-label">@lang('app.txt.email')</label>
-                    <input type="email" name="email" class="form-control" placeholder="Votre email *" required="required" value="{{ old('email') }}" autofocus>
-                    <span>{{ $errors->has('email') ? ' has-error' : '' }}</span>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label">@lang('app.txt.password')</label>
-                    <input name="password"  type="password" placeholder="Votre mot de passe *" class="form-control" placeholder="***********" required="required">
-                    <span>{{ $errors->has('password') ? ' has-error' : '' }}</span>
-                </div>
-                <div class="form-group">
-                    <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> @lang('app.form.login.remember')
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="m-btn m-btn-theme" data-dismiss="modal">@lang('app.btn.close')</button>
-          <button type="button" id="btn_submit" class="m-btn m-btn-theme2nd">@lang('app.btn.login')</button>
-        </div>
-      </div>
-    </div>
-</div>
-{{-- end modal --}}
+  </div>
+  <!-- Fin modal -->
 
 @endsection
 
@@ -236,13 +218,13 @@
         }
       </style>
       <script>
-          $('#apl-form-modal').submit(function(event){
+          $('#afa-form-modal').submit(function(event){
               if($('#check-confirm-modal').is(":checked"))
               {
                   $('.row-confirm-modal').removeClass('hidden');
               }
               else{
-                alert('Veuillez accepter les termes et les conditions APL !');
+                alert('Veuillez accepter les termes et les conditions AFA !');
                 event.preventDefault();
               }
           });

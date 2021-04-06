@@ -232,6 +232,8 @@ return [
     'btn.continuer'    => "Continue",
     'btn.validerinscription'    => "Confirm my registration",
     'btn.close'      =>"Close",
+    'btn.contact_afa'      =>"Contact an AFA",
+    'btn.return'      =>"Retour",
     
     'contact_admin'  => "Contact Administrateur",
     'contact_apl'    => "Contact APL",
@@ -468,6 +470,11 @@ return [
     'txt.repr_mat'        => 'Material representation',   
     'txt.discover' => 'Discover',
     'txt.no_product' => 'No products found for this program',
+    'txt.contact_afa' => 'Contact this AFA',
+    'txt.no_afa_in_this_location' => 'No AFA found in this location',
+    'txt.programme_in_favorites' => 'Program already in the list of your favorites. Click to cancel',
+    'txt.programme_favorites' => 'Put in my favorites',
+    'txt.programme_remove_favorites' => 'Program removed from your favorites list',
     
     
     

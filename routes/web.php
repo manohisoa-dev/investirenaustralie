@@ -73,6 +73,7 @@ Route::middleware(["auth"])->group(function(){
 
     // Label
     Route::get('product/{product}/label/{type}', 'LabelController@storeOrUpdate')->name('label.store');// Save OR Star Product
+    Route::get('product/label/{id}', 'LabelController@remove')->name('label.remove');// Remove Star Product
     Route::get('products/label/{type}', 'LabelController@all')->name('label.list');// List saved products OR starred Product
 
     // Subscription Plan
@@ -116,6 +117,8 @@ Route::middleware(["auth", "role:5"])->group(function(){
 
         Route::get('select-apl', 'MemberController@selectApl')->name('member.select.apl');
         Route::post('select-apl', 'MemberController@updateApl');
+
+        Route::get('select-afa', 'MemberController@selectAfa')->name('member.select.afa');
 
         Route::get('/', 'BackendController@dashboard');
         Route::get('favorites', 'BackendController@favorites');

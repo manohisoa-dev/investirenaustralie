@@ -461,6 +461,35 @@ a:hover {
   color: #ffffff;
 }
 
+.m-btn.m-btn-theme5rd {
+  background: #051b35;
+  color: #ffffff;
+}
+
+.m-btn.m-btn-theme5rd.active, .m-btn.m-btn-theme5rd:focus, .m-btn.m-btn-theme5rd:hover {
+  background: #FFC107;
+  color: #ffffff;
+}
+
+.m-btn.m-btn-theme5rd-light {
+  background: rgba(255,193,7, 0.2);
+  color: #FFC107;
+}
+.m-btn.m-btn-theme5rd-light.active, .m-btn.m-btn-theme5rd-light:focus, .m-btn.m-btn-theme5rd-light:hover {
+  background: #FFC107;
+  color: #ffffff;
+}
+
+.m-btn.m-btn-t-theme5rd {
+  border: 1px solid #FFC107;
+  background: transparent;
+  color: #FFC107;
+}
+.m-btn.m-btn-t-theme5rd.active, .m-btn.m-btn-t-theme5rd:focus, .m-btn.m-btn-t-theme5rd:hover {
+  background: #FFC107;
+  color: #ffffff;
+}
+
 .m-font {
   display: inline-block;
   border: none;

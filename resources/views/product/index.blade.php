@@ -67,7 +67,16 @@
                             </form>
                         </div>
                         <div class="col-sm-3">
-                          <a href="{{route('label.store', ['product'=>$item,'type'=>'starred'])}}" class="m-btn btn-warning dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>
+                          @if (Auth::user())
+                                @if (isset(App\Models\Label::where('author_id',Auth::id())->where('product_id',$item->id)->where('label','starred')->first()->id))
+                                    <a href="{{route('label.remove', ['id'=>App\Models\Label::where('author_id',Auth::id())->where('product_id',$item->id)->where('label','starred')->first()->id])}}" title="@lang('app.txt.programme_in_favorites')" class="m-btn btn-warning dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>
+                                @else
+                                    <a href="{{route('label.store', ['product'=>$item,'type'=>'starred'])}}" title="@lang('app.txt.programme_favorites')" class="m-btn m-btn-theme5rd dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>
+                                @endif
+                            @else
+                                <a href="{{route('label.store', ['product'=>$item,'type'=>'starred'])}}" title="@lang('app.txt.programme_favorites')" class="m-btn m-btn-theme5rd dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>
+                            @endif
+                          {{-- <a href="{{route('label.store', ['product'=>$item,'type'=>'starred'])}}" class="m-btn btn-warning dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a> --}}
                         </div>
                     </div>
                   </section>
@@ -118,11 +127,6 @@
                       <div class="card-body">
                           <h4 class="m-30px-b">@lang('app.txt.product_location')</h4>
                           <div id="map"></div>
-                          {{-- <div class="p-15px white-bg box-shadow">
-                            <div class="embed-responsive embed-responsive-21by9">
-                                <iframe class="embed-responsive-item" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3151.840107317064!2d144.955925!3d-37.817214!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb6899234e561db11!2sEnvato!5e0!3m2!1sen!2sin!4v1520156366883" allowfullscreen=""></iframe>
-                            </div>
-                          </div> --}}
                       </div>
                   </div>
                 </div>

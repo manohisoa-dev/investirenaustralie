@@ -64,8 +64,9 @@ class LoginController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function showLoginForm()
+    public function showLoginForm(Request $request)
     {
+
         $latitude = option(\App\Models\Config::$APP_LATITUDE, -25.647467468105795);
         $longitude = option(\App\Models\Config::$APP_LONGITUDE, 146.89921517372136);
         
@@ -196,6 +197,6 @@ class LoginController extends Controller
         Session::put('locale',$page_locale);
         Session::save();
         
-        return redirect($link);
+        return back();
     }
 }

@@ -15,7 +15,7 @@
                     }   
                 @endphp
                 
-                <a href="{{ route('programme.show', ['slug'=>$item->slug]) }}" target="_blank">
+                <a href="{{ route('programme.show', ['slug'=>$item->slug]) }}" >
                     <div class="transition blog-grid-overlay border-radius-0" style="background-image: url({{ $img }}); ">
                         <div class="blog-gird-info">
                             <h5>{{ $item->title?$item->title:'' }}</h5>

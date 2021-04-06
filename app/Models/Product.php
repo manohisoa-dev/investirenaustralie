@@ -130,7 +130,7 @@ class Product extends Model {
     }
 
     /**
-     * Scope a query to only include products of a given $parent_id.
+     * Scope a query to only include products is parent.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @param mixed $parent_id
@@ -139,6 +139,17 @@ class Product extends Model {
     public function scopeIsParent($query, $parent_id)
     {
         return $query->where('parent_id', $parent_id);
+    }
+
+    /**
+     * Scope a query to only include products have parent.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeIsProduct($query)
+    {
+        return $query->where('parent_id', '!=', 0);
     }
 
 

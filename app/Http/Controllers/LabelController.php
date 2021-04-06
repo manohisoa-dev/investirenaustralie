@@ -50,6 +50,22 @@ class LabelController extends Controller
         
         return back()->with('success', trans('app.txt.product.favoris', ['type'=>$type]));
     }
+
+    /**
+     * Remove a product label
+     *
+     * @param  Illuminate\Http\Request  $request
+     * @param  App\Models\Product  $product
+     * @param  String  $type
+     * @return Illuminate\Http\Response
+     */
+    public function remove($id)
+    {
+        $label = Label::where('id','=', $id)
+            ->delete();
+        
+        return back()->with('success', trans('app.txt.programme_remove_favorites'));
+    }
     
     /**
      * List a product label

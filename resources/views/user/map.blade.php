@@ -3,7 +3,7 @@
       <div class="row">
           <div class="col-md-12">
               <div class="col-md-3">
-                  <img style="width:100%;" class="map-info-image" id="lettrineImage" src="{{$item->imageUrl()}}" title="La cité royale de Loches" />
+                  <img style="width:100%;" class="map-info-image" id="lettrineImage" src="{{$item->imageUrl()}}" title="" />
                   <h4>{{$item->name}}</h4>
                   <h6><i class="fa fa-envelop"></i>{{$item->email}}</h6>
               </div>

@@ -677,6 +677,11 @@ return [
     'txt.no_ads' => 'Aucun Pubs.',
     'txt.discover' => 'Découvrir',
     'txt.no_product' => 'Aucun produit trouvé pour ce programme',
+    'txt.contact_afa' => 'Contacter cette AFA',
+    'txt.no_afa_in_this_location' => 'Aucune AFA trouvée dans cet endroit',
+    'txt.programme_in_favorites' => 'Programme déjà dans la liste de vos favoris. Cliquez pour annuler',
+    'txt.programme_favorites' => 'Mettre dans mes favoris',
+    'txt.programme_remove_favorites' => 'Programme supprimé de votre liste de favoris',
     
     
     'childs' => 'Fils',
@@ -725,6 +730,8 @@ return [
     'btn.continuer'    => "Continuer",
     'btn.validerinscription'    => "Valider mon inscription",
     'btn.close'      =>"Fermer",
+    'btn.contact_afa'      =>"Contacter une AFA",
+    'btn.return'      =>"Retour",
     
     'contact_admin'  => "Contacter l'administrateur",
     'contact_apl'    => "Contacter l'APL",

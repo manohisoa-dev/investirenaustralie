@@ -276,6 +276,7 @@ class IndexController extends Controller
         
         $products = Product::orderBy('created_at','desc')
             ->ofStatus('published')
+            ->isProduct()
             ->take($this->recentSize)
             ->get();
         
@@ -328,6 +329,7 @@ class IndexController extends Controller
         
         $products = Product::orderBy('created_at','desc')
             ->ofStatus('published')
+            ->isProduct()
             ->take($this->recentSize)
             ->get();
         
@@ -373,6 +375,7 @@ class IndexController extends Controller
         
         $products = Product::orderBy('created_at','desc')
             ->ofStatus('published')
+            ->isProduct()
             ->take($this->recentSize)
             ->get();
         
@@ -416,6 +419,7 @@ class IndexController extends Controller
         
         $products = Product::orderBy('created_at','desc')
             ->ofStatus('published')
+            ->isProduct()
             ->take($this->recentSize)
             ->get();
         
@@ -461,6 +465,7 @@ class IndexController extends Controller
         
         $products = Product::orderBy('created_at','desc')
             ->ofStatus('published')
+            ->isProduct()
             ->take($this->recentSize)
             ->get();
         

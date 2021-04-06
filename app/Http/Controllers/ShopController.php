@@ -68,6 +68,7 @@ class ShopController extends Controller
         
         $products = Product::orderBy('created_at','desc')
             ->ofStatus('published')
+            ->isProduct()
             ->get();
         
         $categories = Category::orderBy('created_at', 'desc')

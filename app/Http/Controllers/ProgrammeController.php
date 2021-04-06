@@ -39,6 +39,7 @@ class ProgrammeController extends Controller
                 
                 $products = Product::orderBy('created_at','desc')
                     ->ofStatus('published')
+                    ->isProduct()
                     ->take($this->recentSize)
                     ->get();
                 
@@ -82,7 +83,13 @@ class ProgrammeController extends Controller
                     ->where('users.role','=','4')
                     ->groupBy('localizations.locality')
                     ->get();
-                    
+
+                $afas = User::where('role',3)
+                    ->where('status','active')
+                    ->where('location_id',$product->location_id)
+                    ->orderBy('id','desc')
+                    ->get();
+
                 
                 return view('programme.single')
                     ->with('item', $product)
@@ -95,6 +102,7 @@ class ProgrammeController extends Controller
                     ->with('locationTypes', $locationTypes)
                     ->with('types', $types)
                     ->with('lapls', $lapls)
+                    ->with('afas', $afas)
                     ->with('categories', $categories);
             }
         }else{
@@ -149,6 +157,7 @@ class ProgrammeController extends Controller
         
         $products = Product::orderBy('created_at','desc')
             ->ofStatus('published')
+            ->isProduct()
             ->get();
 
         $programmes = Product::orderBy('created_at','desc')
