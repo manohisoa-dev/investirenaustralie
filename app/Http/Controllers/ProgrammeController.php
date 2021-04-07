@@ -175,6 +175,8 @@ class ProgrammeController extends Controller
         $page2 = Page::where('path', '=', '/products*')->first();
         if($page2){$pubs = $page2->pubs;}else{$pubs=[];}
 
+        // dd($pubs);
+
         
         $typesRes = Type::orderBy('title', 'asc')
             ->where('object_type', 'type')

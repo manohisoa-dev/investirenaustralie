@@ -285,8 +285,8 @@
                 event.preventDefault();
                 $('.view-item').removeClass('col-lg-6');
                 $('.view-item').addClass('col-lg-12');
-                $('.carousel-item > div').removeClass('col-lg-12');
-                $('.carousel-item > div').addClass('col-lg-4');
+                $('.carousel-item-prod > div').removeClass('col-lg-12');
+                $('.carousel-item-prod > div').addClass('col-lg-4');
             });
 
             // grid view
@@ -294,8 +294,8 @@
                 event.preventDefault();
                 $('.view-item').removeClass('col-lg-12');
                 $('.view-item').addClass('col-lg-6');
-                $('.carousel-item > div').removeClass('col-lg-4');
-                $('.carousel-item > div').addClass('col-lg-12');
+                $('.carousel-item-prod > div').removeClass('col-lg-4');
+                $('.carousel-item-prod > div').addClass('col-lg-12');
             });
         });
     </script>
