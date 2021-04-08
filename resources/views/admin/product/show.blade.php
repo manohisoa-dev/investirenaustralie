@@ -76,6 +76,16 @@
 							</div>
 						</dl>
 						@endif
+						@if($product->parent_id !=0)
+						<dl class="row mb-0">
+							<div class="col-sm-4 text-sm">
+								<dt>Programme:</dt>
+							</div>
+							<div class="col-sm-8 text-sm-left">
+								<dd class="mb-1"><span class="label label-warning">{{\App\Models\Product::where('id',$product->parent_id)->value('title') }}</span></dd>
+							</div>
+						</dl>
+						@endif
 						@if($product->seller)
 						<dl class="row mb-0">
 							<div class="col-sm-4 text-sm">

@@ -39,6 +39,7 @@
 							{!!\Nvd\Crud\Html::sortableTh('status','admin.product.index','Statut')!!}
 							{!!\Nvd\Crud\Html::sortableTh('seller_id','admin.product.index','Vendeur')!!}
 							{!!\Nvd\Crud\Html::sortableTh('author_id','admin.product.index','Auteur')!!}
+							<th>Programme</th>
                             <th><a href="javascript:void(0)">Actions</a></th>
 							
                         </tr>
@@ -59,6 +60,7 @@
 								</td>
 								<td><input type="text" class="form-control" name="seller_id" value="{{Request::input("seller_id")}}"></td>
 								<td><input type="text" class="form-control" name="author_id" value="{{Request::input("author_id")}}"></td>
+								<td></td>
                                 <td style="min-width: 6em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>
                             </form>
                         </tr>
@@ -146,6 +148,11 @@
                                     {{ $record->author->name }}
                                 </span>
                             </td>
+							<td>
+								@if($record->parent_id != 0)
+									{{\App\Models\Product::where('id',$record->parent_id)->value('title') }}
+								@endif								
+							</td>
 							<td class="actions-cell text-center" width="12%">
 								<form class="form-inline" action="{{route('admin.product.index')}}/{{$record->id}}" method="POST">
 									<a href="{{route('admin.product.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="Détail">
