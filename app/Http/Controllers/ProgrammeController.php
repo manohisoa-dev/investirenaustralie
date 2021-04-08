@@ -11,6 +11,8 @@ use App\Models\Localisation;
 use App\Models\Search;
 use App\Models\Page;
 use App\Models\User;
+use App\Models\Blog;
+use App\Models\Parameter;
 
 class ProgrammeController extends Controller
 {
@@ -119,6 +121,9 @@ class ProgrammeController extends Controller
         
         $order = $request->get('order');
         if(!in_array($order, ['desc', 'asc'])) $order = 'desc';
+
+        $viewProd = $request->get('view_prod');
+        if(!in_array($viewProd, ['grid', 'list'])) $viewProd = 'list';
         
         $items = Product::ofStatus('published')
                 ->isParent(0)
@@ -335,12 +340,23 @@ class ProgrammeController extends Controller
         }
 
 
+        // if($viewProd === 'list'){
+        //     $blogs = Blog::ofStatus('published')->where('post_type','=', 'blog')->withCount('comments')->get()->random();
+        // }else{
+        //     $blogs = Blog::ofStatus('published')->where('post_type','=', 'blog')->withCount('comments')->get()->random(2);
+        // }
+
+        $xLine = Parameter::where('name','x_line')->first();
+
+
         return view('programme.index')
             ->with('items', $items)
             ->with('search', $search)
             ->with('q', $q)
             ->with('orderBy', $orderBy)
             ->with('order', $order)
+            ->with('viewProd', $viewProd)
+            ->with('xLine', $xLine)
             ->with('page', $page)
             ->with('pubs', $pubs)
             ->with('products', $products)

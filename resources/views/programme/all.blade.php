@@ -3,7 +3,7 @@
     @if($i%2 === 0)
         <div class="row" id="txtHint">
     @endif
-    <div class="col-md-12 view-item layout-item-wrap">
+    <div class="{{ $viewProd=='list' ? 'col-md-12' : 'col-md-6'}} view-item layout-item-wrap">
 
         <div class="col-sm-12 col-lg-12 m-15px-tb">
             <div class="box-shadow-hover hover-top white-bg our-team-hover-icon border-radius-3">
@@ -41,7 +41,7 @@
                                     
                                     @forelse (App\Models\Product::where('parent_id','=',$item->id)->get() as $prod)
                                         <div class="carousel-item carousel-item-prod @if($loop->first) active @endif">
-                                            <div class="col-lg-4 col-sm-12">
+                                            <div class="{{ $viewProd=='list' ? 'col-lg-4' : 'col-md-12'}} col-sm-12">
                                                 <div class="thumb-wrapper">
                                                     <div class="img-box p-10px-b m-15px-b border-bottom-2 border-color-gray">
                                                         @php
@@ -93,7 +93,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     {{-- Show pub --}}
     @if (($key+1)%2 === 0)
@@ -156,6 +155,115 @@
         </div>
     @endif
     {{-- End show pub --}}
+    
+    {{-- Show blog --}}
+        
+        @if ($viewProd === 'list')
+            @if (($key+1)%(int)($xLine->value) === 0)
+                @php
+                    $blogs = App\Models\Blog::ofStatus('published')->where('post_type','=', 'blog')->withCount('comments')->get()->random();
+                @endphp
+                <div class="col-lg-12 md-m-15px-tb m-25px-b">
+                    <div class="m-35px-t">
+                        <div class="card">
+                            <p class="text-center" style="font-size: 11px;">{{ Illuminate\Support\Str::upper(trans('app.blog')) }}</p>
+                            <div id="ads" class="ads-section col-lg-12 p-15px-b white-bg">
+                                <div class="ads-header col-lg-12 float-left p-5px-t p-20px-l p-10px-b border-top-1 border-color-gray">
+                                    <div class="row col-lg-12">
+                                        <div class="col-lg-6">
+                                            <img src="{{ asset('images/ads-logo.png') }}" alt="logo_iea">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ads-content">
+                                    <div class="col-md-12 col-lg-12 m-30px-b view-item-blog">
+                                        <div class="hover-top card box-shadow-only-hover overflow-hidden">
+                                            <div>
+                                                {{-- Show blog image --}}
+                                                <a href="{{route('blog.index',$blogs->slug)}}" target="_blank">
+                                                    @php
+                                                        try {
+                                                            if(file_get_contents($blogs->imageUrl()));
+                                                            $img=$blogs->imageUrl();
+                                                        } catch (\Throwable $th) {
+                                                            $img=asset('images/blog/iea.png');
+                                                        }   
+                                                    @endphp
+                                                    <img src="{{$img}}" alt="{{$blogs->title}}" title="{{$blogs->title}}">
+                                                </a>
+                                            </div>
+                                            <div class="p-20px">
+                                                <label class="font-small">@lang('app.txt.postepar') : <a href="javascript:void(0)">{{$blogs->author ? $blogs->author->name : ''}}</a> – {{$blogs->created_at ? $blogs->created_at->diffForHumans() : ''}}</label>
+                                                <h5 class="m-10px-b font-w-600"><a title="{{$blogs->title}}" class="dark-color" href="{{route('blog.index',$blogs->slug)}}" target="_blank">{{str_limit($blogs->title, 50, '...')}}</a></h5>
+                                                <div class="nav font-small border-top-1 border-color-dark-gray p-15px-t">
+                                                    <a class="m-15px-r body-color font-w-500" href="javascript:void(0)"><i class="fas fa-calendar-alt "></i> {{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $blogs->created_at)->format('d F')}},{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $blogs->created_at)->year }}</a>
+                                                    <a class="body-color font-w-500" href="javascript:void(0)"><i class="fas fa-comments"></i> {{$blogs->comments_count}}</a>
+                                                    <a class="body-color font-w-500 ml-auto" href="{{route('blog.index',$blogs->slug)}}" target="_blank">@lang('app.txt.lecture') <i class="fas fa-chevron-right"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+            @else
+            @if (($key+1)%(int)($xLine->value % 2 === 0 ?$xLine->value:2) === 0)
+                <div class="col-lg-12 md-m-15px-tb m-25px-b">
+                    <div class="m-35px-t">
+                        <div class="card">
+                            <p class="text-center" style="font-size: 11px;">{{ Illuminate\Support\Str::upper(trans('app.blog')) }}</p>
+                            <div id="ads" class="ads-section col-lg-12 p-15px-b white-bg">
+                                <div class="ads-header col-lg-12 float-left p-5px-t p-20px-l p-10px-b border-top-1 border-color-gray">
+                                    <div class="row col-lg-12">
+                                        <div class="col-lg-6">
+                                            <img src="{{ asset('images/ads-logo.png') }}" alt="logo_iea">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ads-content row col-lg-12">
+                                    @forelse (App\Models\Blog::ofStatus('published')->where('post_type','=', 'blog')->withCount('comments')->get()->random(2) as $blog)
+                                        <div class="col-md-12 col-lg-6 m-30px-b view-item-blog">
+                                            <div class="hover-top card box-shadow-only-hover overflow-hidden">
+                                                <div>
+                                                    {{-- Show blog image --}}
+                                                    <a href="{{route('blog.index',$blog->slug)}}" target="_blank">
+                                                        @php
+                                                            try {
+                                                                if(file_get_contents($blog->imageUrl()));
+                                                                $img=$blog->imageUrl();
+                                                            } catch (\Throwable $th) {
+                                                                $img=asset('images/blog/iea.png');
+                                                            }   
+                                                        @endphp
+                                                        <img src="{{$img}}" alt="{{$blog->title}}" title="{{$blog->title}}">
+                                                    </a>
+                                                </div>
+                                                <div class="p-20px">
+                                                    <label class="font-small">@lang('app.txt.postepar') : <a href="javascript:void(0)">{{$blog->author ? $blog->author->name : ''}}</a> – {{$blog->created_at ? $blog->created_at->diffForHumans() : ''}}</label>
+                                                    <h5 class="m-10px-b font-w-600"><a title="{{$blog->title}}" class="dark-color" href="{{route('blog.index',$blog->slug)}}" target="_blank">{{str_limit($blog->title, 50, '...')}}</a></h5>
+                                                    <div class="nav font-small border-top-1 border-color-dark-gray p-15px-t">
+                                                        <a class="m-15px-r body-color font-w-500" href="javascript:void(0)"><i class="fas fa-calendar-alt "></i> {{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $blog->created_at)->format('d F')}},{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $blog->created_at)->year }}</a>
+                                                        <a class="body-color font-w-500" href="javascript:void(0)"><i class="fas fa-comments"></i> {{$blog->comments_count}}</a>
+                                                        <a class="body-color font-w-500 ml-auto" href="{{route('blog.index',$blog->slug)}}" target="_blank">@lang('app.txt.lecture') <i class="fas fa-chevron-right"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @empty
+                                        
+                                    @endforelse
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+            @endif
+        @endif
+        {{-- End show blog --}}
+    
 
     @php $i++; @endphp
     @if($i%2 === 0)

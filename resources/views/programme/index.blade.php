@@ -121,6 +121,7 @@
                                 </div>
                                 <div  class="pull-left col-lg-2 col-md-12 m-50px-t" id="showType" @if($showBy!=='mat') hidden @endif>
                                     <p class="layout-view"> @lang('app.form.vue'): <a href="javascript:void(0)" id="grid"><i class="fa fa-th-large selected" data-layout="6"></i></a> <a href="javascript:void(0)" id="list"><i class="fa fa-list-ul" data-layout="12"></i></a> </p>
+                                    <input type="hidden" name="view_prod" id="view_prod" value="list">
                                 </div>
                             </form>
                         </div>           
@@ -282,20 +283,28 @@
         $(document).ready(function() {
             // list view
             $('#list').click(function(event){
-                event.preventDefault();
-                $('.view-item').removeClass('col-lg-6');
-                $('.view-item').addClass('col-lg-12');
-                $('.carousel-item-prod > div').removeClass('col-lg-12');
-                $('.carousel-item-prod > div').addClass('col-lg-4');
+                // event.preventDefault();
+
+                $('#view_prod').val('list');
+                $('#filter-form').submit();
+
+                // $('.view-item').removeClass('col-lg-6');
+                // $('.view-item').addClass('col-lg-12');
+                // $('.carousel-item-prod > div').removeClass('col-lg-12');
+                // $('.carousel-item-prod > div').addClass('col-lg-4');
             });
 
             // grid view
             $('#grid').click(function(event){
-                event.preventDefault();
-                $('.view-item').removeClass('col-lg-12');
-                $('.view-item').addClass('col-lg-6');
-                $('.carousel-item-prod > div').removeClass('col-lg-4');
-                $('.carousel-item-prod > div').addClass('col-lg-12');
+                // event.preventDefault();
+
+                $('#view_prod').val('grid');
+                $('#filter-form').submit();
+
+                // $('.view-item').removeClass('col-lg-12');
+                // $('.view-item').addClass('col-lg-6');
+                // $('.carousel-item-prod > div').removeClass('col-lg-4');
+                // $('.carousel-item-prod > div').addClass('col-lg-12');
             });
         });
     </script>
