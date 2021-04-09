@@ -82,7 +82,7 @@
                                 </div>
                             </div>
                             <div class="ads-content">
-                                <a href="{{ $item->links?$item->links:'#' }}" target="_blank"><img src="{{ asset('uploads/'.$item->image->filepath) }}" alt=""></a>
+                                <a href="{{ $item->links?$item->links:'#' }}" target="_blank"><img src="{{ asset($item->image->filepath) }}" alt=""></a>
                             </div>
                         </div>
                     @empty
