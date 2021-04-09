@@ -368,7 +368,7 @@ class SearchController extends Controller
             ->get();
 
         $city = $request->city;
-//        $state_id = $request->state?((State::where('content','=',$request->state))->get())[0]->id:'';
+        $state = $request->state;
         $suburb = $request->suburb;
         $prod = $request->prod;
         
@@ -376,17 +376,17 @@ class SearchController extends Controller
 
         $items = $items->join('localizations','localizations.id','=','products.location_id')
                 ->where('products.state_id','!=',0);
-
-//        if($state_id){
-//            $items = $items->where('state_id','=',$state_id);
-//        }
+        
+        if($state){
+            $items = $items->where('localizations.area_level_1','=',$state);
+        }
 
         if($city){
-            $items = $items->where('localizations.locality','=',$city);
+            $items = $items->where('localizations.locality','=',$suburb);
         }
 
         if($suburb){
-            $items = $items->where('localizations.area_level_2','=',$suburb);
+            $items = $items->where('localizations.area_level_2','=',$city);
         }
 
         if($prod){
