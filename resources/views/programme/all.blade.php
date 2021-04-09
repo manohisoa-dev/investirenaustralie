@@ -118,17 +118,18 @@
                                                     <div class="img-box p-10px-b m-15px-b border-bottom-2 border-color-gray">
                                                         @php
                                                             try {
-                                                                if(file_get_contents($pub->imageUrl()));
-                                                                $img_pub=$pub->imageUrl();
+                                                                if(file_get_contents($pub->imageUrl())){
+                                                                    $img_pub=$pub->imageUrl();
+                                                                }
                                                             } catch (\Throwable $th) {
                                                                 $img_pub=asset('images/pub/iea.png');
-                                                            }   
+                                                            }
                                                         @endphp
                                                         <a href="{{ $pub->links }}" target="_blank"><img src="{{$img_pub}}" alt="{{$pub->title}}" class="img-fluid"></a>
                                                     </div>
                                                     <div class="thumb-content">
                                                         <p><span>{{ $pub->title }}</span></p>
-                                                    </div>						
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -141,7 +142,7 @@
                                                     </div>
                                                     <div class="thumb-content">
                                                         <p><span>{{ $pub->title }}</span></p>
-                                                    </div>						
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
