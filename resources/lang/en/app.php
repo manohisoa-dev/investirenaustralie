@@ -279,6 +279,7 @@ return [
     'txt.product'      =>'Product',
     'txt.all_products'      =>'All products',
     'txt.all_programmes'      =>'All programs',
+    'txt.our_programs'      =>'Our programs',
     'txt.programme'      =>'Program',
     'txt.industriel'      =>'Industrial',
     'txt.commercial'      =>'Commercial',

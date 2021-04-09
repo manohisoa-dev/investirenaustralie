@@ -251,6 +251,7 @@
                         </h6>
                         <ul class="list-unstyled links-white footer-link-1">
                             <li><a href="{{route('home')}}">@lang('app.home')</a></li>
+                            <li><a href="{{route('programme.all')}}">@lang('app.txt.our_programs')</a></li>
                             <li><a href="{{route('shop.index', \App\Models\Category::find(1))}}">@lang('app.txt.immobilier_residentiel')</a></li>
                             <li><a href="{{route('shop.index', \App\Models\Category::find(2))}}">@lang('app.txt.immobilier_foncier')</a></li>
                             <li><a href="{{route('shop.index', \App\Models\Category::find(3))}}">@lang('app.txt.business_industriel')</a></li>

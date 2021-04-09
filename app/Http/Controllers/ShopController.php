@@ -218,7 +218,7 @@ class ShopController extends Controller
             ->where('category_id','=',4)
             ->max('land_area');
         
-        $lapls = User::ofRole(4)
+        $apls = User::ofRole(4)
             ->isActive()
             ->has('location')
             ->with('location')
@@ -236,8 +236,6 @@ class ShopController extends Controller
                 'type' => 'product',
             ];
         }
-
-        
 
         return view('shop.index')
             ->with('items', $items)

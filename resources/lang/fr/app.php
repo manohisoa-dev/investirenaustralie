@@ -540,6 +540,7 @@ return [
     'txt.load_more_blog'  => "Chargement de plus de blog",
     'txt.all_products'      =>'Tous les produits',
     'txt.all_programmes'      =>'Tous les programmes',
+    'txt.our_programs'      =>'Nos programmes',
     'txt.programme'      =>'Programme',
     'txt.industriel'      =>'Industriel',
     'txt.commercial'      =>'Commercial',
