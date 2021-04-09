@@ -8,6 +8,7 @@
         </a>
         <ul class="dropdown-menu animated fadeInRight m-t-xs">
             <li><a class="dropdown-item" href="{{route('admin.profile')}}">Profile</a></li>
+            <li><a class="dropdown-item" href="http://iea.easydata.mg/">Retour à la page d'accueil</a></li>
             <li class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="{{ route('logout') }}">{{__('app.logout')}}</a></li>
         </ul>

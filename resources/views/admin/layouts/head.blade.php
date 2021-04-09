@@ -34,7 +34,7 @@
                     @endforeach
                     <li>
                         <div class="text-center link-block">
-                            <a href="mailbox.html" class="dropdown-item">
+                            <a href="{{route('admin.mail.index')}}" class="dropdown-item">
                                 <i class="fa fa-envelope"></i> <strong>Lire tous les messages</strong>
                             </a>
                         </div>

@@ -3,6 +3,6 @@
         {{__('app.footer_description')}}
     </div>
     <div>
-        <strong>Copyright</strong> Investir en Australie &copy; 2019 {{\Carbon\Carbon::now()->year != "2019" ? "- " . \Carbon\Carbon::now()->year : ""}}
+        <strong>Copyright</strong> <a href="http://iea.easydata.mg/">Investir en Australie</a> &copy; 2019 {{\Carbon\Carbon::now()->year != "2019" ? "- " . \Carbon\Carbon::now()->year : ""}}
     </div>
 </div>
