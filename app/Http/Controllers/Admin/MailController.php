@@ -73,8 +73,10 @@ class MailController extends Controller {
      */
     public function show(Request $request, Mail $mail) {
         $mail_user = MailUser::where(['user_id' => Auth::id(), 'mail_id' => $mail->id])->first() ;
-        $mail_user->read = 1;
-        $mail_user->save();
+        if($mail_user){
+            $mail_user->read = 1;
+            $mail_user->save();
+        }
         return $this->view("show", ['mail' => $mail]);
     }
 
