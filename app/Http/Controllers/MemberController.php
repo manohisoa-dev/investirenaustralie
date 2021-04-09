@@ -95,15 +95,17 @@ class MemberController extends Controller
             ->where('users.role','=','4')
             ->groupBy('localizations.locality')
             ->get();
+        $apls = User::ofRole(4)->isActive()->get();
         
         if(($role=='apl') && !Auth::user()->apl){
             return redirect()->route('member.select.apl')
-                ->with('error', 'Vous devez choisir un APL d\'abord.');
+                ->with('error', trans('app.txt.choose_an_apl'));
         }
         
         return view('backend.contact.member')
             ->with('action', $action)
             ->with('lapls', $lapls)
+            ->with('apls', $apls)
             ->with('title', __('app.contact_'.$role));
     }
 
@@ -217,6 +219,20 @@ class MemberController extends Controller
     public function selectApl(Request $request){
         $this->middleware('auth');
         $this->middleware('role:member');
+
+        // check if user has apl or add if user has no apl
+        $message="";
+        if($request->get('apl')){
+            if(Auth::user()->hasApl()){
+                $message = trans('app.txt.member_has_apl', ['apl'=>User::find(Auth::user()->apl_id)->name]);
+            }else{
+                // // Add APL on member
+                User::whereId(Auth::id())->update(['apl_id'=>$request->get('apl'), 'apl_ends_at'=>\Carbon\Carbon::now()->addDays(180)]);
+
+                $message = trans('app.txt.member_has_new_apl', ['apl'=>User::find($request->get('apl'))->name]);
+            }
+        }
+        
         
         $distance = $request->get('distance');
         if(empty($distance)) $distance = 100;
@@ -228,6 +244,7 @@ class MemberController extends Controller
             ->has('location')
             ->with('location')
             ->get();
+
         $lapls = Localisation::select('localizations.*')
             ->join('users','users.location_id','=','localizations.id')
             ->where('users.role','=','4')
@@ -258,6 +275,7 @@ class MemberController extends Controller
         }
         
         $action = route('member.select.apl');
+
     	return view('backend.apl.select')
             ->with('location', Auth::user()->location)
             ->with('action', $action)
@@ -266,6 +284,7 @@ class MemberController extends Controller
             ->with('lapls', $lapls)
             ->with('distances', $this->distances)
             ->with('selected', json_encode($selected))
+            ->with('message', $message)
             ->with('data', json_encode($data));
     }
     
@@ -371,6 +390,7 @@ class MemberController extends Controller
         }
         
         $action = route('member.select.afa');
+
     	return view('backend.afa.select')
             ->with('location', Auth::user()->location)
             ->with('action', $action)

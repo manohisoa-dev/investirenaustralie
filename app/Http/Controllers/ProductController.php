@@ -57,7 +57,7 @@ class ProductController extends Controller
                 
                 if($page){$pubs = $page->pubs;}else{$pubs = [];}
                 
-                $apls = User::ofRole('apl')->isActive()->get();
+                $apls = User::ofRole(4)->isActive()->get();
                 
                 $data = [
                       'id' => $product->id,
@@ -87,12 +87,19 @@ class ProductController extends Controller
                     ->groupBy('localizations.locality')
                     ->get();
                 
+                $afas = User::where('role',3)
+                    ->where('status','active')
+                    ->where('location_id',$product->location_id)
+                    ->orderBy('id','desc')
+                    ->get();
+                
                 return view('product.index')
                     ->with('item', $product)
                     ->with('location', $product->location)
                     ->with('pubs', $pubs)
                     ->with('products', $products)
                     ->with('apls', $apls)
+                    ->with('afas', $afas)
                     ->with('data', json_encode($data))
                     ->with('states', $states)
                     ->with('locationTypes', $locationTypes)

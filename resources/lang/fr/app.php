@@ -678,10 +678,14 @@ return [
     'txt.discover' => 'Découvrir',
     'txt.no_product' => 'Aucun produit trouvé pour ce programme',
     'txt.contact_afa' => 'Contacter cette AFA',
+    'txt.contact_apl' => 'Contacter cette APL',
     'txt.no_afa_in_this_location' => 'Aucune AFA trouvée dans cet endroit',
+    'txt.no_apl_in_this_location' => 'Aucune APL trouvée dans cet endroit',
+    'txt.no_apl' => 'Aucune APL trouvée',
     'txt.programme_in_favorites' => 'Programme déjà dans la liste de vos favoris. Cliquez pour annuler',
     'txt.programme_favorites' => 'Mettre dans mes favoris',
     'txt.programme_remove_favorites' => 'Programme supprimé de votre liste de favoris',
+    'txt.choose_an_apl' => "Vous devez choisir un APL d'abord.",
     
     
     'childs' => 'Fils',
@@ -719,6 +723,8 @@ return [
     'btn.send'           => "Envoyer",
     'btn.send_mail'      => "Envoyer email",
     'btn.add_to_cart'    => "Je veux acheter ce Produit",
+    'btn.go_to_location'    => "Je veux me rendre sur place ...",
+    'txt.go_to_location'    => "Je veux me rendre sur place avant de m'engager",
     'btn.reply'          => "Repondre",
     'btn.draft'          => "Brouillon",
     'btn.next'           => "Suivant",
@@ -731,7 +737,9 @@ return [
     'btn.validerinscription'    => "Valider mon inscription",
     'btn.close'      =>"Fermer",
     'btn.contact_afa'      =>"Contacter une AFA",
+    'btn.contacter_apl'      =>"Contacter une APL",
     'btn.return'      =>"Retour",
+    'btn.ok'      =>"OK",
     
     'contact_admin'  => "Contacter l'administrateur",
     'contact_apl'    => "Contacter l'APL",
@@ -922,6 +930,10 @@ return [
     'txt.loc_geo'        => 'Localisation géographique',  
     'txt.repr_mat'        => 'Représentation matérielle',   
     'txt.new' => 'Nouveau',
+    'txt.accept_term' => 'Veuillez accepter les termes et conditions :role',
+    'txt.condition_days_apl' => 'Vous avez :nbDay jours pour etre en relation avec un APL.',
+    'txt.member_has_apl' => "Vous êtes déjà en relation avec l'APL <b>:apl</b>",
+    'txt.member_has_new_apl' => "Vous êtes maintenant en relation avec l'APL <b>:apl</b>",
 
 
 

@@ -46,7 +46,7 @@
                                                     <div class="img-box p-10px-b m-15px-b border-bottom-2 border-color-gray">
                                                         @php
                                                             try {
-                                                                if(file_get_contents($prod->imageUrl()));
+                                                                if(file_get_contents($prod->imageUrl()))
                                                                 $img_prod=$prod->imageUrl();
                                                             } catch (\Throwable $th) {
                                                                 $img_prod=asset('images/iea.png');
@@ -118,7 +118,7 @@
                                                     <div class="img-box p-10px-b m-15px-b border-bottom-2 border-color-gray">
                                                         @php
                                                             try {
-                                                                if(file_get_contents($pub->imageUrl()));
+                                                                if(file_get_contents($pub->imageUrl()))
                                                                 $img_pub=$pub->imageUrl();
                                                             } catch (\Throwable $th) {
                                                                 $img_pub=asset('images/pub/iea.png');
