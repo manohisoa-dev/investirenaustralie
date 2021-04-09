@@ -3,9 +3,56 @@
 @section('content')
 <!-- Main -->
 <main>
-    @component('includes.breadcrumb')
+    {{-- @component('includes.breadcrumb')
         @lang('Products')
-    @endcomponent
+    @endcomponent --}}
+    <!-- Page Title -->
+    @php
+        try {
+            if(file_get_contents($item->imageUrl()));
+            $img=$item->imageUrl();
+        } catch (\Throwable $th) {
+            $img=asset('images/blog/iea.png');
+        }   
+    @endphp
+    <section class="bg-center bg-cover bg-fiexd effect-section" style="background-image: url({{ $img }});">
+        <div class="mask dark-g-bg opacity-7"></div>
+        <div class="container">
+            <div class="row screen-65 justify-content-center align-items-center p-100px-tb">
+                <div class="col-lg-10 text-center m-50px-t">
+                    <h1 class="display-4 white-color m-25px-b">{{$item->title}}</h1>
+                    <div class="d-flex align-items-center m-25px-t justify-content-center text-left">
+                        <div class="p-15px-l">
+                            <p class="white-color m-0px">{{ $item->location ? Illuminate\Support\Str::upper($item->location->locality.' '.$item->location->area_level_2.', '.$item->location->area_level_1.' '.$item->location->postalCode) : '' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="p-25px-t row col-lg-12">
+                        <div class="col-lg-4 col-sm-6">
+                            <a href="javascript:void(0)" data-toggle="modal" data-target="#listAfaModal" class="m-btn m-btn-theme2nd dark-color flex-shrink-0 col-md-12"><i class="fa fa-envelope" aria-hidden="true"></i>  @lang('app.btn.contact_afa')</a>
+                        </div>
+                        <div class="col-lg-4 col-sm-6">
+                          <a href="{{ route('member.contact', ['role'=>'apl']) }}" class="m-btn m-btn-theme4rd dark-color flex-shrink-0 col-md-12"><i class="fa fa-envelope" aria-hidden="true"></i>  @lang('app.btn.contacter_apl')</a>
+                        </div>
+                        <div class="col-lg-4 col-sm-6">
+
+                            @if (Auth::user())
+                                @if (isset(App\Models\Label::where('author_id',Auth::id())->where('product_id',$item->id)->where('label','starred')->first()->id))
+                                    <a href="{{route('label.remove', ['id'=>App\Models\Label::where('author_id',Auth::id())->where('product_id',$item->id)->where('label','starred')->first()->id])}}" title="@lang('app.txt.programme_in_favorites')" class="m-btn btn-warning dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>
+                                @else
+                                    <a href="{{route('label.store', ['product'=>$item,'type'=>'starred'])}}" title="@lang('app.txt.programme_favorites')" class="m-btn m-btn-theme5rd dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>
+                                @endif
+                            @else
+                                <a href="{{route('label.store', ['product'=>$item,'type'=>'starred'])}}" title="@lang('app.txt.programme_favorites')" class="m-btn m-btn-theme5rd dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>
+                            @endif
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Page Title -->
     <!-- Section -->
     <section class="section">
         <div class="container">
@@ -60,23 +107,17 @@
                   <section class="property-meta-wrapper common">
                     <!-- @include('includes.alerts') -->
                     <div class="row">
-                        <div class="col-sm-9">
+                        <div class="col-sm-6">
                             <form action="{{route('shop.order', ['product'=>$item->slug])}}" method="post">
                                 {{csrf_field()}}
                                 <button type="submit" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12"><i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')</button>
                             </form>
                         </div>
-                        <div class="col-sm-3">
-                          @if (Auth::user())
-                                @if (isset(App\Models\Label::where('author_id',Auth::id())->where('product_id',$item->id)->where('label','starred')->first()->id))
-                                    <a href="{{route('label.remove', ['id'=>App\Models\Label::where('author_id',Auth::id())->where('product_id',$item->id)->where('label','starred')->first()->id])}}" title="@lang('app.txt.programme_in_favorites')" class="m-btn btn-warning dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>
-                                @else
-                                    <a href="{{route('label.store', ['product'=>$item,'type'=>'starred'])}}" title="@lang('app.txt.programme_favorites')" class="m-btn m-btn-theme5rd dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>
-                                @endif
-                            @else
-                                <a href="{{route('label.store', ['product'=>$item,'type'=>'starred'])}}" title="@lang('app.txt.programme_favorites')" class="m-btn m-btn-theme5rd dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>
-                            @endif
-                          {{-- <a href="{{route('label.store', ['product'=>$item,'type'=>'starred'])}}" class="m-btn btn-warning dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a> --}}
+                        <div class="col-sm-6">
+                          <form action="{{route('shop.order', ['product'=>$item->slug])}}" method="post">
+                              {{csrf_field()}}
+                              <button type="submit" class="m-btn m-btn-theme flex-shrink-0 col-md-12" title="@lang('app.txt.go_to_location')"><i class="fa fa-map-marker"></i> @lang('app.btn.go_to_location')</button>
+                          </form>
                         </div>
                     </div>
                   </section>
@@ -129,6 +170,9 @@
                           <div id="map"></div>
                       </div>
                   </div>
+                  <div class="m-35px-t">
+                    <a href="{{ url()->previous() }}" class="m-btn m-btn-theme"><i class="fa fa-arrow-left"></i> @lang('app.btn.return')</a>
+                  </div>
                 </div>
 
                 <!-- Sidebar -->
@@ -157,9 +201,84 @@
             </div>
         </div>
     </section>          
-    <!-- End Section -->
-    
+    <!-- End Section -->    
 </main>
+
+<!-- List AFA modal -->
+<div class="container">
+  <div class="modal left fade" id="listAfaModal" tabindex="" role="dialog" aria-labelledby="listAfaModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content dark-bg">
+              <div class="modal-header" style="background-color: #AE4435 !important;">
+                <h4 class="modal-title white-color text-center" id="title">@lang('app.afa')</h4>
+              </div>
+              <div class="modal-body">
+                  <div class="nav flex-sm-column flex-row">
+                      <div class="row col-lg-12">
+                          @forelse ($afas as $afa)
+                              <div class="col-lg-8"><p id="content" class="white-color"><i class="fa fa-building"></i> {{ $afa->name?$afa->name:'' }}</p></div>
+                              <div class="col-lg-4"><a class="white-color" href="{{route('member.select.afa', ['afa'=>$afa->name?$afa->name:''])}}" title="@lang('app.txt.contact_afa') ({{ $afa->name?$afa->name:'' }})"><i class="fa fa-envelope"></i></a></div>
+                          @empty
+                              <p>@lang('app.txt.no_afa_in_this_location')</p>
+                          @endforelse
+                      </div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <div class="col-md-5">
+                  @if (sizeOf($afas) !== 0)
+                    <button class="m-btn m-btn-theme" data-dismiss="modal" aria-hidden="true">@lang('app.btn.cancel')</button>
+                  @else
+                    <button class="m-btn m-btn-theme" data-dismiss="modal" aria-hidden="true">@lang('app.btn.close')</button>
+                  @endif
+                </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- End list AFA modal -->
+
+<!-- List APL modal -->
+<div class="container">
+  <div class="modal left fade" id="listAplModal" tabindex="" role="dialog" aria-labelledby="listAplModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content dark-bg">
+              <div class="modal-header" style="background-color: #AE4435 !important;">
+                <h4 class="modal-title white-color text-center" id="title">@lang('app.apl')</h4>
+              </div>
+              <div class="modal-body">
+                  <div class="nav flex-sm-column flex-row">
+                      <div class="row col-lg-12">
+                          @forelse ($apls as $apl)
+                              <div class="col-lg-8"><p id="content" class="white-color"><i class="fa fa-building"></i> {{ $apl->name?$apl->name:'' }}</p></div>
+                              <div class="col-lg-4"><a class="white-color contact-apl" href="{{route('member.select.apl', ['apl'=>$apl->id?$apl->id:''])}}" title="@lang('app.txt.contact_apl') ({{ $apl->name?$apl->name:'' }})"><i class="fa fa-envelope"></i></a></div>
+                          @empty
+                              <p>@lang('app.txt.no_apl_in_this_location')</p>
+                          @endforelse
+                      </div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  @if (sizeOf($apls) !== 0)
+                    <div class="pull-left hidden row-confirm-modal" style="margin-bottom: 20px;">
+                        <input id="check-confirm-modal" type="checkbox" name="confirm" value="1"><span style="color:red;"> {!!__('member.accept_term_and_condition_apl')!!}</span>
+                        <label>@lang('app.txt.condition_days_apl', ['nbDay'=>'180'])</label>  
+                    </div>
+                    <div class="col-md-5">
+                      <button class="m-btn m-btn-theme" data-dismiss="modal" aria-hidden="true">@lang('app.btn.cancel')</button>
+                    </div> 
+                    
+                      {{-- <div class="col-md-5">
+                          <button class="m-btn m-btn-theme" data-dismiss="modal" aria-hidden="true">@lang('app.btn.cancel')</button>
+                      </div> --}}
+                  @endif
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- End list APL modal -->
 
 @endsection
     
@@ -170,16 +289,15 @@
     }
   </style>
   <script>
-      $('#apl-form-modal').submit(function(event){
-          if($('#check-confirm-modal').is(":checked"))
+        $('.contact-apl').click(function(event){
+          if(!$('#check-confirm-modal').is(":checked"))
           {
+              event.preventDefault();
               $('.row-confirm-modal').removeClass('hidden');
-          }
-          else{
-            alert('Veuillez accepter les termes et les conditions APL !');
-            event.preventDefault();
-          }
-      });
+              alert("{{ trans('app.txt.accept_term', ['role'=>'APL']) }}");
+          } 
+        });
+      
   </script>
   <script>
       var _map;

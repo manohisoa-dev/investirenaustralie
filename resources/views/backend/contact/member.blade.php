@@ -13,6 +13,23 @@
                             <form class="rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" action="{{$action}}">
                                 {{ csrf_field() }}
                                 <div class="row">
+                                    {{-- Si Member peut contacter une APL sans avoir être en relation avec une APL  --}}
+                                    {{-- <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-control-label">@lang('app.apl')</label>
+                                            @if (Auth::user()->hasApl())
+                                                <input id="subject" name="apl_name" type="text" placeholder="APL *" aria-required="true" required="required" value="" class="form-control" readonly>
+                                            @else
+                                                <select name="apl_name" class="form-control">
+                                                    @forelse ($apls as $apl)
+                                                        <option value="{{ $apl->name }}">{{ $apl->name }}</option>
+                                                    @empty
+                                                        <option value="">@lang('app.txt.no_apl')</option>
+                                                    @endforelse
+                                                </select>
+                                            @endif
+                                        </div>
+                                    </div> --}}
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label class="form-control-label">@lang('app.subject')</label>

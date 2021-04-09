@@ -3,6 +3,7 @@
 @section('subcontent')
 
 <div class="col-lg-8 col-xl-9">
+    @include('includes.alerts')
     <div class="m-40px-tb card card-body">
         <div class="border-bottom-1 border-color-dark-gray m-15px-b p-0px-b">
             <h5>@lang('app.select_apl')</h5>
@@ -52,11 +53,12 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                  <form id="apl-form-modal" class="form-horizontal" role="form" method="post" action="{{$action}}">
+                  <form id="apl-form-modal" class="form-horizontal" role="form" method="get" action="{{$action}}">
                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                     <input type="hidden" id="apl-modal"  name="apl">
                     <div class="pull-left hidden row-confirm-modal" style="margin-bottom: 20px;">
-                        <input id="check-confirm-modal" type="checkbox" name="confirm" value="1"><span style="color:red;"> {!!__('member.accept_term_and_condition_apl')!!}</span>
+                        <input id="check-confirm-modal" type="checkbox"><span style="color:red;"> {!!__('member.accept_term_and_condition_apl')!!}</span>
+                        <label>@lang('app.txt.condition_days_apl', ['nbDay'=>'180'])</label>
                     </div>
                     <div class="row col-md-12">
                       <div class="col-md-5">
@@ -74,6 +76,24 @@
 </div>
 <!-- Fin modal -->
 
+<!-- Message modal -->
+<div id="modal-message" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="title">@lang('member.info')</h4>
+        </div>
+        <div class="modal-body">
+            <p>{!! $message !!}</p>
+        </div>
+        <div class="modal-footer">
+            <button class="m-btn m-btn-theme" data-dismiss="modal" aria-hidden="true">@lang('app.btn.ok')</button>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- Fin Message modal -->
+
 
 
 @push('script')
@@ -85,6 +105,13 @@
         }
 
     </style>
+
+    <script type="text/javascript">
+        $(window).on('load', function() {
+            if('{{ $message }}')
+            $('#modal-message').modal('show');
+        });
+    </script>
     
     <script>
         $('#apl-form-modal').submit(function(event){
@@ -92,6 +119,7 @@
             {
                 $('.row-confirm-modal').removeClass('hidden');
                 event.preventDefault();
+                alert("{{ trans('app.txt.accept_term', ['role'=>'APL']) }}");
             }
         });
     </script>

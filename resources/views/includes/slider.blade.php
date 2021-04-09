@@ -19,13 +19,29 @@
         <div class="carousel-inner" role="listbox">
             @forelse (App\Models\Slider::where('type','image')->where('status',1)->get() as $item)
                 <div class="carousel-item  @if($loop->first) active @endif">
-                    <img class="d-block w-100" src="{{ asset($item->images->filepath) }}"
+                    @php
+                        try {
+                            if(file_get_contents($item->images->filepath));
+                            $img=$item->images->filepath;
+                        } catch (\Throwable $th) {
+                            $img=asset('images/slider/default.jpg');
+                        }   
+                    @endphp
+                    <img class="d-block w-100" src="{{ asset($img) }}"
                         alt="{{ asset($item->content) }}">
                 </div>
             @empty
                 @forelse (App\Models\Slider::where('type','pub')->where('status',1)->get() as $item)
+                    @php
+                        try {
+                            if(file_get_contents($item->images->filepath));
+                            $img=$item->images->filepath;
+                        } catch (\Throwable $th) {
+                            $img=asset('images/slider/default.jpg');
+                        }   
+                    @endphp
                     <div class="carousel-item  @if($loop->first) active @endif">
-                        <a href="{{route('product.index',['product'=>$item->content])}}" target="_blank"><img class="d-block w-100" src="{{ asset($item->images->filepath) }}"
+                        <a href="{{route('product.index',['product'=>$item->content])}}" target="_blank"><img class="d-block w-100" src="{{ asset($img) }}"
                             alt="{{ asset($item->content) }}"></a>
                     </div>
                 @empty

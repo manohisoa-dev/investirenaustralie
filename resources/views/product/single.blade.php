@@ -3,7 +3,7 @@
         <div class="p-10px team-img">
             @php
                     try {
-                        if(file_get_contents($item->imageUrl()));
+                        if(file_get_contents($item->imageUrl()))
                         $img=$item->imageUrl();
                     } catch (\Throwable $th) {
                         $img=asset('images/iea.png');

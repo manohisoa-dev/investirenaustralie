@@ -168,9 +168,9 @@
                 </div>
                 <div class="modal-footer">
                     @if (sizeOf($afas) !== 0)
-                        <div class="col-md-5">
-                            <button class="m-btn m-btn-theme" data-dismiss="modal" aria-hidden="true">@lang('app.btn.cancel')</button>
-                        </div>
+                        <button class="m-btn m-btn-theme" data-dismiss="modal" aria-hidden="true">@lang('app.btn.cancel')</button>
+                    @else
+                        <button class="m-btn m-btn-theme" data-dismiss="modal" aria-hidden="true">@lang('app.btn.close')</button>
                     @endif
                 </div>
             </div>
