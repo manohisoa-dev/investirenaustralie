@@ -25,7 +25,7 @@
     <a href="#"><i class="fa fa-bar-chart-o" title="Statistiques"></i> <span class="nav-label">Statistiques</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
         <li><a href="{{route('admin.chart', ['type'=>'produit'])}}">Produits</a></li>
-        <li><a href="#">Utilisateurs</a></li>
+        <li><a href="{{route('admin.chart', ['type'=>'user'])}}">Utilisateurs</a></li>
         <li><a href="#">Membres</a></li>
         <li><a href="#">Agence Francophone Australienne</a></li>
         <li><a href="#">Agence Partenaire Locale</a></li>
