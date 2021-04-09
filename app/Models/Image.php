@@ -31,7 +31,7 @@ class Image extends BaseModel
         $image = new Image();
         $image->filename = $name;
         $image->filemime = $file->getClientMimeType();
-        $image->filepath = $album.'/'.$name;
+        $image->filepath = 'uploads/'.$album.'/'.$name;
         $image->save();
         return $image;
     }
