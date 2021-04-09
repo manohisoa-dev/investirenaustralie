@@ -21,8 +21,8 @@
                 <div class="carousel-item  @if($loop->first) active @endif">
                     @php
                         try {
-                            if(file_get_contents($item->imageUrl()));
-                            $img=$item->imageUrl();
+                            if(file_get_contents($item->images->filepath));
+                            $img=$item->images->filepath;
                         } catch (\Throwable $th) {
                             $img=asset('images/slider/default.jpg');
                         }   
@@ -34,8 +34,8 @@
                 @forelse (App\Models\Slider::where('type','pub')->where('status',1)->get() as $item)
                     @php
                         try {
-                            if(file_get_contents($item->imageUrl()));
-                            $img=$item->imageUrl();
+                            if(file_get_contents($item->images->filepath));
+                            $img=$item->images->filepath;
                         } catch (\Throwable $th) {
                             $img=asset('images/slider/default.jpg');
                         }   
