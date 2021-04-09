@@ -35,7 +35,7 @@ if( ! function_exists('storage'))
 {
 	function storage($path)
 	{
-		return asset('uploads/'.$path) ;
+		return asset(''.$path) ;
 	}
 }
 
@@ -47,21 +47,21 @@ if( ! function_exists('thumbnail'))
 {
 	function thumbnail($path)
 	{
-        $file = public_path('uploads/'.$path);
+        $file = public_path(''.$path);
         if (!File::exists($file)) {
-            return asset('uploads/'.$path);
+            return asset(''.$path);
         }
 
         $filename = str_replace('\\', '/', $path);
         $pos = strrpos($filename, '/');
         $filename = false === $pos ? $filename : substr($filename, $pos + 1);
 
-        $thumbnail = public_path('uploads/app/thumb_'.$filename);
+        $thumbnail = public_path('app/thumb_'.$filename);
         if (!File::exists($thumbnail)) {
             InterventionImage::make($file)->resize(320,240)->save($thumbnail);
         }
 
-		return asset('uploads/app/thumb_'.$filename) ;
+		return asset('app/thumb_'.$filename) ;
 	}
 }
 
