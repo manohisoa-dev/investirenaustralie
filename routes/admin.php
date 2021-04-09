@@ -20,6 +20,7 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::get('api/chart/locations/{type?}', 'ChartController@locations')->name('chart.locations');
     Route::get('api/chart/prices', 'ChartController@prices')->name('chart.prices');
     Route::get('api/chart/sellers', 'ChartController@sellers')->name('chart.sellers');
+    Route::get('api/chart/dates/{role?}', 'ChartController@dates')->name('chart.dates');
     //profil
 
     Route::get('profile', 'ProfileController@index')->name('profile');
