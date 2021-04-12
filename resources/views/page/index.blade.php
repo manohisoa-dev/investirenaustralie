@@ -289,7 +289,7 @@
         <div class="container">
             <div class="row justify-content-center sm-m-20px-b m-40px-b">
                 <div class="col-lg-8 text-center">
-                    <label class="border-bottom-2 font-w-600 theme-color border-color-theme2nd">Our Blog</label>
+                    <label class="border-bottom-2 font-w-600 theme-color border-color-theme2nd">@lang('app.txt.our_blogs')</label>
                     <h3 class="h1 m-0px">@lang('app.dernierart')</h3>
                 </div>
             </div>

@@ -541,6 +541,7 @@ return [
     'txt.all_products'      =>'Tous les produits',
     'txt.all_programmes'      =>'Tous les programmes',
     'txt.our_programs'      =>'Nos programmes',
+    'txt.our_blogs'      =>'Nos blogs',
     'txt.programme'      =>'Programme',
     'txt.industriel'      =>'Industriel',
     'txt.commercial'      =>'Commercial',
