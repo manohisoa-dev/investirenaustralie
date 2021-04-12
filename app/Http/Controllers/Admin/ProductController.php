@@ -40,13 +40,14 @@ class ProductController extends Controller
      */
     public function store( Request $request )
     {
-        $this->validate($request, Product::validationRules());
+        dd($request);
+        /*$this->validate($request, Product::validationRules());
 
         Product::create($request->all());
 
         # notification
         Notify::success('Product a été créer avec succès');
-        return redirect(route('admin.product.index'));
+        return redirect(route('admin.product.index'));*/
     }
 
     /**

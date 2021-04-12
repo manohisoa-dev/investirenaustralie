@@ -32,7 +32,7 @@
                 <h5>Ajouter un nouveau Product</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-validation form-padding" action="{{ route('admin.product.store') }}" method="post">
+                <form class="form-validation form-padding" action="{{ route('admin.product.store') }}" method="post" id="productForm" enctype="multipart/form-data">
 
                     {{ csrf_field() }}
                                                         
@@ -212,14 +212,30 @@
 						</div>						
 						<div class="col-md-3">
 							<div class="form-group">
-								<label for="title">Type location</label>
-								<input name="location_type_id" id="location_type_id" class="form-control" type="number" value="">
+								<label for="title">Localisation</label>
+								<select class="form-control" name="location_id" id="location_id">
+									<option value="">Choisir...</option>
+									@foreach(\App\Models\Localisation::all() as $localisation)
+										<option value="{{$localisation->id}}">{{$localisation->formatted}}</option>
+									@endforeach
+								</select>
 							</div>
 						</div>
 						<div class="col-md-3">
 							<div class="form-group">
 								<label for="title">Code postal</label>
 								<input name="postalCode" id="postalCode" class="form-control" type="text" value="">
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="title">Vendeur</label>
+								<select class="form-control" name="seller_id" id="seller_id">
+									<option value="">Choisir...</option>
+									@foreach(\App\Models\User::where('role',2)->get() as $seller)
+										<option value="{{$seller->id}}">{{$seller->name}}</option>
+									@endforeach
+								</select>
 							</div>
 						</div>						
 					</div>                                                    
@@ -239,6 +255,97 @@
         $(document).ready(function(){
             CKEDITOR.replace( 'content' );
 			$("#category_id").select2();
+			$("#state_id").select2();
+			$("#seller_id").select2();
+			$("#type_id").select2();
+			$("#parent_id").select2();
+			
+			$('#productForm').validate({
+			    ignore: [],
+				rules: {
+					title: {
+						required: true
+					},
+					category_id: {
+						required: true
+					},
+					type_id: {
+						required: true
+					},
+					parent_id: {
+						required: true
+					},
+					content: {
+						required: true
+					},
+					quantity: {
+						required: true
+					},
+					photo: {
+						required: true
+					},
+					price: {
+						required: true
+					},
+					currency: {
+						required: true
+					},
+					year_built: {
+						required: true
+					},
+					display_address: {
+						required: true
+					},
+					state_id: {
+						required: true
+					}
+				},
+				messages: {
+					title: {
+						required: "Champ obligatoire"
+					},
+					category_id: {
+						required: "Champ obligatoire"
+					},
+					type_id: {
+						required: "Champ obligatoire"
+					},
+					parent_id: {
+						required: "Champ obligatoire"
+					},
+					content: {
+						required: "Champ obligatoire"
+					},
+					quantity: {
+						required: "Champ obligatoire"
+					},
+					photo: {
+						required: "Champ obligatoire"
+					},
+					price: {
+						required: "Champ obligatoire"
+					},
+					currency: {
+						required: "Champ obligatoire"
+					},
+					year_built: {
+						required: "Champ obligatoire"
+					},
+					display_address: {
+						required: "Champ obligatoire"
+					},
+					state_id: {
+						required: "Champ obligatoire"
+					}
+				},
+				errorPlacement: function ( error, element ) {
+					if(element.parent().hasClass('input-group')){
+						error.insertBefore( element.parent() );
+					}else{
+						error.insertAfter( element );
+					}
+				},
+			});
         }) ;
     </script>
 @endsection
