@@ -19,6 +19,7 @@ return [
     
     "contact_admin" => "Contacter ADMIN",
     "contact_apl"   => "Contacter APL",
+    "contact_afa"   => "Contacter AFA",
     "select.apl"    => "Choisir un APL",
     "choose"        => "Choisir",
     "select"        => "Selectionner",

@@ -681,6 +681,7 @@ return [
     'txt.no_product' => 'Aucun produit trouvé pour ce programme',
     'txt.contact_afa' => 'Contacter cette AFA',
     'txt.contact_apl' => 'Contacter cette APL',
+    'txt.list_afa' => 'Liste AFA',
     'txt.no_afa_in_this_location' => 'Aucune AFA trouvée dans cet endroit',
     'txt.no_apl_in_this_location' => 'Aucune APL trouvée dans cet endroit',
     'txt.no_apl' => 'Aucune APL trouvée',
@@ -745,6 +746,7 @@ return [
     
     'contact_admin'  => "Contacter l'administrateur",
     'contact_apl'    => "Contacter l'APL",
+    'contact_afa'    => "Contacter l'AFA",
     'attachment'     => "Attachement",
     'attachments'    => "Attachements",
     
