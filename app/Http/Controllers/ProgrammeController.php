@@ -13,6 +13,7 @@ use App\Models\Page;
 use App\Models\User;
 use App\Models\Blog;
 use App\Models\Parameter;
+use App\Models\Config;
 
 class ProgrammeController extends Controller
 {
@@ -117,7 +118,7 @@ class ProgrammeController extends Controller
         if(empty($page)) $page = 1;
         
         $orderBy = $request->get('orderBy');
-        if(!in_array($orderBy, ['price', 'created_at', 'view_count'])) $orderBy = 'price';
+        if(!in_array($orderBy, ['price', 'created_at', 'view_count'])) $orderBy = Config::where('name','=','order_by')->first()->content;
         
         $order = $request->get('order');
         if(!in_array($order, ['desc', 'asc'])) $order = 'desc';
@@ -338,13 +339,6 @@ class ProgrammeController extends Controller
                 'type' => 'product',
             ];
         }
-
-
-        // if($viewProd === 'list'){
-        //     $blogs = Blog::ofStatus('published')->where('post_type','=', 'blog')->withCount('comments')->get()->random();
-        // }else{
-        //     $blogs = Blog::ofStatus('published')->where('post_type','=', 'blog')->withCount('comments')->get()->random(2);
-        // }
 
         $xLine = Parameter::where('name','x_line')->first();
 
