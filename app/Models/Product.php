@@ -282,5 +282,16 @@ class Product extends Model {
         return $this->hasOne(Localisation::class, 'id', 'location_id');
     }
 
+
+    /**
+     * A product can have many images
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function product_image()
+    {
+        return $this->hasMany(ProductsImage::class, 'product_id', 'id');
+    }
+
 }
 

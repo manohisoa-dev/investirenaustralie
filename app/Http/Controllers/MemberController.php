@@ -96,16 +96,32 @@ class MemberController extends Controller
             ->groupBy('localizations.locality')
             ->get();
         $apls = User::ofRole(4)->isActive()->get();
+        $user_name = "";
+
+        if($request->get('afa'))
+        $user_name = $request->get('afa');
+
+        if($request->get('apl'))
+        $user_name = $request->get('apl');
         
         if(($role=='apl') && !Auth::user()->apl){
             return redirect()->route('member.select.apl')
                 ->with('error', trans('app.txt.choose_an_apl'));
         }
+
+        $lafas = User::where('role',3)
+            ->where('status','active')
+            ->where('location_id',Auth::user()->location_id)
+            ->orderBy('id','desc')
+            ->get();
         
         return view('backend.contact.member')
             ->with('action', $action)
             ->with('lapls', $lapls)
+            ->with('lafas', $lafas)
             ->with('apls', $apls)
+            ->with('role', $role)
+            ->with('user_name', $user_name)
             ->with('title', __('app.contact_'.$role));
     }
 

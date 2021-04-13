@@ -3,8 +3,8 @@
 @section('content')
 
 @component('includes.breadcrumb2', 
-    $category->slug ? [
-        'cat'=>$category->slug,
+    $category ? [
+        'cat'=>$category,
         'states'=>$states,
         'typesRes'=>$typesRes,
         'typesFonc'=>$typesFonc,
@@ -71,7 +71,7 @@
         'max_price_commercial'=>$max_price_commercial,
         'min_area_commercial'=>$min_area_commercial,
         'max_area_commercial'=>$max_area_commercial])
-    @lang('all_programmes')
+    @lang('our_programs')
 @endcomponent
 
 <!-- Section -->
@@ -119,7 +119,7 @@
                                         <option value="desc" {{$order=='desc'?'selected':''}}>@lang('app.form.desc')</option> 
                                     </select>
                                 </div>
-                                <div  class="pull-left col-lg-2 col-md-12 m-50px-t" id="showType" @if($showBy!=='mat') hidden @endif>
+                                <div  class="pull-left col-lg-2 col-md-12 m-50px-t" id="showType" @if($showBy!=='mat' || sizeOf($items)===0) hidden @endif>
                                     <p class="layout-view"> @lang('app.form.vue'): <a href="javascript:void(0)" id="grid"><i class="fa fa-th-large selected" data-layout="6"></i></a> <a href="javascript:void(0)" id="list"><i class="fa fa-list-ul" data-layout="12"></i></a> </p>
                                     <input type="hidden" name="view_prod" id="view_prod" value="list">
                                 </div>
@@ -147,7 +147,11 @@
                     <div class="container">
                         <div class="row w-100" >
                             <div id="infinite-scroll" class="product-data">
-                                @include('programme.all',['items'=>$items])
+                                @if (sizeOf($items)!==0)
+                                    @include('programme.all',['items'=>$items])
+                                @else
+                                    <h4>@lang('app.txt.no_program')</h4>
+                                @endif
                             </div>
                             <div class="row">
                                 <div class="ajax-load text-center" style="display:none">

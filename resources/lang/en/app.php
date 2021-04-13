@@ -241,6 +241,7 @@ return [
     
     'contact_admin'  => "Contact Administrateur",
     'contact_apl'    => "Contact APL",
+    'contact_afa'    => "Contact AFA",
     'contact_prestataire'        => 'Contact provider',
     'attachment'     => "Attachement",
     'attachments'    => "Attachements",
@@ -476,8 +477,10 @@ return [
     'txt.repr_mat'        => 'Material representation',   
     'txt.discover' => 'Discover',
     'txt.no_product' => 'No products found for this program',
+    'txt.no_program' => 'No programs found',
     'txt.contact_afa' => 'Contact this AFA',
     'txt.contact_apl' => 'Contact this APL',
+    'txt.list_afa' => 'List AFA',
     'txt.no_afa_in_this_location' => 'No AFA found in this location',
     'txt.no_apl_in_this_location' => 'No APL found in this location',
     'txt.no_apl' => 'No APL found',

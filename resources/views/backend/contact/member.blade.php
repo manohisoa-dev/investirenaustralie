@@ -32,6 +32,27 @@
                                     </div> --}}
                                     <div class="col-md-12">
                                         <div class="form-group">
+                                            <label class="form-control-label">@lang('app.afa')</label>
+                                            {{-- Contact afa --}}
+                                            @if ($role === 'afa')
+                                                @if ($user_name !== "")
+                                                    <input id="subject" name="afa_name" type="text" placeholder="AFA *" aria-required="true" required="required" value="{{ $user_name }}" class="form-control" readonly>
+                                                @else
+                                                    <select name="afa_name" class="form-control">
+                                                        <option value="" selected disabled>@lang('app.txt.list_afa')</option>
+                                                        @forelse ($lafas as $afa)
+                                                            <option value="{{ $afa->name }}">{{ $afa->name }}</option>
+                                                        @empty
+                                                            <option value="">@lang('app.txt.no_afa')</option>
+                                                        @endforelse
+                                                    </select>
+                                                @endif
+                                            @endif
+                                            {{-- End contact afa --}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
                                             <label class="form-control-label">@lang('app.subject')</label>
                                             <input id="subject" name="subject" type="text" placeholder="Sujet *" aria-required="true" required="required" value="{{old('subject')}}" class="form-control">
                                         </div>

@@ -159,7 +159,7 @@
                         <div class="row col-lg-12">
                             @forelse ($afas as $afa)
                                 <div class="col-lg-8"><p id="content" class="white-color"><i class="fa fa-building"></i> {{ $afa->name?$afa->name:'' }}</p></div>
-                                <div class="col-lg-4"><a class="white-color" href="{{route('member.select.afa', ['afa'=>$afa->name?$afa->name:''])}}" title="@lang('app.txt.contact_afa') ({{ $afa->name?$afa->name:'' }})"><i class="fa fa-envelope"></i></a></div>
+                                <div class="col-lg-4"><a class="white-color" href="{{route('member.contact', ['role'=>'afa', 'afa'=>$afa->name?$afa->name:''])}}" title="@lang('app.txt.contact_afa') ({{ $afa->name?$afa->name:'' }})"><i class="fa fa-envelope"></i></a></div>
                             @empty
                                 <p>@lang('app.txt.no_afa_in_this_location')</p>
                             @endforelse

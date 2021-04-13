@@ -13,6 +13,7 @@ use App\Models\Page;
 use App\Models\User;
 use App\Models\Blog;
 use App\Models\Parameter;
+use App\Models\Config;
 
 class ProgrammeController extends Controller
 {
@@ -112,12 +113,13 @@ class ProgrammeController extends Controller
         }
     }
 
-    public function all(Request $request, Category $category = null){
+    public function all(Request $request, Category $category = null, $cat = null){
+
         $page = $request->get('page');
         if(empty($page)) $page = 1;
         
         $orderBy = $request->get('orderBy');
-        if(!in_array($orderBy, ['price', 'created_at', 'view_count'])) $orderBy = 'price';
+        if(!in_array($orderBy, ['price', 'created_at', 'view_count'])) $orderBy = Config::where('name','=','order_by')->first()->content;
         
         $order = $request->get('order');
         if(!in_array($order, ['desc', 'asc'])) $order = 'desc';
@@ -129,8 +131,9 @@ class ProgrammeController extends Controller
                 ->isParent(0)
                 ->where('quantity', '>', 0);
         
-        if($category&&$category->id>0){
-            $items = $items->where("category_id", $category->id);
+        if($cat){
+            $cat_id = Category::where('slug',$cat)->first()->id;
+            $items = $items->where('category_id',$cat_id);
         }
 
         $show = $request->get('show');
@@ -339,13 +342,6 @@ class ProgrammeController extends Controller
             ];
         }
 
-
-        // if($viewProd === 'list'){
-        //     $blogs = Blog::ofStatus('published')->where('post_type','=', 'blog')->withCount('comments')->get()->random();
-        // }else{
-        //     $blogs = Blog::ofStatus('published')->where('post_type','=', 'blog')->withCount('comments')->get()->random(2);
-        // }
-
         $xLine = Parameter::where('name','x_line')->first();
 
 
@@ -370,7 +366,7 @@ class ProgrammeController extends Controller
             ->with('industriels',$industriels)
             ->with('commercials',$commercials)
             ->with('states', $states)
-            ->with('category', $category)
+            ->with('category', $cat)
             ->with('lapls', $lapls)
             ->with('min_price_residentiel',$min_price_residentiel)
             ->with('max_price_residentiel',$max_price_residentiel)
@@ -399,7 +395,6 @@ class ProgrammeController extends Controller
             ->with('showBy', $showBy)
             ->with(['data' => json_encode($data)]);
     }
-
     
 
     public function getShowProgramme($slug){
