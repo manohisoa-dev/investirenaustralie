@@ -24,8 +24,8 @@ if(Request::segment(2) != ''){
                 <h2 class="white-color h1 m-20px-b">{{ trans('app.txt.'.str_replace(' ','_',strtolower($cat))) }}</h2>
                 <ol class="breadcrumb white justify-content-center">
                     <li><a href="{{ route('home') }}">@lang('app.home')</a></li>
-                    <li class="active">{{ trans('app.txt.'.str_replace(' ','_',strtolower($slot))) }}</li>
-                    <li class="active">{{ trans('app.txt.'.str_replace(' ','_',strtolower($cat))) }}</li>
+                    <li class="active"><a href="{{ route('programme.all') }}">{{ trans('app.txt.'.str_replace(' ','_',strtolower($slot))) }}</a></li>
+                    @if(strtolower($cat)!=='programme')<li class="active">{{ trans('app.txt.'.str_replace(' ','_',strtolower($cat))) }}</li>@endif
                 </ol>
             </div>
         </div>

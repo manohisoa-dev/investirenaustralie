@@ -679,6 +679,7 @@ return [
     'txt.no_ads' => 'Aucun Pubs.',
     'txt.discover' => 'Découvrir',
     'txt.no_product' => 'Aucun produit trouvé pour ce programme',
+    'txt.no_program' => 'Aucun programme trouvé',
     'txt.contact_afa' => 'Contacter cette AFA',
     'txt.contact_apl' => 'Contacter cette APL',
     'txt.list_afa' => 'Liste AFA',

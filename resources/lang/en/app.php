@@ -477,6 +477,7 @@ return [
     'txt.repr_mat'        => 'Material representation',   
     'txt.discover' => 'Discover',
     'txt.no_product' => 'No products found for this program',
+    'txt.no_program' => 'No programs found',
     'txt.contact_afa' => 'Contact this AFA',
     'txt.contact_apl' => 'Contact this APL',
     'txt.list_afa' => 'List AFA',

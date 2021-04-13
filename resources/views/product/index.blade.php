@@ -98,11 +98,11 @@
                           @endforeach                            
                           <a class="carousel-control-prev bg-dark w-auto" href="#myCarousel" role="button" data-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
+                            <span class="sr-only">@lang('app.btn.prev')</span>
                           </a>
                           <a class="carousel-control-next bg-dark w-auto" href="#myCarousel" role="button" data-slide="next">
                               <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                              <span class="sr-only">Next</span>
+                              <span class="sr-only">@lang('app.btn.next')</span>
                           </a>
                       </div> 
                   </div>

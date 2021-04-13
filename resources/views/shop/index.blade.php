@@ -2,7 +2,7 @@
 
 @section('content')
 
-@component('includes.breadcrumb2', 
+@component('includes.breadcrumb2',
     $category->slug ? [
         'cat'=>$category->slug,
         'states'=>$states,
@@ -71,7 +71,7 @@
         'max_price_commercial'=>$max_price_commercial,
         'min_area_commercial'=>$min_area_commercial,
         'max_area_commercial'=>$max_area_commercial])
-    @lang('all_products')
+    @lang('our_programs')
 @endcomponent
 
 <!-- Section -->
