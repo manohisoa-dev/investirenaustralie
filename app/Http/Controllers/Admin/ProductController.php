@@ -10,6 +10,7 @@ use Jleon\LaravelPnotify\Notify;
 
 use App\Models\Image;
 use App\Models\User;
+use Auth;
 
 class ProductController extends Controller
 {
@@ -40,14 +41,56 @@ class ProductController extends Controller
      */
     public function store( Request $request )
     {
-        dd($request);
+        $this->middleware('auth');
+        $this->middleware('role:1');
+        $product = new Product();
+        $lastId = Product::latest('id')->first();
+        $new_id = $lastId->id + 1;
+        if($file=$request->file('image')){
+            $image = Image::storeAndSave($file,'product');
+            $product->image_id = $image->id;
+        }
+        $slug = generateSlug($request->title);
+        $product->reference = 'ref-p00000'.$new_id;
+        $product->title = $request->title;
+        $product->slug = $slug;
+        $product->content = $request->content;
+        $product->quantity = $request->quantity;
+        $product->is_new = 1;
+        $product->view_count = 0;
+        $product->area = $request->area;
+        $product->carport_spaces = $request->carport_spaces;
+        $product->garage_spaces = $request->garage_spaces;
+        $product->off_street_spaces = $request->off_street_spaces;
+        $product->bathrooms = $request->bathrooms;
+        $product->bedrooms = $request->bedrooms;
+        $product->ensuite = $request->ensuite;
+        $product->land_area = $request->land_area;
+        $product->floor_area = $request->floor_area;
+        $product->number_of_floors = $request->number_of_floors;
+        $product->new_construction = $request->new_construction;
+        $product->year_built = $request->year_built;
+        $product->display_address = $request->display_address;
+        $product->price = $request->price;
+        $product->currency = $request->currency;
+        $product->tma = 0.20;
+        $product->status = $request->status;
+        $product->type_id = $request->type_id;
+        $product->category_id = $request->category_id;
+        $product->seller_id = $request->seller_id;
+        $product->author_id = Auth::user()->id;
+        $product->postalCode = $request->postalCode;
+        $product->state_id = $request->state_id;
+        $product->location_id = $request->location_id;
+        $product->parent_id = $request->parent_id;
+        $product->save();
         /*$this->validate($request, Product::validationRules());
 
-        Product::create($request->all());
+        Product::create($request->all());*/
 
         # notification
         Notify::success('Product a été créer avec succès');
-        return redirect(route('admin.product.index'));*/
+        return redirect(route('admin.product.index'));
     }
 
     /**

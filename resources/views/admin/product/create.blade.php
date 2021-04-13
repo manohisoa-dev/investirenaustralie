@@ -67,7 +67,7 @@
 							<div class="form-group">
 								<label for="title">Programme</label>
 								<select class="form-control" name="parent_id" id="parent_id">
-									<option value="">Choisir...</option>
+									<option value="0">Choisir...</option>
 									@foreach(\App\Models\Product::all() as $prd)
 										<option value="{{$prd->id}}">{{$prd->title}}</option>
 									@endforeach
@@ -80,7 +80,7 @@
 						<textarea id="ckeditor" class="form-control" name="content"></textarea>
 					</div> 
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-md-3">
 							<div class="form-group">
 								<label for="title">Quantité</label>
 								<input name="quantity" id="quantity" class="form-control" type="number" value="">
@@ -89,9 +89,18 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label for="title">Photo</label>
-								<input name="photo" class="form-control" type="file">
+								<input name="image" class="form-control" type="file">
 							</div>
 						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="title">Statuts</label>
+								<select class="form-control" name="status" id="status">
+									<option value="published">Publier</option>
+									<option value="archived">Archivé</option>
+								</select>
+							</div>
+						</div> 
 					</div>
 					<div class="row">
 						<div class="col-md-3">
@@ -119,7 +128,7 @@
 						<div class="col-md-3">
 							<div class="form-group">
 								<label for="title">Espaces de carport</label>
-								<input name="carport_spaces" id="carport_spaces" class="form-control" type="number" value="">
+								<input name="carport_spaces" id="carport_spaces" class="form-control" type="number" value="0">
 							</div>  
 						</div>
 					</div>  
@@ -181,7 +190,7 @@
 								<label for="title">Nouvelle construction</label>
 								<select class="form-control" name="new_construction" id="new_construction">
 									<option value="0">OUI</option>
-									<option value="0">NON</option>
+									<option value="1">NON</option>
 								</select>
 							</div>
 						</div>
@@ -281,7 +290,7 @@
 					quantity: {
 						required: true
 					},
-					photo: {
+					image: {
 						required: true
 					},
 					price: {
@@ -319,7 +328,7 @@
 					quantity: {
 						required: "Champ obligatoire"
 					},
-					photo: {
+					image: {
 						required: "Champ obligatoire"
 					},
 					price: {
