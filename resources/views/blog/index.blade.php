@@ -10,8 +10,8 @@
             if(file_get_contents($item->imageUrl()));
             $img=$item->imageUrl();
         } catch (\Throwable $th) {
-            $img=asset('images/blog/iea.png');
-        }   
+            $img=asset('ulooad/images/blog/iea.png');
+        }
     @endphp
     <section class="bg-center bg-cover bg-fiexd effect-section" style="background-image: url({{ $img }});">
         <div class="mask dark-g-bg opacity-7"></div>
@@ -26,7 +26,7 @@
                             </div>
                         </div>
                         <div class="p-15px-l">
-                            <p class="h6 white-color m-0px">{{$item->author->name}}</p>
+                            <p class="h6 white-color m-0px">{{$item->author ? $item->author->name : ""}}</p>
                             <small class="white-color-light">Co-Founder</small>
                         </div>
                     </div>
@@ -73,7 +73,7 @@
                             <img src="{{$item->imageUrl()}}" title="" alt="">
                         </div>
                         <div class="media-body p-20px-l">
-                            <h5 class="m-10px-b">{{$item->author->name}}</h5>
+                            <h5 class="m-10px-b">{{$item->author ? $item->author->name : ""}}</h5>
                             {{-- <p class="m-0px">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p> --}}
                         </div>
                     </div>
