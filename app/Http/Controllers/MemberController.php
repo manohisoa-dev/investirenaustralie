@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Models\Mail;
 use App\Models\MailUser;
 use App\Models\Localisation;
+use App\Models\Message;
 
 class MemberController extends Controller
 {
@@ -89,7 +90,7 @@ class MemberController extends Controller
     }
 
     public function contact(Request $request, $role){
-        $action = route('member.contact', ['role'=>$role]);
+        $action = route('member.send.message', ['role'=>$role]);
         $lapls = Localisation::select('localizations.*')
             ->join('users','users.location_id','=','localizations.id')
             ->where('users.role','=','4')
@@ -123,6 +124,38 @@ class MemberController extends Controller
             ->with('role', $role)
             ->with('user_name', $user_name)
             ->with('title', __('app.contact_'.$role));
+    }
+
+    public function sendMessage(Request $request, $role)
+    {
+        $current = Auth::user();
+        $to_id = $request->to;
+
+        // Validate request
+        $datas = $request->all();
+        $validator = Validator::make($datas,[
+            'content' => 'required|max:1000',
+            //'files.*' => 'mimes:jpeg,jpg,png,gif,svg|max:2048',
+        ]);
+
+        if ($validator->passes()) {
+
+            $item = new Message();
+            $item->type = 'user';
+            $item->from_id = $current->id;
+            $item->body = $request->content;
+            if($to_id === 'admin'){
+                $item->to_id = 1;
+            }else{
+                $item->to_id = $request->to_id;
+            }
+
+            $item->save();
+
+			return response()->json(['success'=>trans('app.txt.message_sent')]);
+        }
+
+    	return response()->json(['error'=>$validator->errors()->all()]);
     }
 
     public function sendMail(Request $request, $role)
