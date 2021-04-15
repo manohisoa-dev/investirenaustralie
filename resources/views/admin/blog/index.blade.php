@@ -54,7 +54,7 @@
 						{!!\Nvd\Crud\Html::sortableTh('post_type','admin.blog.index','Post Type')!!}
 						{!!\Nvd\Crud\Html::sortableTh('image_id','admin.blog.index','Image Id')!!}
 						{!!\Nvd\Crud\Html::sortableTh('author_id','admin.blog.index','Author Id')!!}
-						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.blog.index','Updated At')!!}<?php */?>
+						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.blog.index','Mis à jour le')!!}<?php */?>
 						<th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
@@ -150,7 +150,7 @@
 										 </a>
 									  </span>
                                    </td>
-								   <td>{{$record->created_at->diffForHumans()}}</td>
+								   <td>{{$record->created_at ? $record->created_at->diffForHumans() : ""}}</td>
 								   <td class="actions-cell text-center" width="12%">
 									<form class="form-inline" action="{{route('admin.blog.index')}}/{{$record->id}}" method="POST">
 										<a href="{{route('admin.blog.index')}}/{{$record->id}}/edit" title="Modification" class="btn btn-default btn-circle">

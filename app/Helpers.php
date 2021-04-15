@@ -56,12 +56,12 @@ if( ! function_exists('thumbnail'))
         $pos = strrpos($filename, '/');
         $filename = false === $pos ? $filename : substr($filename, $pos + 1);
 
-        $thumbnail = public_path('app/thumb_'.$filename);
+        $thumbnail = public_path('uploads/app/thumb_'.$filename);
         if (!File::exists($thumbnail)) {
             InterventionImage::make($file)->resize(320,240)->save($thumbnail);
         }
 
-		return asset('app/thumb_'.$filename) ;
+		return asset('uploads/app/thumb_'.$filename) ;
 	}
 }
 

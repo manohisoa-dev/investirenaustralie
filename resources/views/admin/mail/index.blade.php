@@ -49,7 +49,17 @@
                             <td><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
                             <td><input type="text" class="form-control" name="subject" value="{{Request::input("subject")}}"></td>
                             <td><input type="text" class="form-control" name="content" value="{{Request::input("content")}}"></td>
-                            <td><input type="text" class="form-control" name="sender_id" value="{{Request::input("sender_id")}}"></td>
+                            <td>
+                                <div class="form-group">
+                                    <select class="form-control" name="sender_id" id="sender_id">
+                                        <option value="">Tous</option>
+                                        @foreach(\App\Models\User::all() as $user)
+                                            <option value="{{$user->id}}" {{@$_GET['sender_id']==$user->id?'selected':''}}>{{$user->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                            </td>
                             <td><input type="text" class="form-control" name="status" value="{{Request::input("status")}}"></td>
                             <td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>
                             <td style="min-width: 6em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>

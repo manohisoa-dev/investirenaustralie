@@ -1,14 +1,14 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Comments - Détail ')
+@section('title', 'Commentaires - Détail ')
 
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Comments</h2>
+        <h2>Commentaires</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Comments</a>
+                <a href="#">Commentaires</a>
             </li>
             <li class="breadcrumb-item">
                 <a href="{{ route('admin.comment.index') }}">Listes</a>
@@ -55,23 +55,23 @@
                         <h5>{{$comment->spam}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Reply Id</h4>
+                        <h4>Répondu par</h4>
                         <h5>{{$comment->reply_id}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Blog Id</h4>
-                        <h5>{{$comment->blog_id}}</h5>
+                        <h4>Blog</h4>
+                        <h5>{{$comment->blog->title}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>User Id</h4>
-                        <h5>{{$comment->user_id}}</h5>
+                        <h4>Commenter par</h4>
+                        <h5>{{$comment->user->name}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Created At</h4>
+                        <h4>Créée le </h4>
                         <h5>{{$comment->created_at}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Updated At</h4>
+                        <h4>Mis à jour le</h4>
                         <h5>{{$comment->updated_at}}</h5>
                     </li>
                                     </ul>

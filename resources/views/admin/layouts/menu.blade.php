@@ -78,11 +78,12 @@
         <li><a href="email_template.html">Ventes effectué</a></li><?php */?>
     </ul>
 </li>
-<li class="{{Request::is('*/blog/*') || Request::is('*/blog') ? 'active' : ''}}">
+<li class="{{Request::is('*/blog/*') || Request::is('*/blog') || Request::is('*/comment') || Request::is('*/comment/') ? 'active' : ''}}">
     <a href="#"><i class="fa fa-newspaper-o" title="Blogs"></i> <span class="nav-label">Blogs</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
         <li><a href="{{route('admin.blog.create')}}">Ajouter un article</a></li>
         <li><a href="{{route('admin.blog.index')}}">Liste des blogs</a></li>
+        <li><a href="{{route('admin.comment.index')}}">Commentaires</a></li>
         <!--<li><a href="form_wizard.html">Articles publiés</a></li>
         <li><a href="form_file_upload.html">Articles en attente</a></li>
         <li><a href="form_editors.html">Articles archivés</a></li>

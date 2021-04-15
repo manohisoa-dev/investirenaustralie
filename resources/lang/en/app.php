@@ -252,7 +252,7 @@ return [
     'txt.Commercial'      =>'Commercial',
     'txt.postepar'      =>'Posted by',
     'txt.commentaire'      =>'Comment',
-    'txt.commentaires'      =>'Comments',
+    'txt.commentaires'      =>'Commentaires',
     'txt.lecture'      =>'Continue reading',
     'txt.enregistrer_recherche'      =>'Save search',
     'txt.latest_product'  => 'Registered products',

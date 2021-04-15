@@ -1,14 +1,14 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Comments - Listes ')
+@section('title', 'Commentaires - Listes ')
 
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Comments</h2>
+        <h2>Commentaires</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{-- {{ route('admin.comment.index') }} --}}">Comments</a>
+                <a href="{{-- {{ route('admin.comment.index') }} --}}">Commentaires</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Listes</strong>
@@ -29,7 +29,7 @@
 	<div class="col-lg-12">
 		<div class="ibox float-e-margins">
 			<div class="ibox-title">
-				<h5>Comments</h5>
+				<h5>Commentaires</h5>
 			</div>
 			<div class="ibox-content">
                 <table class="table table-striped grid-view-tbl">
@@ -42,9 +42,9 @@
 						{!!\Nvd\Crud\Html::sortableTh('reply_id','admin.comment.index','Reponses')!!}
 						{!!\Nvd\Crud\Html::sortableTh('votes','admin.comment.index','Votes')!!}
 						{!!\Nvd\Crud\Html::sortableTh('spam','admin.comment.index','Spam')!!}						
-						{!!\Nvd\Crud\Html::sortableTh('blog_id','admin.comment.index','Blog Id')!!}						
-						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.comment.index','Created At')!!}
-						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.comment.index','Updated At')!!}
+						{!!\Nvd\Crud\Html::sortableTh('blog_id','admin.comment.index','Blog')!!}
+						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.comment.index','Créée le ')!!}
+						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.comment.index','Mis à jour le')!!}
 						<th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
@@ -129,7 +129,7 @@
                                           data-value="{{ $record->blog_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
                                           data-url="{{ route('admin.comment.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->blog_id }}</span>
+                                          >{{ $record->blog->title }}</span>
                                </td>
                                
                                 <td>{{ $record->created_at }}</td>

@@ -30,7 +30,7 @@
                 </a>
         
                 <div class="p-5px-t p-20px-b text-center">
-                    <h6>{{ $item->content? Illuminate\Support\Str::limit($item->content, 75) :''}}</h6>
+                    <h6>{!! $item->content? Illuminate\Support\Str::limit($item->content, 75) :'' !!}</h6>
                 </div>
 
                 <div class="font-small p-5px-t p-20px-b text-center border-top-1 border-color-dark-gray">
@@ -312,7 +312,6 @@
                 top:-20px;
                 text-align: center;
                 /* background: #0DA600; */
-                border-radius: 30px 30px 30px 30px;
                 color:white;
                 padding:5px 10px;
                 font-size:18px;

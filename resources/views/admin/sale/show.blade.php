@@ -119,11 +119,11 @@
                         <h5>{{$sale->author_id}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Created At</h4>
+                        <h4>Créée le </h4>
                         <h5>{{$sale->created_at}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Updated At</h4>
+                        <h4>Mis à jour le</h4>
                         <h5>{{$sale->updated_at}}</h5>
                     </li>
                                     </ul>

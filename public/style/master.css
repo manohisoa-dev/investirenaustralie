@@ -5132,7 +5132,6 @@ mark {
 -------------------*/
 .blog-grid-overlay {
   background-size: cover;
-  border-radius: 5px;
   overflow: hidden;
 }
 .blog-grid-overlay .blog-gird-info {
