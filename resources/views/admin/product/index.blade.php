@@ -90,7 +90,7 @@
                                 >
                                     {{ $record->title }}
                                 </span></a><br />
-								{{$record->excerpt()}}
+								{!! $record->excerpt() !!}
                                 </span>                            
 							</td>
 							<td>

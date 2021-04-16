@@ -1,14 +1,14 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Comments - Ajout ')
+@section('title', 'Commentaires - Ajout ')
 
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Comments</h2>
+        <h2>Commentaires</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Comments</a>
+                <a href="#">Commentaires</a>
             </li>
             <li class="breadcrumb-item">
                 <a href="{{ route('admin.comment.index') }}">Listes</a>

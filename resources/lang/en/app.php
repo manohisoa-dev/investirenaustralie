@@ -252,7 +252,7 @@ return [
     'txt.Commercial'      =>'Commercial',
     'txt.postepar'      =>'Posted by',
     'txt.commentaire'      =>'Comment',
-    'txt.commentaires'      =>'Comments',
+    'txt.commentaires'      =>'Commentaires',
     'txt.lecture'      =>'Continue reading',
     'txt.enregistrer_recherche'      =>'Save search',
     'txt.latest_product'  => 'Registered products',
@@ -492,6 +492,7 @@ return [
     'txt.member_has_apl' => 'You are already in contact with the APL <b>:apl</b>',
     'txt.member_has_new_apl' => "You are now in contact with the APL <b>:apl</b>",
     'txt.choose_an_apl' => "You need to choose an APL first.",
+    'txt.error_occured' => "An error has occurred.",
     
     
     

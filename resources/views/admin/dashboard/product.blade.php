@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Blogs - Listes ')
+@section('title', 'Statistiques - Produits ')
 
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">

@@ -939,6 +939,7 @@ return [
     'txt.condition_days_apl' => 'Vous avez :nbDay jours pour etre en relation avec un APL.',
     'txt.member_has_apl' => "Vous êtes déjà en relation avec l'APL <b>:apl</b>",
     'txt.member_has_new_apl' => "Vous êtes maintenant en relation avec l'APL <b>:apl</b>",
+    'txt.error_occured' => "Une erreur est survenue.",
 
 
 

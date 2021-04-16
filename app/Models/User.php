@@ -193,16 +193,16 @@ class User extends Authenticatable{
         return $query->where('status', 'active');
     }
 
-    /**
-     * Scope a query to only include users is active
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function isActive()
-    {
-        return $this->status;
-    }
+    // /**
+    //  * Scope a query to only include users is active
+    //  *
+    //  * @param \Illuminate\Database\Eloquent\Builder $query
+    //  * @return \Illuminate\Database\Eloquent\Builder
+    //  */
+    // public function isActive()
+    // {
+    //     return $this->status;
+    // }
     
     /**
      * Scope a query to only include users has Location

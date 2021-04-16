@@ -126,7 +126,8 @@ Route::middleware(["auth", "role:5"])->group(function(){
         Route::get('searches', 'BackendController@searches');
 
         Route::get('contact/role/{role}', 'MemberController@contact')->name('member.contact');
-        Route::post('contact/role/{role}', 'MemberController@sendMail');
+        Route::post('contact/{role}', 'MemberController@sendMessage')->name('member.send.message');
+        Route::post('contact/role/{role}', 'MemberController@sendMail')->name('member.send.mail');
 
         Route::get('carts', 'MemberController@carts')->name('member.carts');
         Route::get('orders', 'MemberController@orders')->name('member.orders');
