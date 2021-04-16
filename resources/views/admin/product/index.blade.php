@@ -158,6 +158,9 @@
 									<a href="{{route('admin.product.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="Détail">
 										<i class="fa fa-eye"></i>
 									</a>&nbsp;&nbsp;
+									<a href="{{route('admin.product.index')}}/{{$record->id}}/edit" class="btn btn-default btn-circle" title="Modification">
+										<i class="fa fa-pencil-square-o"></i>
+									</a>&nbsp;&nbsp;
 									@if($record->status=='pinged' || $record->status=='archived')
 										<a href="{{route('admin.product.publish', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.publish')">
 											<i class="fa fa-check"></i>
