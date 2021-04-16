@@ -48,7 +48,7 @@ class BlogController extends Controller {
         //$this->validate($request, Blog::validationRules());
         $blog = new Blog();
         if($file=$request->file('image')){
-            $image = Image::storeAndSave($file);
+            $image = Image::storeAndSave($file,'blog');
             $blog->image_id = $image->id;
         }
         $slug = $slugOriginal = generateSlug($request->title);
