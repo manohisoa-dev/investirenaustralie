@@ -348,7 +348,7 @@
 					<!-- fin info en tant que membre -->
 					
 					<!-- info organisation -->
-					<div id="info_organisation" style="none">
+					<div id="info_organisation" style="display:none">
 						<h3 class="m-t-none m-b">Détails de l'organisation</h3>
 						<div class="row">
 							<div class="col-md-8">
