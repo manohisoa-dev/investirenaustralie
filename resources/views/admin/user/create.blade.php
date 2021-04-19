@@ -556,6 +556,8 @@ $(document).ready(function(){
 					$('#info_seller').hide();
 					$('#info_afa').hide();
 					$('#info_apl').hide();
+					$('#info_localite').hide();
+					$('#info_contact').hide();
 				}
 			});
 		}
