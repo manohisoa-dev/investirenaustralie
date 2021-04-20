@@ -52,13 +52,14 @@ class UserController extends Controller {
      * @return  \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        $this->validate($request, User::validationRules());
+        dd($request);
+        /*$this->validate($request, User::validationRules());
 
         User::create($request->all());
 
         # notification
         Notify::success('User a été créer avec succès');
-        return redirect(route('admin.user.index'));
+        return redirect(route('admin.user.index'));*/
     }
 
     /**

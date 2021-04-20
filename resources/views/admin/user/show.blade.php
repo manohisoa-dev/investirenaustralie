@@ -34,31 +34,31 @@
             </div>
             <div class="ibox-content">
                 <ul class="list-group">
-                                        <li class="list-group-item">
+                    <li class="list-group-item">
                         <h4>Id</h4>
                         <h5>{{$user->id}}</h5>
                     </li>
-                                        <li class="list-group-item">
+                    <li class="list-group-item">
                         <h4>Name</h4>
                         <h5>{{$user->name}}</h5>
                     </li>
-                                        <li class="list-group-item">
+                    <li class="list-group-item">
                         <h4>Email</h4>
                         <h5>{{$user->email}}</h5>
                     </li>
-                                        <li class="list-group-item">
+                    <li class="list-group-item">
                         <h4>Password</h4>
                         <h5>{{$user->password}}</h5>
                     </li>
-                                        <li class="list-group-item">
+                    <li class="list-group-item">
                         <h4>Role</h4>
                         <h5>{{$user->role}}</h5>
                     </li>
-                                        <li class="list-group-item">
+                    <li class="list-group-item">
                         <h4>Type</h4>
                         <h5>{{$user->type}}</h5>
                     </li>
-                                        <li class="list-group-item">
+                    <li class="list-group-item">
                         <h4>Language</h4>
                         <h5>{{$user->language}}</h5>
                     </li>

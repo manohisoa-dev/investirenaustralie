@@ -4,7 +4,7 @@
         <h2>Produits</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.product.index') }}">Produits</a>
+                <a href="{{ route('admin.product.index') }}">Programme</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Listes</strong>
@@ -13,8 +13,8 @@
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ route('admin.product.create') }}?type=produit" type="button" class="btn btn-primary btn-block">
-				<i class="fa fa-plus"></i> Ajouter un nouveau Produit 
+            <a href="{{ route('admin.product.create') }}?type=programme" type="button" class="btn btn-primary btn-block">
+				<i class="fa fa-plus"></i> Ajouter un nouveau programme 
 			</a>
         </div>
     </div>
@@ -25,7 +25,7 @@
 	<div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Produits</h5>
+                <h5>Programmes</h5>
             </div>
             <div class="ibox-content">
                 <table class="table table-striped grid-view-tbl">
@@ -34,12 +34,10 @@
 							{!!\Nvd\Crud\Html::sortableTh('id','admin.product.index','Id')!!}
 							{!!\Nvd\Crud\Html::sortableTh('image_id','admin.product.index','Image')!!}
 							{!!\Nvd\Crud\Html::sortableTh('title','admin.product.index','Titre')!!}
-							{!!\Nvd\Crud\Html::sortableTh('price','admin.product.index','Prix')!!}
+							{!!\Nvd\Crud\Html::sortableTh('category_id','admin.product.index','Categorie')!!}
 							{!!\Nvd\Crud\Html::sortableTh('created_at','admin.product.index','Date')!!}
 							{!!\Nvd\Crud\Html::sortableTh('status','admin.product.index','Statut')!!}
-							{!!\Nvd\Crud\Html::sortableTh('seller_id','admin.product.index','Vendeur')!!}
 							{!!\Nvd\Crud\Html::sortableTh('author_id','admin.product.index','Auteur')!!}
-							<th>Programme</th>
                             <th><a href="javascript:void(0)">Actions</a></th>
 							
                         </tr>
@@ -47,8 +45,8 @@
                             <form class="search-form">
                                 <td style="width:2%"><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
 								<td><input type="text" class="form-control" name="image_id" value="{{Request::input("image_id")}}"></td>
-								<td><input type="text" class="form-control" name="title" value="{{Request::input("title")}}"></td>
-								<td><input type="text" class="form-control" name="price" value="{{Request::input("price")}}"></td>    
+								<td><input type="text" class="form-control" name="title" value="{{Request::input("title")}}"></td> 
+								<td><input type="text" class="form-control" name="category_id" value="{{Request::input("category_id")}}"></td> 
 								<td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>  
 								<td>
 									<select class="form-control" name="status">
@@ -58,9 +56,7 @@
 										@endforeach
 									</select>
 								</td>
-								<td><input type="text" class="form-control" name="seller_id" value="{{Request::input("seller_id")}}"></td>
 								<td><input type="text" class="form-control" name="author_id" value="{{Request::input("author_id")}}"></td>
-								<td></td>
                                 <td style="min-width: 6em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>
                             </form>
                         </tr>
@@ -75,18 +71,12 @@
                             </td>
 							<td>
 								@if (@getimagesize($record->imageUrl()))
-									<a href="{{route('admin.product.index')}}/{{$record->id}}">
-										<img src="{{$record->imageUrl()}}" class="img-responsive" style="height:80px" />
-									</a>
+									<img src="{{$record->imageUrl()}}" class="img-responsive" style="height:80px" />
 								@else
-									<a href="{{route('admin.product.index')}}/{{$record->id}}">
-										<img class="img-responsive" src="{{asset('img/500x500.jpg')}}" width="80">
-									</a>
+									<img class="img-responsive" src="{{asset('img/500x500.jpg')}}" width="80">
 								@endif
-								
                             </td>
 							<td>
-								<a href="{{route('admin.product.index')}}/{{$record->id}}">
                                 <span
                                     class="editable"
                                     data-type="text"
@@ -96,7 +86,7 @@
                                     data-url="{{ route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
                                     {{ $record->title }}
-                                </span></a><br />
+                                </span><br />
 								{!! $record->excerpt() !!}
                                 </span>                            
 							</td>
@@ -104,14 +94,14 @@
                                 <span
                                     class="editable"
                                     data-type="text"
-                                    data-name="price"
-                                    data-value="{{ $record->price }}"
+                                    data-name="title"
+                                    data-value="{{ $record->category_id }}"
                                     data-pk="{{ $record->{$record->getKeyName()} }}"
                                     data-url="{{ route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
-                                    {{ $record->currency }}&nbsp;{{ number_format($record->price, 0, '.', ' ') }}
-                                </span>
-                            </td>
+                                    {{ $record->category->title }}
+                                </span>                          
+							</td>
 							<td>
                                 {{ $record->created_at ? $record->created_at->diffForHumans() : '' }}
                             </td>
@@ -131,18 +121,6 @@
 									@endif
                                 </span>
                             </td>
-                            <td>
-                                <span
-                                    class="editable"
-                                    data-type="text"
-                                    data-name="seller_id"
-                                    data-value="{{ $record->seller_id }}"
-                                    data-pk="{{ $record->{$record->getKeyName()} }}"
-                                    data-url="{{ route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                >
-                                    {{ $record->seller->name }}
-                                </span>
-                            </td>
 							<td>
                                 <span
                                     class="editable"
@@ -155,11 +133,6 @@
                                     {{ $record->author->name }}
                                 </span>
                             </td>
-							<td>
-								@if($record->parent_id != 0)
-									{{\App\Models\Product::where('id',$record->parent_id)->value('title') }}
-								@endif								
-							</td>
 							<td class="actions-cell text-center" width="12%">
 								<form class="form-inline" action="{{route('admin.product.index')}}/{{$record->id}}" method="POST">
 									<a href="{{route('admin.product.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="Détail">
@@ -168,46 +141,11 @@
 									<a href="{{route('admin.product.index')}}/{{$record->id}}/edit" class="btn btn-default btn-circle" title="Modification">
 										<i class="fa fa-pencil-square-o"></i>
 									</a>&nbsp;&nbsp;
-									@if($record->status=='pinged' || $record->status=='archived')
-										<a href="{{route('admin.product.publish', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.publish')">
-											<i class="fa fa-check"></i>
-										</a>&nbsp;&nbsp;
-										<a href="{{route('admin.product.trash', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
-											<i class="fa fa-trash-o"></i>
-										</a>&nbsp;&nbsp;
-									@elseif($record->status=='trashed')
-										<a href="{{route('admin.product.restore', $record->id)}}" class="btn btn-default btn-circle" title="Restore">
-											<i class="fa fa-window-restore"></i>
-										</a>&nbsp;&nbsp;
-									@endif
-									@if($record->status=='published')
-										<a href="{{route('admin.product.archive', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.archive')">
-											<i class="fa fa-archive"></i>
-										</a>&nbsp;&nbsp;
-										<a href="{{route('admin.product.trash', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
-											<i class="fa fa-trash-o"></i>
-										</a>&nbsp;&nbsp;
-									@endif
-									
 									{{ csrf_field() }}
 									{{ method_field('DELETE') }}
 									<button onclick="return confirm('Vous êtes sur?')"
 											type="submit" class="btn btn-default btn-circle" title="Suppression"><i class="fa fa-times text-danger"></i>
 									</button>
-									<?php /*?><a href="{{route('admin.product.archive', $record->id)}}" class="btn btn-default btn-circle" title="Archiver">
-										<i class="fa fa-archive"></i>
-									</a>&nbsp;&nbsp;
-									<a href="{{route('admin.product.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="Détail">
-										<i class="fa fa-eye"></i>
-									</a>&nbsp;&nbsp;								
-									<a href="{{route('admin.product.index')}}/{{$record->id}}/edit" class="btn btn-default btn-circle" title="Modification">
-										<i class="fa fa-pencil-square-o"></i>
-									</a>&nbsp;&nbsp;									
-									{{ csrf_field() }}
-									{{ method_field('DELETE') }}
-									<button onclick="return confirm('Vous êtes sur?')"
-											type="submit" class="btn btn-default btn-circle" title="Suppression"><i class="fa fa-trash text-danger"></i></button><?php */?>
-								</form>
 							</td>
                         </tr>
                         @empty @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 40]) @endforelse

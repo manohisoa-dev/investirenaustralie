@@ -56,6 +56,7 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::get('trash/{product}', 'ProductController@trash')->name('product.trash');
     Route::get('restore/{product}', 'ProductController@restore')->name('product.restore');
     Route::get('publish/{product}', 'ProductController@publish')->name('product.publish');
+    Route::get('programme', 'ProductController@programme')->name('product.programme');
 
     Route::resource('blog','BlogController');
     Route::get('archive_blog/{blog}', 'BlogController@archive')->name('blog.archive');

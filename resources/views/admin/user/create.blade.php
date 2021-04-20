@@ -119,13 +119,13 @@
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="title">Nom de l'entreprise *</label>
-									<input type="text" class="form-control" id="orga_name_seller" name="orga_name_seller" placeholder="Business Name" required>
+									<input type="text" class="form-control" id="orga_name_seller" name="orga_name_seller" placeholder="Business Name">
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="title">Email de l'entreprise *</label>
-									<input type="email" class="form-control" id="orga_email_seller" name="orga_email_seller" placeholder="Business Email" required>
+									<input type="email" class="form-control" id="orga_email_seller" name="orga_email_seller" placeholder="Business Email">
 								</div>
 							</div>
 						</div>
@@ -133,13 +133,13 @@
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="title">Tél de l'entreprise *</label>
-									<input type="text" class="form-control" id="orga_phone_seller" name="orga_phone_seller" placeholder="Business Phone" required>
+									<input type="text" class="form-control" id="orga_phone_seller" name="orga_phone_seller" placeholder="Business Phone">
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="title">Site web de l'entreprise *</label>
-									<input type="text" class="form-control" id="orga_website_seller" name="orga_website_seller" placeholder="Business Website" required>
+									<input type="text" class="form-control" id="orga_website_seller" name="orga_website_seller" placeholder="Business Website">
 								</div>
 							</div>
 							<div class="col-md-4">
@@ -169,19 +169,19 @@
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="title">Nom de l'entreprise *</label>
-									<input type="text" class="form-control" id="orga_name_afa" name="orga_name_afa" placeholder="Business Name" required>
+									<input type="text" class="form-control" id="orga_name_afa" name="orga_name_afa" placeholder="Business Name">
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="title">Email de l'entreprise *</label>
-									<input type="email" class="form-control" id="orga_email_afa" name="orga_email_afa" placeholder="Business Email" required>
+									<input type="email" class="form-control" id="orga_email_afa" name="orga_email_afa" placeholder="Business Email">
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="title">Tél de l'entreprise *</label>
-									<input type="text" class="form-control" id="orga_phone_afa" name="orga_phone_afa" placeholder="Business Phone" required>
+									<input type="text" class="form-control" id="orga_phone_afa" name="orga_phone_afa" placeholder="Business Phone">
 								</div>
 							</div>
 						</div>
@@ -189,7 +189,7 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<label for="title">Site web de l'entreprise *</label>
-									<input type="text" class="form-control" id="orga_website_afa" name="orga_website_afa" placeholder="Business Website" required>
+									<input type="text" class="form-control" id="orga_website_afa" name="orga_website_afa" placeholder="Business Website">
 								</div>
 							</div>
 							<div class="col-md-3">
@@ -242,19 +242,19 @@
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="title">Nom de l'entreprise *</label>
-									<input type="text" class="form-control" id="orga_name_apl" name="orga_name_apl" placeholder="Business Name" required>
+									<input type="text" class="form-control" id="orga_name_apl" name="orga_name_apl" placeholder="Business Name">
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="title">Email de l'entreprise *</label>
-									<input type="email" class="form-control" id="orga_email_apl" name="orga_email_apl" placeholder="Business Email" required>
+									<input type="email" class="form-control" id="orga_email_apl" name="orga_email_apl" placeholder="Business Email">
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="title">Tél de l'entreprise *</label>
-									<input type="text" class="form-control" id="orga_phone_apl" name="orga_phone_apl" placeholder="Business Phone" required>
+									<input type="text" class="form-control" id="orga_phone_apl" name="orga_phone_apl" placeholder="Business Phone">
 								</div>
 							</div>
 						</div>
@@ -262,7 +262,7 @@
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="title">Site web de l'entreprise *</label>
-									<input type="text" class="form-control" id="orga_website_apl" name="orga_website_apl" placeholder="Business Website" required>
+									<input type="text" class="form-control" id="orga_website_apl" name="orga_website_apl" placeholder="Business Website">
 								</div>
 							</div>
 							<div class="col-md-4">
@@ -354,13 +354,13 @@
 							<div class="col-md-8">
 								<div class="form-group">
 									<label for="title">Nom de l'organisation *</label>
-									<input type="text" class="form-control" id="nom_organisation" name="nom_organisation" required>
+									<input type="text" class="form-control" id="nom_organisation" name="nom_organisation">
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="title">Logo *</label>
-									<input type="file" class="form-control" id="logo_organisation" name="logo_organisation" required>
+									<input type="file" class="form-control" id="logo_organisation" name="logo_organisation">
 								</div>
 							</div>
 						</div>
@@ -368,19 +368,19 @@
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="title">Adresse Email *</label>
-									<input type="email" class="form-control" id="email_organisation" name="email_organisation" required>
+									<input type="email" class="form-control" id="email_organisation" name="email_organisation">
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="title">Téléphone *</label>
-									<input type="text" class="form-control" id="tel_organisation" name="tel_organisation" required>
+									<input type="text" class="form-control" id="tel_organisation" name="tel_organisation">
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="title">Site Web URL *</label>
-									<input type="text" class="form-control" id="web_organisation" name="web_organisation" required>
+									<input type="text" class="form-control" id="web_organisation" name="web_organisation">
 								</div>
 							</div>
 						</div>
@@ -388,7 +388,7 @@
 							<div class="col-md-12">
 								<div class="form-group">
 									<label for="title">Présentation de l'organisation * *</label>
-									<textarea class="form-control" name="orga_presentation" rows="10" required=""></textarea>
+									<textarea class="form-control" name="orga_presentation" rows="10"></textarea>
 								</div>
 							</div>
 						</div>
@@ -414,13 +414,13 @@
 							<div class="col-md-4">   
 								<div class="form-group">
 									<label for="title">Suburb *</label>
-									<input type="text" class="form-control" id="area_level_2" name="area_level_2" placeholder="Suburb" required>
+									<input type="text" class="form-control" id="area_level_2" name="area_level_2" placeholder="Suburb">
 								</div>
 							</div>  
 							<div class="col-md-4">  
 								<div class="form-group">
 									<label for="title">Ville *</label>
-									<input type="text" class="form-control" id="locality" name="locality" placeholder="City" required>
+									<input type="text" class="form-control" id="locality" name="locality" placeholder="City">
 								</div>
 							</div>
 						</div> 
@@ -428,13 +428,13 @@
 							<div class="col-md-8">
 								<div class="form-group">
 									<label for="title">Adresse *</label>
-									<input type="text" class="form-control" id="route" name="route" placeholder="Street Address" required>
+									<input type="text" class="form-control" id="route" name="route" placeholder="Street Address">
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="title">Code postal *</label>
-									<input type="text" class="form-control" id="route" name="route" placeholder="Street Address" required>
+									<input type="text" class="form-control" id="route" name="route" placeholder="Street Address">
 								</div>
 							</div>
 						</div>
@@ -449,19 +449,19 @@
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="title">Nom du contact *</label>
-									<input type="text" class="form-control" id="contact_name" name="contact_name" placeholder="Contact Name" required>
+									<input type="text" class="form-control" id="contact_name" name="contact_name" placeholder="Contact Name">
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="title">Email du contact *</label>
-									<input type="text" class="form-control" id="contact_email" name="contact_email" placeholder="Contact Email" required>
+									<input type="text" class="form-control" id="contact_email" name="contact_email" placeholder="Contact Email">
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="title">Tél du contact *</label>
-									<input type="text" class="form-control" id="contact_phone" name="contact_phone" placeholder="Contact Phone" required>
+									<input type="text" class="form-control" id="contact_phone" name="contact_phone" placeholder="Contact Phone">
 								</div>
 							</div>
 						</div>
@@ -476,13 +476,13 @@
 							<div class="col-md-6">
 								<div class="form-group">
 									<label for="title">CRM nom du fournisseur *</label>
-									<input type="text" class="form-control" id="crm_name" name="crm_name" placeholder="CRM Provider Name" required>
+									<input type="text" class="form-control" id="crm_name" name="crm_name" placeholder="CRM Provider Name">
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
 									<label for="title">CRM email du fournisseur *</label>
-									<input type="text" class="form-control" id="crm_email" name="crm_email" placeholder="CRM Provider Email" required>
+									<input type="text" class="form-control" id="crm_email" name="crm_email" placeholder="CRM Provider Email">
 								</div>
 							</div>
 						</div>
