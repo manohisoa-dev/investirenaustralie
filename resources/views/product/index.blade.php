@@ -375,6 +375,13 @@
              $('.message-error p').html('{{ trans("afa.accept_term") }}')
           }
         });
+
+        // Show image product in modal
+        $(".pop").on("click", function() {
+          var id = $(this).attr('value');
+          $('#imagepreview').attr('src', $('.imageresource'+id).attr('src')); // here asign the image to the modal when the user click the enlarge link
+          $('#imagemodal').modal('show'); // imagemodal is the id attribute assigned to the bootstrap modal, then i use the show function
+        });
   </script>
   <script>
       var _map;
