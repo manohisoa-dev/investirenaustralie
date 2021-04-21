@@ -3,9 +3,10 @@
 @section('subcontent')
 
 <div class="col-lg-8 col-xl-9">
+    @include('includes.alerts')
     <div class="m-40px-tb card card-body">
         <div class="border-bottom-1 border-color-dark-gray m-15px-b p-0px-b">
-            <h5>@lang('app.select_apl')</h5>
+            <h5>@lang('app.select_afa')</h5>
             <div class="row">
                 <div class="col-md-4 m-10px-tb">
                     <div class="media">
@@ -44,19 +45,20 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content dark-bg">
                 <div class="modal-header" style="background-color: #AE4435 !important;">
-                  <h4 class="modal-title white-color" id="title">@lang('app.apl')</h4>
+                  <h4 class="modal-title white-color" id="title">@lang('app.afa')</h4>
                 </div>
                 <div class="modal-body">
                     <div class="nav flex-sm-column flex-row">
-                      <p id="content" class="white-color">@lang('app.select_apl')</p>
+                      <p id="content" class="white-color">@lang('app.select_afa')</p>
                     </div>
                 </div>
                 <div class="modal-footer">
-                  <form id="apl-form-modal" class="form-horizontal" role="form" method="post" action="{{$action}}">
+                  <form id="afa-form-modal" class="form-horizontal" role="form" method="post" action="{{$action}}">
                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                    <input type="hidden" id="apl-modal"  name="apl">
+                    <input type="hidden" id="afa-modal"  name="afa">
                     <div class="pull-left hidden row-confirm-modal" style="margin-bottom: 20px;">
-                        <input id="check-confirm-modal" type="checkbox" name="confirm" value="1"><span style="color:red;"> {!!__('member.accept_term_and_condition_apl')!!}</span>
+                        <input id="check-confirm-modal" type="checkbox" name="confirm" value="1"><span style="color:red;"> {!!__('member.accept_term_and_condition_afa')!!}</span>
+                        <p class="text-left">{!!__('member.select_afa')!!}</p>
                     </div>
                     <div class="row col-md-12">
                       <div class="col-md-5">
@@ -87,11 +89,12 @@
     </style>
     
     <script>
-        $('#apl-form-modal').submit(function(event){
+        $('#afa-form-modal').submit(function(event){
             if(!$('#check-confirm-modal').is(":checked"))
             {
                 $('.row-confirm-modal').removeClass('hidden');
                 event.preventDefault();
+                alert("{{ trans('app.txt.accept_term', ['role'=>'AFA']) }}");
             }
         });
     </script>
@@ -104,21 +107,12 @@
         
         var iconBase = "{{url('')}}";
         var icons = {
-        user: {
-            icon: iconBase + '/images/map/user.png'
-        },
         5: {
             icon: iconBase + '/images/map/member.png'
-        },
-        4: {
-            icon: iconBase + '/images/map/apl.png'
         },
         3: {
             icon: iconBase + '/images/map/afa.png'
         },
-        product: {
-            icon: iconBase + '/images/map/product.png'
-        }
         };
         
         
@@ -158,9 +152,9 @@
                 icon: icons[data.type].icon,
             });
             
-            if(data.type == 4){
+            if(data.type == 3){
                 google.maps.event.addListener(markers[data.id], 'click', function() {
-                    $('#apl-modal').attr("value", data.id);
+                    $('#afa-modal').attr("value", data.id);
                     $('#title').html(data.title);
                     $('#content').html(data.html);
                     $('#myModal').modal('show'); 

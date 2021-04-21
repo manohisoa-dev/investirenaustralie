@@ -36,7 +36,11 @@
 				<div class="ibox-content">
 					<div class="row">
 						<div class="col-md-3">
-							<img src="{{$user->imageUrl(false)}}" alt="{{$user->name}}" class="rounded-circle" style="width:150px">
+							@if (@getimagesize($user->imageUrl()))
+								<img src="{{$user->imageUrl(false)}}" alt="{{$user->name}}" class="rounded-circle" style="width:150px">
+							@else
+								<img src="{{asset('img/500x500.jpg')}}" alt="{{$user->name}}" class="rounded-circle" style="width:150px">
+							@endif
 						</div>
 						<div class="col-md-9">
 							<table class='table table-borderless'>

@@ -89,10 +89,10 @@
                         <div class="property-sorting col-lg-12">        
                             <form id="filter-form" method="get" action="">
                                 <div  class="pull-left form-group col-lg-3 col-md-12">
-                                    <label for="showBy"> @lang('app.form.show'):   </label>  
+                                    <label for="showBy"> @lang('app.form.represent'):   </label>  
                                     <select class="form-control" name="showBy" id="showBy" onchange="document.getElementById('filter-form').submit();"> 
-                                        <option value="map" {{$showBy=='map'?'selected':''}}>@lang('app.txt.loc_geo')</option>
                                         <option value="mat" {{$showBy=='mat'?'selected':''}}>@lang('app.txt.repr_mat')</option>
+                                        <option value="map" {{$showBy=='map'?'selected':''}}>@lang('app.txt.loc_geo')</option>  
                                     </select>
                                 </div>
                                 <div  class="pull-left form-group col-lg-3 col-md-12">
@@ -108,12 +108,13 @@
                                 <div  class="pull-left form-group col-lg-3 col-md-12">
                                     <label for="orderBy"> @lang('app.form.filterBy'):   </label>  
                                     <select class="form-control" name="orderBy" id="orderBy" onchange="document.getElementById('filter-form').submit();" @if($showBy!=='mat') disabled @endif> 
-                                        <option value="created_at" {{$orderBy=='created_at'?'selected':''}}>@lang('app.pub_date')</option>  
+                                        <option value="price" {{$orderBy=='price'?'selected':''}}>@lang('app.txt.price')</option>  
+                                        <option value="created_at" {{$orderBy=='created_at'?'selected':''}}>@lang('app.create_date')</option>  
                                         <option value="view_count" {{$orderBy=='view_count'?'selected':''}}>@lang('app.most_view')</option>
                                     </select>
                                 </div>
                                 <div  class="pull-left form-group col-lg-3 col-md-12">
-                                    <label for="order"> @lang('app.form.order'):   </label>  
+                                    <label for="order"> @lang('app.form.order_price'):   </label>  
                                     <select class="form-control" name="order" id="order" onchange="document.getElementById('filter-form').submit();" @if($showBy!=='mat') disabled @endif> 
                                         <option value="asc" {{$order=='asc'?'selected':''}}>@lang('app.form.asc')</option> 
                                         <option value="desc" {{$order=='desc'?'selected':''}}>@lang('app.form.desc')</option> 

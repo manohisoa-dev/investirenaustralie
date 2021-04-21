@@ -141,11 +141,14 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-3 control-label" for="image"> @lang('app.txt.avatar') </label>
-                                            <div class="col-md-9">
-                                                <input type="file" class="m-btn m-btn-theme" name="image" id="image">
-                                                <p class="help-block">
-                                                    @lang('app.txt.avatar.libelle')
-                                                </p>
+                                            <div class="input-group mb-3 col-md-9">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">@lang('app.txt.upload')</span>
+                                                </div>
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input inputGroupFile" name="image" id="image">
+                                                    <label class="custom-file-label inputGroupFileName" for="inputGroupFile01">@lang('app.txt.choose_file')</label>
+                                                </div>
                                             </div>
                                         </div>
                                     </fieldset>
@@ -238,12 +241,15 @@
                                     <fieldset>
                                         <legend>Bussiness Detail</legend>
                                         <div class="form-group">
-                                            <label class="col-md-3 control-label" for="image">@lang('app.txt.logo.organisation') *</label>
-                                            <div class="col-md-9">
-                                                <input type="file" class="m-btn m-btn-theme" name="image">
-                                                <p class="help-block">
-                                                @lang('app.txt.logo.organisation.libelle')
-                                                </p>
+                                            <label class="col-md-3 control-label" for="image"> @lang('app.txt.logo.organisation') *</label>
+                                            <div class="input-group mb-3 col-md-9">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">@lang('app.txt.upload')</span>
+                                                </div>
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input inputGroupFile02" id="inputGroupFile02" name="image">
+                                                    <label class="custom-file-label inputGroupFileName02" for="inputGroupFile02">@lang('app.txt.choose_file')</label>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="form-group">

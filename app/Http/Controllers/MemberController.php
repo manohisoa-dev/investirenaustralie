@@ -8,6 +8,8 @@ use Validator;
 
 use App\Notifications\NewMail;
 use App\Notifications\AplChanged;
+use App\Notifications\AfaChanged;
+use App\Notifications\AfaCourriel;
 
 use App\Models\Order;
 use App\Models\User;
@@ -15,6 +17,7 @@ use App\Models\Mail;
 use App\Models\MailUser;
 use App\Models\Localisation;
 use App\Models\Message;
+use Session;
 
 class MemberController extends Controller
 {
@@ -404,7 +407,7 @@ class MemberController extends Controller
         
         $data = [];
         
-        $apls = User::ofRole(4)
+        $afas = User::ofRole(3)
             ->isActive()
             ->has('location')
             ->with('location')
@@ -419,8 +422,8 @@ class MemberController extends Controller
         
         $selected = null;
         
-        foreach($apls as $item){
-            $html = view('backend.apl.html')->with('item', $item)->render();
+        foreach($afas as $item){
+            $html = view('backend.afa.html')->with('item', $item)->render();
             $dataTemp = [
               'id' => $item->id,
               'lat' => $item->location?$item->location->latitude:0,
@@ -443,12 +446,121 @@ class MemberController extends Controller
     	return view('backend.afa.select')
             ->with('location', Auth::user()->location)
             ->with('action', $action)
-            ->with('items', $apls)
+            ->with('items', $afas)
             ->with('distance', $distance)
             ->with('lapls', $lapls)
             ->with('distances', $this->distances)
             ->with('selected', json_encode($selected))
             ->with('data', json_encode($data));
     }
+
+
+    /**
+     * Update AFA
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Product
+     * @return \Illuminate\Http\Response
+     */
+    public function updateAfa(Request $request){
+        $this->middleware('auth');
+        $this->middleware('role:5');
+
+        $afa = null;
+
+        if($request->has('afa')){
+            $afa = User::ofRole('3')
+                ->isActive()
+                ->where('id', '=', $request->afa)
+                ->first();
+        }else{
+            return back()->withInput()
+                ->with('error', trans('app.txt.choose_an_afa'));
+        }
+        
+        // No AFA selected
+        if(!$afa){
+    	   return back()->withInput()
+               ->with('error', trans('app.txt.choose_an_afa'));
+        }
+        
+        if(!$request->input('confirm')){
+            return back()->withInput()
+               ->with('error', trans('app.txt.mustagreeterme'));
+        }
+        
+        // Update AFA
+        Auth::user()->afa_id = $afa->id;
+        // Auth::user()->afa_ends_at = \Carbon\Carbon::now()->addDays(option('payment.afa_ends_at', 180));
+        Auth::user()->save();
+        
+        // Notify User
+        try{
+            Auth::user()->notify(new AfaChanged(Auth::user(), false));
+        }catch(\Exception $e){}
+        
+        // Nofity AFA
+        try{
+            $afa->notify(new AfaChanged(Auth::user(), true));
+        }catch(\Exception $e){}
+        
+    	return back()
+            ->with('success', trans('app.txt.info_saved'));
+    }
+
+
+    /**
+     * Select afa
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Product
+     * @return \Illuminate\Http\Response
+     */
+    public function goThere(Request $request){
+        $this->middleware('auth');
+        $this->middleware('role:5');
+        
+        if(Auth::user()->hasAfa()){
+            // Update info member
+            Auth::user()->is_move = 1;
+            Auth::user()->save();
+
+            return redirect(url()->previous())
+                ->with('engagement',trans('afa.condition_deplacement_afa', ['afa'=>Auth::user()?Auth::user()->afa->name:'']));
+        }
+        else{
+            return redirect()->route('member.select.afa')
+                ->with('error', trans('app.txt.choose_an_afa'));
+        }
+    }
+
+
+    /**
+     * Send Courriel for member
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Product
+     * @return \Illuminate\Http\Response
+     */
+    public function sendCourriel(Request $request){
+        $this->middleware('auth');
+        $this->middleware('role:5');
+        session()->forget('engagement');
+        
+        // Notify User
+        Auth::user()->notify(new AfaCourriel(Auth::user(), Auth::user()->afa->name));
+
+        try {
+            return redirect(url()->previous())
+                ->with('engagement',trans('afa.notif_after_send_mail'))
+                ->with('mail_send',"send");
+        } catch (\Exception $exception) {
+            
+        }
+        
+    }
+
+
+
 
 }

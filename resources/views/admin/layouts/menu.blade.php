@@ -58,6 +58,7 @@
 		<span class="label label-warning float-right">16/24</span>
 	</a>
     <ul class="nav nav-second-level collapse">
+		<li><a href="{{route('admin.product.programme')}}">Liste des programmes</a></li>
         <li><a href="{{route('admin.product.index')}}">Liste des produits</a></li>
     </ul>
 </li>

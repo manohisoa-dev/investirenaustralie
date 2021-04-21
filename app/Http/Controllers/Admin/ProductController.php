@@ -22,6 +22,13 @@ class ProductController extends Controller
         $status = Product::groupBy('status')->pluck('status', 'status');        
         return $this->view( "index", ['records' => $records,'status' => $status] );
     }
+    
+    public function programme()
+    {
+        $records = Product::allProgramme();
+        $status = Product::groupBy('status')->pluck('status', 'status');        
+        return $this->view( "programme", ['records' => $records,'status' => $status] );
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -30,7 +37,11 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return $this->view("create");
+        if($_GET['type'] == 'produit'){
+            return $this->view("create");
+        }else{
+            return $this->view("create_programme");
+        }        
     }
 
     /**

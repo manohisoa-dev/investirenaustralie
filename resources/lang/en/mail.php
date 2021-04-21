@@ -29,7 +29,7 @@ return [
     'btn.invoice' => 'Download the invoice',
     'btn.view.user' => 'See :role',
     
-    'default_password' => 'Your default password is :password',
+    'default_password' => 'Your default password is "<b>:password</b>"',
     'quantity' => 'Amount :value',
     'amount' => 'Value :value',
     'tma' => 'TMA :value',
@@ -65,5 +65,7 @@ return [
     'registration.clic_here' => 'Click here',
 
     'btn.reset.password' => 'Click here to reset your password',
+
+    'document.sent' => 'Please download the documents below.',
 
 ];

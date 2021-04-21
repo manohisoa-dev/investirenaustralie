@@ -126,7 +126,7 @@ class BlogController extends Controller {
         }
 
         if ($file = $request->file('image')) {
-            $image = Image::storeAndSave($file);
+            $image = Image::storeAndSave($file,'blog');
             $blog->image_id = $image->id;
         }
 

@@ -66,4 +66,14 @@ class Slider extends Model
     {
         return $this->belongsTo(Image::class,'image_id','id');
     }
+
+    /**
+     * A slider is image || pub || video
+     *
+     * @return Boolean
+     */
+    public function hasSlider($type)
+    {
+      return ($this->type == $type);
+    }
 }

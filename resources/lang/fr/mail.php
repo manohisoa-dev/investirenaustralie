@@ -29,7 +29,7 @@ return [
     'btn.invoice' => 'Télécharger la facture',
     'btn.view.user' => 'Voir :role',
     
-    'default_password' => 'Votre mot de passe par défaut est :password',
+    'default_password' => 'Votre mot de passe par défaut est "<b>:password</b>"',
     'quantity' => 'Quantité :value',
     'amount' => 'Valeur :value',
     'tma' => 'TMA :value',
@@ -65,5 +65,7 @@ return [
     'registration.clic_here' => 'Cliquez ici',
 
     'btn.reset.password' => 'Cliquez ici pour réinitialiser votre mot de passe',
+
+    'document.sent' => 'Veuillez télécharger les documents ci-dessous.',
 
 ];
