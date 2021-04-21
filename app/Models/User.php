@@ -742,5 +742,35 @@ class User extends Authenticatable{
         $this->notify(new PasswordReseted($user,$token));
     }
 
+    /**
+     * Check if user has afa
+     *
+     * @return Boolean
+     */
+    public function hasAfa()
+    {
+        return ($this->afa_id!==0);
+    }
+
+    /**
+     * Check if user is moving
+     *
+     * @return Boolean
+     */
+    public function isMove()
+    {
+        return ($this->is_move!==0);
+    }
+
+    /**
+     * A user can have one default AFA
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function afa()
+    {
+      return $this->hasOne(User::class, 'id', 'afa_id');
+    }
+
 }
 

@@ -60,11 +60,17 @@
                                         <fieldset>
                                             <legend>Business Details</legend>
                                             <div class="form-group">
-                                                <label for="image" class="col-sm-3 control-label">Logo *</label>
-                                                <div class="col-md-3">
-                                                    <input type="file" class="btn btn-default" id="image" name="image" >
-                                                    <span class="text-danger">{{ $errors->first('image') }}</span>
+                                                <label class="col-md-3 control-label" for="image"> @lang('app.txt.logo') *</label>
+                                                <div class="input-group mb-3 col-md-9">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">@lang('app.txt.upload')</span>
+                                                    </div>
+                                                    <div class="custom-file">
+                                                        <input type="file" class="custom-file-input inputGroupFile" name="image" id="image">
+                                                        <label class="custom-file-label inputGroupFileName" for="image">@lang('app.txt.choose_file')</label>
+                                                    </div>
                                                 </div>
+                                                <span class="text-danger">{{ $errors->first('image') }}</span>
                                             </div>
                                             <div class="form-group">
                                                 <label for="orga_name" class="col-sm-3 control-label">Business Name *</label>
@@ -231,7 +237,7 @@
 </div>
 @endsection
 
-@section('script')
+@push('script')
 <script src="{{asset('js/myJs.js')}}"></script>
 <script type="text/javascript">
     $(window).on('load',function(){
@@ -260,4 +266,4 @@
         }
     });
 </script>
-@endsection
+@endpush

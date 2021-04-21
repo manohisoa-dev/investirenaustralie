@@ -119,6 +119,9 @@ Route::middleware(["auth", "role:5"])->group(function(){
         Route::post('select-apl', 'MemberController@updateApl');
 
         Route::get('select-afa', 'MemberController@selectAfa')->name('member.select.afa');
+        Route::post('select-afa', 'MemberController@updateAfa');
+        Route::get('go-there', 'MemberController@goThere')->name('member.go.there');
+        Route::get('send-courriel', 'MemberController@sendCourriel')->name('member.send.courriel');
 
         Route::get('/', 'BackendController@dashboard');
         Route::get('favorites', 'BackendController@favorites');

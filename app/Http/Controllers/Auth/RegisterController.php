@@ -120,8 +120,7 @@ class RegisterController extends Controller
      */
     public function resendActivation(User $user)
     {   
-
-        if($user->isActive()){
+        if($user->active()){
             return back()
                 ->with('error',trans('app.txt.useractived'));
         }
@@ -243,8 +242,11 @@ class RegisterController extends Controller
 
             $request->session()->put("step", "register");
             $action = route('register',['role'=>$role]);
+
+
             return view('login.'.$role)
                     ->with('action', $action)
+                    ->with('role', trans('app.'.$role))
                     ->with('states', State::all())
                     ->with('countries', Country::all());
             

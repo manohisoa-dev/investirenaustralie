@@ -124,30 +124,33 @@ return [
     'form.login.forgot'        => "Mot de passe oublié?",
     'form.login.not_registered'=> "Pas encore inscrit?",
     
-    'form.register.title'      => "Formulaire d'insription",
+    'form.register.title'      => "Formulaire d'inscription",
     
-    'form.register.member.title'      => "Formulaire d'insription de membre",
+    'form.register.member.title'      => "Formulaire d'inscription de membre",
     
-    'form.register.apl.title'      => "Formulaire d'insription de l'Agence Partenaire Locale",
+    'form.register.apl.title'      => "Formulaire d'inscription de l'Agence Partenaire Locale",
     'form.register.apl.desc'      => "Get your properties automatically sent to PropertyHQ.com platform from your CRM System. This means there is no extra work needed from your side for having your properties listed with us. Simply fill in the form below and our staff will contact your CRM to organise the feed",
     
-    'form.register.afa.title'      => "Formulaire d'insription de l'Agence Fancophone Autsralienne",
+    'form.register.afa.title'      => "Formulaire d'inscription de l'Agence Fancophone Autsralienne",
     'form.register.afa.desc'      => "Get your properties automatically sent to PropertyHQ.com platform from your CRM System. This means there is no extra work needed from your side for having your properties listed with us. Simply fill in the form below and our staff will contact your CRM to organise the feed",
     
-    'form.register.seller.title'      => "Formulaire d'insription de vendeur",
+    'form.register.seller.title'      => "Formulaire d'inscription de vendeur",
     'form.register.seller.desc'      => "Get your properties automatically sent to PropertyHQ.com platform from your CRM System. This means there is no extra work needed from your side for having your properties listed with us. Simply fill in the form below and our staff will contact your CRM to organise the feed",
     
     'form.register.newsletter'      => "M'inscrire à la Newsletter",
     'form.register.shareinfo'      => "J'autorise le partage et la commercialisation de mes information avec les partenaires du site www.investirenaustralie.com",
     'form.required'      => '(*) Required field',
     
-    'form.filterBy'      => 'Filtré par',
+    'form.filterBy'      => 'Filtrer par',
     'form.order'      => 'Ordre',
+    'form.order_price'      => 'Ordre des prix',
     'form.show'      => 'Afficher par',
+    'form.represent'      => 'Représentation',
     'form.asc'      => 'Croissant',
     'form.desc'      => 'Décroissant',
     'form.vue'      => 'Vue',
     'pub_date'      => 'Créer le',
+    'create_date'      => 'Date de création',
     'most_view'      => 'Plus de vue',
     
     'list.product'      => 'Liste de produit',
@@ -195,7 +198,8 @@ return [
     'select_user'           => 'Selectionner un utilisateur',
     'select_one'            => 'Selectionner un',
     'select_seller'         => 'Selectionner un vendeur',
-    'select_apl'            => 'Selectionner une agence partenaire locale',
+    'select_apl'            => 'Selectionner une Agence Partenaire Locale',
+    'select_afa'            => 'Selectionner une Agence Francophone Australienne',
     'select_admin'          => 'Selectionner un administrateur',
     'select_frequency'     => 'Selectionner le frequence',
     
@@ -690,6 +694,10 @@ return [
     'txt.programme_favorites' => 'Mettre dans mes favoris',
     'txt.programme_remove_favorites' => 'Programme supprimé de votre liste de favoris',
     'txt.choose_an_apl' => "Vous devez choisir un APL d'abord.",
+    'txt.choose_an_afa' => "Vous devez choisir un AFA d'abord.",
+    'txt.upload' => "Télécharger",
+    'txt.choose_file' => "Choisir le fichier",
+    'txt.info_saved' => "Information enregistrée !",
     
     
     'childs' => 'Fils',
@@ -874,7 +882,7 @@ return [
     'txt.businesswebsite'  => 'Site Web',
     'txt.createuser.success' =>'Un nouveau compte a bien été créé. Veuillez vérifier votre messagerie et activer votre compte.',
     'txt.resendcode' => 'Renvoyer le code',
-    'txt.mustagreeterme' => 'Vous devez accepter les termes et conditions',
+    'txt.mustagreeterme' => 'Vous devez accepter les termes et conditions.',
     'txt.accountdesactivated' => 'Votre compte est désactivé. Un e-mail est envoyé à votre adresse e-mail.',
     'txt.mustconfirmaccount' => 'Vous devez confirmer votre compte.',
     'txt.codedoesnotexist' => "Le code n'existe pour aucun utilisateur de notre système.",
@@ -932,14 +940,16 @@ return [
     'txt.marker.cannot_determine_address'        => "Impossible de déterminer l'adresse à cet emplacement.",  
     'txt.choose_position_exacte'        => 'Veuillez choisir une position exacte.',    
     'txt.list_programme'        => 'Liste des Programmes',    
-    'txt.loc_geo'        => 'Localisation géographique',  
-    'txt.repr_mat'        => 'Représentation matérielle',   
+    'txt.loc_geo'        => 'Géographique',  
+    'txt.repr_mat'        => 'Matérielle',   
     'txt.new' => 'Nouveau',
     'txt.accept_term' => 'Veuillez accepter les termes et conditions :role',
     'txt.condition_days_apl' => 'Vous avez :nbDay jours pour etre en relation avec un APL.',
     'txt.member_has_apl' => "Vous êtes déjà en relation avec l'APL <b>:apl</b>",
     'txt.member_has_new_apl' => "Vous êtes maintenant en relation avec l'APL <b>:apl</b>",
     'txt.error_occured' => "Une erreur est survenue.",
+    'txt.engagement' => "Engagement",
+    'txt.agree' => "J'accepte",
 
 
 
