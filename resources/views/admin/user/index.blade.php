@@ -17,9 +17,9 @@
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ route('admin.user.create') }}" type="button" class="btn btn-primary btn-block">
-                <i class="fa fa-plus"></i> Ajouter un nouveau User            
-			</a>
+            <?php /*?><a href="{{ route('admin.user.create') }}" type="button" class="btn btn-primary"><!--btn-block-->
+                <i class="fa fa-plus"></i> Ajouter un partie prenante           
+			</a><?php */?>
         </div>
     </div>
 </div>
@@ -125,9 +125,16 @@
 						<tr>
 							<td>{{ $record->id }}</td>
 							<td>
+							@if (@getimagesize($record->imageUrl()))
 								<a href="{{route('admin.user.show', $record)}}">
 									<img class="img-responsive" src="{{$record->imageUrl()}}" width="50">
 								</a>
+							@else
+								<a href="{{route('admin.user.show', $record)}}">
+									<img class="img-responsive" src="{{asset('img/500x500.jpg')}}" width="50">
+								</a>
+							@endif
+								
 							</td>
 							<td>
 								<span class="editable"
@@ -244,5 +251,51 @@
 		$("#state_id").select2();
 		$("#type_users_id").select2();
 	});
+	
+	function ajouter()
+	{
+		$('#form')[0].reset();
+		$('.form-group').removeClass('has-error');
+		$('.help-block').empty(); 
+		$('#modal_form').modal('show'); 
+		$('.modal-title').text('Choisir type utilisateur');
+	}
+	
+	function suivant()
+	{
+		var role = $('#new_role').val();
+		window.location.href = "{{ route('admin.user.create') }}?type="+role;
+	}
 </script>
+<div class="modal fade" id="modal_form" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-default">
+        <div class="modal-content">
+            <div class="modal-header">
+				<h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+				 <form action="#" id="form" class="form-horizontal">
+                    <div class="form-body">
+						<div class="form-group">
+                            <label class="control-label">Rôle *</label>
+							<select class="form-control" name="new_role" id="new_role">
+								<option value="">Choisir...</option>
+								@foreach(\App\Models\Role::all() as $role)
+									<option value="{{$role->id}}">{{$role->role_name}}</option>
+								@endforeach
+							</select>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+                <button type="button" id="btnSave" onClick="suivant()" class="btn btn-primary">Enregistrer</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+            </div>
+		</div>
+	</div>
+</div>
 @endsection
