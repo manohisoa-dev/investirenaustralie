@@ -91,7 +91,7 @@
                                 <div  class="pull-left form-group col-lg-3 col-md-12">
                                     <label for="showBy"> @lang('app.form.show'):   </label>  
                                     <select class="form-control" name="showBy" id="showBy" onchange="document.getElementById('filter-form').submit();"> 
-                                        <option value="map" {{$showBy=='map'?'selected':''}}>@lang('app.txt.loc_geo')</option>  
+                                        <option value="map" {{$showBy=='map'?'selected':''}}>@lang('app.txt.loc_geo')</option>
                                         <option value="mat" {{$showBy=='mat'?'selected':''}}>@lang('app.txt.repr_mat')</option>
                                     </select>
                                 </div>
