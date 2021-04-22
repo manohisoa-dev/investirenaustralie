@@ -86,10 +86,9 @@
                                                     <div class="thumb-wrapper">
                                                         <div class="img-box p-10px-b m-15px-b border-bottom-2 border-color-gray">
                                                             @php
-                                                                try {
-                                                                    if(@getimagesize($prod->imageUrl()));
+                                                                if(@getimagesize($prod->imageUrl())){
                                                                     $img_prod=$prod->imageUrl();
-                                                                } catch (\Throwable $th) {
+                                                                }else{
                                                                     $img_prod=asset('images/iea.png');
                                                                 }   
                                                             @endphp

@@ -2,10 +2,9 @@
     <div class="box-shadow-hover hover-top white-bg our-team-hover-icon border-radius-3">
         <div class="p-10px team-img">
             @php
-                    try {
-                        if(@getimagesize($item->imageUrl()))
+                    if(@getimagesize($item->imageUrl())) {
                         $img=$item->imageUrl();
-                    } catch (\Throwable $th) {
+                    } else {
                         $img=asset('images/iea.png');
                     }
                 @endphp

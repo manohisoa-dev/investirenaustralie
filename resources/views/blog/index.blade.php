@@ -6,10 +6,9 @@
 <main>
     <!-- Page Title -->
     @php
-        try {
-            if(@getimagesize($item->imageUrl()));
+        if(@getimagesize($item->imageUrl())) {
             $img=$item->imageUrl();
-        } catch (\Throwable $th) {
+        } else {
             $img=asset('ulooad/images/blog/iea.png');
         }
     @endphp

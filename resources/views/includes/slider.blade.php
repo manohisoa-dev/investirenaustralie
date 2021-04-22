@@ -20,10 +20,9 @@
             @forelse (App\Models\Slider::where('type','image')->where('status',1)->get() as $item)
                 <div class="carousel-item  @if($loop->first) active @endif">
                     @php
-                        try {
-                            if(@getimagesize($item->images->filepath));
+                        if(@getimagesize($item->images->filepath)) {
                             $img=$item->images->filepath;
-                        } catch (\Throwable $th) {
+                        } else {
                             $img=asset('images/slider/default.jpg');
                         }   
                     @endphp
@@ -38,10 +37,9 @@
                             
                                 @foreach (App\Models\Slider::where('type','video')->where('status',1)->get() as $key=>$video)
                                     @php
-                                        try {
-                                            if(@getimagesize($video->images->filepath));
+                                        if(@getimagesize($video->images->filepath)) {
                                             $vid=$video->images->filepath;
-                                        } catch (\Throwable $th) {
+                                        } else {
                                             $vid=asset('images/slider/default.jpg');
                                         }   
                                     @endphp
@@ -55,10 +53,9 @@
                 @empty
                     @forelse (App\Models\Slider::where('type','pub')->where('status',1)->get() as $item)
                         @php
-                            try {
-                                if(@getimagesize($item->images->filepath));
+                            if(@getimagesize($item->images->filepath)) {
                                 $img=$item->images->filepath;
-                            } catch (\Throwable $th) {
+                            } else {
                                 $img=asset('images/slider/default.jpg');
                             }   
                         @endphp

@@ -8,10 +8,9 @@
     @endcomponent --}}
     <!-- Page Title -->
     @php
-        try {
-            if(@getimagesize($item->imageUrl()));
+        if(@getimagesize($item->imageUrl())) {
             $img=$item->imageUrl();
-        } catch (\Throwable $th) {
+        } else {
             $img=asset('images/blog/iea.png');
         }   
     @endphp
@@ -71,12 +70,10 @@
                                             <div class="portfolio-box-02">
                                                 <div class="portfolio-img">
                                                   @php
-                                                      try { 
-                                                        $img_url = App\Models\Image::whereId($it->pivot->image_id)->first()->filepath;
-                                                        if(@getimagesize($img_url))
-                                                        $img_prod=$img_url;
-                                                      } catch (\Throwable $th) {
-                                                          $img_prod=asset('images/iea.png');
+                                                      if(@getimagesize(App\Models\Image::whereId($it->pivot->image_id)->first()->filepath)) { 
+                                                        $img_prod=@getimagesize(App\Models\Image::whereId($it->pivot->image_id)->first()->filepath);
+                                                      } else {
+                                                        $img_prod=asset('images/iea.png');
                                                       }   
                                                   @endphp
                                                   <a href="javascript:void(0)"><img src="{{asset($img_prod)}}" alt="{{$it->title}}" class="img-fluid imageresource{{ $key }}"></a>
@@ -114,10 +111,9 @@
                               <div class="portfolio-box-02">
                                   <div class="portfolio-img">
                                     @php
-                                        try {
-                                            if(@getimagesize($item->imageUrl()));
+                                        if(@getimagesize($item->imageUrl())) {
                                             $img=$item->imageUrl();
-                                        } catch (\Throwable $th) {
+                                        } else {
                                             $img=asset('images/iea.png');
                                         } 
                                     @endphp
