@@ -43,7 +43,7 @@
 						{!!\Nvd\Crud\Html::sortableTh('status','admin.slider.index','Statut')!!}						
 						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.slider.index','Créer le')!!}
 						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.slider.index','Mise à jour le')!!}
-						<th><a href="javascript:void(0)">Actions</a></th>
+						<thw width="40%"><a href="javascript:void(0)">Actions</a></thw>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">
@@ -91,20 +91,32 @@
                                           data-value="{{ $record->status }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
                                           data-url="{{ route('admin.slider.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->status }}</span>
+                                          >{!! $record->status == 1 ? '<label class="text-success">Activé</label>' : '<label class="text-danger">Désactivé</label>'  !!}</span>
                                  </td>
                                  <td>{{ $record->created_at ? $record->created_at->diffForHumans() : ''}}</td>
                                  <td>{{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}</td>
 								 <td class="actions-cell text-center" width="7%">
 									<form class="form-inline" action="{{route('admin.slider.index')}}/{{$record->id}}" method="POST">
-										<a href="{{route('admin.slider.index')}}/{{$record->id}}/edit" title="Modification" class="btn btn-default btn-circle">
-											<i class="fa fa-pencil-square-o"></i>
-										</a>&nbsp;&nbsp;
+                                        @if($record->status == 1)
+                                            <a href="{{route('admin.slider.desactiver', ['slider_id' => $record->id])}}" title="Désactiver ce slider" class="btn btn-default btn-circle">
+                                                <i class="fa fa-times"></i>
+                                            </a>&nbsp;
+                                        @endif
+
+                                        @if($record->status == 0)
+                                            <a href="{{route('admin.slider.activer', ['slider_id' => $record->id])}}" title="Activer ce slider" class="btn btn-default btn-circle">
+                                                <i class="fa fa-check"></i>
+                                            </a>&nbsp;
+                                        @endif
+                                        <a href="{{route('admin.slider.index')}}/{{$record->id}}/edit" title="Modification" class="btn btn-default btn-circle">
+                                            <i class="fa fa-pencil-square-o"></i>
+                                        </a>
+                                        &nbsp;
 										{{ csrf_field() }}
 										{{ method_field('DELETE') }}
 										<button class="btn btn-default btn-circle"
 											onclick="return confirm('Vous êtes sur?')"
-											type="submit" title="Suppression"><i class="fa fa-times text-danger"></i>
+											type="submit" title="Suppression"><i class="fa fa-trash text-danger"></i>
 										</button>
 									</form>
 								 </td>
