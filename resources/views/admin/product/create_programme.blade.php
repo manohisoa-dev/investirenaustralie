@@ -32,13 +32,13 @@
                 <h5>Ajouter un nouveau programme</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-validation form-padding" action="{{ route('admin.product.store') }}" method="post" id="productForm" enctype="multipart/form-data">
+                <form class="form-validation form-padding" action="{{ route('admin.product.store') }}" method="post" id="programmeForm" enctype="multipart/form-data">
 
                     {{ csrf_field() }}
                     <div class="row">
-						<div class="col-md-4">
+						<div class="col-md-3">
 							<div class="form-group">
-								<label for="title">Catégorie</label>
+								<label for="title">Catégorie *</label>
 								<select class="form-control" name="category_id" id="category_id">
 									<option value="">Choisir...</option>
 									@foreach(\App\Models\Category::all() as $category)
@@ -47,41 +47,37 @@
 								</select>
 							</div>
 						</div>
-						<div class="col-md-4">
+						<div class="col-md-3">
 							<div class="form-group">
-								<label for="title">Prix Minimal</label>
+								<label for="title">Prix Minimal *</label>
 								<input name="prix_min" id="prix_min" class="form-control" type="number" value="">
 							</div>
 						</div>
-						<div class="col-md-4">
+						<div class="col-md-3">
 							<div class="form-group">
-								<label for="title">Prix Maximal</label>
+								<label for="title">Prix Maximal *</label>
 								<input name="prix_max" id="prix_max" class="form-control" type="number" value="">
+							</div>
+						</div>
+						<div class="col-lg-3">
+							<div class="form-group">
+								<label for="title">Photo</label>
+								<input name="image_programme" class="form-control" type="file">
 							</div>
 						</div>
 					</div>
 					<div class="row">     
-						<div class="col-md-8">                              
+						<div class="col-md-12">                              
 							<div class="form-group">
-								<label for="title">Titre</label>
+								<label for="title">Titre *</label>
 								<input name="title" id="title" class="form-control" type="text" value="">
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="form-group">
-								<label for="title">Vendeur</label>
-								<select class="form-control" name="seller_id" id="seller_id">
-									<option value="">Choisir...</option>
-									@foreach(\App\Models\User::where('role',2)->get() as $seller)
-										<option value="{{$seller->id}}">{{$seller->name}}</option>
-									@endforeach
-								</select>
 							</div>
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="title">Description</label>
-						<textarea id="ckeditor" class="form-control" name="content"></textarea>
+						<label for="title">Description *</label>
+						<textarea id="content" class="form-control" name="content"></textarea>
+						<input type="hidden" name="type" value="{{$type}}" />
 					</div>                                       
                     <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Créer</button>
 
@@ -99,12 +95,8 @@
         $(document).ready(function(){
             CKEDITOR.replace( 'content' );
 			$("#category_id").select2();
-			$("#state_id").select2();
-			$("#seller_id").select2();
-			$("#type_id").select2();
-			$("#parent_id").select2();
 			
-			$('#productForm').validate({
+			$('#programmeForm').validate({
 			    ignore: [],
 				rules: {
 					title: {
@@ -113,34 +105,13 @@
 					category_id: {
 						required: true
 					},
-					type_id: {
+					prix_min: {
 						required: true
 					},
-					parent_id: {
+					prix_max: {
 						required: true
 					},
 					content: {
-						required: true
-					},
-					quantity: {
-						required: true
-					},
-					image: {
-						required: true
-					},
-					price: {
-						required: true
-					},
-					currency: {
-						required: true
-					},
-					year_built: {
-						required: true
-					},
-					display_address: {
-						required: true
-					},
-					state_id: {
 						required: true
 					}
 				},
@@ -151,34 +122,13 @@
 					category_id: {
 						required: "Champ obligatoire"
 					},
-					type_id: {
+					prix_min: {
 						required: "Champ obligatoire"
 					},
-					parent_id: {
+					prix_max: {
 						required: "Champ obligatoire"
 					},
 					content: {
-						required: "Champ obligatoire"
-					},
-					quantity: {
-						required: "Champ obligatoire"
-					},
-					image: {
-						required: "Champ obligatoire"
-					},
-					price: {
-						required: "Champ obligatoire"
-					},
-					currency: {
-						required: "Champ obligatoire"
-					},
-					year_built: {
-						required: "Champ obligatoire"
-					},
-					display_address: {
-						required: "Champ obligatoire"
-					},
-					state_id: {
 						required: "Champ obligatoire"
 					}
 				},

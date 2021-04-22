@@ -132,6 +132,7 @@
                                 </span>
                             </td>
                             <td>
+							@if($record->seller_id != 0)
                                 <span
                                     class="editable"
                                     data-type="text"
@@ -142,6 +143,7 @@
                                 >
                                     {{ $record->seller->name }}
                                 </span>
+							@endif
                             </td>
 							<td>
                                 <span

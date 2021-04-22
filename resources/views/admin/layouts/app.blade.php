@@ -27,6 +27,9 @@
 
     <link href="{{ asset('administrator/css/animate.css') }}" rel="stylesheet">
     <link href="{{ asset('administrator/css/style.css') }}" rel="stylesheet">
+	
+	<!-- step -->
+	<link href="{{ asset('administrator/css/plugins/steps/jquery.steps.css') }}" rel="stylesheet">
 
     @yield('custom-css')
 
@@ -562,6 +565,7 @@
 
 <!-- jquery validate-->
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
 
 <script>
     $(document).ready(function() {
