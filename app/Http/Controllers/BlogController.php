@@ -14,7 +14,7 @@ use App\Models\Product;
 use App\Models\Page;
 use App\Models\Localisation;
 use App\Models\Comment;
-use App\Models\BadWord;
+use App\Models\Badword;
 use Jleon\LaravelPnotify\Notify;
 
 class BlogController extends Controller
@@ -542,7 +542,7 @@ class BlogController extends Controller
             'user_id' => 'required',
         ]);
 
-        $badwords = BadWord::all();
+        $badwords = Badword::all();
 
         if ($validator->fails()) {
             return back()->withErrors($validator)
