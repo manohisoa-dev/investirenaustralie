@@ -6,12 +6,12 @@
 <main>
     <!-- Page Title -->
     @php
-        try {
-            if(@getimagesize($item->imageUrl()));
+        if(@getimagesize($item->imageUrl())){
             $img=$item->imageUrl();
-        } catch (\Throwable $th) {
+        }
+        else{
             $img=asset('images/blog/iea.png');
-        }   
+        }
     @endphp
     <section class="bg-center bg-cover bg-fiexd effect-section" style="background-image: url({{ $img }});">
         <div class="mask dark-g-bg opacity-7"></div>
