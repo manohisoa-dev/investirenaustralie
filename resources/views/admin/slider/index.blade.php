@@ -50,7 +50,7 @@
 							<td><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
 							<td><input type="text" class="form-control" name="image_id" value="{{Request::input("image_id")}}"></td>
 							<td><input type="text" class="form-control" name="content" value="{{Request::input("content")}}"></td>
-							<td><input type="text" class="form-control" name="type" value="{{Rsingle.blade.phpequest::input("type")}}"></td>
+							<td><input type="text" class="form-control" name="type" value="{{Request::input("type")}}"></td>
 							<td><input type="text" class="form-control" name="status" value="{{Request::input("status")}}"></td>							
 							<td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>
 							<td><input type="text" class="form-control" name="updated_at" value="{{Request::input("updated_at")}}"></td>
