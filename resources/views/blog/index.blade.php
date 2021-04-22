@@ -92,7 +92,7 @@
                                                 <p>{{ $comment->content }}.</p>
                                             </div>
 
-                                            @if (Auth::id() && Auth::id() !== $comment->user_id && Auth::id() !== $comment->replies[0]->user_id)
+                                            @if (Auth::id() && Auth::id() !== $comment->user_id)
                                                 <div class="comment-reply">
                                                     <a class="m-btn m-btn-t-theme m-btn-sm btn_reply" href="javascript:void(0)" value="{{ $comment->id }}">@lang('app.btn.reply')</a>
                                                 </div>
