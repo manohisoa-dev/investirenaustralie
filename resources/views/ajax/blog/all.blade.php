@@ -5,12 +5,11 @@
             {{-- Show blog image --}}
             <a href="{{route('blog.index',$item->slug)}}" target="_blank">
                 @php
-                    try {
-                        if(file_get_contents($item->imageUrl()))
+                    if(@getimagesize($item->imageUrl())){
                         $img=$item->imageUrl();
-                    } catch (\Throwable $th) {
+                    }else{
                         $img=asset('images/blog/iea.png');
-                    }   
+                    }
                 @endphp
                 <img src="{{$img}}" alt="{{$item->title}}" title="{{$item->title}}">
             </a>

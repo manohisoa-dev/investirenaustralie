@@ -21,7 +21,7 @@
                 <div class="carousel-item  @if($loop->first) active @endif">
                     @php
                         try {
-                            if(file_get_contents($item->images->filepath));
+                            if(@getimagesize($item->images->filepath));
                             $img=$item->images->filepath;
                         } catch (\Throwable $th) {
                             $img=asset('images/slider/default.jpg');
@@ -39,7 +39,7 @@
                                 @foreach (App\Models\Slider::where('type','video')->where('status',1)->get() as $key=>$video)
                                     @php
                                         try {
-                                            if(file_get_contents($video->images->filepath));
+                                            if(@getimagesize($video->images->filepath));
                                             $vid=$video->images->filepath;
                                         } catch (\Throwable $th) {
                                             $vid=asset('images/slider/default.jpg');
@@ -56,7 +56,7 @@
                     @forelse (App\Models\Slider::where('type','pub')->where('status',1)->get() as $item)
                         @php
                             try {
-                                if(file_get_contents($item->images->filepath));
+                                if(@getimagesize($item->images->filepath));
                                 $img=$item->images->filepath;
                             } catch (\Throwable $th) {
                                 $img=asset('images/slider/default.jpg');

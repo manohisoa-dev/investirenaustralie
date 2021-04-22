@@ -9,7 +9,7 @@
     <!-- Page Title -->
     @php
         try {
-            if(file_get_contents($item->imageUrl()));
+            if(@getimagesize($item->imageUrl()));
             $img=$item->imageUrl();
         } catch (\Throwable $th) {
             $img=asset('images/blog/iea.png');
@@ -73,7 +73,7 @@
                                                   @php
                                                       try { 
                                                         $img_url = App\Models\Image::whereId($it->pivot->image_id)->first()->filepath;
-                                                        if(file_get_contents($img_url))
+                                                        if(@getimagesize($img_url))
                                                         $img_prod=$img_url;
                                                       } catch (\Throwable $th) {
                                                           $img_prod=asset('images/iea.png');
@@ -115,7 +115,7 @@
                                   <div class="portfolio-img">
                                     @php
                                         try {
-                                            if(file_get_contents($item->imageUrl()));
+                                            if(@getimagesize($item->imageUrl()));
                                             $img=$item->imageUrl();
                                         } catch (\Throwable $th) {
                                             $img=asset('images/iea.png');

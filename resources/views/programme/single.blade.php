@@ -6,12 +6,12 @@
 <main>
     <!-- Page Title -->
     @php
-        try {
-            if(file_get_contents($item->imageUrl()));
+        if(@getimagesize($item->imageUrl())){
             $img=$item->imageUrl();
-        } catch (\Throwable $th) {
+        }
+        else{
             $img=asset('images/blog/iea.png');
-        }   
+        }
     @endphp
     <section class="bg-center bg-cover bg-fiexd effect-section" style="background-image: url({{ $img }});">
         <div class="mask dark-g-bg opacity-7"></div>
@@ -87,7 +87,7 @@
                                                         <div class="img-box p-10px-b m-15px-b border-bottom-2 border-color-gray">
                                                             @php
                                                                 try {
-                                                                    if(file_get_contents($prod->imageUrl()));
+                                                                    if(@getimagesize($prod->imageUrl()));
                                                                     $img_prod=$prod->imageUrl();
                                                                 } catch (\Throwable $th) {
                                                                     $img_prod=asset('images/iea.png');
