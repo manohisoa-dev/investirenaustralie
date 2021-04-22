@@ -6,7 +6,7 @@
             <a href="{{route('blog.index',$item->slug)}}" target="_blank">
                 @php
                     try {
-                        if(file_get_contents($item->imageUrl()))
+                        if(@getimagesize($item->imageUrl()))
                         $img=$item->imageUrl();
                     } catch (\Throwable $th) {
                         $img=asset('images/blog/iea.png');

@@ -9,7 +9,7 @@
             <div class="box-shadow-hover hover-top white-bg our-team-hover-icon border-radius-3">
                 @php
                     try {
-                        if(file_get_contents($item->imageUrl()));
+                        if(@getimagesize($item->imageUrl()));
                         $img=$item->imageUrl();
                     } catch (\Throwable $th) {
                         $img=asset('images/iea.png');
@@ -46,7 +46,7 @@
                                                     <div class="img-box p-10px-b m-15px-b border-bottom-2 border-color-gray">
                                                         @php
                                                             try { 
-                                                                if(file_get_contents($prod->imageUrl()))
+                                                                if(@getimagesize($prod->imageUrl()))
                                                                 $img_prod=$prod->imageUrl();
                                                             } catch (\Throwable $th) {
                                                                 $img_prod=asset('images/iea.png');
@@ -118,7 +118,7 @@
                                                     <div class="img-box p-10px-b m-15px-b border-bottom-2 border-color-gray">
                                                         @php
                                                             try {
-                                                                if(file_get_contents($pub->imageUrl())){
+                                                                if(@getimagesize($pub->imageUrl())){
                                                                     $img_pub=$pub->imageUrl();
                                                                 }                                                            } catch (\Throwable $th) {
                                                                 $img_pub=asset('images/pub/iea.png');
@@ -183,7 +183,7 @@
                                                 <a href="{{route('blog.index',$blogs->slug)}}" target="_blank">
                                                     @php
                                                         try {
-                                                            if(file_get_contents($blogs->imageUrl()));
+                                                            if(@getimagesize($blogs->imageUrl()));
                                                             $img=$blogs->imageUrl();
                                                         } catch (\Throwable $th) {
                                                             $img=asset('images/blog/iea.png');
@@ -232,7 +232,7 @@
                                                     <a href="{{route('blog.index',$blog->slug)}}" target="_blank">
                                                         @php
                                                             try {
-                                                                if(file_get_contents($blog->imageUrl()));
+                                                                if(@getimagesize($blog->imageUrl()));
                                                                 $img=$blog->imageUrl();
                                                             } catch (\Throwable $th) {
                                                                 $img=asset('images/blog/iea.png');
