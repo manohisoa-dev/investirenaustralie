@@ -110,9 +110,6 @@
 					},
 					prix_max: {
 						required: true
-					},
-					content: {
-						required: true
 					}
 				},
 				messages: {
@@ -126,9 +123,6 @@
 						required: "Champ obligatoire"
 					},
 					prix_max: {
-						required: "Champ obligatoire"
-					},
-					content: {
 						required: "Champ obligatoire"
 					}
 				},
