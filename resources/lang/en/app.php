@@ -382,6 +382,7 @@ return [
     'txt.logintocomment'      =>"Please login to comment.",
     'txt.yourcomment'      =>"Your Comment",
     'txt.pub.comment.success'      =>"Your comment has been successfully published.",
+    'txt.pub.comment.error'      =>"Error: Prohibited word. Your comment could not be published! ",
     'txt.search'    => 'Search',
     'txt.resultat'    => 'Result',
     'txt.resultats'    => 'Results',

@@ -38,16 +38,12 @@
     <!-- Section -->
     <section class="section">
         <div class="container">
-            <div class="row">
-                @if (session('success'))
-                    <div class="alert alert-success alert-dismissible fade show col-lg-8" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                        {{ session('success') }}
-                    </div>
-                @endif
+            <div class="row"> 
                 <div class="col-lg-8">
+                    <span>
+                        @include('includes.alerts')
+                    </span>
+
                     <div class="nav p-25px-b">
                         <span class="dark-color font-w-600"><i class="fas fa-calendar-alt "></i> {{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $item->created_at)->format('d F')}},{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $item->created_at)->year }}</span>
                         <!-- <a class="dark-color font-w-600 m-15px-l" href="#"><i class="far fa-folder-open"></i> Categories</a> -->
@@ -96,7 +92,8 @@
                                             <div class="comment-content">
                                                 <p>{{ $comment->content }}.</p>
                                             </div>
-                                            @if (Auth::id())
+
+                                            @if (Auth::id() && Auth::id() !== $comment->user_id && Auth::id() !== $comment->replies[0]->user_id)
                                                 <div class="comment-reply">
                                                     <a class="m-btn m-btn-t-theme m-btn-sm btn_reply" href="javascript:void(0)" value="{{ $comment->id }}">@lang('app.btn.reply')</a>
                                                 </div>
@@ -118,7 +115,7 @@
                                                             <div class="comment-content">
                                                                 <p>{{ $repl->content }}.</p>
                                                             </div>
-                                                            @if (Auth::id())
+                                                            @if (Auth::id() && Auth::id() !== $repl->user_id )
                                                                 <div class="comment-reply">
                                                                     <a class="m-btn m-btn-t-theme m-btn-sm btn_reply" href="javascript:void(0)" value="{{ $comment->id }}">@lang('app.btn.reply')</a>
                                                                 </div>
@@ -146,7 +143,7 @@
                                                 <input type="hidden" name="user_id" value="{{ Auth::id() }}">
                                                 <input type="hidden" name="blog_id" value="{{ $item->id }}">
                                                 <input type="hidden" name="reply_id" value="0">
-                                                <textarea class="form-control" rows="6" name="content" placeholder="..." aria-label="How'd you hear about Front?" required="" data-msg="Please enter an answer." data-error-class="u-has-error" data-success-class="u-has-success"></textarea>
+                                                <textarea class="form-control" rows="6" maxlength="5000" name="content" placeholder="..." aria-label="Please enter an answer." required="" data-msg="Please enter an answer." data-error-class="u-has-error" data-success-class="u-has-success">{{ session()->get('old')?session()->get('old'):'' }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-md-12">

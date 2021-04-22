@@ -644,6 +644,7 @@ return [
     'txt.logintocomment'      =>"Veuillez vous connecter pour commenter.",
     'txt.yourcomment'      =>"Votre Commentaire",
     'txt.pub.comment.success'      =>"Votre commentaire a été publié avec succès.",
+    'txt.pub.comment.error'      =>"Erreur : Mot intérdit. Votre commentaire n'a pas pu être publié!",
     'txt.search'    => 'Recherche',
     'txt.resultat'    => 'Résultat',
     'txt.resultats'    => 'Résultats',

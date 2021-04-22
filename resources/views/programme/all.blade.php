@@ -120,7 +120,8 @@
                                                             try {
                                                                 if(file_get_contents($pub->imageUrl())){
                                                                     $img_pub=$pub->imageUrl();
-                                                                }                                                            } catch (\Throwable $th) {
+                                                                }                                                            
+                                                            } catch (\Throwable $th) {
                                                                 $img_pub=asset('images/pub/iea.png');
                                                             }
                                                         @endphp
