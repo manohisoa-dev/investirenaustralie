@@ -37,9 +37,10 @@
                             
                                 @foreach (App\Models\Slider::where('type','video')->where('status',1)->get() as $key=>$video)
                                     @php
-                                        if(@getimagesize($video->images->filepath)) {
+                                        try {
+                                            if(@getimagesize($video->images->filepath));
                                             $vid=$video->images->filepath;
-                                        } else {
+                                        } catch (\Throwable $th) {
                                             $vid=asset('images/slider/default.jpg');
                                         }   
                                     @endphp
