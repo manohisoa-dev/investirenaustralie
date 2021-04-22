@@ -77,8 +77,8 @@ class ProductController extends Controller {
                 $slug = generateSlug($request->title);
                 $programme = new Product();
                 if ($file = $request->file('image_programme')) {
-                    $image = Image::storeAndSave($file, 'product');
-                    $programme->image_id = $image->id;
+                    $image_pro = Image::storeAndSave($file, 'product');
+                    $programme->image_id = $image_pro->id;
                 }
                 $programme->category_id = $request->cat_programmme_id;
                 $programme->min_price = $request->prix_min;
