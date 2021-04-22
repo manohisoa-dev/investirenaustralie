@@ -153,7 +153,7 @@
 									<select class="form-control" name="currency" id="currency">
 										<option value="EUR">Euro</option>
 										<option value="USD">Dollar</option>
-										<option value="AUD">Dollar Australien</option>
+										<option value="AUD" selected="selected">Dollar Australien</option>
 									</select>
 								</div>  
 							</div>
