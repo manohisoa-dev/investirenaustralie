@@ -76,8 +76,8 @@ class ProductController extends Controller {
                 //cration programme
                 $slug = generateSlug($request->title);
                 $programme = new Product();
-                if ($file = $request->file('image_programme')) {
-                    $image_pro = Image::storeAndSave($file, 'product');
+                if ($file_pro = $request->file('image_programme')) {
+                    $image_pro = Image::storeAndSave($file_pro, 'product');
                     $programme->image_id = $image_pro->id;
                 }
                 $programme->category_id = $request->cat_programmme_id;
