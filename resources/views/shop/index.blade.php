@@ -90,9 +90,9 @@
                             <form id="filter-form" method="get" action="">
                                 <div  class="pull-left form-group col-lg-3 col-md-12">
                                     <label for="showBy"> @lang('app.form.show'):   </label>  
-                                    <select class="form-control" name="showBy" id="showBy"> 
-                                        <option value="map">@lang('app.txt.loc_geo')</option>  
+                                    <select class="form-control" name="showBy" id="showBy">
                                         <option value="mat">@lang('app.txt.repr_mat')</option>
+                                        <option value="map">@lang('app.txt.loc_geo')</option>
                                     </select>
                                 </div>
                                 <div  class="pull-left form-group col-lg-3 col-md-12">
