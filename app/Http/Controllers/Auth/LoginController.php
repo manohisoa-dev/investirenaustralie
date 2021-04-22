@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\AccountCreated;
 use Session;
 use Cookie;
 
@@ -137,6 +138,14 @@ class LoginController extends Controller
                 $this->incrementLoginAttempts($request);
                 
                 if($user->status == 'disabled'){
+                    $password = str_random(10);
+                    $user->password = bcrypt($password);
+                    $user->activation_code = md5(str_random(30).(time()*32));
+                    $user->save();
+                    
+                    // Notify User
+                    $user->notify(new AccountCreated($user, $password));
+
                     return redirect()
                         ->route('login')
                         ->withInput($request->only($this->username(), 'remember'))

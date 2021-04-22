@@ -58,7 +58,7 @@ class AccountCreated extends Notification
             ->subject(__('mail.created.content.1'))
             ->subject(__('mail.created.content.2'))
             ->action(__('mail.btn.active'), route('activate.user', $user->activation_code))
-            ->line(__('mail.default_password', ['password'=>$password]))
+            ->line(__("mail.default_password", ["password"=>$password]))
             ->line(__('mail.thank'));
     }
 

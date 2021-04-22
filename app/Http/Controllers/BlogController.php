@@ -14,6 +14,7 @@ use App\Models\Product;
 use App\Models\Page;
 use App\Models\Localisation;
 use App\Models\Comment;
+use App\Models\BadWord;
 use Jleon\LaravelPnotify\Notify;
 
 class BlogController extends Controller
@@ -94,45 +95,6 @@ class BlogController extends Controller
         
     }
 
-    public function index2(Request $request, Blog $blog)
-    {
-        if($blog->status != 'published'){
-            abort(404);
-        }
-        
-        $blog->view_count++;
-        $blog->save();
-        
-        $products = Product::orderBy('created_at','desc')
-            ->ofStatus('published')
-            ->isProduct()
-            ->take($this->recentSize)
-            ->get();
-        
-        $categories = Category::orderBy('created_at', 'desc')
-            ->has('products')
-            ->withCount('products')
-            ->take($this->recentSize)
-            ->get();
-
-        $lapls = Localisation::select('localizations.*')
-                ->join('users','users.location_id','=','localizations.id')
-                ->where('users.role','=','4')
-                ->groupBy('localizations.locality')
-                ->get();
-        
-        $page = Page::where('path', '=', '/blogs*')
-            ->first();
-        
-        if($page){$pubs = $page->pubs;}else{$pubs = [];}
-        
-        return view('blog.index')
-                ->with('item', $blog)
-                ->with('pubs', $pubs)
-                ->with('products', $products)
-                ->with('lapls', $lapls)
-                ->with('categories', $categories); 
-    }
 
     /**
      * Show the list of blog.
@@ -574,15 +536,24 @@ class BlogController extends Controller
         // Validate request
         $datas = $request->all();
         $validator = Validator::make($datas,[
-                            'content' => 'required',
-                            'reply_id' => 'required',
-                            'blog_id' => 'required',
-                            'user_id' => 'required',
-                        ]);
+            'content' => 'required|max:5000',
+            'reply_id' => 'required',
+            'blog_id' => 'required',
+            'user_id' => 'required',
+        ]);
+
+        $badwords = BadWord::all();
 
         if ($validator->fails()) {
             return back()->withErrors($validator)
                         ->withInput();
+        }
+
+        // Check badword in the input text
+        foreach ($badwords as $key => $bw) {
+            if(preg_match("#".$bw->content."# i", strtolower($request->content))){
+                return back()->with('error',trans('app.txt.pub.comment.error'))->with('old',$request->content);
+            }  
         }
 
         $comment = new Comment();
@@ -592,8 +563,7 @@ class BlogController extends Controller
         $comment->user_id = $request->user_id;
         $comment->save();
 
-        Session()->flash('success',trans('app.txt.pub.comment.success'));
-        return back();
+        return back()->with('success',trans('app.txt.pub.comment.success'));
     }
 
 }

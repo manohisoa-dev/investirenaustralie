@@ -29,4 +29,6 @@ return [
     "info_no_apl"  => "Vous avez 180 jours pour etre en relation avec un APL.",
     
     "accept_term_and_condition_apl"  => "Acceptez les termes et les conditions",
+    "accept_term_and_condition_afa"  => "Acceptez les termes et les conditions",
+    "select_afa"  => "Si vous cliquez sur le bouton 'Selectionner' cela sélectionnera définitivement cette AFA particulière pour toute interaction ultérieure concernant un programme.",
 ];

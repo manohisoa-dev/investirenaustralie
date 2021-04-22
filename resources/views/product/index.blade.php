@@ -8,10 +8,9 @@
     @endcomponent --}}
     <!-- Page Title -->
     @php
-        try {
-            if(file_get_contents($item->imageUrl()));
+        if(@getimagesize($item->imageUrl())) {
             $img=$item->imageUrl();
-        } catch (\Throwable $th) {
+        } else {
             $img=asset('images/blog/iea.png');
         }   
     @endphp
@@ -71,12 +70,10 @@
                                             <div class="portfolio-box-02">
                                                 <div class="portfolio-img">
                                                   @php
-                                                      try { 
-                                                        $img_url = App\Models\Image::whereId($it->pivot->image_id)->first()->filepath;
-                                                        if(file_get_contents($img_url))
-                                                        $img_prod=$img_url;
-                                                      } catch (\Throwable $th) {
-                                                          $img_prod=asset('images/iea.png');
+                                                      if(@getimagesize(App\Models\Image::whereId($it->pivot->image_id)->first()->filepath)) { 
+                                                        $img_prod=@getimagesize(App\Models\Image::whereId($it->pivot->image_id)->first()->filepath);
+                                                      } else {
+                                                        $img_prod=asset('images/iea.png');
                                                       }   
                                                   @endphp
                                                   <a href="javascript:void(0)"><img src="{{asset($img_prod)}}" alt="{{$it->title}}" class="img-fluid imageresource{{ $key }}"></a>
@@ -114,10 +111,9 @@
                               <div class="portfolio-box-02">
                                   <div class="portfolio-img">
                                     @php
-                                        try {
-                                            if(file_get_contents($item->imageUrl()));
+                                        if(@getimagesize($item->imageUrl())) {
                                             $img=$item->imageUrl();
-                                        } catch (\Throwable $th) {
+                                        } else {
                                             $img=asset('images/iea.png');
                                         } 
                                     @endphp
@@ -147,15 +143,11 @@
                             </form>
                         </div>
                         <div class="col-sm-6">
-                          <form action="{{route('shop.order', ['product'=>$item->slug])}}" method="post">
-                              {{csrf_field()}}
-                              <button type="submit" class="m-btn m-btn-theme flex-shrink-0 col-md-12" title="@lang('app.txt.go_to_location')"><i class="fa fa-map-marker"></i> @lang('app.btn.go_to_location')</button>
-                          </form>
+                          <a href="{{route('member.go.there')}}" id="btn_go_there" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme flex-shrink-0 col-md-12" title="@lang('app.txt.go_to_location')" @if(Auth::user()) {{ Auth::user()->isMove()?'disabled':'' }} @endif><i class="fa fa-map-marker"></i> @lang('app.btn.go_to_location')</a>
                         </div>
                     </div>
                   </section>
                   
-                    
                   <div class="p-25px-tb m-35px-tb border-top-1 border-bottom-1 border-color-gray">
                       <div class="d-flex justify-content-between align-items-center">
                           <div>
@@ -301,10 +293,6 @@
                     <div class="col-md-5">
                       <button class="m-btn m-btn-theme" data-dismiss="modal" aria-hidden="true">@lang('app.btn.cancel')</button>
                     </div> 
-                    
-                      {{-- <div class="col-md-5">
-                          <button class="m-btn m-btn-theme" data-dismiss="modal" aria-hidden="true">@lang('app.btn.cancel')</button>
-                      </div> --}}
                   @endif
               </div>
           </div>
@@ -327,6 +315,28 @@
   </div>
 </div>
 
+<!-- Modal for member and afa engagement -->
+<div id="engagementModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog">
+      <div class="modal-content white-bg">
+          <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
+              <h4 class="modal-title white-color">@lang('app.txt.engagement')</h4>
+          </div>
+          <div class="modal-body">
+            {!! Session()->get('engagement') !!}
+          </div>
+          <div class="modal-footer">
+            @if (!Session::has('mail_send'))
+              <a type="button" class="pull-left m-btn m-btn-theme" id="btn_cancel" href="javascript:void(0)" data-dismiss="modal">@lang('app.btn.abandonner')</a>  
+              <a type="button" class="m-btn m-btn-theme2nd" id="btn_continue">@lang('app.btn.continuer')</a>
+            @else
+              <a type="button" class="m-btn m-btn-theme2nd" href="javascript:void(0)" data-dismiss="modal" id="btn_continue">@lang('app.btn.ok')</a>
+            @endif
+          </div>
+      </div>
+  </div>
+</div>
+
 @endsection
     
 @push('script')
@@ -340,15 +350,29 @@
     }
   </style>
   <script>
-        $('.contact-apl').click(function(event){
-          if(!$('#check-confirm-modal').is(":checked"))
+    $(document).ready(function(){
+      var eng = $('#btn_go_there').attr('value');
+
+      // show engagement modal
+      if(eng !== '0'){
+        $('#engagementModal').modal('show');
+      }
+
+    });
+  </script>
+  <script>
+        $('#btn_continue').click(function(event){
+          if($('#condition').is(":checked"))
           {
               event.preventDefault();
-              $('.row-confirm-modal').removeClass('hidden');
-              alert("{{ trans('app.txt.accept_term', ['role'=>'APL']) }}");
-          } 
+              window.location.replace("{{  route('member.send.courriel')  }}");
+
+          }else{
+             $('.message-error p').html('{{ trans("afa.accept_term") }}')
+          }
         });
 
+        // Show image product in modal
         $(".pop").on("click", function() {
           var id = $(this).attr('value');
           $('#imagepreview').attr('src', $('.imageresource'+id).attr('src')); // here asign the image to the modal when the user click the enlarge link

@@ -76,7 +76,7 @@
 
         <div class="list-group list-group-flush">
             @foreach($categories as $category)
-            <a href="{{route('shop.index',$category)}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+            <a href="{{route('programme.all', \App\Models\Category::find($category->id))}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                 <div>
                     <span class="theme2nd-bg p-5px-tb p-10px-lr border-radius-15 white-color small">{{$category->products_count}}</span> <span> {{ trans('app.txt.'.$category->title) }} </span>
                 </div>
