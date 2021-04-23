@@ -171,7 +171,7 @@ class ProgrammeController extends Controller
         $programmes = Product::orderBy('created_at','desc')
             ->isParent(0)
             ->ofStatus('published')
-            ->take($show?(int)$show:$this->recentSize)
+            // ->take($show?(int)$show:$this->recentSize)
             ->get();
         
         $categories = Category::orderBy('created_at', 'desc')
@@ -182,9 +182,6 @@ class ProgrammeController extends Controller
         
         $page2 = Page::where('path', '=', '/products*')->first();
         if($page2){$pubs = $page2->pubs;}else{$pubs=[];}
-
-        // dd($pubs);
-
         
         $typesRes = Type::orderBy('title', 'asc')
             ->where('object_type', 'type')
@@ -341,6 +338,7 @@ class ProgrammeController extends Controller
                 'type' => 'product',
             ];
         }
+
 
         $xLine = Parameter::where('name','x_line')->first();
 

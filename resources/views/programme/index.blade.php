@@ -309,7 +309,67 @@
         height: 25rem;
         }
     </style>
+
     <script>
+        var _map;
+        var _geocoder;
+        var _marker;
+        var _lat = -25.363;
+        var _long = 131.044;
+        
+        var iconBase = "{{url('')}}";
+        var icons = {
+            product: {
+                icon: iconBase + '/images/map/product.png'
+            }
+        };
+        
+        
+        var datas = {!!$data!!};
+        var markers = [];
+        
+        function initMap() {
+            
+            _map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: _lat, lng:  _long},
+                zoom: 3.5
+            });
+
+        
+            for (var i = 0; i < datas.length; i++) {
+                placeMarker(datas[i], );
+            }
+        }
+        
+        function placeMarker(data) {
+            markers[data.id] = new google.maps.Marker({
+                position: {lat:parseFloat(data.lat), lng:parseFloat(data.lng)},
+                map: _map,
+                title: data.title,
+                icon: icons[data.type].icon,
+            });
+            
+            if(data.type == 'product'){
+                google.maps.event.addListener(markers[data.id], 'click', function() {
+                    var slug= data.slug;
+                    var uri = '{{ URL::to("get/show/programme/") }}'+'/'+slug;
+                    var envoi = $.get( uri );
+    
+                    envoi.done( function(url) {
+                        window.open(url.res, '_blank');
+                    });
+    
+                });
+            }
+        }
+
+    </script>
+    <script type="text/javascript"
+        src="http://maps.googleapis.com/maps/api/js?libraries=geometry&sensor=false&key=AIzaSyBSsKUzYG_Wz7u2qL6unHqfBOmvaZ0H1Mg&callback=initMap">
+    </script>
+
+
+    {{-- <script>
         var _map;
         var _lat = -25.363;
         var _long = 131.044;
@@ -359,7 +419,7 @@
         }
     
     </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA&callback=initMap"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA&callback=initMap"></script> --}}
 
 @endpush
 
