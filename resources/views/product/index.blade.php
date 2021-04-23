@@ -28,7 +28,7 @@
 
                     <div class="p-25px-t row col-lg-12">
                         <div class="col-lg-4 col-sm-6">
-                            <a href="javascript:void(0)" data-toggle="modal" data-target="#listAfaModal" class="m-btn m-btn-theme2nd dark-color flex-shrink-0 col-md-12"><i class="fa fa-envelope" aria-hidden="true"></i>  @lang('app.btn.contact_afa')</a>
+                            <a href="{{ route('member.contact.afa') }}" id="contact_afa" value="{{ Session::has('has_afa')?1:0 }}" class="m-btn m-btn-theme2nd dark-color flex-shrink-0 col-md-12"><i class="fa fa-envelope" aria-hidden="true"></i>  @lang('app.btn.contact_afa')</a>
                         </div>
                         <div class="col-lg-4 col-sm-6">
                           <a href="{{ route('member.contact', ['role'=>'apl']) }}" class="m-btn m-btn-theme4rd dark-color flex-shrink-0 col-md-12"><i class="fa fa-envelope" aria-hidden="true"></i>  @lang('app.btn.contacter_apl')</a>
@@ -229,41 +229,6 @@
     <!-- End Section -->    
 </main>
 
-<!-- List AFA modal -->
-<div class="container">
-  <div class="modal left fade" id="listAfaModal" tabindex="" role="dialog" aria-labelledby="listAfaModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-          <div class="modal-content dark-bg">
-              <div class="modal-header" style="background-color: #AE4435 !important;">
-                <h4 class="modal-title white-color text-center" id="title">@lang('app.afa')</h4>
-              </div>
-              <div class="modal-body">
-                  <div class="nav flex-sm-column flex-row">
-                      <div class="row col-lg-12">
-                          @forelse ($afas as $afa)
-                              <div class="col-lg-8"><p id="content" class="white-color"><i class="fa fa-building"></i> {{ $afa->name?$afa->name:'' }}</p></div>
-                              <div class="col-lg-4"><a class="white-color" href="{{route('member.contact', ['role'=>'afa', 'afa'=>$afa->name?$afa->name:''])}}" title="@lang('app.txt.contact_afa') ({{ $afa->name?$afa->name:'' }})"><i class="fa fa-envelope"></i></a></div>
-                          @empty
-                              <p>@lang('app.txt.no_afa_in_this_location')</p>
-                          @endforelse
-                      </div>
-                  </div>
-              </div>
-              <div class="modal-footer">
-                <div class="col-md-5">
-                  @if (sizeOf($afas) !== 0)
-                    <button class="m-btn m-btn-theme" data-dismiss="modal" aria-hidden="true">@lang('app.btn.cancel')</button>
-                  @else
-                    <button class="m-btn m-btn-theme" data-dismiss="modal" aria-hidden="true">@lang('app.btn.close')</button>
-                  @endif
-                </div>
-              </div>
-          </div>
-      </div>
-  </div>
-</div>
-<!-- End list AFA modal -->
-
 <!-- List APL modal -->
 <div class="container">
   <div class="modal left fade" id="listAplModal" tabindex="" role="dialog" aria-labelledby="listAplModalLabel" aria-hidden="true">
@@ -337,6 +302,23 @@
   </div>
 </div>
 
+
+<!-- Modal of member has afa -->
+<div id="memberHasAfaModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog">
+      <div class="modal-content white-bg">
+          <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
+              <h4 class="modal-title white-color">@lang('app.txt.information')</h4>
+          </div>
+          <div class="modal-body">
+            {!! Session()->get('has_afa') !!}
+          </div>
+          <div class="modal-footer">
+              <a type="button" class="m-btn m-btn-theme2nd" href="javascript:void(0)" data-dismiss="modal">@lang('app.btn.ok')</a>
+          </div>
+      </div>
+  </div>
+</div>
 @endsection
     
 @push('script')
@@ -352,10 +334,16 @@
   <script>
     $(document).ready(function(){
       var eng = $('#btn_go_there').attr('value');
+      var hasAfa = $('#contact_afa').attr('value');
 
       // show engagement modal
       if(eng !== '0'){
         $('#engagementModal').modal('show');
+      }
+
+      // show has afa modal
+      if(hasAfa !== '0'){
+        $('#memberHasAfaModal').modal('show');
       }
 
     });
