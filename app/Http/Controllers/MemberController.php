@@ -521,10 +521,6 @@ class MemberController extends Controller
         $this->middleware('role:5');
         
         if(Auth::user()->hasAfa()){
-            // Update info member
-            Auth::user()->is_move = 1;
-            Auth::user()->save();
-
             return redirect(url()->previous())
                 ->with('engagement',trans('afa.condition_deplacement_afa', ['afa'=>Auth::user()?Auth::user()->afa->name:'']));
         }
@@ -546,6 +542,10 @@ class MemberController extends Controller
         $this->middleware('auth');
         $this->middleware('role:5');
         session()->forget('engagement');
+
+        // Update info member
+        Auth::user()->is_move = 1;
+        Auth::user()->save();
         
         // Notify User
         Auth::user()->notify(new AfaCourriel(Auth::user(), Auth::user()->afa->name));
