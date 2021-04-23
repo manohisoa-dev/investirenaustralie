@@ -78,7 +78,7 @@ class ProductController extends Controller {
                 $programme = new Product();
 
                 if ($request->file('image_programme')) {
-                    $file_pro = $request->file('image_programme') ;
+                    $file_pro = $request->file('image_programme');
                     $image_pro = Image::storeAndSave($file_pro, 'product');
                     $programme->image_id = $image_pro->id;
                 }
@@ -96,7 +96,7 @@ class ProductController extends Controller {
                 $lastId = Product::latest('id')->first();
                 $new_id = $lastId->id + 1;
                 if ($request->file('image')) {
-                    $file = $request->file('image') ;
+                    $file = $request->file('image');
                     $image = Image::storeAndSave($file, 'product');
                     $product->image_id = $image->id;
                 }
@@ -111,12 +111,12 @@ class ProductController extends Controller {
                 $product->area = $request->area;
                 $product->carport_spaces = $request->carport_spaces;
                 $product->garage_spaces = $request->garage_spaces;
-                $product->off_street_spaces = $request->off_street_spaces;
+                $product->interior_area = $request->interior_area;
+                $product->exterior_area = $request->exterior_area;
+                $product->total_area = $request->total_area;
                 $product->bathrooms = $request->bathrooms;
                 $product->bedrooms = $request->bedrooms;
                 $product->ensuite = $request->ensuite;
-                $product->land_area = $request->land_area;
-                $product->floor_area = $request->floor_area;
                 $product->number_of_floors = $request->number_of_floors;
                 $product->new_construction = $request->new_construction;
                 $product->year_built = $request->year_built;
@@ -152,12 +152,12 @@ class ProductController extends Controller {
                 $product->area = $request->area;
                 $product->carport_spaces = $request->carport_spaces;
                 $product->garage_spaces = $request->garage_spaces;
-                $product->off_street_spaces = $request->off_street_spaces;
+                $product->interior_area = $request->interior_area;
+                $product->exterior_area = $request->exterior_area;
+                $product->total_area = $request->total_area;
                 $product->bathrooms = $request->bathrooms;
                 $product->bedrooms = $request->bedrooms;
                 $product->ensuite = $request->ensuite;
-                $product->land_area = $request->land_area;
-                $product->floor_area = $request->floor_area;
                 $product->number_of_floors = $request->number_of_floors;
                 $product->new_construction = $request->new_construction;
                 $product->year_built = $request->year_built;
@@ -196,7 +196,14 @@ class ProductController extends Controller {
      * @return  \Illuminate\Http\Response
      */
     public function edit(Request $request, Product $product) {
-        return $this->view("edit", ['product' => $product]);
+        if ($product->parent_id == 0) {
+            //modification programme
+            return $this->view("edit_programme", ['product' => $product, 'type' =>
+                'programme']);
+        } else {
+            //modification proudiut
+            return $this->view("edit", ['product' => $product, 'type' => 'programme']);
+        }
     }
 
     /**
@@ -206,13 +213,31 @@ class ProductController extends Controller {
      * @return  \Illuminate\Http\Response
      */
     public function update(Request $request, Product $product) {
-        if ($request->isXmlHttpRequest()) {
-            $data = [$request->name => $request->value];
-            $validator = \Validator::make($data, Product::validationRules($request->name));
-            if ($validator->fails())
-                return response($validator->errors()->first($request->name), 403);
-            $product->update($data);
-            return "Record updated";
+        if ($request->type == 'programme') {
+            if ($request->file('image_programme')) {
+                $file_pro = $request->file('image_programme');
+                $image_pro = Image::storeAndSave($file_pro, 'product');
+                $product->image_id = $image_pro->id;
+            }
+            $slug = generateSlug($request->title);
+            $product->title = $request->title;
+            $product->slug = $slug;
+            $product->category_id = $request->category_id;
+            $product->min_price = $request->prix_min;
+            $product->max_price = $request->prix_max;
+            $product->save();
+
+            # notification
+            Notify::success('Programme a été mise à jour avec succès');
+            return redirect(route('admin.product.programme'));
+        }
+        /*if ($request->isXmlHttpRequest()) {
+        $data = [$request->name => $request->value];
+        $validator = \Validator::make($data, Product::validationRules($request->name));
+        if ($validator->fails())
+        return response($validator->errors()->first($request->name), 403);
+        $product->update($data);
+        return "Record updated";
         }
 
         $this->validate($request, Product::validationRules());
@@ -221,7 +246,7 @@ class ProductController extends Controller {
 
         # notification
         Notify::success('Produit a été mise à jour avec succès');
-        return redirect(route('admin.product.index'));
+        return redirect(route('admin.product.index'));*/
     }
 
     /**
@@ -230,11 +255,20 @@ class ProductController extends Controller {
      * @return  \Illuminate\Http\Response
      */
     public function destroy(Request $request, Product $product) {
-        $product->delete();
-
-        # notification
-        Notify::success('Produit a été supprimer avec succès');
-        return redirect(route('admin.product.index'));
+        if ($product->parent_id == 0) {
+            //suppression produit
+            Product::where('parent_id', $product->id)->delete();
+            //suppression programme
+            $product->delete();
+            # notification
+            Notify::success('Programme a été supprimer avec succès');
+            return redirect(route('admin.product.programme'));
+        } else {            
+            $product->delete();
+            # notification
+            Notify::success('Produit a été supprimer avec succès');
+            return redirect(route('admin.product.programme'));
+        }
     }
 
     public function archive(Request $request, Product $product) {

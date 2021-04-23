@@ -31,13 +31,15 @@
                 <table class="table table-striped grid-view-tbl">
                     <thead>
                         <tr class="header-row">
-							{!!\Nvd\Crud\Html::sortableTh('id','admin.product.index','Id')!!}
-							{!!\Nvd\Crud\Html::sortableTh('image_id','admin.product.index','Image')!!}
-							{!!\Nvd\Crud\Html::sortableTh('title','admin.product.index','Titre')!!}
-							{!!\Nvd\Crud\Html::sortableTh('category_id','admin.product.index','Categorie')!!}
-							{!!\Nvd\Crud\Html::sortableTh('created_at','admin.product.index','Date')!!}
-							{!!\Nvd\Crud\Html::sortableTh('status','admin.product.index','Statut')!!}
-							{!!\Nvd\Crud\Html::sortableTh('author_id','admin.product.index','Auteur')!!}
+							{!!\Nvd\Crud\Html::sortableTh('id','admin.product.programme','Id')!!}
+							{!!\Nvd\Crud\Html::sortableTh('image_id','admin.product.programme','Image')!!}
+							{!!\Nvd\Crud\Html::sortableTh('title','admin.product.programme','Titre')!!}
+							{!!\Nvd\Crud\Html::sortableTh('category_id','admin.product.programme','Categorie')!!}
+							{!!\Nvd\Crud\Html::sortableTh('created_at','admin.product.programme','Date')!!}
+							{!!\Nvd\Crud\Html::sortableTh('status','admin.product.programme','Statut')!!}
+							{!!\Nvd\Crud\Html::sortableTh('min_price','admin.product.programme','Prix min')!!}
+							{!!\Nvd\Crud\Html::sortableTh('max_price','admin.product.programme','Prix max')!!}
+							{!!\Nvd\Crud\Html::sortableTh('author_id','admin.product.programme','Auteur')!!}
                             <th><a href="javascript:void(0)">Actions</a></th>
 							
                         </tr>
@@ -56,6 +58,8 @@
 										@endforeach
 									</select>
 								</td>
+								<td><input type="text" class="form-control" name="min_price" value="{{Request::input("min_price")}}"></td>
+								<td><input type="text" class="form-control" name="max_price" value="{{Request::input("max_price")}}"></td>
 								<td><input type="text" class="form-control" name="author_id" value="{{Request::input("author_id")}}"></td>
                                 <td style="min-width: 6em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>
                             </form>
@@ -83,7 +87,7 @@
                                     data-name="title"
                                     data-value="{{ $record->title }}"
                                     data-pk="{{ $record->{$record->getKeyName()} }}"
-                                    data-url="{{ route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                    data-url="{{ route('admin.product.programme')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
                                     {{ $record->title }}
                                 </span><br />
@@ -97,7 +101,7 @@
                                     data-name="title"
                                     data-value="{{ $record->category_id }}"
                                     data-pk="{{ $record->{$record->getKeyName()} }}"
-                                    data-url="{{ route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                    data-url="{{ route('admin.product.programme')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
                                     {{ $record->category->title }}
                                 </span>                          
@@ -112,7 +116,7 @@
                                     data-name="status"
                                     data-value="{{ $record->status }}"
                                     data-pk="{{ $record->{$record->getKeyName()} }}"
-                                    data-url="{{ route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                    data-url="{{ route('admin.product.programme')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
 									@if($record->status=='published')
 									<span class="label label-success">@lang('app.'.$record->status)</span>
@@ -124,17 +128,41 @@
 							<td>
                                 <span
                                     class="editable"
+                                    data-type="number"
+                                    data-name="min_price"
+                                    data-value="{{ $record->min_price }}"
+                                    data-pk="{{ $record->{$record->getKeyName()} }}"
+                                    data-url="{{ route('admin.product.programme')}}/{{ $record->{$record->getKeyName()} }}"
+                                >
+                                    {{ $record->min_price }}
+                                </span>
+                            </td>
+							<td>
+                                <span
+                                    class="editable"
+                                    data-type="text"
+                                    data-name="max_price"
+                                    data-value="{{ $record->max_price }}"
+                                    data-pk="{{ $record->{$record->getKeyName()} }}"
+                                    data-url="{{ route('admin.product.programme')}}/{{ $record->{$record->getKeyName()} }}"
+                                >
+                                    {{ $record->max_price }}
+                                </span>
+                            </td>
+							<td>
+                                <span
+                                    class="editable"
                                     data-type="text"
                                     data-name="author_id"
                                     data-value="{{ $record->author_id }}"
                                     data-pk="{{ $record->{$record->getKeyName()} }}"
-                                    data-url="{{ route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                    data-url="{{ route('admin.product.programme')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
                                     {{ $record->author->name }}
                                 </span>
                             </td>
 							<td class="actions-cell text-center" width="12%">
-								<form class="form-inline" action="{{route('admin.product.index')}}/{{$record->id}}" method="POST">
+								<form class="form-inline" id="del_programme" action="{{route('admin.product.index')}}/{{$record->id}}" method="POST">
 									<a href="{{route('admin.product.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="Détail">
 										<i class="fa fa-eye"></i>
 									</a>&nbsp;&nbsp;
@@ -143,8 +171,7 @@
 									</a>&nbsp;&nbsp;
 									{{ csrf_field() }}
 									{{ method_field('DELETE') }}
-									<button onclick="return confirm('Vous êtes sur?')"
-											type="submit" class="btn btn-default btn-circle" title="Suppression"><i class="fa fa-times text-danger"></i>
+									<button type="submit" class="btn btn-default btn-circle" title="Suppression"><i class="fa fa-times text-danger"></i>
 									</button>
 							</td>
                         </tr>
@@ -161,4 +188,25 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('custom-script')
+	<script src="{{ asset('administrator/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
+	<script>
+		$(document).on('submit', '[id^=del_programme]', function (e) {
+			e.preventDefault();
+			var data = $(this).serialize();
+			swal({
+				title: "Programme",
+				text: "Voulez-vous supprimer",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonText: "Confirmer",
+				cancelButtonText: "Annuler",
+			}).then(function (e) {
+				$('form #del_programme').submit();
+			});
+			return false;
+		});
+	</script>
 @endsection

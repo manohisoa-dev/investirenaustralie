@@ -176,7 +176,7 @@
 							</div>
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Surface</label>
+									<label for="title">Surface *</label>
 									<input name="area" id="area" class="form-control" type="text" value="">
 								</div>
 							</div>
@@ -187,18 +187,46 @@
 								</div>
 							</div>
 						</div>
+						
 						<div class="row">
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Surface garage</label>
-									<input name="garage_spaces" id="garage_spaces" class="form-control" type="number" value="0">
+									<label for="title">Surface intérieur</label>
+									<input name="interior_area" id="interior_area" class="form-control" type="number" value="0">
 								</div>
 							</div>
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Hors des espaces de la rue</label>
-									<input name="off_street_spaces" id="off_street_spaces" class="form-control" type="number" value="0">
-								</div> 
+									<label for="title">Surface extérieur</label>
+									<input name="exterior_area" id="exterior_area" class="form-control" type="number" value="0">
+								</div>
+							</div>
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Surface total</label>
+									<input name="total_area" id="total_area" class="form-control" type="number" value="0">
+								</div>
+							</div>
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Unités garage</label>
+									<input name="garage_spaces" id="garage_spaces" class="form-control" type="number" value="0">
+								</div>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Nombre d'étages</label>
+									<input name="number_of_floors" id="number_of_floors" class="form-control" type="number" value="0">
+								</div>
+							</div>
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Nombre de sweet</label>
+									<input name="ensuite" id="ensuite" class="form-control" type="number" value="0">
+								</div>
 							</div>
 							<div class="col-lg-3">
 								<div class="form-group">
@@ -216,30 +244,20 @@
 						<div class="row">
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Nombre de suite</label>
-									<input name="ensuite" id="ensuite" class="form-control" type="number" value="0">
+									<label for="title">Etat</label>
+									<select class="form-control" name="state_id" id="state_id" style="width:100%">
+										@foreach(\App\Models\State::all() as $state)
+											<option value="{{$state->id}}">{{$state->content}}</option>
+										@endforeach
+									</select>
 								</div>
 							</div>
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Aire d'atterrissage</label>
-									<input name="land_area" id="land_area" class="form-control" type="number" value="0">
-								</div> 
-							</div>
-							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="title">Surface de plancher</label>
-									<input name="floor_area" id="floor_area" class="form-control" type="number" value="0">
+									<label for="title">Code postal</label>
+									<input name="postalCode" id="postalCode" class="form-control" type="text" value="">
 								</div>
 							</div>
-							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="title">Nombre d'étages</label>
-									<input name="number_of_floors" id="number_of_floors" class="form-control" type="number" value="0">
-								</div>
-							</div>
-						</div>
-						<div class="row">
 							<div class="col-lg-3">
 								<div class="form-group">
 									<label for="title">Nouvelle construction</label>
@@ -254,23 +272,7 @@
 									<label for="title">Année de construction</label>
 									<input name="year_built" id="year_built" class="form-control" type="number" value="0">
 								</div>
-							</div>
-							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="title">Pays</label>
-									<select class="form-control" name="state_id" id="state_id" style="width:100%">
-										@foreach(\App\Models\State::all() as $state)
-											<option value="{{$state->id}}">{{$state->content}}</option>
-										@endforeach
-									</select>
-								</div>
-							</div>
-							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="title">Code postal</label>
-									<input name="postalCode" id="postalCode" class="form-control" type="text" value="">
-								</div>
-							</div>
+							</div>							
 						</div>
 						<div class="row">
 							<div class="col-lg-12">

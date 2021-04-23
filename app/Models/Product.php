@@ -105,6 +105,8 @@ class Product extends Model {
         \Request::input('image_id') and $query->where('image_id',\Request::input('image_id'));
         \Request::input('created_at') and $query->where('created_at',\Request::input('created_at'));
         \Request::input('updated_at') and $query->where('updated_at',\Request::input('updated_at'));
+        \Request::input('min_price') and $query->where('min_price',\Request::input('min_price'));
+        \Request::input('max_price') and $query->where('max_price',\Request::input('max_price'));
         
         // sort results
         \Request::input("sort") and $query->orderBy(\Request::input("sort"),\Request::input("sortType","asc"));
