@@ -102,8 +102,11 @@
         var _map;
         var _geocoder;
         var _marker;
-        var _lat = {{$location?$location->latitude:-25.647467468105795}};
-        var _long = {{$location?$location->longitude:146.89921517372136}};
+        // var _lat = {{$location?$location->latitude:-25.647467468105795}};
+        // var _long = {{$location?$location->longitude:146.89921517372136}};
+
+        var _lat = -25.647467468105795;
+        var _long = 146.89921517372136;
         
         var iconBase = "{{url('')}}";
         var icons = {
