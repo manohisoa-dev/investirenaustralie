@@ -212,7 +212,7 @@
                     </div>
                     <div class="extra-menu d-flex align-items-center">
                         <div class="d-none d-md-block h-btn m-35px-l">
-                            <form class="d-flex flex-row m-5px-b p-1 white-bg input-group" action="{{route('shop.index')}}" method="get">
+                            <form class="d-flex flex-row m-5px-b p-1 white-bg input-group" action="{{route('programme.all')}}" method="get">
                                 <input type="text" class="form-control border-radius-0 border-0" placeholder="@lang('app.input.recherche')" name="q" value="{{isset($q)?$q:''}}">
                                 <button class="m-btn m-btn-theme2nd flex-shrink-0" type="submit">@lang('app.input.recherche')</button>
                             </form>
