@@ -259,6 +259,28 @@ class MemberController extends Controller
 
         return back()->with('success', 'Message envoyé avec succes.');
     }
+
+
+    /**
+     * Contact AFA
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Auth
+     * @return \Illuminate\Http\Response
+     */
+    public function contactAfa(Request $request){
+        $this->middleware('auth');
+        $this->middleware('role:member');
+
+        if(Auth::user()->hasAfa()){
+            return redirect(url()->previous())
+                ->with('has_afa',trans('app.txt.member_has_afa'));
+        }
+        else{
+            return redirect()->route('member.select.afa')
+                ->with('info', trans('app.txt.choose_an_afa'));
+        }
+    }
     
     
     /**
@@ -544,8 +566,8 @@ class MemberController extends Controller
         session()->forget('engagement');
 
         // Update info member
-        Auth::user()->is_move = 1;
-        Auth::user()->save();
+            Auth::user()->is_move = 1;
+            Auth::user()->save();
         
         // Notify User
         Auth::user()->notify(new AfaCourriel(Auth::user(), Auth::user()->afa->name));

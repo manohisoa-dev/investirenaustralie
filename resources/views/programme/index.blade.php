@@ -292,11 +292,6 @@
 
                 $('#view_prod').val('list');
                 $('#filter-form').submit();
-
-                // $('.view-item').removeClass('col-lg-6');
-                // $('.view-item').addClass('col-lg-12');
-                // $('.carousel-item-prod > div').removeClass('col-lg-12');
-                // $('.carousel-item-prod > div').addClass('col-lg-4');
             });
 
             // grid view
@@ -305,11 +300,6 @@
 
                 $('#view_prod').val('grid');
                 $('#filter-form').submit();
-
-                // $('.view-item').removeClass('col-lg-12');
-                // $('.view-item').addClass('col-lg-6');
-                // $('.carousel-item-prod > div').removeClass('col-lg-4');
-                // $('.carousel-item-prod > div').addClass('col-lg-12');
             });
         });
     </script>
