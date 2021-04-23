@@ -44,7 +44,7 @@
 									<select class="form-control" name="parent_id" id="parent_id">
 										<option value="">Choisir...</option>
 										<option value="0">Nouveau programme</option>
-										@foreach(\App\Models\Product::all() as $prd)
+										@foreach(\App\Models\Product::where('parent_id',0)->get() as $prd)
 											<option value="{{$prd->id}}">{{$prd->title}}</option>
 										@endforeach
 									</select>
@@ -259,7 +259,6 @@
 								<div class="form-group">
 									<label for="title">Pays</label>
 									<select class="form-control" name="state_id" id="state_id" style="width:100%">
-										<option value="">Choisir...</option>
 										@foreach(\App\Models\State::all() as $state)
 											<option value="{{$state->id}}">{{$state->content}}</option>
 										@endforeach
@@ -555,7 +554,7 @@
 						  //console.log(data.content);	
 						  $("#form").validate().resetForm();				  
 						  $('[name="cat_programmme_id"]').val(data.category_id);
-						  $('#cat_programmme_id'). prop("disabled", true);
+						  //$('#cat_programmme_id'). prop("disabled", true);
 						  $('[name="prix_min"]').val(data.min_price);
 						  $("#prix_min").prop("readonly", true);
 						  $('[name="prix_max"]').val(data.max_price);

@@ -76,9 +76,11 @@ class ProductController extends Controller {
                 //cration programme
                 $slug = generateSlug($request->title);
                 $programme = new Product();
-                if ($file = $request->file('image_programme')) {
-                    $image = Image::storeAndSave($file, 'product');
-                    $programme->image_id = $image->id;
+
+                if ($request->file('image_programme')) {
+                    $file_pro = $request->file('image_programme') ;
+                    $image_pro = Image::storeAndSave($file_pro, 'product');
+                    $programme->image_id = $image_pro->id;
                 }
                 $programme->category_id = $request->cat_programmme_id;
                 $programme->min_price = $request->prix_min;
@@ -93,7 +95,8 @@ class ProductController extends Controller {
                 $product = new Product();
                 $lastId = Product::latest('id')->first();
                 $new_id = $lastId->id + 1;
-                if ($file = $request->file('image')) {
+                if ($request->file('image')) {
+                    $file = $request->file('image') ;
                     $image = Image::storeAndSave($file, 'product');
                     $product->image_id = $image->id;
                 }

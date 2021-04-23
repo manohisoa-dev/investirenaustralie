@@ -44,6 +44,11 @@ class SliderController extends Controller {
                 $slider->image_id = $image->id;
             }
 
+            if ($fileVideo = $request->file('video')) {
+                $video = Image::storeAndSave($fileVideo, 'slider');
+                $slider->image_id = $video->id;
+            }
+
             $slider->type = $request->type;
             $slider->status = $request->status;
             $slider->content = $request->content;
@@ -125,6 +130,33 @@ class SliderController extends Controller {
 
         # notification
         Notify::success('Slider a été supprimer avec succès');
+        return redirect(route('admin.slider.index'));
+    }
+
+    /**
+     * Disable User
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function desactiver(Request $request, Slider $slider) {
+        $slider->status = 0;
+        $slider->save();
+
+        Notify::success("Le slider a été desactivé avec succés");
+        return redirect(route('admin.slider.index'));
+    }
+
+    public function activer(Request $request, Slider $slider) {
+        $slider->status = 1;
+        $slider->save();
+
+        // désactivation des autres types de slider
+        Slider::where('type', '!=' ,$slider->type)
+            ->update(['status' => 0]);
+
+        Notify::success("Le slider a été activé avec succés");
         return redirect(route('admin.slider.index'));
     }
 

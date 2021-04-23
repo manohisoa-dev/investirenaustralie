@@ -40,6 +40,7 @@
                         <select name="type" id="type" class="form-control">
 							<option value="">Choisir...</option>
                             <option value="image">Image</option>
+                            <option value="video">Vidéo</option>
 							<option value="pub">Pub</option>
                         </select>
                     </div>
@@ -68,6 +69,16 @@
 						<div class="form-group">
 							<label for="title">Image</label>
 							<input type="file" name="image" class="form-control"/>
+						</div>
+					</div>
+					<div id="slideVideo" style="display:none">
+						<div class="form-group">
+							<label for="title">@lang('app.admin.content')</label>
+							<input type="text" name="content" id="content" class="form-control"/>
+						</div>
+						<div class="form-group">
+							<label for="title">Vidéo</label>
+							<input type="file" name="video" class="form-control"/>
 						</div>
 					</div>
                     <div class="form-group">
@@ -99,13 +110,21 @@
 				if(type == 'image'){
 					$('#slideImage').show();
 					$('#slideProduct').hide();
+					$('#slideVideo').hide();
 					$('[name="content"]').val('');
 				}else if(type == 'pub'){
 					$('#slideProduct').show();
 					$('#slideImage').hide();
-				}else{
+					$('#slideVideo').hide();
+				}else if(type == 'video'){
+					$('#slideVideo').show();
 					$('#slideImage').hide();
 					$('#slideProduct').hide();
+				}
+				else{
+					$('#slideImage').hide();
+					$('#slideProduct').hide();
+					$('#slideVideo').hide();
 				}
 			});
 			

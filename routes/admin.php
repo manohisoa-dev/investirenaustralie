@@ -81,6 +81,8 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::resource('type-user','TypeUserController');
     
     Route::resource('slider','SliderController');
+    Route::get('slider/desactiver/{slider}', 'SliderController@desactiver')->name('slider.desactiver');
+    Route::get('slider/activer/{slider}', 'SliderController@activer')->name('slider.activer');
 
     // Confi Controller
     Route::prefix('config')->as('config.')->group(function () {

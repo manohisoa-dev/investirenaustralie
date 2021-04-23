@@ -51,7 +51,7 @@
 		</li>
     </ul>
 </li>
-<li class="{{Request::is('*/product/*') || Request::is('*/product') ? 'active' : ''}}">
+<li class="{{Request::is('*/product/*') || Request::is('*/product') || Request::is('*/programme/*') || Request::is('*/programme') ? 'active' : ''}}">
     <a href="#">
 		<i class="fa fa-product-hunt" title="Produits"></i> 
 		<span class="nav-label">Produits </span>
