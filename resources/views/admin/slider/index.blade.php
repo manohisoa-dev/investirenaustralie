@@ -64,7 +64,11 @@
                             <tr>
                                 <td>{{ $record->id }}</td>
 								<td>
-                                     <img src="{{ asset($record->images ? $record->images->filepath : "") }}" class="img-responsive" style="height:80px" />
+                                    @if($record->type != 'video')
+                                        <img src="{{ asset($record->images ? $record->images->filepath : "") }}" class="img-responsive" style="height:80px" />
+                                    @else
+                                        <img src="{{asset('images/iead.png')}}" lass="img-responsive" style="height:80px; width: 10.6rem" >
+                                    @endif
                                 </td>
                                 <td>
                                     <span class="editable"
