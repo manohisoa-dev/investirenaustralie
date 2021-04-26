@@ -30,6 +30,8 @@
 	
 	<!-- step -->
 	<link href="{{ asset('administrator/css/plugins/steps/jquery.steps.css') }}" rel="stylesheet">
+	<!-- Sweet Alert -->
+    <link href="{{ asset('administrator/css/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet">
 
     @yield('custom-css')
 

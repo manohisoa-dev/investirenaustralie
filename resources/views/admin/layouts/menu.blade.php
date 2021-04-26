@@ -60,6 +60,7 @@
     <ul class="nav nav-second-level collapse">
 		<li><a href="{{route('admin.product.programme')}}">Liste des programmes</a></li>
         <li><a href="{{route('admin.product.index')}}">Liste des produits</a></li>
+		<li><a href="{{ route('admin.product.create') }}?type=produit">Ajouter produit</a></li>
     </ul>
 </li>
 <li class="{{Request::is('*/sale/*') || Request::is('*/sale') ? 'active' : ''}}">
