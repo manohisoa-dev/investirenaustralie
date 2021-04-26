@@ -364,9 +364,10 @@
         }
 
     </script>
-    <script type="text/javascript"
-        src="http://maps.googleapis.com/maps/api/js?libraries=geometry&sensor=false&key=AIzaSyBSsKUzYG_Wz7u2qL6unHqfBOmvaZ0H1Mg&callback=initMap">
-    </script>
+    <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA&callback=initMap&libraries=&v=weekly"
+    async
+    ></script>
 
 
     {{-- <script>

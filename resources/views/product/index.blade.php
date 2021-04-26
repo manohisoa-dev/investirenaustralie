@@ -3,9 +3,6 @@
 @section('content')
 <!-- Main -->
 <main>
-    {{-- @component('includes.breadcrumb')
-        @lang('Products')
-    @endcomponent --}}
     <!-- Page Title -->
     @php
         if(@getimagesize($item->imageUrl())) {
@@ -70,8 +67,9 @@
                                             <div class="portfolio-box-02">
                                                 <div class="portfolio-img">
                                                   @php
+                                                    $img_prod = "";
                                                       if(@getimagesize(App\Models\Image::whereId($it->pivot->image_id)->first()->filepath)) { 
-                                                        $img_prod=@getimagesize(App\Models\Image::whereId($it->pivot->image_id)->first()->filepath);
+                                                        $img_prod=App\Models\Image::whereId($it->pivot->image_id)->first()->filepath;
                                                       } else {
                                                         $img_prod=asset('images/iea.png');
                                                       }   
