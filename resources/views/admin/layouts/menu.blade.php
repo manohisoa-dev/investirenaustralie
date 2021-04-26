@@ -159,7 +159,7 @@
         {{--<li><a href="{{route('admin.plan.create')}}">Ajouter un plan</a></li>--}}
     {{--</ul>--}}
 {{--</li>--}}
-<li class="{{Request::is('*/config/*') || Request::is('*/menu/*') || Request::is('*/menu') ? 'active' : ''}}">
+<li class="{{Request::is('*/config/*') || Request::is('*/menu/*') || Request::is('*/menu') || Request::is('*/firb/*') || Request::is('*/firb') ? 'active' : ''}}">
     <a href="#"><i class="fa fa-wrench" title="Configurations"></i> <span class="nav-label">Configurations</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
         <li><a href="{{route('admin.config.site')}}">Information du site</a></li>
@@ -169,6 +169,11 @@
 		<li>
 			<a href="{{route('admin.menu.index')}}">
 				<span class="nav-label">Menus</span>
+			</a>
+		</li>
+		<li>
+			<a href="{{route('admin.firb.index')}}">
+				<span class="nav-label">Firb</span>
 			</a>
 		</li>
     </ul>
