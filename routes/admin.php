@@ -96,4 +96,5 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
         Route::post('payment', 'ConfigController@payment')->name('payment.update');
         Route::get('fontawesome', 'ConfigController@fontawesome')->name('fontawesome');
     });
+    Route::resource('firb','FirbController');
 });
