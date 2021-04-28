@@ -417,7 +417,8 @@ class MemberController extends Controller
      * Select afa
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product
+     * @param  \App\Models\User
+     * @param  \App\Models\Localisation
      * @return \Illuminate\Http\Response
      */
     public function selectAfa(Request $request){
@@ -525,6 +526,14 @@ class MemberController extends Controller
         try{
             $afa->notify(new AfaChanged(Auth::user(), true));
         }catch(\Exception $e){}
+
+        if(session()->get('link_product')){
+            $linkProduct = session()->get('link_product');
+            session()->forget('link_product');
+            
+            return redirect($linkProduct)
+            ->with('engagement',trans('afa.condition_deplacement_afa', ['afa'=>Auth::user()?Auth::user()->afa->name:'']));
+        }
         
     	return back()
             ->with('success', trans('app.txt.info_saved'));
@@ -547,6 +556,8 @@ class MemberController extends Controller
                 ->with('engagement',trans('afa.condition_deplacement_afa', ['afa'=>Auth::user()?Auth::user()->afa->name:'']));
         }
         else{
+            session()->put('link_product',url()->previous());
+
             return redirect()->route('member.select.afa')
                 ->with('error', trans('app.txt.choose_an_afa'));
         }
