@@ -37,6 +37,7 @@
                     {{ csrf_field() }}
                                                         
                     {!! \Nvd\Crud\Form::input('label','text')->show() !!}
+					{!! \Nvd\Crud\Form::input('codePostal','text')->show() !!}
                                                                                     
                     <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Créer</button>
 

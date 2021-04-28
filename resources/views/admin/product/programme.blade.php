@@ -173,6 +173,7 @@
 									{{ method_field('DELETE') }}
 									<button type="submit" class="btn btn-default btn-circle" title="Suppression"><i class="fa fa-times text-danger"></i>
 									</button>
+								</form>
 							</td>
                         </tr>
                         @empty @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 40]) @endforelse

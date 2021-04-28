@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Product;
+use App\Models\Firb;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -50,6 +51,9 @@ class ProductController extends Controller {
     public function store(Request $request) {
         $this->middleware('auth');
         $this->middleware('role:1');
+        $anciennete = $request->ancienneteBien;
+        $nature = $request->natureBien;
+        
         if ($request->type == 'programme') {
             //creation programme
             $slug = generateSlug($request->title);
@@ -344,6 +348,17 @@ class ProductController extends Controller {
         return response()->json(['title' => $product->title, 'slug' => $product->slug,
             'id' => $product->id, 'category_id' => $product->category_id, 'min_price' => $product->min_price,
             'max_price' => $product->max_price, 'content' => $product->content]);
+    }
+    
+    public function ajaxCheckFirb()
+    {
+        $code_postal = $_GET['postal_code'];
+        $firb = Firb::where('codePostal',$code_postal)->get();
+        if(count($firb) > 0){
+            return response()->json(['msg'=>'true']);
+        }else{
+            echo 'false';
+        }
     }
 
 }
