@@ -98,13 +98,12 @@ class ProductController extends Controller {
                 }
             } else {
                 //si ancienneté == ancien
-                $this->save_new_produit($anciennete, $nature, $request->title_product, $request->file
+                $this->save_new_produit($anciennete, '', $request->title_product, $request->file
                     ('image'), $request->desc_product, $request->quantity, $request->area, $request->interior_area,
                     $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
                     $request->bathrooms, $request->bedrooms, $request->ensuite, $request->number_of_floors,
-                    'NON', $request->annee_const, $request->display_address, $request->price, $request->currency,
-                    $request->status, $request->type_id, 0, $request->postal_code, $request->state_id,
-                    -1);
+                    'NON', $request->annee_const, '', $request->price, $request->currency, $request->status,
+                    $request->type_id, 0, $request->postal_code, 0, -1);
             }
 
 
