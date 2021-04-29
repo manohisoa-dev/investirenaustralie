@@ -444,13 +444,13 @@
 									return $("input[name='postal_code']").val();
 								},
                             },
+							dataType: "json",
 							success: function(msg){
-								if(msg.msg == 'true') {
-									console.log('exists');
-									return 'true';
+								if(msg === true){
+									console.log('ato');
 								}else{
-									console.log('doesnt exists');
-									return 'false';
+									console.log('rrrr');
+									return false;
 								}
 							},
                         },

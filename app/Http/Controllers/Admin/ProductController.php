@@ -355,9 +355,12 @@ class ProductController extends Controller {
         $code_postal = $_GET['postal_code'];
         $firb = Firb::where('codePostal',$code_postal)->get();
         if(count($firb) > 0){
-            return response()->json(['msg'=>'true']);
+            return 'true';
+            //echo 'true';
+            //return response()->json(['msg'=>'true']);
         }else{
-            echo 'false';
+            return 'false';
+            //echo 'false';
         }
     }
 
