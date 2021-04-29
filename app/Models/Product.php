@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 
 class Product extends Model {
@@ -13,6 +14,7 @@ class Product extends Model {
     {
         $query = Product::query();
         $query->where('parent_id','!=',0);
+        $query->where('author_id', Auth::id());
         // search results based on user input
         \Request::input('id') and $query->where('id',\Request::input('id'));
         \Request::input('reference') and $query->where('reference','like','%'.\Request::input('reference').'%');
@@ -65,6 +67,7 @@ class Product extends Model {
     {
         $query = Product::query();
         $query->where('parent_id',0);
+        $query->where('author_id',Auth::id());
         // search results based on user input
         \Request::input('id') and $query->where('id',\Request::input('id'));
         \Request::input('reference') and $query->where('reference','like','%'.\Request::input('reference').'%');
@@ -146,7 +149,7 @@ class Product extends Model {
             'status' => 'required|string|max:20',
             'type_id' => 'required',
             'location_type_id' => 'required',
-            'category_id' => 'required',
+            'category_id' => '',
             'buyer_id' => 'required',
             'seller_id' => 'required',
             'author_id' => 'required',

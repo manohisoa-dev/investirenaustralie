@@ -15,36 +15,9 @@
             <li class="dropdown">
                 <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                     <i class="fa fa-envelope"></i>  
-					<span class="label label-warning">{{\App\Models\Mail::inboxcount(Auth::user()->id)}}</span>
+					<span class="label label-warning">8</span>
                 </a>
-                <ul class="dropdown-menu dropdown-messages dropdown-menu-right">
-                    @foreach(\App\Models\Mail::inboxlist(Auth::user()->id) as $mail)
-                    <li>
-                        <div class="dropdown-messages-box">
-                            <a class="dropdown-item float-left" href="{{route('admin.mail.index')}}/{{$mail->id}}">
-                                <img alt="image" class="rounded-circle" src="{{$mail->sender->imageUrl()}}">
-                            </a>
-                            <div class="media-body">
-                                Vous avez reçu une message de la part de <strong>{{ $mail->sender->name}}</strong>. <br>
-                                <small class="text-muted">{{ $mail->created_at ? $mail->created_at->diffForHumans() : '' }}</small>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="dropdown-divider"></li>
-                    @endforeach
-                    <li>
-                        <div class="text-center link-block">
-                            <a href="{{route('admin.mail.index')}}" class="dropdown-item">
-                                <i class="fa fa-envelope"></i> <strong>Lire tous les messages</strong>
-                            </a>
-                        </div>
-                    </li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                    <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
-                </a>
+
                 <ul class="dropdown-menu dropdown-alerts">
                     <li>
                         <a href="mailbox.html" class="dropdown-item">
@@ -78,6 +51,34 @@
                             <a href="notifications.html" class="dropdown-item">
                                 <strong>See All Alerts</strong>
                                 <i class="fa fa-angle-right"></i>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                    <i class="fa fa-bell"></i>  <span class="label label-primary">{{\App\Models\Mail::inboxcount(Auth::user()->id)}}</span>
+                </a>
+                <ul class="dropdown-menu dropdown-messages dropdown-menu-right">
+                    @foreach(\App\Models\Mail::inboxlist(Auth::user()->id) as $mail)
+                        <li>
+                            <div class="dropdown-messages-box">
+                                <a class="dropdown-item float-left" href="{{route('admin.mail.index')}}/{{$mail->id}}">
+                                    <img alt="image" class="rounded-circle" src="{{$mail->sender->imageUrl()}}">
+                                </a>
+                                <div class="media-body">
+                                    Vous avez reçu une message de la part de <strong>{{ $mail->sender->name}}</strong>. <br>
+                                    <small class="text-muted">{{ $mail->created_at ? $mail->created_at->diffForHumans() : '' }}</small>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="dropdown-divider"></li>
+                    @endforeach
+                    <li>
+                        <div class="text-center link-block">
+                            <a href="{{route('admin.mail.index')}}" class="dropdown-item">
+                                <i class="fa fa-envelope"></i> <strong>Lire tous les messages</strong>
                             </a>
                         </div>
                     </li>
