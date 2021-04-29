@@ -294,44 +294,47 @@
 								</div>  
 							</div>
 						</div>
-						<div class="row">
-							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="title">Etat</label>
-									<select class="form-control" name="state_id" id="state_id" style="width:100%">
-										@foreach(\App\Models\State::all() as $state)
-											<option value="{{$state->id}}">{{$state->content}}</option>
-										@endforeach
-									</select>
+						
+						<div id="infoAdresse" style="display:none">
+							<div class="row">
+								<div class="col-lg-3">
+									<div class="form-group">
+										<label for="title">Etat</label>
+										<select class="form-control" name="state_id" id="state_id" style="width:100%">
+											@foreach(\App\Models\State::all() as $state)
+												<option value="{{$state->id}}">{{$state->content}}</option>
+											@endforeach
+										</select>
+									</div>
 								</div>
+								<div class="col-lg-3">
+									<div class="form-group">
+										<label for="title">Code postal</label>
+										<input name="postalCode" id="postalCode" class="form-control" type="text" value="">
+									</div>
+								</div>
+								<div class="col-lg-3">
+									<div class="form-group">
+										<label for="title">Nouvelle construction</label>
+										<select class="form-control" name="new_construction" id="new_construction">
+											<option value="0">OUI</option>
+											<option value="1">NON</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-lg-3">
+									<div class="form-group">
+										<label for="title">Année de construction</label>
+										<input name="year_built" id="year_built" class="form-control" type="number" value="0">
+									</div>
+								</div>							
 							</div>
-							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="title">Code postal</label>
-									<input name="postalCode" id="postalCode" class="form-control" type="text" value="">
-								</div>
-							</div>
-							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="title">Nouvelle construction</label>
-									<select class="form-control" name="new_construction" id="new_construction">
-										<option value="0">OUI</option>
-										<option value="1">NON</option>
-									</select>
-								</div>
-							</div>
-							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="title">Année de construction</label>
-									<input name="year_built" id="year_built" class="form-control" type="number" value="0">
-								</div>
-							</div>							
-						</div>
-						<div class="row">
-							<div class="col-lg-12">
-								<div class="form-group">
-									<label for="title">Adresse *</label>
-									<input name="display_address" id="display_address" class="form-control" type="text" value="">
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="form-group">
+										<label for="title">Adresse *</label>
+										<input name="display_address" id="display_address" class="form-control" type="text" value="">
+									</div>
 								</div>
 							</div>
 						</div>
@@ -428,111 +431,10 @@
 					}
 				},
 				rules: {
-					ancienneteBien: {
-						required: true
-					},
-					natureBien: {
-						required: true
-					},
-					postal_code: {
-						required: true,
-						remote: {
-                            url: "{{ route('admin.ajaxCheckFirb') }}",
-                            type: "GET",
-                            data: {
-                                postal_code: function () {
-									return $("input[name='postal_code']").val();
-								},
-                            },
-							dataType: "json",
-							success: function(msg){
-								if(msg === true){
-									console.log('ato');
-								}else{
-									console.log('rrrr');
-									return false;
-								}
-							},
-                        },
-					},
-					chk_firb: {
-						required: true,
-					},
-					parent_id: {
-						required: true
-					},
-					title: {
-						required: true
-					},
-					cat_programmme_id: {
-						required: true
-					},
-					prix_min: {
-						required: true
-					},
-					prix_max: {
-						required: true
-					},
-					display_address: {
-						required: true
-					},
-					price: {
-						required: true
-					},
-					quantity: {
-						required: true
-					},
-					type_id: {
-						required: true
-					},
-					title_product: {
-						required: true
-					}
+					
 				},
 				messages: {
-					ancienneteBien: {
-						required: "Champ obligatoire"
-					},
-					natureBien: {
-						required: "Champ obligatoire"
-					},
-					postal_code: {
-						required: "Champ obligatoire",
-						remote: $.validator.format("Code postal non autorisé"),
-					},
-					chk_firb: {
-						required: "Champ obligatoire"
-					},
-					parent_id: {
-						required: "Champ obligatoire"
-					},
-					title: {
-						required: "Champ obligatoire"
-					},
-					cat_programmme_id: {
-						required: "Champ obligatoire"
-					},
-					prix_min: {
-						required: "Champ obligatoire"
-					},
-					prix_max: {
-						required: "Champ obligatoire"
-					},
-					display_address: {
-						required: "Champ obligatoire"
-					},
-					price: {
-						required: "Champ obligatoire"
-					},
-					quantity: {
-						required: "Champ obligatoire"
-					},
-					type_id: {
-						required: "Champ obligatoire"
-					},
-					title_product: {
-						required: "Champ obligatoire"
-					}
+					
 				}
 			});
 			CKEDITOR.replace( 'description' );
@@ -547,6 +449,7 @@
 				var anciennete = this.value;
 				if(anciennete == 'Neuf'){
 					$('#nature_enregistrement').show();
+					$('#infoAdresse').show();
 					$('#info_code_postal').hide();
 					$('#natureBien').on('change', function() {
 						var nature = this.value;
@@ -556,10 +459,12 @@
 						}else{
 							//pour le programme individuel
 							$('#programme').hide();	
+							$("#form").steps("next")
 						}
 					});
 				}else{
 					$('#info_code_postal').show();
+					$('#infoAdresse').hide();
 					$('#nature_enregistrement').hide();
 				}
 			});

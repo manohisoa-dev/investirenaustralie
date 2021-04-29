@@ -182,10 +182,6 @@
                 </table>
 
                 @include('vendor.crud.single-page-templates.common.pagination', [ 'records' => $records ] )
-
-                <script>
-                    $(".editable").editable({ ajaxOptions: { method: "PUT" } });
-                </script>
             </div>
         </div>
     </div>

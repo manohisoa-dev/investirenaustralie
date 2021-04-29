@@ -53,136 +53,132 @@ class ProductController extends Controller {
         $this->middleware('role:1');
         $anciennete = $request->ancienneteBien;
         $nature = $request->natureBien;
-        
         if ($request->type == 'programme') {
-            //creation programme
-            $slug = generateSlug($request->title);
-            $programme = new Product();
-            if ($file = $request->file('image_programme')) {
-                $image = Image::storeAndSave($file, 'product');
-                $programme->image_id = $image->id;
-            }
-            $programme->category_id = $request->category_id;
-            $programme->min_price = $request->prix_min;
-            $programme->max_price = $request->prix_max;
-            $programme->content = $request->content;
-            $programme->title = $request->title;
-            $programme->slug = $slug;
-            $programme->author_id = Auth::user()->id;
-            $programme->save();
+            //creation simple programme
+            $this->save_programme($request->title, $request->file('image_programme'), $request->category_id,
+                $request->prix_min, $request->prix_max, $request->content);
 
             # notification
             Notify::success('Programme a été créer avec succès');
             return redirect(route('admin.product.programme'));
         } else {
             //creation produit
-            if ($request->parent_id == 0) {
-                //cration programme
-                $slug = generateSlug($request->title);
-                $programme = new Product();
-
-                if ($request->file('image_programme')) {
-                    $file_pro = $request->file('image_programme');
-                    $image_pro = Image::storeAndSave($file_pro, 'product');
-                    $programme->image_id = $image_pro->id;
+            if ($anciennete == 'Neuf') {
+                if ($nature == 'Programme immobilier') {
+                    if ($request->parent_id == 0) {
+                        //creation programme
+                        $id_programme = $this->save_programme($request->title, $request->file('image_programme'),
+                            $request->category_id, $request->prix_min, $request->prix_max, $request->content);
+                        //creation produit
+                        $this->save_new_produit($anciennete, $nature, $request->title_product, $request->file
+                            ('image'), $request->desc_product, $request->quantity, $request->area, $request->interior_area,
+                            $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
+                            $request->bathrooms, $request->bedrooms, $request->ensuite, $request->number_of_floors,
+                            $request->new_construction, $request->year_built, $request->display_address, $request->price,
+                            $request->currency, $request->status, $request->type_id, $request->cat_programmme_id,
+                            $request->postalCode, $request->state_id, $id_programme);
+                    } else {
+                        $this->save_new_produit($anciennete, $nature, $request->title_product, $request->file
+                            ('image'), $request->desc_product, $request->quantity, $request->area, $request->interior_area,
+                            $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
+                            $request->bathrooms, $request->bedrooms, $request->ensuite, $request->number_of_floors,
+                            $request->new_construction, $request->year_built, $request->display_address, $request->price,
+                            $request->currency, $request->status, $request->type_id, $request->cat_programmme_id,
+                            $request->postalCode, $request->state_id, $request->parent_id);
+                    }
+                } else {
+                    //si nature == Produit individuel
+                    $this->save_new_produit($anciennete, $nature, $request->title_product, $request->file
+                        ('image'), $request->desc_product, $request->quantity, $request->area, $request->interior_area,
+                        $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
+                        $request->bathrooms, $request->bedrooms, $request->ensuite, $request->number_of_floors,
+                        $request->new_construction, $request->year_built, $request->display_address, $request->price,
+                        $request->currency, $request->status, $request->type_id, 0, $request->postalCode,
+                        $request->state_id, -1);
                 }
-                $programme->category_id = $request->cat_programmme_id;
-                $programme->min_price = $request->prix_min;
-                $programme->max_price = $request->prix_max;
-                $programme->content = $request->description;
-                $programme->title = $request->title;
-                $programme->slug = $slug;
-                $programme->author_id = Auth::user()->id;
-                $programme->save();
-
-                //creation produit
-                $product = new Product();
-                $lastId = Product::latest('id')->first();
-                $new_id = $lastId->id + 1;
-                if ($request->file('image')) {
-                    $file = $request->file('image');
-                    $image = Image::storeAndSave($file, 'product');
-                    $product->image_id = $image->id;
-                }
-                $slug = generateSlug($request->title_product);
-                $product->reference = 'ref-p00000' . $new_id;
-                $product->title = $request->title_product;
-                $product->slug = $slug;
-                $product->content = $request->desc_product;
-                $product->quantity = $request->quantity;
-                $product->is_new = 1;
-                $product->view_count = 0;
-                $product->area = $request->area;
-                $product->carport_spaces = $request->carport_spaces;
-                $product->garage_spaces = $request->garage_spaces;
-                $product->interior_area = $request->interior_area;
-                $product->exterior_area = $request->exterior_area;
-                $product->total_area = $request->total_area;
-                $product->bathrooms = $request->bathrooms;
-                $product->bedrooms = $request->bedrooms;
-                $product->ensuite = $request->ensuite;
-                $product->number_of_floors = $request->number_of_floors;
-                $product->new_construction = $request->new_construction;
-                $product->year_built = $request->year_built;
-                $product->display_address = $request->display_address;
-                $product->price = $request->price;
-                $product->currency = $request->currency;
-                $product->tma = 0.20;
-                $product->status = $request->status;
-                $product->type_id = $request->type_id;
-                $product->category_id = $request->cat_programmme_id;
-                $product->author_id = Auth::user()->id;
-                $product->postalCode = $request->postalCode;
-                $product->state_id = $request->state_id;
-                $product->parent_id = $programme->id;
-                $product->save();
             } else {
-                //creation simple produit
-                $product = new Product();
-                $lastId = Product::latest('id')->first();
-                $new_id = $lastId->id + 1;
-                if ($file = $request->file('image')) {
-                    $image = Image::storeAndSave($file, 'product');
-                    $product->image_id = $image->id;
-                }
-                $slug = generateSlug($request->title_product);
-                $product->reference = 'ref-p00000' . $new_id;
-                $product->title = $request->title_product;
-                $product->slug = $slug;
-                $product->content = $request->desc_product;
-                $product->quantity = $request->quantity;
-                $product->is_new = 1;
-                $product->view_count = 0;
-                $product->area = $request->area;
-                $product->carport_spaces = $request->carport_spaces;
-                $product->garage_spaces = $request->garage_spaces;
-                $product->interior_area = $request->interior_area;
-                $product->exterior_area = $request->exterior_area;
-                $product->total_area = $request->total_area;
-                $product->bathrooms = $request->bathrooms;
-                $product->bedrooms = $request->bedrooms;
-                $product->ensuite = $request->ensuite;
-                $product->number_of_floors = $request->number_of_floors;
-                $product->new_construction = $request->new_construction;
-                $product->year_built = $request->year_built;
-                $product->display_address = $request->display_address;
-                $product->price = $request->price;
-                $product->currency = $request->currency;
-                $product->tma = 0.20;
-                $product->status = $request->status;
-                $product->type_id = $request->type_id;
-                $product->category_id = $request->cat_programmme_id;
-                $product->author_id = Auth::user()->id;
-                $product->postalCode = $request->postalCode;
-                $product->state_id = $request->state_id;
-                $product->parent_id = $request->parent_id;
-                $product->save();
+                //si ancienneté == ancien
+                $this->save_new_produit($anciennete, $nature, $request->title_product, $request->file
+                    ('image'), $request->desc_product, $request->quantity, $request->area, $request->interior_area,
+                    $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
+                    $request->bathrooms, $request->bedrooms, $request->ensuite, $request->number_of_floors,
+                    'NON', $request->annee_const, $request->display_address, $request->price, $request->currency,
+                    $request->status, $request->type_id, 0, $request->postal_code, $request->state_id,
+                    -1);
             }
+
 
             # notification
             Notify::success('Produit a été créer avec succès');
             return redirect(route('admin.product.index'));
         }
+    }
+
+    function save_programme($title, $photo, $categorie, $prix_min, $prix_max, $content) {
+        $slug = generateSlug($title);
+        $programme = new Product();
+        if ($file = $photo) {
+            $image = Image::storeAndSave($file, 'product');
+            $programme->image_id = $image->id;
+        }
+        $programme->category_id = $categorie;
+        $programme->min_price = $prix_min;
+        $programme->max_price = $prix_max;
+        $programme->content = $content;
+        $programme->title = $title;
+        $programme->slug = $slug;
+        $programme->author_id = Auth::user()->id;
+        $programme->save();
+        return $programme->id;
+    }
+
+    function save_new_produit($anciennete, $nature, $title, $photo, $content, $qty,
+        $area, $interior_area, $exterior_area, $total_area, $carport_spaces, $garage_spaces,
+        $bathrooms, $bedrooms, $sweet, $number_of_floors, $new_construction, $year_built,
+        $display_address, $price, $currency, $status, $type_id, $cat_programmme_id, $postalCode,
+        $state_id, $parent_id) {
+        $product = new Product();
+        $lastId = Product::latest('id')->first();
+        $new_id = $lastId->id + 1;
+        if ($photo) {
+            $file = $photo;
+            $image = Image::storeAndSave($file, 'product');
+            $product->image_id = $image->id;
+        }
+        $slug = generateSlug($title);
+        $product->ancienneteBien = $anciennete;
+        $product->natureBien = $nature;
+        $product->reference = 'ref-p00000' . $new_id;
+        $product->title = $title;
+        $product->slug = $slug;
+        $product->content = $content;
+        $product->quantity = $qty;
+        $product->is_new = 1;
+        $product->view_count = 0;
+        $product->area = $area;
+        $product->interior_area = $interior_area;
+        $product->exterior_area = $exterior_area;
+        $product->total_area = $total_area;
+        $product->carport_spaces = $carport_spaces;
+        $product->garage_spaces = $garage_spaces;
+        $product->bathrooms = $bathrooms;
+        $product->bedrooms = $bedrooms;
+        $product->ensuite = $sweet;
+        $product->number_of_floors = $number_of_floors;
+        $product->new_construction = $new_construction;
+        $product->year_built = $year_built;
+        $product->display_address = $display_address;
+        $product->price = $price;
+        $product->currency = $currency;
+        $product->tma = 0.20;
+        $product->status = $status;
+        $product->type_id = $type_id;
+        $product->category_id = $cat_programmme_id;
+        $product->author_id = Auth::user()->id;
+        $product->postalCode = $postalCode;
+        $product->state_id = $state_id;
+        $product->parent_id = $parent_id;
+        $product->save();
     }
 
     /**
@@ -267,7 +263,7 @@ class ProductController extends Controller {
             # notification
             Notify::success('Programme a été supprimer avec succès');
             return redirect(route('admin.product.programme'));
-        } else {            
+        } else {
             $product->delete();
             # notification
             Notify::success('Produit a été supprimer avec succès');
@@ -349,16 +345,15 @@ class ProductController extends Controller {
             'id' => $product->id, 'category_id' => $product->category_id, 'min_price' => $product->min_price,
             'max_price' => $product->max_price, 'content' => $product->content]);
     }
-    
-    public function ajaxCheckFirb()
-    {
+
+    public function ajaxCheckFirb() {
         $code_postal = $_GET['postal_code'];
-        $firb = Firb::where('codePostal',$code_postal)->get();
-        if(count($firb) > 0){
+        $firb = Firb::where('codePostal', $code_postal)->get();
+        if (count($firb) > 0) {
             return 'true';
             //echo 'true';
             //return response()->json(['msg'=>'true']);
-        }else{
+        } else {
             return 'false';
             //echo 'false';
         }
