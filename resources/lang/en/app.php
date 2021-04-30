@@ -59,6 +59,9 @@ return [
     'config.social' => 'Social networks',
     'config.card'   => 'Payment',
     'config.page'   => 'Static Page',
+
+    'chats_afa'              => 'AFA Chats',
+    'chats_apl'              => 'APL Chats',
     
     'blogs'                 => 'Blogs',
     'blog'                  => 'Blog',
@@ -499,12 +502,15 @@ return [
     'txt.member_has_new_afa' => "You are now in contact with an AFA",
     'txt.choose_an_apl' => "You need to choose an APL.",
     'txt.choose_an_afa' => "You need to choose an AFA.",
+    'txt.choose_an_afa_before_messaging' => "You must choose an AFA to be able to contact her.",
+    'txt.choose_an_apl_before_messaging' => "You must choose an APL to be able to contact it.",
     'txt.error_occured' => "An error has occurred.",
     'txt.upload' => "Upload",
     'txt.choose_file' => "Choose file",
     'txt.info_saved' => "Recorded information !",
     'txt.engagement' => "Engagement",
     'txt.agree' => "I agree",
+    'txt.welcome_chat' => 'Welcome to our discussion',
     
     
     
@@ -542,7 +548,11 @@ return [
     'txt.blog_iea' => 'The Blog "Investir En Australie"',
     'txt.blog_def' => 'What is this Blog page.',
     'txt.new' => 'New',
-    
+    'txt.write_message' => 'Write a message',
+    'txt.no_message_found' => "No message found",
+    'txt.read' => "Read",
+    'txt.unread' => "Unread",
+
 
 
     'num.area' => ':num m2',

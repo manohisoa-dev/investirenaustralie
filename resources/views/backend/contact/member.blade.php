@@ -4,87 +4,38 @@
 <!-- Section -->
 <div class="col-lg-8 col-xl-9">
     <div class="profile-content-area m-40px-tb card card-body">
-        <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
+        <div class="border-bottom-0 border-color-dark-gray m-15px-b p-15px-b">
             <h5>{{$title}}</h5>
             <div class="row">
                 <div class="col-md-12 m-10px-tb">
                     <div class="media">
                         <div class="media-body p-15px-l lh-normal">
-                            {{-- <form class="rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" action="{{$action}}"> --}}
+
                             <form id="formContact" data-form-output="form-output-global" data-form-type="contact" method="post" action="{{$action}}">
                                 {{ csrf_field() }}
                                 <div class="row">
-                                    {{-- Si Member peut contacter une APL sans avoir être en relation avec une APL  --}}
-                                    {{-- <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-control-label">@lang('app.apl')</label>
-                                            @if (Auth::user()->hasApl())
-                                                <input id="subject" name="apl_name" type="text" placeholder="APL *" aria-required="true" required="required" value="" class="form-control" readonly>
-                                            @else
-                                                <select name="apl_name" class="form-control">
-                                                    @forelse ($apls as $apl)
-                                                        <option value="{{ $apl->name }}">{{ $apl->name }}</option>
-                                                    @empty
-                                                        <option value="">@lang('app.txt.no_apl')</option>
-                                                    @endforelse
-                                                </select>
-                                            @endif
-                                        </div>
-                                    </div> --}}
                                     <div class="col-md-12">
-                                        <div class="form-group">
-                                            {{-- Contact afa --}}
-                                            @if ($role === 'afa')
-                                                <label class="form-control-label">@lang('app.afa')</label>
-                                                @if ($user_name !== "")
-                                                    <input id="subject" name="to" type="text" placeholder="AFA *" aria-required="true" required="required" value="{{ $user_name }}" class="form-control" readonly>
-                                                @else
-                                                    <select name="to" class="form-control">
-                                                        <option value="" selected disabled>@lang('app.txt.list_afa')</option>
-                                                        @forelse ($lafas as $afa)
-                                                            <option value="{{ $afa->id }}">{{ $afa->name }}</option>
-                                                        @empty
-                                                            <option value="">@lang('app.txt.no_afa')</option>
-                                                        @endforelse
-                                                    </select>
-                                                @endif
-                                            @endif
-                                            {{-- End contact afa --}}
+                                        <div class="panel panel-primary">
+                                            <div class="panel-body p-10px-t p-20px-lr border-top-1 border-left-1 border-bottom-1 border-right-1 border-color-gray">
+                                                <ul class="chat">
+                                                    <div id="show_message"></div>
+                                                </ul>
+                                            </div>
+                                            <div class="panel-footer p-25px-t">
+                                                <div class="input-group">
+                                                    <textarea id="content" name="content" class="no-resize-bar form-control" rows="2" placeholder="@lang('app.txt.write_message') ..."></textarea>
+                                                    <span class="input-group-btn">
+                                                        <button class="m-btn m-btn-warning btn-sm" id="btn_send">
+                                                            @lang('app.btn.send')</button>
+                                                    </span>
+                                                </div>
+                                                <span id="error_message" class="text-danger"></span>
+                                            </div>
                                         </div>
                                     </div>
-                                    @if ($role !== 'admin')
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-control-label">@lang('app.subject')</label>
-                                            <input id="subject" name="subject" type="text" placeholder="Sujet *" aria-required="true" required="required" value="{{old('subject')}}" class="form-control">
-                                        </div>
-                                    </div>
-                                    @endif
-                                    <input id="to" name="to" type="hidden" class="form-control" value="{{ $role }}">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-control-label">@lang('app.comment')</label>
-                                            <textarea id="content" name="content" placeholder="@lang('app.message') ..." cols="45" rows="8" aria-required="true" required="required" data-constraints="@Required" class="form-control">{{old('content')}}</textarea>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group form-group-default">
-                                            <label>@lang('app.attachments') (jpg, jpeg, png, gif, pdf: Max: 2MB)</label>
-                                            <input type="file" name="files[]" accept="file_extension|image/*|media_type" multiple>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 p-10px-t">
-                                        <button id="btn_send" class="m-btn m-btn-theme w-100" type="button" name="send" data-hover="@lang('app.btn.send')">@lang('app.btn.send')</button>
-                                        <div class="snackbars" id="form-output-global"></div>
-                                    </div>
-                                </div>
-                                <div class="alert alert-dismissible fade show col-lg-12 m-15px-t print-msg" role="alert">
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
-                                    <ul></ul>
                                 </div>
                             </form>
+
                         </div>
                     </div>
                 </div>
@@ -96,32 +47,188 @@
 @endsection
 
 @push('script')
+    <style>
+        .chat
+        {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .chat li
+        {
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px dotted #B3A9A9;
+        }
+
+        .chat li.left .chat-body
+        {
+            margin-left: 60px;
+        }
+
+        .chat li.right .chat-body
+        {
+            margin-right: 60px;
+        }
+
+
+        .chat li .chat-body p
+        {
+            margin: 0;
+            color: #777777;
+        }
+
+        .panel .slidedown .glyphicon, .chat .glyphicon
+        {
+            margin-right: 5px;
+        }
+
+        .panel-body
+        {
+            overflow-y: scroll;
+            height: 450px;
+        }
+
+    </style>
     <script>
+
+        $(document).ready(function  (){
+            var scroll=$('.panel-body');
+
+            // Show message
+            showMessages();
+            
+            // Show recent message
+            showRecentMessage();
+            
+            function showMessages(){
+                var showMessage = $('#show_message');
+                var content= "";
+
+
+                $.ajax({
+                    url : '{{ route("member.get.message", ["role"=>$role]) }}',
+                    method : 'get',
+                    dataType : 'json',
+                    success : function(dt){
+                        if(dt.length !== 0)
+                        {
+                            for(var i=0; i<dt.length; i++){
+                                var fromId = dt[i].from_id;
+                                var fromName = dt[i].from_name;
+                                var chatingName = dt[i].chating_name;
+                                var createdAt = dt[i].created_at;
+                                var createdAtSend = dt[i].created_at_send;
+                                var message = dt[i].body;
+                                var seen = dt[i].seen;
+
+
+                                if(dt[i].from_id !== {{ Auth::user()->id }}){
+
+                                    content += '<li class="left clearfix">'+
+                                            '<span class="chat-img pull-left">'+
+                                                '<img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />'+
+                                            '</span>'+
+                                            '<div class="chat-body clearfix">'+
+                                                '<div class="header">'+
+                                                    '<strong class="primary-font">'+fromName+'</strong> <small class="pull-right text-muted">'+
+                                                    '<span class="glyphicon glyphicon-time"></span><i>'+createdAtSend+', '+seen+'</i></small>'+
+                                                '</div>'+
+                                                '<p class="pull-left p-10px-t">'+
+                                                    message +
+                                                '</p>'+
+                                            '</div>'+
+                                        '</li>';
+                                }else{
+                                    content += '<li class="right clearfix">'+
+                                            '<span class="chat-img pull-right">'+
+                                                '<img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />'+
+                                            '</span>'+
+                                            '<div class="chat-body clearfix">'+
+                                                '<div class="header">'+
+                                                    '<small class=" text-muted"><span class="glyphicon glyphicon-time"></span><i>'+createdAtSend+', '+seen+'</i></small>'+
+                                                    '<strong class="pull-right primary-font"> {{ Auth::user()->name }} </strong>'+
+                                                '</div>'+
+                                                '<p class="pull-right p-10px-t">'+
+                                                    message +
+                                                '</p>'+
+                                            '</div>'+
+                                        '</li>';
+                                }
+                                
+                            }
+                        }else{
+                            content += '<li class="center clearfix">'+
+                                            '<div class="chat-body clearfix">'+
+                                                '<p class="text-center p-50px-t">'+
+                                                    '<div class="p-25px text-center">'+
+                                                        '<div class="avatar-80 border-radius-50 d-inline-block">'+
+                                                            '<img src="{{ asset("images/iea.png") }}" title="" alt="">'+
+                                                        '</div>'+
+                                                        '<h6 class="font-w-500 m-15px-t m-0px"><span class="font-w-700"> @if($role=="admin") {{ App\Models\User::where("id",1)->first()->name }} @elseif($role=="afa") {{ App\Models\User::where("id",Auth::user()->afa_id)->first()->name }} @else {{ App\Models\User::where("id",Auth::user()->apl_id)->first()->name }} @endif </span></h6>'+
+                                                        '<span class="font-small"></span>'+
+                                                        '<div class="p-10px-t">'+
+                                                            '<span class="font-small"><i> {{ trans("app.txt.welcome_chat") }} </i></span>'+
+                                                        '</div>'+
+                                                    '</div>'+
+                                                '</p>'+
+                                            '</div>'+
+                                        '</li>';
+                        }
+                        return showMessage.html(content);
+
+                    }
+                });
+
+            }
+
+            // Reload show message
+            setInterval(() => {
+                showMessages()
+            }, 2500);
+
+
+            function showRecentMessage(){
+                scroll.animate({scrollTop: scroll.prop("scrollHeight")});
+                scroll.animate({scrollTop:$(document).height()}, 'slow');
+
+                return false;
+            }
+            
         
             $('#btn_send').click(function(event){
                 event.preventDefault();
 
                 var formData = $('#formContact').serialize();
+                $('#error_message').html("");
 
                 $.ajax({
-                    type: "POST",
                     url: '{{ $action }}',
+                    type: "POST",
                     data: formData,
                     dataType: "json",
-                    // encode: true,
                     success:function(data){
                         if($.isEmptyObject(data.error)){
                             $('#formContact')[0].reset();
-                            printSuccessMsg(data.success);
+                            console.log(data.success);
                         }else{
-                            printErrorMsg(data.error);
+                            $('#content').addClass('is-invalid');
+                            $('#error_message').html(data.error);
                         }
                     },
-                    error:function(){
-                        alert('Error');
+                    error:function(e){
+                        console.log(e);
                     }
                 });
             });
+
+            $('#content').focus(function(){
+                $('#content').removeClass('is-invalid');
+                $('#error_message').html('');
+
+                return false;
+            })
 
             function printErrorMsg (msg) {
                 $(".print-msg").addClass('alert-danger');
@@ -140,6 +247,7 @@
                 $(".print-msg").css('display','block');
                 $(".print-msg").find("ul").append('<li>'+msg+'</li>');
             }
+        })
         
     </script>    
 @endpush

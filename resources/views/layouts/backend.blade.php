@@ -143,10 +143,12 @@
                                         <i class="fas fa-chevron-right"></i>
                                     </div>
                                 </a>
-                                <a href="{{route('member.contact', ['role'=>'admin'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('member/contact/role/admin')) ? 'menu-active' : '' }}">
+                                <a href="{{route('member.contact', ['role'=>'admin'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb align-items-center {{ (request()->is('member/contact/role/admin')) ? 'menu-active' : '' }}">
                                     <div>
                                         <i class="far fa-envelope m-10px-r"></i>
                                         <span>@lang('member.contact_admin')</span>
+                                        <span class="unread-count-admin badge badge-pill badge-primary"></span>
+                                        {{-- {!! isset(App\Models\Message::unreadCount(Auth::user()->id , 1)->count) ? '<span class="badge badge-pilll badge-primary">'.App\Models\Message::unreadCount(Auth::user()->id, 1)->count.'</span>' : '' !!} --}}
                                     </div>
                                     <div>
                                         <i class="fas fa-chevron-right"></i>
@@ -156,6 +158,8 @@
                                     <div>
                                         <i class="far fa-envelope m-10px-r"></i>
                                         <span>@lang('member.contact_afa')</span>
+                                        <span class="unread-count-afa badge badge-pill badge-primary"></span>
+                                        {{-- {!! isset(App\Models\Message::unreadCount(Auth::user()->id , Auth::user()->afa_id)->count) ? '<span class="badge badge-pilll badge-primary">'.App\Models\Message::unreadCount(Auth::user()->id, Auth::user()->afa_id)->count.'</span>' : '' !!} --}}
                                     </div>
                                     <div>
                                         <i class="fas fa-chevron-right"></i>
@@ -310,6 +314,20 @@
                                       <i class="fas fa-chevron-right"></i>
                                   </div>
                               </a>
+
+                              @if (Auth::user()->hasRole(3) || Auth::user()->hasRole(4) )
+                                <a href="{{route(''.\App\Models\User::find(Auth::id())->roleUser->role_initial.'.mail.list',['filter'=>'inbox'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is(\App\Models\User::find(Auth::id())->roleUser->role_initial.'/mails/inbox')) ? 'menu-active' : '' }}">
+                                    <div>
+                                        <i class="far fa-comments m-10px-r"></i>
+                                        <span>@lang('app.chats')</span>
+                                        <span class="unread-count-member badge badge-pill badge-primary">10</span>
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-chevron-right"></i>
+                                    </div>
+                                </a>
+                              @endif
+
                               <a href="{{route(''.\App\Models\User::find(Auth::id())->roleUser->role_initial.'.mail.list',['filter'=>'inbox'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is(\App\Models\User::find(Auth::id())->roleUser->role_initial.'/mails/inbox')) ? 'menu-active' : '' }}">
                                   <div>
                                       <i class="far fa-envelope m-10px-r"></i>
@@ -419,4 +437,39 @@
 @push('script')
     <link rel="stylesheet" href="{{asset('administrator/plugins/bootstrap-fileupload/css/bootstrap-fileupload.css')}}">
     <script src="{{asset('administrator/plugins/bootstrap-fileupload/js/bootstrap-fileupload.js')}}"></script>
+    <script>
+        $(document).ready(function(){
+            
+            // Show unread message count in left sidebar
+            showUnreadCount();
+
+            function showUnreadCount(){
+                $.ajax({
+                    url: '{{ route("member.get.unread.message") }}',
+                    type: "GET",
+                    dataType: "json",
+                    success:function(data){
+                        if(data.res['role_id'] == 5){
+                            var unreadCountAdmin = $('.unread-count-admin');
+                            var unreadCountAfa = $('.unread-count-afa');
+                            
+                            unreadCountAdmin.html(data.res['unreadCountAdmin']);
+                            unreadCountAfa.html(data.res['unreadCountAfa']);
+                        }
+                        console.log(data);
+                    },
+                    error:function(e){
+                        console.log(e);
+                    }
+                });
+
+                return false;
+            }
+
+            setInterval(() => {
+                showUnreadCount();
+            }, 2500);
+
+        })
+    </script>
 @endpush

@@ -101,6 +101,7 @@ class MemberController extends Controller
             ->get();
         $apls = User::ofRole(4)->isActive()->get();
         $user_name = "";
+        
 
         if($request->get('afa'))
         $user_name = $request->get('afa');
@@ -110,7 +111,11 @@ class MemberController extends Controller
         
         if(($role=='apl') && !Auth::user()->apl){
             return redirect()->route('member.select.apl')
-                ->with('error', trans('app.txt.choose_an_apl'));
+                ->with('error', trans('app.txt.choose_an_apl_before_messaging'));
+        }elseif($role=='afa'){
+            if(!Auth::user()->hasAfa())
+            return redirect()->route('member.select.afa')
+                ->with('error', trans('app.txt.choose_an_afa_before_messaging'));
         }
 
         $lafas = User::where('role',3)
@@ -118,6 +123,8 @@ class MemberController extends Controller
             ->where('location_id',Auth::user()->location_id)
             ->orderBy('id','desc')
             ->get();
+
+        $getAllMessage = $this->getAllMessage($role);
         
         return view('backend.contact.member')
             ->with('action', $action)
@@ -126,14 +133,89 @@ class MemberController extends Controller
             ->with('apls', $apls)
             ->with('role', $role)
             ->with('user_name', $user_name)
-            ->with('title', __('app.contact_'.$role));
+            ->with('title', __('app.contact_'.$role))
+            ->with(['data' => $getAllMessage]);
+    }
+
+    public function getAllMessage($role){
+
+        switch ($role) {
+            case 'admin':
+                $to_id = 1;
+                break;
+            
+            case 'afa':
+                $to_id = User::where('id', Auth::user()->id)->first()->afa_id;
+                break;
+            
+            case 'apl':
+                $to_id = User::where('id', Auth::user()->id)->first()->apl_id;
+                break;
+
+            default:
+                # code...
+                break;
+        }
+
+        $messages = Message::whereRaw("(from_id = ".Auth::user()->id." AND to_id = ".$to_id.") OR (to_id = ".Auth::user()->id." AND from_id = ".$to_id.")" )
+                            ->orderBy('created_at', 'ASC')
+                            ->get();
+
+        $data = [];
+        foreach($messages as $message){
+            $data[] = [
+                'id' => $message->id,
+                'from_id' => $message->from_id,
+                'from_name' => User::where('id',$message->from_id)->first()->name,
+                'to_id' => $message->to_id,
+                'body' => nl2br(e($message->body)),
+                'created_at' => $message->created_at,
+                'created_at_send' => $message->created_at->diffForHumans(),
+                'seen' => $message->seen? trans('app.txt.read') : trans('app.txt.unread'),
+            ];
+        }
+
+        
+        // update message showing
+        Message::where('from_id',$to_id)->where('to_id', Auth::user()->id)->update(['seen' => 1]);
+        
+
+        return json_encode($data);
+    }
+
+    public function getUnreadMessage(){
+        $role_id = Auth::user()->role;
+        $unreadCountAdmin = '';
+        $unreadCountAfa = '';
+        $unreadCountApl = '';
+        $data = [];
+
+        if($role_id == 5){
+            if(isset(Message::unreadCount(Auth::user()->id , 1)->count)){
+                $unreadCountAdmin = Message::unreadCount(Auth::user()->id, 1)->count;
+            }
+            
+            if(isset(Message::unreadCount(Auth::user()->id , User::where('id', Auth::user()->id)->first()->afa_id)->count)){
+                $unreadCountAfa = Message::unreadCount(Auth::user()->id, User::where('id', Auth::user()->id)->first()->afa_id)->count;
+            }
+            
+            if(isset(Message::unreadCount(Auth::user()->id , User::where('id', Auth::user()->id)->first()->apl_id)->count)){
+                $unreadCountApl = Message::unreadCount(Auth::user()->id, User::where('id', Auth::user()->id)->first()->apl_id)->count;
+            }
+            
+            $data = [
+                'role_id'=>$role_id, 
+                'unreadCountAdmin'=>$unreadCountAdmin, 
+                'unreadCountAfa'=>$unreadCountAfa, 
+                'unreadCountApl'=>$unreadCountApl, 
+            ];
+        }
+
+        return response()->json(['res'=>$data]);
     }
 
     public function sendMessage(Request $request, $role)
     {
-        $current = Auth::user();
-        $to_id = $request->to;
-
         // Validate request
         $datas = $request->all();
         $validator = Validator::make($datas,[
@@ -142,15 +224,18 @@ class MemberController extends Controller
         ]);
 
         if ($validator->passes()) {
+            $current = Auth::user();
 
             $item = new Message();
             $item->type = 'user';
             $item->from_id = $current->id;
             $item->body = $request->content;
-            if($to_id === 'admin'){
+            if($role === 'admin'){
                 $item->to_id = 1;
+            }else if($role === 'afa'){
+                $item->to_id = $current->afa_id;
             }else{
-                $item->to_id = $request->to_id;
+                $item->to_id = $current->apl_id;
             }
 
             $item->save();

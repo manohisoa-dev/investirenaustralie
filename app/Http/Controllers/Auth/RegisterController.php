@@ -334,9 +334,9 @@ class RegisterController extends Controller
                     'orga_operation_state' => 'required|max:100',
                     'orga_operation_range' => 'required|max:100',
 
-                    'country'      => 'nullable|max:100',
-                    'area_level_1' => 'required|max:100',
-                    'area_level_2' => 'required|max:100',
+                    'country'      => 'required|max:100',
+                    'area_level_1' => 'nullable|max:100',
+                    'area_level_2' => 'nullable|max:100',
                     'locality'     => 'required|max:100',
                     'route'        => 'nullable|max:100',
                     'postalCode'   => 'nullable|max:100',

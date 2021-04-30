@@ -318,6 +318,8 @@ return [
     'subproducts'           => 'Sub Produits',
     'subproduct'            => 'Sub Produit',
     
+    'chats_afa'              => 'Messages AFA',
+    'chats_apl'              => 'Messages APL',
     'chats'              => 'Messages',
     'chat'               => 'Message',
     'admin.chats'        => 'Messages',
@@ -697,9 +699,13 @@ return [
     'txt.programme_remove_favorites' => 'Programme supprimé de votre liste de favoris',
     'txt.choose_an_apl' => "Vous devez choisir un APL.",
     'txt.choose_an_afa' => "Vous devez choisir un AFA.",
+    'txt.choose_an_afa_before_messaging' => "Vous devez choisir une AFA pour pouvoir le contacter.",
+    'txt.choose_an_apl_before_messaging' => "Vous devez choisir une APL pour pouvoir le contacter.",
     'txt.upload' => "Télécharger",
     'txt.choose_file' => "Choisir le fichier",
     'txt.info_saved' => "Information enregistrée !",
+    'txt.write_message' => 'Écrire un message',
+    'txt.welcome_chat' => 'Bienvenu dans notre discussion',
     
     
     'childs' => 'Fils',
@@ -954,6 +960,9 @@ return [
     'txt.error_occured' => "Une erreur est survenue.",
     'txt.engagement' => "Engagement",
     'txt.agree' => "J'accepte",
+    'txt.no_message_found' => "Aucun message trouvé",
+    'txt.read' => "Lu",
+    'txt.unread' => "Non lu",
 
 
 

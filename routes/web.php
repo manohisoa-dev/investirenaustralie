@@ -131,6 +131,8 @@ Route::middleware(["auth", "role:5"])->group(function(){
 
         Route::get('contact/role/{role}', 'MemberController@contact')->name('member.contact');
         Route::post('contact/{role}', 'MemberController@sendMessage')->name('member.send.message');
+        Route::get('contact/{role}/messages', 'MemberController@getAllMessage')->name('member.get.message');
+        Route::get('contact/messages/unread', 'MemberController@getUnreadMessage')->name('member.get.unread.message');
         Route::post('contact/role/{role}', 'MemberController@sendMail')->name('member.send.mail');
 
         Route::get('carts', 'MemberController@carts')->name('member.carts');

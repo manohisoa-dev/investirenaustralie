@@ -8,6 +8,23 @@
     @lang('inscriptionafa')
 @endcomponent
 <!-- Section -->
+<style>
+    #map{
+        height: 25rem;
+    }
+
+    #mapCanvas {
+        width: 500px;
+        height: 400px;
+        float: left;
+    }
+    #infoPanel {
+        float: left;
+    }
+    #infoPanel div {
+        margin-bottom: 5px;
+    }
+</style>
 
 <div class="main-slider-wrapper clearfix content corps p-100px-tb">
     <div class="container">
@@ -134,11 +151,11 @@
                                             </div>
                                         </fieldset>
                                         <fieldset>
-                                            <legend>Locality Information</legend>
+                                            <legend> Locality Information </legend>
                                             <div class="form-group">
                                                 <label for="country" class="col-sm-3 control-label">Pays *</label>
                                                 <div class="col-md-9">
-                                                    <select class="form-control" name="country">
+                                                    <select class="form-control country-select" name="country">
                                                         <option value="0">@lang('app.select_country')</option>
                                                         @foreach($countries as $country)
                                                             @if($country->prefixPhone)
@@ -146,48 +163,39 @@
                                                             @endif
                                                         @endforeach
                                                     </select>
-                                                    <span class="text-danger">{{ $errors->first('country') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="area_level_1" class="col-sm-3 control-label">State *</label>
-                                                <div class="col-md-9">
-                                                    <select class="form-control" name="area_level_1">
-                                                        <option value="0">@lang('app.select_state')</option>
-                                                        @foreach($states as $state)
-                                                        <option value="{{$state->id}}"> {{$state->content}}</option>
-                                                        @endforeach
-                                                    </select>
+                                                <label class="col-sm-3 control-label" for="state">State *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" name="area_level_1" id="area_level_1" >
                                                     <span class="text-danger">{{ $errors->first('area_level_1') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="area_level_2" class="col-sm-3 control-label">Suburb *</label>
+                                                <label class="col-sm-3 control-label" for="locality">City *</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="area_level_2" name="area_level_2" placeholder="Suburb" required>
-                                                    <span class="text-danger">{{ $errors->first('area_level_2') }}</span>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="locality" class="col-sm-3 control-label">City *</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="locality" name="locality" placeholder="City" required>
+                                                    <input type="text" class="form-control" name="locality" id="locality" required>
                                                     <span class="text-danger">{{ $errors->first('locality') }}</span>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
+                                            {{-- <div class="form-group">
                                                 <label for="route" class="col-sm-3 control-label">Street Address *</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" class="form-control" id="route" name="route" placeholder="Street Address" required>
                                                     <span class="text-danger">{{ $errors->first('route') }}</span>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                             <div class="form-group">
-                                                <label for="postalCode" class="col-sm-3 control-label">Post Code *</label>
+                                                <label class="col-sm-3 control-label" for="postalCode">Post Code *</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="postalCode" name="postalCode" placeholder="Post Code" required>
+                                                    <input type="text" class="form-control" name="postalCode" id="postalCode" required>
                                                     <span class="text-danger">{{ $errors->first('postalCode') }}</span>
                                                 </div>
+                                            </div>
+                                            <div>
+                                                <input type="hidden" name="longitude" id="longitude">
+                                                <input type="hidden" name="latitude" id="latitude">
                                             </div>
                                         </fieldset>
                                         <fieldset>
@@ -251,6 +259,33 @@
         </div>
     </div>
 </div>
+
+<div id="countrySelectModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content white-bg">
+            <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
+                <h4 class="modal-title white-color">{{trans('app.txt.choose_position')}}</h4>
+            </div>
+            <div class="modal-body">
+                <div id="map"></div>                  
+                <div id="infoPanel"  class=" col-lg-12 border-top-1 border-color-gray m-25px-t p-15px-t">
+                    <b>@lang('app.txt.marker.status') :</b>
+                    <div id="markerStatus"><i>@lang('app.txt.marker.click_drag')</i></div>
+                    <b>@lang('app.txt.marker.current_position'):</b>
+                    <div id="info"></div>
+                    <b>@lang('app.txt.marker.matching_address') :</b>
+                    <div id="address"></div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="pull-left m-btn m-btn-theme" data-dismiss="modal">@lang('app.btn.close')</a>
+                <a type="button" class="pull-left m-btn m-btn-theme4rd" id="btn_save">@lang('app.btn.save')</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @push('script')
@@ -283,4 +318,158 @@
     });
 
 </script>
+
+<script>
+    $('form').on('change','.country-select',function(){
+        var country_id = $(this).val();
+
+        if(country_id==12){
+            $('#countrySelectModal').modal('show');
+        }
+
+        // renitialise localization info input
+        $('#latitude').val('');
+        $('#longitude').val('');
+        $('#postalCode').val('');
+        $('#locality').val('');
+        $('#area_level_1').val('');
+    })
+</script>
+<script type="text/javascript">
+    var _map;
+    var _lat = -25.363;
+    var _long = 131.044;
+    var geocoder;
+
+    function initMap() {
+        var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
+            geocoder = new google.maps.Geocoder();
+        
+        _map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: _lat, lng:  _long},
+            zoom: 4
+        });
+
+        // Place a draggable marker on the map
+        var marker = new google.maps.Marker({
+            position: {lat: _lat, lng:  _long},
+            map: _map,
+            draggable:true,
+            title:"{{ trans('app.txt.choose_position') }}"
+        });
+
+        // Get info with marker drag
+        // Update current position info.
+        updateMarkerPosition(myLatlng);
+        geocodePosition(myLatlng);
+        
+        // Add dragging event listeners.
+        google.maps.event.addListener(marker, 'dragstart', function() {
+            updateMarkerAddress('{{ trans("app.txt.marker.dragging") }}...');
+        });
+        
+        google.maps.event.addListener(marker, 'drag', function() {
+            updateMarkerStatus('{{ trans("app.txt.marker.dragging") }}...');
+            updateMarkerPosition(marker.getPosition());
+        });
+        
+        google.maps.event.addListener(marker, 'dragend', function() {
+            updateMarkerStatus('{{ trans("app.txt.marker.drag_ended") }}');
+            geocodePosition(marker.getPosition());
+        });
+        
+        
+        // Onload handler to fire off the app.
+        // google.maps.event.addDomListener(window, 'load', initialize);
+        // End Get info with marker drag
+    }
+    
+    function geocodePosition(pos) {
+        geocoder.geocode({
+            latLng: pos
+        }, function(responses) {
+            if (responses && responses.length > 0) {
+            updateMarkerAddress(responses[0].formatted_address);
+            } else {
+            updateMarkerAddress("{{ trans('app.txt.marker.cannot_determine_address') }}");
+            }
+        });
+    }
+    
+    function updateMarkerStatus(str) {
+        document.getElementById('markerStatus').innerHTML = str;
+    }
+    
+    function updateMarkerPosition(latLng) {
+        document.getElementById('info').innerHTML = [
+            latLng.lat(),
+            latLng.lng()
+        ].join(', ');
+    }
+    
+    function updateMarkerAddress(str) {
+        document.getElementById('address').innerHTML = str;
+    }
+</script>
+<script type="text/javascript">
+    $('#btn_save').click(function(){
+        var latLong = $('#info').text();
+        var adr = ($('#address').text()).split(',');
+        var lat=0;long = 0;
+        var state,postalCode,locality="";
+
+        switch (adr.length) {
+            case 3:
+                var adrInfo = adr[1].split(' ');
+                lat = latLong.split(',')[0];            
+                long = latLong.split(',')[1];
+                postalCode = adrInfo[(adrInfo.length)-1];
+                state = adrInfo[(adrInfo.length)-2];
+
+                // set locality
+                for(var i=0;i<adrInfo.length-2;i++){
+                    if(adrInfo[i].length !== 0){
+                        locality+=adrInfo[i]+' ';
+                    }
+                }
+
+                $('#countrySelectModal').modal('hide');
+
+                break;
+
+            case 2:
+                var adrInfo = adr[0].split(' ');
+                lat = latLong.split(',')[0];            
+                long = latLong.split(',')[1];
+                postalCode = adrInfo[(adrInfo.length)-1];
+                state = adrInfo[(adrInfo.length)-2];
+
+                // set locality
+                for(var i=0;i<adrInfo.length-2;i++){
+                    if(adrInfo[i].length !== 0){
+                        locality+=adrInfo[i]+' ';
+                    }
+                }
+
+                $('#countrySelectModal').modal('hide');
+                
+                break;
+        
+            default:
+                alert("{{ trans('app.txt.choose_position_exacte') }}");
+                break;
+        }
+        
+        // set localisation input info
+        $('#latitude').val(lat);
+        $('#longitude').val(long);
+        $('#postalCode').val(postalCode);
+        $('#locality').val(locality);
+        $('#area_level_1').val(state);
+    });
+
+</script>
+
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA&callback=initMap"></script>
 @endpush
