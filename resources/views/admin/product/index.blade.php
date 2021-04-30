@@ -193,22 +193,10 @@
 									
 									{{ csrf_field() }}
 									{{ method_field('DELETE') }}
-									<button onclick="return confirm('Vous êtes sur?')"
-											type="submit" class="btn btn-default btn-circle" title="Suppression"><i class="fa fa-times text-danger"></i>
+									
+									
+									<button type="button" class="btn btn-default btn-circle" title="Suppression" id="delRecord"><i class="fa fa-times text-danger"></i>
 									</button>
-									<?php /*?><a href="{{route('admin.product.archive', $record->id)}}" class="btn btn-default btn-circle" title="Archiver">
-										<i class="fa fa-archive"></i>
-									</a>&nbsp;&nbsp;
-									<a href="{{route('admin.product.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="Détail">
-										<i class="fa fa-eye"></i>
-									</a>&nbsp;&nbsp;								
-									<a href="{{route('admin.product.index')}}/{{$record->id}}/edit" class="btn btn-default btn-circle" title="Modification">
-										<i class="fa fa-pencil-square-o"></i>
-									</a>&nbsp;&nbsp;									
-									{{ csrf_field() }}
-									{{ method_field('DELETE') }}
-									<button onclick="return confirm('Vous êtes sur?')"
-											type="submit" class="btn btn-default btn-circle" title="Suppression"><i class="fa fa-trash text-danger"></i></button><?php */?>
 								</form>
 							</td>
                         </tr>
@@ -225,4 +213,26 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('custom-script')
+	<script src="{{ asset('administrator/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
+	<script>
+		$(document.body).on('click', '#delRecord', function (event) {
+        	event.preventDefault();
+        	var $form = $(this).closest('form');
+				swal({
+					title: "Voulez-vous supprimer ?",
+					type: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#DD6B55",
+					confirmButtonText: "Oui",
+					cancelButtonText: "Annuler",
+					closeOnConfirm: true
+				},
+				function () {
+                    $form.submit();
+                });
+      });
+	</script>
 @endsection

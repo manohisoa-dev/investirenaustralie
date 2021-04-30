@@ -52,7 +52,8 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     
     Route::resource('product','ProductController');
     Route::post('ajaxRequestProduct', 'ProductController@ajaxRequestPost')->name('ajaxRequestProduct.post');  
-    Route::post('ajaxRequestProgramme', 'ProductController@ajaxRequestProgramme')->name('ajaxRequestProgramme.post');    
+    Route::post('ajaxRequestProgramme', 'ProductController@ajaxRequestProgramme')->name('ajaxRequestProgramme.post');  
+    Route::get('ajaxCheckFirb', 'ProductController@ajaxCheckFirb')->name('ajaxCheckFirb');    
     Route::get('archive/{product}', 'ProductController@archive')->name('product.archive');
     Route::get('trash/{product}', 'ProductController@trash')->name('product.trash');
     Route::get('restore/{product}', 'ProductController@restore')->name('product.restore');

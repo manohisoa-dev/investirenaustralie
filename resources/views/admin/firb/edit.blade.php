@@ -39,6 +39,7 @@
                     {{ method_field("PUT") }}
                                                                                                 
                             {!! \Nvd\Crud\Form::input('label','text')->model($firb)->show() !!}
+							{!! \Nvd\Crud\Form::input('codePostal','text')->model($firb)->show() !!}
                                                                                                                                                 
                     <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Enregistrer</button>
 

@@ -16,6 +16,7 @@ class Firb extends Model {
         // search results based on user input
         \Request::input('id') and $query->where('id',\Request::input('id'));
         \Request::input('label') and $query->where('label','like','%'.\Request::input('label').'%');
+        \Request::input('codePostal') and $query->where('codePostal','like','%'.\Request::input('codePostal').'%');
         \Request::input('created_at') and $query->where('created_at',\Request::input('created_at'));
         \Request::input('updated_at') and $query->where('updated_at',\Request::input('updated_at'));
         

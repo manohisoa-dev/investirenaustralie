@@ -162,7 +162,7 @@
                                 </span>
                             </td>
 							<td class="actions-cell text-center" width="12%">
-								<form class="form-inline" id="del_programme" action="{{route('admin.product.index')}}/{{$record->id}}" method="POST">
+								<form class="form-inline" action="{{route('admin.product.index')}}/{{$record->id}}" method="POST">
 									<a href="{{route('admin.product.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="Détail">
 										<i class="fa fa-eye"></i>
 									</a>&nbsp;&nbsp;
@@ -171,8 +171,10 @@
 									</a>&nbsp;&nbsp;
 									{{ csrf_field() }}
 									{{ method_field('DELETE') }}
-									<button type="submit" class="btn btn-default btn-circle" title="Suppression"><i class="fa fa-times text-danger"></i>
+									
+									<button type="button" class="btn btn-default btn-circle" title="Suppression" id="delRecord"><i class="fa fa-times text-danger"></i>
 									</button>
+								</form>
 							</td>
                         </tr>
                         @empty @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 40]) @endforelse
@@ -180,10 +182,6 @@
                 </table>
 
                 @include('vendor.crud.single-page-templates.common.pagination', [ 'records' => $records ] )
-
-                <script>
-                    $(".editable").editable({ ajaxOptions: { method: "PUT" } });
-                </script>
             </div>
         </div>
     </div>
@@ -193,20 +191,21 @@
 @section('custom-script')
 	<script src="{{ asset('administrator/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
 	<script>
-		$(document).on('submit', '[id^=del_programme]', function (e) {
-			e.preventDefault();
-			var data = $(this).serialize();
-			swal({
-				title: "Programme",
-				text: "Voulez-vous supprimer",
-				type: "warning",
-				showCancelButton: true,
-				confirmButtonText: "Confirmer",
-				cancelButtonText: "Annuler",
-			}).then(function (e) {
-				$('form #del_programme').submit();
-			});
-			return false;
-		});
+		$(document.body).on('click', '#delRecord', function (event) {
+        	event.preventDefault();
+        	var $form = $(this).closest('form');
+				swal({
+					title: "Voulez-vous supprimer ?",
+					type: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#DD6B55",
+					confirmButtonText: "Oui",
+					cancelButtonText: "Annuler",
+					closeOnConfirm: true
+				},
+				function () {
+                    $form.submit();
+                });
+      });
 	</script>
 @endsection

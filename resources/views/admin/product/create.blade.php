@@ -32,16 +32,41 @@
                 <h5>Ajouter un nouveau Product</h5>
             </div>
             <div class="ibox-content">
-				<form class="form-validation form-padding wizard-big" action="{{ route('admin.product.store') }}" method="post" id="form" enctype="multipart/form-data">
-					<h1>Programme</h1>
+				<form class="form-padding wizard-big" action="{{ route('admin.product.store') }}" method="post" id="form" enctype="multipart/form-data">
+					<h1>Configuration</h1>
 					<fieldset>
-						<h2>Information sur le programme</h2>
+						<h2>Information sur la configuration</h2>
 						{{ csrf_field() }}
 						<div class="row">
+							<div class="col-lg-12">
+								<div class="form-group">
+									<label for="title">Ancienneté du bien *</label>
+									<select class="form-control" name="ancienneteBien" id="ancienneteBien">
+										<option value="">Choisir...</option>
+										<option value="Neuf">Neuf</option>
+										<option value="Ancien">Ancien</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="row" style="display:none" id="nature_enregistrement">
+							<div class="col-lg-12">
+								<div class="form-group">
+									<label for="title">Nature de L'Enregistrement *</label>
+									<select class="form-control" name="natureBien" id="natureBien">
+										<option value="">Choisir...</option>
+										<option value="Programme immobilier">Programme immobilier</option>
+										<option value="Produit individuel">Produit individuel</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<!-- choix programmme existant ou nouveau -->
+						<div class="row" style="display:none" id="programme">
 							<div class="col-lg-6">
 								<div class="form-group">
 									<label>Choisir programme *</label>
-									<select class="form-control" name="parent_id" id="parent_id">
+									<select class="form-control" name="parent_id" id="parent_id" style="width:100%">
 										<option value="">Choisir...</option>
 										<option value="0">Nouveau programme</option>
 										@foreach(\App\Models\Product::where('parent_id',0)->get() as $prd)
@@ -52,6 +77,8 @@
 							</div>
 							<div class="col-lg-6"></div>
 						</div>
+						<!-- fin choix programmme existant ou nouveau -->
+						<!-- information programme -->
 						<div id="info-programme" style="display:none">
 							<div class="row">							
 								<div class="col-lg-3">
@@ -102,6 +129,32 @@
 								</div>
 							</div>
 						</div>
+						<!-- fin information programme -->
+						<!-- si ancienneté est encien -->
+						<div id="info_code_postal" style="display:none">
+							<div class="row">
+								<div class="col-lg-6">
+									<div class="form-group">
+										<label for="title">Code postal *</label>
+										<input type="text" class="form-control" name="postal_code" id="postal_code" />
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="form-group">
+										<label for="title">Année de construction du bâtiment *</label>
+										<input type="number" class="form-control" name="annee_const" id="annee_const" />
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-12">
+									<label class="chk_firb"> 
+										<input type="checkbox" value="" name="chk_firb"> The Seller certifies undertheir sole responsibilitythatthispropertycanbesold to non-residentforeigners in accordance withAustralianlaw and the rules applicable by the ForeignInvestmentReviewBoard (FIRB)
+									</label>
+								</div>
+							</div>
+						</div>
+						<!-- fin si ancienneté est encien -->
 					</fieldset>
 					
 					<h1>Produit</h1>
@@ -241,44 +294,47 @@
 								</div>  
 							</div>
 						</div>
-						<div class="row">
-							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="title">Etat</label>
-									<select class="form-control" name="state_id" id="state_id" style="width:100%">
-										@foreach(\App\Models\State::all() as $state)
-											<option value="{{$state->id}}">{{$state->content}}</option>
-										@endforeach
-									</select>
+						
+						<div id="infoAdresse" style="display:none">
+							<div class="row">
+								<div class="col-lg-3">
+									<div class="form-group">
+										<label for="title">Etat</label>
+										<select class="form-control" name="state_id" id="state_id" style="width:100%">
+											@foreach(\App\Models\State::all() as $state)
+												<option value="{{$state->id}}">{{$state->content}}</option>
+											@endforeach
+										</select>
+									</div>
 								</div>
+								<div class="col-lg-3">
+									<div class="form-group">
+										<label for="title">Code postal</label>
+										<input name="postalCode" id="postalCode" class="form-control" type="text" value="">
+									</div>
+								</div>
+								<div class="col-lg-3">
+									<div class="form-group">
+										<label for="title">Nouvelle construction</label>
+										<select class="form-control" name="new_construction" id="new_construction">
+											<option value="0">OUI</option>
+											<option value="1">NON</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-lg-3">
+									<div class="form-group">
+										<label for="title">Année de construction</label>
+										<input name="year_built" id="year_built" class="form-control" type="number" value="0">
+									</div>
+								</div>							
 							</div>
-							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="title">Code postal</label>
-									<input name="postalCode" id="postalCode" class="form-control" type="text" value="">
-								</div>
-							</div>
-							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="title">Nouvelle construction</label>
-									<select class="form-control" name="new_construction" id="new_construction">
-										<option value="0">OUI</option>
-										<option value="1">NON</option>
-									</select>
-								</div>
-							</div>
-							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="title">Année de construction</label>
-									<input name="year_built" id="year_built" class="form-control" type="number" value="0">
-								</div>
-							</div>							
-						</div>
-						<div class="row">
-							<div class="col-lg-12">
-								<div class="form-group">
-									<label for="title">Adresse *</label>
-									<input name="display_address" id="display_address" class="form-control" type="text" value="">
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="form-group">
+										<label for="title">Adresse *</label>
+										<input name="display_address" id="display_address" class="form-control" type="text" value="">
+									</div>
 								</div>
 							</div>
 						</div>
@@ -297,94 +353,7 @@
 	<!-- Jquery Validate -->
     <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
     <script>
-        $(document).ready(function(){
-			$('#productForm').validate({
-			    ignore: [],
-				rules: {
-					title: {
-						required: true
-					},
-					category_id: {
-						required: true
-					},
-					type_id: {
-						required: true
-					},
-					parent_id: {
-						required: true
-					},
-					content: {
-						required: true
-					},
-					quantity: {
-						required: true
-					},
-					image: {
-						required: true
-					},
-					price: {
-						required: true
-					},
-					currency: {
-						required: true
-					},
-					year_built: {
-						required: true
-					},
-					display_address: {
-						required: true
-					},
-					state_id: {
-						required: true
-					}
-				},
-				messages: {
-					title: {
-						required: "Champ obligatoire"
-					},
-					category_id: {
-						required: "Champ obligatoire"
-					},
-					type_id: {
-						required: "Champ obligatoire"
-					},
-					parent_id: {
-						required: "Champ obligatoire"
-					},
-					content: {
-						required: "Champ obligatoire"
-					},
-					quantity: {
-						required: "Champ obligatoire"
-					},
-					image: {
-						required: "Champ obligatoire"
-					},
-					price: {
-						required: "Champ obligatoire"
-					},
-					currency: {
-						required: "Champ obligatoire"
-					},
-					year_built: {
-						required: "Champ obligatoire"
-					},
-					display_address: {
-						required: "Champ obligatoire"
-					},
-					state_id: {
-						required: "Champ obligatoire"
-					}
-				},
-				errorPlacement: function ( error, element ) {
-					if(element.parent().hasClass('input-group')){
-						error.insertBefore( element.parent() );
-					}else{
-						error.insertAfter( element );
-					}
-				},
-			});
-			
+        $(document).ready(function(){			
 			$("#form").steps({
                 bodyTag: "fieldset",
                 onStepChanging: function (event, currentIndex, newIndex)
@@ -462,68 +431,10 @@
 					}
 				},
 				rules: {
-					parent_id: {
-						required: true
-					},
-					title: {
-						required: true
-					},
-					cat_programmme_id: {
-						required: true
-					},
-					prix_min: {
-						required: true
-					},
-					prix_max: {
-						required: true
-					},
-					display_address: {
-						required: true
-					},
-					price: {
-						required: true
-					},
-					quantity: {
-						required: true
-					},
-					type_id: {
-						required: true
-					},
-					title_product: {
-						required: true
-					}
+					
 				},
 				messages: {
-					parent_id: {
-						required: "Champ obligatoire"
-					},
-					title: {
-						required: "Champ obligatoire"
-					},
-					cat_programmme_id: {
-						required: "Champ obligatoire"
-					},
-					prix_min: {
-						required: "Champ obligatoire"
-					},
-					prix_max: {
-						required: "Champ obligatoire"
-					},
-					display_address: {
-						required: "Champ obligatoire"
-					},
-					price: {
-						required: "Champ obligatoire"
-					},
-					quantity: {
-						required: "Champ obligatoire"
-					},
-					type_id: {
-						required: "Champ obligatoire"
-					},
-					title_product: {
-						required: "Champ obligatoire"
-					}
+					
 				}
 			});
 			CKEDITOR.replace( 'description' );
@@ -533,6 +444,30 @@
 			$("#seller_id").select2();
 			$("#parent_id").select2();
 			$("#type_id").select2();
+			
+			$('#ancienneteBien').on('change', function() {
+				var anciennete = this.value;
+				if(anciennete == 'Neuf'){
+					$('#nature_enregistrement').show();
+					$('#infoAdresse').show();
+					$('#info_code_postal').hide();
+					$('#natureBien').on('change', function() {
+						var nature = this.value;
+						//console.log(nature);
+						if(nature == 'Programme immobilier'){
+							$('#programme').show();								
+						}else{
+							//pour le programme individuel
+							$('#programme').hide();	
+							$("#form").steps("next")
+						}
+					});
+				}else{
+					$('#info_code_postal').show();
+					$('#infoAdresse').hide();
+					$('#nature_enregistrement').hide();
+				}
+			});
 				
 			$('#parent_id').on('change', function() {
 				var type_programme = this.value;				

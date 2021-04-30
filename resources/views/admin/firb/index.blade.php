@@ -38,6 +38,7 @@
                     <tr class="header-row">
 						{!!\Nvd\Crud\Html::sortableTh('id','admin.firb.index','Id')!!}
 						{!!\Nvd\Crud\Html::sortableTh('label','admin.firb.index','Label')!!}
+						{!!\Nvd\Crud\Html::sortableTh('codePostal','admin.firb.index','Code postal')!!}
 						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.firb.index','Crée le')!!}
 						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.firb.index','Modifié le')!!}
 						<th><a href="javascript:void(0)">Actions</a></th>
@@ -46,6 +47,7 @@
                         <form class="search-form">
 							<td><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
 							<td><input type="text" class="form-control" name="label" value="{{Request::input("label")}}"></td>
+							<td><input type="text" class="form-control" name="codePostal" value="{{Request::input("codePostal")}}"></td>
 							<td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>
 							<td><input type="text" class="form-control" name="updated_at" value="{{Request::input("updated_at")}}"></td>
 							<td style="min-width: 6em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>
@@ -65,6 +67,15 @@
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
                                           data-url="{{ route('admin.firb.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->label }}</span>
+                                 </td>
+								 <td>
+                                    <span class="editable"
+                                          data-type="text"
+                                          data-name="label"
+                                          data-value="{{ $record->codePostal }}"
+                                          data-pk="{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('admin.firb.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          >{{ $record->codePostal }}</span>
                                  </td>
                                  <td>{{$record->created_at ? $record->created_at->diffForHumans() : ""}}</td>
                                  <td>{{$record->updated_at ? $record->updated_at->diffForHumans() : ""}}</td>
