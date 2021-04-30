@@ -353,7 +353,8 @@
 	<!-- Jquery Validate -->
     <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
     <script>
-        $(document).ready(function(){			
+        $(document).ready(function(){	
+				
 			$("#form").steps({
                 bodyTag: "fieldset",
                 onStepChanging: function (event, currentIndex, newIndex)
@@ -422,6 +423,7 @@
                 }
             }).validate({
 			    ignore: [],
+				ignore:":not(:visible)",
 				errorPlacement: function (error, element)
 				{
 					if(element.parent().hasClass('input-group')){
@@ -437,6 +439,7 @@
 					
 				}
 			});
+			
 			CKEDITOR.replace( 'description' );
 			CKEDITOR.replace( 'desc_product' );
 			$("#category_id").select2();
