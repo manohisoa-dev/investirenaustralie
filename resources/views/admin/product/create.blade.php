@@ -150,13 +150,15 @@
 									</div>
 								</div>
 								<div class="col-lg-4">
-									<div class="form-group">
-										<label for="title">Etat *</label>
-										<select class="form-control" name="state_id" id="state_id" style="width:100%">
-											@foreach(\App\Models\State::all() as $state)
-												<option value="{{$state->id}}">{{$state->content}}</option>
-											@endforeach
-										</select>
+									<div id="info_etat">
+										<div class="form-group">
+											<label for="title">Etat *</label>
+											<select class="form-control" name="state_id" id="state_id" style="width:100%">
+												@foreach(\App\Models\State::all() as $state)
+													<option value="{{$state->id}}">{{$state->content}}</option>
+												@endforeach
+											</select>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -165,7 +167,7 @@
 									<div class="form-group">
 										<label for="title">Pays</label>
 										<select class="form-control" name="countryId" id="countryId" style="width:100%">
-											@foreach(\App\Models\Country::where('id',12)->get() as $country)
+											@foreach(\App\Models\Country::whereIn('id',[12,152])->get() as $country)
 												<option value="{{$country->id}}">{{$country->content}}</option>
 											@endforeach
 										</select>
@@ -499,6 +501,7 @@
 						$('#chk_firb').show();
 						$('#yearConstruct').hide();
 					}else if(ancienneteBien == 'Ancien'){
+						$('[name="year_built"]').val($('#annee_const').val()).prop("readonly", true);
 						$('#yearConstruct').show();
 						$('#jardin_info').show();
 						$('#chk_picine').show();
@@ -576,10 +579,56 @@
 					}
 				},
 				rules: {
-					
+					cat_programmme_id: {
+						required: true
+					},
+					ancienneteBien: {
+						required: true
+					},
+					natureBien: {
+						required: true
+					},
+					parent_id: {
+						required: true
+					},
+					prix_min: {
+						required: true
+					},
+					prix_max: {
+						required: true
+					},
+					type_id: {
+						required: true
+					},
+					image_programme: {
+						required: true
+					}
 				},
 				messages: {
-					
+					cat_programmme_id: {
+						required: "Champ obligatoire"
+					},
+					ancienneteBien: {
+						required: "Champ obligatoire"
+					},
+					natureBien: {
+						required: "Champ obligatoire"
+					},
+					parent_id: {
+						required: "Champ obligatoire"
+					},
+					prix_min: {
+						required: "Champ obligatoire"
+					},
+					prix_max: {
+						required: "Champ obligatoire"
+					},
+					type_id: {
+						required: "Champ obligatoire"
+					},
+					image_programme: {
+						required: "Champ obligatoire"
+					}
 				}
 			});
 			
@@ -590,6 +639,14 @@
 			$("#seller_id").select2();
 			$("#parent_id").select2();
 			//$("#type_id").select2();
+			$('#countryId').on('change', function() {
+				var country = this.value;
+				if(country == 152){
+					$('#info_etat').hide();
+				}else{
+					$('#info_etat').show();
+				}
+			});
 			
 			$('#ancienneteBien').on('change', function() {
 				var anciennete = this.value;

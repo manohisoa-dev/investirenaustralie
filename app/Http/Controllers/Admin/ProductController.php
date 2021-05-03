@@ -70,6 +70,7 @@ class ProductController extends Controller {
             Notify::success('Programme a été créer avec succès');
             return redirect(route('admin.product.programme'));
         } else {
+            dd($request->All());
             //creation produit
             if ($anciennete == 'Neuf') {
                 if ($nature == 'Programme immobilier') {
