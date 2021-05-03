@@ -38,7 +38,18 @@
 						<h2>Information sur la configuration</h2>
 						{{ csrf_field() }}
 						<div class="row">
-							<div class="col-lg-12">
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label>A quelle catégorie appartient le bien que vous voulez saisir ? *</label>
+									<select class="form-control" name="cat_programmme_id" id="cat_programmme_id">
+										<option value="">Choisir...</option>
+										@foreach(\App\Models\Category::all() as $category)
+											<option value="{{$category->id}}">{{$category->title}}</option>
+										@endforeach
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-4">
 								<div class="form-group">
 									<label for="title">Ancienneté du bien *</label>
 									<select class="form-control" name="ancienneteBien" id="ancienneteBien">
@@ -48,16 +59,16 @@
 									</select>
 								</div>
 							</div>
-						</div>
-						<div class="row" style="display:none" id="nature_enregistrement">
-							<div class="col-lg-12">
-								<div class="form-group">
-									<label for="title">Nature de L'Enregistrement *</label>
-									<select class="form-control" name="natureBien" id="natureBien">
-										<option value="">Choisir...</option>
-										<option value="Programme immobilier">Programme immobilier</option>
-										<option value="Produit individuel">Produit individuel</option>
-									</select>
+							<div class="col-lg-4">
+								<div id="nature_enregistrement" style="display:none">
+									<div class="form-group">
+										<label for="title">Nature de L'Enregistrement *</label>
+										<select class="form-control" name="natureBien" id="natureBien">
+											<option value="">Choisir...</option>
+											<option value="Programme immobilier">Programme immobilier</option>
+											<option value="Produit isolé">Produit isolé</option>
+										</select>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -80,52 +91,106 @@
 						<!-- fin choix programmme existant ou nouveau -->
 						<!-- information programme -->
 						<div id="info-programme" style="display:none">
-							<div class="row">							
-								<div class="col-lg-3">
+							<div class="row">
+								<div class="col-md-4">
 									<div class="form-group">
-										<label>Catégorie *</label>
-										<select class="form-control" name="cat_programmme_id" id="cat_programmme_id">
-											<option value="">Choisir...</option>
-											@foreach(\App\Models\Category::all() as $category)
-												<option value="{{$category->id}}">{{$category->title}}</option>
-											@endforeach
-										</select>
+										<label for="title">Prix Minimal *</label>
+										<input name="prix_min" id="prix_min" class="form-control" type="number" value="">
 									</div>
 								</div>
-								<div class="col-lg-3">
+								<div class="col-md-4">
 									<div class="form-group">
-										<label>Prix Minimal *</label>
-										<input name="prix_min" id="prix_min" class="form-control" type="number" value="0">
+										<label for="title">Prix Maximal *</label>
+										<input name="prix_max" id="prix_max" class="form-control" type="number" value="">
 									</div>
 								</div>
-								<div class="col-lg-3">
+								<div class="col-lg-4">
 									<div class="form-group">
-										<label>Prix Maximal *</label>
-										<input name="prix_max" id="prix_max" class="form-control" type="number" value="0">
-									</div>
-								</div>
-								<div class="col-lg-3">
-									<div class="form-group">
-										<label for="title">Photo</label>
+										<label for="title">Photo programme *</label>
 										<input name="image_programme" class="form-control" type="file">
 									</div>
 								</div>
 							</div>
-							<div class="row">     
-								<div class="col-lg-12">                              
+							<div class="row">
+								<div class="col-lg-4">
 									<div class="form-group">
-										<label for="title">Titre *</label>
-										<input name="title" id="title" class="form-control" type="text" value="">
+										<label for="title">Type de produits *</label>
+										<select class="form-control" name="type_id" id="type_id" style="width:100%">
+											<option value="">Choisir...</option>
+											@foreach(\App\Models\Type::all() as $ty)
+												<option value="{{$ty->id}}">{{$ty->title}}</option>
+											@endforeach
+										</select>
+									</div>
+								</div>
+								<div class="col-lg-4">
+									<div class="form-group">
+										<label for="title">Adresse rue *</label>
+										<input name="display_address" id="display_address" class="form-control" type="text" value="">
+									</div>
+								</div>
+								<div class="col-lg-4">
+									<div class="form-group">
+										<label for="title">Suburb</label>
+										<input name="suburb" id="suburb" class="form-control" type="text" value="">
 									</div>
 								</div>
 							</div>
-							<div class="row">     
+							<div class="row">
+								<div class="col-lg-4">
+									<div class="form-group">
+										<label for="title">Ville *</label>
+										<input name="ville" id="ville" class="form-control" type="text">
+									</div>  
+								</div>
+								<div class="col-lg-4">
+									<div class="form-group">
+										<label for="title">Code postal *</label>
+										<input name="postalCode" id="postalCode" class="form-control" type="text" value="">
+									</div>
+								</div>
+								<div class="col-lg-4">
+									<div class="form-group">
+										<label for="title">Etat *</label>
+										<select class="form-control" name="state_id" id="state_id" style="width:100%">
+											@foreach(\App\Models\State::all() as $state)
+												<option value="{{$state->id}}">{{$state->content}}</option>
+											@endforeach
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-4">
+									<div class="form-group">
+										<label for="title">Pays</label>
+										<select class="form-control" name="countryId" id="countryId" style="width:100%">
+											@foreach(\App\Models\Country::where('id',12)->get() as $country)
+												<option value="{{$country->id}}">{{$country->content}}</option>
+											@endforeach
+										</select>
+									</div>
+								</div>
+								<div class="col-md-8">                              
+									<div class="form-group">
+										<label for="title">Nom/Titre du programme *</label>
+										<input name="title_programme" id="title_programme" class="form-control" type="text" value="">
+									</div>
+								</div>
+							</div>
+							<div class="row">
 								<div class="col-lg-12">                              
 									<div class="form-group">
-										<label for="title">Description</label>
+										<label for="title">Description du programme</label>
 										<textarea class="form-control" rows="10" name="description" id="description"></textarea>
-										<input type="hidden" name="type" value="{{$type}}" />
 									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-12">
+									<label class="chk_firb"> 
+										<input type="checkbox" value="" name="chk_firb"> The Seller certifies under their sole responsibilitythatthis property canbe sold to non-residentforeigners in accordance with Australian law and the rules applicable by the Foreign Investment Review Board (FIRB).
+									</label>
 								</div>
 							</div>
 						</div>

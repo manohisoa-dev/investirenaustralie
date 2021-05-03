@@ -12,7 +12,11 @@ use Jleon\LaravelPnotify\Notify;
 
 use App\Models\Image;
 use App\Models\User;
+use App\Models\Localisation;
 use Auth;
+
+use GuzzleHttp;
+use GuzzleHttp\Client;
 
 class ProductController extends Controller {
     public $viewDir = "admin.product";
@@ -35,11 +39,12 @@ class ProductController extends Controller {
      * @return  \Illuminate\Http\Response
      */
     public function create() {
-        if ($_GET['type'] == 'produit') {
-            return $this->view("create", ['type' => $_GET['type']]);
+        //dd($this->get_lonlat('509 Pitt Street, Sydney, 2000, NSW, Australia'));
+        /*if ($_GET['type'] == 'produit') {
+        return $this->view("create", ['type' => $_GET['type']]);
         } else {
-            return $this->view("create_programme", ['type' => $_GET['type']]);
-        }
+        return $this->view("create_programme", ['type' => $_GET['type']]);
+        }*/
     }
 
     /**
@@ -51,12 +56,15 @@ class ProductController extends Controller {
     public function store(Request $request) {
         $this->middleware('auth');
         $this->middleware('role:1');
+        dd($request->All());
         $anciennete = $request->ancienneteBien;
         $nature = $request->natureBien;
         if ($request->type == 'programme') {
             //creation simple programme
-            $this->save_programme($request->title, $request->file('image_programme'), $request->category_id,
-                $request->prix_min, $request->prix_max, $request->content);
+            $this->save_programme($request->category_id, $request->ancienneteBien, $request->natureBien,
+                $request->file('image_programme'), $request->prix_min, $request->prix_max, $request->type_id,
+                $request->display_address, $request->postalCode, $request->state_id, $request->title,
+                $request->content);
 
             # notification
             Notify::success('Programme a été créer avec succès');
@@ -113,7 +121,27 @@ class ProductController extends Controller {
         }
     }
 
-    function save_programme($title, $photo, $categorie, $prix_min, $prix_max, $content) {
+    function get_lonlat($address) {
+        try {
+            //Converts address into Lat and Lng
+            $client = new Client(); //GuzzleHttp\Client
+            $result = (string )$client->post("https://maps.googleapis.com/maps/api/geocode/json?address=$address", ['form_params' => ['key' =>
+                'AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA']])->getBody();
+            $json = json_decode($result);
+            $address->lat = $json->results[0]->geometry->location->lat;
+            $address->lng = $json->results[0]->geometry->location->lng;
+            return $result;
+        }
+        catch (exception $e) {
+        }
+    }
+
+    function save_location() {
+        $location = new Localisation();
+    }
+
+    function save_programme($categorie, $ancienete, $nature, $photo, $prix_min, $prix_max,
+        $type_id, $display_address, $postalCode, $state_id, $title, $content) {
         $slug = generateSlug($title);
         $programme = new Product();
         if ($file = $photo) {
@@ -121,10 +149,16 @@ class ProductController extends Controller {
             $programme->image_id = $image->id;
         }
         $programme->category_id = $categorie;
+        $programme->ancienneteBien = $ancienete;
+        $programme->natureBien = $nature;
         $programme->min_price = $prix_min;
         $programme->max_price = $prix_max;
-        $programme->content = $content;
+        $programme->type_id = $type_id;
+        $programme->display_address = $display_address;
+        $programme->postalCode = $postalCode;
+        $programme->state_id = $state_id;
         $programme->title = $title;
+        $programme->content = $content;
         $programme->slug = $slug;
         $programme->author_id = Auth::user()->id;
         $programme->save();
@@ -224,9 +258,7 @@ class ProductController extends Controller {
             $product->category_id = $request->category_id;
             $product->min_price = $request->prix_min;
             $product->max_price = $request->prix_max;
-            $product->save();
-
-            # notification
+            $product->save(); # notification
             Notify::success('Programme a été mise à jour avec succès');
             return redirect(route('admin.product.programme'));
         }
@@ -256,15 +288,12 @@ class ProductController extends Controller {
     public function destroy(Request $request, Product $product) {
         if ($product->parent_id == 0) {
             //suppression produit
-            Product::where('parent_id', $product->id)->delete();
-            //suppression programme
-            $product->delete();
-            # notification
+            Product::where('parent_id', $product->id)->delete(); //suppression programme
+            $product->delete(); # notification
             Notify::success('Programme a été supprimer avec succès');
             return redirect(route('admin.product.programme'));
         } else {
-            $product->delete();
-            # notification
+            $product->delete(); # notification
             Notify::success('Produit a été supprimer avec succès');
             return redirect(route('admin.product.programme'));
         }
@@ -287,7 +316,6 @@ class ProductController extends Controller {
     public function trash(Request $request, Product $product) {
         $product->status = 'trashed';
         $product->save();
-
         Notify::success('Le produit a été ajouté au corbeille avec succés');
         return redirect(route('admin.product.index'));
     }
@@ -302,10 +330,8 @@ class ProductController extends Controller {
     public function restore(Request $request, Product $product) {
         $this->middleware('auth');
         $this->middleware('role:admin');
-
         $product->status = 'pinged';
         $product->save();
-
         Notify::success('Le produit a été restoré avec succés');
         return redirect(route('admin.product.index'));
     }
@@ -320,10 +346,8 @@ class ProductController extends Controller {
     public function publish(Request $request, Product $product) {
         $this->middleware('auth');
         $this->middleware('role:admin');
-
         $product->status = 'published';
         $product->save();
-
         Notify::success('Le produit a été publié avec succés');
         return redirect(route('admin.product.index'));
     }
@@ -349,12 +373,10 @@ class ProductController extends Controller {
         $code_postal = $_GET['postal_code'];
         $firb = Firb::where('codePostal', $code_postal)->get();
         if (count($firb) > 0) {
-            return 'true';
-            //echo 'true';
+            return 'true'; //echo 'true';
             //return response()->json(['msg'=>'true']);
         } else {
-            return 'false';
-            //echo 'false';
+            return 'false'; //echo 'false';
         }
     }
 
