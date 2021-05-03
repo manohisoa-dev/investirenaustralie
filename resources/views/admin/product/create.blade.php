@@ -226,26 +226,27 @@
 					<fieldset>
 						<h2>Information du produit</h2>
 						<div class="row">
-							<div class="col-lg-12">
-								<div class="form-group">
-									<label for="title">Titre du produit *</label>
-									<input name="title_product" id="title_product" class="form-control" type="text" value="">
+								<div class="col-lg-12">
+									<div class="form-group">
+										<label for="title">Titre du produit *</label>
+										<input name="title_product" id="title_product" class="form-control" type="text" value="">
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="row">     
-							<div class="col-lg-12">                              
-								<div class="form-group">
-									<label for="title">Description produit *</label>
-									<textarea class="form-control" rows="10" name="desc_product" id="desc_product"></textarea>
+							<div class="row">     
+								<div class="col-lg-12">                              
+									<div class="form-group">
+										<label for="title">Description produit *</label>
+										<textarea class="form-control" rows="10" name="desc_product" id="desc_product"></textarea>
+									</div>
 								</div>
 							</div>
-						</div>
+							
 						<div class="row">
 							<div class="col-lg-3">
 								<div class="form-group">
 									<label for="title">Type *</label>
-									<select class="form-control" name="type_id" id="type_id" style="width:100%">
+									<select class="form-control" name="product_type_id" id="product_type_id" style="width:100%">
 										<option value="">Choisir...</option>
 										@foreach(\App\Models\Type::all() as $ty)
 											<option value="{{$ty->id}}">{{$ty->title}}</option>
@@ -255,16 +256,65 @@
 							</div>
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Quantité</label>
-									<input name="quantity" id="quantity" class="form-control" type="number" value="0">
+									<label for="title">Suburb</label>
+									<input name="suburb_product" id="suburb_product" class="form-control" type="text" value="">
+								</div>
+							</div>
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Ville *</label>
+									<input name="ville_product" id="ville_product" class="form-control" type="text">
 								</div>  
 							</div>
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Prix</label>
+									<label for="title">Code postal *</label>
+									<input name="postalCode_product" id="postalCode_product" class="form-control" type="text" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label for="title">Adresse rue *</label>
+									<input name="display_address_product" id="display_address_product" class="form-control" type="text" value="">
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label for="title">Etat *</label>
+									<select class="form-control" name="state_id_product" id="state_id_product" style="width:100%">
+										@foreach(\App\Models\State::all() as $state)
+											<option value="{{$state->id}}">{{$state->content}}</option>
+										@endforeach
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label for="title">Pays</label>
+									<select class="form-control" name="countryId_product" id="countryId_product" style="width:100%">
+										@foreach(\App\Models\Country::where('id',12)->get() as $country)
+											<option value="{{$country->id}}">{{$country->content}}</option>
+										@endforeach
+									</select>
+								</div>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Quantité</label>
+									<input name="quantity" id="quantity" class="form-control" type="number" value="1">
+								</div>  
+							</div>
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Prix de vente</label>
 									<input name="price" id="price" class="form-control" type="number" value="0">
 								</div>  
-							</div>							
+							</div>
 							<div class="col-lg-3">
 								<div class="form-group">
 									<label for="title">Devise</label>
@@ -273,14 +323,6 @@
 										<option value="USD">Dollar</option>
 										<option value="AUD" selected="selected">Dollar Australien</option>
 									</select>
-								</div>  
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="title">Photo</label>
-									<input name="image" class="form-control" type="file">
 								</div>
 							</div>
 							<div class="col-lg-3">
@@ -292,114 +334,125 @@
 									</select>
 								</div>
 							</div>
-							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="title">Surface *</label>
-									<input name="area" id="area" class="form-control" type="text" value="">
-								</div>
-							</div>
-							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="title">Espaces de carport</label>
-									<input name="carport_spaces" id="carport_spaces" class="form-control" type="number" value="0">
-								</div>
-							</div>
 						</div>
-						
 						<div class="row">
-							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="title">Surface intérieur</label>
-									<input name="interior_area" id="interior_area" class="form-control" type="number" value="0">
-								</div>
-							</div>
-							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="title">Surface extérieur</label>
-									<input name="exterior_area" id="exterior_area" class="form-control" type="number" value="0">
-								</div>
-							</div>
-							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="title">Surface total</label>
-									<input name="total_area" id="total_area" class="form-control" type="number" value="0">
-								</div>
-							</div>
-							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="title">Unités garage</label>
-									<input name="garage_spaces" id="garage_spaces" class="form-control" type="number" value="0">
-								</div>
-							</div>
-						</div>
-						
-						<div class="row">
-							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="title">Nombre d'étages</label>
-									<input name="number_of_floors" id="number_of_floors" class="form-control" type="number" value="0">
-								</div>
-							</div>
-							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="title">Nombre de sweet</label>
-									<input name="ensuite" id="ensuite" class="form-control" type="number" value="0">
-								</div>
-							</div>
-							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="title">Nombre de salles de bain</label>
-									<input name="bathrooms" id="bathrooms" class="form-control" type="number" value="0">
-								</div> 
-							</div>
 							<div class="col-lg-3">
 								<div class="form-group">
 									<label for="title">Nombre de chambre</label>
 									<input name="bedrooms" id="bedrooms" class="form-control" type="number" value="0">
 								</div>  
 							</div>
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Nombre de suites de chambres</label>
+									<input name="ensuite" id="ensuite" class="form-control" type="number" value="0">
+								</div>
+							</div>
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Nombre autres salles de bain/eau</label>
+									<input name="bathrooms" id="bathrooms" class="form-control" type="number" value="0">
+								</div> 
+							</div>
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Photo</label>
+									<input name="image" class="form-control" type="file">
+								</div>
+							</div>
 						</div>
-						
-						<div id="infoAdresse" style="display:none">
-							<div class="row">
-								<div class="col-lg-3">
-									<div class="form-group">
-										<label for="title">Etat</label>
-										<select class="form-control" name="state_id" id="state_id" style="width:100%">
-											@foreach(\App\Models\State::all() as $state)
-												<option value="{{$state->id}}">{{$state->content}}</option>
-											@endforeach
-										</select>
+						<div class="row">
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Surface intérieur *</label>
+									<div class="input-group m-b">
+										<input type="number" name="interior_area" id="interior_area" class="form-control">
+										<div class="input-group-append">
+											<span class="input-group-addon">.m2</span>
+										</div>
 									</div>
 								</div>
-								<div class="col-lg-3">
-									<div class="form-group">
-										<label for="title">Code postal</label>
-										<input name="postalCode" id="postalCode" class="form-control" type="text" value="">
+							</div>
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Surface extérieur *</label>
+									<div class="input-group m-b">
+										<input type="number" name="exterior_area" id="exterior_area" class="form-control">
+										<div class="input-group-append">
+											<span class="input-group-addon">.m2</span>
+										</div>
 									</div>
 								</div>
-								<div class="col-lg-3">
-									<div class="form-group">
-										<label for="title">Nouvelle construction</label>
-										<select class="form-control" name="new_construction" id="new_construction">
-											<option value="0">OUI</option>
-											<option value="1">NON</option>
-										</select>
+							</div>
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Surface total *</label>
+									<div class="input-group m-b">
+										<input type="number" name="total_area" id="total_area" class="form-control">
+										<div class="input-group-append">
+											<span class="input-group-addon">.m2</span>
+										</div>
 									</div>
 								</div>
-								<div class="col-lg-3">
+							</div>
+							<div class="col-lg-3">
+								<div id="yearConstruct" style="display:none">								
 									<div class="form-group">
 										<label for="title">Année de construction</label>
 										<input name="year_built" id="year_built" class="form-control" type="number" value="0">
 									</div>
-								</div>							
+								</div>
 							</div>
-							<div class="row">
-								<div class="col-lg-12">
+						</div>
+						<div class="row">
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label for="title">Emplacements parking fermés *</label>
+									<input name="garage_spaces" id="garage_spaces" class="form-control" type="text" value="">
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label for="title">Emplacements parking carport</label>
+									<input name="carport_spaces" id="carport_spaces" class="form-control" type="number" value="0">
+								</div>
+							</div>
+							
+							<div class="col-lg-4">
+								<div id="jardin_info" style="display:none">
 									<div class="form-group">
-										<label for="title">Adresse *</label>
-										<input name="display_address" id="display_address" class="form-control" type="text" value="">
+										<label for="title">Superficie jardin privatif *</label>
+										<div class="input-group m-b">
+											<input type="text" class="form-control">
+											<div class="input-group-append">
+												<span class="input-group-addon">.m2</span>
+											</div>
+										</div>
 									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-lg-12">
+								<label class="chk_parking"> 
+									<input type="checkbox" value="1" name="chk_parking"> parking voies publiques
+								</label>
+							</div>
+							
+							<div class="col-lg-12">
+								<div id="chk_picine" style="display:none">
+									<label class="chk_picine"> 
+										<input type="checkbox" value="1" name="chk_picine"> piscine
+									</label>
+								</div>
+							</div>
+							
+							<div class="col-lg-12">
+								<div id="chk_firb" style="display:none">
+									<label class="chk_firb"> 
+										<input type="checkbox" value="" name="chk_firb"> The Seller certifies under their sole responsibilitythatthis property canbe sold to non-residentforeigners in accordance with Australian law and the rules applicable by the Foreign Investment Review Board (FIRB).
+									</label>
 								</div>
 							</div>
 						</div>
@@ -424,8 +477,33 @@
                 bodyTag: "fieldset",
                 onStepChanging: function (event, currentIndex, newIndex)
                 {
-					var titre_programme = $('#title').val();
+					var titre_programme = $('#title_programme').val();
 					$('#title_product').val(titre_programme+' - ');
+					var ancienneteBien = $('#ancienneteBien').val();
+					var natureBien = $('#natureBien').val();
+					if(ancienneteBien == 'Neuf' && natureBien == 'Programme immobilier'){
+						$('[name="product_type_id"]').val($('#type_id').val()).prop("disabled", true);
+						$('[name="suburb_product"]').val($('#suburb').val()).prop("readonly", true);
+						$('[name="ville_product"]').val($('#ville').val()).prop("readonly", true);
+						$('[name="postalCode_product"]').val($('#postalCode').val()).prop("readonly", true);
+						$('[name="display_address_product"]').val($('#display_address').val()).prop("readonly", true);
+						$('[name="state_id_product"]').val($('#state_id').val()).prop("disabled", true);
+						$('[name="countryId_product"]').val($('#countryId').val()).prop("readonly", true);
+						$('#jardin_info').hide();
+						$('#chk_picine').hide();
+						$('#chk_firb').hide();
+						$('#yearConstruct').hide();
+					}else if(ancienneteBien == 'Neuf' && natureBien == 'Produit isolé'){
+						$('#jardin_info').show();
+						$('#chk_picine').show();
+						$('#chk_firb').show();
+						$('#yearConstruct').hide();
+					}else if(ancienneteBien == 'Ancien'){
+						$('#yearConstruct').show();
+						$('#jardin_info').show();
+						$('#chk_picine').show();
+						$('#chk_firb').show();
+					}
 					// Always allow going backward even if the current step contains invalid fields!
                     if (currentIndex > newIndex)
                     {
@@ -511,7 +589,7 @@
 			$("#state_id").select2();
 			$("#seller_id").select2();
 			$("#parent_id").select2();
-			$("#type_id").select2();
+			//$("#type_id").select2();
 			
 			$('#ancienneteBien').on('change', function() {
 				var anciennete = this.value;
@@ -527,7 +605,7 @@
 						}else{
 							//pour le programme individuel
 							$('#programme').hide();	
-							$("#form").steps("next")
+							$("#form").steps("next");
 						}
 					});
 				}else{
@@ -546,8 +624,18 @@
 					$("#prix_min").prop("readonly", false);
 					$('[name="prix_max"]').val('');
 					$("#prix_max").prop("readonly", false);
-					$('[name="title"]').val('');
-					$("#title").prop("readonly", false);
+					$('[name="title_programme"]').val('');
+					$("#title_programme").prop("readonly", false);
+					$('#type_id').prop('disabled', false);
+					$('[name="type_id"]').val('');
+					$('[name="display_address"]').val('');
+					$("#display_address").prop("readonly", false);
+					$('[name="suburb"]').val('');
+					$("#suburb").prop("readonly", false);
+					$('[name="ville"]').val('');
+					$("#ville").prop("readonly", false);
+					$('[name="postalCode"]').val('');
+					$("#postalCode").prop("readonly", false);
 					CKEDITOR.instances['description'].setData('');					
 					$('#info-programme').show();
 				}else{
@@ -564,14 +652,28 @@
 						  $("#prix_min").prop("readonly", true);
 						  $('[name="prix_max"]').val(data.max_price);
 						  $("#prix_max").prop("readonly", true);
-						  $('[name="title"]').val(data.title);
-						  $("#title").prop("readonly", true);
+						  $('[name="title_programme"]').val(data.title);
+						  $("#title_programme").prop("readonly", true);
+						  $('[name="type_id"]').val(data.type_id);
+						  $("#type_id").prop("disabled", true);
+						  $('[name="suburb"]').val(data.suburb);
+						  $("#suburb").prop("readonly", true);
+						  $('[name="countryId"]').val(data.country);
+						  $("#countryId").prop("readonly", true);
+						  $('[name="postalCode"]').val(data.postalCode);
+						  $("#postalCode").prop("readonly", true);						  
+						  $('[name="display_address"]').val(data.display_address);
+						  $("#display_address").prop("readonly", true);
+						  $('[name="ville"]').val(data.ville);
+						  $("#ville").prop("readonly", true);
 						  CKEDITOR.instances['description'].setData(data.content);
 						  $('#info-programme').show();
+						  $("#form").steps("next")
 					   }
 					});
 				}
 			});
+		
         });
     </script>
 @endsection

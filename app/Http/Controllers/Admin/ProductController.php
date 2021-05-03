@@ -39,12 +39,11 @@ class ProductController extends Controller {
      * @return  \Illuminate\Http\Response
      */
     public function create() {
-        //dd($this->get_lonlat('509 Pitt Street, Sydney, 2000, NSW, Australia'));
-        /*if ($_GET['type'] == 'produit') {
-        return $this->view("create", ['type' => $_GET['type']]);
+        if ($_GET['type'] == 'produit') {
+            return $this->view("create", ['type' => $_GET['type']]);
         } else {
-        return $this->view("create_programme", ['type' => $_GET['type']]);
-        }*/
+            return $this->view("create_programme", ['type' => $_GET['type']]);
+        }
     }
 
     /**
@@ -56,15 +55,16 @@ class ProductController extends Controller {
     public function store(Request $request) {
         $this->middleware('auth');
         $this->middleware('role:1');
-        dd($request->All());
         $anciennete = $request->ancienneteBien;
         $nature = $request->natureBien;
         if ($request->type == 'programme') {
             //creation simple programme
-            $this->save_programme($request->category_id, $request->ancienneteBien, $request->natureBien,
+            $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
+                '', '', $request->ville);
+            $this->save_programme($request->cat_programmme_id, $request->ancienneteBien, $request->natureBien,
                 $request->file('image_programme'), $request->prix_min, $request->prix_max, $request->type_id,
-                $request->display_address, $request->postalCode, $request->state_id, $request->title,
-                $request->content);
+                $request->display_address, $request->postalCode, $request->state_id, $request->title_programme,
+                $request->description, $id_location);
 
             # notification
             Notify::success('Programme a été créer avec succès');
@@ -75,8 +75,12 @@ class ProductController extends Controller {
                 if ($nature == 'Programme immobilier') {
                     if ($request->parent_id == 0) {
                         //creation programme
-                        $id_programme = $this->save_programme($request->title, $request->file('image_programme'),
-                            $request->category_id, $request->prix_min, $request->prix_max, $request->content);
+                        $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
+                            '', '', $request->ville);
+                        $id_programme = $this->save_programme($request->cat_programmme_id, $request->ancienneteBien,
+                            $request->natureBien, $request->file('image_programme'), $request->prix_min, $request->prix_max,
+                            $request->type_id, $request->display_address, $request->postalCode, $request->state_id,
+                            $request->title_programme, $request->description, $id_location);
                         //creation produit
                         $this->save_new_produit($anciennete, $nature, $request->title_product, $request->file
                             ('image'), $request->desc_product, $request->quantity, $request->area, $request->interior_area,
@@ -126,7 +130,7 @@ class ProductController extends Controller {
             //Converts address into Lat and Lng
             $client = new Client(); //GuzzleHttp\Client
             $result = (string )$client->post("https://maps.googleapis.com/maps/api/geocode/json?address=$address", ['form_params' => ['key' =>
-                'AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA']])->getBody();
+                'AIzaSyCzqATs_wp3WXAVlt9iPVS9GcRFPGcIZZw']])->getBody();
             $json = json_decode($result);
             $address->lat = $json->results[0]->geometry->location->lat;
             $address->lng = $json->results[0]->geometry->location->lng;
@@ -136,12 +140,22 @@ class ProductController extends Controller {
         }
     }
 
-    function save_location() {
+    function save_location($country, $suburb, $postalCode, $longitude, $latitude, $locality) {
         $location = new Localisation();
+        $location->country = $country;
+        $location->area_level_1 = $suburb;
+        $location->postalCode = $postalCode;
+        $location->longitude = $longitude;
+        $location->latitude = $latitude;
+        $location->locality = $locality;
+        $location->author_id = Auth::user()->id;
+
+        $location->save();
+        return $location->id;
     }
 
     function save_programme($categorie, $ancienete, $nature, $photo, $prix_min, $prix_max,
-        $type_id, $display_address, $postalCode, $state_id, $title, $content) {
+        $type_id, $display_address, $postalCode, $state_id, $title, $content, $location_id) {
         $slug = generateSlug($title);
         $programme = new Product();
         if ($file = $photo) {
@@ -160,6 +174,7 @@ class ProductController extends Controller {
         $programme->title = $title;
         $programme->content = $content;
         $programme->slug = $slug;
+        $programme->location_id = $location_id;
         $programme->author_id = Auth::user()->id;
         $programme->save();
         return $programme->id;
@@ -364,9 +379,13 @@ class ProductController extends Controller {
 
     public function ajaxRequestProgramme(Request $request) {
         $product = Product::find($request->productId);
+        $location = Localisation::find($product->location_id);
         return response()->json(['title' => $product->title, 'slug' => $product->slug,
             'id' => $product->id, 'category_id' => $product->category_id, 'min_price' => $product->min_price,
-            'max_price' => $product->max_price, 'content' => $product->content]);
+            'max_price' => $product->max_price, 'content' => $product->content, 'type_id' =>
+            $product->type_id, 'suburb' => $location?$location->area_level_1:'', 'country' => $location?$location->country:12,
+            'postalCode' => $location?$location->postalCode:'', 'display_address' => $product->display_address,
+            'ville' => $location?$location->locality:'']);
     }
 
     public function ajaxCheckFirb() {
