@@ -98,10 +98,12 @@
                         @foreach($recent['mails'] as $mail)
                             <div class="feed-element">
                                 <div>
-                                    <small class="float-right text-navy">{{Carbon\Carbon::now()->diffForHumans($mail->created_at)}}</small>
-                                    <strong>{{$mail->subject}}</strong>
-                                    <div>{{ strip_tags($mail->content)  }} </div>
-                                    <small class="text-muted">{{ \Carbon\Carbon::parse($mail->created_at)->format('l jS F Y')}}</small>
+                                    <small class="float-right text-navy">{{$mail->created_at ? $mail->created_at->diffForHumans() : ''}}</small>
+                                    <a href="{{route('admin.mail.index')}}/{{$mail->id}}">
+                                        <strong>{{$mail->subject}}</strong>
+                                    </a>
+                                    <div>{{ str_limit(strip_tags($mail->content), "100", "...") }}</div>
+                                    <small class="text-muted">{{$mail->created_at ? $mail->created_at->diffForHumans() : ''}}</small>
                                 </div>
                             </div>
                         @endforeach
@@ -132,14 +134,14 @@
                                 <tr>
                                     <th>Status</th>
                                     <th>Date</th>
-                                    <th>User</th>
+                                    <th>Utilisateurs</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($recent['users'] as $user)
                                     <tr>
-                                        <td><small>Pending...</small></td>
-                                        <td><i class="fa fa-clock-o"></i> 11:20pm</td>
+                                        <td><small>{{$user->status }}</small></td>
+                                        <td><i class="fa fa-clock-o"></i> {{$user->created_at }}</td>
                                         <td>{{$user->name}}</td>
                                     </tr>
                                 @endforeach
@@ -165,7 +167,7 @@
                             <ul class="todo-list m-t small-list">
                                 @foreach($recent['products'] as $product)
                                     <li>
-                                        <span class="m-l-xs">{{$product->title}} - ${{number_format($product->price, 0, ',',' ')}}</span>
+                                        <span class="m-l-xs">{{$product->title}} - ${{number_format($product->price, 0  , ',',' ')}}</span>
                                     </li>
                                 @endforeach
                             </ul>
@@ -234,26 +236,37 @@
                             </div>
                         </div>
                         <div class="ibox-content table-responsive">
-                            <table class="table table-hover no-margins">
-                                <thead>
-                                <tr>
-                                    <th>Status</th>
-                                    <th>Date</th>
-                                    <th>User</th>
-                                    <th>Value</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($recent['sales'] as $product)
+                            @if(count($recent['sales']) > 0)
+                                <table class="table table-hover no-margins">
+                                    <thead>
                                     <tr>
-                                        <td><small>Pending...</small></td>
-                                        <td><i class="fa fa-clock-o"></i> 11:20pm</td>
-                                        <td>{{$product->title}}</td>
-                                        <td class="text-navy"> <i class="fa fa-level-up"></i> 24% </td>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                        <th>Utilisateur</th>
+                                        <th>Oix</th>
                                     </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($recent['sales'] as $product)
+                                        <tr>
+                                            <td>
+                                                @if($product->status=='published')
+                                                    <span class="label label-success">@lang('app.'.$product->status)</span>
+                                                @else
+                                                    <span class="label label-warning">@lang('app.'.$product->status)</span>
+                                                @endif
+                                            </td>
+                                            <td><i class="fa fa-clock-o"></i> {{$product->created_at}}</td>
+                                            <td>{{$product->title}}</td>
+                                            <td class="text-navy"> <i class="fa fa-level-up"></i> 24% </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            @else
+                                Aucun vente pour le moment
+                            @endif
+
                         </div>
                     </div>
                 </div>
@@ -271,9 +284,9 @@
                     <h5><i class="fa fa-line-chart"></i> Repartition des utilisateurs par date d'inscription</h5>
                     <div class="ibox-tools">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-xs btn-white active">Today</button>
-                            <button type="button" class="btn btn-xs btn-white">Monthly</button>
-                            <button type="button" class="btn btn-xs btn-white">Annual</button>
+                            <button type="button" class="btn btn-xs btn-white active">Aujourd'hui</button>
+                            <button type="button" class="btn btn-xs btn-white">Mensuel</button>
+                            <button type="button" class="btn btn-xs btn-white">Annuel</button>
                         </div>
                     </div>
                 </div>
@@ -326,9 +339,9 @@
                     <h5><i class="fa fa-line-chart"></i> Repartition des produits par date</h5>
                     <div class="ibox-tools">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-xs btn-white active">Today</button>
-                            <button type="button" class="btn btn-xs btn-white">Monthly</button>
-                            <button type="button" class="btn btn-xs btn-white">Annual</button>
+                            <button type="button" class="btn btn-xs btn-white active">Aujourd'hui</button>
+                            <button type="button" class="btn btn-xs btn-white">Mensuel</button>
+                            <button type="button" class="btn btn-xs btn-white">Annuel</button>
                         </div>
                     </div>
                 </div>
