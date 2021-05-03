@@ -1,14 +1,14 @@
 @extends('admin.layouts.app')
 
-@section('title', 'States - Listes ')
+@section('title', 'Etats - Listes ')
 
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>States</h2>
+        <h2>Etats</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.state.index') }}">States</a>
+                <a href="{{ route('admin.state.index') }}">Etats</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Listes</strong>
@@ -30,7 +30,7 @@
 	<div class="col-lg-12">
 		<div class="ibox float-e-margins">
 			<div class="ibox-title">
-				<h5>States</h5>
+				<h5>Etats</h5>
 			</div>
 			<div class="ibox-content">
                 <table class="table table-striped grid-view-tbl">
