@@ -190,8 +190,8 @@
 							</div>
 							<div class="row">
 								<div class="col-lg-12">
-									<label class="chk_firb"> 
-										<input type="checkbox" value="" name="chk_firb" required> The Seller certifies under their sole responsibilitythatthis property canbe sold to non-residentforeigners in accordance with Australian law and the rules applicable by the Foreign Investment Review Board (FIRB).
+									<label class="chk_firb_programme"> 
+										<input type="checkbox" value="" name="chk_firb_programme" id="chk_firb_programme" required> The Seller certifies under their sole responsibilitythatthis property canbe sold to non-residentforeigners in accordance with Australian law and the rules applicable by the Foreign Investment Review Board (FIRB).
 									</label>
 								</div>
 							</div>
@@ -400,7 +400,7 @@
 							<div class="col-lg-3">
 								<div id="yearConstruct" style="display:none">								
 									<div class="form-group">
-										<label for="title">Année de construction</label>
+										<label for="title">Année de construction *</label>
 										<input name="year_built" id="year_built" class="form-control" type="number" value="0">
 									</div>
 								</div>
@@ -409,8 +409,8 @@
 						<div class="row">
 							<div class="col-lg-4">
 								<div class="form-group">
-									<label for="title">Emplacements parking fermés *</label>
-									<input name="garage_spaces" id="garage_spaces" class="form-control" type="text" value="">
+									<label for="title">Emplacements parking fermés</label>
+									<input name="garage_spaces" id="garage_spaces" class="form-control" type="number" value="0">
 								</div>
 							</div>
 							<div class="col-lg-4">
@@ -423,9 +423,9 @@
 							<div class="col-lg-4">
 								<div id="jardin_info" style="display:none">
 									<div class="form-group">
-										<label for="title">Superficie jardin privatif *</label>
+										<label for="title">Superficie jardin privatif</label>
 										<div class="input-group m-b">
-											<input type="text" class="form-control">
+											<input type="text" class="form-control" name="superficie_jardin" id="superficie_jardin">
 											<div class="input-group-append">
 												<span class="input-group-addon">.m2</span>
 											</div>
@@ -474,7 +474,9 @@
     <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
     <script>
         $(document).ready(function(){	
-				
+			$.validator.setDefaults({
+				ignore: []
+			});	
 			$("#form").steps({
                 bodyTag: "fieldset",
 				labels: {
@@ -492,12 +494,12 @@
 					if(ancienneteBien == 'Neuf' && natureBien == 'Programme immobilier'){
 						var titre_programme = $('#title_programme').val();
 						$('#title_product').val(titre_programme+' - ');
-						$('[name="product_type_id"]').val($('#type_id').val()).prop("disabled", true);
+						$('[name="product_type_id"]').val($('#type_id').val());
 						$('[name="suburb_product"]').val($('#suburb').val()).prop("readonly", true);
 						$('[name="ville_product"]').val($('#ville').val()).prop("readonly", true);
 						$('[name="postalCode_product"]').val($('#postalCode').val()).prop("readonly", true);
 						$('[name="display_address_product"]').val($('#display_address').val()).prop("readonly", true);
-						$('[name="state_id_product"]').val($('#state_id').val()).prop("disabled", true);
+						$('[name="state_id_product"]').val($('#state_id').val());
 						$('[name="countryId_product"]').val($('#countryId').val()).prop("readonly", true);
 						$('#jardin_info').hide();
 						$('#chk_picine').hide();
@@ -512,6 +514,7 @@
 					}else if(ancienneteBien == 'Ancien'){
 						$('#title_product').val('');
 						$('[name="year_built"]').val($('#annee_const').val()).prop("readonly", true);
+						$('[name="postalCode_product"]').val($('#postal_code').val()).prop("readonly", true);
 						$('#yearConstruct').show();
 						$('#jardin_info').show();
 						$('#chk_picine').show();
@@ -568,6 +571,8 @@
                     form.validate().settings.ignore = ":disabled";
 
                     // Start validation; Prevent form submission if false
+					var val = form.validate();
+ 					console.log("error list", val);
                     return form.valid();
                 },
                 onFinished: function (event, currentIndex)
@@ -597,22 +602,58 @@
 						required: true
 					},
 					natureBien: {
-						required: true
+						required: {
+							depends: function(element) {
+								if($("#ancienneteBien").val() == 'Neuf'){
+									return true;	
+								}
+							}
+						}
 					},
 					parent_id: {
-						required: true
+						required: {
+							depends: function(element) {
+								if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier'){
+									return true;	
+								}
+							}
+						}
 					},
 					prix_min: {
-						required: true
+						required: {
+							depends: function(element) {
+								if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier'){
+									return true;	
+								}
+							}
+						}
 					},
 					prix_max: {
-						required: true
+						required: {
+							depends: function(element) {
+								if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier'){
+									return true;	
+								}
+							}
+						}
 					},
 					type_id: {
-						required: true
+						required: {
+							depends: function(element) {
+								if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier'){
+									return true;	
+								}
+							}
+						}
 					},
 					postal_code: {
-						required: true,
+						required: {
+							depends: function(element) {
+								if($("#info_code_postal").is(":visible")){
+									return true;	
+								}
+							}
+						},
 						remote: {
 							url: "{{ route('admin.ajaxCheckFirb') }}",
 							type: "get",
@@ -624,10 +665,22 @@
 						}
 					},
 					annee_const: {
-						required: true
+						required: {
+							depends: function(element) {
+								if($("#info_code_postal").is(":visible")){
+									return true;	
+								}
+							}
+						}
 					},
 					chk_firb1: {
-						required: true
+						required: {
+							depends: function(element) {
+								if($("#info_code_postal").is(":visible")){
+									return true;	
+								}
+							}
+						}
 					},
 					title_product: {
 						required: true
@@ -646,6 +699,69 @@
 					},
 					price: {
 						required: true
+					},
+					interior_area: {
+						required: true
+					},
+					exterior_area: {
+						required: true
+					},
+					total_area: {
+						required: true
+					},
+					image_programme: {
+						required: {
+							depends: function(element) {
+								if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier' && $("#parent_id").val() == 0){
+									return true;	
+								}
+							}
+						}
+					},
+					display_address: {
+						required: {
+							depends: function(element) {
+								if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier' && $("#parent_id").val() == 0){
+									return true;	
+								}
+							}
+						}
+					},
+					ville: {
+						required: {
+							depends: function(element) {
+								if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier' && $("#parent_id").val() == 0){
+									return true;	
+								}
+							}
+						}
+					},
+					postalCode: {
+						required: {
+							depends: function(element) {
+								if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier' && $("#parent_id").val() == 0){
+									return true;	
+								}
+							}
+						}
+					},
+					title_programme: {
+						required: {
+							depends: function(element) {
+								if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier' && $("#parent_id").val() == 0){
+									return true;	
+								}
+							}
+						}
+					},
+					chk_firb_programme: {
+						required: {
+							depends: function(element) {
+								if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier' && $("#parent_id").val() == 0){
+									return true;	
+								}
+							}
+						}
 					}
 				},
 				messages: {
@@ -697,6 +813,33 @@
 					},
 					price: {
 						required: "Champ obligatoire"
+					},
+					interior_area: {
+						required: "Champ obligatoire"
+					},
+					exterior_area: {
+						required: "Champ obligatoire"
+					},
+					total_area: {
+						required: "Champ obligatoire"
+					},
+					image_programme: {
+						required: "Champ obligatoire"
+					},
+					display_address: {
+						required: "Champ obligatoire"
+					},
+					ville: {
+						required: "Champ obligatoire"
+					},
+					postalCode: {
+						required: "Champ obligatoire"
+					},
+					title_programme: {
+						required: "Champ obligatoire"
+					},
+					chk_firb_programme: {
+						required: "Champ obligatoire"
 					}
 				}
 			});
@@ -745,7 +888,6 @@
 			$('#parent_id').on('change', function() {
 				var type_programme = this.value;				
 				if(type_programme == 0){
-					$('[name="cat_programmme_id"]').val('');
 					$('#cat_programmme_id').prop('disabled', false);
 					$('[name="prix_min"]').val('');
 					$("#prix_min").prop("readonly", false);
@@ -793,6 +935,7 @@
 						  $("#display_address").prop("readonly", true);
 						  $('[name="ville"]').val(data.ville);
 						  $("#ville").prop("readonly", true);
+						  $('#chk_firb').prop('checked', true);
 						  CKEDITOR.instances['description'].setData(data.content);
 						  $('#info-programme').show();
 						  $("#form").steps("next")

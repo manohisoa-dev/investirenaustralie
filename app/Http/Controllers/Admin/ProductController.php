@@ -70,8 +70,18 @@ class ProductController extends Controller {
             Notify::success('Programme a été créer avec succès');
             return redirect(route('admin.product.programme'));
         } else {
-            dd($request->All());
             //creation produit
+            if (isset($request->chk_parking)) {
+                $avoir_parking = 1;
+            } else {
+                $avoir_parking = 0;
+            }
+            
+            if (isset($request->chk_picine)) {
+                $avoir_piscine = 1;
+            } else {
+                $avoir_piscine = 0;
+            }
             if ($anciennete == 'Neuf') {
                 if ($nature == 'Programme immobilier') {
                     if ($request->parent_id == 0) {
@@ -84,39 +94,49 @@ class ProductController extends Controller {
                             $request->title_programme, $request->description, $id_location);
                         //creation produit
                         $this->save_new_produit($anciennete, $nature, $request->title_product, $request->file
-                            ('image'), $request->desc_product, $request->quantity, $request->area, $request->interior_area,
+                            ('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
                             $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
-                            $request->bathrooms, $request->bedrooms, $request->ensuite, $request->number_of_floors,
-                            $request->new_construction, $request->year_built, $request->display_address, $request->price,
-                            $request->currency, $request->status, $request->type_id, $request->cat_programmme_id,
-                            $request->postalCode, $request->state_id, $id_programme);
+                            $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
+                            $request->price, $request->currency, $request->status, $request->product_type_id,
+                            $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
+                            $id_programme, $id_location, 0, $avoir_parking, 0);
                     } else {
+                        //creation produit avec programme existant
+                        $id_location = Product::where('id', $request->parent_id)->get(['location_id']);
                         $this->save_new_produit($anciennete, $nature, $request->title_product, $request->file
-                            ('image'), $request->desc_product, $request->quantity, $request->area, $request->interior_area,
+                            ('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
                             $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
-                            $request->bathrooms, $request->bedrooms, $request->ensuite, $request->number_of_floors,
-                            $request->new_construction, $request->year_built, $request->display_address, $request->price,
-                            $request->currency, $request->status, $request->type_id, $request->cat_programmme_id,
-                            $request->postalCode, $request->state_id, $request->parent_id);
+                            $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
+                            $request->price, $request->currency, $request->status, $request->product_type_id,
+                            $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
+                            $request->parent_id, $id_location, 0, $avoir_parking, 0);
                     }
                 } else {
-                    //si nature == Produit individuel
+                    //creation produit isolé
+                    //creation location produit isolé
+                    $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
+                        $request->postalCode_product, '', '', $request->ville_product);
+
                     $this->save_new_produit($anciennete, $nature, $request->title_product, $request->file
-                        ('image'), $request->desc_product, $request->quantity, $request->area, $request->interior_area,
+                        ('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
                         $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
-                        $request->bathrooms, $request->bedrooms, $request->ensuite, $request->number_of_floors,
-                        $request->new_construction, $request->year_built, $request->display_address, $request->price,
-                        $request->currency, $request->status, $request->type_id, 0, $request->postalCode,
-                        $request->state_id, -1);
+                        $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
+                        $request->price, $request->currency, $request->status, $request->product_type_id,
+                        $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
+                        -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine);
                 }
             } else {
                 //si ancienneté == ancien
+                $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
+                    $request->postalCode_product, '', '', $request->ville_product);
+
                 $this->save_new_produit($anciennete, '', $request->title_product, $request->file
-                    ('image'), $request->desc_product, $request->quantity, $request->area, $request->interior_area,
+                    ('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
                     $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
-                    $request->bathrooms, $request->bedrooms, $request->ensuite, $request->number_of_floors,
-                    'NON', $request->annee_const, '', $request->price, $request->currency, $request->status,
-                    $request->type_id, 0, $request->postal_code, 0, -1);
+                    $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
+                    $request->price, $request->currency, $request->status, $request->product_type_id,
+                    $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
+                    -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine);
             }
 
 
@@ -185,7 +205,9 @@ class ProductController extends Controller {
         $area, $interior_area, $exterior_area, $total_area, $carport_spaces, $garage_spaces,
         $bathrooms, $bedrooms, $sweet, $number_of_floors, $new_construction, $year_built,
         $display_address, $price, $currency, $status, $type_id, $cat_programmme_id, $postalCode,
-        $state_id, $parent_id) {
+        $state_id, $programme_id, $location_id, $superficie_jardin, $avoir_parking_voie_public,
+        $avoir_piscine) {
+
         $product = new Product();
         $lastId = Product::latest('id')->first();
         $new_id = $lastId->id + 1;
@@ -226,7 +248,11 @@ class ProductController extends Controller {
         $product->author_id = Auth::user()->id;
         $product->postalCode = $postalCode;
         $product->state_id = $state_id;
-        $product->parent_id = $parent_id;
+        $product->parent_id = $programme_id;
+        $product->location_id = $location_id;
+        $product->superficie_jardin = $superficie_jardin;
+        $product->avoir_parking_voie_public = $avoir_parking_voie_public;
+        $product->avoir_piscine = $avoir_piscine;
         $product->save();
     }
 
@@ -384,21 +410,18 @@ class ProductController extends Controller {
         return response()->json(['title' => $product->title, 'slug' => $product->slug,
             'id' => $product->id, 'category_id' => $product->category_id, 'min_price' => $product->min_price,
             'max_price' => $product->max_price, 'content' => $product->content, 'type_id' =>
-            $product->type_id, 'suburb' => $location?$location->area_level_1:'', 'country' => $location?$location->country:12,
-            'postalCode' => $location?$location->postalCode:'', 'display_address' => $product->display_address,
-            'ville' => $location?$location->locality:'']);
+            $product->type_id, 'suburb' => $location ? $location->area_level_1 : '',
+            'country' => $location ? $location->country : 12, 'postalCode' => $location ? $location->postalCode :
+            '', 'display_address' => $product->display_address, 'ville' => $location ? $location->locality :
+            '']);
     }
 
     public function ajaxCheckFirb() {
         $code_postal = $_GET['postal_code'];
         $firb = Firb::where('codePostal', $code_postal)->get();
         if (count($firb) > 0) {
-            //return 'true'; //echo 'true';
-            //return response()->json(['msg'=>'true']);
             echo "true";
         } else {
-            //return 'false'; //echo 'false';
-            //return response()->json(['msg'=>'false']);
             echo "false";
         }
     }
