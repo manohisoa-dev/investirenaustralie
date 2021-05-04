@@ -215,8 +215,8 @@
 							</div>
 							<div class="row">
 								<div class="col-lg-12">
-									<label class="chk_firb"> 
-										<input type="checkbox" value="" name="chk_firb"> The Seller certifies undertheir sole responsibilitythatthispropertycanbesold to non-residentforeigners in accordance withAustralianlaw and the rules applicable by the ForeignInvestmentReviewBoard (FIRB)
+									<label class="chk_firb1"> 
+										<input type="checkbox" value="" name="chk_firb1"> The Seller certifies undertheir sole responsibilitythatthispropertycanbesold to non-residentforeigners in accordance withAustralianlaw and the rules applicable by the ForeignInvestmentReviewBoard (FIRB)
 									</label>
 								</div>
 							</div>
@@ -314,7 +314,7 @@
 							<div class="col-lg-3">
 								<div class="form-group">
 									<label for="title">Prix de vente</label>
-									<input name="price" id="price" class="form-control" type="number" value="0">
+									<input name="price" id="price" class="form-control" type="number">
 								</div>  
 							</div>
 							<div class="col-lg-3">
@@ -479,11 +479,11 @@
                 bodyTag: "fieldset",
                 onStepChanging: function (event, currentIndex, newIndex)
                 {
-					var titre_programme = $('#title_programme').val();
-					$('#title_product').val(titre_programme+' - ');
 					var ancienneteBien = $('#ancienneteBien').val();
 					var natureBien = $('#natureBien').val();
 					if(ancienneteBien == 'Neuf' && natureBien == 'Programme immobilier'){
+						var titre_programme = $('#title_programme').val();
+						$('#title_product').val(titre_programme+' - ');
 						$('[name="product_type_id"]').val($('#type_id').val()).prop("disabled", true);
 						$('[name="suburb_product"]').val($('#suburb').val()).prop("readonly", true);
 						$('[name="ville_product"]').val($('#ville').val()).prop("readonly", true);
@@ -496,11 +496,13 @@
 						$('#chk_firb').hide();
 						$('#yearConstruct').hide();
 					}else if(ancienneteBien == 'Neuf' && natureBien == 'Produit isolé'){
+						$('#title_product').val('');
 						$('#jardin_info').show();
 						$('#chk_picine').show();
 						$('#chk_firb').show();
 						$('#yearConstruct').hide();
 					}else if(ancienneteBien == 'Ancien'){
+						$('#title_product').val('');
 						$('[name="year_built"]').val($('#annee_const').val()).prop("readonly", true);
 						$('#yearConstruct').show();
 						$('#jardin_info').show();
@@ -569,6 +571,7 @@
                 }
             }).validate({
 			    ignore: [],
+				onkeyup: false,
 				ignore:":not(:visible)",
 				errorPlacement: function (error, element)
 				{
@@ -600,7 +603,40 @@
 					type_id: {
 						required: true
 					},
-					image_programme: {
+					postal_code: {
+						required: true,
+						remote: {
+							url: "{{ route('admin.ajaxCheckFirb') }}",
+							type: "get",
+							data: {
+								postal_code: function () {
+									return $("input[name='postal_code']").val();
+								}
+							}
+						}
+					},
+					annee_const: {
+						required: true
+					},
+					chk_firb1: {
+						required: true
+					},
+					title_product: {
+						required: true
+					},
+					product_type_id: {
+						required: true
+					},
+					ville_product: {
+						required: true
+					},
+					postalCode_product: {
+						required: true
+					},
+					display_address_product: {
+						required: true
+					},
+					price: {
 						required: true
 					}
 				},
@@ -626,7 +662,32 @@
 					type_id: {
 						required: "Champ obligatoire"
 					},
-					image_programme: {
+					postal_code: {
+						required: "Champ obligatoire",
+						remote: jQuery.validator.format("{0} Code postal non autorisé")
+					},
+					annee_const: {
+						required: "Champ obligatoire",
+					},
+					chk_firb1: {
+						required: "Champ obligatoire"
+					},
+					title_product: {
+						required: "Champ obligatoire"
+					},
+					product_type_id: {
+						required: "Champ obligatoire"
+					},
+					ville_product: {
+						required: "Champ obligatoire"
+					},
+					postalCode_product: {
+						required: "Champ obligatoire"
+					},
+					display_address_product: {
+						required: "Champ obligatoire"
+					},
+					price: {
 						required: "Champ obligatoire"
 					}
 				}
@@ -669,6 +730,7 @@
 					$('#info_code_postal').show();
 					$('#infoAdresse').hide();
 					$('#nature_enregistrement').hide();
+					$('#info-programme').hide();	
 				}
 			});
 				
