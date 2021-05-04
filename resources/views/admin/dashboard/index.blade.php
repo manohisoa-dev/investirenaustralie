@@ -79,9 +79,6 @@
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
                         </a>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
                     </div>
                 </div>
                 <div class="ibox-content ibox-heading">
@@ -123,9 +120,6 @@
                                 <a class="collapse-link">
                                     <i class="fa fa-chevron-up"></i>
                                 </a>
-                                <a class="close-link">
-                                    <i class="fa fa-times"></i>
-                                </a>
                             </div>
                         </div>
                         <div class="ibox-content table-responsive">
@@ -158,9 +152,6 @@
                                 <a class="collapse-link">
                                     <i class="fa fa-chevron-up"></i>
                                 </a>
-                                <a class="close-link">
-                                    <i class="fa fa-times"></i>
-                                </a>
                             </div>
                         </div>
                         <div class="ibox-content">
@@ -183,9 +174,6 @@
                             <div class="ibox-tools">
                                 <a class="collapse-link">
                                     <i class="fa fa-chevron-up"></i>
-                                </a>
-                                <a class="close-link">
-                                    <i class="fa fa-times"></i>
                                 </a>
                             </div>
                         </div>
@@ -229,9 +217,6 @@
                             <div class="ibox-tools">
                                 <a class="collapse-link">
                                     <i class="fa fa-chevron-up"></i>
-                                </a>
-                                <a class="close-link">
-                                    <i class="fa fa-times"></i>
                                 </a>
                             </div>
                         </div>

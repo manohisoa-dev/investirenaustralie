@@ -35,10 +35,10 @@
 				<form class="form-padding wizard-big" action="{{ route('admin.product.store') }}" method="post" id="form" enctype="multipart/form-data">
 					<h1>Configuration</h1>
 					<fieldset>
-						<h2>Information sur la configuration</h2>
+						<h4>Information concernant le programme <small><i>La création d'un programme avec un produit se fait en deux étapes</i></small></h4>
 						{{ csrf_field() }}
 						<div class="row">
-							<div class="col-lg-4">
+							<div class="col-lg-5">
 								<div class="form-group">
 									<label>A quelle catégorie appartient le bien que vous voulez saisir ? *</label>
 									<select class="form-control" name="cat_programmme_id" id="cat_programmme_id">
@@ -59,7 +59,7 @@
 									</select>
 								</div>
 							</div>
-							<div class="col-lg-4">
+							<div class="col-lg-3">
 								<div id="nature_enregistrement" style="display:none">
 									<div class="form-group">
 										<label for="title">Nature de L'Enregistrement *</label>
@@ -74,7 +74,7 @@
 						</div>
 						<!-- choix programmme existant ou nouveau -->
 						<div class="row" style="display:none" id="programme">
-							<div class="col-lg-6">
+							<div class="col-lg-5">
 								<div class="form-group">
 									<label>Choisir programme *</label>
 									<select class="form-control" name="parent_id" id="parent_id" style="width:100%">
@@ -107,7 +107,7 @@
 								<div class="col-lg-4">
 									<div class="form-group">
 										<label for="title">Photo programme *</label>
-										<input name="image_programme" class="form-control" type="file">
+										<input name="image_programme" class="form-control" type="file" accept="image/png, image/jpeg,.pdf">
 									</div>
 								</div>
 							</div>
@@ -191,7 +191,7 @@
 							<div class="row">
 								<div class="col-lg-12">
 									<label class="chk_firb"> 
-										<input type="checkbox" value="" name="chk_firb"> The Seller certifies under their sole responsibilitythatthis property canbe sold to non-residentforeigners in accordance with Australian law and the rules applicable by the Foreign Investment Review Board (FIRB).
+										<input type="checkbox" value="" name="chk_firb" required> The Seller certifies under their sole responsibilitythatthis property canbe sold to non-residentforeigners in accordance with Australian law and the rules applicable by the Foreign Investment Review Board (FIRB).
 									</label>
 								</div>
 							</div>
@@ -477,6 +477,14 @@
 				
 			$("#form").steps({
                 bodyTag: "fieldset",
+				labels: {
+					current: "current step:",
+					pagination: "Pagination",
+					finish: "Terminé",
+					next: "Saisir les détails du produit",
+					previous: "Précédent",
+					loading: "Chargement ..."
+				},
                 onStepChanging: function (event, currentIndex, newIndex)
                 {
 					var ancienneteBien = $('#ancienneteBien').val();
