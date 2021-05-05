@@ -13,6 +13,7 @@ use Jleon\LaravelPnotify\Notify;
 use App\Models\Image;
 use App\Models\User;
 use App\Models\Localisation;
+use App\Models\Type;
 use Auth;
 
 use GuzzleHttp;
@@ -414,6 +415,16 @@ class ProductController extends Controller {
             'country' => $location ? $location->country : 12, 'postalCode' => $location ? $location->postalCode :
             '', 'display_address' => $product->display_address, 'ville' => $location ? $location->locality :
             '']);
+    }
+    
+    public function ajaxGetTypeProduitCategorie(Request $request)
+    {
+        $typePrd = Type::where('categories_id',$request->categoryId)->get();
+        $output = '<option value="">Choisir...</option>';
+        foreach($typePrd as $val){
+            $output .= '<option value="'.$val->id.'">'.$val->title.'</option>';
+        }
+        return response()->json($output);
     }
 
     public function ajaxCheckFirb() {
