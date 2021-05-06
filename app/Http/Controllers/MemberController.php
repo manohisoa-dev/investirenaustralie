@@ -93,7 +93,7 @@ class MemberController extends Controller
     }
 
     public function contact(Request $request, $role){
-        $action = route('member.send.message', ['role'=>$role]);
+        $action = route('send.message', ['role'=>$role]);
         $lapls = Localisation::select('localizations.*')
             ->join('users','users.location_id','=','localizations.id')
             ->where('users.role','=','4')
@@ -138,6 +138,7 @@ class MemberController extends Controller
     }
 
     public function getAllMessage($role){
+        $to_id="";
 
         switch ($role) {
             case 'admin':
@@ -157,7 +158,7 @@ class MemberController extends Controller
                 break;
         }
 
-        $messages = Message::whereRaw("(from_id = ".Auth::user()->id." AND to_id = ".$to_id.") OR (to_id = ".Auth::user()->id." AND from_id = ".$to_id.")" )
+        $messages = Message::whereRaw("(from_id = ".Auth::user()->id." AND to_id = $to_id ) OR (to_id = ".Auth::user()->id." AND from_id = $to_id )" )
                             ->orderBy('created_at', 'ASC')
                             ->get();
 
@@ -190,29 +191,29 @@ class MemberController extends Controller
         $unreadCountApl = '';
         $data = [];
 
-        if($role_id == 5){
-            if(isset(Message::unreadCount(Auth::user()->id , 1)->count)){
-                $unreadCountAdmin = Message::unreadCount(Auth::user()->id, 1)->count;
-            }
-            
-            if(isset(Message::unreadCount(Auth::user()->id , User::where('id', Auth::user()->id)->first()->afa_id)->count)){
-                $unreadCountAfa = Message::unreadCount(Auth::user()->id, User::where('id', Auth::user()->id)->first()->afa_id)->count;
-            }
-            
-            if(isset(Message::unreadCount(Auth::user()->id , User::where('id', Auth::user()->id)->first()->apl_id)->count)){
-                $unreadCountApl = Message::unreadCount(Auth::user()->id, User::where('id', Auth::user()->id)->first()->apl_id)->count;
-            }
-            
-            $data = [
-                'role_id'=>$role_id, 
-                'unreadCountAdmin'=>$unreadCountAdmin, 
-                'unreadCountAfa'=>$unreadCountAfa, 
-                'unreadCountApl'=>$unreadCountApl, 
-            ];
+        if(isset(Message::unreadCount(Auth::user()->id , 1)->count)){
+            $unreadCountAdmin = Message::unreadCount(Auth::user()->id, 1)->count;
         }
+        
+        if(isset(Message::unreadCount(Auth::user()->id , User::where('id', Auth::user()->id)->first()->afa_id)->count)){
+            $unreadCountAfa = Message::unreadCount(Auth::user()->id, User::where('id', Auth::user()->id)->first()->afa_id)->count;
+        }
+        
+        if(isset(Message::unreadCount(Auth::user()->id , User::where('id', Auth::user()->id)->first()->apl_id)->count)){
+            $unreadCountApl = Message::unreadCount(Auth::user()->id, User::where('id', Auth::user()->id)->first()->apl_id)->count;
+        }
+        
+        $data = [
+            'role_id'=>$role_id, 
+            'unreadCountAdmin'=>$unreadCountAdmin, 
+            'unreadCountAfa'=>$unreadCountAfa, 
+            'unreadCountApl'=>$unreadCountApl, 
+        ];
+        
 
         return response()->json(['res'=>$data]);
     }
+
 
     public function sendMessage(Request $request, $role)
     {

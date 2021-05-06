@@ -511,6 +511,8 @@ return [
     'txt.engagement' => "Engagement",
     'txt.agree' => "I agree",
     'txt.welcome_chat' => 'Welcome to our discussion',
+    'txt.welcome_your_chat' => 'Welcome to your discussion',
+    'txt.loading_message' => 'Load message',
     
     
     

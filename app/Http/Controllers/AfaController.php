@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Http\Request;
 use App\Models\Localisation;
+use App\Models\User;
+use App\Models\Message;
+
 
 class AfaController extends Controller
 {
@@ -99,4 +102,35 @@ class AfaController extends Controller
             ->with('lapls', $lapls)
             ->with('items', $items);
     }
+
+    
+    public function showMessage(Request $request, $role){
+        $action = route('send.message', ['role'=>$role]);
+        $lapls = Localisation::select('localizations.*')
+            ->join('users','users.location_id','=','localizations.id')
+            ->where('users.role','=','4')
+            ->groupBy('localizations.locality')
+            ->get();
+        $apls = User::ofRole(4)->isActive()->get();
+        
+        $lafas = User::where('role',3)
+            ->where('status','active')
+            ->where('location_id',Auth::user()->location_id)
+            ->orderBy('id','desc')
+            ->get();
+
+        $lcontact = Message::where("to_id", Auth::user()->id)
+        ->orderBy('created_at', 'ASC')
+        ->groupBy('from_id')
+        ->get();
+        
+        return view('backend.contact.afa')
+            ->with('action', $action)
+            ->with('lapls', $lapls)
+            ->with('lafas', $lafas)
+            ->with('apls', $apls)
+            ->with('role', $role)
+            ->with('title', trans('app.chat'));
+    }
+    
 }
