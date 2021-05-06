@@ -175,8 +175,23 @@
 							<div class="row">
 								<div class="col-lg-4">
 									<div class="form-group">
+										<label for="title">Fond de dossier</label>
+										<input name="fond_dossier" class="form-control" type="file" accept="image/png, image/jpeg,.pdf,video/mp4,video/x-m4v,video/*">
+									</div>
+								</div>
+								<div class="col-lg-4">
+									<div class="form-group">
 										<label for="title">Icône du programme *</label>
 										<input name="image_programme" class="form-control" type="file" accept="image/png, image/jpeg,.pdf">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="dropzone">
+										<div class="fallback">
+											<input name="file" type="file" multiple />
+										</div>
 									</div>
 								</div>
 							</div>
@@ -471,6 +486,7 @@
 	<!-- Jquery Validate -->
     <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
     <script>
+		Dropzone.autoDiscover = false;
         $(document).ready(function(){	
 			$.validator.setDefaults({
 				ignore: []
@@ -831,6 +847,12 @@
 			$("#state_id").select2();
 			$("#seller_id").select2();
 			$("#parent_id").select2();
+			
+			Dropzone.options.form = {
+				paramName: "file", // The name that will be used to transfer the file
+				maxFilesize: 2, // MB
+				dictDefaultMessage: "<strong>Drop files here or click to upload. </strong></br> (This is just a demo dropzone. Selected files are not actually uploaded.)"
+			};
 			//$("#type_id").select2();
 			$('#countryId').on('change', function() {
 				var country = this.value;

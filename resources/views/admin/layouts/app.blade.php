@@ -18,8 +18,11 @@
     <link href="{{ asset('administrator/css/plugins/toastr/toastr.min.css') }}" rel="stylesheet">
 
     <!-- Gritter -->
-    <link href="{{ asset('administrator/js/
-    plugins/gritter/jquery.gritter.css') }}" rel="stylesheet">
+    <link href="{{ asset('administrator/js/plugins/gritter/jquery.gritter.css') }}" rel="stylesheet">
+	
+	<!-- dropzone -->
+	<link href="{{ asset('administrator/css/plugins/dropzone/basic.css') }}" rel="stylesheet">
+    <link href="{{ asset('administrator/css/plugins/dropzone/dropzone.css') }}" rel="stylesheet">
 	
 	<!-- select2 -->
     <link href="{{ asset('administrator/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
@@ -549,6 +552,9 @@
 
 <!-- GITTER -->
 <script src="{{ asset('administrator/js/plugins/gritter/jquery.gritter.min.js') }}"></script>
+
+<!-- dropzone -->
+<script src="{{ asset('administrator/js/plugins/dropzone/dropzone.js') }}"></script>
 
 <!-- Sparkline -->
 <script src="{{ asset('administrator/js/plugins/sparkline/jquery.sparkline.min.js') }}"></script>
