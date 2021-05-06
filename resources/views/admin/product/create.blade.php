@@ -188,15 +188,6 @@
 							</div>
 							<div class="row">
 								<div class="col-lg-12">
-									<div class="dropzone">
-										<div class="fallback">
-											<input name="file" type="file" multiple />
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-lg-12">
 									<label class="chk_firb_programme"> 
 										<input type="checkbox" value="" name="chk_firb_programme" id="chk_firb_programme" required> The Seller certifies under their sole responsibilitythatthis property canbe sold to non-residentforeigners in accordance with Australian law and the rules applicable by the Foreign Investment Review Board (FIRB).
 									</label>
@@ -473,6 +464,13 @@
 						</div>
 					</fieldset>
 				</form>
+
+				<form id="custom-file"
+					  class="dropzone"
+					  action="/ajax_file_upload_handler/"
+					  enctype="multipart/form-data"
+					  method="post">
+				</form>
             </div>
         </div>
     </div>
@@ -487,7 +485,16 @@
     <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
     <script>
 		Dropzone.autoDiscover = false;
-        $(document).ready(function(){	
+
+        $(document).ready(function(){
+			$("#custom-file").dropzone({
+				maxFiles: 2,
+				url: "/ajax-file-handler/",
+				success: function (file, response) {
+					console.log(response);
+				}
+			});
+
 			$.validator.setDefaults({
 				ignore: []
 			});	
@@ -848,11 +855,7 @@
 			$("#seller_id").select2();
 			$("#parent_id").select2();
 			
-			Dropzone.options.form = {
-				paramName: "file", // The name that will be used to transfer the file
-				maxFilesize: 2, // MB
-				dictDefaultMessage: "<strong>Drop files here or click to upload. </strong></br> (This is just a demo dropzone. Selected files are not actually uploaded.)"
-			};
+
 			//$("#type_id").select2();
 			$('#countryId').on('change', function() {
 				var country = this.value;
