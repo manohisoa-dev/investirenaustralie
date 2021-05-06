@@ -179,11 +179,10 @@
 										<input name="fond_dossier" class="form-control" type="file" accept="image/png, image/jpeg,.pdf,video/mp4,video/x-m4v,video/*">
 									</div>
 								</div>
-								<div class="col-lg-4">
-									<div class="form-group">
-										<label for="title">Icône du programme *</label>
-										<input name="image_programme" class="form-control" type="file" accept="image/png, image/jpeg,.pdf">
-									</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="dropzone" id="image_upload"></div>
 								</div>
 							</div>
 							<div class="row">
@@ -207,7 +206,7 @@
 								<div class="col-lg-6">
 									<div class="form-group">
 										<label for="title">Année de construction du bâtiment *</label>
-										<input type="number" class="form-control" name="annee_const" id="annee_const" />
+										<input type="number" class="form-control" name="annee_const" id="annee_const" disabled="disabled"/>
 									</div>
 								</div>
 							</div>
@@ -226,21 +225,21 @@
 					<fieldset>
 						<h2>Information du produit</h2>
 						<div class="row">
-								<div class="col-lg-12">
-									<div class="form-group">
-										<label for="title">Titre du produit *</label>
-										<input name="title_product" id="title_product" class="form-control" type="text" value="" title="Indiquez la référence du produit">
-									</div>
+							<div class="col-lg-12">
+								<div class="form-group">
+									<label for="title">Titre du produit *</label>
+									<input name="title_product" id="title_product" class="form-control" type="text" value="" title="Indiquez la référence du produit">
 								</div>
 							</div>
-							<div class="row">     
-								<div class="col-lg-12">                              
-									<div class="form-group">
-										<label for="title">Description produit *</label>
-										<textarea class="form-control" rows="10" name="desc_product" id="desc_product"></textarea>
-									</div>
+						</div>
+						<div class="row">     
+							<div class="col-lg-12">                              
+								<div class="form-group">
+									<label for="title">Description produit *</label>
+									<textarea class="form-control" rows="10" name="desc_product" id="desc_product"></textarea>
 								</div>
 							</div>
+						</div>
 							
 						<div class="row">
 							<div class="col-lg-3">
@@ -465,12 +464,12 @@
 					</fieldset>
 				</form>
 
-				<form id="custom-file"
+				<!--<form id="custom-file"
 					  class="dropzone"
 					  action="/ajax_file_upload_handler/"
 					  enctype="multipart/form-data"
 					  method="post">
-				</form>
+				</form>-->
             </div>
         </div>
     </div>
@@ -485,15 +484,14 @@
     <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
     <script>
 		Dropzone.autoDiscover = false;
-
         $(document).ready(function(){
-			$("#custom-file").dropzone({
+			/*$("#custom-file").dropzone({
 				maxFiles: 2,
 				url: "/ajax-file-handler/",
 				success: function (file, response) {
 					console.log(response);
 				}
-			});
+			});*/
 
 			$.validator.setDefaults({
 				ignore: []
@@ -545,12 +543,6 @@
                     if (currentIndex > newIndex)
                     {
                         return true;
-                    }
-
-                    // Forbid suppressing "Warning" step if the user is to young
-                    if (newIndex === 3 && Number($("#age").val()) < 18)
-                    {
-                        return false;
                     }
 
                     var form = $(this);
@@ -676,6 +668,13 @@
 								postal_code: function () {
 									return $("input[name='postal_code']").val();
 								}
+							},
+							complete: function(data){
+								if(data.responseText == "true" ) {
+									$('#annee_const').prop('disabled', false);
+								}else{
+									$('#annee_const').prop('disabled', true);
+								}
 							}
 						}
 					},
@@ -763,6 +762,15 @@
 							}
 						}
 					},
+					state_id: {
+						required: {
+							depends: function(element) {
+								if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier'){
+									return true;	
+								}
+							}
+						}
+					},
 					chk_firb_programme: {
 						required: {
 							depends: function(element) {
@@ -771,6 +779,9 @@
 								}
 							}
 						}
+					},
+					state_id_product:{
+						required: true,
 					}
 				},
 				messages: {
@@ -844,7 +855,17 @@
 					},
 					chk_firb_programme: {
 						required: "Champ obligatoire"
+					},
+					state_id: {
+						required: "Champ obligatoire"
+					},
+					state_id_product: {
+						required: "Champ obligatoire"
 					}
+				},
+				success: function(label,element) {
+					label.parent().removeClass('error');
+					label.remove(); 
 				}
 			});
 			
@@ -855,7 +876,17 @@
 			$("#seller_id").select2();
 			$("#parent_id").select2();
 			
-
+			$("#image_upload").dropzone({
+				maxFiles: 2,
+				dictDefaultMessage: 'Choisir plusieurs photo pour la représentation du programme',
+				addRemoveLinks: true,
+				uploadMultiple: true,
+				url: "{{ route('admin.ajaxDropZone') }}",
+				params: {"_token": "{{ csrf_token() }}"},
+				success: function (file, response) {
+					console.log(response);
+				}
+			});
 			//$("#type_id").select2();
 			$('#countryId').on('change', function() {
 				var country = this.value;
@@ -939,6 +970,25 @@
 					$('#total_area').val(total_area);
 				}
 			});
+			
+			$('#postal_code').keyup(function(){
+				var codeP = this.value;
+				$.ajax({
+				   type:'GET',
+				   url:"{{ route('admin.ajaxCheckFirb') }}",
+				   data: {"_token": "{{ csrf_token() }}","postal_code": codeP},
+				   success:function(data) {
+				      if(data == "true" ) {
+					  	 $('#annee_const').prop('disabled', false);
+						 $('#postal_code').removeClass('error');
+						 $('#postal_code-error').hide();
+					  }else{
+					  	 $('#postal_code').addClass('error');
+						 $('#postal_code-error').show();
+					  }					  
+				   }
+				});
+			})
 		
         });
     </script>

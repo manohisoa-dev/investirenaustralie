@@ -53,7 +53,8 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::resource('product','ProductController');
     Route::post('ajaxRequestProduct', 'ProductController@ajaxRequestPost')->name('ajaxRequestProduct.post');  
     Route::post('ajaxRequestProgramme', 'ProductController@ajaxRequestProgramme')->name('ajaxRequestProgramme.post'); 
-    Route::post('ajaxGetTypeProduitCategorie', 'ProductController@ajaxGetTypeProduitCategorie')->name('ajaxGetTypeProduitCategorie');  
+    Route::post('ajaxGetTypeProduitCategorie', 'ProductController@ajaxGetTypeProduitCategorie')->name('ajaxGetTypeProduitCategorie'); 
+    Route::post('ajaxDropZone', 'ProductController@ajaxDropZone')->name('ajaxDropZone');  
     Route::get('ajaxCheckFirb', 'ProductController@ajaxCheckFirb')->name('ajaxCheckFirb');    
     Route::get('archive/{product}', 'ProductController@archive')->name('product.archive');
     Route::get('trash/{product}', 'ProductController@trash')->name('product.trash');
