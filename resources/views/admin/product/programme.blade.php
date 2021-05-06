@@ -103,7 +103,9 @@
                                     data-pk="{{ $record->{$record->getKeyName()} }}"
                                     data-url="{{ route('admin.product.programme')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
-                                    {{ $record->category->title }}
+                                    @if ($record->category) 
+									{{ $record->category->title }}
+									@endif
                                 </span>                          
 							</td>
 							<td>
