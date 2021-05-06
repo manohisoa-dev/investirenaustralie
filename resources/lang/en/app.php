@@ -554,6 +554,8 @@ return [
     'txt.no_message_found' => "No message found",
     'txt.read' => "Read",
     'txt.unread' => "Unread",
+    'txt.lang_update' => "Updating of Site languages",
+    'txt.search_all_translation' => 'Search all translations',
 
 
 
@@ -624,6 +626,7 @@ return [
     'purchase' => 'Purchase',
     'purchases'=> 'Purchases',
     'empty_cart'  => 'Empty cart',
+    'translation'  => 'Translation',
     
     //add par Rado
     'avatar' => 'Avatar',

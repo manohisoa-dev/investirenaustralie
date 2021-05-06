@@ -708,6 +708,7 @@ return [
     'txt.welcome_chat' => 'Bienvenu dans notre discussion',
     'txt.welcome_your_chat' => 'Bienvenu dans votre discussion',
     'txt.loading_message' => 'Chargement des messages',
+    'txt.search_all_translation' => 'Rechercher toutes les traductions',
     
     
     'childs' => 'Fils',
@@ -965,11 +966,9 @@ return [
     'txt.no_message_found' => "Aucun message trouvé",
     'txt.read' => "Lu",
     'txt.unread' => "Non lu",
+    'txt.lang_update' => "Mise à jour des langues du Site",
 
-
-
-
-
+    'translation'  => 'Traduction',
     'dernierprod'           =>'Derniers Produits',
     'dernierart'           =>'Derniers Articles',
     

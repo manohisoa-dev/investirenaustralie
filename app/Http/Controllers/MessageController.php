@@ -167,9 +167,9 @@ class MessageController extends Controller
             $item->save();
 
             // Notification user
-            try{
-                $user->notify(new NotifyMessage(Auth::user()));
-            }catch(\Exception $e){}
+            // try{
+            //     $user->notify(new NotifyMessage(Auth::user()));
+            // }catch(\Exception $e){}
 
 			return response()->json(['success'=>trans('app.txt.message_sent')]);
         }
