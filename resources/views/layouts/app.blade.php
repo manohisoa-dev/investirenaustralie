@@ -14,7 +14,7 @@
 <meta name="keywords" content="{{option('site.meta_keywords', 'IEA, Investir')}}">
     
 <!-- Mombo -->
-<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+{{-- <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"> --}}
     <!-- plugin CSS -->
 <link href="{{ asset('plugin/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
 <link href="{{ asset('plugin/font-awesome/css/all.min.css') }}" rel="stylesheet">

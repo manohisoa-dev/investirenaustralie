@@ -130,9 +130,9 @@ Route::middleware(["auth", "role:5"])->group(function(){
         Route::get('searches', 'BackendController@searches');
 
         Route::get('contact/role/{role}', 'MemberController@contact')->name('member.contact');
-        Route::post('contact/{role}', 'MemberController@sendMessage')->name('member.send.message');
-        Route::get('contact/{role}/messages', 'MemberController@getAllMessage')->name('member.get.message');
-        Route::get('contact/messages/unread', 'MemberController@getUnreadMessage')->name('member.get.unread.message');
+        // Route::post('contact/{role}', 'MemberController@sendMessage')->name('member.send.message');
+        // Route::get('contact/{role}/messages', 'MemberController@getAllMessage')->name('member.get.message');
+        // Route::get('contact/messages/unread', 'MemberController@getUnreadMessage')->name('member.get.unread.message');
         Route::post('contact/role/{role}', 'MemberController@sendMail')->name('member.send.mail');
 
         Route::get('carts', 'MemberController@carts')->name('member.carts');
@@ -197,9 +197,10 @@ Route::prefix('afa')->middleware(["auth","role:3"])->group(function(){
     Route::get('mails/{filter?}', 'MailController@all')->name('afa.mail.list');
     Route::prefix('mail')->group(function(){
         Route::get('{mail}', 'MailController@view')->name('afa.mail.index');
-        Route::get('delete/{mail}', 'MailController@delete')->name('afa.mail.delete');
+        Route::get('delete/{mail}', 'AfaController@delete')->name('afa.mail.delete');
     });
 
+    Route::get('message/{role}/show', 'AfaController@showMessage')->name('show.message');
 });
 
 Route::prefix('seller')->middleware(["auth","role:2"])->group(function(){
@@ -223,5 +224,18 @@ Route::prefix('seller')->middleware(["auth","role:2"])->group(function(){
         Route::get('{mail}', 'MailController@view')->name('seller.mail.index');
         Route::get('delete/{mail}', 'MailController@delete')->name('seller.mail.delete');
     });
+
+});
+
+
+Route::middleware(["auth", "role:5"] || ["auth", "role:3"])->group(function(){
+
+    Route::post('message/{role}', 'MessageController@sendMessage')->name('send.message');
+    Route::get('message/get_all/{role}', 'MessageController@getAllMessage')->name('get.message');
+    Route::get('message/unread/{user_id}', 'MessageController@getUnreadMessage')->name('get.unread.message');
+    Route::get('message/list/contact', 'MessageController@getListContactMessage')->name('get.list.contact.message');
+    Route::get('message/all/contact/unread/', 'MessageController@getUnreadCountMessageContact')->name('get.unread.count.message.contact');
+    Route::get('message/show/{to_id}', 'MessageController@showContactMessage')->name('show.contact.message');
+    Route::post('message/contact', 'MessageController@sendContactMessage')->name('send.contact.message');
 
 });

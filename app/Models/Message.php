@@ -19,4 +19,11 @@ class Message extends Model
         ->first();
     }
 
+    public static function unreadCountAfa(int $user_id){
+        return Message::where('to_id', $user_id)
+        ->selectRaw('from_id, COUNT(id) as count')
+        ->whereRaw('seen = 0')
+        ->first();
+    }
+
 }

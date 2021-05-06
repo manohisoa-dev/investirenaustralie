@@ -706,6 +706,8 @@ return [
     'txt.info_saved' => "Information enregistrée !",
     'txt.write_message' => 'Écrire un message',
     'txt.welcome_chat' => 'Bienvenu dans notre discussion',
+    'txt.welcome_your_chat' => 'Bienvenu dans votre discussion',
+    'txt.loading_message' => 'Chargement des messages',
     
     
     'childs' => 'Fils',

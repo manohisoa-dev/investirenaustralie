@@ -13,6 +13,8 @@
 
                             <form id="formContact" data-form-output="form-output-global" data-form-type="contact" method="post" action="{{$action}}">
                                 {{ csrf_field() }}
+                                <input type="hidden" id="user_id" value="{{ Auth::user()->id }}">
+                                <input type="hidden" id="to_id" value="@if($role==='admin') 1  @elseif($role==='afa'){{Auth::user()->afa_id}}@else {{ Auth::user()->apl_id }} @endif">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="panel panel-primary">
@@ -106,12 +108,12 @@
                 var showMessage = $('#show_message');
                 var content= "";
 
-
                 $.ajax({
-                    url : '{{ route("member.get.message", ["role"=>$role]) }}',
+                    url : '{{ route("get.message", ["role"=>$role]) }}',
                     method : 'get',
                     dataType : 'json',
                     success : function(dt){
+
                         if(dt.length !== 0)
                         {
                             for(var i=0; i<dt.length; i++){
@@ -128,7 +130,7 @@
 
                                     content += '<li class="left clearfix">'+
                                             '<span class="chat-img pull-left">'+
-                                                '<img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />'+
+                                                '<img src="http://placehold.it/50/555658/fff&text='+(fromName.charAt(0)).toUpperCase()+'" alt="User Avatar" class="img-circle" />'+
                                             '</span>'+
                                             '<div class="chat-body clearfix">'+
                                                 '<div class="header">'+
@@ -143,7 +145,7 @@
                                 }else{
                                     content += '<li class="right clearfix">'+
                                             '<span class="chat-img pull-right">'+
-                                                '<img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />'+
+                                                '<img src="http://placehold.it/50/AE4435/fff&text='+(fromName.charAt(0)).toUpperCase()+'" alt="User Avatar" class="img-circle" />'+
                                             '</span>'+
                                             '<div class="chat-body clearfix">'+
                                                 '<div class="header">'+
@@ -159,12 +161,12 @@
                                 
                             }
                         }else{
-                            content += '<li class="center clearfix">'+
+                            content = '<li class="center clearfix">'+
                                             '<div class="chat-body clearfix">'+
                                                 '<p class="text-center p-50px-t">'+
                                                     '<div class="p-25px text-center">'+
                                                         '<div class="avatar-80 border-radius-50 d-inline-block">'+
-                                                            '<img src="{{ asset("images/iea.png") }}" title="" alt="">'+
+                                                            '<img src="@if($role=="admin") {{ \App\Models\User::where("role",1)->first()->imageUrl() }} @else {{ \App\Models\User::find(Auth::user()->afa_id)->imageUrl() }} @endif" title="" alt="">'+
                                                         '</div>'+
                                                         '<h6 class="font-w-500 m-15px-t m-0px"><span class="font-w-700"> @if($role=="admin") {{ App\Models\User::where("id",1)->first()->name }} @elseif($role=="afa") {{ App\Models\User::where("id",Auth::user()->afa_id)->first()->name }} @else {{ App\Models\User::where("id",Auth::user()->apl_id)->first()->name }} @endif </span></h6>'+
                                                         '<span class="font-small"></span>'+
@@ -186,7 +188,7 @@
             // Reload show message
             setInterval(() => {
                 showMessages()
-            }, 2500);
+            }, 4500);
 
 
             function showRecentMessage(){
@@ -201,7 +203,17 @@
                 event.preventDefault();
 
                 var formData = $('#formContact').serialize();
+                var thisHtml = $(this).html();
+
+                // Initialize error message
                 $('#error_message').html("");
+
+                // disable button
+                $(this).prop("disabled", true);
+                // add spinner to button
+                $(this).html(
+                    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+                );
 
                 $.ajax({
                     url: '{{ $action }}',
@@ -209,6 +221,10 @@
                     data: formData,
                     dataType: "json",
                     success:function(data){
+                        // reset button
+                        $('#btn_send').prop("disabled", false);
+                        $('#btn_send').html(thisHtml);
+
                         if($.isEmptyObject(data.error)){
                             $('#formContact')[0].reset();
                             console.log(data.success);

@@ -315,12 +315,25 @@
                                   </div>
                               </a>
 
-                              @if (Auth::user()->hasRole(3) || Auth::user()->hasRole(4) )
-                                <a href="{{route(''.\App\Models\User::find(Auth::id())->roleUser->role_initial.'.mail.list',['filter'=>'inbox'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is(\App\Models\User::find(Auth::id())->roleUser->role_initial.'/mails/inbox')) ? 'menu-active' : '' }}">
+                              @if (Auth::user()->hasRole(2) || Auth::user()->hasRole(3) || Auth::user()->hasRole(4) )
+                                @if (Auth::user()->hasRole(2))
+                                    @php
+                                        $rl = 'seller';
+                                    @endphp
+                                @elseif(Auth::user()->hasRole(3))
+                                    @php
+                                        $rl = 'afa';
+                                    @endphp
+                                @else
+                                    @php
+                                        $rl = 'apl';
+                                    @endphp
+                                @endif
+                                <a href="{{route('show.message', ['role'=>$rl])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is(\App\Models\User::find(Auth::id())->roleUser->role_initial.'/mails/inbox')) ? 'menu-active' : '' }}">
                                     <div>
                                         <i class="far fa-comments m-10px-r"></i>
                                         <span>@lang('app.chats')</span>
-                                        <span class="unread-count-member badge badge-pill badge-primary">10</span>
+                                        <span class="unread-count badge badge-pill badge-primary"></span>
                                     </div>
                                     <div>
                                         <i class="fas fa-chevron-right"></i>
@@ -443,20 +456,37 @@
             // Show unread message count in left sidebar
             showUnreadCount();
 
+            // Update show unread message count
+            setInterval(() => {
+                showUnreadCount();
+            }, 4500);
+            
+
             function showUnreadCount(){
                 $.ajax({
-                    url: '{{ route("member.get.unread.message") }}',
+                    url: '{{ route("get.unread.message", ["user_id"=>Auth::user()->id]) }}',
                     type: "GET",
                     dataType: "json",
+
                     success:function(data){
+
                         if(data.res['role_id'] == 5){
                             var unreadCountAdmin = $('.unread-count-admin');
                             var unreadCountAfa = $('.unread-count-afa');
                             
                             unreadCountAdmin.html(data.res['unreadCountAdmin']);
                             unreadCountAfa.html(data.res['unreadCountAfa']);
+                        }else{
+                            var unreadCount = $('.unread-count');
+
+                            if(data.res['unreadCount'] !== 0){
+                                unreadCount.html(data.res['unreadCount']);
+                            }
+                            else{
+                                unreadCount.html('');
+                            }
                         }
-                        console.log(data);
+
                     },
                     error:function(e){
                         console.log(e);
@@ -465,10 +495,6 @@
 
                 return false;
             }
-
-            setInterval(() => {
-                showUnreadCount();
-            }, 2500);
 
         })
     </script>
