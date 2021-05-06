@@ -245,6 +245,7 @@
                                 content = '';
                                 $('#panel-show-message-default').removeAttr('hidden');
                                 $('#panel-show-message').attr('hidden','hidden');
+                                $('#to_id').val('0');
                             }
 
                             return showMessage.html(content);
