@@ -73,16 +73,42 @@
 					</div> 
 					<div id="infoNewProgramme">
 						<div class="row">
+							<div class="col-md-12">                              
+								<div class="form-group">
+									<label for="title">Nom/Titre du programme *</label>
+									<input name="title_programme" id="title_programme" class="form-control" type="text" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12">                              
+								<div class="form-group">
+									<label for="title">Description du programme</label>
+									<textarea class="form-control" rows="10" name="description" id="description"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="row">
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="title">Prix Minimal *</label>
-									<input name="prix_min" id="prix_min" class="form-control" type="number" value="">
+									<div class="input-group m-b">
+										<input type="number" class="form-control" name="prix_min" id="prix_min">
+										<div class="input-group-append">
+											<span class="input-group-addon">AUD</span>
+										</div>
+									</div>
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="title">Prix Maximal *</label>
-									<input name="prix_max" id="prix_max" class="form-control" type="number" value="">
+									<div class="input-group m-b">
+										<input type="number" class="form-control" name="prix_max" id="prix_max">
+										<div class="input-group-append">
+											<span class="input-group-addon">AUD</span>
+										</div>
+									</div>
 								</div>
 							</div>
 							<div class="col-lg-4">
@@ -97,10 +123,7 @@
 								<div class="form-group">
 									<label for="title">Type de produits *</label>
 									<select class="form-control" name="type_id" id="type_id" style="width:100%">
-										<option value="">Choisir...</option>
-										@foreach(\App\Models\Type::all() as $ty)
-											<option value="{{$ty->id}}">{{$ty->title}}</option>
-										@endforeach
+										
 									</select>
 								</div>
 							</div>
@@ -118,31 +141,19 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-lg-4">
+							<div class="col-lg-3">
 								<div class="form-group">
 									<label for="title">Ville *</label>
 									<input name="ville" id="ville" class="form-control" type="text">
 								</div>  
 							</div>
-							<div class="col-lg-4">
+							<div class="col-lg-3">
 								<div class="form-group">
 									<label for="title">Code postal *</label>
 									<input name="postalCode" id="postalCode" class="form-control" type="text" value="">
 								</div>
 							</div>
-							<div class="col-lg-4">
-								<div class="form-group">
-									<label for="title">Etat *</label>
-									<select class="form-control" name="state_id" id="state_id" style="width:100%">
-										@foreach(\App\Models\State::all() as $state)
-											<option value="{{$state->id}}">{{$state->content}}</option>
-										@endforeach
-									</select>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-4">
+							<div class="col-lg-3">
 								<div class="form-group">
 									<label for="title">Pays</label>
 									<select class="form-control" name="countryId" id="countryId" style="width:100%">
@@ -152,21 +163,17 @@
 									</select>
 								</div>
 							</div>
-							<div class="col-md-8">                              
+							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Nom/Titre du programme *</label>
-									<input name="title_programme" id="title_programme" class="form-control" type="text" value="">
+									<label for="title">Etat *</label>
+									<select class="form-control" name="state_id" id="state_id" style="width:100%">
+										@foreach(\App\Models\State::all() as $state)
+											<option value="{{$state->id}}">{{$state->content}}</option>
+										@endforeach
+									</select>
 								</div>
 							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-12">                              
-								<div class="form-group">
-									<label for="title">Description du programme</label>
-									<textarea class="form-control" rows="10" name="description" id="description"></textarea>
-								</div>
-							</div>
-						</div>
+						</div>						
 						<div class="row">
 							<div class="col-lg-12">
 								<label class="chk_firb"> 
@@ -192,7 +199,20 @@
             CKEDITOR.replace( 'description' );
 			$("#category_id").select2();
 			$("#type_id").select2();
-			
+			$('#cat_programmme_id').on('change', function() {
+				var category = this.value;
+				$.ajax({
+				   type:'POST',
+				   url:"{{ route('admin.ajaxGetTypeProduitCategorie') }}",
+				   data: {"_token": "{{ csrf_token() }}","categoryId": category},
+				   success:function(data) {
+				      console.log(data);
+					  $('#type_id').html(data);
+					  $('#product_type_id').html(data);
+					  
+				   }
+				});
+			});
 			$('#programmeForm').validate({
 			    ignore: [],
 				rules: {
