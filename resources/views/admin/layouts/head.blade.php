@@ -2,9 +2,10 @@
     <nav class="navbar navbar-static-top {{Request::is('*/admin') ? 'white-bg' : ''}}" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
             <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
-            <form role="search" class="navbar-form-custom" action="search_results.html">
+            <form role="search" class="navbar-form-custom" action="{{route('admin.product.programme')}}">
+                <input type="hidden" name="{{csrf_token()}}">
                 <div class="form-group">
-                    <input type="text" placeholder="Cherchez quelque chose ..." class="form-control" name="top-search" id="top-search">
+                    <input type="text" placeholder="Cherchez un programme/produit ..." class="form-control" id="top-search" name="title" style="width: 17rem !important;" value="{{Request::input("title")}}">
                 </div>
             </form>
         </div>

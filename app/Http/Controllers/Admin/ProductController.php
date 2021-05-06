@@ -12,7 +12,12 @@ use Jleon\LaravelPnotify\Notify;
 
 use App\Models\Image;
 use App\Models\User;
+use App\Models\Localisation;
+use App\Models\Type;
 use Auth;
+
+use GuzzleHttp;
+use GuzzleHttp\Client;
 
 class ProductController extends Controller {
     public $viewDir = "admin.product";
@@ -55,55 +60,84 @@ class ProductController extends Controller {
         $nature = $request->natureBien;
         if ($request->type == 'programme') {
             //creation simple programme
-            $this->save_programme($request->title, $request->file('image_programme'), $request->category_id,
-                $request->prix_min, $request->prix_max, $request->content);
+            $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
+                '', '', $request->ville);
+            $this->save_programme($request->cat_programmme_id, $request->ancienneteBien, $request->natureBien,
+                $request->file('image_programme'), $request->prix_min, $request->prix_max, $request->type_id,
+                $request->display_address, $request->postalCode, $request->state_id, $request->title_programme,
+                $request->description, $id_location);
 
             # notification
             Notify::success('Programme a été créer avec succès');
             return redirect(route('admin.product.programme'));
         } else {
             //creation produit
+            if (isset($request->chk_parking)) {
+                $avoir_parking = 1;
+            } else {
+                $avoir_parking = 0;
+            }
+            
+            if (isset($request->chk_picine)) {
+                $avoir_piscine = 1;
+            } else {
+                $avoir_piscine = 0;
+            }
             if ($anciennete == 'Neuf') {
                 if ($nature == 'Programme immobilier') {
                     if ($request->parent_id == 0) {
                         //creation programme
-                        $id_programme = $this->save_programme($request->title, $request->file('image_programme'),
-                            $request->category_id, $request->prix_min, $request->prix_max, $request->content);
+                        $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
+                            '', '', $request->ville);
+                        $id_programme = $this->save_programme($request->cat_programmme_id, $request->ancienneteBien,
+                            $request->natureBien, $request->file('image_programme'), $request->prix_min, $request->prix_max,
+                            $request->type_id, $request->display_address, $request->postalCode, $request->state_id,
+                            $request->title_programme, $request->description, $id_location);
                         //creation produit
                         $this->save_new_produit($anciennete, $nature, $request->title_product, $request->file
-                            ('image'), $request->desc_product, $request->quantity, $request->area, $request->interior_area,
+                            ('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
                             $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
-                            $request->bathrooms, $request->bedrooms, $request->ensuite, $request->number_of_floors,
-                            $request->new_construction, $request->year_built, $request->display_address, $request->price,
-                            $request->currency, $request->status, $request->type_id, $request->cat_programmme_id,
-                            $request->postalCode, $request->state_id, $id_programme);
+                            $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
+                            $request->price, $request->currency, $request->status, $request->product_type_id,
+                            $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
+                            $id_programme, $id_location, 0, $avoir_parking, 0);
                     } else {
+                        //creation produit avec programme existant
+                        $id_location = Product::where('id', $request->parent_id)->get(['location_id']);
                         $this->save_new_produit($anciennete, $nature, $request->title_product, $request->file
-                            ('image'), $request->desc_product, $request->quantity, $request->area, $request->interior_area,
+                            ('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
                             $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
-                            $request->bathrooms, $request->bedrooms, $request->ensuite, $request->number_of_floors,
-                            $request->new_construction, $request->year_built, $request->display_address, $request->price,
-                            $request->currency, $request->status, $request->type_id, $request->cat_programmme_id,
-                            $request->postalCode, $request->state_id, $request->parent_id);
+                            $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
+                            $request->price, $request->currency, $request->status, $request->product_type_id,
+                            $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
+                            $request->parent_id, $id_location, 0, $avoir_parking, 0);
                     }
                 } else {
-                    //si nature == Produit individuel
+                    //creation produit isolé
+                    //creation location produit isolé
+                    $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
+                        $request->postalCode_product, '', '', $request->ville_product);
+
                     $this->save_new_produit($anciennete, $nature, $request->title_product, $request->file
-                        ('image'), $request->desc_product, $request->quantity, $request->area, $request->interior_area,
+                        ('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
                         $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
-                        $request->bathrooms, $request->bedrooms, $request->ensuite, $request->number_of_floors,
-                        $request->new_construction, $request->year_built, $request->display_address, $request->price,
-                        $request->currency, $request->status, $request->type_id, 0, $request->postalCode,
-                        $request->state_id, -1);
+                        $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
+                        $request->price, $request->currency, $request->status, $request->product_type_id,
+                        $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
+                        -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine);
                 }
             } else {
                 //si ancienneté == ancien
+                $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
+                    $request->postalCode_product, '', '', $request->ville_product);
+
                 $this->save_new_produit($anciennete, '', $request->title_product, $request->file
-                    ('image'), $request->desc_product, $request->quantity, $request->area, $request->interior_area,
+                    ('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
                     $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
-                    $request->bathrooms, $request->bedrooms, $request->ensuite, $request->number_of_floors,
-                    'NON', $request->annee_const, '', $request->price, $request->currency, $request->status,
-                    $request->type_id, 0, $request->postal_code, 0, -1);
+                    $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
+                    $request->price, $request->currency, $request->status, $request->product_type_id,
+                    $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
+                    -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine);
             }
 
 
@@ -113,7 +147,37 @@ class ProductController extends Controller {
         }
     }
 
-    function save_programme($title, $photo, $categorie, $prix_min, $prix_max, $content) {
+    function get_lonlat($address) {
+        try {
+            //Converts address into Lat and Lng
+            $client = new Client(); //GuzzleHttp\Client
+            $result = (string )$client->post("https://maps.googleapis.com/maps/api/geocode/json?address=$address", ['form_params' => ['key' =>
+                'AIzaSyCzqATs_wp3WXAVlt9iPVS9GcRFPGcIZZw']])->getBody();
+            $json = json_decode($result);
+            $address->lat = $json->results[0]->geometry->location->lat;
+            $address->lng = $json->results[0]->geometry->location->lng;
+            return $result;
+        }
+        catch (exception $e) {
+        }
+    }
+
+    function save_location($country, $suburb, $postalCode, $longitude, $latitude, $locality) {
+        $location = new Localisation();
+        $location->country = $country;
+        $location->area_level_1 = $suburb;
+        $location->postalCode = $postalCode;
+        $location->longitude = $longitude;
+        $location->latitude = $latitude;
+        $location->locality = $locality;
+        $location->author_id = Auth::user()->id;
+
+        $location->save();
+        return $location->id;
+    }
+
+    function save_programme($categorie, $ancienete, $nature, $photo, $prix_min, $prix_max,
+        $type_id, $display_address, $postalCode, $state_id, $title, $content, $location_id) {
         $slug = generateSlug($title);
         $programme = new Product();
         if ($file = $photo) {
@@ -121,11 +185,18 @@ class ProductController extends Controller {
             $programme->image_id = $image->id;
         }
         $programme->category_id = $categorie;
+        $programme->ancienneteBien = $ancienete;
+        $programme->natureBien = $nature;
         $programme->min_price = $prix_min;
         $programme->max_price = $prix_max;
-        $programme->content = $content;
+        $programme->type_id = $type_id;
+        $programme->display_address = $display_address;
+        $programme->postalCode = $postalCode;
+        $programme->state_id = $state_id;
         $programme->title = $title;
+        $programme->content = $content;
         $programme->slug = $slug;
+        $programme->location_id = $location_id;
         $programme->author_id = Auth::user()->id;
         $programme->save();
         return $programme->id;
@@ -135,7 +206,9 @@ class ProductController extends Controller {
         $area, $interior_area, $exterior_area, $total_area, $carport_spaces, $garage_spaces,
         $bathrooms, $bedrooms, $sweet, $number_of_floors, $new_construction, $year_built,
         $display_address, $price, $currency, $status, $type_id, $cat_programmme_id, $postalCode,
-        $state_id, $parent_id) {
+        $state_id, $programme_id, $location_id, $superficie_jardin, $avoir_parking_voie_public,
+        $avoir_piscine) {
+
         $product = new Product();
         $lastId = Product::latest('id')->first();
         $new_id = $lastId->id + 1;
@@ -176,7 +249,11 @@ class ProductController extends Controller {
         $product->author_id = Auth::user()->id;
         $product->postalCode = $postalCode;
         $product->state_id = $state_id;
-        $product->parent_id = $parent_id;
+        $product->parent_id = $programme_id;
+        $product->location_id = $location_id;
+        $product->superficie_jardin = $superficie_jardin;
+        $product->avoir_parking_voie_public = $avoir_parking_voie_public;
+        $product->avoir_piscine = $avoir_piscine;
         $product->save();
     }
 
@@ -224,9 +301,7 @@ class ProductController extends Controller {
             $product->category_id = $request->category_id;
             $product->min_price = $request->prix_min;
             $product->max_price = $request->prix_max;
-            $product->save();
-
-            # notification
+            $product->save(); # notification
             Notify::success('Programme a été mise à jour avec succès');
             return redirect(route('admin.product.programme'));
         }
@@ -256,15 +331,12 @@ class ProductController extends Controller {
     public function destroy(Request $request, Product $product) {
         if ($product->parent_id == 0) {
             //suppression produit
-            Product::where('parent_id', $product->id)->delete();
-            //suppression programme
-            $product->delete();
-            # notification
+            Product::where('parent_id', $product->id)->delete(); //suppression programme
+            $product->delete(); # notification
             Notify::success('Programme a été supprimer avec succès');
             return redirect(route('admin.product.programme'));
         } else {
-            $product->delete();
-            # notification
+            $product->delete(); # notification
             Notify::success('Produit a été supprimer avec succès');
             return redirect(route('admin.product.programme'));
         }
@@ -287,7 +359,6 @@ class ProductController extends Controller {
     public function trash(Request $request, Product $product) {
         $product->status = 'trashed';
         $product->save();
-
         Notify::success('Le produit a été ajouté au corbeille avec succés');
         return redirect(route('admin.product.index'));
     }
@@ -302,10 +373,8 @@ class ProductController extends Controller {
     public function restore(Request $request, Product $product) {
         $this->middleware('auth');
         $this->middleware('role:admin');
-
         $product->status = 'pinged';
         $product->save();
-
         Notify::success('Le produit a été restoré avec succés');
         return redirect(route('admin.product.index'));
     }
@@ -320,10 +389,8 @@ class ProductController extends Controller {
     public function publish(Request $request, Product $product) {
         $this->middleware('auth');
         $this->middleware('role:admin');
-
         $product->status = 'published';
         $product->save();
-
         Notify::success('Le produit a été publié avec succés');
         return redirect(route('admin.product.index'));
     }
@@ -340,21 +407,33 @@ class ProductController extends Controller {
 
     public function ajaxRequestProgramme(Request $request) {
         $product = Product::find($request->productId);
+        $location = Localisation::find($product->location_id);
         return response()->json(['title' => $product->title, 'slug' => $product->slug,
             'id' => $product->id, 'category_id' => $product->category_id, 'min_price' => $product->min_price,
-            'max_price' => $product->max_price, 'content' => $product->content]);
+            'max_price' => $product->max_price, 'content' => $product->content, 'type_id' =>
+            $product->type_id, 'suburb' => $location ? $location->area_level_1 : '',
+            'country' => $location ? $location->country : 12, 'postalCode' => $location ? $location->postalCode :
+            '', 'display_address' => $product->display_address, 'ville' => $location ? $location->locality :
+            '']);
+    }
+    
+    public function ajaxGetTypeProduitCategorie(Request $request)
+    {
+        $typePrd = Type::where('categories_id',$request->categoryId)->get();
+        $output = '<option value="">Choisir...</option>';
+        foreach($typePrd as $val){
+            $output .= '<option value="'.$val->id.'">'.$val->title.'</option>';
+        }
+        return response()->json($output);
     }
 
     public function ajaxCheckFirb() {
         $code_postal = $_GET['postal_code'];
         $firb = Firb::where('codePostal', $code_postal)->get();
         if (count($firb) > 0) {
-            return 'true';
-            //echo 'true';
-            //return response()->json(['msg'=>'true']);
+            echo "true";
         } else {
-            return 'false';
-            //echo 'false';
+            echo "false";
         }
     }
 

@@ -1,14 +1,14 @@
 @extends('admin.layouts.app')
 
-@section('title', 'States - Ajout ')
+@section('title', 'Etats - Ajout ')
 
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>States</h2>
+        <h2>Etats</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">States</a>
+                <a href="#">Etats</a>
             </li>
             <li class="breadcrumb-item">
                 <a href="{{ route('admin.state.index') }}">Listes</a>
