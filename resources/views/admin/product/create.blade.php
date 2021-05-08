@@ -5,10 +5,10 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Products</h2>
+        <h2>Produits</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Products</a>
+                <a href="#">Produits</a>
             </li>
             <li class="breadcrumb-item">
                 <a href="{{ route('admin.product.index') }}">Listes</a>
@@ -29,7 +29,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Ajouter un nouveau Product</h5>
+                <h5>Ajouter un nouveau Produits</h5>
             </div>
             <div class="ibox-content">
 				<form class="form-padding wizard-big" action="{{ route('admin.product.store') }}" method="post" id="form" enctype="multipart/form-data">
@@ -180,7 +180,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="row">
+							<div class="row mb-2">
 								<div class="col-lg-12">
 									<div class="dropzone" id="image_upload"></div>
 								</div>
@@ -877,9 +877,16 @@
 			$("#parent_id").select2();
 			
 			$("#image_upload").dropzone({
+<<<<<<< HEAD
 				maxFiles: 5, 
 				maxFilesize: 4,
 				dictDefaultMessage: 'Choisir plusieurs photo pour la représentation du programme',
+=======
+				maxFiles: 2,
+				dictDefaultMessage: 'Choisissez vos photos pour la représentation du programme',
+				addRemoveLinks: true,
+				uploadMultiple: true,
+>>>>>>> 7e65e9f97d27575508a99af8b331b024c874a673
 				url: "{{ route('admin.ajaxDropZone') }}",
 				params: {"_token": "{{ csrf_token() }}"},
 				acceptedFiles: ".jpeg,.jpg,.png,.gif",
