@@ -877,14 +877,61 @@
 			$("#parent_id").select2();
 			
 			$("#image_upload").dropzone({
-				maxFiles: 2,
+				maxFiles: 5, 
+				maxFilesize: 4,
 				dictDefaultMessage: 'Choisir plusieurs photo pour la représentation du programme',
-				addRemoveLinks: true,
-				uploadMultiple: true,
 				url: "{{ route('admin.ajaxDropZone') }}",
 				params: {"_token": "{{ csrf_token() }}"},
-				success: function (file, response) {
-					console.log(response);
+				acceptedFiles: ".jpeg,.jpg,.png,.gif",
+				addRemoveLinks: true,
+				timeout: 50000,
+				init:function() {
+					// Get images
+					var myDropzone = this;
+				},
+				removedfile: function(file) 
+				{
+					if (this.options.dictRemoveFile) {
+					  return Dropzone.confirm("Are You Sure to "+this.options.dictRemoveFile, function() {
+						if(file.previewElement.id != ""){
+							var name = file.previewElement.id;
+						}else{
+							var name = file.name;
+						}
+						//console.log(name);
+						var fileRef;
+							return (fileRef = file.previewElement) != null ? 
+							fileRef.parentNode.removeChild(file.previewElement) : void 0;
+					  });
+					}		
+				},
+		   
+				success: function(file, response) 
+				{
+					file.previewElement.id = response.success;
+					//console.log(file.previewElement.id); 
+					// set new images names in dropzone’s preview box.
+					var olddatadzname = file.previewElement.querySelector("[data-dz-name]");   
+					file.previewElement.querySelector("img").alt = response.success;
+					file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'><input value='"+response.success+"' type='radio' name='radioDrop' style='display:inline-block'> is principal</label>");
+					file.previewElement.appendChild(file._captionBox);
+					$('#form').append('<input type="hidden" name="document[]" value="'+response.success +'">');
+					olddatadzname.innerHTML = response.success;
+				},
+				error: function(file, response)
+				{
+				   if($.type(response) === "string")
+						var message = response; //dropzone sends it's own error messages in string
+					else
+						var message = response.message;
+					file.previewElement.classList.add("dz-error");
+					_ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+					_results = [];
+					for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+						node = _ref[_i];
+						_results.push(node.textContent = message);
+					}
+					return _results;
 				}
 			});
 			//$("#type_id").select2();

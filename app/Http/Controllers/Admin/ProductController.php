@@ -59,13 +59,14 @@ class ProductController extends Controller {
         $anciennete = $request->ancienneteBien;
         $nature = $request->natureBien;
         if ($request->type == 'programme') {
+            dd($request->All());
             //creation simple programme
             $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
                 '', '', $request->ville);
             $this->save_programme($request->cat_programmme_id, $request->ancienneteBien, $request->natureBien,
                 $request->file('image_programme'), $request->prix_min, $request->prix_max, $request->type_id,
                 $request->display_address, $request->postalCode, $request->state_id, $request->title_programme,
-                $request->description, $id_location,$request->file('fond_dossier'));
+                $request->description, $id_location, $request->file('fond_dossier'));
 
             # notification
             Notify::success('Programme a été créer avec succès');
@@ -92,13 +93,13 @@ class ProductController extends Controller {
                         $id_programme = $this->save_programme($request->cat_programmme_id, $request->ancienneteBien,
                             $request->natureBien, $request->file('image_programme'), $request->prix_min, $request->prix_max,
                             $request->type_id, $request->display_address, $request->postalCode, $request->state_id,
-                            $request->title_programme, $request->description, $id_location,$request->file('fond_dossier'));
+                            $request->title_programme, $request->description, $id_location, $request->file('fond_dossier'));
                         //creation produit
                         $this->save_new_produit($anciennete, $nature, $request->title_product, $request->file
-                            ('image'), $request->desc_product, 1, 0, $request->interior_area,
-                            $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
-                            $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
-                            $request->price,$request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
+                            ('image'), $request->desc_product, 1, 0, $request->interior_area, $request->exterior_area,
+                            $request->total_area, $request->carport_spaces, $request->garage_spaces, $request->bathrooms,
+                            $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
+                            $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
                             $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                             $id_programme, $id_location, 0, $avoir_parking, 0);
                     } else {
@@ -108,9 +109,9 @@ class ProductController extends Controller {
                             ('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
                             $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
                             $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
-                            $request->price, 'AUD', $request->status, $request->product_type_id,
-                            $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
-                            $request->parent_id, $id_location, 0, $avoir_parking, 0);
+                            $request->price, 'AUD', $request->status, $request->product_type_id, $request->cat_programmme_id,
+                            $request->postalCode_product, $request->state_id_product, $request->parent_id, $id_location,
+                            0, $avoir_parking, 0);
                     }
                 } else {
                     //creation produit isolé
@@ -122,7 +123,7 @@ class ProductController extends Controller {
                         ('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
                         $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
                         $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
-                        $request->price,$request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
+                        $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
                         $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                         -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine);
                 }
@@ -135,7 +136,7 @@ class ProductController extends Controller {
                     ('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
                     $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
                     $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
-                    $request->price,$request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
+                    $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
                     $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                     -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine);
             }
@@ -177,7 +178,8 @@ class ProductController extends Controller {
     }
 
     function save_programme($categorie, $ancienete, $nature, $photo, $prix_min, $prix_max,
-        $type_id, $display_address, $postalCode, $state_id, $title, $content, $location_id,$fond_dossier) {
+        $type_id, $display_address, $postalCode, $state_id, $title, $content, $location_id,
+        $fond_dossier) {
         $slug = generateSlug($title);
         $programme = new Product();
         if ($file = $photo) {
@@ -209,8 +211,8 @@ class ProductController extends Controller {
     function save_new_produit($anciennete, $nature, $title, $photo, $content, $qty,
         $area, $interior_area, $exterior_area, $total_area, $carport_spaces, $garage_spaces,
         $bathrooms, $bedrooms, $sweet, $number_of_floors, $new_construction, $year_built,
-        $display_address, $min_price,$max_price, $currency, $status, $type_id, $cat_programmme_id, $postalCode,
-        $state_id, $programme_id, $location_id, $superficie_jardin, $avoir_parking_voie_public,
+        $display_address, $min_price, $max_price, $currency, $status, $type_id, $cat_programmme_id,
+        $postalCode, $state_id, $programme_id, $location_id, $superficie_jardin, $avoir_parking_voie_public,
         $avoir_piscine) {
 
         $product = new Product();
@@ -442,9 +444,17 @@ class ProductController extends Controller {
     }
 
     public function ajaxDropZone(Request $request) {
-        foreach ($request->file as $photo) {
-            dd($photo[0]->file_name);
-        }
+        $image = $request->file('file');
+        $fileInfo = $image->getClientOriginalName();
+        $filename = pathinfo($fileInfo, PATHINFO_FILENAME);
+        $extension = pathinfo($fileInfo, PATHINFO_EXTENSION);
+        $file_name = $filename . '-' . time() . '.' . $extension;
+        $image->move(public_path('uploads/product'), $file_name);
+        /*$imageUpload = new Gallery;
+        $imageUpload->original_filename = $fileInfo;
+        $imageUpload->filename = $file_name;
+        $imageUpload->save();*/
+        return response()->json(['success' => $file_name]);
     }
 
 }
