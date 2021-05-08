@@ -877,16 +877,9 @@
 			$("#parent_id").select2();
 			
 			$("#image_upload").dropzone({
-<<<<<<< HEAD
 				maxFiles: 5, 
 				maxFilesize: 4,
 				dictDefaultMessage: 'Choisir plusieurs photo pour la représentation du programme',
-=======
-				maxFiles: 2,
-				dictDefaultMessage: 'Choisissez vos photos pour la représentation du programme',
-				addRemoveLinks: true,
-				uploadMultiple: true,
->>>>>>> 7e65e9f97d27575508a99af8b331b024c874a673
 				url: "{{ route('admin.ajaxDropZone') }}",
 				params: {"_token": "{{ csrf_token() }}"},
 				acceptedFiles: ".jpeg,.jpg,.png,.gif",
