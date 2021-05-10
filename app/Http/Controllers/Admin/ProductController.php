@@ -14,6 +14,7 @@ use App\Models\Image;
 use App\Models\User;
 use App\Models\Localisation;
 use App\Models\Type;
+use App\Models\ProductsImage;
 use Auth;
 
 use GuzzleHttp;
@@ -59,15 +60,28 @@ class ProductController extends Controller {
         $anciennete = $request->ancienneteBien;
         $nature = $request->natureBien;
         if ($request->type == 'programme') {
-            dd($request->All());
             //creation simple programme
             $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
                 '', '', $request->ville);
-            $this->save_programme($request->cat_programmme_id, $request->ancienneteBien, $request->natureBien,
-                $request->file('image_programme'), $request->prix_min, $request->prix_max, $request->type_id,
+            $id_programme = $this->save_programme($request->cat_programmme_id, $request->ancienneteBien,
+                $request->natureBien, $request->prix_min, $request->prix_max, $request->type_id,
                 $request->display_address, $request->postalCode, $request->state_id, $request->title_programme,
                 $request->description, $id_location, $request->file('fond_dossier'));
-
+            //save photo programme
+            if ($request->dropPhoto) {
+                foreach ($request->dropPhoto as $key => $value) {
+                    if ($request->radioDrop) {
+                        if ($request->radioDrop == $value) {
+                            $is_principal = 1;
+                        } else {
+                            $is_principal = 0;
+                        }
+                    } else {
+                        $is_principal = 0;
+                    }
+                    $this->save_photo_programme($value, $id_programme, $is_principal);
+                }
+            }
             # notification
             Notify::success('Programme a été créer avec succès');
             return redirect(route('admin.product.programme'));
@@ -91,11 +105,27 @@ class ProductController extends Controller {
                         $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
                             '', '', $request->ville);
                         $id_programme = $this->save_programme($request->cat_programmme_id, $request->ancienneteBien,
-                            $request->natureBien, $request->file('image_programme'), $request->prix_min, $request->prix_max,
-                            $request->type_id, $request->display_address, $request->postalCode, $request->state_id,
-                            $request->title_programme, $request->description, $id_location, $request->file('fond_dossier'));
+                            $request->natureBien, $request->prix_min, $request->prix_max, $request->type_id,
+                            $request->display_address, $request->postalCode, $request->state_id, $request->title_programme,
+                            $request->description, $id_location, $request->file('fond_dossier'));
+                        //save photo programme
+                        if ($request->dropPhoto) {
+                            foreach ($request->dropPhoto as $key => $value) {
+                                if ($request->radioDrop) {
+                                    if ($request->radioDrop == $value) {
+                                        $is_principal = 1;
+                                    } else {
+                                        $is_principal = 0;
+                                    }
+                                } else {
+                                    $is_principal = 0;
+                                }
+                                $this->save_photo_programme($value, $id_programme, $is_principal);
+                            }
+                        }
                         //creation produit
-                        $this->save_new_produit($anciennete, $nature, $request->title_product, $request->file
+                        $titre_product = $request->title_programme.'-'.$request->title_product;
+                        $this->save_new_produit($anciennete, $nature, $titre_product, $request->file
                             ('image'), $request->desc_product, 1, 0, $request->interior_area, $request->exterior_area,
                             $request->total_area, $request->carport_spaces, $request->garage_spaces, $request->bathrooms,
                             $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
@@ -177,15 +207,10 @@ class ProductController extends Controller {
         return $location->id;
     }
 
-    function save_programme($categorie, $ancienete, $nature, $photo, $prix_min, $prix_max,
-        $type_id, $display_address, $postalCode, $state_id, $title, $content, $location_id,
-        $fond_dossier) {
+    function save_programme($categorie, $ancienete, $nature, $prix_min, $prix_max, $type_id,
+        $display_address, $postalCode, $state_id, $title, $content, $location_id, $fond_dossier) {
         $slug = generateSlug($title);
         $programme = new Product();
-        if ($file = $photo) {
-            $image = Image::storeAndSave($file, 'product');
-            $programme->image_id = $image->id;
-        }
         if ($file = $fond_dossier) {
             $fond_dossier = Image::storeAndSave($fond_dossier, 'product');
             $programme->image_fond_dossier_id = $fond_dossier->id;
@@ -450,11 +475,27 @@ class ProductController extends Controller {
         $extension = pathinfo($fileInfo, PATHINFO_EXTENSION);
         $file_name = $filename . '-' . time() . '.' . $extension;
         $image->move(public_path('uploads/product'), $file_name);
-        /*$imageUpload = new Gallery;
-        $imageUpload->original_filename = $fileInfo;
-        $imageUpload->filename = $file_name;
-        $imageUpload->save();*/
+
         return response()->json(['success' => $file_name]);
+    }
+
+    public function save_photo_programme($nom_photo, $id_programme, $is_principale) {
+        //save image "table image"
+        $image = new Image();
+        $image->url = $nom_photo;
+        $image->filename = $nom_photo;
+        $image->filemime = '';
+        $image->filepath = 'uploads/product/' . $nom_photo;
+        $image->author_id = Auth::user()->id;
+        $image->save();
+
+        //save photo programme "table products_images"
+        $image_programme = new ProductsImage();
+        $image_programme->product_id = $id_programme;
+        $image_programme->image_id = $image->id;
+        $image_programme->is_principal = $is_principale;
+        $image_programme->author_id = Auth::user()->id;
+        $image_programme->save();
     }
 
 }

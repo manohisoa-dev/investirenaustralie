@@ -228,7 +228,12 @@
 							<div class="col-lg-12">
 								<div class="form-group">
 									<label for="title">Titre du produit *</label>
-									<input name="title_product" id="title_product" class="form-control" type="text" value="" title="Indiquez la référence du produit">
+									<div class="input-group m-b">
+										<div class="input-group-prepend">
+											<span class="input-group-addon" id="progTitle"></span>
+										</div>
+										<input name="title_product" id="title_product" class="form-control" type="text" value="" title="Indiquez la référence du produit">
+									</div>									
 								</div>
 							</div>
 						</div>
@@ -362,7 +367,7 @@
 							<div class="col-lg-3">
 								<div class="form-group">
 									<label for="title">Photo</label>
-									<input name="image" class="form-control" type="file">
+									<input name="image" class="form-control" type="file" accept="image/png, image/jpeg">
 								</div>
 							</div>
 						</div>
@@ -485,14 +490,6 @@
     <script>
 		Dropzone.autoDiscover = false;
         $(document).ready(function(){
-			/*$("#custom-file").dropzone({
-				maxFiles: 2,
-				url: "/ajax-file-handler/",
-				success: function (file, response) {
-					console.log(response);
-				}
-			});*/
-
 			$.validator.setDefaults({
 				ignore: []
 			});	
@@ -512,7 +509,6 @@
 					var natureBien = $('#natureBien').val();
 					if(ancienneteBien == 'Neuf' && natureBien == 'Programme immobilier'){
 						var titre_programme = $('#title_programme').val();
-						$('#title_product').val(titre_programme+' - ');
 						$('[name="product_type_id"]').val($('#type_id').val());
 						$('[name="suburb_product"]').val($('#suburb').val()).prop("readonly", true);
 						$('[name="ville_product"]').val($('#ville').val()).prop("readonly", true);
@@ -524,6 +520,7 @@
 						$('#chk_picine').hide();
 						$('#chk_firb').hide();
 						$('#yearConstruct').hide();
+						$("#progTitle").text(titre_programme);
 					}else if(ancienneteBien == 'Neuf' && natureBien == 'Produit isolé'){
 						$('#title_product').val('');
 						$('#jardin_info').show();
@@ -915,7 +912,7 @@
 					file.previewElement.querySelector("img").alt = response.success;
 					file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'><input value='"+response.success+"' type='radio' name='radioDrop' style='display:inline-block'> is principal</label>");
 					file.previewElement.appendChild(file._captionBox);
-					$('#form').append('<input type="hidden" name="document[]" value="'+response.success +'">');
+					$('#form').append('<input type="hidden" name="dropPhoto[]" value="'+response.success +'">');
 					olddatadzname.innerHTML = response.success;
 				},
 				error: function(file, response)

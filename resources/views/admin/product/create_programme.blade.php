@@ -137,7 +137,7 @@
 						<div class="row">
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Ville *</label>
+									<label for="title">Ville</label>
 									<input name="ville" id="ville" class="form-control" type="text">
 								</div>  
 							</div>
@@ -272,7 +272,7 @@
 				file.previewElement.querySelector("img").alt = response.success;
 				file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'><input value='"+response.success+"' type='radio' name='radioDrop' style='display:inline-block'> is principal</label>");
 				file.previewElement.appendChild(file._captionBox);
-				$('#programmeForm').append('<input type="hidden" name="document[]" value="'+response.success +'">');
+				$('#programmeForm').append('<input type="hidden" name="dropPhoto[]" value="'+response.success +'">');
 				olddatadzname.innerHTML = response.success;
             },
             error: function(file, response)
@@ -313,9 +313,6 @@
 				display_address: {
 					required: true
 				},
-				ville: {
-					required: true
-				},
 				postalCode: {
 					required: true
 				},
@@ -346,9 +343,6 @@
 					required: "Champ obligatoire"
 				},
 				display_address: {
-					required: "Champ obligatoire"
-				},
-				ville: {
 					required: "Champ obligatoire"
 				},
 				postalCode: {
