@@ -269,7 +269,9 @@
                     }
                     if (this.options.addRemoveLinks) {
                         file._removeLink = Dropzone.createElement("<a class=\"dz-remove\" href=\"javascript:undefined;\" data-dz-remove>" + this.options.dictRemoveFile + "</a>");
+						//file._radio = Dropzone.createElement("<label><input type=\"radio\" id=\"dropRadio\" name=\"dropRadio[]\"> is principal</label>");
                         file.previewElement.appendChild(file._removeLink);
+						//file.previewElement.appendChild(file._radio);
                     }
                     removeFileEvent = (function(_this) {
                         return function(e) {

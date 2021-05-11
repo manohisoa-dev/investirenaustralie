@@ -113,21 +113,15 @@
 							</div>
 							<div class="col-lg-4">
 								<div class="form-group">
-									<label for="title">Photo programme *</label>
-									<input name="image_programme" class="form-control" type="file">
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-4">
-								<div class="form-group">
 									<label for="title">Type de produits *</label>
 									<select class="form-control" name="type_id" id="type_id" style="width:100%">
 										
 									</select>
 								</div>
-							</div>
-							<div class="col-lg-4">
+							</div>							
+						</div>
+						<div class="row">							
+							<div class="col-lg-8">
 								<div class="form-group">
 									<label for="title">Adresse rue *</label>
 									<input name="display_address" id="display_address" class="form-control" type="text" value="">
@@ -143,7 +137,7 @@
 						<div class="row">
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Ville *</label>
+									<label for="title">Ville</label>
 									<input name="ville" id="ville" class="form-control" type="text">
 								</div>  
 							</div>
@@ -173,6 +167,28 @@
 									</select>
 								</div>
 							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label for="title">Fond de dossier</label>
+									<input name="fond_dossier" class="form-control" type="file" accept="image/png, image/jpeg,.pdf,video/mp4,video/x-m4v,video/*">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="dropzone" id="image_upload" multiple>
+									<!--<div class="fallback">
+										<input name='file' type='file' multiple />
+									</div>-->
+									<div id="template" class="file-row">
+										
+										
+
+									</div>
+								</div>
+							</div>
 						</div>						
 						<div class="row">
 							<div class="col-lg-12">
@@ -182,7 +198,7 @@
 							</div>
 						</div>
 					</div>                              
-                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Créer</button>
+                    <button type="submit" id="savePro" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Créer</button>
 				
                 </form>
             </div>
@@ -193,106 +209,163 @@
 @endsection
 @section('custom-script')
 	<script src="{{asset('administrator/plugins/ckeditor/ckeditor.js')}}"></script>
-
+	<!-- Jquery Validate -->
+    <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
     <script>
-        $(document).ready(function(){
-            CKEDITOR.replace( 'description' );
-			$("#category_id").select2();
-			$("#type_id").select2();
-			$('#cat_programmme_id').on('change', function() {
-				var category = this.value;
-				$.ajax({
-				   type:'POST',
-				   url:"{{ route('admin.ajaxGetTypeProduitCategorie') }}",
-				   data: {"_token": "{{ csrf_token() }}","categoryId": category},
-				   success:function(data) {
-				      console.log(data);
-					  $('#type_id').html(data);
-					  $('#product_type_id').html(data);
-					  
-				   }
-				});
+	Dropzone.autoDiscover = false;
+	$(document).ready(function(){
+		CKEDITOR.replace( 'description' );
+		$("#category_id").select2();
+		$("#type_id").select2();
+		
+		$('#cat_programmme_id').on('change', function() {
+			var category = this.value;
+			$.ajax({
+			   type:'POST',
+			   url:"{{ route('admin.ajaxGetTypeProduitCategorie') }}",
+			   data: {"_token": "{{ csrf_token() }}","categoryId": category},
+			   success:function(data) {
+				  console.log(data);
+				  $('#type_id').html(data);
+				  $('#product_type_id').html(data);
+				  
+			   }
 			});
-			$('#programmeForm').validate({
-			    ignore: [],
-				rules: {
-					cat_programmme_id: {
-						required: true
-					},
-					prix_min: {
-						required: true
-					},
-					prix_max: {
-						required: true
-					},
-					image_programme: {
-						required: true
-					},
-					type_id: {
-						required: true
-					},
-					display_address: {
-						required: true
-					},
-					ville: {
-						required: true
-					},
-					postalCode: {
-						required: true
-					},
-					state_id: {
-						required: true
-					},
-					title_programme: {
-						required: true
-					},
-					chk_firb: {
-						required: true
-					}
-				},
-				messages: {
-					cat_programmme_id: {
-						required: "Champ obligatoire"
-					},
-					prix_min: {
-						required: "Champ obligatoire"
-					},
-					prix_max: {
-						required: "Champ obligatoire"
-					},
-					image_programme: {
-						required: "Champ obligatoire"
-					},
-					type_id: {
-						required: "Champ obligatoire"
-					},
-					display_address: {
-						required: "Champ obligatoire"
-					},
-					ville: {
-						required: "Champ obligatoire"
-					},
-					postalCode: {
-						required: "Champ obligatoire"
-					},
-					state_id: {
-						required: "Champ obligatoire"
-					},
-					title_programme: {
-						required: "Champ obligatoire"
-					},
-					chk_firb: {
-						required: "Champ obligatoire"
-					}
-				},
-				errorPlacement: function ( error, element ) {
-					if(element.parent().hasClass('input-group')){
-						error.insertBefore( element.parent() );
+		});
+			
+		$("#image_upload").dropzone({
+			maxFiles: 5, 
+            maxFilesize: 4,
+			dictDefaultMessage: 'Choisir plusieurs photo pour la représentation du programme',
+            url: "{{ route('admin.ajaxDropZone') }}",
+			params: {"_token": "{{ csrf_token() }}"},
+            acceptedFiles: ".jpeg,.jpg,.png,.gif",
+            addRemoveLinks: true,
+            timeout: 50000,
+            init:function() {
+				// Get images
+				var myDropzone = this;
+			},
+            removedfile: function(file) 
+            {
+				if (this.options.dictRemoveFile) {
+				  return Dropzone.confirm("Are You Sure to "+this.options.dictRemoveFile, function() {
+					if(file.previewElement.id != ""){
+						var name = file.previewElement.id;
 					}else{
-						error.insertAfter( element );
+						var name = file.name;
 					}
+					//console.log(name);
+					var fileRef;
+						return (fileRef = file.previewElement) != null ? 
+						fileRef.parentNode.removeChild(file.previewElement) : void 0;
+				  });
+			    }		
+            },
+       
+            success: function(file, response) 
+            {
+				file.previewElement.id = response.success;
+				//console.log(file.previewElement.id); 
+				// set new images names in dropzone’s preview box.
+                var olddatadzname = file.previewElement.querySelector("[data-dz-name]");   
+				file.previewElement.querySelector("img").alt = response.success;
+				file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'><input value='"+response.success+"' type='radio' name='radioDrop' style='display:inline-block'> is principal</label>");
+				file.previewElement.appendChild(file._captionBox);
+				$('#programmeForm').append('<input type="hidden" name="dropPhoto[]" value="'+response.success +'">');
+				olddatadzname.innerHTML = response.success;
+            },
+            error: function(file, response)
+            {
+               if($.type(response) === "string")
+					var message = response; //dropzone sends it's own error messages in string
+				else
+					var message = response.message;
+				file.previewElement.classList.add("dz-error");
+				_ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+				_results = [];
+				for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+					node = _ref[_i];
+					_results.push(node.textContent = message);
+				}
+				return _results;
+            }
+		});
+		
+		$('#programmeForm').validate({
+			ignore: [],
+			rules: {
+				cat_programmme_id: {
+					required: true
 				},
-			});
-        }) ;
-    </script>
+				prix_min: {
+					required: true
+				},
+				prix_max: {
+					required: true
+				},
+				image_programme: {
+					required: true
+				},
+				type_id: {
+					required: true
+				},
+				display_address: {
+					required: true
+				},
+				postalCode: {
+					required: true
+				},
+				state_id: {
+					required: true
+				},
+				title_programme: {
+					required: true
+				},
+				chk_firb: {
+					required: true
+				}
+			},
+			messages: {
+				cat_programmme_id: {
+					required: "Champ obligatoire"
+				},
+				prix_min: {
+					required: "Champ obligatoire"
+				},
+				prix_max: {
+					required: "Champ obligatoire"
+				},
+				image_programme: {
+					required: "Champ obligatoire"
+				},
+				type_id: {
+					required: "Champ obligatoire"
+				},
+				display_address: {
+					required: "Champ obligatoire"
+				},
+				postalCode: {
+					required: "Champ obligatoire"
+				},
+				state_id: {
+					required: "Champ obligatoire"
+				},
+				title_programme: {
+					required: "Champ obligatoire"
+				},
+				chk_firb: {
+					required: "Champ obligatoire"
+				}
+			},
+			errorPlacement: function ( error, element ) {
+				if(element.parent().hasClass('input-group')){
+					error.insertBefore( element.parent() );
+				}else{
+					error.insertAfter( element );
+				}
+			},
+		});
+	});
+	</script>
 @endsection

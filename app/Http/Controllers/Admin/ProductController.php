@@ -14,6 +14,7 @@ use App\Models\Image;
 use App\Models\User;
 use App\Models\Localisation;
 use App\Models\Type;
+use App\Models\ProductsImage;
 use Auth;
 
 use GuzzleHttp;
@@ -62,11 +63,25 @@ class ProductController extends Controller {
             //creation simple programme
             $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
                 '', '', $request->ville);
-            $this->save_programme($request->cat_programmme_id, $request->ancienneteBien, $request->natureBien,
-                $request->file('image_programme'), $request->prix_min, $request->prix_max, $request->type_id,
+            $id_programme = $this->save_programme($request->cat_programmme_id, $request->ancienneteBien,
+                $request->natureBien, $request->prix_min, $request->prix_max, $request->type_id,
                 $request->display_address, $request->postalCode, $request->state_id, $request->title_programme,
-                $request->description, $id_location);
-
+                $request->description, $id_location, $request->file('fond_dossier'));
+            //save photo programme
+            if ($request->dropPhoto) {
+                foreach ($request->dropPhoto as $key => $value) {
+                    if ($request->radioDrop) {
+                        if ($request->radioDrop == $value) {
+                            $is_principal = 1;
+                        } else {
+                            $is_principal = 0;
+                        }
+                    } else {
+                        $is_principal = 0;
+                    }
+                    $this->save_photo_programme($value, $id_programme, $is_principal);
+                }
+            }
             # notification
             Notify::success('Programme a été créer avec succès');
             return redirect(route('admin.product.programme'));
@@ -77,7 +92,7 @@ class ProductController extends Controller {
             } else {
                 $avoir_parking = 0;
             }
-            
+
             if (isset($request->chk_picine)) {
                 $avoir_piscine = 1;
             } else {
@@ -90,15 +105,31 @@ class ProductController extends Controller {
                         $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
                             '', '', $request->ville);
                         $id_programme = $this->save_programme($request->cat_programmme_id, $request->ancienneteBien,
-                            $request->natureBien, $request->file('image_programme'), $request->prix_min, $request->prix_max,
-                            $request->type_id, $request->display_address, $request->postalCode, $request->state_id,
-                            $request->title_programme, $request->description, $id_location);
+                            $request->natureBien, $request->prix_min, $request->prix_max, $request->type_id,
+                            $request->display_address, $request->postalCode, $request->state_id, $request->title_programme,
+                            $request->description, $id_location, $request->file('fond_dossier'));
+                        //save photo programme
+                        if ($request->dropPhoto) {
+                            foreach ($request->dropPhoto as $key => $value) {
+                                if ($request->radioDrop) {
+                                    if ($request->radioDrop == $value) {
+                                        $is_principal = 1;
+                                    } else {
+                                        $is_principal = 0;
+                                    }
+                                } else {
+                                    $is_principal = 0;
+                                }
+                                $this->save_photo_programme($value, $id_programme, $is_principal);
+                            }
+                        }
                         //creation produit
-                        $this->save_new_produit($anciennete, $nature, $request->title_product, $request->file
-                            ('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
-                            $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
-                            $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
-                            $request->price, $request->currency, $request->status, $request->product_type_id,
+                        $titre_product = $request->title_programme.'-'.$request->title_product;
+                        $this->save_new_produit($anciennete, $nature, $titre_product, $request->file
+                            ('image'), $request->desc_product, 1, 0, $request->interior_area, $request->exterior_area,
+                            $request->total_area, $request->carport_spaces, $request->garage_spaces, $request->bathrooms,
+                            $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
+                            $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
                             $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                             $id_programme, $id_location, 0, $avoir_parking, 0);
                     } else {
@@ -108,9 +139,9 @@ class ProductController extends Controller {
                             ('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
                             $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
                             $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
-                            $request->price, $request->currency, $request->status, $request->product_type_id,
-                            $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
-                            $request->parent_id, $id_location, 0, $avoir_parking, 0);
+                            $request->price, 'AUD', $request->status, $request->product_type_id, $request->cat_programmme_id,
+                            $request->postalCode_product, $request->state_id_product, $request->parent_id, $id_location,
+                            0, $avoir_parking, 0);
                     }
                 } else {
                     //creation produit isolé
@@ -122,7 +153,7 @@ class ProductController extends Controller {
                         ('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
                         $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
                         $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
-                        $request->price, $request->currency, $request->status, $request->product_type_id,
+                        $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
                         $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                         -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine);
                 }
@@ -135,7 +166,7 @@ class ProductController extends Controller {
                     ('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
                     $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
                     $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
-                    $request->price, $request->currency, $request->status, $request->product_type_id,
+                    $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
                     $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                     -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine);
             }
@@ -176,13 +207,13 @@ class ProductController extends Controller {
         return $location->id;
     }
 
-    function save_programme($categorie, $ancienete, $nature, $photo, $prix_min, $prix_max,
-        $type_id, $display_address, $postalCode, $state_id, $title, $content, $location_id) {
+    function save_programme($categorie, $ancienete, $nature, $prix_min, $prix_max, $type_id,
+        $display_address, $postalCode, $state_id, $title, $content, $location_id, $fond_dossier) {
         $slug = generateSlug($title);
         $programme = new Product();
-        if ($file = $photo) {
-            $image = Image::storeAndSave($file, 'product');
-            $programme->image_id = $image->id;
+        if ($file = $fond_dossier) {
+            $fond_dossier = Image::storeAndSave($fond_dossier, 'product');
+            $programme->image_fond_dossier_id = $fond_dossier->id;
         }
         $programme->category_id = $categorie;
         $programme->ancienneteBien = $ancienete;
@@ -205,8 +236,8 @@ class ProductController extends Controller {
     function save_new_produit($anciennete, $nature, $title, $photo, $content, $qty,
         $area, $interior_area, $exterior_area, $total_area, $carport_spaces, $garage_spaces,
         $bathrooms, $bedrooms, $sweet, $number_of_floors, $new_construction, $year_built,
-        $display_address, $price, $currency, $status, $type_id, $cat_programmme_id, $postalCode,
-        $state_id, $programme_id, $location_id, $superficie_jardin, $avoir_parking_voie_public,
+        $display_address, $min_price, $max_price, $currency, $status, $type_id, $cat_programmme_id,
+        $postalCode, $state_id, $programme_id, $location_id, $superficie_jardin, $avoir_parking_voie_public,
         $avoir_piscine) {
 
         $product = new Product();
@@ -240,7 +271,8 @@ class ProductController extends Controller {
         $product->new_construction = $new_construction;
         $product->year_built = $year_built;
         $product->display_address = $display_address;
-        $product->price = $price;
+        $product->min_price = $min_price;
+        $product->max_price = $max_price;
         $product->currency = $currency;
         $product->tma = 0.20;
         $product->status = $status;
@@ -416,13 +448,12 @@ class ProductController extends Controller {
             '', 'display_address' => $product->display_address, 'ville' => $location ? $location->locality :
             '']);
     }
-    
-    public function ajaxGetTypeProduitCategorie(Request $request)
-    {
-        $typePrd = Type::where('categories_id',$request->categoryId)->get();
+
+    public function ajaxGetTypeProduitCategorie(Request $request) {
+        $typePrd = Type::where('categories_id', $request->categoryId)->get();
         $output = '<option value="">Choisir...</option>';
-        foreach($typePrd as $val){
-            $output .= '<option value="'.$val->id.'">'.$val->title.'</option>';
+        foreach ($typePrd as $val) {
+            $output .= '<option value="' . $val->id . '">' . $val->title . '</option>';
         }
         return response()->json($output);
     }
@@ -435,6 +466,36 @@ class ProductController extends Controller {
         } else {
             echo "false";
         }
+    }
+
+    public function ajaxDropZone(Request $request) {
+        $image = $request->file('file');
+        $fileInfo = $image->getClientOriginalName();
+        $filename = pathinfo($fileInfo, PATHINFO_FILENAME);
+        $extension = pathinfo($fileInfo, PATHINFO_EXTENSION);
+        $file_name = $filename . '-' . time() . '.' . $extension;
+        $image->move(public_path('uploads/product'), $file_name);
+
+        return response()->json(['success' => $file_name]);
+    }
+
+    public function save_photo_programme($nom_photo, $id_programme, $is_principale) {
+        //save image "table image"
+        $image = new Image();
+        $image->url = $nom_photo;
+        $image->filename = $nom_photo;
+        $image->filemime = '';
+        $image->filepath = 'uploads/product/' . $nom_photo;
+        $image->author_id = Auth::user()->id;
+        $image->save();
+
+        //save photo programme "table products_images"
+        $image_programme = new ProductsImage();
+        $image_programme->product_id = $id_programme;
+        $image_programme->image_id = $image->id;
+        $image_programme->is_principal = $is_principale;
+        $image_programme->author_id = Auth::user()->id;
+        $image_programme->save();
     }
 
 }

@@ -5,10 +5,10 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Products</h2>
+        <h2>Produits</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Products</a>
+                <a href="#">Produits</a>
             </li>
             <li class="breadcrumb-item">
                 <a href="{{ route('admin.product.index') }}">Listes</a>
@@ -29,7 +29,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Ajouter un nouveau Product</h5>
+                <h5>Ajouter un nouveau Produits</h5>
             </div>
             <div class="ibox-content">
 				<form class="form-padding wizard-big" action="{{ route('admin.product.store') }}" method="post" id="form" enctype="multipart/form-data">
@@ -179,11 +179,10 @@
 										<input name="fond_dossier" class="form-control" type="file" accept="image/png, image/jpeg,.pdf,video/mp4,video/x-m4v,video/*">
 									</div>
 								</div>
-								<div class="col-lg-4">
-									<div class="form-group">
-										<label for="title">Icône du programme *</label>
-										<input name="image_programme" class="form-control" type="file" accept="image/png, image/jpeg,.pdf">
-									</div>
+							</div>
+							<div class="row mb-2">
+								<div class="col-lg-12">
+									<div class="dropzone" id="image_upload"></div>
 								</div>
 							</div>
 							<div class="row">
@@ -207,7 +206,7 @@
 								<div class="col-lg-6">
 									<div class="form-group">
 										<label for="title">Année de construction du bâtiment *</label>
-										<input type="number" class="form-control" name="annee_const" id="annee_const" />
+										<input type="number" class="form-control" name="annee_const" id="annee_const" disabled="disabled"/>
 									</div>
 								</div>
 							</div>
@@ -226,21 +225,26 @@
 					<fieldset>
 						<h2>Information du produit</h2>
 						<div class="row">
-								<div class="col-lg-12">
-									<div class="form-group">
-										<label for="title">Titre du produit *</label>
+							<div class="col-lg-12">
+								<div class="form-group">
+									<label for="title">Titre du produit *</label>
+									<div class="input-group m-b">
+										<div class="input-group-prepend">
+											<span class="input-group-addon" id="progTitle"></span>
+										</div>
 										<input name="title_product" id="title_product" class="form-control" type="text" value="" title="Indiquez la référence du produit">
-									</div>
+									</div>									
 								</div>
 							</div>
-							<div class="row">     
-								<div class="col-lg-12">                              
-									<div class="form-group">
-										<label for="title">Description produit *</label>
-										<textarea class="form-control" rows="10" name="desc_product" id="desc_product"></textarea>
-									</div>
+						</div>
+						<div class="row">     
+							<div class="col-lg-12">                              
+								<div class="form-group">
+									<label for="title">Description produit *</label>
+									<textarea class="form-control" rows="10" name="desc_product" id="desc_product"></textarea>
 								</div>
 							</div>
+						</div>
 							
 						<div class="row">
 							<div class="col-lg-3">
@@ -363,7 +367,7 @@
 							<div class="col-lg-3">
 								<div class="form-group">
 									<label for="title">Photo</label>
-									<input name="image" class="form-control" type="file">
+									<input name="image" class="form-control" type="file" accept="image/png, image/jpeg">
 								</div>
 							</div>
 						</div>
@@ -465,12 +469,12 @@
 					</fieldset>
 				</form>
 
-				<form id="custom-file"
+				<!--<form id="custom-file"
 					  class="dropzone"
 					  action="/ajax_file_upload_handler/"
 					  enctype="multipart/form-data"
 					  method="post">
-				</form>
+				</form>-->
             </div>
         </div>
     </div>
@@ -485,16 +489,7 @@
     <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
     <script>
 		Dropzone.autoDiscover = false;
-
         $(document).ready(function(){
-			$("#custom-file").dropzone({
-				maxFiles: 2,
-				url: "/ajax-file-handler/",
-				success: function (file, response) {
-					console.log(response);
-				}
-			});
-
 			$.validator.setDefaults({
 				ignore: []
 			});	
@@ -514,7 +509,6 @@
 					var natureBien = $('#natureBien').val();
 					if(ancienneteBien == 'Neuf' && natureBien == 'Programme immobilier'){
 						var titre_programme = $('#title_programme').val();
-						$('#title_product').val(titre_programme+' - ');
 						$('[name="product_type_id"]').val($('#type_id').val());
 						$('[name="suburb_product"]').val($('#suburb').val()).prop("readonly", true);
 						$('[name="ville_product"]').val($('#ville').val()).prop("readonly", true);
@@ -526,6 +520,7 @@
 						$('#chk_picine').hide();
 						$('#chk_firb').hide();
 						$('#yearConstruct').hide();
+						$("#progTitle").text(titre_programme);
 					}else if(ancienneteBien == 'Neuf' && natureBien == 'Produit isolé'){
 						$('#title_product').val('');
 						$('#jardin_info').show();
@@ -545,12 +540,6 @@
                     if (currentIndex > newIndex)
                     {
                         return true;
-                    }
-
-                    // Forbid suppressing "Warning" step if the user is to young
-                    if (newIndex === 3 && Number($("#age").val()) < 18)
-                    {
-                        return false;
                     }
 
                     var form = $(this);
@@ -676,6 +665,13 @@
 								postal_code: function () {
 									return $("input[name='postal_code']").val();
 								}
+							},
+							complete: function(data){
+								if(data.responseText == "true" ) {
+									$('#annee_const').prop('disabled', false);
+								}else{
+									$('#annee_const').prop('disabled', true);
+								}
 							}
 						}
 					},
@@ -763,6 +759,15 @@
 							}
 						}
 					},
+					state_id: {
+						required: {
+							depends: function(element) {
+								if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier'){
+									return true;	
+								}
+							}
+						}
+					},
 					chk_firb_programme: {
 						required: {
 							depends: function(element) {
@@ -771,6 +776,9 @@
 								}
 							}
 						}
+					},
+					state_id_product:{
+						required: true,
 					}
 				},
 				messages: {
@@ -844,7 +852,17 @@
 					},
 					chk_firb_programme: {
 						required: "Champ obligatoire"
+					},
+					state_id: {
+						required: "Champ obligatoire"
+					},
+					state_id_product: {
+						required: "Champ obligatoire"
 					}
+				},
+				success: function(label,element) {
+					label.parent().removeClass('error');
+					label.remove(); 
 				}
 			});
 			
@@ -855,7 +873,64 @@
 			$("#seller_id").select2();
 			$("#parent_id").select2();
 			
-
+			$("#image_upload").dropzone({
+				maxFiles: 5, 
+				maxFilesize: 4,
+				dictDefaultMessage: 'Choisir plusieurs photo pour la représentation du programme',
+				url: "{{ route('admin.ajaxDropZone') }}",
+				params: {"_token": "{{ csrf_token() }}"},
+				acceptedFiles: ".jpeg,.jpg,.png,.gif",
+				addRemoveLinks: true,
+				timeout: 50000,
+				init:function() {
+					// Get images
+					var myDropzone = this;
+				},
+				removedfile: function(file) 
+				{
+					if (this.options.dictRemoveFile) {
+					  return Dropzone.confirm("Are You Sure to "+this.options.dictRemoveFile, function() {
+						if(file.previewElement.id != ""){
+							var name = file.previewElement.id;
+						}else{
+							var name = file.name;
+						}
+						//console.log(name);
+						var fileRef;
+							return (fileRef = file.previewElement) != null ? 
+							fileRef.parentNode.removeChild(file.previewElement) : void 0;
+					  });
+					}		
+				},
+		   
+				success: function(file, response) 
+				{
+					file.previewElement.id = response.success;
+					//console.log(file.previewElement.id); 
+					// set new images names in dropzone’s preview box.
+					var olddatadzname = file.previewElement.querySelector("[data-dz-name]");   
+					file.previewElement.querySelector("img").alt = response.success;
+					file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'><input value='"+response.success+"' type='radio' name='radioDrop' style='display:inline-block'> is principal</label>");
+					file.previewElement.appendChild(file._captionBox);
+					$('#form').append('<input type="hidden" name="dropPhoto[]" value="'+response.success +'">');
+					olddatadzname.innerHTML = response.success;
+				},
+				error: function(file, response)
+				{
+				   if($.type(response) === "string")
+						var message = response; //dropzone sends it's own error messages in string
+					else
+						var message = response.message;
+					file.previewElement.classList.add("dz-error");
+					_ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+					_results = [];
+					for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+						node = _ref[_i];
+						_results.push(node.textContent = message);
+					}
+					return _results;
+				}
+			});
 			//$("#type_id").select2();
 			$('#countryId').on('change', function() {
 				var country = this.value;
@@ -939,6 +1014,25 @@
 					$('#total_area').val(total_area);
 				}
 			});
+			
+			$('#postal_code').keyup(function(){
+				var codeP = this.value;
+				$.ajax({
+				   type:'GET',
+				   url:"{{ route('admin.ajaxCheckFirb') }}",
+				   data: {"_token": "{{ csrf_token() }}","postal_code": codeP},
+				   success:function(data) {
+				      if(data == "true" ) {
+					  	 $('#annee_const').prop('disabled', false);
+						 $('#postal_code').removeClass('error');
+						 $('#postal_code-error').hide();
+					  }else{
+					  	 $('#postal_code').addClass('error');
+						 $('#postal_code-error').show();
+					  }					  
+				   }
+				});
+			})
 		
         });
     </script>
