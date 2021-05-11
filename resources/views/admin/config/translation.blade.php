@@ -170,7 +170,15 @@
             });
 
             $('#btn_save').click(function(){
-                var datas = $('#editLangForm').serialize();
+                
+                var datas = {
+                    "_token": "{{ csrf_token() }}",
+                    'lang' : $('#lang').val(),
+                    'file' : $('#file').val(),
+                    'key' : $('#key').val(),
+                    'new_content' : $('#new_content').val(),
+                };
+                
                 // Set value on input edit
                 newContent= $('#new_content').val();
 
@@ -200,9 +208,8 @@
             });
 
             $('#searchForm').on('change','#select_lang',function(){
-                var val = $(this).val();
-                var datas = $('#searchForm').serialize();
-                
+                var lang = $(this).val();
+                var file = $('#select_file_name').val();
 
                 $('#tablelang').dataTable().fnDestroy();
                 
@@ -215,9 +222,9 @@
                     autoWidth: false,
                     pageLength: 10,
                     ajax: {
-                        url: '{{ route("admin.config.get.translation.filter") }}',
+                        url: '{{ route("admin.config.get.translation") }}',
                         method: "GET",
-                        data : datas,
+                        data : {'select_file_name':file, 'select_lang':lang},
                     },
                     columns: [
                         {data: 'groupe', name: 'groupe', render:function(){
@@ -232,8 +239,8 @@
             });
 
             $('#searchForm').on('change','#select_file_name',function(){
-                var val = $(this).val();
-                var datas = $('#searchForm').serialize();
+                var lang = $('#select_lang').val();
+                var file = $(this).val();
 
                 $('#tablelang').dataTable().fnDestroy();
                 
@@ -246,9 +253,9 @@
                     autoWidth: false,
                     pageLength: 10,
                     ajax: {
-                        url: '{{ route("admin.config.get.translation.filter") }}',
+                        url: '{{ route("admin.config.get.translation") }}',
                         method: "GET",
-                        data : datas,
+                        data : {'select_file_name':file, 'select_lang':lang},
                     },
                     columns: [
                         {data: 'groupe', name: 'groupe', render:function(){
