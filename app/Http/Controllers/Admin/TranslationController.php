@@ -97,38 +97,17 @@ class TranslationController extends Controller
 
         return view('admin.config.translation')->with('langFiles', $langFiles);
     }
+    
 
-    public function getTranslationFilter(Request $request)
+    public function getTranslation(Request $request)
     {
-        // $lang = strtolower($request->get('select_file_name'));
-        $file = strtolower($request->get('select_file_name'));
-
         if($request->get('select_lang')){
             $this->lang = strtolower($request->get('select_lang'));
         }
 
         if($request->get('select_file_name')){
-            $file = strtolower($request->get('select_file_name'));
-        }        
-
-        $data = $this->read($this->lang,$file);
-
-        return Datatables::of($data)
-            ->addColumn('action', function($row){
-                $actionBtn = '<span class="btn_edit">
-                        <a href="javascript:void(0)" title="'.trans('app.btn.edit').'" class="btn btn-default btn-circle btn-edit">
-                            <i class="fa fa-pencil-square-o"></i>
-                        </a>
-                    </span>';
-                return $actionBtn;
-            })
-            ->rawColumns(['action'])
-            ->make(true);
-    }
-    
-
-    public function getTranslation(Request $request)
-    {
+            $this->file = strtolower($request->get('select_file_name'));
+        }
 
         $data = $this->read($this->lang,$this->file);
 
@@ -153,8 +132,8 @@ class TranslationController extends Controller
 
         // Read file
         if ($this->lang == '') $this->lang = App::getLocale();
-        $this->path = base_path().'/resources/lang/'.$this->lang.'/'.$this->file.'.php';
-        $this->arrayLang = Lang::get($this->file);
+        $this->path = base_path().'/resources/lang/'.$lang.'/'.$file.'.php';
+        $this->arrayLang = Lang::get($file);
         if (gettype($this->arrayLang) == 'string') $this->arrayLang = array(); 
 
         $this->arrayLang[$key] = $value;
