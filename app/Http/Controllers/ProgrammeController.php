@@ -122,7 +122,7 @@ class ProgrammeController extends Controller
         if(!in_array($orderBy, ['price', 'created_at', 'view_count'])) $orderBy = Config::where('name','=','order_by')->first()->content;
         
         $order = $request->get('order');
-        if(!in_array($order, ['desc', 'asc'])) $order = 'desc';
+        if(!in_array($order, ['desc', 'asc'])) $order = 'asc';
 
         $viewProd = $request->get('view_prod');
         if(!in_array($viewProd, ['grid', 'list'])) $viewProd = 'list';

@@ -24,8 +24,11 @@
                     </div>
 
                     {{-- Badge --}}
-                    {{-- <div class="card-badge">@lang('app.txt.new')</div> --}} 
-                    <span class="notify-badge btn-success">@lang('app.txt.new')</span>
+                    @if ($item->created_at > Carbon\Carbon::now()->subDays(30))
+                        {{-- <div class="card-badge">@lang('app.txt.new')</div>  --}}
+                        <span class="notify-badge btn-success">@lang('app.txt.new')</span>
+                    @endif
+
                 </a>
         
                 <div class="p-5px-t p-20px-b text-center">

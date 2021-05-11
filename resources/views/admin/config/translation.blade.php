@@ -36,31 +36,29 @@
                         <div class="ibox-title">
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <form class="search-form">
+                                    <form class="search-form" id="searchForm">
                                         <div class="row">
-                                            <div class="col-lg-4">
-                                                <!-- Search form -->
-                                                <div class="input-group">
-                                                    <input class="form-control py-2 border-right-0 border" type="search" placeholder="@lang('app.txt.search_all_translation')" id="search" name="search">
-                                                    <span class="input-group-append">
-                                                        <div class="input-group-text bg-transparent"><i class="fa fa-search"></i></div>
-                                                    </span>
-                                                  </div>
-                                            </div>
+                                            <div class="col-lg-2">
+                                                <button type="button" class="btn btn-default btn-sm " id="btn_refresh"><i class="fa fa-refresh"></i> @lang('app.btn.refresh')</button>
+                                            </div> 
                                             <div class="col-lg-3">
-                                                <select class="form-control" name="lang" id="lang">
-                                                    <option value="">{{ strtoupper(app()->getLocale()) }}</option>
+                                                <select class="form-control" name="select_lang" id="select_lang">
+                                                    <option {{ app()->getLocale()=='fr' ? 'selected' : '' }}>FR</option>
+                                                    <option {{ app()->getLocale()=='en' ? 'selected' : '' }}>EN</option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-3">
-                                                <select class="form-control" name="type" id="type">
-                                                    <option value="">VALIDATION</option>
+                                                <select class="form-control" name="select_file_name" id="select_file_name">
+                                                    {{-- <option value="" selected disabled>@lang('app.txt.choose_select_file_name')</option> --}}
+                                                    @foreach ($langFiles as $langFile)
+                                                        <option value="{{ strtoupper($langFile) }}">{{ strtoupper($langFile) }}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                             <div class="col-lg-2">
-                                                <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> @lang('app.btn.add')</button>
-                                                {{-- <div style="clear:both"></div> --}}
-                                            </div>
+                                                <button type="button" class="btn btn-primary btn-sm" id="btn_add"><i class="fa fa-plus"></i> @lang('app.btn.add')</button>
+                                                {{-- <button type="button" class="btn btn-default btn-sm " id="btn_refresh"><i class="fa fa-refresh"></i> @lang('app.btn.refresh')</button> --}}
+                                            </div> 
                                         </div>
                                     </form>
                                 </div>
@@ -68,31 +66,16 @@
                         </div>
 
                         <div class="ibox-content">
-                            <table class="table table-striped grid-view-tbl">
+                            <table class="table table-striped grid-view-tbl datatable yajra-datatable" id="tablelang">
                                 <thead>
                                     <tr class="header-row">
-                                        <th>GROUP/SINGLE</th>
-                                        <th>KEY</th>
-                                        <th>EN</th>
-                                        <th>EN</th>
+                                        <th>{{ strtoupper(trans('app.txt.group_single')) }}</th>
+                                        <th>{{ strtoupper(trans('app.txt.key')) }}</th>
+                                        <th>{{ strtoupper(trans('app.txt.old_value')) }}</th>
+                                        <th>{{ strtoupper(trans('app.txt.new_value')) }}</th>
+                                        <th>{{ strtoupper(trans('app.txt.action')) }}</th>
                                     </tr>
                                 </thead>
-                
-                                <tbody>
-                                    <tr>
-                                        <td>validation</td>
-                                        <td>accepted</td>
-                                        <td>The :attribute must be accepted.</td>
-                                        <td>
-                                            <span class="btn_edit">
-                                                <a href="javascript:void(0)" title="@lang('app.txt.edit')" class="btn btn-default btn-circle">
-                                                    <i class="fa fa-pencil-square-o"></i>
-                                                </a>
-                                            </span> 
-                                            The :attribute must be accepted.
-                                        </td>
-                                    </tr>
-                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -100,4 +83,185 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div id="editLangModal" data-backdrop="static" data-keyboard="false" class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <!-- Vertically centered modal -->
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">@lang('app.txt.edit')</h5>
+                </div>
+                <div class="modal-body">
+                    <form action="" id="editLangForm">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="lang" id="lang">
+                        <input type="hidden" name="file" id="file">
+                        <input type="hidden" name="key" id="key">
+                        <textarea class="form-control" name="new_content" id="new_content" cols="60" rows="10"></textarea>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                <button type="button" id="btn_cancel" class="btn btn-secondary" data-dismiss="modal">@lang('app.btn.cancel')</button>
+                <button type="button" id="btn_save" class="btn btn-primary">@lang('app.btn.save')</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@endsection
+
+@section('custom-script')
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var newContent="";
+            var rowIndex="";
+
+            var tablelang = $('#tablelang').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json'
+                },
+                processing: true,
+                serverSide: false,
+                autoWidth: false,
+                pageLength: 10,
+                ajax: '{{ route("admin.config.get.translation") }}',
+                columns: [
+                    {data: 'groupe', name: 'groupe', render:function(){
+                        return $('#select_file_name').val();
+                    }},
+                    {data: 'key', name: 'key'},
+                    {data: 'content', name: 'content'},
+                    {data: 'content', name: 'content'},
+                    {data: 'action', name: 'action'},
+                ],
+            });
+        
+            $('#tablelang').on('click','tr .btn-edit',function(){
+                    var tr = $(this).closest("tr");
+                        rowIndex = tr.index();
+                    var rowData = tablelang.rows( { selected: true } ).data()[rowIndex];
+                    var oldContent =tablelang.cell(rowIndex,3).data();
+                    var key = tablelang.cell(rowIndex,1).data();
+                    var file = $('#select_file_name').val();
+                    var lang = $('#select_lang').val();
+
+                    // Show edit content lang modal
+                    $('#editLangModal').modal('show');
+
+                    // Set value on input edit
+                    $('#lang').val(lang);
+                    $('#file').val(file);
+                    $('#key').val(key);
+                    $('#new_content').val(oldContent);
+
+            });
+
+            $('#btn_cancel').click(function(){
+                // Set value on input edit
+                $('#lang').val('');
+                $('#file').val('');
+                $('#key').val('');
+               $('#new_content').val('');
+            });
+
+            $('#btn_save').click(function(){
+                var datas = $('#editLangForm').serialize();
+                // Set value on input edit
+                newContent= $('#new_content').val();
+
+                $.ajax({
+                    url: '{{ route("admin.config.save.translation") }}',
+                    method: 'POST',
+                    data: datas,
+                    dataType: 'json',
+                    success: function(data){
+                        // Close edit content lang modal
+                        $('#editLangModal').modal('hide');
+
+                        // Reset value on input
+                        $('#lang').val('');
+                        $('#file').val('');
+                        $('#key').val('');
+                        $('#new_content').text('');
+                    }
+                });
+
+                return tablelang.cell( rowIndex, 3 ).data(newContent).draw();
+            });
+
+
+            $('#btn_refresh').click(function(){
+                return tablelang.ajax.reload();
+            });
+
+            $('#searchForm').on('change','#select_lang',function(){
+                var val = $(this).val();
+                var datas = $('#searchForm').serialize();
+                
+
+                $('#tablelang').dataTable().fnDestroy();
+                
+                tablelang = $('#tablelang').DataTable({
+                    language: {
+                        url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json'
+                    },
+                    processing: true,
+                    serverSide: false,
+                    autoWidth: false,
+                    pageLength: 10,
+                    ajax: {
+                        url: '{{ route("admin.config.get.translation.filter") }}',
+                        method: "GET",
+                        data : datas,
+                    },
+                    columns: [
+                        {data: 'groupe', name: 'groupe', render:function(){
+                            return $('#select_file_name').val();
+                        }},
+                        {data: 'key', name: 'key'},
+                        {data: 'content', name: 'content'},
+                        {data: 'content', name: 'content'},
+                        {data: 'action', name: 'action'},
+                    ],
+                });
+            });
+
+            $('#searchForm').on('change','#select_file_name',function(){
+                var val = $(this).val();
+                var datas = $('#searchForm').serialize();
+
+                $('#tablelang').dataTable().fnDestroy();
+                
+                tablelang = $('#tablelang').DataTable({
+                    language: {
+                        url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json'
+                    },
+                    processing: true,
+                    serverSide: false,
+                    autoWidth: false,
+                    pageLength: 10,
+                    ajax: {
+                        url: '{{ route("admin.config.get.translation.filter") }}',
+                        method: "GET",
+                        data : datas,
+                    },
+                    columns: [
+                        {data: 'groupe', name: 'groupe', render:function(){
+                            return $('#select_file_name').val();
+                        }},
+                        {data: 'key', name: 'key'},
+                        {data: 'content', name: 'content'},
+                        {data: 'content', name: 'content'},
+                        {data: 'action', name: 'action'},
+                    ],
+                });
+            });
+        
+        });
+    </script>
 @endsection

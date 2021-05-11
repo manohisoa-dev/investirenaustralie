@@ -1,13 +1,11 @@
 <?php
 
 return [
-
     'app_name'          => 'Investir en Australie',
     'rapid_link'      => 'Quick access',
     'footer_description'  => '"Invest In Australia" is a real estate and business portal.',
     'copyright'           => '© Copyright :year : ":app" - All rights reserved',
     'last_update'       => 'Last modification, :date',
-    
     'home'      => 'Home',
     'sinscrire'         => "Subscribe",
     'language'      => 'Language',
@@ -32,7 +30,6 @@ return [
     'select_afa'            => 'Select a Australian Francophone Agency',
     'select_admin'          => 'Select an administrator',
     'select_frequency'     => 'Select the frequency',
-
     'immobilier'        => 'Real estate',
     'residentiel'       => 'Residential',
     'foncier'           => 'Land',
@@ -47,22 +44,17 @@ return [
     'compte'            => 'Compte',
     'confidential'      => 'Confidentiality',
     'user_guide'        => "Investisor's guide",
-    
     'publicities'   => 'Advertising',
     'Publicite'     => 'Publicity',
-    
     'messages'      => 'Messages',
     'message'       => 'Message',
-    
     'configs'       => 'Configurations',
     'config.site'   => 'Site Information',
     'config.social' => 'Social networks',
     'config.card'   => 'Payment',
     'config.page'   => 'Static Page',
-
     'chats_afa'              => 'AFA Chats',
     'chats_apl'              => 'APL Chats',
-    
     'blogs'                 => 'Blogs',
     'blog'                  => 'Blog',
     'admin.blogs'           => 'Blogs',
@@ -73,7 +65,6 @@ return [
     'admin.blog.publish'    => 'Published articles',
     'admin.blog.ping'       => 'Pending items',
     'admin.blog.star'       => 'Favorite articles',
-    
     'products'              => 'Products',
     'product'               => 'Product',
     'admin.products'        => 'Products',
@@ -83,45 +74,36 @@ return [
     'admin.product.archive' => 'Archived products',
     'admin.product.publish' => 'Published products',
     'admin.product.trash'   => 'Products in baskets',
-    
     'productstosell'                => 'Products for sale',
     'producttosell'                 => 'Product for sale',
     'admin.productstosell'          => 'Product for sale',
     'admin.productstosell.list'     => 'List of products for sale',
     'admin.productstosell.add'      => 'Sell ​​a product',
     'admin.productstosell.archive'  => 'Register of products for sale',
-    
     'categories'                => 'Categories',
     'category'                  => 'Categorie',
     'admin.categories'          => 'Categories',
     'admin.category.list'       => 'List of categories',
     'admin.category.add'        => 'Add a category',
     'admin.category.archive'    => 'Category register',
-    
     'users'                 => 'Users',
     'user'                  => 'User',
     'admin.users'           => 'Users',
     'admin.user.list'       => 'Users list',
     'admin.user.add'        => 'Add users',
     'admin.user.archive'    => 'Users register',
-    
     'pubs'                 => 'Advertising',
     'pub'                  => 'Publicity',
     'admin.pubs'           => 'Advertising',
     'admin.pub.list'       => 'List of advertisements',
     'admin.pub.add'        => 'Add ad',
-    
     'pages'                 => 'Pages',
     'page'                  => 'Page',
     'admin.pages'           => 'Pages',
     'admin.page.list'       => 'List of pages',
     'admin.page.add'        => 'Add a page',
-    
     'admin.orders'          => 'Orders',
     'admin.carts'           => 'Carts',
-
-
-
     'contact_us_phone'    => 'Contact us: :phone',
     'home.step1.modal.title'            => "Step 1",
     'home.step1.modal.content'            =>'Without having to be registered as a Member, you can browse all the products displayed on the site. To help you search for properties that meet your expectations: you select the object of your choice in the menu bar: real estate or business; depending on your previous choice, you have a panel that offers you different search criteria. The site then displays the search result corresponding to your criteria in the selected geographical location.
@@ -150,10 +132,8 @@ return [
     'home.step4.content'            =>'After confirmation of the availability of the property, its withdrawal from the market and its reservation in your name, the file is transferred to the AFA which will take care of the completion of the formalities of transfer of ownership. depending on whether the property is already built and available, under construction or purchased on plans. "Investir En Australie" follows you and helps you throughout the procedure by putting you in contact with French-speaking Australian professionals as a of need.',
     'home.step4.large.title'            => "Among all the products displayed on the site. select the one or those that interest you",
     'home.youtube.title'        =>"Our Youtube channel",
-    
     'admin.language.fr'          =>'French',
     'admin.language.en'          =>'English',
-
     'input.recherche'            =>'Search',
     'input.etat'        =>'State',
     'input.etats'        =>'States',
@@ -184,7 +164,6 @@ return [
     'input.menucommercial'        =>'Commercial menu',
     'input.menucommercial.content'        =>'Waiting for information from Agentpoint',
     'input.area_comm'        =>'Commercial area',
-
     'btn.residentiel'      =>'Residential',
     'btn.foncier'           =>'Land',
     'btn.industriel'      =>'Industrial',
@@ -192,7 +171,6 @@ return [
     'btn.contact_admin'  => "Contact the administrator",
     'btn.contact_apl'    => "Contact the APL",
     'btn.save'           => 'Save',
-
     'btn.contact'        => 'Contact',
     'btn.add'            => 'Add',
     'btn.search'         => 'Search',
@@ -242,14 +220,13 @@ return [
     'btn.contacter_apl'      =>"Contact an APL",
     'btn.return'      =>"Retour",
     'btn.ok'      =>"OK",
-    
+    'btn.refresh' => 'Refresh',
     'contact_admin'  => "Contact Administrateur",
     'contact_apl'    => "Contact APL",
     'contact_afa'    => "Contact AFA",
     'contact_prestataire'        => 'Contact provider',
     'attachment'     => "Attachement",
     'attachments'    => "Attachements",
-
     'txt.Residentiel'      =>'Residential',
     'txt.Foncier'           =>'Land',
     'txt.Industriel'      =>'Industrial',
@@ -294,11 +271,11 @@ return [
     'txt.slogan'        =>"The best opportunities to invest in Australia.",
     'txt.missionvision'        =>"Mission & Vision",
     'txt.mission.title'        =>"Our Mission",
-    'txt.mission.content'        =>"The mission of the '' IEA '' project is: </br>
+    'txt.mission.content'        =>"The mission of the &ldquo;IEA&rdquo; project is: </br>
                                     - To help develop relations between the international Francophone community (more than 250 million French speakers around the world) and Australia by promoting investment in the island-continent through a platform of abundant, varied, reliable and friendly exchange; </br>
                                     - To facilitate and secure investment transactions by offering French-speaking investors legal, financial and technical assistance from French-speaking Australian professionals.",
     'txt.vision.title'        =>"Our Vision",
-    'txt.vision.content'        =>"In carrying out its mission, the '' Invest in Australia '' project sets itself the following objectives: </br>
+    'txt.vision.content'        =>"In carrying out its mission, the &ldquo;Invest in Australia&rdquo; project sets itself the following objectives: </br>
                                     - Provided customer service that is its best competitive advantage; </br>
                                     - To eventually be the benchmark site for investment in Australia for the entire French-speaking community.",
     'txt.contact'               =>"Contact",
@@ -326,7 +303,7 @@ return [
     'txt.en'               =>"English",
     'txt.shop'      =>'Shop',
     'txt.close'      =>'Close',
-    'txt.aplfound'      =>"Number of APL's found",
+    'txt.aplfound'      =>"Number of APL&lsquo;s found",
     'txt.particulier'      =>"Particular",
     'txt.organisation'      =>"Organization",
     'txt.typemembre'      =>"Member type",
@@ -347,7 +324,7 @@ return [
     'txt.autorisation.commercial'      =>"I authorize the sharing and marketing of my information with the partners of the site www.investirenaustral.com.",
     'txt.logo'      =>"Logo",
     'txt.logo.organisation'      =>"Organization logo",
-    'txt.logo.organisation.libelle'      =>"Choose your organization's logo",
+    'txt.logo.organisation.libelle'      =>"Choose your organization&lsquo;s logo",
     'txt.nom.organisation'      =>"Organization name",
     'txt.presentation.organisation'      =>"Organization presentation",
     'txt.localisation'      =>"Location",
@@ -438,7 +415,7 @@ return [
     'txt.message_sent' => "Message sent successfully.",
     'txt.connect_with_new_password' => "Password changed. Please log in with your new password.",
     'txt.langue_changed' =>'Language changed.',
-    'txt.trouble_link' =>'If you\'re having trouble clicking the ":link" button, copy and paste the URL below into your web browser: :url',
+    'txt.trouble_link' =>'If you&lsquo;re having trouble clicking the ":link" button, copy and paste the URL below into your web browser: :url',
     'txt.whoops' =>'Whoops!',
     'txt.hello' =>'Hello!',
     'txt.regards' =>'Regards',
@@ -513,9 +490,6 @@ return [
     'txt.welcome_chat' => 'Welcome to our discussion',
     'txt.welcome_your_chat' => 'Welcome to your discussion',
     'txt.loading_message' => 'Load message',
-    
-    
-    
     'admin.mail'           => 'Mail',
     'admin.mails'          => 'Mails',
     'admin.mail.list'      => 'Mail list',
@@ -524,15 +498,10 @@ return [
     'admin.mail.draft'     => "Draft",
     'admin.mail.spam'      => "Spam",
     'admin.mail.model'      => "Saved messages",
-    
     'table.title'  => "Title",
     'table.titles'  => "Titles",
-
-
-
     'dernierprod'           =>'Last Products',
     'dernierart'           =>'Last Articles',
-
     'list_apl'  => 'Lists of Local Partner Agencies',
     'recent.product'  => 'Recent products',
     'recent.category' => 'Recent categories',
@@ -556,21 +525,21 @@ return [
     'txt.unread' => "Unread",
     'txt.lang_update' => "Updating of Site languages",
     'txt.search_all_translation' => 'Search all translations',
-
-
-
+    'txt.choose_file_name' => 'Choose file name',
+    'txt.old_value' => 'Old value',
+    'txt.new_value' => 'New value',
+    'txt.key' => 'Key',
+    'txt.group_single' => 'Group/Single',
     'num.area' => ':num m2',
     'num.bed' =>  ':num Chs',
     'num.bath' =>  ':num Bth',
     'yes' =>  'yes',
     'no' =>  'no',
-
     'search'       => 'Search',
     'search_result' => 'Search result ":q"',
     'search.filter'=> 'Search filter',
     'all_product'     => 'All products',
     'load_more_product'  => "Loading more product",
-
     'form.filterBy'      => 'Filter by',
     'form.order'      => 'Order',
     'form.order_price'      => 'Price order',
@@ -584,7 +553,7 @@ return [
     'form.login.register'      => "Inscrivez-vous",
     'form.login.address'      => "Addresse",
     'form.login.contact'      => "Contact",
-    'form.login.have_not_account'  => "Don't have an account?",
+    'form.login.have_not_account'  => "Don&lsquo;t have an account?",
     'form.login.remember'      => "Remember me",
     'form.login.forgot'        => "Forgot your password?",
     'form.login.not_registered'=> "Not registered?",
@@ -592,12 +561,10 @@ return [
     'form.register.afa.title'      => "Autsralienne Fancophone Agency (AFA) registration form",
     'form.register.apl.title'      => "Local Partner Agency (APL) registration form",
     'form.register.member.title'      => "Member registration form",
-
     'pub_date'      => 'Publication date',
     'create_date'      => 'Creation date',
     'most_view'      => 'More view',
     'price'  => 'Price',
-
     'choose_as_default_apl' => 'Choose as default apl',
     'i_want_buy_this_item'  => 'I want buy this item',
     'as'       => 'As',
@@ -627,8 +594,6 @@ return [
     'purchases'=> 'Purchases',
     'empty_cart'  => 'Empty cart',
     'translation'  => 'Translation',
-    
-    //add par Rado
     'avatar' => 'Avatar',
     'title.password' => 'Update password',
     'last.password' => 'Last password',
@@ -636,13 +601,10 @@ return [
     'confirm.password' => 'Confirm password',
     'location' => 'Upadate location',
     'password' => 'Password',
-    //convert tableau email
     'etbl.sujetth' => 'Subject',
     'etbl.contentth' => 'Content',
     'etbl.senderth' => 'Sender',
     'etbl.statusth' => 'Status',
-
-    //menu Menu dans l'admin
     'admin.menu.createBtn' => 'Add a new menu',
     'admin.menu.libMenuParent' => 'Parent menu',
     'admin.menu.photoBack' => 'Background photo',

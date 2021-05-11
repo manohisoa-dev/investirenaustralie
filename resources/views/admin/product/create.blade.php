@@ -478,7 +478,7 @@
 
 @endsection
 @section('custom-script')
-    <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+<script src="{{asset('administrator/plugins/ckeditor/ckeditor.js')}}"></script>
 	<!-- Steps -->
 	<script src="{{ asset('administrator/js/plugins/steps/jquery.steps.min.js') }}"></script>
 	<!-- Jquery Validate -->

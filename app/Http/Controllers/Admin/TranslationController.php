@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Yajra\Datatables\Datatables;
+use Illuminate\Support\Facades\DB;
 use App;
 use Lang;
 
@@ -11,11 +13,12 @@ class TranslationController extends Controller
 {
 
     private $lang = '';
-    private $file;
+    private $file = 'app';
     private $key;
     private $value;
     private $path;
     private $arrayLang = array();
+    private $data;
 
 
     //------------------------------------------------------------------------------
@@ -34,12 +37,39 @@ class TranslationController extends Controller
     // Read lang file content
     //------------------------------------------------------------------------------
 
-    private function read() 
-    {
+    private function read1() 
+    {   
         if ($this->lang == '') $this->lang = App::getLocale();
+        if ($this->file == '') $this->file = 'app';
+
         $this->path = base_path().'/resources/lang/'.$this->lang.'/'.$this->file.'.php';
         $this->arrayLang = Lang::get($this->file);
         if (gettype($this->arrayLang) == 'string') $this->arrayLang = array();
+
+        $this->data = [];
+        foreach ($this->arrayLang as $key=>$lang) {
+            $this->data[] = ['key'=>$key,'content'=>$lang];
+        }
+        
+        return $this->data; 
+    }
+
+    private function read($lang,$file) 
+    {   
+        if ($lang == '') $lang = App::getLocale();
+        if ($file !== 'app') $file = $file;
+
+        $this->path = base_path().'/resources/lang/'.$lang.'/'.$file.'.php';
+        App::setLocale($lang);
+        $this->arrayLang = Lang::get($file);
+        if (gettype($this->arrayLang) == 'string') $this->arrayLang = array();
+
+        $this->data = [];
+        foreach ($this->arrayLang as $key=>$lang) {
+            $this->data[] = ['key'=>$key,'content'=>$lang];
+        }
+        
+        return $this->data; 
     }
 
     //------------------------------------------------------------------------------
@@ -63,6 +93,85 @@ class TranslationController extends Controller
 
     public function translation(Request $request){
 
-        return view('admin.config.translation');
+        $langFiles = ['app','apl','afa','auth','mail','member','pagination','passwords','seller','validation'];
+
+        return view('admin.config.translation')->with('langFiles', $langFiles);
+    }
+
+    public function getTranslationFilter(Request $request)
+    {
+        // $lang = strtolower($request->get('select_file_name'));
+        $file = strtolower($request->get('select_file_name'));
+
+        if($request->get('select_lang')){
+            $this->lang = strtolower($request->get('select_lang'));
+        }
+
+        if($request->get('select_file_name')){
+            $file = strtolower($request->get('select_file_name'));
+        }        
+
+        $data = $this->read($this->lang,$file);
+
+        return Datatables::of($data)
+            ->addColumn('action', function($row){
+                $actionBtn = '<span class="btn_edit">
+                        <a href="javascript:void(0)" title="'.trans('app.btn.edit').'" class="btn btn-default btn-circle btn-edit">
+                            <i class="fa fa-pencil-square-o"></i>
+                        </a>
+                    </span>';
+                return $actionBtn;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+    
+
+    public function getTranslation(Request $request)
+    {
+
+        $data = $this->read($this->lang,$this->file);
+
+        return Datatables::of($data)
+            ->addColumn('action', function($row){
+                $actionBtn = '<span class="btn_edit">
+                        <a href="javascript:void(0)" title="'.trans('app.btn.edit').'" class="btn btn-default btn-circle btn-edit">
+                            <i class="fa fa-pencil-square-o"></i>
+                        </a>
+                    </span>';
+                return $actionBtn;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
+    public function saveTranslation(Request $request){
+        $lang = $request->get('lang');
+        $file = strtolower($request->get('file'));
+        $key = $request->get('key');
+        $value = $request->get('new_content');
+
+        // Read file
+        if ($this->lang == '') $this->lang = App::getLocale();
+        $this->path = base_path().'/resources/lang/'.$this->lang.'/'.$this->file.'.php';
+        $this->arrayLang = Lang::get($this->file);
+        if (gettype($this->arrayLang) == 'string') $this->arrayLang = array(); 
+
+        $this->arrayLang[$key] = $value;
+
+        // save change
+        $content = "<?php\n\nreturn\n[\n";
+
+        foreach ($this->arrayLang as $key => $value) 
+        {
+            $content .= "\t'".$key."' => '".$value."',\n";
+        }
+
+        $content .= "];";
+
+        file_put_contents($this->path, $content);
+
+
+        return response()->json(['success'=>'ok']);
     }
 }

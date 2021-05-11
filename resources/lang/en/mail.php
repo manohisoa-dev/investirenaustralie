@@ -45,10 +45,10 @@ return [
     'activated.content' => 'Your registration has been confirmed.',
     
     'reseted.subject' => '[:app] Request new password',
-    'reseted.content' => "We've received a request to reset your password. If you didn't make the request, just ignore this email. Otherwise, you can rest your password using this link :",
+    'reseted.content' => "We&lsquo;ve received a request to reset your password. If you didn&lsquo;t make the request, just ignore this email. Otherwise, you can rest your password using this link :",
     
     'subscribed.subject' => '[:app] New registration (:plan)',
-    'subscribed.content' => "Someone has subscribed to \":plan\" (:count jours).",
+    'subscribed.content' => "Someone has subscribed to &ldquo; :plan &rdquo; (:count jours).",
     
     'disabled.subject' => '[:app] Account suspended',
     'disabled.content' => 'Your account has been suspended.',

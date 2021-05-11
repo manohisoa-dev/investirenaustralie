@@ -196,6 +196,8 @@ return [
         Nvd\Crud\Providers\NvdCrudServiceProvider::class,
 
         Jleon\LaravelPnotify\NotifyServiceProvider::class,
+
+        Yajra\DataTables\DataTablesServiceProvider::class,
     ],
 
     /*
@@ -252,6 +254,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Notify' => Jleon\LaravelPnotify\Notify::class,
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
     ],
 
 ];
