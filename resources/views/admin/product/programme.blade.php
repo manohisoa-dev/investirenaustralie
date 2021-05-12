@@ -74,11 +74,23 @@
                                 {{ $record->id }}
                             </td>
 							<td>
-								@if (@getimagesize($record->imageUrl()))
-									<img src="{{$record->imageUrl()}}" class="img-responsive" style="height:80px" />
+							@php
+								$photo_principal = \App\Models\ProductsImage::where('products_images.product_id', '=', $record->id)->where('products_images.is_principal', '=', 1)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+								$first_photo = \App\Models\ProductsImage::where('products_images.product_id', '=', $record->id)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+								
+							@endphp
+							@if($first_photo)
+								@if($photo_principal)
+								<!-- Programme sans principal -->
+								<img src="{{asset($photo_principal->filepath)}}" class="img-responsive" style="height:80px" />
 								@else
-									<img class="img-responsive" src="{{asset('img/500x500.jpg')}}" width="80">
+								<!-- Programme principal -->
+								<img src="{{asset($first_photo->filepath)}}" class="img-responsive" style="height:80px" />
 								@endif
+							@else
+								<!-- Programme aucun photo -->
+								<img class="img-responsive" src="{{asset('img/500x500.jpg')}}" width="80">
+							@endif								
                             </td>
 							<td>
                                 <span

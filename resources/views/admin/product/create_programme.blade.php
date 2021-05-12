@@ -270,7 +270,7 @@
 				// set new images names in dropzone’s preview box.
                 var olddatadzname = file.previewElement.querySelector("[data-dz-name]");   
 				file.previewElement.querySelector("img").alt = response.success;
-				file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'><input value='"+response.success+"' type='radio' name='radioDrop' style='display:inline-block'> is principal</label>");
+				file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'><input value='"+response.success+"' type='radio' name='radioDrop' style='display:inline-block'> Photo icône</label>");
 				file.previewElement.appendChild(file._captionBox);
 				$('#programmeForm').append('<input type="hidden" name="dropPhoto[]" value="'+response.success +'">');
 				olddatadzname.innerHTML = response.success;
@@ -302,7 +302,9 @@
 					required: true
 				},
 				prix_max: {
-					required: true
+					required: true,
+					number: true,
+					min: function ()  { return parseInt($("#prix_min").val())}
 				},
 				image_programme: {
 					required: true
@@ -320,7 +322,16 @@
 					required: true
 				},
 				title_programme: {
-					required: true
+					required: true,
+					remote: {
+						url: "{{ route('admin.ajaxCheckTitreProgramme') }}",
+						type: "get",
+						data: {
+							title_programme: function () {
+								return $("input[name='title_programme']").val();
+							}
+						}
+					}
 				},
 				chk_firb: {
 					required: true
@@ -334,7 +345,8 @@
 					required: "Champ obligatoire"
 				},
 				prix_max: {
-					required: "Champ obligatoire"
+					required: "Champ obligatoire",
+					min: jQuery.validator.format("Prix maximal doit superieur à {0}")
 				},
 				image_programme: {
 					required: "Champ obligatoire"
@@ -352,7 +364,8 @@
 					required: "Champ obligatoire"
 				},
 				title_programme: {
-					required: "Champ obligatoire"
+					required: "Champ obligatoire",
+					remote: jQuery.validator.format("{0} existe déjà")
 				},
 				chk_firb: {
 					required: "Champ obligatoire"

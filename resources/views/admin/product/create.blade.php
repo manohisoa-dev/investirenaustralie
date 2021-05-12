@@ -446,7 +446,7 @@
 						<div class="row">
 							<div class="col-lg-12">
 								<label class="chk_parking"> 
-									<input type="checkbox" value="1" name="chk_parking"> parking voies publiques
+									<input type="checkbox" value="1" id="chk_parking" name="chk_parking"> parking voies publiques
 								</label>
 							</div>
 							
@@ -694,7 +694,22 @@
 						}
 					},
 					title_product: {
-						required: true
+						required: true,
+						remote: {
+							url: "{{ route('admin.ajaxCheckTitreProgramme') }}",
+							type: "get",
+							data: {
+								title_programme: function () {
+									if($("input[name='title_programme']").val() != ''){
+										var prg_text = $("input[name='title_programme']").val();
+										var prd_text = $("input[name='title_product']").val();
+										return prg_text+'-'+prd_text;
+									}else{
+										return $("input[name='title_product']").val();
+									}									
+								}
+							}
+						}
 					},
 					product_type_id: {
 						required: true
@@ -755,6 +770,15 @@
 							depends: function(element) {
 								if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier'){
 									return true;	
+								}
+							}
+						},
+						remote: {
+							url: "{{ route('admin.ajaxCheckTitreProgramme') }}",
+							type: "get",
+							data: {
+								title_programme: function () {
+									return $("input[name='title_programme']").val();
 								}
 							}
 						}
@@ -812,7 +836,8 @@
 						required: "Champ obligatoire"
 					},
 					title_product: {
-						required: "Champ obligatoire"
+						required: "Champ obligatoire",
+						remote: jQuery.validator.format("{0} existe déjà")
 					},
 					product_type_id: {
 						required: "Champ obligatoire"
@@ -848,7 +873,8 @@
 						required: "Champ obligatoire"
 					},
 					title_programme: {
-						required: "Champ obligatoire"
+						required: "Champ obligatoire",
+						remote: jQuery.validator.format("{0} existe déjà")
 					},
 					chk_firb_programme: {
 						required: "Champ obligatoire"
@@ -910,7 +936,7 @@
 					// set new images names in dropzone’s preview box.
 					var olddatadzname = file.previewElement.querySelector("[data-dz-name]");   
 					file.previewElement.querySelector("img").alt = response.success;
-					file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'><input value='"+response.success+"' type='radio' name='radioDrop' style='display:inline-block'> is principal</label>");
+					file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'><input value='"+response.success+"' type='radio' name='radioDrop' style='display:inline-block'> Photo icône</label>");
 					file.previewElement.appendChild(file._captionBox);
 					$('#form').append('<input type="hidden" name="dropPhoto[]" value="'+response.success +'">');
 					olddatadzname.innerHTML = response.success;
@@ -1032,8 +1058,17 @@
 					  }					  
 				   }
 				});
-			})
-		
+			});
+			
+			$('#garage_spaces, #carport_spaces').bind('keyup mouseup', function (){
+				if($('#garage_spaces').val() != 0 || $('#carport_spaces').val() != 0){
+				     console.log('tokony disabled');
+					$("#chk_parking").attr('disabled','disabled');
+				}else{
+					console.log('normal');
+					$("#chk_parking").removeAttr('disabled');
+				}
+			});	
         });
     </script>
 @endsection
