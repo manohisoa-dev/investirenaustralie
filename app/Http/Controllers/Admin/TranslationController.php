@@ -65,8 +65,9 @@ class TranslationController extends Controller
         if (gettype($this->arrayLang) == 'string') $this->arrayLang = array();
 
         $this->data = [];
+        $i=1;
         foreach ($this->arrayLang as $key=>$lang) {
-            $this->data[] = ['key'=>$key,'content'=>$lang];
+            $this->data[] = ['id'=>$i++,'key'=>$key,'content'=>$lang];
         }
         
         return $this->data; 
@@ -115,37 +116,37 @@ class TranslationController extends Controller
     }
 
     public function saveTranslation(Request $request){
-        $lang = $request->get('lang');
+        $lang = strtolower($request->get('lang'));
         $file = strtolower($request->get('file'));
         $key = $request->get('key');
         $value = $request->get('new_content');
 
-        if(is_array($lang)){
-            foreach ($lang as $value) {
-                // Read file
-                if ($this->lang == '') $this->lang = App::getLocale();
-                $this->path = base_path().'/resources/lang/'.$lang.'/'.$file.'.php';
-                $this->arrayLang = Lang::get($file);
-                if (gettype($this->arrayLang) == 'string') $this->arrayLang = array();
+        // if(is_array($lang)){
+        //     foreach ($lang as $value) {
+        //         // Read file
+        //         if ($this->lang == '') $this->lang = App::getLocale();
+        //         $this->path = base_path().'/resources/lang/'.$lang.'/'.$file.'.php';
+        //         $this->arrayLang = Lang::get($file);
+        //         if (gettype($this->arrayLang) == 'string') $this->arrayLang = array();
 
-                $this->arrayLang[$key] = $value;
+        //         $this->arrayLang[$key] = $value;
 
-                // save change
-                $content = "<?php\n\nreturn\n[\n";
+        //         // save change
+        //         $content = "<?php\n\nreturn\n[\n";
 
-                foreach ($this->arrayLang as $key => $value) 
-                {
-                    $content .= "\t'".$key."' => '".$value."',\n";
-                }
+        //         foreach ($this->arrayLang as $key => $value) 
+        //         {
+        //             $content .= "\t'".$key."' => '".$value."',\n";
+        //         }
 
-                $content .= "];";
+        //         $content .= "];";
 
-                file_put_contents($this->path, $content);
-            }
-        }else{
+        //         file_put_contents($this->path, $content);
+        //     }
+        // }else{
             // Read file
-            if ($this->lang == '') $this->lang = App::getLocale();
             $this->path = base_path().'/resources/lang/'.$lang.'/'.$file.'.php';
+            App::setLocale($lang);
             $this->arrayLang = Lang::get($file);
             if (gettype($this->arrayLang) == 'string') $this->arrayLang = array();
 
@@ -162,8 +163,9 @@ class TranslationController extends Controller
             $content .= "];";
 
             file_put_contents($this->path, $content);
-        }
+        // }
 
         return response()->json(['success'=>'success']);
+        
     }
 }

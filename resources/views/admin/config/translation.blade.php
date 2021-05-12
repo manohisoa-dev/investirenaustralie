@@ -67,6 +67,7 @@
                             <table class="table table-striped grid-view-tbl datatable yajra-datatable" id="tablelang">
                                 <thead>
                                     <tr class="header-row">
+                                        <th></th>
                                         <th>{{ strtoupper(trans('app.txt.group_single')) }}</th>
                                         <th>{{ strtoupper(trans('app.txt.key')) }}</th>
                                         <th>{{ strtoupper(trans('app.txt.old_value')) }}</th>
@@ -166,6 +167,7 @@
                     dataSrc: 'data'
                 },
                 columns: [
+                    {data: 'id', name: 'id', visible:false},
                     {data: 'groupe', name: 'groupe', render:function(){
                         return $('#select_file_name').val();
                     }},
@@ -187,8 +189,8 @@
                 var tr = $(this).closest("tr");
                     rowIndex = tr.index();
                 var rowData = tablelang.rows( { selected: true } ).data()[rowIndex];
-                var oldContent =tablelang.cell(rowIndex,3).data();
-                var key = tablelang.cell(rowIndex,1).data();
+                var oldContent =tablelang.cell(rowIndex,4).data();
+                var key = tablelang.cell(rowIndex,2).data();
                 var file = $('#select_file_name').val();
                 var lang = $('#select_lang').val();
 
@@ -220,7 +222,7 @@
                     'new_content' : $('#new_content').val(),
                 };
                 
-                // Set value on input edit
+                // new value to set on datatable
                 newContent= $('#new_content').val();
 
                 $.ajax({
@@ -240,7 +242,7 @@
                     }
                 });
 
-                return tablelang.cell( rowIndex, 3 ).data(newContent).draw();
+                return tablelang.cell( rowIndex, 4 ).data(newContent).draw();
             });
 
 
@@ -268,6 +270,7 @@
                         data : {'select_file_name':file, 'select_lang':lang},
                     },
                     columns: [
+                        {data: 'id', name: 'id', visible:false},
                         {data: 'groupe', name: 'groupe', render:function(){
                             return $('#select_file_name').val();
                         }},
@@ -306,6 +309,7 @@
                         data : {'select_file_name':file, 'select_lang':lang},
                     },
                     columns: [
+                        {data: 'id', name: 'id', visible:false},
                         {data: 'groupe', name: 'groupe', render:function(){
                             return $('#select_file_name').val();
                         }},
@@ -378,6 +382,7 @@
                         data : {'select_file_name':file, 'select_lang':lang},
                     },
                     columns: [
+                        {data: 'id', name: 'id', visible:false},
                         {data: 'groupe', name: 'groupe', render:function(){
                             return $('#select_file_name').val();
                         }},
