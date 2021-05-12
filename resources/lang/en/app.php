@@ -609,4 +609,3 @@ return [
     'admin.menu.libMenuParent' => 'Parent menu',
     'admin.menu.photoBack' => 'Background photo',
 ];
-

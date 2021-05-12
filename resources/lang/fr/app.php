@@ -868,6 +868,5 @@ return
 	'admin.menu.createBtn' => 'Ajouter un nouveau Menu',
 	'admin.menu.libMenuParent' => 'Menu parent',
 	'admin.menu.photoBack' => 'Photo de fond',
-	'' => '',
 	'empty' => 'Aucun élément trouvés.',
 ];

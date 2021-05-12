@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Yajra\Datatables\Datatables;
+// use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\DB;
 use App;
 use Lang;
@@ -111,17 +111,7 @@ class TranslationController extends Controller
 
         $data = $this->read($this->lang,$this->file);
 
-        return Datatables::of($data)
-            ->addColumn('action', function($row){
-                $actionBtn = '<span class="btn_edit">
-                        <a href="javascript:void(0)" title="'.trans('app.btn.edit').'" class="btn btn-default btn-circle btn-edit">
-                            <i class="fa fa-pencil-square-o"></i>
-                        </a>
-                    </span>';
-                return $actionBtn;
-            })
-            ->rawColumns(['action'])
-            ->make(true);
+        return response()->json(['data'=>$data]);
     }
 
     public function saveTranslation(Request $request){
@@ -130,27 +120,50 @@ class TranslationController extends Controller
         $key = $request->get('key');
         $value = $request->get('new_content');
 
-        // Read file
-        if ($this->lang == '') $this->lang = App::getLocale();
-        $this->path = base_path().'/resources/lang/'.$lang.'/'.$file.'.php';
-        $this->arrayLang = Lang::get($file);
-        if (gettype($this->arrayLang) == 'string') $this->arrayLang = array(); 
+        if(is_array($lang)){
+            foreach ($lang as $value) {
+                // Read file
+                if ($this->lang == '') $this->lang = App::getLocale();
+                $this->path = base_path().'/resources/lang/'.$lang.'/'.$file.'.php';
+                $this->arrayLang = Lang::get($file);
+                if (gettype($this->arrayLang) == 'string') $this->arrayLang = array();
 
-        $this->arrayLang[$key] = $value;
+                $this->arrayLang[$key] = $value;
 
-        // save change
-        $content = "<?php\n\nreturn\n[\n";
+                // save change
+                $content = "<?php\n\nreturn\n[\n";
 
-        foreach ($this->arrayLang as $key => $value) 
-        {
-            $content .= "\t'".$key."' => '".$value."',\n";
+                foreach ($this->arrayLang as $key => $value) 
+                {
+                    $content .= "\t'".$key."' => '".$value."',\n";
+                }
+
+                $content .= "];";
+
+                file_put_contents($this->path, $content);
+            }
+        }else{
+            // Read file
+            if ($this->lang == '') $this->lang = App::getLocale();
+            $this->path = base_path().'/resources/lang/'.$lang.'/'.$file.'.php';
+            $this->arrayLang = Lang::get($file);
+            if (gettype($this->arrayLang) == 'string') $this->arrayLang = array();
+
+            $this->arrayLang[$key] = $value;
+
+            // save change
+            $content = "<?php\n\nreturn\n[\n";
+
+            foreach ($this->arrayLang as $key => $value) 
+            {
+                $content .= "\t'".$key."' => '".$value."',\n";
+            }
+
+            $content .= "];";
+
+            file_put_contents($this->path, $content);
         }
 
-        $content .= "];";
-
-        file_put_contents($this->path, $content);
-
-
-        return response()->json(['success'=>'ok']);
+        return response()->json(['success'=>'success']);
     }
 }
