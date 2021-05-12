@@ -65,7 +65,7 @@ class TranslationController extends Controller
         if (gettype($this->arrayLang) == 'string') $this->arrayLang = array();
 
         $this->data = [];
-        $i=1;
+        $i=0;
         foreach ($this->arrayLang as $key=>$lang) {
             $this->data[] = ['id'=>$i++,'key'=>$key,'content'=>$lang];
         }

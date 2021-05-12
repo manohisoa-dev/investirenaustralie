@@ -166,6 +166,7 @@
                     url: '{{ route("admin.config.get.translation") }}',
                     dataSrc: 'data'
                 },
+                select: true,
                 columns: [
                     {data: 'id', name: 'id', visible:false},
                     {data: 'groupe', name: 'groupe', render:function(){
@@ -186,14 +187,15 @@
             } );
         
             $('#tablelang').on('click','tr .btn-edit',function(){
+                // var rowData = tablelang.rows( { selected: true } ).data()[rowIndex];
                 var tr = $(this).closest("tr");
-                    rowIndex = tr.index();
-                var rowData = tablelang.rows( { selected: true } ).data()[rowIndex];
+                var rowData = tablelang.row( tr ).data();
+                    rowIndex = rowData.id;
                 var oldContent =tablelang.cell(rowIndex,4).data();
                 var key = tablelang.cell(rowIndex,2).data();
                 var file = $('#select_file_name').val();
                 var lang = $('#select_lang').val();
-
+               
                 // Show edit content lang modal
                 $('#editLangModal').modal('show');
 
