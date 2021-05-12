@@ -116,35 +116,39 @@ class TranslationController extends Controller
     }
 
     public function saveTranslation(Request $request){
-        $lang = strtolower($request->get('lang'));
+        $lang = $request->get('lang');
         $file = strtolower($request->get('file'));
         $key = $request->get('key');
         $value = $request->get('new_content');
 
-        // if(is_array($lang)){
-        //     foreach ($lang as $value) {
-        //         // Read file
-        //         if ($this->lang == '') $this->lang = App::getLocale();
-        //         $this->path = base_path().'/resources/lang/'.$lang.'/'.$file.'.php';
-        //         $this->arrayLang = Lang::get($file);
-        //         if (gettype($this->arrayLang) == 'string') $this->arrayLang = array();
+        if(is_array($lang)){
+            $value_fr = $request->get('new_content_fr');
+            $value_en = $request->get('new_content_en');
 
-        //         $this->arrayLang[$key] = $value;
+            foreach ($lang as $lg) {
+                // Read file
+                $this->path = base_path().'/resources/lang/'.$lg.'/'.$file.'.php';
+                App::setLocale($lg);
+                $this->arrayLang = Lang::get($file);
+                if (gettype($this->arrayLang) == 'string') $this->arrayLang = array();
 
-        //         // save change
-        //         $content = "<?php\n\nreturn\n[\n";
+                $this->arrayLang[$key] = $lg=='fr'?$value_fr:$value_en;
 
-        //         foreach ($this->arrayLang as $key => $value) 
-        //         {
-        //             $content .= "\t'".$key."' => '".$value."',\n";
-        //         }
+                // save change
+                $content = "<?php\n\nreturn\n[\n";
 
-        //         $content .= "];";
+                foreach ($this->arrayLang as $key => $value) 
+                {
+                    $content .= "\t'".$key."' => '".$value."',\n";
+                }
 
-        //         file_put_contents($this->path, $content);
-        //     }
-        // }else{
+                $content .= "];";
+
+                file_put_contents($this->path, $content);
+            }
+        }else{
             // Read file
+            $lang = strtolower($lang);
             $this->path = base_path().'/resources/lang/'.$lang.'/'.$file.'.php';
             App::setLocale($lang);
             $this->arrayLang = Lang::get($file);
@@ -163,7 +167,7 @@ class TranslationController extends Controller
             $content .= "];";
 
             file_put_contents($this->path, $content);
-        // }
+        }
 
         return response()->json(['success'=>'success']);
         

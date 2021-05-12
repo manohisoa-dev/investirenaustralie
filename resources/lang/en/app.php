@@ -600,4 +600,8 @@ return
 	'admin.menu.createBtn' => 'Add a new menu',
 	'admin.menu.libMenuParent' => 'Parent menu',
 	'admin.menu.photoBack' => 'Background photo',
+	'txt.file' => 'File name',
+	'txt.content_fr' => 'French content',
+	'txt.content_en' => 'Frensh Content',
+	'txt.add' => 'Ajouter',
 ];

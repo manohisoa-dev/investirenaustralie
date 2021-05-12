@@ -119,25 +119,31 @@
                 <div class="modal-body">
                     <form action="" id="addLangForm">
                         {{ csrf_field() }}
-                        <div class="form-group">
-                            <label class="col-lg-12" for="new_file">@lang('app.txt.file')</label>
-                            <select class="form-control" name="new_file" id="new_file">
-                                @foreach ($langFiles as $langFile)
-                                    <option value="{{ strtoupper($langFile) }}">{{ strtoupper($langFile) }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-lg-12" for="new_key">@lang('app.txt.key')</label>
-                            <input class="form-control col-lg-12" type="text" name="new_key" id="new_key">
-                        </div>
+                        <div class="row col-lg-12">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="col-lg-12" for="new_file">@lang('app.txt.file')</label>
+                                    <select class="form-control" name="new_file" id="new_file">
+                                        @foreach ($langFiles as $langFile)
+                                            <option value="{{ strtoupper($langFile) }}">{{ strtoupper($langFile) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="col-lg-12" for="new_key">@lang('app.txt.key')</label>
+                                    <input class="form-control col-lg-12" type="text" name="new_key" id="new_key">
+                                </div>
+                            </div>
+                        </div>                        
                         <div class="form-group">
                             <label class="col-lg-12" for="new_content_fr">@lang('app.txt.content_fr')</label>
-                            <textarea class="form-control col-lg-12" name="new_content_fr" id="new_content_fr" cols="60" rows="10"></textarea>
+                            <textarea class="form-control col-lg-12" name="new_content_fr" id="new_content_fr" cols="60" rows="5"></textarea>
                         </div>
                         <div class="form-group">
                             <label class="col-lg-12" for="new_content_en">@lang('app.txt.content_en')</label>
-                            <textarea class="form-control col-lg-12" name="new_content_en" id="new_content_en" cols="60" rows="10"></textarea>
+                            <textarea class="form-control col-lg-12" name="new_content_en" id="new_content_en" cols="60" rows="5"></textarea>
                         </div>
                     </form>
                 </div>
@@ -162,11 +168,11 @@
             var rowIndex="";
 
             var tablelang = $('#tablelang').DataTable( {
+                order: [[ 0, "desc" ]],
                 ajax: {
                     url: '{{ route("admin.config.get.translation") }}',
                     dataSrc: 'data'
                 },
-                select: true,
                 columns: [
                     {data: 'id', name: 'id', visible:false},
                     {data: 'groupe', name: 'groupe', render:function(){
@@ -247,6 +253,40 @@
                 return tablelang.cell( rowIndex, 4 ).data(newContent).draw();
             });
 
+            $('#btn_new_save').click(function(){
+                // disable button
+                $(this).prop("disabled", true);
+                // add spinner to button
+                $(this).html(
+                    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+                );
+                
+                var datas = {
+                    "_token": "{{ csrf_token() }}",
+                    'lang' : new Array('fr','en'),
+                    'file' : $('#new_file').val(),
+                    'key' : $('#new_key').val(),
+                    'new_content_fr' : $('#new_content_fr').val(),
+                    'new_content_en' : $('#new_content_en').val(),
+                };
+
+                $.ajax({
+                    url: '{{ route("admin.config.save.translation") }}',
+                    method: 'POST',
+                    data: datas,
+                    dataType: 'json',
+                    success: function(data){
+                        // Refresh page after update
+                        setTimeout(function(){
+                            // Close edit content lang modal
+                            $('#addTranslationModal').modal('hide');
+
+                            location.reload();
+                        }, 5000)
+                    }
+                });
+            });
+
 
             $('#btn_refresh').click(function(){
                 return tablelang.ajax.reload();
@@ -266,6 +306,7 @@
                     serverSide: false,
                     autoWidth: false,
                     pageLength: 10,
+                    order: [[ 0, "desc" ]],
                     ajax: {
                         url: '{{ route("admin.config.get.translation") }}',
                         method: "GET",
@@ -305,6 +346,7 @@
                     serverSide: false,
                     autoWidth: false,
                     pageLength: 10,
+                    order: [[ 0, "desc" ]],
                     ajax: {
                         url: '{{ route("admin.config.get.translation") }}',
                         method: "GET",
@@ -330,40 +372,6 @@
                 });
             });
 
-            $('#btn_new_save').click(function(){
-                
-                var datas = {
-                    "_token": "{{ csrf_token() }}",
-                    'lang' : new Array('fr','en'),
-                    'file' : $('#new_file').val(),
-                    'key' : $('#new_key').val(),
-                    'new_content' : $('#new_content_fr').val(),
-                };
-
-                $.ajax({
-                    url: '{{ route("admin.config.save.translation") }}',
-                    method: 'POST',
-                    data: datas,
-                    dataType: 'json',
-                    success: function(data){
-                        // // Close edit content lang modal
-                        // $('#addTranslationModal').modal('hide');
-
-                        // // Reload datatable
-                        // reloadDatatable();
-
-                        // // Reset value on input
-                        // $('#new_file').val('');
-                        // $('#new_key').val('');
-                        // $('#new_content_fr').text('');
-
-
-                        console.log(data);
-
-                    }
-                });
-            });
-
             function reloadDatatable(){
                 var lang = $('#lang').val();
                 var file = $('#new_file').val();
@@ -378,6 +386,7 @@
                     serverSide: false,
                     autoWidth: false,
                     pageLength: 10,
+                    order: [[ 0, "desc" ]],
                     ajax: {
                         url: '{{ route("admin.config.get.translation") }}',
                         method: "GET",
@@ -391,7 +400,14 @@
                         {data: 'key', name: 'key'},
                         {data: 'content', name: 'content'},
                         {data: 'content', name: 'content'},
-                        {data: 'action', name: 'action'},
+                        {data: 'action', name: 'action', render:function(){
+                            var actionBtn = '<span class="btn_edit">'+
+                                '<a href="javascript:void(0)" title="{{ trans('app.btn.edit') }}" class="btn btn-default btn-circle btn-edit">'+
+                                    '<i class="fa fa-pencil-square-o"></i>'+
+                                '</a>'+
+                            '</span>';
+                            return actionBtn;
+                        }},
                     ],
                 });
             }
