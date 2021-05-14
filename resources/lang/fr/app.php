@@ -868,6 +868,10 @@ return
 	'admin.menu.createBtn' => 'Ajouter un nouveau Menu',
 	'admin.menu.libMenuParent' => 'Menu parent',
 	'admin.menu.photoBack' => 'Photo de fond',
-	'' => '',
 	'empty' => 'Aucun élément trouvés.',
+	'txt.file' => 'Nom du fichier',
+	'txt.content_fr' => 'Contenu en français',
+	'txt.content_en' => 'Contenu en Anglais',
+	'txt.add' => 'Ajouter',
+	'txt.delete' => 'Supprimer',
 ];

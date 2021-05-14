@@ -59,6 +59,7 @@
                                 <div class="nav justify-content-center justify-content-md-end social-icon si-30 gray">
                                     <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(URL::current()) }}"><i class="fab fa-facebook-f"></i></a>
                                     <a target="_blank" href="https://twitter.com/intent/tweet?text={{ urlencode(URL::current()) }}"><i class="fab fa-twitter"></i></a>
+                                    <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url={{ urlencode(URL::current()) }}"><i class="fab fa-linkedin"></i></a>
                                 </div>
                             </div>
                         </div>
