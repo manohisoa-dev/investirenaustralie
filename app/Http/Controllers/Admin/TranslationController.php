@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-// use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\TranslationRequest;
 use App;
 use Lang;
 

@@ -605,4 +605,6 @@ return
 	'txt.content_en' => 'Frensh Content',
 	'txt.add' => 'Add',
 	'txt.delete' => 'Delete',
+	'txt.complete_all_fields' => 'Please complete all fields !',
+	'txt.cancel' => 'Cancel',
 ];
