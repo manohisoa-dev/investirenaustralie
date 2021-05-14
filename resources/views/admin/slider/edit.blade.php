@@ -94,7 +94,7 @@
 @endsection
 
 @section('custom-script')
-	<script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+	<script src="{{asset('administrator/plugins/ckeditor/ckeditor.js')}}"></script>
 	<script>
         $(document).ready(function(){
 			$("#product_id").select2();
