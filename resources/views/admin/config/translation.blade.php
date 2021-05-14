@@ -221,6 +221,12 @@
             });
 
             $('#btn_save').click(function(){
+                // disable button
+                $(this).prop("disabled", true);
+                // add spinner to button
+                $(this).html(
+                    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+                );
                 
                 var datas = {
                     "_token": "{{ csrf_token() }}",
@@ -239,18 +245,27 @@
                     data: datas,
                     dataType: 'json',
                     success: function(data){
-                        // Close edit content lang modal
-                        $('#editLangModal').modal('hide');
+                        // // Close edit content lang modal
+                        // $('#editLangModal').modal('hide');
 
-                        // Reset value on input
-                        $('#lang').val('');
-                        $('#file').val('');
-                        $('#key').val('');
-                        $('#new_content').text('');
+                        // // Reset value on input
+                        // $('#lang').val('');
+                        // $('#file').val('');
+                        // $('#key').val('');
+                        // $('#new_content').text('');
+
+                        // Refresh page after update
+                        setTimeout(function(){
+                            location.reload();
+                            
+                            // Close edit content lang modal
+                            $('#editLangModal').modal('hide');
+
+                        }, 5000);
                     }
                 });
 
-                return tablelang.cell( rowIndex, 4 ).data(newContent).draw();
+                // return tablelang.cell( rowIndex, 4 ).data(newContent).draw();
             });
 
             $('#btn_new_save').click(function(){
@@ -282,7 +297,7 @@
                             $('#addTranslationModal').modal('hide');
 
                             location.reload();
-                        }, 5000)
+                        }, 5000);
                     }
                 });
             });

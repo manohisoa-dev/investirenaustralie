@@ -603,5 +603,6 @@ return
 	'txt.file' => 'File name',
 	'txt.content_fr' => 'French content',
 	'txt.content_en' => 'Frensh Content',
-	'txt.add' => 'Ajouter',
+	'txt.add' => 'Add',
+	'txt.delete' => 'Delete',
 ];

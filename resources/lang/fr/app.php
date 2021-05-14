@@ -873,4 +873,5 @@ return
 	'txt.content_fr' => 'Contenu en français',
 	'txt.content_en' => 'Contenu en Anglais',
 	'txt.add' => 'Ajouter',
+	'txt.delete' => 'Supprimer',
 ];
