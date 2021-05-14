@@ -9,7 +9,7 @@
     <title>@yield('title', '') | IEA ADMIN </title>
 
     <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="{{asset('favicon.ico')}}">
+    <link rel="shortcut icon" href="{{asset('images/favicon.png')}}">
 
     <link href="{{ asset('administrator/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('administrator/font-awesome/css/font-awesome.css') }}" rel="stylesheet">

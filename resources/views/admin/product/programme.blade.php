@@ -89,7 +89,7 @@
 								@endif
 							@else
 								<!-- Programme aucun photo -->
-								<img class="img-responsive" src="{{asset('img/500x500.jpg')}}" width="80">
+								<img class="img-responsive" src="{{asset('images/product.png')}}" width="80">
 							@endif								
                             </td>
 							<td>
