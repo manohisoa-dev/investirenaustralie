@@ -44,6 +44,7 @@ class Blog extends Model {
             'meta_tag' => 'string|max:191',
             'meta_description' => 'string|max:191',
             'view_count' => 'required',
+            'view_order' => 'required',
             'status' => 'required|string|max:20',
             'starred' => 'required|integer',
             'post_type' => 'required|string|max:150',

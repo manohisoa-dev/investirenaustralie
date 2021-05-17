@@ -44,7 +44,6 @@ class BlogController extends Controller {
         $this->middleware('auth');
         $this->middleware('role:1');
         
-        
         //$this->validate($request, Blog::validationRules());
         $blog = new Blog();
         if($file=$request->file('image')){
@@ -56,6 +55,17 @@ class BlogController extends Controller {
         while(Blog::where('slug', $slug)->exists()){
             $slug = $slugOriginal + '-' + $i++;
         }
+
+        // Update order item if order item is affected
+        if(Blog::where('view_order', $request->view_order)->exists()){ 
+            $countItem = Blog::where('view_order','>=',$request->view_order)->count();
+            $item = Blog::select('id')->where('view_order','>=',$request->view_order)->get();
+
+            $j=$countItem;
+            foreach ($item as $value) {
+                Blog::where('id','=',$value->id)->update(['view_order'=>$request->view_order+$j--]);
+            }
+        }
         
         $blog->slug = $slug;
         $blog->title = $request->title;
@@ -64,6 +74,7 @@ class BlogController extends Controller {
         $blog->meta_description = $request->meta_description;
         $blog->post_type = $this->post_type;
         $blog->status = 'published';
+        $blog->view_order = $request->view_order;
         $blog->save();
         
         // Add Blog to the selected category
@@ -136,12 +147,26 @@ class BlogController extends Controller {
             $slug = $slugOriginal + '-' + $i++;
         }
 
+        // Update order item if order item is affected
+        if($request->old_view_order !== $request->view_order){
+            if(Blog::where('view_order', $request->view_order)->exists()){ 
+                $countItem = Blog::where('view_order','>=',$request->view_order)->count();
+                $item = Blog::select('id')->where('view_order','>=',$request->view_order)->get();
+    
+                $j=$countItem;
+                foreach ($item as $value) {
+                    Blog::where('id','=',$value->id)->update(['view_order'=>$request->view_order+$j--]);
+                }
+            }
+        }
+
         $blog->slug = $slug;
         $blog->title = $request->title;
         $blog->content = $request->content;
         $blog->meta_tag = $request->meta_tag;
         $blog->meta_description = $request->meta_description;
         $blog->post_type = $this->post_type;
+        $blog->view_order = $request->view_order;
         $blog->status = 'published';
         $blog->save();
 
