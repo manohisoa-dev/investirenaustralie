@@ -207,12 +207,14 @@
 									<div class="file-name">
 										<label> 
 											@if($photo->is_principal == 1)
-											<input type="radio" checked="" value="option1" name="radioDrop"> Photo icône
+											<input type="radio" checked="" value="{{$photo->prdImageId}}" name="radioDrop"> Photo icône
 											@else
-											<input type="radio" value="option1" name="radioDrop"> Photo icône
+											<input type="radio" value="{{$photo->prdImageId}}" name="radioDrop"> Photo icône 
 											@endif
 										</label>
-										<a class="pull-right" href=""><i class="fa fa-trash"></i></a>
+										<a class="pull-right" href="javascript:void(0)" onclick="delete_photo({{$photo->prdImageId}})">
+											<i class="fa fa-trash"></i>
+										</a>
 										<br>
 										<small>{{$photo->created_at ? $photo->created_at->diffForHumans() : ""}}</small>
 									</div>
@@ -230,23 +232,94 @@
 							</div>
 						</div>
 					</div>	                                                                                                                    
-                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Enregistrer</button>
-
+                    <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-save"></i> Enregistrer la modification</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+
+<div class="row">
+	<div class="col-lg-12">
+		<div class="ibox ">
+			<div class="ibox-title">
+				<h5>Produits du programme</h5>
+				<div class="ibox-tools">
+					<a href="javascript:void(0)" onclick="add_product({{$product->id}})" class="btn btn-primary btn-block">
+						<i class="fa fa-plus"></i> Ajouter un nouveau Produit 
+					</a>
+				</div>
+			</div>
+			<div class="ibox-content">
+				<table class="table table-striped grid-view-tbl">
+					<thead>
+                        <tr class="header-row">
+							<th>Id</th>
+							<th>Image</th>
+							<th>Titre</th>
+							<th>Prix min</th>
+							<th>Prix max</th>
+							<th>Date</th>
+							<th>Statut</th>
+							<th>Vendeur</th>
+							<th>Auteur</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+					@foreach($product_lies as $product_lie)
+						<tr>
+							<td>{{$product_lie->id}}</td>
+							<td>
+								@if (@getimagesize($product_lie->imageUrl()))
+									<a href="{{route('admin.product.index')}}/{{$product_lie->id}}">
+										<img src="{{$product_lie->imageUrl()}}" class="img-responsive" style="height:80px" />
+									</a>
+								@else
+									<a href="{{route('admin.product.index')}}/{{$product_lie->id}}">
+										<img class="img-responsive" src="{{asset('img/500x500.jpg')}}" width="80">
+									</a>
+								@endif
+							</td>
+							<td><b>{{ $product_lie->title }}</b><br />{!! $product_lie->excerpt() !!}</td>
+							<td>{{ $product_lie->currency }}&nbsp;{{ number_format($product_lie->min_price, 0, '.', ' ') }}</td>
+							<td>{{ $product_lie->currency }}&nbsp;{{ number_format($product_lie->max_price, 0, '.', ' ') }}</td>
+							<td>{{ $product_lie->created_at ? $product_lie->created_at->diffForHumans() : '' }}</td>
+							<td>
+								@if($product_lie->status=='published')
+								<span class="label label-success">@lang('app.'.$product_lie->status)</span>
+								@else
+								<span class="label label-warning">@lang('app.'.$product_lie->status)</span>
+								@endif
+							</td>
+							<td>
+								@if($product_lie->seller_id != 0)
+									{{ $product_lie->seller->name }}
+								@endif
+							</td>
+							<td>{{ $product_lie->author->name }}</td>
+							<td></td>
+						</tr>
+					@endforeach
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
 @endsection
 
 @section('custom-script')
 	<script src="{{asset('administrator/plugins/ckeditor/ckeditor.js')}}"></script>
+	<script src="{{ asset('administrator/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
 	<script>
 		Dropzone.autoDiscover = false;
         $(document).ready(function(){
             CKEDITOR.replace( 'description' );
 			$("#category_id").select2();
 			set_type_programme($('#cat_programmme_id').val(),{{$product->type_id}});
+			set_type_produit($('#cat_programmme_id').val());
 			
 			$('#cat_programmme_id').on('change', function() {
 				var category = this.value;
@@ -267,8 +340,8 @@
 				maxFiles: 5, 
 				maxFilesize: 4,
 				dictDefaultMessage: 'Choisir plusieurs photo pour la représentation du programme',
-				url: "{{ route('admin.ajaxDropZone') }}",
-				params: {"_token": "{{ csrf_token() }}"},
+				url: "{{ route('admin.ajaxDropZoneEdit') }}",
+				params: {"_token": "{{ csrf_token() }}","id_programme": "{{ $product->id }}"},
 				acceptedFiles: ".jpeg,.jpg,.png,.gif",
 				addRemoveLinks: true,
 				timeout: 50000,
@@ -295,15 +368,7 @@
 		   
 				success: function(file, response) 
 				{
-					file.previewElement.id = response.success;
-					//console.log(file.previewElement.id); 
-					// set new images names in dropzone’s preview box.
-					var olddatadzname = file.previewElement.querySelector("[data-dz-name]");   
-					file.previewElement.querySelector("img").alt = response.success;
-					file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'><input value='"+response.success+"' type='radio' name='radioDrop' style='display:inline-block'> Photo icône</label>");
-					file.previewElement.appendChild(file._captionBox);
-					$('#programmeForm').append('<input type="hidden" name="dropPhoto[]" value="'+response.success +'">');
-					olddatadzname.innerHTML = response.success;
+					location.reload();	
 				},
 				error: function(file, response)
 				{
@@ -321,6 +386,18 @@
 					return _results;
 				}
 			});
+			
+			$('input[type=radio][name=radioDrop]').change(function() {
+				$.ajax({
+				   type:'POST',
+				   url:"{{ route('admin.ajaxChangeIconPhotoActive') }}",
+				   data: {"_token": "{{ csrf_token() }}","id_photo_prd": this.value, "id_prd": {{$product->id}}},
+				   success:function(data) {
+					  
+					  
+				   }
+				});
+			})
         }) ;
 		
 		function set_type_programme(categorie_id,type_id_active)
@@ -331,9 +408,407 @@
 			   data: {"_token": "{{ csrf_token() }}","categoryId": categorie_id, "type_id_active": type_id_active},
 			   success:function(data) {
 				  $('#type_id').html(data);
+			   }
+			});
+		}
+		
+		function set_type_produit(categorie_id)
+		{
+			$.ajax({
+			   type:'POST',
+			   url:"{{ route('admin.ajaxGetTypeProduitCategorie') }}",
+			   data: {"_token": "{{ csrf_token() }}","categoryId": categorie_id},
+			   success:function(data) {
+				  $('#product_type_id').html(data);
 				  
 			   }
 			});
 		}
+		
+		function delete_photo(id_photo_prd_image)
+		{
+			swal({
+				title: "Photo icône",
+				text: "Voulez vous supprimer ?",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: '#ff3547',
+				confirmButtonText: 'OUI',
+				cancelButtonText: "NON",
+				closeOnConfirm: false,
+				closeOnCancel: false
+			 },
+			 function(isConfirm){	
+			   if (isConfirm){
+					 $.ajax({
+						url : "{{ route('admin.ajaxDropPhotoIcon') }}",
+						type: "POST",
+						dataType: "JSON",
+						data:{"_token": "{{ csrf_token() }}",'id_photo_prd_image':id_photo_prd_image},
+						success: function(data)
+						{
+							swal("Photo icône", "photo bien supprimé", "success");
+							location.reload();	
+						},
+						error: function (jqXHR, textStatus, errorThrown)
+						{
+							swal("Photo icône", "Opération impossible", "error");
+							location.reload();	
+						}
+					}); 
+				} else {
+					swal("Photo icône", "Vous venez d'annuler l'opération", "error");
+				}
+			 });
+		}
+		
+		function add_product(id_programme)
+		{
+			save_method = 'add';
+			$('#form_product')[0].reset();
+			$('.form-group').removeClass('has-error');
+			$('.help-block').empty(); 
+			$('#id_programme').val(id_programme);
+			$('#title_new_programme').val($('#title_programme').val());
+			CKEDITOR.replace( 'desc_product' );
+			$("#progTitle").text($('#title_programme').val());
+			$('#modal_form_product').modal('show'); 
+			$('.modal-title').text('Nouveau produit');
+		}
+		
+		function save_product()
+		{
+			var url;
+			var form = $("#form_product");
+		
+			if(save_method == 'add') {
+				url = "{{ route('admin.ajaxSaveProduct') }}";
+			} else {
+				url = "{{ route('admin.ajaxModifProduct') }}";
+			}
+			
+			form.validate({
+				rules: {
+					title_product: {
+						required: true,
+						remote: {
+							url: "{{ route('admin.ajaxCheckTitreProgramme') }}",
+							type: "get",
+							data: {
+								title_programme: function () {
+									if($("input[name='title_programme']").val() != ''){
+										var prg_text = $("input[name='title_new_programme']").val();
+										var prd_text = $("input[name='title_product']").val();
+										return prg_text+'-'+prd_text;
+									}else{
+										return $("input[name='title_product']").val();
+									}									
+								}
+							}
+						}
+					}
+				},
+				messages: {
+					title_product: {
+						required: "Champ obligatoire",
+						remote: jQuery.validator.format("{0} existe déjà")
+					}
+				},
+				errorPlacement: function ( error, element ) {
+					if(element.parent().hasClass('input-group')){
+					  error.insertAfter( element.parent() );
+					}else{
+						error.insertAfter( element );
+					}
+				},
+			});
+			
+			// ajax adding data to database
+			if (form.valid() === true) {
+				var formData = new FormData($('#form_product')[0]);
+				$.ajax({
+					url : url,
+					type: "POST",
+					data: formData,
+					contentType: false,
+					processData: false,
+					dataType: "JSON",
+					success: function(data)
+					{
+						//location.reload();
+					},
+					error: function (jqXHR, textStatus, errorThrown)
+					{
+						$('#btnSave').text('Enregistrer'); //change button text
+						$('#btnSave').attr('disabled',false); //set button enable 
+			
+					}
+				});
+			}else{
+				$('#btnSave').attr('disabled',false);
+				$(this).addClass('input-error');
+			}
+		}
     </script>
+	
+	<div class="modal inmodal fade" id="modal_form_product" role="dialog" data-keyboard="false" data-backdrop="static">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title"></h4>
+				</div>
+				<div class="modal-body">
+					<form action="#" id="form_product" class="form-horizontal">
+						<input type="hidden" name="title_new_programme" id="title_new_programme" />
+						{{ csrf_field() }}
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="form-group">
+									<label for="title">Titre du produit *</label>
+									<div class="input-group m-b">
+										<div class="input-group-prepend">
+											<span class="input-group-addon" id="progTitle"></span>
+										</div>
+										<input name="title_product" id="title_product" class="form-control" type="text" value="" title="Indiquez la référence du produit">
+									</div>									
+								</div>
+							</div>
+						</div>
+						<div class="row">     
+							<div class="col-lg-12">                              
+								<div class="form-group">
+									<label for="title">Description produit *</label>
+									<textarea class="form-control" rows="10" name="desc_product" id="desc_product"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Type *</label>
+									<select class="form-control" name="product_type_id" id="product_type_id" style="width:100%">
+										
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Suburb</label>
+									<input name="suburb_product" id="suburb_product" class="form-control" type="text" value="">
+								</div>
+							</div>
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Ville</label>
+									<input name="ville_product" id="ville_product" class="form-control" type="text">
+								</div>  
+							</div>
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Code postal *</label>
+									<input name="postalCode_product" id="postalCode_product" class="form-control" type="text" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label for="title">Adresse rue *</label>
+									<input name="display_address_product" id="display_address_product" class="form-control" type="text" value="">
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label for="title">Etat *</label>
+									<select class="form-control" name="state_id_product" id="state_id_product" style="width:100%">
+										<option value="">Sélectionner état...</option>
+										@foreach(\App\Models\State::all() as $state)
+											<option value="{{$state->id}}">{{$state->content}}</option>
+										@endforeach
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label for="title">Pays</label>
+									<select class="form-control" name="countryId_product" id="countryId_product" style="width:100%">
+										@foreach(\App\Models\Country::where('id',12)->get() as $country)
+											<option value="{{$country->id}}">{{$country->content}}</option>
+										@endforeach
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="row">							
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Prix min de vente *</label>
+									<div class="input-group m-b">
+										<input type="number" class="form-control" name="price" id="price">
+										<div class="input-group-append">
+											<span class="input-group-addon">AUD</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Prix max de vente *</label>
+									<div class="input-group m-b">
+										<input type="number" class="form-control" name="price_max_prd" id="price_max_prd">
+										<div class="input-group-append">
+											<span class="input-group-addon">AUD</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Statuts</label>
+									<select class="form-control" name="status" id="status">
+										<option value="published">Publier</option>
+										<option value="En attente">En attente</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-3">
+								<div id="info_qte">
+									<div class="form-group">
+										<label for="title">Quantité</label>
+										<input name="quantity" id="quantity" class="form-control" type="number" value="1">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Nombre de chambre</label>
+									<input name="bedrooms" id="bedrooms" class="form-control" type="number" value="0">
+								</div>  
+							</div>
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Nombre de suites de chambres</label>
+									<input name="ensuite" id="ensuite" class="form-control" type="number" value="0">
+								</div>
+							</div>
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Nombre autres salles de bain/eau</label>
+									<input name="bathrooms" id="bathrooms" class="form-control" type="number" value="0">
+								</div> 
+							</div>
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Photo</label>
+									<input name="image" class="form-control" type="file" accept="image/png, image/jpeg">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Surface intérieur *</label>
+									<div class="input-group m-b">
+										<input type="text" name="interior_area" id="interior_area" class="form-control">
+										<div class="input-group-append">
+											<span class="input-group-addon">.m2</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Surface extérieur *</label>
+									<div class="input-group m-b">
+										<input type="text" name="exterior_area" id="exterior_area" class="form-control">
+										<div class="input-group-append">
+											<span class="input-group-addon">.m2</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Surface total *</label>
+									<div class="input-group m-b">
+										<input type="text" name="total_area" id="total_area" class="form-control" readonly="">
+										<div class="input-group-append">
+											<span class="input-group-addon">.m2</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3">
+								<div id="yearConstruct" style="display:none">								
+									<div class="form-group">
+										<label for="title">Année de construction *</label>
+										<input name="year_built" id="year_built" class="form-control" type="number" value="0">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label for="title">Emplacements parking fermés</label>
+									<input name="garage_spaces" id="garage_spaces" class="form-control" type="number" value="0">
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label for="title">Emplacements parking carport</label>
+									<input name="carport_spaces" id="carport_spaces" class="form-control" type="number" value="0">
+								</div>
+							</div>
+							
+							<div class="col-lg-4">
+								<div id="jardin_info" style="display:none">
+									<div class="form-group">
+										<label for="title">Superficie jardin privatif</label>
+										<div class="input-group m-b">
+											<input type="number" class="form-control" name="superficie_jardin" id="superficie_jardin" value="0">
+											<div class="input-group-append">
+												<span class="input-group-addon">.m2</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-lg-12">
+								<label class="chk_parking"> 
+									<input type="checkbox" value="1" id="chk_parking" name="chk_parking"> parking voies publiques
+								</label>
+							</div>
+							
+							<div class="col-lg-12">
+								<div id="chk_picine" style="display:none">
+									<label class="chk_picine"> 
+										<input type="checkbox" value="1" name="chk_picine"> piscine
+									</label>
+								</div>
+							</div>
+							
+							<div class="col-lg-12">
+								<div id="chk_firb" style="display:none">
+									<label class="chk_firb"> 
+										<input type="checkbox" value="" name="chk_firb"> The Seller certifies under their sole responsibilitythatthis property canbe sold to non-residentforeigners in accordance with Australian law and the rules applicable by the Foreign Investment Review Board (FIRB).
+									</label>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" id="btnSave" onClick="save_product()">Enregistrer</button>
+				</div>
+			</div>
+		</div>
+	</div>
 @endsection
