@@ -105,6 +105,7 @@ return
 	'admin.page.add' => 'Add a page',
 	'admin.orders' => 'Orders',
 	'admin.carts' => 'Carts',
+	'admin.article_order.desc' => 'Add the order number of the item',
 	'contact_us_phone' => 'Contact us: :phone',
 	'home.step1.modal.title' => 'Step 1',
 	'home.step1.modal.content' => 'Without having to be registered as a Member, you can browse all the products displayed on the site. To help you search for properties that meet your expectations: you select the object of your choice in the menu bar: real estate or business; depending on your previous choice, you have a panel that offers you different search criteria. The site then displays the search result corresponding to your criteria in the selected geographical location.
@@ -607,4 +608,9 @@ return
 	'txt.delete' => 'Delete',
 	'txt.complete_all_fields' => 'Please complete all fields !',
 	'txt.cancel' => 'Cancel',
+	'txt.list_programme_immobilier_residentiel' => 'List of Residential Real Estate Programs',
+	'txt.list_bien_nature_foncière' => 'List of Land Properties',
+	'txt.list_bien_industriel' => 'List of Industrial Goods',
+	'txt.list_bien_commercial' => 'List of Commercial Goods',
+	'admin.article_display_order' => 'Article display order',
 ];

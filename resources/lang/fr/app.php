@@ -332,6 +332,7 @@ return
 	'admin.path.desc' => 'Ajouter un lien URI',
 	'admin.page_order' => 'Ordre de la page',
 	'admin.page_order.desc' => 'Ajouter le numéro d&lsquo;ordre de la page',
+	'admin.article_order.desc' => 'Ajouter le numéro d&lsquo;ordre de l&lsquo;article',
 	'admin.content' => 'Contenu',
 	'admin.content.desc' => 'Ajouter les paragraphes',
 	'admin.link' => 'Lien URL',
@@ -876,4 +877,9 @@ return
 	'txt.delete' => 'Supprimer',
 	'txt.complete_all_fields' => 'Veuillez renseigner tous les champs !',
 	'txt.cancel' => 'Annuler',
+	'txt.list_programme_immobilier_residentiel' => 'Liste des Programmes Immobiliers Résidentiels',
+	'txt.list_bien_nature_foncière' => 'Liste des Biens de Nature Foncière',
+	'txt.list_bien_industriel' => 'Liste des Biens Industriels',
+	'txt.list_bien_commercial' => 'Liste des Biens Commerciaux',
+	'admin.article_display_order' => 'Ordre d&lsquo;affichage de l&lsquo;article',
 ];

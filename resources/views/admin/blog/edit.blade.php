@@ -89,6 +89,11 @@
 							</div>
 							<div class="col-md-4"></div>
 						</div>
+					</div>
+					<div class="form-group">
+						<label for="view_order">@lang('app.admin.article_display_order')</label>
+						<input type="hidden" name="old_view_order" value="{{$blog->view_order}}">
+						<input name="view_order" id="view_order" class="form-control" type="number" min="1" max="{{ (App\Models\Blog::max('view_order')) }}" value="{{$blog->view_order}}" placeholder="@lang('app.admin.article_order.desc')">
 					</div>                                                                                                                                                 
                     <button type="submit" class="btn btn-primary btn-lg pull-right">
 						<i class="fa fa-save"></i> @lang('app.btn.save')

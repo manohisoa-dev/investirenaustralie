@@ -68,7 +68,7 @@
 						<div class="well well-nice">
 							<div class="fileupload fileupload-new" data-provides="fileupload">
 								<div class="row">									
-									<div class="col-md-8">
+									<div class="col-md-12">
 										<label>@lang('app.admin.file.select')</label> 
 										<div class="input-group">
 											<div class="custom-file">
@@ -83,6 +83,10 @@
 								</div>
 							</div>
 						</div>
+					</div>
+					<div class="form-group">
+						<label for="view_order">@lang('app.admin.article_display_order')</label>
+						<input name="view_order" id="view_order" class="form-control" type="number" min="1" max="{{ (App\Models\Blog::max('view_order')+1) }}" value="{{ (App\Models\Blog::max('view_order')+1) }}" placeholder="@lang('app.admin.article_order.desc')">
 					</div>            
 					<div class="hr-line-dashed"></div>
                     <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-save"></i> @lang('app.btn.save')</button>

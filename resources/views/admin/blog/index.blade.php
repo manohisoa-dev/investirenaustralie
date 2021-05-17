@@ -41,6 +41,7 @@
 						<th>@lang('app.table.photo')</th>
 						{!!\Nvd\Crud\Html::sortableTh('title','admin.blog.index','Titres/Contenus')!!}
 						<th>@lang('app.table.comment')</th>
+						<th>@lang('app.form.order')</th>
 						{!!\Nvd\Crud\Html::sortableTh('meta_tag','admin.blog.index','Meta TAG')!!}
 						{!!\Nvd\Crud\Html::sortableTh('meta_description','admin.blog.index','Meta DESC')!!}
 						{!!\Nvd\Crud\Html::sortableTh('status','admin.blog.index','Statut')!!}
@@ -62,6 +63,7 @@
 							<td width="5%"><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
 							<td></td>
 							<td><input type="text" class="form-control" name="title" value="{{Request::input("title")}}"></td>
+							<td></td>
 							<td></td>
 							<td><input type="text" class="form-control" name="meta_tag" value="{{Request::input("meta_tag")}}"></td>
 							<td><input type="text" class="form-control" name="meta_description" value="{{Request::input("meta_description")}}"></td>
@@ -113,6 +115,7 @@
 								<td style="text-align:center">
 									<a href="{{route('admin.comment.index').'?blog_id='.$record->id}}">{{count($record->comments)}}</a>
 								</td>
+								<td>{{ $record->view_order }}</td>
 								<td>
                                      <span class="editable"
                                           data-type="text"

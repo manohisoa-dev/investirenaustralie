@@ -79,7 +79,17 @@
     <div class="container">
         <div class="row md-m-25px-b m-65px-b justify-content-center text-center">
             <div class="col-lg-8">
-                <h3 class="h1 m-20px-b p-20px-b theme-after after-50px">@lang('app.txt.list_programme')</h3>
+                @if ($category=='residentiel')
+                    <h3 class="h1 m-20px-b p-20px-b theme-after after-50px">@lang('app.txt.list_programme_immobilier_residentiel')</h3>
+                @elseif($category=='foncier')
+                    <h3 class="h1 m-20px-b p-20px-b theme-after after-50px">@lang('app.txt.list_bien_nature_foncière')</h3>
+                @elseif($category=='industriel')
+                    <h3 class="h1 m-20px-b p-20px-b theme-after after-50px">@lang('app.txt.list_bien_industriel')</h3>
+                @elseif($category=='commercial')
+                    <h3 class="h1 m-20px-b p-20px-b theme-after after-50px">@lang('app.txt.list_bien_commercial')</h3>
+                @else
+                    <h3 class="h1 m-20px-b p-20px-b theme-after after-50px">@lang('app.txt.list_programme')</h3>
+                @endif
             </div>
         </div>
         <div class="row">
