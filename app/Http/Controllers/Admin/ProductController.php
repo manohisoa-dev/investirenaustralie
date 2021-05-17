@@ -124,9 +124,9 @@ class ProductController extends Controller {
                             }
                         }
                         //creation produit
-                        $titre_product = $request->title_programme.'-'.$request->title_product;
-                        $this->save_new_produit($anciennete, $nature, $titre_product, $request->file
-                            ('image'), $request->desc_product, 1, 0, $request->interior_area, $request->exterior_area,
+                        $titre_product = $request->title_programme . '-' . $request->title_product;
+                        $this->save_new_produit($anciennete, $nature, $titre_product, $request->file('image'),
+                            $request->desc_product, 1, 0, $request->interior_area, $request->exterior_area,
                             $request->total_area, $request->carport_spaces, $request->garage_spaces, $request->bathrooms,
                             $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
                             $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
@@ -306,8 +306,14 @@ class ProductController extends Controller {
     public function edit(Request $request, Product $product) {
         if ($product->parent_id == 0) {
             //modification programme
+            $localisation = Localisation::find($product->location_id);
+            $fonDossier = Image::find($product->image_fond_dossier_id);
+            $photo = ProductsImage::where('products_images.product_id', '=', $product->id)->join('images',
+                'products_images.image_id', '=', 'images.id')->get();
+
             return $this->view("edit_programme", ['product' => $product, 'type' =>
-                'programme']);
+                'programme', 'localisation' => $localisation, 'dossier' => $fonDossier, 'photos' =>
+                $photo]);
         } else {
             //modification proudiut
             return $this->view("edit", ['product' => $product, 'type' => 'programme']);
@@ -453,7 +459,13 @@ class ProductController extends Controller {
         $typePrd = Type::where('categories_id', $request->categoryId)->get();
         $output = '<option value="">Choisir...</option>';
         foreach ($typePrd as $val) {
-            $output .= '<option value="' . $val->id . '">' . $val->title . '</option>';
+            if ($val->id == $request->type_id_active) {
+                $type_active = 'selected="selected"';
+            } else {
+                $type_active = '';
+            }
+            $output .= '<option value="' . $val->id . '" ' . $type_active . '>' . $val->title .
+                '</option>';
         }
         return response()->json($output);
     }
@@ -467,9 +479,8 @@ class ProductController extends Controller {
             echo "false";
         }
     }
-    
-    public function ajaxCheckTitreProgramme()
-    {
+
+    public function ajaxCheckTitreProgramme() {
         $titre_programme = $_GET['title_programme'];
         //echo $titre_programme;
         $slug = generateSlug($titre_programme);
