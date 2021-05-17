@@ -874,4 +874,6 @@ return
 	'txt.content_en' => 'Contenu en Anglais',
 	'txt.add' => 'Ajouter',
 	'txt.delete' => 'Supprimer',
+	'txt.complete_all_fields' => 'Veuillez renseigner tous les champs !',
+	'txt.cancel' => 'Annuler',
 ];

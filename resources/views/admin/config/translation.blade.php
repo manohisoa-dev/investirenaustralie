@@ -97,7 +97,9 @@
                         <input type="hidden" name="lang" id="lang">
                         <input type="hidden" name="file" id="file">
                         <input type="hidden" name="key" id="key">
+                        <label for="new_content">@lang('app.txt.new_value') *</label>
                         <textarea class="form-control" name="new_content" id="new_content" cols="60" rows="10"></textarea>
+                        <span class="text-danger m-25px-t" id="error_0"></span>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -117,7 +119,7 @@
                     <h5 class="modal-title" id="staticBackdropLabel">@lang('app.txt.add')</h5>
                 </div>
                 <div class="modal-body">
-                    <form action="" id="addLangForm">
+                    <form action="#" id="addLangForm" class="form-validation">
                         {{ csrf_field() }}
                         <div class="row col-lg-12">
                             <div class="col-lg-6">
@@ -132,20 +134,21 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label class="col-lg-12" for="new_key">@lang('app.txt.key')</label>
+                                    <label class="col-lg-12" for="new_key">@lang('app.txt.key') *</label>
                                     <input class="form-control col-lg-12" type="text" name="new_key" id="new_key">
                                 </div>
                             </div>
                         </div>                        
                         <div class="form-group">
-                            <label class="col-lg-12" for="new_content_fr">@lang('app.txt.content_fr')</label>
+                            <label class="col-lg-12" for="new_content_fr">@lang('app.txt.content_fr') *</label>
                             <textarea class="form-control col-lg-12" name="new_content_fr" id="new_content_fr" cols="60" rows="5"></textarea>
                         </div>
                         <div class="form-group">
-                            <label class="col-lg-12" for="new_content_en">@lang('app.txt.content_en')</label>
+                            <label class="col-lg-12" for="new_content_en">@lang('app.txt.content_en') *</label>
                             <textarea class="form-control col-lg-12" name="new_content_en" id="new_content_en" cols="60" rows="5"></textarea>
                         </div>
                     </form>
+                    <span class="text-danger m-25px-t" id="error"></span>
                 </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('app.btn.cancel')</button>
@@ -161,6 +164,7 @@
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
 
     <script type="text/javascript">
         $(document).ready(function(){
@@ -221,85 +225,137 @@
             });
 
             $('#btn_save').click(function(){
-                // disable button
-                $(this).prop("disabled", true);
-                // add spinner to button
-                $(this).html(
-                    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
-                );
-                
-                var datas = {
-                    "_token": "{{ csrf_token() }}",
-                    'lang' : $('#lang').val(),
-                    'file' : $('#file').val(),
-                    'key' : $('#key').val(),
-                    'new_content' : $('#new_content').val(),
-                };
-                
-                // new value to set on datatable
-                newContent= $('#new_content').val();
+                var newContent = $('#new_content').val();
 
-                $.ajax({
-                    url: '{{ route("admin.config.save.translation") }}',
-                    method: 'POST',
-                    data: datas,
-                    dataType: 'json',
-                    success: function(data){
-                        // // Close edit content lang modal
-                        // $('#editLangModal').modal('hide');
+                if(newContent!==''){
+                    // disable button
+                    $(this).prop("disabled", true);
+                    // add spinner to button
+                    $(this).html(
+                        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+                    );
+                    
+                    var datas = {
+                        "_token": "{{ csrf_token() }}",
+                        'lang' : $('#lang').val(),
+                        'file' : $('#file').val(),
+                        'key' : $('#key').val(),
+                        'new_content' : $('#new_content').val(),
+                    };
+                    
+                    // new value to set on datatable
+                    // newContent= $('#new_content').val();
 
-                        // // Reset value on input
-                        // $('#lang').val('');
-                        // $('#file').val('');
-                        // $('#key').val('');
-                        // $('#new_content').text('');
+                    $.ajax({
+                        url: '{{ route("admin.config.save.translation") }}',
+                        method: 'POST',
+                        data: datas,
+                        dataType: 'json',
+                        success: function(data){
+                            // // Close edit content lang modal
+                            // $('#editLangModal').modal('hide');
 
-                        // Refresh page after update
-                        setTimeout(function(){
-                            location.reload();
-                            
-                            // Close edit content lang modal
-                            $('#editLangModal').modal('hide');
+                            // // Reset value on input
+                            // $('#lang').val('');
+                            // $('#file').val('');
+                            // $('#key').val('');
+                            // $('#new_content').text('');
 
-                        }, 5000);
-                    }
-                });
+                            // Refresh page after update
+                            setTimeout(function(){
+                                location.reload();
+                                
+                                // Close edit content lang modal
+                                $('#editLangModal').modal('hide');
+
+                            }, 5000);
+                        }
+                    });
+                }else{
+                    $('#error_0').html('(*): {{ trans("app.txt.champobligatoire") }}');
+                    $('#error_0').delay(10000).fadeOut();
+                }
 
                 // return tablelang.cell( rowIndex, 4 ).data(newContent).draw();
             });
 
+            // $('#addLangForm').validate({
+            //     ignore: [],
+            //     rules: {
+            //         'new_key': {
+            //             required: true
+            //         },
+            //         'new_content_fr': {
+            //             required: true
+            //         },
+            //         'new_content_en': {
+            //             required: true
+            //         },
+            //     },
+            //     messages: {
+            //         'new_key': {
+            //             required: "Champ obligatoire"
+            //         },
+            //         'new_content_fr': {
+            //             required: "Champ obligatoire"
+            //         },
+            //         'new_content_en': {
+            //             required: "Champ obligatoire",
+            //         },
+            //     },
+            //     errorPlacement: function ( error, element ) {
+            //         if(element.parent().hasClass('input-group')){
+            //             error.insertBefore( element.parent() );
+            //         }else{
+            //             error.insertAfter( element );
+            //         }
+            //     },
+            // });
+            
+
             $('#btn_new_save').click(function(){
-                // disable button
-                $(this).prop("disabled", true);
-                // add spinner to button
-                $(this).html(
-                    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
-                );
-                
-                var datas = {
-                    "_token": "{{ csrf_token() }}",
-                    'lang' : new Array('fr','en'),
-                    'file' : $('#new_file').val(),
-                    'key' : $('#new_key').val(),
-                    'new_content_fr' : $('#new_content_fr').val(),
-                    'new_content_en' : $('#new_content_en').val(),
-                };
+                var newKey = $('#new_key').val();
+                var newContentFr = $('#new_content_fr').val();
+                var newContentAn = $('#new_content_en').val();
 
-                $.ajax({
-                    url: '{{ route("admin.config.save.translation") }}',
-                    method: 'POST',
-                    data: datas,
-                    dataType: 'json',
-                    success: function(data){
-                        // Refresh page after update
-                        setTimeout(function(){
-                            // Close edit content lang modal
-                            $('#addTranslationModal').modal('hide');
+                if(newKey!=='' && newContentFr!=='' && newContentAn!==''){
+                    // disable button
+                    $(this).prop("disabled", true);
+                    // add spinner to button
+                    $(this).html(
+                        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+                    );
+                    
+                    var datas = {
+                        "_token": "{{ csrf_token() }}",
+                        'lang' : new Array('fr','en'),
+                        'file' : $('#new_file').val(),
+                        'key' : $('#new_key').val(),
+                        'new_content_fr' : $('#new_content_fr').val(),
+                        'new_content_en' : $('#new_content_en').val(),
+                    };
 
-                            location.reload();
-                        }, 5000);
-                    }
-                });
+                    $.ajax({
+                        url: '{{ route("admin.config.save.translation") }}',
+                        method: 'POST',
+                        data: datas,
+                        dataType: 'json',
+                        success: function(data){
+                            $('#error').html();
+
+                            // Refresh page after update
+                            setTimeout(function(){
+                                // Close edit content lang modal
+                                $('#addTranslationModal').modal('hide');
+
+                                location.reload();
+                            }, 5000);
+                        },
+                    });
+                }else{
+                    $('#error').html('(*): {{ trans("app.txt.complete_all_fields") }}');
+                    $('#error').delay(10000).fadeOut();
+                }
             });
 
 
@@ -428,5 +484,6 @@
             }
         
         });
+
     </script>
 @endsection
