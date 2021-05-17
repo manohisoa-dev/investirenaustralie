@@ -308,12 +308,14 @@ class ProductController extends Controller {
             //modification programme
             $localisation = Localisation::find($product->location_id);
             $fonDossier = Image::find($product->image_fond_dossier_id);
+            $produit_lie = Product::where('parent_id', $product->id)->get();
             $photo = ProductsImage::where('products_images.product_id', '=', $product->id)->join('images',
-                'products_images.image_id', '=', 'images.id')->get();
+                'products_images.image_id', '=', 'images.id')->select('*',
+                'products_images.id as prdImageId')->get();
 
             return $this->view("edit_programme", ['product' => $product, 'type' =>
                 'programme', 'localisation' => $localisation, 'dossier' => $fonDossier, 'photos' =>
-                $photo]);
+                $photo,'product_lies'=>$produit_lie]);
         } else {
             //modification proudiut
             return $this->view("edit", ['product' => $product, 'type' => 'programme']);
@@ -503,6 +505,32 @@ class ProductController extends Controller {
         return response()->json(['success' => $file_name]);
     }
 
+    public function ajaxDropZoneEdit(Request $request) {
+        $id_programme = $request->id_programme;
+        $image = $request->file('file');
+
+        $fileInfo = $image->getClientOriginalName();
+        $filename = pathinfo($fileInfo, PATHINFO_FILENAME);
+        $extension = pathinfo($fileInfo, PATHINFO_EXTENSION);
+        $file_name = $filename . '-' . time() . '.' . $extension;
+        $image->move(public_path('uploads/product'), $file_name);
+
+        $this->save_photo_programme($file_name, $id_programme, 0);
+        return response()->json(['success' => 'true']);
+    }
+
+    public function ajaxDropPhotoIcon(Request $request) {
+        ProductsImage::where('id', $request->id_photo_prd_image)->delete();
+        return response()->json(['success' => 'true']);
+    }
+
+    public function ajaxChangeIconPhotoActive(Request $request) {
+        ProductsImage::where('product_id', $request->id_prd)->update(['is_principal' =>
+            0]);
+        ProductsImage::where('id', $request->id_photo_prd)->update(['is_principal' => 1]);
+        return response()->json(['success' => 'true']);
+    }
+
     public function save_photo_programme($nom_photo, $id_programme, $is_principale) {
         //save image "table image"
         $image = new Image();
@@ -520,6 +548,16 @@ class ProductController extends Controller {
         $image_programme->is_principal = $is_principale;
         $image_programme->author_id = Auth::user()->id;
         $image_programme->save();
+    }
+    
+    public function ajaxSaveProduct(Request $request)
+    {
+        dd($request->All());
+    }
+    
+    public function ajaxModifProduct(Request $request)
+    {
+        
     }
 
 }
