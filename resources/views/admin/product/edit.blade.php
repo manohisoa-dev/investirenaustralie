@@ -33,7 +33,6 @@
             </div>
             <div class="ibox-content">
                 <form action="{{ route('admin.product.index')}}/{{$product->id}}" method="post">
-
                     {{ csrf_field() }}
                     {{ method_field("PUT") }}
                     <div class="row">
@@ -42,7 +41,7 @@
 								<label>Choisir programme *</label>
 								<select class="form-control" name="parent_id" id="parent_id">
 									@foreach(\App\Models\Product::where('parent_id',0)->get() as $prd)
-										<option value="{{$prd->id}}" {{$product->id == $prd->id ? 'selected' : ''}}>{{$prd->title}}</option>
+										<option value="{{$prd->id}}" {{$product->parent_id == $prd->id ? 'selected' : ''}}>{{$prd->title}}</option>
 									@endforeach
 								</select>
 							</div>
