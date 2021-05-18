@@ -32,7 +32,7 @@
                 <h5>Mise à jour Produit : {{$product->reference}}</h5>
             </div>
             <div class="ibox-content">
-                <form action="{{ route('admin.product.index')}}/{{$product->id}}" method="post">
+                <form action="{{ route('admin.product.index')}}/{{$product->id}}" method="post" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     {{ method_field("PUT") }}
                     <div class="row">
