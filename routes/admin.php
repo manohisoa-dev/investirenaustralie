@@ -108,6 +108,8 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
         Route::get('translation', 'TranslationController@translation')->name('translation');
         Route::post('translation', 'TranslationController@saveTranslation')->name('save.translation');
         Route::get('get/translation', 'TranslationController@getTranslation')->name('get.translation');
+        Route::get('parameter', 'ParameterController@show')->name('parameter');
+        Route::post('parameter', 'ParameterController@update')->name('update.parameter');
     });
 
     Route::resource('firb','FirbController');

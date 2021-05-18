@@ -24,8 +24,7 @@
                     </div>
 
                     {{-- Badge --}}
-                    @if ($item->created_at > Carbon\Carbon::now()->subDays(30))
-                        {{-- <div class="card-badge">@lang('app.txt.new')</div>  --}}
+                    @if ($item->created_at > Carbon\Carbon::now()->subDays(App\Models\Parameter::where('name','nb_day_new_prod')->first()->value))
                         <span class="notify-badge btn-success">@lang('app.txt.new')</span>
                     @endif
 

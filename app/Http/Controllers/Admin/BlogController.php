@@ -59,11 +59,11 @@ class BlogController extends Controller {
         // Update order item if order item is affected
         if(Blog::where('view_order', $request->view_order)->exists()){ 
             $countItem = Blog::where('view_order','>=',$request->view_order)->count();
-            $item = Blog::select('id')->where('view_order','>=',$request->view_order)->get();
+            $item = Blog::select('id')->where('view_order','>=',$request->view_order)->orderBy('view_order','ASC')->get();
 
-            $j=$countItem;
+            $j=1;
             foreach ($item as $value) {
-                Blog::where('id','=',$value->id)->update(['view_order'=>$request->view_order+$j--]);
+                Blog::where('id','=',$value->id)->update(['view_order'=>$request->view_order+$j++]);
             }
         }
         
@@ -151,11 +151,19 @@ class BlogController extends Controller {
         if($request->old_view_order !== $request->view_order){
             if(Blog::where('view_order', $request->view_order)->exists()){ 
                 $countItem = Blog::where('view_order','>=',$request->view_order)->count();
-                $item = Blog::select('id')->where('view_order','>=',$request->view_order)->get();
-    
-                $j=$countItem;
-                foreach ($item as $value) {
-                    Blog::where('id','=',$value->id)->update(['view_order'=>$request->view_order+$j--]);
+                $oldItemOrder = Blog::select('id')->where('view_order','=',$request->view_order)->first();
+
+                if($request->old_view_order > $request->view_order){
+                    $item = Blog::select('id','view_order')->where('view_order','>=',$request->view_order)->orderBy('view_order','ASC')->get();
+                    foreach ($item as $value) {
+                        Blog::where('id','=',$value->id)->update(['view_order'=>$value->view_order+1]);
+                    }
+                }else{
+                    $item = Blog::select('id','view_order')->where('view_order','>',$request->old_view_order)->orderBy('view_order','ASC')->get();
+                    
+                    foreach ($item as $value) {
+                        Blog::where('id','=',$value->id)->update(['view_order'=>$value->view_order-1]);
+                    }
                 }
             }
         }

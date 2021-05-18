@@ -182,6 +182,11 @@
 				<span class="nav-label">Translation</span>
 			</a>
 		</li>
+        <li>
+			<a href="{{route('admin.config.parameter')}}">
+				<span class="nav-label">Paramètre</span>
+			</a>
+		</li>
     </ul>
 </li>
 <li class="special_link">
