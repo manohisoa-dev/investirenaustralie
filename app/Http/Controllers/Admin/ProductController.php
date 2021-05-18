@@ -530,9 +530,8 @@ class ProductController extends Controller {
         ProductsImage::where('id', $request->id_photo_prd_image)->delete();
         return response()->json(['success' => 'true']);
     }
-    
-    public function ajaxDropProduit(Request $request)
-    {
+
+    public function ajaxDropProduit(Request $request) {
         Product::where('id', $request->id_produit)->delete();
         return response()->json(['success' => 'true']);
     }
@@ -584,8 +583,14 @@ class ProductController extends Controller {
         return response()->json(['success' => 'true']);
     }
 
-    public function ajaxModifProduct(Request $request) {
+    public function ajaxGetProductById(Request $request) {
+        $product = Product::find($request->id_produit);
+        $localisation = Localisation::find($product->location_id);
+        return response()->json(['product' => $product, 'localisation' => $localisation]);
+    }
 
+    public function ajaxModifProduct(Request $request) {
+        dd($request->All());
     }
 
 }

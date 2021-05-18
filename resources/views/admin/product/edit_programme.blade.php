@@ -301,7 +301,7 @@
 							</td>
 							<td>{{ $product_lie->author->name }}</td>
 							<td class="actions-cell text-center" width="10%">								
-								<a href="#" class="btn btn-default btn-circle" title="Modification">
+								<a href="javascript:void(0)" onclick="edit_product({{$product_lie->id}})" class="btn btn-default btn-circle" title="Modification">
 									<i class="fa fa-pencil-square-o"></i>
 								</a>&nbsp;&nbsp;
 								<a href="javascript:void(0)" onclick="delete_product({{$product_lie->id}})" class="btn btn-default btn-circle" title="Supprimer">
@@ -532,11 +532,63 @@
 			$('.form-group').removeClass('has-error');
 			$('.help-block').empty(); 
 			$('#id_programme').val(id_programme);
-			$('#title_new_programme').val($('#title_programme').val());
-			CKEDITOR.replace( 'desc_product' );
+			$('#title_new_programme').val($('#title_programme').val());			
 			$("#progTitle").text($('#title_programme').val());
 			$('#modal_form_product').modal('show'); 
+			CKEDITOR.replace( 'desc_product' );
 			$('.modal-title').text('Nouveau produit');
+		}
+		
+		function edit_product(id_produit)
+		{
+			save_method = 'update';
+			$('#form_product')[0].reset(); 
+			$('.form-group').removeClass('has-error'); 
+			$('.help-block').empty(); 
+		
+		
+			//Ajax Load data from ajax
+			$.ajax({
+				url : "{{ route('admin.ajaxGetProductById') }}",
+				type: "POST",
+				dataType: "JSON",
+				data:{"_token": "{{ csrf_token() }}",'id_produit':id_produit},
+				success: function(data)
+				{
+					console.log(data);
+					$('#title_new_programme').val($('#title_programme').val());
+					$("#progTitle").text($('#title_programme').val());
+					$('[name="title_product"]').val(data.product.title);
+					$('#desc_product').val(data.product.content);
+					CKEDITOR.replace( 'desc_product' );
+					$('[name="product_type_id"]').val(data.product.type_id);
+					$('[name="suburb_product"]').val(data.localisation.area_level_1);
+					$('[name="ville_product"]').val(data.localisation.locality);
+					$('[name="postalCode_product"]').val(data.product.postalCode);
+					$('[name="display_address_product"]').val(data.product.display_address);
+					$('[name="state_id_product"]').val(data.product.state_id);
+					$('[name="countryId_product"]').val(data.localisation.country);
+					$('[name="price"]').val(data.product.min_price);
+					$('[name="price_max_prd"]').val(data.product.max_price);
+					$('[name="status"]').val(data.product.status);
+					$('[name="quantity"]').val(data.product.quantity);
+					$('[name="bedrooms"]').val(data.product.bedrooms);
+					$('[name="ensuite"]').val(data.product.ensuite);
+					$('[name="bathrooms"]').val(data.product.bathrooms);
+					$('[name="interior_area"]').val(data.product.interior_area);
+					$('[name="exterior_area"]').val(data.product.exterior_area);
+					$('[name="total_area"]').val(data.product.total_area);
+					$('[name="garage_spaces"]').val(data.product.garage_spaces);
+					$('[name="carport_spaces"]').val(data.product.carport_spaces);
+					
+					$('#modal_form_product').modal('show'); 
+					$('.modal-title').text('Modification agence'); 
+				},
+				error: function (jqXHR, textStatus, errorThrown)
+				{
+					alert('Error get data from ajax');
+				}
+			});
 		}
 		
 		function save_product()
@@ -646,6 +698,9 @@
 				},
 			});
 			
+			for ( instance in CKEDITOR.instances ) {
+				CKEDITOR.instances[instance].updateElement();
+			}
 			// ajax adding data to database
 			if (form.valid() === true) {
 				var formData = new FormData($('#form_product')[0]);
@@ -653,6 +708,8 @@
 					url : url,
 					type: "POST",
 					data: formData,
+					async: true,
+					cache: false,
 					contentType: false,
 					processData: false,
 					dataType: "JSON",
@@ -683,7 +740,7 @@
 					<h4 class="modal-title"></h4>
 				</div>
 				<div class="modal-body">
-					<form action="#" id="form_product" class="form-horizontal">
+					<form action="#" id="form_product" class="form-horizontal" enctype="multipart/form-data">
 						<input type="hidden" name="title_new_programme" id="title_new_programme" />
 						<input type="hidden" name="prg_anciennete" id="prg_anciennete" value="{{$product->ancienneteBien}}" />
 						<input type="hidden" name="prg_nature" id="prg_nature" value="{{$product->natureBien}}"/>
