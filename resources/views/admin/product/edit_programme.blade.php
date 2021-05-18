@@ -233,7 +233,8 @@
 							</div>
 						</div>
 					</div>	                                                                                                                    
-                    <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-save"></i> Enregistrer la modification</button>
+                    <button type="submit" class="btn btn-primary btn-lg pull-right"><i class="fa fa-save"></i> Enregistrer la modification</button>
+					<div style="clear:both"></div>
                 </form>
             </div>
         </div>
