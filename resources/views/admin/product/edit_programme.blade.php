@@ -683,7 +683,7 @@
 					<h4 class="modal-title"></h4>
 				</div>
 				<div class="modal-body">
-					<form action="#" id="form_product" class="form-horizontal">
+					<form action="#" id="form_product" class="form-horizontal" enctype="multipart/form-data">
 						<input type="hidden" name="title_new_programme" id="title_new_programme" />
 						<input type="hidden" name="prg_anciennete" id="prg_anciennete" value="{{$product->ancienneteBien}}" />
 						<input type="hidden" name="prg_nature" id="prg_nature" value="{{$product->natureBien}}"/>
