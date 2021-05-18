@@ -27,7 +27,9 @@ class Blog extends Model {
         \Request::input('author_id') and $query->where('author_id',\Request::input('author_id'));
         \Request::input('created_at') and $query->where('created_at',\Request::input('created_at'));
         \Request::input('updated_at') and $query->where('updated_at',\Request::input('updated_at'));
-        
+
+
+        $query->orderBy("view_order","asc");
         // sort results
         \Request::input("sort") and $query->orderBy(\Request::input("sort"),\Request::input("sortType","asc"));
 
