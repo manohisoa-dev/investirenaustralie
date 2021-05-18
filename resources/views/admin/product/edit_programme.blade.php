@@ -304,7 +304,7 @@
 								<a href="#" class="btn btn-default btn-circle" title="Modification">
 									<i class="fa fa-pencil-square-o"></i>
 								</a>&nbsp;&nbsp;
-								<a href="#" class="btn btn-default btn-circle" title="Détail">
+								<a href="javascript:void(0)" onclick="delete_product({{$product_lie->id}})" class="btn btn-default btn-circle" title="Supprimer">
 									<i class="fa fa-times text-danger"></i>
 								</a>
 							</td>
@@ -484,6 +484,43 @@
 					}); 
 				} else {
 					swal("Photo icône", "Vous venez d'annuler l'opération", "error");
+				}
+			 });
+		}
+		
+		function delete_product(id_prd)
+		{
+			swal({
+				title: "Produit",
+				text: "Voulez vous supprimer ?",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: '#ff3547',
+				confirmButtonText: 'OUI',
+				cancelButtonText: "NON",
+				closeOnConfirm: false,
+				closeOnCancel: false
+			 },
+			 function(isConfirm){	
+			   if (isConfirm){
+					 $.ajax({
+						url : "{{ route('admin.ajaxDropProduit') }}",
+						type: "POST",
+						dataType: "JSON",
+						data:{"_token": "{{ csrf_token() }}",'id_produit':id_prd},
+						success: function(data)
+						{
+							swal("Produit", "Produit bien supprimé", "success");
+							location.reload();	
+						},
+						error: function (jqXHR, textStatus, errorThrown)
+						{
+							swal("Produit", "Opération impossible", "error");
+							location.reload();	
+						}
+					}); 
+				} else {
+					swal("Produit", "Vous venez d'annuler l'opération", "error");
 				}
 			 });
 		}
