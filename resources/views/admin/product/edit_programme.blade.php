@@ -32,17 +32,18 @@
                 <h5>Mise à jour Programme : {{$product->title}}</h5>
             </div>
             <div class="ibox-content">
-                <form action="{{ route('admin.product.index')}}/{{$product->id}}" method="post">
+                <form action="{{ route('admin.product.index')}}/{{$product->id}}" method="post" enctype="multipart/form-data">
 
                     {{ csrf_field() }}
 
                     {{ method_field("PUT") }}
-					<input type="hidden" name="type" value="{{$type}}" />                                                                  
+					<input type="hidden" name="type" value="{{$type}}" />   
+					<input type="hidden"  name="location_Id" value="{{$product->location_id}}" />                                                              
                     <div class="row">
 						<div class="col-lg-4">
 							<div class="form-group">
 								<label>A quelle catégorie appartient le bien que vous voulez saisir ? *</label>
-								<select class="form-control" name="cat_programmme_id" id="cat_programmme_id">
+								<select class="form-control" name="cat_programmme_id" id="cat_programmme_id" disabled>
 									<option value="">Choisir...</option>
 									@foreach(\App\Models\Category::all() as $category)
 										<option value="{{$category->id}}" {{$category->id == $product->category_id ? 'selected' : ''}}>{{$category->title}}</option>
@@ -53,7 +54,7 @@
 						<div class="col-lg-4">
 							<div class="form-group">
 								<label for="title">Ancienneté du bien *</label>
-								<select class="form-control" name="ancienneteBien" id="ancienneteBien">
+								<select class="form-control" name="ancienneteBien" id="ancienneteBien" disabled>
 									<option value=""></option>
 									<option value="Neuf" {{$product->ancienneteBien == 'Neuf' ? 'selected' : ''}}>Neuf</option>
 									<option value="Ancien" {{$product->ancienneteBien == 'Ancien' ? 'selected' : ''}}>Ancien</option>
@@ -64,9 +65,9 @@
 							<div id="nature_enregistrement">
 								<div class="form-group">
 									<label for="title">Nature de L'Enregistrement *</label>
-									<select class="form-control" name="natureBien" id="natureBien">
-										<option value="Programme immobilier" {{$product->ancienneteBien == 'Programme immobilier' ? 'selected' : ''}}>Programme immobilier</option>
-										<option value="Produit isolé" {{$product->ancienneteBien == 'Produit isolé' ? 'selected' : ''}}>Produit isolé</option>
+									<select class="form-control" name="natureBien" id="natureBien" disabled>
+										<option value="Programme immobilier" {{$product->natureBien == 'Programme immobilier' ? 'selected' : ''}}>Programme immobilier</option>
+										<option value="Produit isolé" {{$product->natureBien == 'Produit isolé' ? 'selected' : ''}}>Produit isolé</option>
 									</select>
 								</div>
 							</div>
@@ -168,12 +169,13 @@
 							</div>
 						</div>
 					</div> 
-					@if ($dossier)
+					
 					<div class="row">
+						@if ($dossier)
 						<div class="col-lg-3">
 							<div class="file-box">
 								<div class="file">
-									<a href="{{$dossier->filepath}}" target="_blank">
+									<a href="{{asset($dossier->filepath)}}" target="_blank">
 										<span class="corner"></span>
 										<div class="icon">
 											<i class="fa fa-file"></i>
@@ -185,6 +187,7 @@
 								</div>
 							</div>
 						</div>
+						@endif  
 						<div class="col-lg-4">
 							<div class="form-group">
 								<label for="title">Modifier fond de dossier</label>
@@ -192,7 +195,7 @@
 							</div>
 						</div>
 					</div>     
-					@endif  
+					
 					@if ($photos)
 					<div class="row">
 						<div class="col-lg-12">
@@ -232,7 +235,8 @@
 							</div>
 						</div>
 					</div>	                                                                                                                    
-                    <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-save"></i> Enregistrer la modification</button>
+                    <button type="submit" class="btn btn-primary btn-lg pull-right"><i class="fa fa-save"></i> Enregistrer la modification</button>
+					<div style="clear:both"></div>
                 </form>
             </div>
         </div>
@@ -264,7 +268,7 @@
 							<th>Statut</th>
 							<th>Vendeur</th>
 							<th>Auteur</th>
-							<th>Actions</th>
+							<th style="text-align:center">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -299,7 +303,14 @@
 								@endif
 							</td>
 							<td>{{ $product_lie->author->name }}</td>
-							<td></td>
+							<td class="actions-cell text-center" width="10%">								
+								<a href="javascript:void(0)" onclick="edit_product({{$product_lie->id}})" class="btn btn-default btn-circle" title="Modification">
+									<i class="fa fa-pencil-square-o"></i>
+								</a>&nbsp;&nbsp;
+								<a href="javascript:void(0)" onclick="delete_product({{$product_lie->id}})" class="btn btn-default btn-circle" title="Supprimer">
+									<i class="fa fa-times text-danger"></i>
+								</a>
+							</td>
 						</tr>
 					@endforeach
 					</tbody>
@@ -396,9 +407,27 @@
 					  
 					  
 				   }
-				});
-			})
-        }) ;
+				})
+			});
+			
+			$("#interior_area").keyup(function(){
+			    var interior = parseInt($("#interior_area").val());
+				var exterior = parseInt($("#exterior_area").val());
+				var total_area = interior + exterior;
+				if($.isNumeric(total_area) === true){
+					$('#total_area').val(total_area);
+				}
+			});
+			
+			$("#exterior_area").keyup(function(){
+				var interior = parseInt($("#interior_area").val());
+				var exterior = parseInt($("#exterior_area").val());
+				var total_area = interior + exterior;
+				if($.isNumeric(total_area) === true){
+					$('#total_area').val(total_area);
+				}
+			});
+        });
 		
 		function set_type_programme(categorie_id,type_id_active)
 		{
@@ -462,6 +491,43 @@
 			 });
 		}
 		
+		function delete_product(id_prd)
+		{
+			swal({
+				title: "Produit",
+				text: "Voulez vous supprimer ?",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: '#ff3547',
+				confirmButtonText: 'OUI',
+				cancelButtonText: "NON",
+				closeOnConfirm: false,
+				closeOnCancel: false
+			 },
+			 function(isConfirm){	
+			   if (isConfirm){
+					 $.ajax({
+						url : "{{ route('admin.ajaxDropProduit') }}",
+						type: "POST",
+						dataType: "JSON",
+						data:{"_token": "{{ csrf_token() }}",'id_produit':id_prd},
+						success: function(data)
+						{
+							swal("Produit", "Produit bien supprimé", "success");
+							location.reload();	
+						},
+						error: function (jqXHR, textStatus, errorThrown)
+						{
+							swal("Produit", "Opération impossible", "error");
+							location.reload();	
+						}
+					}); 
+				} else {
+					swal("Produit", "Vous venez d'annuler l'opération", "error");
+				}
+			 });
+		}
+		
 		function add_product(id_programme)
 		{
 			save_method = 'add';
@@ -469,11 +535,66 @@
 			$('.form-group').removeClass('has-error');
 			$('.help-block').empty(); 
 			$('#id_programme').val(id_programme);
-			$('#title_new_programme').val($('#title_programme').val());
-			CKEDITOR.replace( 'desc_product' );
+			$('#title_new_programme').val($('#title_programme').val());			
 			$("#progTitle").text($('#title_programme').val());
 			$('#modal_form_product').modal('show'); 
+			CKEDITOR.replace( 'desc_product' );
 			$('.modal-title').text('Nouveau produit');
+		}
+		
+		function edit_product(id_produit)
+		{
+			save_method = 'update';
+			$('#form_product')[0].reset(); 
+			$('.form-group').removeClass('has-error'); 
+			$('.help-block').empty(); 
+		
+		
+			//Ajax Load data from ajax
+			$.ajax({
+				url : "{{ route('admin.ajaxGetProductById') }}",
+				type: "POST",
+				dataType: "JSON",
+				data:{"_token": "{{ csrf_token() }}",'id_produit':id_produit},
+				success: function(data)
+				{
+					console.log(data);
+					$('#title_new_programme').val($('#title_programme').val());
+					$("#progTitle").text($('#title_programme').val());
+					$('[name="title_product"]').val(data.product.title);
+					$('#desc_product').val(data.product.content);
+					CKEDITOR.replace( 'desc_product' );
+					$('[name="product_type_id"]').val(data.product.type_id);
+					$('[name="suburb_product"]').val(data.localisation.area_level_1);
+					$('[name="ville_product"]').val(data.localisation.locality);
+					$('[name="postalCode_product"]').val(data.product.postalCode);
+					$('[name="display_address_product"]').val(data.product.display_address);
+					$('[name="state_id_product"]').val(data.product.state_id);
+					$('[name="countryId_product"]').val(data.localisation.country);
+					$('[name="price"]').val(data.product.min_price);
+					$('[name="price_max_prd"]').val(data.product.max_price);
+					$('[name="status"]').val(data.product.status);
+					$('[name="quantity"]').val(data.product.quantity);
+					$('[name="bedrooms"]').val(data.product.bedrooms);
+					$('[name="ensuite"]').val(data.product.ensuite);
+					$('[name="bathrooms"]').val(data.product.bathrooms);
+					$('[name="interior_area"]').val(data.product.interior_area);
+					$('[name="exterior_area"]').val(data.product.exterior_area);
+					$('[name="total_area"]').val(data.product.total_area);
+					$('[name="garage_spaces"]').val(data.product.garage_spaces);
+					$('[name="carport_spaces"]').val(data.product.carport_spaces);
+					$('[name="id_programme"]').val(data.product.parent_id);
+					$('[name="id_product"]').val(data.product.id);
+					$('[name="id_location_product"]').val(data.product.location_id);
+					
+					$('#modal_form_product').modal('show'); 
+					$('.modal-title').text('Modification agence'); 
+				},
+				error: function (jqXHR, textStatus, errorThrown)
+				{
+					alert('Error get data from ajax');
+				}
+			});
 		}
 		
 		function save_product()
@@ -506,12 +627,72 @@
 								}
 							}
 						}
+					},
+					product_type_id: {
+						required: true
+					},
+					postalCode_product: {
+						required: true
+					},
+					display_address_product: {
+						required: true
+					},
+					state_id_product: {
+						required: true
+					},
+					price: {
+						required: true
+					},
+					price_max_prd: {
+						required: true
+					},
+					interior_area: {
+						required: true
+					},
+					exterior_area: {
+						required: true
+					},
+					total_area: {
+						required: true
+					},
+					year_built: {
+						required: true
 					}
 				},
 				messages: {
 					title_product: {
 						required: "Champ obligatoire",
 						remote: jQuery.validator.format("{0} existe déjà")
+					},
+					product_type_id: {
+						required: "Champ obligatoire"
+					},
+					postalCode_product: {
+						required: "Champ obligatoire"
+					},
+					display_address_product:{
+						required: "Champ obligatoire"
+					},
+					state_id_product:{
+						required: "Champ obligatoire"
+					},
+					price:{
+						required: "Champ obligatoire"
+					},
+					price_max_prd:{
+						required: "Champ obligatoire"
+					},
+					interior_area:{
+						required: "Champ obligatoire"
+					},
+					exterior_area:{
+						required: "Champ obligatoire"
+					},
+					total_area:{
+						required: "Champ obligatoire"
+					},
+					year_built:{
+						required: "Champ obligatoire"
 					}
 				},
 				errorPlacement: function ( error, element ) {
@@ -523,6 +704,9 @@
 				},
 			});
 			
+			for ( instance in CKEDITOR.instances ) {
+				CKEDITOR.instances[instance].updateElement();
+			}
 			// ajax adding data to database
 			if (form.valid() === true) {
 				var formData = new FormData($('#form_product')[0]);
@@ -530,12 +714,15 @@
 					url : url,
 					type: "POST",
 					data: formData,
+					async: true,
+					cache: false,
 					contentType: false,
 					processData: false,
 					dataType: "JSON",
 					success: function(data)
 					{
-						//location.reload();
+						console.log(data);
+						location.reload();
 					},
 					error: function (jqXHR, textStatus, errorThrown)
 					{
@@ -559,8 +746,14 @@
 					<h4 class="modal-title"></h4>
 				</div>
 				<div class="modal-body">
-					<form action="#" id="form_product" class="form-horizontal">
+					<form action="#" id="form_product" class="form-horizontal" enctype="multipart/form-data">
 						<input type="hidden" name="title_new_programme" id="title_new_programme" />
+						<input type="hidden" name="prg_anciennete" id="prg_anciennete" value="{{$product->ancienneteBien}}" />
+						<input type="hidden" name="prg_nature" id="prg_nature" value="{{$product->natureBien}}"/>
+						<input type="hidden" name="prg_cat_id" id="prg_cat_id" value="{{$product->category_id}}"/>
+						<input type="hidden" name="id_programme" id="id_programme"/>
+						<input type="hidden" name="id_product" id="id_product" />
+						<input type="hidden" name="id_location_product" id="id_location_product" />
 						{{ csrf_field() }}
 						<div class="row">
 							<div class="col-lg-12">

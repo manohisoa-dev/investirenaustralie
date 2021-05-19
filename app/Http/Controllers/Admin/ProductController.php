@@ -315,7 +315,7 @@ class ProductController extends Controller {
 
             return $this->view("edit_programme", ['product' => $product, 'type' =>
                 'programme', 'localisation' => $localisation, 'dossier' => $fonDossier, 'photos' =>
-                $photo,'product_lies'=>$produit_lie]);
+                $photo, 'product_lies' => $produit_lie]);
         } else {
             //modification proudiut
             return $this->view("edit", ['product' => $product, 'type' => 'programme']);
@@ -330,17 +330,24 @@ class ProductController extends Controller {
      */
     public function update(Request $request, Product $product) {
         if ($request->type == 'programme') {
-            if ($request->file('image_programme')) {
-                $file_pro = $request->file('image_programme');
-                $image_pro = Image::storeAndSave($file_pro, 'product');
-                $product->image_id = $image_pro->id;
+            //modification localisation
+            Localisation::where('id', $request->location_Id)->update(['area_level_1' => $request->suburb,
+                'country' => $request->countryId, 'postalCode' => $request->postalCode,
+                'locality' => $request->ville]);
+
+            if ($request->file('fond_dossier')) {
+                $fond_dossier = $request->file('fond_dossier');
+                $image_pro = Image::storeAndSave($fond_dossier, 'product');
+                $product->image_fond_dossier_id = $image_pro->id;
             }
-            $slug = generateSlug($request->title);
-            $product->title = $request->title;
+            $slug = generateSlug($request->title_programme);
+            $product->title = $request->title_programme;
             $product->slug = $slug;
-            $product->category_id = $request->category_id;
+            $product->content = $request->description;
             $product->min_price = $request->prix_min;
             $product->max_price = $request->prix_max;
+            $product->display_address = $request->display_address;
+            $product->type_id = $request->type_id;
             $product->save(); # notification
             Notify::success('Programme a été mise à jour avec succès');
             return redirect(route('admin.product.programme'));
@@ -524,6 +531,11 @@ class ProductController extends Controller {
         return response()->json(['success' => 'true']);
     }
 
+    public function ajaxDropProduit(Request $request) {
+        Product::where('id', $request->id_produit)->delete();
+        return response()->json(['success' => 'true']);
+    }
+
     public function ajaxChangeIconPhotoActive(Request $request) {
         ProductsImage::where('product_id', $request->id_prd)->update(['is_principal' =>
             0]);
@@ -549,15 +561,65 @@ class ProductController extends Controller {
         $image_programme->author_id = Auth::user()->id;
         $image_programme->save();
     }
-    
-    public function ajaxSaveProduct(Request $request)
-    {
-        dd($request->All());
+
+    public function ajaxSaveProduct(Request $request) {
+        $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
+            $request->postalCode_product, '', '', $request->ville_product);
+        $titre_product = $request->title_new_programme . '-' . $request->title_product;
+
+        if (isset($request->chk_parking)) {
+            $avoir_parking = 1;
+        } else {
+            $avoir_parking = 0;
+        }
+
+        $this->save_new_produit($request->prg_anciennete, $request->prg_nature, $titre_product,
+            $request->file('image'), $request->desc_product, 1, 0, $request->interior_area,
+            $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
+            $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
+            $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
+            $request->prg_cat_id, $request->postalCode_product, $request->state_id_product,
+            $request->id_programme, $id_location, 0, $avoir_parking, 0);
+        return response()->json(['success' => 'true']);
     }
-    
-    public function ajaxModifProduct(Request $request)
-    {
+
+    public function ajaxGetProductById(Request $request) {
+        $product = Product::find($request->id_produit);
+        $localisation = Localisation::find($product->location_id);
+        return response()->json(['product' => $product, 'localisation' => $localisation]);
+    }
+
+    public function ajaxModifProduct(Request $request) {
+        //modification localisation
+        Localisation::where('id', $request->id_location_product)->update(['area_level_1' =>
+            $request->suburb_product, 'country' => $request->countryId_product, 'postalCode' =>
+            $request->postalCode_product, 'locality' => $request->ville_product]);
+
+        $titre_product = $request->title_new_programme . '-' . $request->title_product;
+        if (isset($request->chk_parking)) {
+            $avoir_parking = 1;
+        } else {
+            $avoir_parking = 0;
+        }
+
+        Product::where('id', $request->id_product)->update(['title' => $titre_product,
+            'content' => $request->desc_product, 'type_id' => $request->product_type_id,
+            'postalCode' => $request->postalCode_product, 'display_address' => $request->display_address_product,
+            'state_id' => $request->state_id_product, 'min_price' => $request->price,
+            'max_price' => $request->price_max_prd, 'status' => $request->status, 'quantity' =>
+            $request->quantity, 'bedrooms' => $request->bedrooms, 'ensuite' => $request->ensuite,
+            'bathrooms' => $request->bathrooms, 'interior_area' => $request->interior_area,
+            'exterior_area' => $request->exterior_area, 'total_area' => $request->total_area,
+            'garage_spaces' => $request->garage_spaces, 'carport_spaces' => $request->carport_spaces]);
         
+
+        if ($request->file('image')) {
+            $photo = $request->file('image');
+            $image_prod = Image::storeAndSave($photo, 'product');
+            Product::where('id', $request->id_product)->update(['image_id' => $image_prod->id]);
+        }
+        
+        return response()->json(['success' => 'true']);
     }
 
 }
