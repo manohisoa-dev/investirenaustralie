@@ -10,6 +10,8 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <title>{{app_name()}} {{isset($title)?' - '.$title:''}}</title>
+<!-- Le fav and touch icons -->
+<link rel="shortcut icon" href="{{asset('images/favicon.png')}}">
 <meta name="description" content="{{option('site.meta_desc', 'IEA')}}">
 <meta name="keywords" content="{{option('site.meta_keywords', 'IEA, Investir')}}">
     
