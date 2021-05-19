@@ -125,8 +125,8 @@
                     <div class="row align-items-center p-10px-tb">
                         <div class="col-md-5 ht-info">
                             <ul class="nav justify-content-md-start justify-content-center links-white">
-                                <li class="small"><a href="#"><i class="fas fa-mobile-alt"></i> @lang('app.contact_us_phone', ['phone'=>option('site.admin_phone', '+61 33 333 33')])</a></li>
-                                <li class="small m-10px-l"><a href="mailto:info@admin.com"><i class="fas fa-envelope"></i> info@admin.com</a></li>
+                                <li class="small"><a href="#"><i class="fas fa-mobile-alt"></i> @lang('app.contact_us_phone', ['phone'=>option('site.admin_phone', App\Models\Config::site()->get_meta('admin_phone')?App\Models\Config::site()->get_meta('admin_phone'):'-')])</a></li>
+                                <li class="small m-10px-l"><a href="mailto:info@admin.com"><i class="fas fa-envelope"></i> {{ App\Models\Config::site()->get_meta('admin_email')?App\Models\Config::site()->get_meta('admin_email')->value:'-' }}</a></li>
                             </ul>
                         </div>
                         <div class="col-md-7 d-none d-md-block">
@@ -313,9 +313,9 @@
                             {{ Illuminate\Support\Str::upper(trans('app.txt.information')) }}
                         </h6>
                         <address>
-                            <p class="white-color-light m-5px-b">301 The Greenhouse London,<br> E2 8DY UK</p>
-                            <p class="m-5px-b"><a class="theme2nd-color border-color-theme4nd" href="mailto:support@domain.com">info@admin.com</a></p>
-                            <p class="m-5px-b"><a class="theme2nd-color border-color-theme4nd" href="tel:820-885-3321">+61 33 333 33</a></p>
+                            <p class="white-color-light m-5px-b">{!! App\Models\Config::site()->get_meta('admin_address')?App\Models\Config::site()->get_meta('admin_address')->value:'-' !!}</p>
+                            <p class="m-5px-b"><a class="theme2nd-color border-color-theme4nd" href="mailto:{{ App\Models\Config::site()->get_meta('admin_email')?App\Models\Config::site()->get_meta('admin_email')->value:'#' }}">{{ App\Models\Config::site()->get_meta('admin_email')?App\Models\Config::site()->get_meta('admin_email')->value:'-' }}</a></p>
+                            <p class="m-5px-b"><a class="theme2nd-color border-color-theme4nd" href="tel:{{ App\Models\Config::site()->get_meta('admin_phone')?App\Models\Config::site()->get_meta('admin_phone')->value:'#' }}">{{ App\Models\Config::site()->get_meta('admin_phone')?App\Models\Config::site()->get_meta('admin_phone')->value:'-' }}</a></p>
                         </address>
                         <div class="social-icon si-30 theme2nd nav">
                             @foreach(\App\Models\Config::socialRules() as $key => $value)
