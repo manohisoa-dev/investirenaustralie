@@ -35,6 +35,8 @@
 	<link href="{{ asset('administrator/css/plugins/steps/jquery.steps.css') }}" rel="stylesheet">
 	<!-- Sweet Alert -->
     <link href="{{ asset('administrator/css/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet">
+	<!--fancybox-->
+	<link rel="stylesheet" href="{{ asset('plugin/fancybox/jquery.fancybox.css') }}" type="text/css" media="screen" />
 
     @yield('custom-css')
 
