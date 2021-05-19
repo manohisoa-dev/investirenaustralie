@@ -169,8 +169,9 @@
 							</div>
 						</div>
 					</div> 
-					@if ($dossier)
+					
 					<div class="row">
+						@if ($dossier)
 						<div class="col-lg-3">
 							<div class="file-box">
 								<div class="file">
@@ -186,6 +187,7 @@
 								</div>
 							</div>
 						</div>
+						@endif  
 						<div class="col-lg-4">
 							<div class="form-group">
 								<label for="title">Modifier fond de dossier</label>
@@ -193,7 +195,7 @@
 							</div>
 						</div>
 					</div>     
-					@endif  
+					
 					@if ($photos)
 					<div class="row">
 						<div class="col-lg-12">
