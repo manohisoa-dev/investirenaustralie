@@ -581,6 +581,9 @@
 					$('[name="total_area"]').val(data.product.total_area);
 					$('[name="garage_spaces"]').val(data.product.garage_spaces);
 					$('[name="carport_spaces"]').val(data.product.carport_spaces);
+					$('[name="id_programme"]').val(data.product.parent_id);
+					$('[name="id_product"]').val(data.product.id);
+					$('[name="id_location_product"]').val(data.product.location_id);
 					
 					$('#modal_form_product').modal('show'); 
 					$('.modal-title').text('Modification agence'); 
@@ -747,6 +750,8 @@
 						<input type="hidden" name="prg_nature" id="prg_nature" value="{{$product->natureBien}}"/>
 						<input type="hidden" name="prg_cat_id" id="prg_cat_id" value="{{$product->category_id}}"/>
 						<input type="hidden" name="id_programme" id="id_programme"/>
+						<input type="hidden" name="id_product" id="id_product" />
+						<input type="hidden" name="id_location_product" id="id_location_product" />
 						{{ csrf_field() }}
 						<div class="row">
 							<div class="col-lg-12">

@@ -590,7 +590,36 @@ class ProductController extends Controller {
     }
 
     public function ajaxModifProduct(Request $request) {
-        dd($request->All());
+        //modification localisation
+        Localisation::where('id', $request->id_location_product)->update(['area_level_1' =>
+            $request->suburb_product, 'country' => $request->countryId_product, 'postalCode' =>
+            $request->postalCode_product, 'locality' => $request->ville_product]);
+
+        $titre_product = $request->title_new_programme . '-' . $request->title_product;
+        if (isset($request->chk_parking)) {
+            $avoir_parking = 1;
+        } else {
+            $avoir_parking = 0;
+        }
+
+        Product::where('id', $request->id_product)->update(['title' => $titre_product,
+            'content' => $request->desc_product, 'type_id' => $request->product_type_id,
+            'postalCode' => $request->postalCode_product, 'display_address' => $request->display_address_product,
+            'state_id' => $request->state_id_product, 'min_price' => $request->price,
+            'max_price' => $request->price_max_prd, 'status' => $request->status, 'quantity' =>
+            $request->quantity, 'bedrooms' => $request->bedrooms, 'ensuite' => $request->ensuite,
+            'bathrooms' => $request->bathrooms, 'interior_area' => $request->interior_area,
+            'exterior_area' => $request->exterior_area, 'total_area' => $request->total_area,
+            'garage_spaces' => $request->garage_spaces, 'carport_spaces' => $request->carport_spaces]);
+        
+
+        if ($request->file('image')) {
+            $photo = $request->file('image');
+            $image_prod = Image::storeAndSave($photo, 'product');
+            Product::where('id', $request->id_product)->update(['image_id' => $image_prod->id]);
+        }
+        
+        return response()->json(['success' => 'true']);
     }
 
 }
