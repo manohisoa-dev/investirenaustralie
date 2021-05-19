@@ -5,14 +5,17 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Parameter;
+use View;
+use Redirect;
+use Jleon\LaravelPnotify\Notify;
 
 class ParameterController extends Controller
 {
     public function show(){
 
-        $data = Parameter::all();
+        $params = Parameter::all();
 
-        return view('admin.config.parameter')->with('params',$data);
+        return view('admin.config.parameter', compact(['params']));
     }
 
     public function update(Request $request){   
@@ -24,6 +27,8 @@ class ParameterController extends Controller
             Parameter::where('id','=',$request->param_.$value->id )->update(['value'=>$request->$name]);
         }
 
-        return view('admin.config.parameter')->with('params',$params);
+        # notification
+        Notify::success('Paramètre a été mise à jour avec succès');
+        return Redirect::back();
     }
 }

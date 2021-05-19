@@ -71,17 +71,14 @@
                 <div class="border-all-10 border-color-white p-40px-tb p-20px-lr theme-bg box-shadow h-100">
                     <h5 class="font-1 white-color m-10px-b">@lang('app.form.login.address')</h5>
                     <p class="white-color-light m-30px-b">
-                        @if(empty($address))
-                            @lang('app.txt.noinfo')
-                        @else
-                            {!!$address!!}
-                        @endif
+                        {!! App\Models\Config::site()->get_meta('admin_address') ? App\Models\Config::site()->get_meta('admin_address')->value: trans('app.txt.noinfo') !!}
                     </p>
                     <h5 class="font-1 white-color m-10px-b">@lang('app.form.login.contact')</h5>
-                    @if(empty($contact))
-                        <p class="m-0px links-white"><a href="tel:820-885-3321">820-885-3321</a></p>
-                        <p class="m-5px-b links-white"><a href="mailto:support@domain.com">support@domain.com</a></p>
-                    @else
+                    {{-- @if(empty($contact)) --}}
+                        <p class="m-0px links-white">@lang('app.txt.phone') : <a href="tel:{{ App\Models\Config::site()->get_meta('admin_phone')?App\Models\Config::site()->get_meta('admin_phone')->value:'#' }}">{{ App\Models\Config::site()->get_meta('admin_phone')?App\Models\Config::site()->get_meta('admin_phone')->value:'-' }}</a></p>
+                        <p class="m-5px-b links-white">@lang('app.mail') : <a href="mailto:{{ App\Models\Config::site()->get_meta('admin_email')?App\Models\Config::site()->get_meta('admin_email')->value:'#' }}">{{ App\Models\Config::site()->get_meta('admin_email')?App\Models\Config::site()->get_meta('admin_email')->value:'-' }}</a></p>
+                        <p class="m-5px-b links-white">Fax : <a href="fax:{{ App\Models\Config::site()->get_meta('admin_fax')?App\Models\Config::site()->get_meta('admin_fax')->value:'#' }}">{{ App\Models\Config::site()->get_meta('admin_fax')?App\Models\Config::site()->get_meta('admin_fax')->value:'-' }}</a></p>
+                    {{-- @else
                         @php
                             $str_replace = str_replace('</ul>','',str_replace('<ul>','',str_replace('<li>', '', $contact)));
                             $str_replace2 = str_replace('</li>','/',$str_replace);
@@ -91,7 +88,7 @@
                         @foreach($adr as $ad)
                             <p class="m-0px links-white"><a href="#">{{ $ad }}</a></p>
                         @endforeach
-                    @endif
+                    @endif --}}
                     <h5 class="font-1 white-color m-10px-b m-30px-t">@lang('app.txt.followus')</h5>
                     <div class="social-icon si-30 white radius nav">
                         @php $socialConfig = \App\Models\Config::social(); @endphp

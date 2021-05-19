@@ -44,6 +44,8 @@ class Config extends BaseModel
             'admin_email' => 'required|max:100',
             'admin_phone' => 'required|max:100',
             'admin_name' => 'required|max:100',
+            'admin_fax' => 'required|max:100',
+            'admin_address' => 'required|max:100',
             
             'meta_title'    => 'required|max:100',
             'meta_desc'     => 'required|max:500',
