@@ -824,11 +824,16 @@
 					dataType: "JSON",
 					success: function(data)
 					{
-						console.log(data);
-						location.reload();
+						if(data.success == 'false'){
+							$('#info_error').show();
+						}else{
+							location.reload();
+						}
 					},
 					error: function (jqXHR, textStatus, errorThrown)
 					{
+					    console.log(errorThrown);
+						
 						$('#btnSave').text('Enregistrer'); //change button text
 						$('#btnSave').attr('disabled',false); //set button enable 
 			
@@ -1097,6 +1102,11 @@
 									</label>
 								</div>
 							</div>
+						</div>
+						<div class="alert alert-danger alert-dismissable" id="info_error" style="display:none">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							<h4><i class="icon fa fa-ban"></i> Eurreur !</h4>
+							L'enregistrement est impossible car il a un ou plusieurs champs null.
 						</div>
 					</form>
 				</div>

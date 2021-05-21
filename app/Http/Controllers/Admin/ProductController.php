@@ -354,9 +354,9 @@ class ProductController extends Controller {
             Notify::success('Programme a été mise à jour avec succès');
             return redirect(route('admin.product.programme'));
         } else {
-            Localisation::where('id', $request->location_id)->update(['area_level_1' =>
-                $request->suburb_product, 'country' => $request->countryId_product, 'postalCode' =>
-                $request->postalCode_product, 'locality' => $request->ville_product]);
+            Localisation::where('id', $request->location_id)->update(['area_level_1' => $request->suburb_product,
+                'country' => $request->countryId_product, 'postalCode' => $request->postalCode_product,
+                'locality' => $request->ville_product]);
 
             $slug = $slugOriginal = generateSlug($request->title);
             $product->slug = $slug;
@@ -373,20 +373,20 @@ class ProductController extends Controller {
             $product->min_price = $request->min_price;
             $product->max_price = $request->max_price;
             $product->status = $request->status;
-            $product->quantity = $request->quantity;            
+            $product->quantity = $request->quantity;
             $product->bedrooms = $request->bedrooms;
             $product->ensuite = $request->ensuite;
             $product->bathrooms = $request->bathrooms;
             $product->interior_area = $request->interior_area;
             $product->exterior_area = $request->exterior_area;
-            if($product->ancienneteBien == 'Ancien'){
+            if ($product->ancienneteBien == 'Ancien') {
                 $product->year_built = $request->year_built;
             }
             $product->total_area = $request->total_area;
-            
+
             $product->garage_spaces = $request->garage_spaces;
             $product->carport_spaces = $request->carport_spaces;
-            
+
             $product->save();
             # notification
             Notify::success('Produit a été mise à jour avec succès');
@@ -597,14 +597,19 @@ class ProductController extends Controller {
             $avoir_parking = 0;
         }
 
-        $this->save_new_produit($request->prg_anciennete, $request->prg_nature, $titre_product,
-            $request->file('image'), $request->desc_product, 1, 0, $request->interior_area,
-            $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
-            $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
-            $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
-            $request->prg_cat_id, $request->postalCode_product, $request->state_id_product,
-            $request->id_programme, $id_location, 0, $avoir_parking, 0);
-        return response()->json(['success' => 'true']);
+        if ($request->prg_anciennete && $request->prg_nature) {
+            $this->save_new_produit($request->prg_anciennete, $request->prg_nature, $titre_product,
+                $request->file('image'), $request->desc_product, 1, 0, $request->interior_area,
+                $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
+                $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
+                $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
+                $request->prg_cat_id, $request->postalCode_product, $request->state_id_product,
+                $request->id_programme, $id_location, 0, $avoir_parking, 0);
+
+            return response()->json(['success' => 'true']);
+        }else{
+            return response()->json(['success' => 'false']);
+        }
     }
 
     public function ajaxGetProductById(Request $request) {

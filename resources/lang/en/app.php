@@ -614,4 +614,6 @@ return
 	'txt.list_bien_commercial' => 'List of Commercial Goods',
 	'admin.article_display_order' => 'Article display order',
 	'txt.parameter' => 'Setting',
+    'txt.add_new_programme' => 'Add a new program',
+    'txt.liste' => 'List',
 ];
