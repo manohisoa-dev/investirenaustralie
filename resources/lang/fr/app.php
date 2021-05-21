@@ -883,4 +883,5 @@ return
 	'txt.list_bien_commercial' => 'Liste des Biens Commerciaux',
 	'admin.article_display_order' => 'Ordre d&lsquo;affichage de l&lsquo;article',
 	'txt.parameter' => 'Paramètre',
+	'txt.recent_searches' => 'Recherches Récentes',
 ];

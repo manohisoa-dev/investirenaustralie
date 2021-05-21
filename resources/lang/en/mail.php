@@ -29,7 +29,7 @@ return [
     'btn.invoice' => 'Download the invoice',
     'btn.view.user' => 'See :role',
     
-    'default_password' => 'Your default password is "<b>:password</b>"',
+    'default_password' => 'Your default password is &ldquo;<b>:password</b>&rdquo;',
     'quantity' => 'Amount :value',
     'amount' => 'Value :value',
     'tma' => 'TMA :value',
@@ -67,5 +67,8 @@ return [
     'btn.reset.password' => 'Click here to reset your password',
 
     'document.sent' => 'Please download the documents below.',
+    
+    'suspended.user.logged' => 'A suspended user has just logged in',
+    'suspended.user' => 'Username: <b>&ldquo; :user &rdquo;</b>',
 
 ];

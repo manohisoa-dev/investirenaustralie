@@ -495,9 +495,27 @@ class SearchController extends Controller
         // }
             
         $items = $items->paginate(20);
+
+
+        // Set url in request array
+        $currentUrl = url('/').$_SERVER['REQUEST_URI'];
+        $request['url']=$currentUrl;
+
+        // Set search keyword in session
+        $dataSerialize = serialize($request->all());
+        $sessionsSearch = session()->get('search_session');
+
+        if(session()->exists('search_session')){
+            if(!in_array($dataSerialize,$sessionsSearch)){
+                session()->push('search_session', serialize($request->all()));
+            }
+        }else{
+            session()->push('search_session', serialize($request->all()));
+        }
+
         
-        $search->content = serialize($request->all());
-        $search->save();
+        // $search->content = serialize($request->all());
+        // $search->save();
 
         $typesRes = Type::orderBy('title', 'asc')
             ->where('object_type', 'type')
@@ -669,5 +687,23 @@ class SearchController extends Controller
         ->with('categories', $categories)
         ->with('items', $items);
             
+    }
+
+    public function removeSearch(Request $request){
+        $idSession = $request->id;
+        $searchSession = session()->get('search_session');
+
+        // delete item in session
+        unset($searchSession[$idSession]);
+
+        // update session
+        session()->put('search_session',$searchSession);
+
+        // delete session if array is empty
+        if(sizeOf($searchSession) == 0){
+            session()->forget('search_session');
+        }
+
+        return response()->json(['res'=>$searchSession]);
     }
 }
