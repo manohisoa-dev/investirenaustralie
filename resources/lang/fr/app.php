@@ -886,4 +886,7 @@ return
 	'admin.article_display_order' => 'Ordre d&lsquo;affichage de l&lsquo;article',
 	'txt.parameter' => 'Paramètre',
 	'txt.recent_searches' => 'Recherches Récentes',
+	'txt.saved_search' => 'Recherche enregistrée',
+	'txt.login_to_saved_search' => 'Vous devez vous connecter pour sauvegarder cette recherche',
+	'txt.error_save' => 'Erreur de sauvegarde',
 ];

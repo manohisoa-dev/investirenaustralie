@@ -10,6 +10,7 @@ use App\Models\Localisation;
 use App\Models\State;
 use App\Models\Type;
 use App\Models\Page;
+use Auth;
 class SearchController extends Controller
 {
     /**
@@ -500,6 +501,7 @@ class SearchController extends Controller
         // Set url in request array
         $currentUrl = url('/').$_SERVER['REQUEST_URI'];
         $request['url']=$currentUrl;
+        $request['query']=serialize($request->all());
 
         // Set search keyword in session
         $dataSerialize = serialize($request->all());
@@ -705,5 +707,27 @@ class SearchController extends Controller
         }
 
         return response()->json(['res'=>$searchSession]);
+    }
+
+    public function saveSearch(Request $request){
+        $status=0;
+
+        if(Auth::user() && Auth::user()->role=='5'){
+            if($request->dt !== ""){
+                $search = new Search();
+                $search->content = $request->dt;
+                $search->author_id = Auth::user()->id;
+                $search->save();
+
+                $msg = trans('app.txt.saved_search');
+            }else{
+                $msg = trans('app.txt.error_save');
+            }
+        }else{
+            $msg = trans('app.txt.login_to_saved_search');
+            $status = 1;
+        }
+
+        return response()->json(['msg'=>$msg, 'status'=>$status]);
     }
 }

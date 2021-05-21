@@ -614,10 +614,10 @@ return
 	'txt.list_bien_commercial' => 'List of Commercial Goods',
 	'admin.article_display_order' => 'Article display order',
 	'txt.parameter' => 'Setting',
-<<<<<<< HEAD
 	'txt.recent_searches' => 'Recent Searches',
-=======
     'txt.add_new_programme' => 'Add a new program',
     'txt.liste' => 'List',
->>>>>>> 94311786c657cf259e2afe7373b3fb05d01b8761
+	'txt.saved_search' => 'Saved search',
+	'txt.login_to_saved_search' => 'You must log in to save this search',
+	'txt.error_save' => 'Error save',
 ];

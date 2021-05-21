@@ -45,7 +45,7 @@
                                         <button type="button" class="close white-color float-right btn-search-close" aria-label="Close" value="search-{{ $key }}">
                                             <span aria-hidden="true" class="small p-5px">&times;</span>
                                         </button>
-                                        <button type="button" class="close white-color float-right" aria-label="Close">
+                                        <button type="button" class="close white-color float-right btn-search-save" aria-label="Close" value="{{ $data['query']?$data['query']:'' }}">
                                             <span aria-hidden="true" class="small"><i class="fa fa-save"></i></span>
                                         </button>
                                         <a href="{{ $data['url'] }}">
@@ -1016,7 +1016,34 @@
             }
         });
 
-    })
+    });
+
+    $('.btn-search-save').click(function(){
+        var datas = {
+            'dt' : $(this).val(),
+        };
+        
+        $.ajax({
+            url:'{{ route("save.search") }}',
+            method: 'GET',
+            data : datas,
+            dataType : 'json',
+            success: function(data){
+                var msg = data.msg;
+                var status = data.status;
+
+                console.log(msg);
+
+                if(status == 1){
+                    location.href = "{{ route('login') }}";
+                }
+            },
+            error: function(e){
+                console.log(e);
+            }
+        });
+
+    });
     
     </script>
 @endpush
