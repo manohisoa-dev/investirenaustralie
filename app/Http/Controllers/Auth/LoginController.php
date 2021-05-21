@@ -117,13 +117,6 @@ class LoginController extends Controller
         }
 
         /*
-        * Method 1: Default Login
-        if ($this->attemptLogin($request)) {
-            return $this->sendLoginResponse($request);
-        }
-        */
-        
-        /*
         * Method 2: Login Active user only
         */
         if ($this->guard()->validate($this->credentials($request))) {

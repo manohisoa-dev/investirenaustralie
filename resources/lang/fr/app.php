@@ -836,6 +836,8 @@ return
 	'txt.marker.cannot_determine_address' => 'Impossible de déterminer l&lsquo;adresse à cet emplacement.',
 	'txt.choose_position_exacte' => 'Veuillez choisir une position exacte.',
 	'txt.list_programme' => 'Liste des Programmes',
+    'txt.add_new_programme' => 'Ajouter un nouveau programme',
+    'txt.liste' => 'Liste',
 	'txt.loc_geo' => 'Géographique',
 	'txt.repr_mat' => 'Matérielle',
 	'txt.new' => 'Nouveau',

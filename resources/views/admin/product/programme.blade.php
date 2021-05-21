@@ -1,20 +1,20 @@
 @extends('admin.layouts.app') @section('title', 'Products - Listes ') @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Produits</h2>
+        <h2>@lang('app.txt.all_programmes')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.product.index') }}">Programme</a>
+                <a href="{{ route('admin.product.index') }}">@lang('app.txt.programme') </a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Listes</strong>
+                <strong>@lang('app.txt.liste') </strong>
             </li>
         </ol>
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
             <a href="{{ route('admin.product.create') }}?type=programme" type="button" class="btn btn-primary btn-block">
-				<i class="fa fa-plus"></i> Ajouter un nouveau programme 
+				<i class="fa fa-plus"></i> @lang('app.txt.add_new_programme') 
 			</a>
         </div>
     </div>
@@ -25,7 +25,7 @@
 	<div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Programmes</h5>
+                <h5>@lang('app.txt.list_programme')</h5>
             </div>
             <div class="ibox-content">
                 <table class="table table-striped grid-view-tbl">

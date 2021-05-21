@@ -304,9 +304,9 @@ class ProductController extends Controller {
      * @return  \Illuminate\Http\Response
      */
     public function edit(Request $request, Product $product) {
+        $localisation = Localisation::find($product->location_id);
         if ($product->parent_id == 0) {
             //modification programme
-            $localisation = Localisation::find($product->location_id);
             $fonDossier = Image::find($product->image_fond_dossier_id);
             $produit_lie = Product::where('parent_id', $product->id)->get();
             $photo = ProductsImage::where('products_images.product_id', '=', $product->id)->join('images',
@@ -318,7 +318,8 @@ class ProductController extends Controller {
                 $photo, 'product_lies' => $produit_lie]);
         } else {
             //modification proudiut
-            return $this->view("edit", ['product' => $product, 'type' => 'programme']);
+            return $this->view("edit", ['product' => $product, 'type' => 'produit',
+                'localisation' => $localisation]);
         }
     }
 
@@ -348,26 +349,49 @@ class ProductController extends Controller {
             $product->max_price = $request->prix_max;
             $product->display_address = $request->display_address;
             $product->type_id = $request->type_id;
-            $product->save(); # notification
+            $product->save();
+            # notification
             Notify::success('Programme a été mise à jour avec succès');
             return redirect(route('admin.product.programme'));
+        } else {
+            Localisation::where('id', $request->location_id)->update(['area_level_1' => $request->suburb_product,
+                'country' => $request->countryId_product, 'postalCode' => $request->postalCode_product,
+                'locality' => $request->ville_product]);
+
+            $slug = $slugOriginal = generateSlug($request->title);
+            $product->slug = $slug;
+            $product->title = $request->title;
+            if ($request->file('image')) {
+                $file = $request->file('image');
+                $image = Image::storeAndSave($file, 'product');
+                $product->image_id = $image->id;
+            }
+            $product->content = $request->content;
+            $product->type_id = $request->type_id;
+            $product->display_address = $request->display_address;
+            $product->state_id = $request->state_id;
+            $product->min_price = $request->min_price;
+            $product->max_price = $request->max_price;
+            $product->status = $request->status;
+            $product->quantity = $request->quantity;
+            $product->bedrooms = $request->bedrooms;
+            $product->ensuite = $request->ensuite;
+            $product->bathrooms = $request->bathrooms;
+            $product->interior_area = $request->interior_area;
+            $product->exterior_area = $request->exterior_area;
+            if ($product->ancienneteBien == 'Ancien') {
+                $product->year_built = $request->year_built;
+            }
+            $product->total_area = $request->total_area;
+
+            $product->garage_spaces = $request->garage_spaces;
+            $product->carport_spaces = $request->carport_spaces;
+
+            $product->save();
+            # notification
+            Notify::success('Produit a été mise à jour avec succès');
+            return redirect(route('admin.product.index'));
         }
-        /*if ($request->isXmlHttpRequest()) {
-        $data = [$request->name => $request->value];
-        $validator = \Validator::make($data, Product::validationRules($request->name));
-        if ($validator->fails())
-        return response($validator->errors()->first($request->name), 403);
-        $product->update($data);
-        return "Record updated";
-        }
-
-        $this->validate($request, Product::validationRules());
-
-        $product->update($request->all());
-
-        # notification
-        Notify::success('Produit a été mise à jour avec succès');
-        return redirect(route('admin.product.index'));*/
     }
 
     /**
@@ -573,14 +597,19 @@ class ProductController extends Controller {
             $avoir_parking = 0;
         }
 
-        $this->save_new_produit($request->prg_anciennete, $request->prg_nature, $titre_product,
-            $request->file('image'), $request->desc_product, 1, 0, $request->interior_area,
-            $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
-            $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
-            $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
-            $request->prg_cat_id, $request->postalCode_product, $request->state_id_product,
-            $request->id_programme, $id_location, 0, $avoir_parking, 0);
-        return response()->json(['success' => 'true']);
+        if ($request->prg_anciennete && $request->prg_nature) {
+            $this->save_new_produit($request->prg_anciennete, $request->prg_nature, $titre_product,
+                $request->file('image'), $request->desc_product, 1, 0, $request->interior_area,
+                $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
+                $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
+                $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
+                $request->prg_cat_id, $request->postalCode_product, $request->state_id_product,
+                $request->id_programme, $id_location, 0, $avoir_parking, 0);
+
+            return response()->json(['success' => 'true']);
+        }else{
+            return response()->json(['success' => 'false']);
+        }
     }
 
     public function ajaxGetProductById(Request $request) {
@@ -611,14 +640,14 @@ class ProductController extends Controller {
             'bathrooms' => $request->bathrooms, 'interior_area' => $request->interior_area,
             'exterior_area' => $request->exterior_area, 'total_area' => $request->total_area,
             'garage_spaces' => $request->garage_spaces, 'carport_spaces' => $request->carport_spaces]);
-        
+
 
         if ($request->file('image')) {
             $photo = $request->file('image');
             $image_prod = Image::storeAndSave($photo, 'product');
             Product::where('id', $request->id_product)->update(['image_id' => $image_prod->id]);
         }
-        
+
         return response()->json(['success' => 'true']);
     }
 

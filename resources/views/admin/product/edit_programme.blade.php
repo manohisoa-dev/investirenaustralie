@@ -32,7 +32,7 @@
                 <h5>Mise à jour Programme : {{$product->title}}</h5>
             </div>
             <div class="ibox-content">
-                <form action="{{ route('admin.product.index')}}/{{$product->id}}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('admin.product.index')}}/{{$product->id}}" method="post" id="programmeForm" enctype="multipart/form-data">
 
                     {{ csrf_field() }}
 
@@ -175,7 +175,7 @@
 						<div class="col-lg-3">
 							<div class="file-box">
 								<div class="file">
-									<a href="{{asset($dossier->filepath)}}" target="_blank">
+									<a href="{{asset($dossier->filepath)}}" class="fancyboxLink">
 										<span class="corner"></span>
 										<div class="icon">
 											<i class="fa fa-file"></i>
@@ -324,13 +324,15 @@
 @section('custom-script')
 	<script src="{{asset('administrator/plugins/ckeditor/ckeditor.js')}}"></script>
 	<script src="{{ asset('administrator/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 	<script>
 		Dropzone.autoDiscover = false;
         $(document).ready(function(){
             CKEDITOR.replace( 'description' );
 			$("#category_id").select2();
+			$(".fancyboxLink").fancybox();
 			set_type_programme($('#cat_programmme_id').val(),{{$product->type_id}});
-			set_type_produit($('#cat_programmme_id').val());
+			//set_type_produit($('#cat_programmme_id').val());
 			
 			$('#cat_programmme_id').on('change', function() {
 				var category = this.value;
@@ -427,6 +429,104 @@
 					$('#total_area').val(total_area);
 				}
 			});
+			
+			$('#garage_spaces, #carport_spaces').bind('keyup mouseup', function (){
+				if($('#garage_spaces').val() != 0 || $('#carport_spaces').val() != 0){
+				     console.log('tokony disabled');
+					$("#chk_parking").attr('disabled','disabled');
+				}else{
+					console.log('normal');
+					$("#chk_parking").removeAttr('disabled');
+				}
+			});	
+			
+			$('#programmeForm').validate({
+				ignore: [],
+				rules: {
+					cat_programmme_id: {
+						required: true
+					},
+					prix_min: {
+						required: true
+					},
+					prix_max: {
+						required: true,
+						number: true,
+						min: function ()  { return parseInt($("#prix_min").val())}
+					},
+					image_programme: {
+						required: true
+					},
+					type_id: {
+						required: true
+					},
+					display_address: {
+						required: true
+					},
+					postalCode: {
+						required: true
+					},
+					state_id: {
+						required: true
+					},
+					title_programme: {
+						required: true,
+						remote: {
+							url: "{{ route('admin.ajaxCheckTitreProgramme') }}",
+							type: "get",
+							data: {
+								title_programme: function () {
+									return $("input[name='title_programme']").val();
+								}
+							}
+						}
+					},
+					chk_firb: {
+						required: true
+					}
+				},
+				messages: {
+					cat_programmme_id: {
+						required: "Champ obligatoire"
+					},
+					prix_min: {
+						required: "Champ obligatoire"
+					},
+					prix_max: {
+						required: "Champ obligatoire",
+						min: jQuery.validator.format("Prix maximal doit superieur à {0}")
+					},
+					image_programme: {
+						required: "Champ obligatoire"
+					},
+					type_id: {
+						required: "Champ obligatoire"
+					},
+					display_address: {
+						required: "Champ obligatoire"
+					},
+					postalCode: {
+						required: "Champ obligatoire"
+					},
+					state_id: {
+						required: "Champ obligatoire"
+					},
+					title_programme: {
+						required: "Champ obligatoire",
+						remote: jQuery.validator.format("{0} existe déjà")
+					},
+					chk_firb: {
+						required: "Champ obligatoire"
+					}
+				},
+				errorPlacement: function ( error, element ) {
+					if(element.parent().hasClass('input-group')){
+						error.insertBefore( element.parent() );
+					}else{
+						error.insertAfter( element );
+					}
+				},
+			});
         });
 		
 		function set_type_programme(categorie_id,type_id_active)
@@ -437,6 +537,7 @@
 			   data: {"_token": "{{ csrf_token() }}","categoryId": categorie_id, "type_id_active": type_id_active},
 			   success:function(data) {
 				  $('#type_id').html(data);
+				  $('#product_type_id').html(data);
 			   }
 			});
 		}
@@ -457,7 +558,7 @@
 		function delete_photo(id_photo_prd_image)
 		{
 			swal({
-				title: "Photo icône",
+				title: "Photo",
 				text: "Voulez vous supprimer ?",
 				type: "warning",
 				showCancelButton: true,
@@ -476,17 +577,17 @@
 						data:{"_token": "{{ csrf_token() }}",'id_photo_prd_image':id_photo_prd_image},
 						success: function(data)
 						{
-							swal("Photo icône", "photo bien supprimé", "success");
+							swal("Photo", "photo bien supprimé", "success");
 							location.reload();	
 						},
 						error: function (jqXHR, textStatus, errorThrown)
 						{
-							swal("Photo icône", "Opération impossible", "error");
+							swal("Photo", "Opération impossible", "error");
 							location.reload();	
 						}
 					}); 
 				} else {
-					swal("Photo icône", "Vous venez d'annuler l'opération", "error");
+					swal("Photo", "Vous venez d'annuler l'opération", "error");
 				}
 			 });
 		}
@@ -644,7 +745,8 @@
 						required: true
 					},
 					price_max_prd: {
-						required: true
+						required: true,
+						min: function ()  { return parseInt($("#price").val())}
 					},
 					interior_area: {
 						required: true
@@ -680,7 +782,8 @@
 						required: "Champ obligatoire"
 					},
 					price_max_prd:{
-						required: "Champ obligatoire"
+						required: "Champ obligatoire",
+						min: jQuery.validator.format("Prix maximal doit superieur à {0}")
 					},
 					interior_area:{
 						required: "Champ obligatoire"
@@ -721,11 +824,16 @@
 					dataType: "JSON",
 					success: function(data)
 					{
-						console.log(data);
-						location.reload();
+						if(data.success == 'false'){
+							$('#info_error').show();
+						}else{
+							location.reload();
+						}
 					},
 					error: function (jqXHR, textStatus, errorThrown)
 					{
+					    console.log(errorThrown);
+						
 						$('#btnSave').text('Enregistrer'); //change button text
 						$('#btnSave').attr('disabled',false); //set button enable 
 			
@@ -994,6 +1102,11 @@
 									</label>
 								</div>
 							</div>
+						</div>
+						<div class="alert alert-danger alert-dismissable" id="info_error" style="display:none">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							<h4><i class="icon fa fa-ban"></i> Eurreur !</h4>
+							L'enregistrement est impossible car il a un ou plusieurs champs null.
 						</div>
 					</form>
 				</div>
