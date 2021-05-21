@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\Localisation;
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\AccountCreated;
+use App\Notifications\NotifyAdmin;
 use Session;
 use Cookie;
 
@@ -115,13 +117,6 @@ class LoginController extends Controller
         }
 
         /*
-        * Method 1: Default Login
-        if ($this->attemptLogin($request)) {
-            return $this->sendLoginResponse($request);
-        }
-        */
-        
-        /*
         * Method 2: Login Active user only
         */
         if ($this->guard()->validate($this->credentials($request))) {
@@ -145,6 +140,10 @@ class LoginController extends Controller
                     
                     // Notify User
                     $user->notify(new AccountCreated($user, $password));
+
+                    // Notify Admin
+                    $admin = User::where('role',1)->first();
+                    $admin->notify(new NotifyAdmin($admin, $user, trans('mail.suspended.user.logged')));
 
                     return redirect()
                         ->route('login')

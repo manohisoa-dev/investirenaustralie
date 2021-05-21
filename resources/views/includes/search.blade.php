@@ -11,7 +11,7 @@
                         <span class="d-flex flex-row m-5px-b p-1 white-bg input-group">
                             {{-- {{csrf_field()}} --}}
                             <select id="administrative_area_level_1" class="form-control border-radius-0 border-1 m-15px-r" name="state">
-                                <option value="{{isset($q)?$q:''}}" selected disabled>@lang('app.input.etat')</option>
+                                <option value="{{isset($q)?$q:''}}" selected readonly>@lang('app.input.etat')</option>
                                 @foreach ($states as $state)
                                     <option value="{{ $state->content }}">{{ trans('app.txt.'.$state->content) }} ({{ $state->content }})</option>
                                 @endforeach
@@ -29,6 +29,34 @@
                         <input type="hidden" value="@lang('app.txt.any')" id="prod" name="prod">
                     </div>
                 </div>
+                
+                @if (session()->exists('search_session') && sizeOf(session()->get('search_session'))!==0)
+                    <div class="section-search">
+                        <hr>
+                        <p>@lang('app.txt.recent_searches')</p>
+                        <div class="row">
+                            @foreach (session('search_session') as $key=>$item)
+                                @php
+                                    $data = unserialize($item);
+                                @endphp
+                                
+                                <div class="col-lg-4 col-sm-12 m-15px-tb" id="search-{{ $key }}">
+                                    <div class="p-20px p-0px-r border-all-1 border-color-white arrow-hover" style="border:solid 1px #555658;background-color:#555658;">
+                                        <button type="button" class="close white-color float-right btn-search-close" aria-label="Close" value="search-{{ $key }}">
+                                            <span aria-hidden="true" class="small p-5px">&times;</span>
+                                        </button>
+                                        <button type="button" class="close white-color float-right btn-search-save" aria-label="Close" value="{{ $data['query']?$data['query']:'' }}">
+                                            <span aria-hidden="true" class="small"><i class="fa fa-save"></i></span>
+                                        </button>
+                                        <a href="{{ $data['url'] }}">
+                                            <h5 class="font-1 font-w-600 white-color m-0px text-left">{{ ($data['state']?$data['state']:''). ($data['city']?'-'.$data['city']:''). ($data['suburb']?'-'.$data['suburb']:'') }}</h5>
+                                        </a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
             </div>
             {{-- Position fixed  --}}
                 {{-- <div class="collapse position-absolute border-radius-0" id="collapseSearch" style="z-index:5; width:82.5%;">  --}} 
@@ -960,6 +988,61 @@
 
         $('.'+myElement+'-input').attr('disabled','disabled');
         return $('#prod').val('');
+    });
+
+    $('.btn-search-close').click(function(){
+        var idSearch = $(this).val();
+        var id = idSearch.split('-')[1];
+        var datas = {
+            'id' : id
+        };
+
+        $('#'+idSearch).remove();
+
+        
+        $.ajax({
+            url:'{{ route("remove.search") }}',
+            method: 'GET',
+            data : datas,
+            dataType : 'json',
+            success: function(data){
+                var res = data.res;
+                if(res.length == 0){
+                    $('.section-search').hide();
+                }
+            },
+            error: function(){
+                console.log('error');
+            }
+        });
+
+    });
+
+    $('.btn-search-save').click(function(){
+        var datas = {
+            'dt' : $(this).val(),
+        };
+        
+        $.ajax({
+            url:'{{ route("save.search") }}',
+            method: 'GET',
+            data : datas,
+            dataType : 'json',
+            success: function(data){
+                var msg = data.msg;
+                var status = data.status;
+
+                console.log(msg);
+
+                if(status == 1){
+                    location.href = "{{ route('login') }}";
+                }
+            },
+            error: function(e){
+                console.log(e);
+            }
+        });
+
     });
     
     </script>

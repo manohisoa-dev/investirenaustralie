@@ -142,16 +142,17 @@ class ProgrammeController extends Controller
         $showBy = $request->get('showBy');
         if(!in_array($showBy, ['map', 'mat'])) $showBy = 'mat';
         
-        $search = new Search();
-        $q = $request->q;
-        if($q){
-            $items = $items->where(function($query) use ($q){
-                return $query->where('content', 'LIKE', '%'.$q.'%')
-                    ->orWhere('title', 'LIKE', '%'.$q.'%');
-            });
-            $search->keyword = $q;
-            $search->save();
-        }
+        // Save search key on data base
+        // $search = new Search();
+        // $q = $request->q;
+        // if($q){
+        //     $items = $items->where(function($query) use ($q){
+        //         return $query->where('content', 'LIKE', '%'.$q.'%')
+        //             ->orWhere('title', 'LIKE', '%'.$q.'%');
+        //     });
+        //     $search->keyword = $q;
+        //     $search->save();
+        // }
         
         $items = $items->orderBy($orderBy, $order);
 
