@@ -5,16 +5,16 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Programmes</h2>
+        <h2>@lang('app.txt.programme')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Programmes</a>
+                <a href="#">@lang('app.txt.programme')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{route('admin.product.programme')}}">Listes</a>
+                <a href="{{route('admin.product.programme')}}">@lang('app.txt.liste')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Ajout</strong>
+                <strong>@lang('app.txt.add_new_programme')</strong>
             </li>
         </ol>
     </div>
@@ -29,7 +29,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Ajouter un nouveau programme</h5>
+                <h5>@lang('app.txt.new_programme')</h5>
             </div>
             <div class="ibox-content">
                 <form class="form-validation form-padding" action="{{ route('admin.product.store') }}" method="post" id="programmeForm" enctype="multipart/form-data">
@@ -39,9 +39,9 @@
 					<div class="row">
 						<div class="col-lg-4">
 							<div class="form-group">
-								<label>A quelle catégorie appartient le bien que vous voulez saisir ? *</label>
+								<label>@lang('app.form.programme_choix_categorie') *</label>
 								<select class="form-control" name="cat_programmme_id" id="cat_programmme_id">
-									<option value="">Choisir...</option>
+									<option value="">@lang('app.form.choix_txt')</option>
 									@foreach(\App\Models\Category::all() as $category)
 										<option value="{{$category->id}}">{{$category->title}}</option>
 									@endforeach
@@ -50,7 +50,7 @@
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
-								<label for="title">Ancienneté du bien *</label>
+								<label for="title">@lang('app.form.programme_choix_anciennete') *</label>
 								<select class="form-control" name="ancienneteBien" id="ancienneteBien" disabled="disabled">
 									<option value="Neuf">Neuf</option>
 									<option value="Ancien">Ancien</option>
@@ -61,7 +61,7 @@
 						<div class="col-lg-4">
 							<div id="nature_enregistrement">
 								<div class="form-group">
-									<label for="title">Nature de L'Enregistrement *</label>
+									<label for="title">@lang('app.form.programme_choix_nature') *</label>
 									<select class="form-control" name="natureBien" id="natureBien" disabled="disabled">
 										<option value="Programme immobilier">Programme immobilier</option>
 										<option value="Produit isolé">Produit isolé</option>
@@ -75,7 +75,7 @@
 						<div class="row">
 							<div class="col-md-12">                              
 								<div class="form-group">
-									<label for="title">Nom/Titre du programme *</label>
+									<label for="title">@lang('app.form.programme_title') *</label>
 									<input name="title_programme" id="title_programme" class="form-control" type="text" value="">
 								</div>
 							</div>
@@ -83,7 +83,7 @@
 						<div class="row">
 							<div class="col-lg-12">                              
 								<div class="form-group">
-									<label for="title">Description du programme</label>
+									<label for="title">@lang('app.form.programme_content')</label>
 									<textarea class="form-control" rows="10" name="description" id="description"></textarea>
 								</div>
 							</div>
@@ -91,7 +91,7 @@
 						<div class="row">
 							<div class="col-md-4">
 								<div class="form-group">
-									<label for="title">Prix Minimal *</label>
+									<label for="title">@lang('app.form.programme_price_min') *</label>
 									<div class="input-group m-b">
 										<input type="number" class="form-control" name="prix_min" id="prix_min">
 										<div class="input-group-append">
@@ -102,7 +102,7 @@
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
-									<label for="title">Prix Maximal *</label>
+									<label for="title">@lang('app.form.programme_price_max') *</label>
 									<div class="input-group m-b">
 										<input type="number" class="form-control" name="prix_max" id="prix_max">
 										<div class="input-group-append">
@@ -113,7 +113,7 @@
 							</div>
 							<div class="col-lg-4">
 								<div class="form-group">
-									<label for="title">Type de produits *</label>
+									<label for="title">@lang('app.form.programme_product_type') *</label>
 									<select class="form-control" name="type_id" id="type_id" style="width:100%">
 										
 									</select>
@@ -123,13 +123,13 @@
 						<div class="row">							
 							<div class="col-lg-8">
 								<div class="form-group">
-									<label for="title">Adresse rue *</label>
+									<label for="title">@lang('app.form.programme_adresse') *</label>
 									<input name="display_address" id="display_address" class="form-control" type="text" value="">
 								</div>
 							</div>
 							<div class="col-lg-4">
 								<div class="form-group">
-									<label for="title">Suburb</label>
+									<label for="title">@lang('app.form.programme_suburb')</label>
 									<input name="suburb" id="suburb" class="form-control" type="text" value="">
 								</div>
 							</div>
@@ -137,19 +137,19 @@
 						<div class="row">
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Ville</label>
+									<label for="title">@lang('app.form.programme_ville')</label>
 									<input name="ville" id="ville" class="form-control" type="text">
 								</div>  
 							</div>
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Code postal *</label>
+									<label for="title">@lang('app.form.programme_cp') *</label>
 									<input name="postalCode" id="postalCode" class="form-control" type="text" value="">
 								</div>
 							</div>
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Pays</label>
+									<label for="title">@lang('app.form.programme_pays')</label>
 									<select class="form-control" name="countryId" id="countryId" style="width:100%">
 										@foreach(\App\Models\Country::where('id',12)->get() as $country)
 											<option value="{{$country->id}}">{{$country->content}}</option>
@@ -159,7 +159,7 @@
 							</div>
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Etat *</label>
+									<label for="title">@lang('app.form.programme_etat') *</label>
 									<select class="form-control" name="state_id" id="state_id" style="width:100%">
 										@foreach(\App\Models\State::all() as $state)
 											<option value="{{$state->id}}">{{$state->content}}</option>
@@ -171,7 +171,7 @@
 						<div class="row">
 							<div class="col-lg-4">
 								<div class="form-group">
-									<label for="title">Fond de dossier</label>
+									<label for="title">@lang('app.form.programme_fond_dossier')</label>
 									<input name="fond_dossier" class="form-control" type="file" accept="image/png, image/jpeg,.pdf,video/mp4,video/x-m4v,video/*">
 								</div>
 							</div>
@@ -191,15 +191,17 @@
 							</div>
 						</div>						
 						<div class="row">
-							<div class="col-lg-12">
+							<div class="col-lg-12" style="margin-top:15px">
 								<label class="chk_firb"> 
 									<input type="checkbox" value="" name="chk_firb"> The Seller certifies under their sole responsibilitythatthis property canbe sold to non-residentforeigners in accordance with Australian law and the rules applicable by the Foreign Investment Review Board (FIRB).
 								</label>
 							</div>
 						</div>
 					</div>                              
-                    <button type="submit" id="savePro" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Créer</button>
-				
+                    <button type="submit" id="savePro" class="btn btn-primary btn-lg pull-right">
+						<i class="fa fa-save"></i> @lang('app.form.programme_btn_create')
+					</button>
+					<div style="clear:both"></div>
                 </form>
             </div>
         </div>
@@ -236,7 +238,7 @@
 		$("#image_upload").dropzone({
 			maxFiles: 5, 
             maxFilesize: 4,
-			dictDefaultMessage: 'Choisir plusieurs photo pour la représentation du programme',
+			dictDefaultMessage: "@lang('app.dropzone.libelle')",
             url: "{{ route('admin.ajaxDropZone') }}",
 			params: {"_token": "{{ csrf_token() }}"},
             acceptedFiles: ".jpeg,.jpg,.png,.gif",
@@ -270,7 +272,7 @@
 				// set new images names in dropzone’s preview box.
                 var olddatadzname = file.previewElement.querySelector("[data-dz-name]");   
 				file.previewElement.querySelector("img").alt = response.success;
-				file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'><input value='"+response.success+"' type='radio' name='radioDrop' style='display:inline-block'> Photo icône</label>");
+				file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'><input value='"+response.success+"' type='radio' name='radioDrop' style='display:inline-block'> @lang('app.dropzone.photoIcon_tex')</label>");
 				file.previewElement.appendChild(file._captionBox);
 				$('#programmeForm').append('<input type="hidden" name="dropPhoto[]" value="'+response.success +'">');
 				olddatadzname.innerHTML = response.success;
@@ -339,36 +341,36 @@
 			},
 			messages: {
 				cat_programmme_id: {
-					required: "Champ obligatoire"
+					required: "@lang('app.txt.champobligatoire')"
 				},
 				prix_min: {
-					required: "Champ obligatoire"
+					required: "@lang('app.txt.champobligatoire')"
 				},
 				prix_max: {
-					required: "Champ obligatoire",
-					min: jQuery.validator.format("Prix maximal doit superieur à {0}")
+					required: "@lang('app.txt.champobligatoire')",
+					min: jQuery.validator.format("@lang('app.form.programme_validate_prix_max') {0}")
 				},
 				image_programme: {
-					required: "Champ obligatoire"
+					required: "@lang('app.txt.champobligatoire')"
 				},
 				type_id: {
-					required: "Champ obligatoire"
+					required: "@lang('app.txt.champobligatoire')"
 				},
 				display_address: {
-					required: "Champ obligatoire"
+					required: "@lang('app.txt.champobligatoire')"
 				},
 				postalCode: {
-					required: "Champ obligatoire"
+					required: "@lang('app.txt.champobligatoire')"
 				},
 				state_id: {
-					required: "Champ obligatoire"
+					required: "@lang('app.txt.champobligatoire')"
 				},
 				title_programme: {
-					required: "Champ obligatoire",
-					remote: jQuery.validator.format("{0} existe déjà")
+					required: "@lang('app.txt.champobligatoire')",
+					remote: jQuery.validator.format("{0} @lang('app.form.programme_validate_titre')")
 				},
 				chk_firb: {
-					required: "Champ obligatoire"
+					required: "@lang('app.txt.champobligatoire')"
 				}
 			},
 			errorPlacement: function ( error, element ) {

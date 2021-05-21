@@ -5,16 +5,16 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Programme</h2>
+        <h2>@lang('app.txt.programme')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Programme</a>
+                <a href="#">@lang('app.txt.programme')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.product.programme') }}">Listes</a>
+                <a href="{{ route('admin.product.programme') }}">@lang('app.txt.liste')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Edition</strong>
+                <strong>@lang('app.form.programme_edition')</strong>
             </li>
         </ol>
     </div>
@@ -29,7 +29,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Mise à jour Programme : {{$product->title}}</h5>
+                <h5>@lang('app.form.programme_edit_title') : {{$product->title}}</h5>
             </div>
             <div class="ibox-content">
                 <form action="{{ route('admin.product.index')}}/{{$product->id}}" method="post" id="programmeForm" enctype="multipart/form-data">
@@ -42,9 +42,9 @@
                     <div class="row">
 						<div class="col-lg-4">
 							<div class="form-group">
-								<label>A quelle catégorie appartient le bien que vous voulez saisir ? *</label>
+								<label>@lang('app.form.programme_choix_categorie') *</label>
 								<select class="form-control" name="cat_programmme_id" id="cat_programmme_id" disabled>
-									<option value="">Choisir...</option>
+									<option value="">@lang('app.form.choix_txt')</option>
 									@foreach(\App\Models\Category::all() as $category)
 										<option value="{{$category->id}}" {{$category->id == $product->category_id ? 'selected' : ''}}>{{$category->title}}</option>
 									@endforeach
@@ -53,7 +53,7 @@
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
-								<label for="title">Ancienneté du bien *</label>
+								<label for="title">@lang('app.form.programme_choix_anciennete') *</label>
 								<select class="form-control" name="ancienneteBien" id="ancienneteBien" disabled>
 									<option value=""></option>
 									<option value="Neuf" {{$product->ancienneteBien == 'Neuf' ? 'selected' : ''}}>Neuf</option>
@@ -64,7 +64,7 @@
 						<div class="col-lg-4">
 							<div id="nature_enregistrement">
 								<div class="form-group">
-									<label for="title">Nature de L'Enregistrement *</label>
+									<label for="title">@lang('app.form.programme_choix_nature') *</label>
 									<select class="form-control" name="natureBien" id="natureBien" disabled>
 										<option value="Programme immobilier" {{$product->natureBien == 'Programme immobilier' ? 'selected' : ''}}>Programme immobilier</option>
 										<option value="Produit isolé" {{$product->natureBien == 'Produit isolé' ? 'selected' : ''}}>Produit isolé</option>
@@ -76,7 +76,7 @@
                     <div class="row">
 						<div class="col-md-12">                              
 							<div class="form-group">
-								<label for="title">Nom/Titre du programme *</label>
+								<label for="title">@lang('app.form.programme_title') *</label>
 								<input name="title_programme" id="title_programme" class="form-control" type="text" value="{{$product->title}}">
 							</div>
 						</div>
@@ -84,7 +84,7 @@
 					<div class="row">
 						<div class="col-lg-12">                              
 							<div class="form-group">
-								<label for="title">Description du programme</label>
+								<label for="title">@lang('app.form.programme_content')</label>
 								<textarea class="form-control" rows="10" name="description" id="description">{{$product->content}}</textarea>
 							</div>
 						</div>
@@ -92,7 +92,7 @@
 					<div class="row">
 						<div class="col-md-4">
 							<div class="form-group">
-								<label for="title">Prix Minimal *</label>
+								<label for="title">@lang('app.form.programme_price_min') *</label>
 								<div class="input-group m-b">
 									<input type="number" class="form-control" name="prix_min" id="prix_min" value="{{$product->min_price}}">
 									<div class="input-group-append">
@@ -103,7 +103,7 @@
 						</div>
 						<div class="col-md-4">
 							<div class="form-group">
-								<label for="title">Prix Maximal *</label>
+								<label for="title">@lang('app.form.programme_price_max') *</label>
 								<div class="input-group m-b">
 									<input type="number" class="form-control" name="prix_max" id="prix_max" value="{{$product->max_price}}">
 									<div class="input-group-append">
@@ -114,7 +114,7 @@
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
-								<label for="title">Type de produits *</label>
+								<label for="title">@lang('app.form.programme_product_type') *</label>
 								<select class="form-control" name="type_id" id="type_id" style="width:100%">
 									
 								</select>
@@ -124,13 +124,13 @@
 					<div class="row">							
 						<div class="col-lg-8">
 							<div class="form-group">
-								<label for="title">Adresse rue *</label>
+								<label for="title">@lang('app.form.programme_adresse') *</label>
 								<input name="display_address" id="display_address" class="form-control" type="text" value="{{$product->display_address}}">
 							</div>
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
-								<label for="title">Suburb</label>
+								<label for="title">@lang('app.form.programme_suburb')</label>
 								<input name="suburb" id="suburb" class="form-control" type="text" value="{{$localisation->area_level_1}}">
 							</div>
 						</div>
@@ -138,19 +138,19 @@
 					<div class="row">
 						<div class="col-lg-3">
 							<div class="form-group">
-								<label for="title">Ville</label>
+								<label for="title">@lang('app.form.programme_ville')</label>
 								<input name="ville" id="ville" class="form-control" type="text" value="{{$localisation->locality}}">
 							</div>  
 						</div>
 						<div class="col-lg-3">
 							<div class="form-group">
-								<label for="title">Code postal *</label>
+								<label for="title">@lang('app.form.programme_cp') *</label>
 								<input name="postalCode" id="postalCode" class="form-control" type="text" value="{{$product->postalCode}}">
 							</div>
 						</div>
 						<div class="col-lg-3">
 							<div class="form-group">
-								<label for="title">Pays</label>
+								<label for="title">@lang('app.form.programme_pays')</label>
 								<select class="form-control" name="countryId" id="countryId" style="width:100%">
 									@foreach(\App\Models\Country::where('id',12)->get() as $country)
 										<option value="{{$country->id}}" {{$country->id == $localisation->country ? 'selected' : ''}}>{{$country->content}}</option>
@@ -160,7 +160,7 @@
 						</div>
 						<div class="col-lg-3">
 							<div class="form-group">
-								<label for="title">Etat *</label>
+								<label for="title">@lang('app.form.programme_etat') *</label>
 								<select class="form-control" name="state_id" id="state_id" style="width:100%">
 									@foreach(\App\Models\State::all() as $state)
 										<option value="{{$state->id}}" {{$state->id == $product->state_id ? 'selected' : ''}}>{{$state->content}}</option>
@@ -181,7 +181,7 @@
 											<i class="fa fa-file"></i>
 										</div>
 										<div class="file-name">
-											Fond de dossier<br><small>{{$dossier->created_at ? $dossier->created_at->diffForHumans() : ""}}</small>
+											@lang('app.form.programme_fond_dossier')<br><small>{{$dossier->created_at ? $dossier->created_at->diffForHumans() : ""}}</small>
 										</div>
 									</a>
 								</div>
@@ -190,7 +190,7 @@
 						@endif  
 						<div class="col-lg-4">
 							<div class="form-group">
-								<label for="title">Modifier fond de dossier</label>
+								<label for="title">@lang('app.form.programme_fond_dossier_edit')</label>
 								<input name="fond_dossier" class="form-control" type="file" accept="image/png, image/jpeg,.pdf,video/mp4,video/x-m4v,video/*">
 							</div>
 						</div>
@@ -210,9 +210,9 @@
 									<div class="file-name">
 										<label> 
 											@if($photo->is_principal == 1)
-											<input type="radio" checked="" value="{{$photo->prdImageId}}" name="radioDrop"> Photo icône
+											<input type="radio" checked="" value="{{$photo->prdImageId}}" name="radioDrop"> @lang('app.dropzone.photoIcon_tex')
 											@else
-											<input type="radio" value="{{$photo->prdImageId}}" name="radioDrop"> Photo icône 
+											<input type="radio" value="{{$photo->prdImageId}}" name="radioDrop"> @lang('app.dropzone.photoIcon_tex')
 											@endif
 										</label>
 										<a class="pull-right" href="javascript:void(0)" onclick="delete_photo({{$photo->prdImageId}})">
@@ -235,7 +235,9 @@
 							</div>
 						</div>
 					</div>	                                                                                                                    
-                    <button type="submit" class="btn btn-primary btn-lg pull-right"><i class="fa fa-save"></i> Enregistrer la modification</button>
+                    <button type="submit" class="btn btn-primary btn-lg pull-right">
+						<i class="fa fa-save"></i> @lang('app.form.programme_btn_edit')
+					</button>
 					<div style="clear:both"></div>
                 </form>
             </div>
@@ -248,27 +250,29 @@
 	<div class="col-lg-12">
 		<div class="ibox ">
 			<div class="ibox-title">
-				<h5>Produits du programme</h5>
+				<h5>@lang('app.table.product_programme_title')</h5>
 				<div class="ibox-tools">
-					<a href="javascript:void(0)" onclick="add_product({{$product->id}})" class="btn btn-primary btn-block">
-						<i class="fa fa-plus"></i> Ajouter un nouveau Produit 
+					<a href="javascript:void(0)" onclick="add_product({{$product->id}})" class="btn btn-primary">
+						<i class="fa fa-plus"></i> @lang('app.form.product_add_ajax')
 					</a>
+					<div style="clear:both"></div>
 				</div>
+				<div style="clear:both"></div>
 			</div>
 			<div class="ibox-content">
 				<table class="table table-striped grid-view-tbl">
 					<thead>
                         <tr class="header-row">
 							<th>Id</th>
-							<th>Image</th>
-							<th>Titre</th>
-							<th>Prix min</th>
-							<th>Prix max</th>
+							<th>@lang('app.table.produit_image')</th>
+							<th>@lang('app.table.produit_titre')</th>
+							<th>@lang('app.table.produit_prix_min')</th>
+							<th>@lang('app.table.produit_prix_max')</th>
 							<th>Date</th>
-							<th>Statut</th>
-							<th>Vendeur</th>
-							<th>Auteur</th>
-							<th style="text-align:center">Actions</th>
+							<th>@lang('app.table.status')</th>
+							<th>@lang('app.seller')</th>
+							<th>@lang('app.table.author')</th>
+							<th style="text-align:center">@lang('app.table.actions')</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -304,10 +308,10 @@
 							</td>
 							<td>{{ $product_lie->author->name }}</td>
 							<td class="actions-cell text-center" width="10%">								
-								<a href="javascript:void(0)" onclick="edit_product({{$product_lie->id}})" class="btn btn-default btn-circle" title="Modification">
+								<a href="javascript:void(0)" onclick="edit_product({{$product_lie->id}})" class="btn btn-default btn-circle" title="@lang('app.table.btn_title_modification')">
 									<i class="fa fa-pencil-square-o"></i>
 								</a>&nbsp;&nbsp;
-								<a href="javascript:void(0)" onclick="delete_product({{$product_lie->id}})" class="btn btn-default btn-circle" title="Supprimer">
+								<a href="javascript:void(0)" onclick="delete_product({{$product_lie->id}})" class="btn btn-default btn-circle" title="@lang('app.table.btn_title_delete')">
 									<i class="fa fa-times text-danger"></i>
 								</a>
 							</td>
@@ -352,7 +356,7 @@
 			$("#image_upload").dropzone({
 				maxFiles: 5, 
 				maxFilesize: 4,
-				dictDefaultMessage: 'Choisir plusieurs photo pour la représentation du programme',
+				dictDefaultMessage: "@lang('app.dropzone.libelle')",
 				url: "{{ route('admin.ajaxDropZoneEdit') }}",
 				params: {"_token": "{{ csrf_token() }}","id_programme": "{{ $product->id }}"},
 				acceptedFiles: ".jpeg,.jpg,.png,.gif",
@@ -432,10 +436,8 @@
 			
 			$('#garage_spaces, #carport_spaces').bind('keyup mouseup', function (){
 				if($('#garage_spaces').val() != 0 || $('#carport_spaces').val() != 0){
-				     console.log('tokony disabled');
 					$("#chk_parking").attr('disabled','disabled');
 				}else{
-					console.log('normal');
 					$("#chk_parking").removeAttr('disabled');
 				}
 			});	
@@ -487,36 +489,36 @@
 				},
 				messages: {
 					cat_programmme_id: {
-						required: "Champ obligatoire"
+						required: "@lang('app.txt.champobligatoire')"
 					},
 					prix_min: {
-						required: "Champ obligatoire"
+						required: "@lang('app.txt.champobligatoire')"
 					},
 					prix_max: {
-						required: "Champ obligatoire",
-						min: jQuery.validator.format("Prix maximal doit superieur à {0}")
+						required: "@lang('app.txt.champobligatoire')",
+						min: jQuery.validator.format("@lang('app.form.programme_validate_prix_max') {0}")
 					},
 					image_programme: {
-						required: "Champ obligatoire"
+						required: "@lang('app.txt.champobligatoire')"
 					},
 					type_id: {
-						required: "Champ obligatoire"
+						required: "@lang('app.txt.champobligatoire')"
 					},
 					display_address: {
-						required: "Champ obligatoire"
+						required: "@lang('app.txt.champobligatoire')"
 					},
 					postalCode: {
-						required: "Champ obligatoire"
+						required: "@lang('app.txt.champobligatoire')"
 					},
 					state_id: {
-						required: "Champ obligatoire"
+						required: "@lang('app.txt.champobligatoire')"
 					},
 					title_programme: {
-						required: "Champ obligatoire",
-						remote: jQuery.validator.format("{0} existe déjà")
+						required: "@lang('app.txt.champobligatoire')",
+						remote: jQuery.validator.format("{0} @lang('app.form.programme_validate_titre')")
 					},
 					chk_firb: {
-						required: "Champ obligatoire"
+						required: "@lang('app.txt.champobligatoire')"
 					}
 				},
 				errorPlacement: function ( error, element ) {
@@ -558,13 +560,13 @@
 		function delete_photo(id_photo_prd_image)
 		{
 			swal({
-				title: "Photo",
-				text: "Voulez vous supprimer ?",
+				title: "@lang('app.table.produit_image')",
+				text: "@lang('app.dropzone.delete_photo_confirme')",
 				type: "warning",
 				showCancelButton: true,
 				confirmButtonColor: '#ff3547',
-				confirmButtonText: 'OUI',
-				cancelButtonText: "NON",
+				confirmButtonText: "@lang('app.yes')",
+				cancelButtonText: "@lang('app.no')",
 				closeOnConfirm: false,
 				closeOnCancel: false
 			 },
@@ -577,17 +579,17 @@
 						data:{"_token": "{{ csrf_token() }}",'id_photo_prd_image':id_photo_prd_image},
 						success: function(data)
 						{
-							swal("Photo", "photo bien supprimé", "success");
+							swal("@lang('app.table.produit_image')", "@lang('app.dropzone.delete_photo_yes')", "success");
 							location.reload();	
 						},
 						error: function (jqXHR, textStatus, errorThrown)
 						{
-							swal("Photo", "Opération impossible", "error");
+							swal("@lang('app.table.produit_image')", "@lang('app.jquery.error_delete')", "error");
 							location.reload();	
 						}
 					}); 
 				} else {
-					swal("Photo", "Vous venez d'annuler l'opération", "error");
+					swal("@lang('app.table.produit_image')", "@lang('app.jquery.delete_cancel')", "error");
 				}
 			 });
 		}
@@ -595,13 +597,13 @@
 		function delete_product(id_prd)
 		{
 			swal({
-				title: "Produit",
-				text: "Voulez vous supprimer ?",
+				title: "@lang('app.products')",
+				text: "@lang('app.dropzone.delete_photo_confirme')",
 				type: "warning",
 				showCancelButton: true,
 				confirmButtonColor: '#ff3547',
-				confirmButtonText: 'OUI',
-				cancelButtonText: "NON",
+				confirmButtonText: "@lang('app.yes')",
+				cancelButtonText: "@lang('app.no')",
 				closeOnConfirm: false,
 				closeOnCancel: false
 			 },
@@ -614,17 +616,17 @@
 						data:{"_token": "{{ csrf_token() }}",'id_produit':id_prd},
 						success: function(data)
 						{
-							swal("Produit", "Produit bien supprimé", "success");
+							swal("@lang('app.products')", "@lang('app.jquery.delete_product_yes')", "success");
 							location.reload();	
 						},
 						error: function (jqXHR, textStatus, errorThrown)
 						{
-							swal("Produit", "Opération impossible", "error");
+							swal("@lang('app.products')", "@lang('app.jquery.error_delete')", "error");
 							location.reload();	
 						}
 					}); 
 				} else {
-					swal("Produit", "Vous venez d'annuler l'opération", "error");
+					swal("@lang('app.products')", "@lang('app.jquery.delete_cancel')", "error");
 				}
 			 });
 		}
@@ -640,7 +642,7 @@
 			$("#progTitle").text($('#title_programme').val());
 			$('#modal_form_product').modal('show'); 
 			CKEDITOR.replace( 'desc_product' );
-			$('.modal-title').text('Nouveau produit');
+			$('.modal-title').text("@lang('app.form.product_add_ajax')");
 		}
 		
 		function edit_product(id_produit)
@@ -659,7 +661,6 @@
 				data:{"_token": "{{ csrf_token() }}",'id_produit':id_produit},
 				success: function(data)
 				{
-					console.log(data);
 					$('#title_new_programme').val($('#title_programme').val());
 					$("#progTitle").text($('#title_programme').val());
 					$('[name="title_product"]').val(data.product.title);
@@ -689,7 +690,7 @@
 					$('[name="id_location_product"]').val(data.product.location_id);
 					
 					$('#modal_form_product').modal('show'); 
-					$('.modal-title').text('Modification agence'); 
+					$('.modal-title').text("@lang('app.form.product_edit_title')"); 
 				},
 				error: function (jqXHR, textStatus, errorThrown)
 				{
@@ -763,39 +764,39 @@
 				},
 				messages: {
 					title_product: {
-						required: "Champ obligatoire",
-						remote: jQuery.validator.format("{0} existe déjà")
+						required: "@lang('app.txt.champobligatoire')",
+						remote: jQuery.validator.format("{0} @lang('app.form.programme_validate_titre')")
 					},
 					product_type_id: {
-						required: "Champ obligatoire"
+						required: "@lang('app.txt.champobligatoire')"
 					},
 					postalCode_product: {
-						required: "Champ obligatoire"
+						required: "@lang('app.txt.champobligatoire')"
 					},
 					display_address_product:{
-						required: "Champ obligatoire"
+						required: "@lang('app.txt.champobligatoire')"
 					},
 					state_id_product:{
-						required: "Champ obligatoire"
+						required: "@lang('app.txt.champobligatoire')"
 					},
 					price:{
-						required: "Champ obligatoire"
+						required: "@lang('app.txt.champobligatoire')"
 					},
 					price_max_prd:{
-						required: "Champ obligatoire",
-						min: jQuery.validator.format("Prix maximal doit superieur à {0}")
+						required: "@lang('app.txt.champobligatoire')",
+						min: jQuery.validator.format("@lang('app.form.programme_validate_prix_max') {0}")
 					},
 					interior_area:{
-						required: "Champ obligatoire"
+						required: "@lang('app.txt.champobligatoire')"
 					},
 					exterior_area:{
-						required: "Champ obligatoire"
+						required: "@lang('app.txt.champobligatoire')"
 					},
 					total_area:{
-						required: "Champ obligatoire"
+						required: "@lang('app.txt.champobligatoire')"
 					},
 					year_built:{
-						required: "Champ obligatoire"
+						required: "@lang('app.txt.champobligatoire')"
 					}
 				},
 				errorPlacement: function ( error, element ) {
@@ -832,8 +833,6 @@
 					},
 					error: function (jqXHR, textStatus, errorThrown)
 					{
-					    console.log(errorThrown);
-						
 						$('#btnSave').text('Enregistrer'); //change button text
 						$('#btnSave').attr('disabled',false); //set button enable 
 			
@@ -866,12 +865,12 @@
 						<div class="row">
 							<div class="col-lg-12">
 								<div class="form-group">
-									<label for="title">Titre du produit *</label>
+									<label for="title">@lang('app.form.product_title') *</label>
 									<div class="input-group m-b">
 										<div class="input-group-prepend">
 											<span class="input-group-addon" id="progTitle"></span>
 										</div>
-										<input name="title_product" id="title_product" class="form-control" type="text" value="" title="Indiquez la référence du produit">
+										<input name="title_product" id="title_product" class="form-control" type="text" value="" title="@lang('app.form.product_title_input')">
 									</div>									
 								</div>
 							</div>
@@ -879,7 +878,7 @@
 						<div class="row">     
 							<div class="col-lg-12">                              
 								<div class="form-group">
-									<label for="title">Description produit *</label>
+									<label for="title">@lang('app.form.product_content') *</label>
 									<textarea class="form-control" rows="10" name="desc_product" id="desc_product"></textarea>
 								</div>
 							</div>
@@ -887,7 +886,7 @@
 						<div class="row">
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Type *</label>
+									<label for="title">@lang('app.form.programme_product_type') *</label>
 									<select class="form-control" name="product_type_id" id="product_type_id" style="width:100%">
 										
 									</select>
@@ -895,19 +894,19 @@
 							</div>
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Suburb</label>
+									<label for="title">@lang('app.form.programme_suburb')</label>
 									<input name="suburb_product" id="suburb_product" class="form-control" type="text" value="">
 								</div>
 							</div>
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Ville</label>
+									<label for="title">@lang('app.form.programme_ville')</label>
 									<input name="ville_product" id="ville_product" class="form-control" type="text">
 								</div>  
 							</div>
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Code postal *</label>
+									<label for="title">@lang('app.form.programme_cp') *</label>
 									<input name="postalCode_product" id="postalCode_product" class="form-control" type="text" value="">
 								</div>
 							</div>
@@ -915,13 +914,13 @@
 						<div class="row">
 							<div class="col-lg-4">
 								<div class="form-group">
-									<label for="title">Adresse rue *</label>
+									<label for="title">@lang('app.form.programme_adresse') *</label>
 									<input name="display_address_product" id="display_address_product" class="form-control" type="text" value="">
 								</div>
 							</div>
 							<div class="col-lg-4">
 								<div class="form-group">
-									<label for="title">Etat *</label>
+									<label for="title">@lang('app.form.programme_etat') *</label>
 									<select class="form-control" name="state_id_product" id="state_id_product" style="width:100%">
 										<option value="">Sélectionner état...</option>
 										@foreach(\App\Models\State::all() as $state)
@@ -932,7 +931,7 @@
 							</div>
 							<div class="col-lg-4">
 								<div class="form-group">
-									<label for="title">Pays</label>
+									<label for="title">@lang('app.form.programme_pays')</label>
 									<select class="form-control" name="countryId_product" id="countryId_product" style="width:100%">
 										@foreach(\App\Models\Country::where('id',12)->get() as $country)
 											<option value="{{$country->id}}">{{$country->content}}</option>
@@ -944,7 +943,7 @@
 						<div class="row">							
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Prix min de vente *</label>
+									<label for="title">@lang('app.form.product_prix_min') *</label>
 									<div class="input-group m-b">
 										<input type="number" class="form-control" name="price" id="price">
 										<div class="input-group-append">
@@ -955,7 +954,7 @@
 							</div>
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Prix max de vente *</label>
+									<label for="title">@lang('app.form.product_prix_max') *</label>
 									<div class="input-group m-b">
 										<input type="number" class="form-control" name="price_max_prd" id="price_max_prd">
 										<div class="input-group-append">
@@ -966,7 +965,7 @@
 							</div>
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Statuts</label>
+									<label for="title">@lang('app.table.status')</label>
 									<select class="form-control" name="status" id="status">
 										<option value="published">Publier</option>
 										<option value="En attente">En attente</option>
@@ -976,7 +975,7 @@
 							<div class="col-lg-3">
 								<div id="info_qte">
 									<div class="form-group">
-										<label for="title">Quantité</label>
+										<label for="title">@lang('app.form.product_qte')</label>
 										<input name="quantity" id="quantity" class="form-control" type="number" value="1">
 									</div>
 								</div>
@@ -985,25 +984,25 @@
 						<div class="row">
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Nombre de chambre</label>
+									<label for="title">@lang('app.input.nbchambre')</label>
 									<input name="bedrooms" id="bedrooms" class="form-control" type="number" value="0">
 								</div>  
 							</div>
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Nombre de suites de chambres</label>
+									<label for="title">@lang('app.input.nbchambresuite')</label>
 									<input name="ensuite" id="ensuite" class="form-control" type="number" value="0">
 								</div>
 							</div>
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Nombre autres salles de bain/eau</label>
+									<label for="title">@lang('app.input.nbsalledebain')</label>
 									<input name="bathrooms" id="bathrooms" class="form-control" type="number" value="0">
 								</div> 
 							</div>
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Photo</label>
+									<label for="title">@lang('app.table.produit_image')</label>
 									<input name="image" class="form-control" type="file" accept="image/png, image/jpeg">
 								</div>
 							</div>
@@ -1011,7 +1010,7 @@
 						<div class="row">
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Surface intérieur *</label>
+									<label for="title">@lang('app.form.product_area_interior') *</label>
 									<div class="input-group m-b">
 										<input type="text" name="interior_area" id="interior_area" class="form-control">
 										<div class="input-group-append">
@@ -1022,7 +1021,7 @@
 							</div>
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Surface extérieur *</label>
+									<label for="title">@lang('app.form.product_area_exterior') *</label>
 									<div class="input-group m-b">
 										<input type="text" name="exterior_area" id="exterior_area" class="form-control">
 										<div class="input-group-append">
@@ -1033,7 +1032,7 @@
 							</div>
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="title">Surface total *</label>
+									<label for="title">@lang('app.form.product_area_total') *</label>
 									<div class="input-group m-b">
 										<input type="text" name="total_area" id="total_area" class="form-control" readonly="">
 										<div class="input-group-append">
@@ -1045,7 +1044,7 @@
 							<div class="col-lg-3">
 								<div id="yearConstruct" style="display:none">								
 									<div class="form-group">
-										<label for="title">Année de construction *</label>
+										<label for="title">@lang('app.form.product_anneeConstruct') *</label>
 										<input name="year_built" id="year_built" class="form-control" type="number" value="0">
 									</div>
 								</div>
@@ -1054,13 +1053,13 @@
 						<div class="row">
 							<div class="col-lg-4">
 								<div class="form-group">
-									<label for="title">Emplacements parking fermés</label>
+									<label for="title">@lang('app.form.product_parking_ferme')</label>
 									<input name="garage_spaces" id="garage_spaces" class="form-control" type="number" value="0">
 								</div>
 							</div>
 							<div class="col-lg-4">
 								<div class="form-group">
-									<label for="title">Emplacements parking carport</label>
+									<label for="title">@lang('app.form.product_parking_carpot')</label>
 									<input name="carport_spaces" id="carport_spaces" class="form-control" type="number" value="0">
 								</div>
 							</div>
@@ -1068,7 +1067,7 @@
 							<div class="col-lg-4">
 								<div id="jardin_info" style="display:none">
 									<div class="form-group">
-										<label for="title">Superficie jardin privatif</label>
+										<label for="title">@lang('app.form.product_jardin_space')</label>
 										<div class="input-group m-b">
 											<input type="number" class="form-control" name="superficie_jardin" id="superficie_jardin" value="0">
 											<div class="input-group-append">
@@ -1083,14 +1082,14 @@
 						<div class="row">
 							<div class="col-lg-12">
 								<label class="chk_parking"> 
-									<input type="checkbox" value="1" id="chk_parking" name="chk_parking"> parking voies publiques
+									<input type="checkbox" value="1" id="chk_parking" name="chk_parking"> @lang('app.form.product_parking_vPublic')
 								</label>
 							</div>
 							
 							<div class="col-lg-12">
 								<div id="chk_picine" style="display:none">
 									<label class="chk_picine"> 
-										<input type="checkbox" value="1" name="chk_picine"> piscine
+										<input type="checkbox" value="1" name="chk_picine"> @lang('app.form.product_piscine')
 									</label>
 								</div>
 							</div>
@@ -1105,14 +1104,14 @@
 						</div>
 						<div class="alert alert-danger alert-dismissable" id="info_error" style="display:none">
 							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-							<h4><i class="icon fa fa-ban"></i> Eurreur !</h4>
-							L'enregistrement est impossible car il a un ou plusieurs champs null.
+							<h4><i class="icon fa fa-ban"></i> @lang('app.form.product_error_title') !</h4>
+							@lang('app.form.product_error_content')
 						</div>
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" id="btnSave" onClick="save_product()">Enregistrer</button>
+					<button type="button" class="btn btn-white" data-dismiss="modal">@lang('app.txt.close')</button>
+					<button type="button" class="btn btn-primary" id="btnSave" onClick="save_product()">@lang('app.form.product_btn_save')</button>
 				</div>
 			</div>
 		</div>
