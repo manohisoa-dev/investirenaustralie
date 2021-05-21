@@ -618,7 +618,7 @@ return
 	'txt.recent_searches' => 'Recent Searches',
     'txt.add_new_programme' => 'Add a new program',
     'txt.liste' => 'List',
-<<<<<<< HEAD
+
     'table.confirm_delete' => 'Do you want to delete ?',
     'form.choix_status' => 'Choose status',
     'form.choix_txt' => 'Choose ...',
@@ -680,9 +680,8 @@ return
     'form.product_error_title' => 'Error',
     'form.product_error_content' => 'Registration is not possible because it has one or more null fields.',
     'form.product_btn_save' => 'Save',
-=======
+
 	'txt.saved_search' => 'Saved search',
 	'txt.login_to_saved_search' => 'You must log in to save this search',
 	'txt.error_save' => 'Error save',
->>>>>>> 630f348b9db76d2081c6d9599aa3084660691e13
 ];

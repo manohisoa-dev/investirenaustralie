@@ -887,7 +887,7 @@ return
 	'txt.list_bien_commercial' => 'Liste des Biens Commerciaux',
 	'admin.article_display_order' => 'Ordre d&lsquo;affichage de l&lsquo;article',
 	'txt.parameter' => 'Paramètre',
-<<<<<<< HEAD
+
     'table.confirm_delete' => 'Voulez-vous supprimer ?',
     'form.choix_status' => 'Choisir statut',
     'form.choix_txt' => 'Choisir ...',
@@ -948,10 +948,9 @@ return
     'form.product_error_title' => 'Erreur',
     'form.product_error_content' => 'L\'enregistrement est impossible car il a un ou plusieurs champs null.',
     'form.product_btn_save' => 'Enregistrer',
-=======
+
 	'txt.recent_searches' => 'Recherches Récentes',
 	'txt.saved_search' => 'Recherche enregistrée',
 	'txt.login_to_saved_search' => 'Vous devez vous connecter pour sauvegarder cette recherche',
 	'txt.error_save' => 'Erreur de sauvegarde',
->>>>>>> 630f348b9db76d2081c6d9599aa3084660691e13
 ];
