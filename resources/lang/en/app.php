@@ -620,4 +620,6 @@ return
 	'txt.saved_search' => 'Saved search',
 	'txt.login_to_saved_search' => 'You must log in to save this search',
 	'txt.error_save' => 'Error save',
+	'txt.update_search' => 'Search modification',
+	'txt.product_link' => 'Product link',
 ];

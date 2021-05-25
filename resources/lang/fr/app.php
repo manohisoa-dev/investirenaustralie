@@ -889,4 +889,6 @@ return
 	'txt.saved_search' => 'Recherche enregistrée',
 	'txt.login_to_saved_search' => 'Vous devez vous connecter pour sauvegarder cette recherche',
 	'txt.error_save' => 'Erreur de sauvegarde',
+	'txt.update_search' => 'Modification de la recherche',
+	'txt.product_link' => 'Lien du produit',
 ];
