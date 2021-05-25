@@ -5,16 +5,16 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Products</h2>
+        <h2>@lang('app.products')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Produits</a>
+                <a href="#">@lang('app.products')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.product.index') }}">Listes</a>
+                <a href="{{ route('admin.product.index') }}">@lang('app.list')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Edition</strong>
+                <strong>@lang('app.form.programme_edition')</strong>
             </li>
         </ol>
     </div>
@@ -29,7 +29,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Mise à jour Produit : {{$product->reference}}</h5>
+                <h5>@lang('app.txt.produit_update_info') : {{$product->reference}}</h5>
             </div>
             <div class="ibox-content">
                 <form action="{{ route('admin.product.index')}}/{{$product->id}}" id="productForm" method="post" enctype="multipart/form-data">
@@ -40,15 +40,15 @@
                     <div class="row">
 						<div class="col-lg-12">
 							<div class="form-group">
-								<label for="title">Titre du produit *</label>
-								<input name="title" id="title" class="form-control" type="text" value="{{$product->title}}" title="Indiquez la référence du produit">								
+								<label for="title">@lang('app.form.product_title') *</label>
+								<input name="title" id="title" class="form-control" type="text" value="{{$product->title}}">								
 							</div>
 						</div>
 					</div>
 					<div class="row">     
 						<div class="col-lg-12">                              
 							<div class="form-group">
-								<label for="title">Description produit</label>
+								<label for="title">@lang('app.form.product_content')</label>
 								<textarea class="form-control" rows="10" name="content" id="content">{{$product->content}}</textarea>
 							</div>
 						</div>
@@ -57,7 +57,7 @@
 					<div class="row">
 						<div class="col-lg-3">
 							<div class="form-group">
-								<label for="title">Type *</label>
+								<label for="title">@lang('app.input.type') *</label>
 								<select class="form-control" name="type_id" id="product_type_id" style="width:100%">
 									
 								</select>
@@ -65,19 +65,19 @@
 						</div>
 						<div class="col-lg-3">
 							<div class="form-group">
-								<label for="title">Suburb</label>
+								<label for="title">@lang('app.form.programme_suburb')</label>
 								<input name="suburb_product" id="suburb_product" class="form-control" type="text" value="{{$localisation ? $localisation->area_level_1:''}}">
 							</div>
 						</div>
 						<div class="col-lg-3">
 							<div class="form-group">
-								<label for="title">Ville</label>
+								<label for="title">@lang('app.form.programme_ville')</label>
 								<input name="ville_product" id="ville_product" class="form-control" type="text" value="{{$localisation ? $localisation->locality:''}}">
 							</div>  
 						</div>
 						<div class="col-lg-3">
 							<div class="form-group">
-								<label for="title">Code postal *</label>
+								<label for="title">@lang('app.form.programme_cp') *</label>
 								<input name="postalCode_product" id="postalCode_product" class="form-control" type="text" value="{{$product->postalCode}}">
 							</div>
 						</div>
@@ -85,13 +85,13 @@
 					<div class="row">
 						<div class="col-lg-4">
 							<div class="form-group">
-								<label for="title">Adresse rue *</label>
+								<label for="title">@lang('app.form.programme_adresse') *</label>
 								<input name="display_address" id="display_address" class="form-control" type="text" value="{{$product->display_address}}">
 							</div>
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
-								<label for="title">Etat *</label>
+								<label for="title">@lang('app.form.programme_etat') *</label>
 								<select class="form-control" name="state_id" id="state_id" style="width:100%">
 									<option value="">Sélectionner état...</option>
 									@foreach(\App\Models\State::all() as $state)
@@ -102,7 +102,7 @@
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
-								<label for="title">Pays</label>
+								<label for="title">@lang('app.form.programme_pays')</label>
 								<select class="form-control" name="countryId_product" id="countryId_product" style="width:100%">
 									@foreach(\App\Models\Country::where('id',12)->get() as $country)
 									    @if($localisation)
@@ -120,7 +120,7 @@
 					<div class="row">							
 						<div class="col-lg-3">
 							<div class="form-group">
-								<label for="title">Prix min de vente *</label>
+								<label for="title">@lang('app.form.product_prix_min') *</label>
 								<div class="input-group m-b">
 									<input type="number" class="form-control" name="min_price" id="min_price" value="{{$product->min_price}}">
 									<div class="input-group-append">
@@ -131,7 +131,7 @@
 						</div>
 						<div class="col-lg-3">
 							<div class="form-group">
-								<label for="title">Prix max de vente *</label>
+								<label for="title">@lang('app.form.product_prix_max') *</label>
 								<div class="input-group m-b">
 									<input type="number" class="form-control" name="max_price" id="max_price" value="{{$product->max_price}}">
 									<div class="input-group-append">
@@ -142,7 +142,7 @@
 						</div>
 						<div class="col-lg-3">
 							<div class="form-group">
-								<label for="title">Statuts</label>
+								<label for="title">@lang('app.form.product_status')</label>
 								<select class="form-control" name="status" id="status">
 									<option value="published" {{$product->status == 'published' ? 'selected' : ''}}>Publier</option>
 									<option value="En attente" {{$product->status == 'En attente' ? 'selected' : ''}}>En attente</option>
@@ -152,7 +152,7 @@
 						<div class="col-lg-3">
 							<div id="info_qte">
 								<div class="form-group">
-									<label for="title">Quantité</label>
+									<label for="title">@lang('app.form.product_qte')</label>
 									<input name="quantity" id="quantity" class="form-control" type="number" value="{{$product->quantity}}">
 								</div>
 							</div>
@@ -161,19 +161,19 @@
 					<div class="row">
 						<div class="col-lg-4">
 							<div class="form-group">
-								<label for="title">Nombre de chambre</label>
+								<label for="title">@lang('app.input.nbchambre')</label>
 								<input name="bedrooms" id="bedrooms" class="form-control" type="number" value="{{$product->bedrooms}}">
 							</div>  
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
-								<label for="title">Nombre de suites de chambres</label>
+								<label for="title">@lang('app.input.nbchambresuite')</label>
 								<input name="ensuite" id="ensuite" class="form-control" type="number" value="{{$product->ensuite}}">
 							</div>
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
-								<label for="title">Nombre autres salles de bain/eau</label>
+								<label for="title">@lang('app.input.nbsalledebain')</label>
 								<input name="bathrooms" id="bathrooms" class="form-control" type="number" value="{{$product->bathrooms}}">
 							</div> 
 						</div>
@@ -181,7 +181,7 @@
 					<div class="row">
 						<div class="col-lg-3">
 							<div class="form-group">
-								<label for="title">Surface intérieur *</label>
+								<label for="title">@lang('app.form.product_area_interior') *</label>
 								<div class="input-group m-b">
 									<input type="text" name="interior_area" id="interior_area" class="form-control" value="{{$product->interior_area}}">
 									<div class="input-group-append">
@@ -192,7 +192,7 @@
 						</div>
 						<div class="col-lg-3">
 							<div class="form-group">
-								<label for="title">Surface extérieur *</label>
+								<label for="title">@lang('app.form.product_area_exterior') *</label>
 								<div class="input-group m-b">
 									<input type="text" name="exterior_area" id="exterior_area" class="form-control" value="{{$product->exterior_area}}">
 									<div class="input-group-append">
@@ -203,7 +203,7 @@
 						</div>
 						<div class="col-lg-3">
 							<div class="form-group">
-								<label for="title">Surface total *</label>
+								<label for="title">@lang('app.form.product_area_total') *</label>
 								<div class="input-group m-b">
 									<input type="text" name="total_area" id="total_area" class="form-control" value="{{$product->total_area}}" readonly="">
 									<div class="input-group-append">
@@ -216,7 +216,7 @@
 						@if($product->ancienneteBien == 'Ancien')
 							<div id="yearConstruct">								
 								<div class="form-group">
-									<label for="title">Année de construction *</label>
+									<label for="title">@lang('app.form.product_anneeConstruct') *</label>
 									<input name="year_built" id="year_built" class="form-control" type="number" value="{{$product->year_built}}">
 								</div>
 							</div>
@@ -226,13 +226,13 @@
 					<div class="row">
 						<div class="col-lg-4">
 							<div class="form-group">
-								<label for="title">Emplacements parking fermés</label>
+								<label for="title">@lang('app.form.product_parking_ferme')</label>
 								<input name="garage_spaces" id="garage_spaces" class="form-control" type="number" value="{{$product->garage_spaces}}">
 							</div>
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
-								<label for="title">Emplacements parking carport</label>
+								<label for="title">@lang('app.form.product_parking_carpot')</label>
 								<input name="carport_spaces" id="carport_spaces" class="form-control" type="number" value="{{$product->carport_spaces}}">
 							</div>
 						</div>
@@ -240,7 +240,7 @@
 						<div class="col-lg-4">
 							<div id="jardin_info" style="display:none">
 								<div class="form-group">
-									<label for="title">Superficie jardin privatif</label>
+									<label for="title">@lang('app.form.product_jardin_space')</label>
 									<div class="input-group m-b">
 										<input type="number" class="form-control" name="superficie_jardin" id="superficie_jardin" value="{{$product->superficie_jardin}}">
 										<div class="input-group-append">
@@ -271,14 +271,14 @@
 									</a>
 								</div>
 								<div class="file-name">
-									<label>Photo produit</label>
+									<label>@lang('app.table.produit_image')</label>
 								</div>
 							</div>
 						</div>
 						@endif
 						<div class="col-lg-3">
 							<div class="form-group">
-								<label for="title">Photo</label>
+								<label for="title">@lang('app.table.produit_image')</label>
 								<input name="image" class="form-control" type="file" accept="image/png, image/jpeg">
 							</div>
 						</div>
@@ -288,7 +288,7 @@
 					<div class="row">
 						<div class="col-lg-12">
 							<label class="chk_parking"> 
-								<input type="checkbox" value="1" id="chk_parking" name="chk_parking" {{$product->avoir_parking_voie_public == 1 ? 'checked="checked"' : ''}}> parking voies publiques
+								<input type="checkbox" value="1" id="chk_parking" name="chk_parking" {{$product->avoir_parking_voie_public == 1 ? 'checked="checked"' : ''}}> @lang('app.form.product_parking_vPublic')
 							</label>
 						</div>
 						
@@ -296,7 +296,7 @@
 						<div class="col-lg-12">
 							<div id="chk_picine">
 								<label class="chk_picine"> 
-									<input type="checkbox" value="1" name="chk_picine" {{$product->avoir_piscine == 1 ? 'checked="checked"' : ''}}> piscine
+									<input type="checkbox" value="1" name="chk_picine" {{$product->avoir_piscine == 1 ? 'checked="checked"' : ''}}> @lang('app.form.product_piscine')
 								</label>
 							</div>
 						</div>
@@ -309,7 +309,7 @@
 							</div>
 						</div>
 					</div>                                                                                                                         
-                    <button type="submit" class="btn btn-primary btn-lg pull-right"><i class="fa fa-save"></i> Enregistrer</button>
+                    <button type="submit" class="btn btn-primary btn-lg pull-right"><i class="fa fa-save"></i> @lang('app.form.product_btn_save')</button>
 					<div style="clear:both"></div>
                 </form>
             </div>
