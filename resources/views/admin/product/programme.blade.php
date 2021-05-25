@@ -52,7 +52,7 @@
 								<td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>  
 								<td>
 									<select class="form-control" name="status">
-										<option value="">Choisir statut</option>
+										<option value="">@lang('app.form.choix_status')</option>
 										@foreach($status as $st)
 										<option value="{{$st}}" {{@$_GET['status']==$st?'selected':''}}>{{$st}}</option>
 										@endforeach
@@ -177,16 +177,16 @@
                             </td>
 							<td class="actions-cell text-center" width="12%">
 								<form class="form-inline" action="{{route('admin.product.index')}}/{{$record->id}}" method="POST">
-									<a href="{{route('admin.product.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="Détail">
+									<a href="{{route('admin.product.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="@lang('app.table.btn_title_detail')">
 										<i class="fa fa-eye"></i>
 									</a>&nbsp;&nbsp;
-									<a href="{{route('admin.product.index')}}/{{$record->id}}/edit" class="btn btn-default btn-circle" title="Modification">
+									<a href="{{route('admin.product.index')}}/{{$record->id}}/edit" class="btn btn-default btn-circle" title="@lang('app.table.btn_title_modification')">
 										<i class="fa fa-pencil-square-o"></i>
 									</a>&nbsp;&nbsp;
 									{{ csrf_field() }}
 									{{ method_field('DELETE') }}
 									
-									<button type="button" class="btn btn-default btn-circle" title="Suppression" id="delRecord"><i class="fa fa-times text-danger"></i>
+									<button type="button" class="btn btn-default btn-circle" title="@lang('app.table.btn_title_delete')" id="delRecord"><i class="fa fa-times text-danger"></i>
 									</button>
 								</form>
 							</td>
@@ -209,12 +209,12 @@
         	event.preventDefault();
         	var $form = $(this).closest('form');
 				swal({
-					title: "Voulez-vous supprimer ?",
+					title: "@lang('app.table.confirm_delete')",
 					type: "warning",
 					showCancelButton: true,
 					confirmButtonColor: "#DD6B55",
-					confirmButtonText: "Oui",
-					cancelButtonText: "Annuler",
+					confirmButtonText: "@lang('app.yes')",
+					cancelButtonText: "@lang('app.btn.cancel')",
 					closeOnConfirm: true
 				},
 				function () {
