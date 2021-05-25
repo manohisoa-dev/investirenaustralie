@@ -681,7 +681,6 @@ return
     'form.product_error_title' => 'Error',
     'form.product_error_content' => 'Registration is not possible because it has one or more null fields.',
     'form.product_btn_save' => 'Save',
-
 	'txt.saved_search' => 'Saved search',
 	'txt.login_to_saved_search' => 'You must log in to save this search',
 	'txt.error_save' => 'Error save',
@@ -696,4 +695,6 @@ return
     'form.steps_load' => 'Loading ...',
     'form.validation_cp' => 'Postal code not allowed',
     'txt.produit_update_info' => 'Product Update',
+	'txt.update_search' => 'Search modification',
+	'txt.product_link' => 'Product link',
 ];

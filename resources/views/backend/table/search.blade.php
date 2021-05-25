@@ -18,11 +18,21 @@
             <td>{{$search->keyword}}</td>
             <td>{{$search->created_at->diffForHumans()}}</td>
             <td>
-                <a class="btn btn-info border-radius-0 btn-edit-search" style="color:#fff;" 
-                   data-search-id="{{$search->id}}" 
-                   data-search-title="{{$search->title}}" >@lang('app.btn.edit')</a>
-                <a class="btn btn-danger border-radius-0 btn-delete white-color" style="color:#fff;" 
-                   data-search-id="{{$search->id}}">x</a>
+                <div class="row col-lg-12">
+                    <div class="col-lg-4">
+                        <a class="btn btn-info btn-sm border-radius-0 btn-edit-search" style="color:#fff;" 
+                        data-search-id="{{$search->id}}" 
+                        data-search-title="{{ $search->title }}" title="@lang('app.txt.edit')"><i class="fa fa-edit"></i></a>
+                    </div>
+                    <div class="col-lg-4">
+                        <a class="btn btn-danger btn-sm border-radius-0 btn-delete white-color" style="color:#fff;" 
+                        data-search-id="{{$search->id}}" title="@lang('app.txt.delete')"><i class="fa fa-times"></i></a>
+                    </div>
+                    <div class="col-lg-4">
+                        <a href="@php print_r(unserialize($search->content)['url']) @endphp" class="btn btn-primary btn-sm border-radius-0 white-color" title="URL" style="color:#fff;">
+                            <i class="fa fa-link"></i></a>
+                    </div>
+                </div>
             </td>
         </tr>
         @endforeach
@@ -36,7 +46,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-          <h4 class="modal-title" id="title">Modification de la recherche</h4>
+          <h4 class="modal-title" id="title">@lang('app.txt.update_search')</h4>
       </div>
       <div class="modal-body">
           <form id="form-edit-search" action="" method="post">

@@ -715,6 +715,12 @@ class SearchController extends Controller
         if(Auth::user() && Auth::user()->role=='5'){
             if($request->dt !== ""){
                 $search = new Search();
+                $datas = unserialize($request->dt);
+                $title = $datas['state'].'-'.$datas['city'].'-'.$datas['suburb'].' | '.$datas['prod'];
+                $key = $datas['state'].','.$datas['city'].','.$datas['suburb'];
+
+                $search->title = $title;
+                $search->keyword = $key;
                 $search->content = $request->dt;
                 $search->author_id = Auth::user()->id;
                 $search->save();
@@ -728,6 +734,6 @@ class SearchController extends Controller
             $status = 1;
         }
 
-        return response()->json(['msg'=>$msg, 'status'=>$status]);
+        return response()->json(['msg'=>$datas, 'status'=>$status]);
     }
 }

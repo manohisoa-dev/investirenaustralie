@@ -949,7 +949,6 @@ return
     'form.product_error_title' => 'Erreur',
     'form.product_error_content' => 'L\'enregistrement est impossible car il a un ou plusieurs champs null.',
     'form.product_btn_save' => 'Enregistrer',
-
 	'txt.recent_searches' => 'Recherches Récentes',
 	'txt.saved_search' => 'Recherche enregistrée',
 	'txt.login_to_saved_search' => 'Vous devez vous connecter pour sauvegarder cette recherche',
@@ -965,4 +964,6 @@ return
     'form.steps_load' => 'Chargement ...',
     'form.validation_cp' => 'Code postal non autorisé',
     'txt.produit_update_info' => 'Mise à jour Produit',
+	'txt.update_search' => 'Modification de la recherche',
+	'txt.product_link' => 'Lien du produit',
 ];

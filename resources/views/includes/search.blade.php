@@ -50,6 +50,7 @@
                                         </button>
                                         <a href="{{ $data['url'] }}">
                                             <h5 class="font-1 font-w-600 white-color m-0px text-left">{{ ($data['state']?$data['state']:''). ($data['city']?'-'.$data['city']:''). ($data['suburb']?'-'.$data['suburb']:'') }}</h5>
+                                            <small class="white-color">{{ $data['prod']===trans('app.txt.any')?trans('app.all_product'):$data['prod'] }}</small>
                                         </a>
                                     </div>
                                 </div>
