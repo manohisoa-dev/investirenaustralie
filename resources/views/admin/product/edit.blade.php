@@ -359,29 +359,29 @@
 			},
 			messages: {
 				title: {
-					required: "Champ obligatoire"
+					required: "@lang('app.txt.champobligatoire')"
 				},
 				type_id: {
-					required: "Champ obligatoire"
+					required: "@lang('app.txt.champobligatoire')"
 				},
 				min_price: {
-					required: "Champ obligatoire"
+					required: "@lang('app.txt.champobligatoire')"
 				},
 				max_price: {
-					required: "Champ obligatoire",
-					min: jQuery.validator.format("Prix maximal doit superieur à {0}")
+					required: "@lang('app.txt.champobligatoire')",
+					min: jQuery.validator.format("@lang('app.form.programme_validate_prix_max') {0}")
 				},
 				display_address: {
-					required: "Champ obligatoire",
+					required: "@lang('app.txt.champobligatoire')",
 				},
 				postalCode_product: {
-					required: "Champ obligatoire",
+					required: "@lang('app.txt.champobligatoire')",
 				},
 				interior_area: {
-					required: "Champ obligatoire",
+					required: "@lang('app.txt.champobligatoire')",
 				},
 				exterior_area: {
-					required: "Champ obligatoire",
+					required: "@lang('app.txt.champobligatoire')",
 				}
 			},
 			errorPlacement: function ( error, element ) {
