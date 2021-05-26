@@ -8,10 +8,10 @@
         <h2>Parties prenantes</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.user.index') }}">Parties prenantes</a>
+                <a href="{{ route('admin.user.index') }}">@lang('app.txt.stakeholders')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Listes</strong>
+                <strong>@lang('app.txt.lists')</strong>
             </li>
         </ol>
     </div>
@@ -31,12 +31,12 @@
 	<div class="col-lg-12">
 		<div class="ibox float-e-margins">
 			<div class="ibox-title">
-				<h5>Liste des parties prenantes</h5>
+				<h5>@lang('app.txt.lists_of_stakeholders')</h5>
 			</div>
 			<div class="ibox-content">
 				<div class="ibox float-e-margins">
 					<div class="ibox-title">
-						<h5><i class="fa fa-search"></i> Filtre de recherche</h5>
+						<h5><i class="fa fa-search"></i> @lang('app.search.filter')</h5>
 						<div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -50,7 +50,7 @@
 									<div class="form-group">
 										<label>@lang('app.select_role')</label> 
 										<select class="form-control" name="role" id="role">
-											<option value="">Tous</option>
+											<option value="">@lang('app.txt.any')</option>
 											@foreach($roles as $role)
 											<option value="{{$role->id}}" {{@$_GET['role']==$role->id?'selected':''}}>{{$role->role_name}}</option>
 											@endforeach
@@ -60,7 +60,7 @@
 								<div class="col-md-2">
 									<label>@lang('app.select_country')</label> 
 									<select class="form-control" name="country_id" id="country_id">
-										<option value="">Tous</option>
+										<option value="">@lang('app.txt.any')</option>
 										@foreach($countries as $c)
 										<option value="{{$c->id}}" {{@$_GET['country_id']==$c->id?'selected':''}}>{{$c->content}}</option>
 										@endforeach
@@ -69,7 +69,7 @@
 								<div class="col-md-2">
 									<label>@lang('app.select_state')</label> 
 									<select class="form-control" name="state_id" id="state_id">
-										<option value="">Tous</option>
+										<option value="">@lang('app.txt.any')</option>
 										@foreach($states as $stateItem)
 										<option value="{{$stateItem->id}}" {{@$_GET['state_id']==$stateItem->id?'selected':''}}>{{$stateItem->content}}</option>
 										@endforeach
@@ -82,7 +82,7 @@
 								<div class="col-md-2">
 									<label>Type</label> 
 									<select class="form-control" name="type_users_id" id="type_users_id">
-										<option value="">Tous</option>
+										<option value="">@lang('app.txt.any')</option>
 										@foreach($typeUser as $type)
 										<option value="{{$type->id}}" {{@$_GET['type_users_id']==$type->id?'selected':''}}>{{$type->type_user_name}}</option>
 										@endforeach
@@ -91,7 +91,7 @@
 								<div class="col-md-2">
 									<label>Status</label> 
 									<select class="form-control" name="status">
-										<option value="">Tous</option>
+										<option value="">@lang('app.txt.any')</option>
 										@foreach($statuts as $st)
 										<option value="{{$st}}" {{@$_GET['status']==$st?'selected':''}}>{{$st}}</option>
 										@endforeach
@@ -99,7 +99,7 @@
 								</div>
 							</div>
 							<div class="hr-line-dashed"></div>
-							<button type="submit" class="btn btn-primary btn-sm pull-right"><i class="fa fa-search"></i> Filtrer</button>
+							<button type="submit" class="btn btn-primary btn-sm pull-right"><i class="fa fa-search"></i> @lang('app.form.filter')</button>
 							<div style="clear:both"></div>
 						</form>
 					</div>
@@ -196,7 +196,7 @@
 									<span class="label label-primary">{{$record->status == 'active' ? 'Actif' : ''}}</span>
 									@else
 										@if($record->status == 'disabled')
-											<span class="label label-warning">Suspendu</span>
+											<span class="label label-danger">Suspendu</span>
 										@elseif($record->status == 'pinged')
 											<span class="label label-warning">{{ucfirst($record->status)}}</span>
 										@endif
@@ -280,9 +280,9 @@
 				 <form action="#" id="form" class="form-horizontal">
                     <div class="form-body">
 						<div class="form-group">
-                            <label class="control-label">Rôle *</label>
+                            <label class="control-label">@lang('app.txt.role') *</label>
 							<select class="form-control" name="new_role" id="new_role">
-								<option value="">Choisir...</option>
+								<option value="">@lang('app.form.choix_txt')</option>
 								@foreach(\App\Models\Role::all() as $role)
 									<option value="{{$role->id}}">{{$role->role_name}}</option>
 								@endforeach
@@ -292,8 +292,8 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-                <button type="button" id="btnSave" onClick="suivant()" class="btn btn-primary">Enregistrer</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                <button type="button" id="btnSave" onClick="suivant()" class="btn btn-primary">@lang('app.btn.save')</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">@lang('app.btn.cancel')</button>
             </div>
 		</div>
 	</div>

@@ -115,6 +115,7 @@ return
 	'form.register.shareinfo' => 'J&lsquo;autorise le partage et la commercialisation de mes information avec les partenaires du site www.investirenaustralie.com',
 	'form.required' => '(*) Required field',
 	'form.filterBy' => 'Filtrer par',
+	'form.filter' => 'Filtrer',
 	'form.order' => 'Ordre',
 	'form.order_price' => 'Ordre des prix',
 	'form.show' => 'Afficher par',
@@ -652,6 +653,7 @@ return
 	'btn.draft' => 'Brouillon',
 	'btn.next' => 'Suivant',
 	'btn.prev' => 'Precedent',
+	'btn.save' => 'Enregistrer',
 	'btn.save_as_model' => 'Enregistrer en tant que Model',
 	'btn.register' => 'Valider l&lsquo;inscription',
 	'btn.submit' => 'Soumettre',
@@ -968,4 +970,8 @@ return
 	'txt.update_search' => 'Modification de la recherche',
 	'txt.product_link' => 'Lien du produit',
 	'waiting' => 'En attente',
+	'txt.stakeholders' => 'Parties prenantes',
+	'txt.lists' => 'Listes',
+	'txt.lists_of_stakeholders' => 'Listes des parties prenantes',
+	'txt.role' => 'R&ocirc;le'
 ];

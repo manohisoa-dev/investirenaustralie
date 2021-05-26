@@ -205,6 +205,7 @@ return
 	'btn.draft' => 'Draft',
 	'btn.next' => 'Next',
 	'btn.prev' => 'Previous',
+	'btn.save' => 'Save',
 	'btn.save_as_model' => 'Save as model',
 	'btn.register' => 'Confirm registration',
 	'btn.go_to_location' => 'I want to go there before ...',
@@ -539,6 +540,7 @@ return
 	'all_product' => 'All products',
 	'load_more_product' => 'Loading more product',
 	'form.filterBy' => 'Filter by',
+	'form.filter' => 'Filter',
 	'form.order' => 'Order',
 	'form.order_price' => 'Price order',
 	'form.show' => 'Show by',
@@ -699,4 +701,8 @@ return
 	'txt.update_search' => 'Search modification',
 	'txt.product_link' => 'Product link',
 	'waiting' => 'En attente',
+	'txt.stakeholders' => 'Stakeholders',
+	'txt.lists' => 'Lists',
+	'txt.lists_of_stakeholders' => 'Lists of Stakeholders',
+	'txt.role' => 'Role'
 ];
