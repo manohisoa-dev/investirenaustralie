@@ -24,7 +24,7 @@
                     </div>
 
                     {{-- Badge --}}
-                    @if ($item->created_at > Carbon\Carbon::now()->subDays(App\Models\Parameter::where('name','nb_day_new_prod')->first()->value))
+                    @if ($item->validated_at > Carbon\Carbon::now()->subDays(App\Models\Parameter::where('name','nb_day_new_prod')->first()->value))
                         <span class="notify-badge btn-success">@lang('app.txt.new')</span>
                     @endif
 
@@ -55,6 +55,10 @@
                                                         <a href="{{route('product.index',['product'=>$prod->slug])}}" target="_blank"><img src="{{$img_prod}}" alt="{{$prod->title}}" class="img-fluid"></a>
                                                         {{-- Badge type --}}
                                                         <span class="type-badge btn-info">{{ App\Models\Type::find($prod->type_id)->title }}</span>
+                                                        {{-- Badge new product --}}
+                                                        @if ($prod->validated_at > Carbon\Carbon::now()->subDays(App\Models\Parameter::where('name','nb_day_new_prod')->first()->value))
+                                                            <span class="notify-badge-prod btn-success">@lang('app.txt.new')</span>
+                                                        @endif
                                                     </div>
                                                     <div class="thumb-content">
                                                         <p class="item-price"><span>$ {{number_format($prod->price, 0, '.', ' ')}}</span></p>
@@ -308,10 +312,21 @@
                 right:-20px;
                 top:-20px;
                 text-align: center;
-                /* background: #0DA600; */
                 color:white;
                 padding:5px 10px;
                 font-size:18px;
+            }
+
+            .notify-badge-prod{
+                position: absolute;
+                left: 15px;
+                top: 100px;
+                text-align: center;
+                /* background: #0DA600; */
+                background: rgba(40,167,69, 0.8);
+                color:white;
+                padding:5px 10px;
+                font-size:14px;
             }
         </style>
 @endpush

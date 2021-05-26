@@ -132,11 +132,13 @@
                                     data-pk="{{ $record->{$record->getKeyName()} }}"
                                     data-url="{{ route('admin.product.programme')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
-									@if($record->status=='published')
-									<span class="label label-success">@lang('app.'.$record->status)</span>
-									@else
-									<span class="label label-warning">@lang('app.'.$record->status)</span>
-									@endif
+                                    @if($record->status=='published')
+                                        <span class="label label-success">@lang('app.'.$record->status)</span>
+                                    @elseif($record->status=='waiting')
+                                        <span class="label label-danger">@lang('app.'.$record->status)</span>
+                                    @else
+                                        <span class="label label-warning">@lang('app.'.$record->status)</span>
+                                    @endif
                                 </span>
                             </td>
 							<td>
@@ -183,9 +185,13 @@
 									<a href="{{route('admin.product.index')}}/{{$record->id}}/edit" class="btn btn-default btn-circle" title="@lang('app.table.btn_title_modification')">
 										<i class="fa fa-pencil-square-o"></i>
 									</a>&nbsp;&nbsp;
+                                    @if($record->status=='waiting')
+										<a href="{{route('admin.product.publish', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.validate')">
+											<i class="fa fa-check text-info"></i>
+										</a>&nbsp;&nbsp;
+									@endif
 									{{ csrf_field() }}
 									{{ method_field('DELETE') }}
-									
 									<button type="button" class="btn btn-default btn-circle" title="@lang('app.table.btn_title_delete')" id="delRecord"><i class="fa fa-times text-danger"></i>
 									</button>
 								</form>

@@ -126,8 +126,10 @@
                                 >
 									@if($record->status=='published')
 									<span class="label label-success">@lang('app.'.$record->status)</span>
-									@else
-									<span class="label label-warning">@lang('app.'.$record->status)</span>
+									@elseif($record->status=='waiting')
+									<span class="label label-danger">@lang('app.'.$record->status)</span>
+                                    @else
+                                    <span class="label label-warning">@lang('app.'.$record->status)</span>
 									@endif
                                 </span>
                             </td>
@@ -188,6 +190,11 @@
 										</a>&nbsp;&nbsp;
 										<a href="{{route('admin.product.trash', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
 											<i class="fa fa-trash-o"></i>
+										</a>&nbsp;&nbsp;
+									@endif
+                                    @if($record->status=='waiting')
+										<a href="{{route('admin.product.publish', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.validate')">
+											<i class="fa fa-check text-info"></i>
 										</a>&nbsp;&nbsp;
 									@endif
 									

@@ -219,6 +219,7 @@ return
 	'btn.return' => 'Retour',
 	'btn.ok' => 'OK',
 	'btn.refresh' => 'Refresh',
+	'btn.validate' => 'Validate',
 	'contact_admin' => 'Contact Administrateur',
 	'contact_apl' => 'Contact APL',
 	'contact_afa' => 'Contact AFA',
@@ -697,4 +698,5 @@ return
     'txt.produit_update_info' => 'Product Update',
 	'txt.update_search' => 'Search modification',
 	'txt.product_link' => 'Product link',
+	'waiting' => 'En attente',
 ];

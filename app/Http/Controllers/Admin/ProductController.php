@@ -16,6 +16,7 @@ use App\Models\Localisation;
 use App\Models\Type;
 use App\Models\ProductsImage;
 use Auth;
+use Carbon\Carbon;
 
 use GuzzleHttp;
 use GuzzleHttp\Client;
@@ -461,9 +462,11 @@ class ProductController extends Controller {
         $this->middleware('auth');
         $this->middleware('role:admin');
         $product->status = 'published';
+        $product->validated_at = Carbon::now();
         $product->save();
         Notify::success('Le produit a été publié avec succés');
-        return redirect(route('admin.product.index'));
+        
+        return back();
     }
 
     protected function view($view, $data = []) {

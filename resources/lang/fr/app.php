@@ -664,6 +664,7 @@ return
 	'btn.return' => 'Retour',
 	'btn.ok' => 'OK',
 	'btn.refresh' => 'Actualiser',
+	'btn.validate' => 'Valider',
 	'contact_admin' => 'Contacter l&lsquo;administrateur',
 	'contact_apl' => 'Contacter l&lsquo;APL',
 	'contact_afa' => 'Contacter l&lsquo;AFA',
@@ -966,4 +967,5 @@ return
     'txt.produit_update_info' => 'Mise à jour Produit',
 	'txt.update_search' => 'Modification de la recherche',
 	'txt.product_link' => 'Lien du produit',
+	'waiting' => 'En attente',
 ];
