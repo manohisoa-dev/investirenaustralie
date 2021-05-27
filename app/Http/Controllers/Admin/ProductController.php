@@ -31,6 +31,7 @@ class ProductController extends Controller {
     }
 
     public function programme() {
+        //echo $this->get_lonlat('Samberstraat 69, Antwerpen, Belgium');
         $records = Product::allProgramme();
         $status = Product::groupBy('status')->pluck('status', 'status');
         return $this->view("programme", ['records' => $records, 'status' => $status]);
@@ -184,7 +185,7 @@ class ProductController extends Controller {
             //Converts address into Lat and Lng
             $client = new Client(); //GuzzleHttp\Client
             $result = (string )$client->post("https://maps.googleapis.com/maps/api/geocode/json?address=$address", ['form_params' => ['key' =>
-                'AIzaSyCzqATs_wp3WXAVlt9iPVS9GcRFPGcIZZw']])->getBody();
+                'AIzaSyC7t58Gd0iEOXO6H0K_YGLqjEx1u7Z4c0U'],'verify' => false])->getBody();
             $json = json_decode($result);
             $address->lat = $json->results[0]->geometry->location->lat;
             $address->lng = $json->results[0]->geometry->location->lng;
@@ -230,6 +231,7 @@ class ProductController extends Controller {
         $programme->slug = $slug;
         $programme->location_id = $location_id;
         $programme->author_id = Auth::user()->id;
+        $programme->validated_at = Carbon::now();
         $programme->save();
         return $programme->id;
     }
@@ -287,6 +289,7 @@ class ProductController extends Controller {
         $product->superficie_jardin = $superficie_jardin;
         $product->avoir_parking_voie_public = $avoir_parking_voie_public;
         $product->avoir_piscine = $avoir_piscine;
+        $product->validated_at = Carbon::now();
         $product->save();
     }
 
