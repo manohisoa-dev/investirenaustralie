@@ -195,6 +195,8 @@ return
 	'Vendeur' => 'Vendeur',
 	'Admin' => 'Admin',
 	'admin' => 'Administrateur',
+	'Administrateur' => 'Administrateur',
+	'Administrator' => 'Administrateur',
 	'seller' => 'Vendeur',
 	'afa' => 'Agence Francophone Australienne',
 	'apl' => 'Agence Partenaire Locale',

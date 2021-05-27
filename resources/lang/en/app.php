@@ -573,6 +573,8 @@ return
 	'Admin' => 'Admin',
 	'members' => 'Admin',
 	'admin' => 'Administrator',
+	'Administrator' => 'Administrator',
+	'Administrateur' => 'Administrator',
 	'seller' => 'Seller',
 	'afa' => 'Australian Francophone Agency (AFA)',
 	'apl' => 'Local Partner Agency (LPA)',

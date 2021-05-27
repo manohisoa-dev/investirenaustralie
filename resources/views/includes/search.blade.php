@@ -45,9 +45,17 @@
                                         <button type="button" class="close white-color float-right btn-search-close" aria-label="Close" value="search-{{ $key }}">
                                             <span aria-hidden="true" class="small p-5px">&times;</span>
                                         </button>
-                                        <button type="button" class="close white-color float-right btn-search-save" aria-label="Close" value="{{ $data['query']?$data['query']:'' }}">
-                                            <span aria-hidden="true" class="small"><i class="fa fa-save"></i></span>
-                                        </button>
+                                        @if (Auth::user())
+                                            @if (Auth::user()->role==5)
+                                                <button type="button" class="close white-color float-right btn-search-save" aria-label="Close" value="{{ $data['query']?$data['query']:'' }}">
+                                                    <span aria-hidden="true" class="small"><i class="fa fa-save"></i></span>
+                                                </button>
+                                            @endif
+                                        @else
+                                            <button type="button" class="close white-color float-right btn-search-save" aria-label="Close" value="{{ $data['query']?$data['query']:'' }}">
+                                                <span aria-hidden="true" class="small"><i class="fa fa-save"></i></span>
+                                            </button>
+                                        @endif
                                         <a href="{{ $data['url'] }}">
                                             <h5 class="font-1 font-w-600 white-color m-0px text-left">{{ ($data['state']?$data['state']:''). ($data['city']?'-'.$data['city']:''). ($data['suburb']?'-'.$data['suburb']:'') }}</h5>
                                             <small class="white-color">{{ $data['prod']===trans('app.txt.any')?trans('app.all_product'):$data['prod'] }}</small>
