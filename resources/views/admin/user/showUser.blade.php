@@ -5,10 +5,13 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Parties prenantes</h2>
+        <h2>@lang('app.txt.stakeholders')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('admin.user.index') }}">@lang('app.txt.stakeholders')</a>
+            </li>
+			<li class="breadcrumb-item">
+				<a href="{{ route('admin.user.show.'.$userRole) }}">@lang('app.txt.'.$userRole)</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>@lang('app.txt.lists')</strong>
@@ -195,6 +198,9 @@
 							</td>
 							<td>
 							<form class="form-inline" action="{{route('admin.user.index')}}/{{$record->id}}" method="POST">
+								<a href="{{route('admin.user.part.show', ['user_role' => App\Models\Role::where('id',$record->role)->first()->role_initial,'user_id' => $record->id])}}" class="btn btn-default btn-circle" title="@lang('app.btn.view')">
+									<i class="fa fa-info text-success"></i>
+								</a>&nbsp;&nbsp;
 								@if($record->status=='active')
 								<a href="{{route('admin.user.desactiver', ['user_id' => $record->id])}}" class="btn btn-default btn-circle" title="@lang('app.btn.disable')">
 									<i class="fa fa-eye-slash"></i>

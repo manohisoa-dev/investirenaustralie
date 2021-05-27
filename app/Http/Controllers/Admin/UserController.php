@@ -46,7 +46,7 @@ class UserController extends Controller {
         $countries = Country::all();
         $states = State::all();
         $typeUser = TypeUser::all();
-        // $records = User::findRequested();
+        $userRole = 'seller';
 
         if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
             $users_array = User::findRequested()->where('role',2);
@@ -58,7 +58,7 @@ class UserController extends Controller {
         
         return $this->view("showUser", ['records' => $records, 'roles' => $role,
             'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
-            'statuts' => $statuts]);
+            'statuts' => $statuts, 'userRole' => $userRole]);
     }
 
     public function showAfa() {
@@ -70,7 +70,7 @@ class UserController extends Controller {
         $countries = Country::all();
         $states = State::all();
         $typeUser = TypeUser::all();
-        // $records = User::findRequested();
+        $userRole = 'afa';
 
         if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
             $users_array = User::findRequested()->where('role',3);
@@ -82,7 +82,7 @@ class UserController extends Controller {
         
         return $this->view("showUser", ['records' => $records, 'roles' => $role,
             'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
-            'statuts' => $statuts]);
+            'statuts' => $statuts, 'userRole' => $userRole]);
     }
 
     public function showApl() {
@@ -94,7 +94,7 @@ class UserController extends Controller {
         $countries = Country::all();
         $states = State::all();
         $typeUser = TypeUser::all();
-        // $records = User::findRequested();
+        $userRole = 'apl';
 
         if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
             $users_array = User::findRequested()->where('role',4);
@@ -106,7 +106,7 @@ class UserController extends Controller {
         
         return $this->view("showUser", ['records' => $records, 'roles' => $role,
             'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
-            'statuts' => $statuts]);
+            'statuts' => $statuts, 'userRole' => $userRole]);
     }
 
     public function showMember() {
@@ -118,7 +118,7 @@ class UserController extends Controller {
         $countries = Country::all();
         $states = State::all();
         $typeUser = TypeUser::all();
-        // $records = User::findRequested();
+        $userRole = 'member';
 
         if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
             $users_array = User::findRequested()->where('role',5);
@@ -130,7 +130,7 @@ class UserController extends Controller {
         
         return $this->view("showUser", ['records' => $records, 'roles' => $role,
             'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
-            'statuts' => $statuts]);
+            'statuts' => $statuts, 'userRole' => $userRole]);
     }
 
     public function showMemberParticulier() {
@@ -142,6 +142,8 @@ class UserController extends Controller {
         $countries = Country::all();
         $states = State::all();
         $typeUser = TypeUser::all();
+        $userRole = 'member.particulier';
+        
         // $records = User::findRequested();
 
         if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
@@ -154,7 +156,7 @@ class UserController extends Controller {
         
         return $this->view("showUser", ['records' => $records, 'roles' => $role,
             'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
-            'statuts' => $statuts]);
+            'statuts' => $statuts, 'userRole' => $userRole]);
     }
 
     public function showMemberOrganisation() {
@@ -166,7 +168,7 @@ class UserController extends Controller {
         $countries = Country::all();
         $states = State::all();
         $typeUser = TypeUser::all();
-        // $records = User::findRequested();
+        $userRole = 'member.organisation';
 
         if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
             $users_array = User::findRequested()->where('role',5)->where('type_users_id',1);
@@ -178,7 +180,7 @@ class UserController extends Controller {
         
         return $this->view("showUser", ['records' => $records, 'roles' => $role,
             'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
-            'statuts' => $statuts]);
+            'statuts' => $statuts, 'userRole' => $userRole]);
     }
 
     /**
@@ -217,6 +219,16 @@ class UserController extends Controller {
             return redirect()->route('admin.profile');
         }
         return $this->view("info", ['user' => $user]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @return  \Illuminate\Http\Response
+     */
+    public function showPart(Request $request, $role, User $user) {
+        
+        return $this->view("infoPart", ['user' => $user, 'role'=>$role]);
     }
 
     /**

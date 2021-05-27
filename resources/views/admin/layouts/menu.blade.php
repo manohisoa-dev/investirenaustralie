@@ -40,7 +40,16 @@
 		<span class="nav-label">@lang('app.txt.stakeholders') </span><span class="fa arrow"></span>
 	</a>
     <ul class="nav nav-second-level collapse">
-
+		<li class="">
+			<a href="{{route('admin.user.index')}}">@lang('app.txt.any')</a>
+		</li>
+		<li class="">
+			<a href="{{route('admin.role.index')}}">@lang('app.txt.roles')</a>
+		</li>
+		<li class="">
+			<a href="{{route('admin.type-user.index')}}">@lang('app.txt.types')</a>
+		</li>
+        
         @forelse (App\Models\Role::where('role_initial','!=','admin')->get() as $item)
             <li class="{{Request::is('*/user/show/'.$item->role_initial) || Request::is('*/user/show/'.$item->role_initial.'/*') ? 'active' : ''}}">
                 <a href="#"> 
@@ -63,16 +72,6 @@
         @empty
             
         @endforelse
-
-		<li class="">
-			<a href="{{route('admin.user.index')}}">@lang('app.txt.any')</a>
-		</li>
-		<li class="">
-			<a href="{{route('admin.role.index')}}">@lang('app.txt.roles')</a>
-		</li>
-		<li class="">
-			<a href="{{route('admin.type-user.index')}}">@lang('app.txt.types')</a>
-		</li>
     </ul>
 </li>
 <li class="{{Request::is('*/product/*') || Request::is('*/product') || Request::is('*/programme/*') || Request::is('*/programme') ? 'active' : ''}}">

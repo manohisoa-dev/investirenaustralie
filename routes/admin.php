@@ -85,12 +85,13 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::get('active/{user}', 'UserController@active')->name('user.active');
     Route::get('contact/{user}' , 'UserController@contact')->name('user.contact');
     Route::get('show/{user}', 'UserController@show')->name('user.show');
+    Route::get('user/show/{role}/{user}', 'UserController@showPart')->name('user.part.show');
     Route::get('user/show/seller', 'UserController@showSeller')->name('user.show.seller');
     Route::get('user/show/afa', 'UserController@showAfa')->name('user.show.afa');
     Route::get('user/show/apl', 'UserController@showApl')->name('user.show.apl');
     Route::get('user/show/member', 'UserController@showMember')->name('user.show.member');
-    Route::get('user/show/member/particulier', 'UserController@showMemberParticulier')->name('user.show.member.particulier');
-    Route::get('user/show/member/organisation', 'UserController@showMemberOrganisation')->name('user.show.member.organisation');
+    Route::get('user/show/member/type/particulier', 'UserController@showMemberParticulier')->name('user.show.member.particulier');
+    Route::get('user/show/member/type/organisation', 'UserController@showMemberOrganisation')->name('user.show.member.organisation');
 
     Route::resource('sale','SaleController');
     Route::get('pay/{sale}/{role}', 'SaleController@pay')->name('sale.pay');
