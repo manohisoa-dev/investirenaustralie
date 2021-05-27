@@ -28,6 +28,7 @@ return [
     'btn.more' => 'Savoir Plus',
     'btn.invoice' => 'Télécharger la facture',
     'btn.view.user' => 'Voir :role',
+    'btn.contact_admin' => 'Contacter Admin',
     
     'default_password' => 'Votre mot de passe par défaut est &ldquo;<b>:password</b>&rdquo;',
     'quantity' => 'Quantité :value',
@@ -38,6 +39,7 @@ return [
     'thank' => "Merci d&lsquo;utiliser notre application.",
     
     'created.subject' => '[:app] Compte créé',
+    'disabled.subject' => '[:app] Compte suspendu',
     'created.content.1' => "Quelqu&lsquo;un a créé un compte á cette adresse email.",
     'created.content.2' => "Veuillez confirmer votre inscription en cliquant le lien ci-dessous.",
     
@@ -69,5 +71,6 @@ return [
     'document.sent' => 'Veuillez télécharger les documents ci-dessous.',
     'suspended.user.logged' => 'Un utilisateur suspendu vient de se connecter.',
     'suspended.user' => 'Nom d&lsquo;utilisateur: <b>&ldquo; :user &rdquo;</b>',
+    'txt.contact_admin' => 'Pour la récupération de votre compte, Veuillez contacter l&lsquo;admin par l&lsquo;adresse e-mail <b>&ldquo; :mail &rdquo;</b>.',
 
 ];

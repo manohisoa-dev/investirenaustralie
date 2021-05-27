@@ -47,17 +47,6 @@
 						<form class="search-form">
 							<div class="row">
 								<div class="col-md-2">
-									<div class="form-group">
-										<label>@lang('app.select_role')</label> 
-										<select class="form-control" name="role" id="role">
-											<option value="">@lang('app.txt.any')</option>
-											@foreach($roles as $role)
-											<option value="{{$role->id}}" {{@$_GET['role']==$role->id?'selected':''}}>{{$role->role_name}}</option>
-											@endforeach
-										</select>
-									</div>
-								</div>
-								<div class="col-md-2">
 									<label>@lang('app.select_country')</label> 
 									<select class="form-control" name="country_id" id="country_id">
 										<option value="">@lang('app.txt.any')</option>

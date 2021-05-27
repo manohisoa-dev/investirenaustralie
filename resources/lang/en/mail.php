@@ -28,6 +28,7 @@ return [
     'btn.more' => 'Know more',
     'btn.invoice' => 'Download the invoice',
     'btn.view.user' => 'See :role',
+    'btn.contact_admin' => 'Contact Admin',
     
     'default_password' => 'Your default password is &ldquo;<b>:password</b>&rdquo;',
     'quantity' => 'Amount :value',
@@ -38,6 +39,7 @@ return [
     'thank' => 'Thank you for using our application.',
     
     'created.subject' => '[:app] Account created',
+    'disabled.subject' => '[:app] Account suspended',
     'created.content.1' => "Someone has created an account at this email address.",
     'created.content.2' => "Please confirm your registration by clicking the link below.",
     
@@ -70,5 +72,6 @@ return [
     
     'suspended.user.logged' => 'A suspended user has just logged in',
     'suspended.user' => 'Username: <b>&ldquo; :user &rdquo;</b>',
+    'txt.contact_admin' => 'For the recovery of your account, please contact the admin by the e-mail address <b>&ldquo; :mail &rdquo; </b>.',
 
 ];
