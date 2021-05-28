@@ -43,15 +43,35 @@
 		<li class="">
 			<a href="{{route('admin.user.index')}}">@lang('app.txt.any')</a>
 		</li>
-		<li class="">
-			<a href="{{route('admin.role.index')}}">@lang('app.txt.roles')</a>
-		</li>
-		<li class="">
-			<a href="{{route('admin.type-user.index')}}">@lang('app.txt.types')</a>
-		</li>
-        
         @forelse (App\Models\Role::where('role_initial','!=','admin')->get() as $item)
-            <li class="{{Request::is('*/user/show/'.$item->role_initial) || Request::is('*/user/show/'.$item->role_initial.'/*') ? 'active' : ''}}">
+            @if($item->role_initial !== 'member')
+                <li class="">
+                    <a href="{{route('admin.user.show.'.$item->role_initial)}}">@lang('app.txt.'.$item->role_initial)</a>
+                </li>
+            @else
+                <li class="{{Request::is('*/user/show/'.$item->role_initial) || Request::is('*/user/show/'.$item->role_initial.'/*') ? 'active' : ''}}">
+                    <a href="#"> 
+                        <span class="nav-label">@lang('app.txt.'.$item->role_initial) </span><span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level collapse">
+                        <li class="">
+                            <a href="{{route('admin.user.show.'.$item->role_initial)}}">{{ trans('app.txt.list_of', ['role'=>trans('app.txt.'.$item->role_initial)]) }}</a>
+                        </li>
+                        @if($item->role_initial == 'member')
+                            <li class="">
+                                <a href="{{route('admin.user.show.member.particulier')}}">@lang('app.txt.list_particulier')</a>
+                            </li>
+                            <li class="">
+                                <a href="{{route('admin.user.show.member.organisation')}}">@lang('app.txt.list_organisation')</a>
+                            </li>
+                        @endif
+                    </ul>
+                </li>    
+            @endif
+
+
+
+            {{-- <li class="{{Request::is('*/user/show/'.$item->role_initial) || Request::is('*/user/show/'.$item->role_initial.'/*') ? 'active' : ''}}">
                 <a href="#"> 
                     <span class="nav-label">@lang('app.txt.'.$item->role_initial) </span><span class="fa arrow"></span>
                 </a>
@@ -68,10 +88,17 @@
                         </li>
                     @endif
                 </ul>
-            </li>    
+            </li>     --}}
         @empty
             
         @endforelse
+        <hr>
+		<li class="">
+			<a href="{{route('admin.role.index')}}">@lang('app.txt.roles')</a>
+		</li>
+		<li class="">
+			<a href="{{route('admin.type-user.index')}}">@lang('app.txt.types')</a>
+		</li>
     </ul>
 </li>
 <li class="{{Request::is('*/product/*') || Request::is('*/product') || Request::is('*/programme/*') || Request::is('*/programme') ? 'active' : ''}}">
