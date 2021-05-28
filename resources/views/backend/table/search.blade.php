@@ -79,7 +79,7 @@
                 var $parent = $this.parent().parent().find('#search-title');
                 $.post('{{route("search.delete")}}', data, function(res){
                     if(res.state == 1){
-                        $this.parent().parent().remove();
+                        $this.parent().parent().parent().parent().remove();
                     }else{
                         $parent.find('#error-message').html(res.message);
                     }

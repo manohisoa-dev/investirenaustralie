@@ -10,8 +10,11 @@
             <li class="breadcrumb-item">
                 <a href="#">@lang('app.txt.stakeholders')</a>
             </li>
+			<li class="breadcrumb-item">
+                <a href="#">@lang('app.txt.'.$role)</a>
+            </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.user.index') }}">@lang('app.txt.lists')</a>
+                <a href="{{ route('admin.user.show.'.$role) }}">@lang('app.txt.lists')</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>@lang('app.txt.detail')</strong>

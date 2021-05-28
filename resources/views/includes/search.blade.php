@@ -45,9 +45,26 @@
                                         <button type="button" class="close white-color float-right btn-search-close" aria-label="Close" value="search-{{ $key }}">
                                             <span aria-hidden="true" class="small p-5px">&times;</span>
                                         </button>
-                                        <button type="button" class="close white-color float-right btn-search-save" aria-label="Close" value="{{ $data['query']?$data['query']:'' }}">
-                                            <span aria-hidden="true" class="small"><i class="fa fa-save"></i></span>
-                                        </button>
+
+                                        @if (Auth::user())
+                                            @if (Auth::user()->role==5)
+                                                @php
+                                                    $content = unserialize($item)['query'];
+                                                    $search = App\Models\Search::where('content',$content)->where('author_id',Auth::user()->id)->first();
+                                                @endphp
+
+                                                @if(!$search)
+                                                    <button type="button" class="close white-color float-right btn-search-save" aria-label="Close" value="{{ $data['query']?$data['query']:'' }}">
+                                                        <span aria-hidden="true" class="small"><i class="fa fa-save"></i></span>
+                                                    </button>
+                                                @endif
+                                            @endif
+                                        @else
+                                            <button type="button" class="close white-color float-right btn-search-save" aria-label="Close" value="{{ $data['query']?$data['query']:'' }}">
+                                                <span aria-hidden="true" class="small"><i class="fa fa-save"></i></span>
+                                            </button>
+                                        @endif
+
                                         <a href="{{ $data['url'] }}">
                                             <h5 class="font-1 font-w-600 white-color m-0px text-left">{{ ($data['state']?$data['state']:''). ($data['city']?'-'.$data['city']:''). ($data['suburb']?'-'.$data['suburb']:'') }}</h5>
                                             <small class="white-color">{{ $data['prod']===trans('app.txt.any')?trans('app.all_product'):$data['prod'] }}</small>
@@ -1023,6 +1040,7 @@
         var datas = {
             'dt' : $(this).val(),
         };
+        var thisEl = $(this);
         
         $.ajax({
             url:'{{ route("save.search") }}',
@@ -1033,11 +1051,12 @@
                 var msg = data.msg;
                 var status = data.status;
 
-                console.log(msg);
-
                 if(status == 1){
                     location.href = "{{ route('login') }}";
                 }
+
+                $(thisEl).hide();
+                console.log(msg);
             },
             error: function(e){
                 console.log(e);

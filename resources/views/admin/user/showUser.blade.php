@@ -10,6 +10,9 @@
             <li class="breadcrumb-item">
                 <a href="{{ route('admin.user.index') }}">@lang('app.txt.stakeholders')</a>
             </li>
+			<li class="breadcrumb-item">
+				<a href="{{ route('admin.user.show.'.$userRole) }}">@lang('app.txt.'.$userRole)</a>
+            </li>
             <li class="breadcrumb-item active">
                 <strong>@lang('app.txt.lists')</strong>
             </li>
@@ -46,17 +49,6 @@
 					<div class="ibox-content">
 						<form class="search-form">
 							<div class="row">
-								<div class="col-md-2">
-									<div class="form-group">
-										<label>@lang('app.select_role')</label> 
-										<select class="form-control" name="role" id="role">
-											<option value="">@lang('app.txt.any')</option>
-											@foreach($roles as $role)
-											<option value="{{$role->id}}" {{@$_GET['role']==$role->id?'selected':''}}>{{$role->role_name}}</option>
-											@endforeach
-										</select>
-									</div>
-								</div>
 								<div class="col-md-2">
 									<label>@lang('app.select_country')</label> 
 									<select class="form-control" name="country_id" id="country_id">
@@ -206,7 +198,7 @@
 							</td>
 							<td>
 							<form class="form-inline" action="{{route('admin.user.index')}}/{{$record->id}}" method="POST">
-								<a href="{{route('admin.user.show', ['user_id' => $record->id])}}" class="btn btn-default btn-circle" title="@lang('app.btn.view')">
+								<a href="{{route('admin.user.part.show', ['user_role' => App\Models\Role::where('id',$record->role)->first()->role_initial,'user_id' => $record->id])}}" class="btn btn-default btn-circle" title="@lang('app.btn.view')">
 									<i class="fa fa-info text-success"></i>
 								</a>&nbsp;&nbsp;
 								@if($record->status=='active')

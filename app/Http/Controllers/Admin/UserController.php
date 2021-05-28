@@ -16,6 +16,7 @@ use App\Models\Country;
 use App\Models\State;
 use App\Models\Role;
 use App\Models\TypeUser;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserController extends Controller {
     public $viewDir = "admin.user";
@@ -34,6 +35,152 @@ class UserController extends Controller {
         return $this->view("index", ['records' => $records, 'roles' => $role,
             'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
             'statuts' => $statuts]);
+    }
+
+    public function showSeller(Request $request) {
+        $this->middleware('auth');
+        $this->middleware('role:1');
+
+        $role = Role::all();
+        $statuts = User::groupBy('status')->pluck('status', 'status');
+        $countries = Country::all();
+        $states = State::all();
+        $typeUser = TypeUser::all();
+        $userRole = 'seller';
+
+        if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
+            $users_array = User::findRequested()->where('role',2);
+            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/seller')]);
+        }else{
+            $users_array = User::where('role',2)->get();
+            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/seller')]);
+        }
+        
+        return $this->view("showUser", ['records' => $records, 'roles' => $role,
+            'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
+            'statuts' => $statuts, 'userRole' => $userRole]);
+    }
+
+    public function showAfa() {
+        $this->middleware('auth');
+        $this->middleware('role:1');
+
+        $role = Role::all();
+        $statuts = User::groupBy('status')->pluck('status', 'status');
+        $countries = Country::all();
+        $states = State::all();
+        $typeUser = TypeUser::all();
+        $userRole = 'afa';
+
+        if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
+            $users_array = User::findRequested()->where('role',3);
+            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/seller')]);
+        }else{
+            $users_array = User::where('role',3)->get();
+            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/seller')]);
+        }
+        
+        return $this->view("showUser", ['records' => $records, 'roles' => $role,
+            'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
+            'statuts' => $statuts, 'userRole' => $userRole]);
+    }
+
+    public function showApl() {
+        $this->middleware('auth');
+        $this->middleware('role:1');
+
+        $role = Role::all();
+        $statuts = User::groupBy('status')->pluck('status', 'status');
+        $countries = Country::all();
+        $states = State::all();
+        $typeUser = TypeUser::all();
+        $userRole = 'apl';
+
+        if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
+            $users_array = User::findRequested()->where('role',4);
+            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/seller')]);
+        }else{
+            $users_array = User::where('role',4)->get();
+            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/seller')]);
+        }
+        
+        return $this->view("showUser", ['records' => $records, 'roles' => $role,
+            'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
+            'statuts' => $statuts, 'userRole' => $userRole]);
+    }
+
+    public function showMember() {
+        $this->middleware('auth');
+        $this->middleware('role:1');
+
+        $role = Role::all();
+        $statuts = User::groupBy('status')->pluck('status', 'status');
+        $countries = Country::all();
+        $states = State::all();
+        $typeUser = TypeUser::all();
+        $userRole = 'member';
+
+        if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
+            $users_array = User::findRequested()->where('role',5);
+            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/seller')]);
+        }else{
+            $users_array = User::where('role',5)->get();
+            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/seller')]);
+        }
+        
+        return $this->view("showUser", ['records' => $records, 'roles' => $role,
+            'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
+            'statuts' => $statuts, 'userRole' => $userRole]);
+    }
+
+    public function showMemberParticulier() {
+        $this->middleware('auth');
+        $this->middleware('role:1');
+
+        $role = Role::all();
+        $statuts = User::groupBy('status')->pluck('status', 'status');
+        $countries = Country::all();
+        $states = State::all();
+        $typeUser = TypeUser::all();
+        $userRole = 'member.particulier';
+        
+        // $records = User::findRequested();
+
+        if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
+            $users_array = User::findRequested()->where('role',5)->where('type_users_id',2);
+            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/seller')]);
+        }else{
+            $users_array = User::where('role',5)->where('type_users_id',2)->get();
+            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/seller')]);
+        }
+        
+        return $this->view("showUser", ['records' => $records, 'roles' => $role,
+            'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
+            'statuts' => $statuts, 'userRole' => $userRole]);
+    }
+
+    public function showMemberOrganisation() {
+        $this->middleware('auth');
+        $this->middleware('role:1');
+
+        $role = Role::all();
+        $statuts = User::groupBy('status')->pluck('status', 'status');
+        $countries = Country::all();
+        $states = State::all();
+        $typeUser = TypeUser::all();
+        $userRole = 'member.organisation';
+
+        if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
+            $users_array = User::findRequested()->where('role',5)->where('type_users_id',1);
+            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/seller')]);
+        }else{
+            $users_array = User::where('role',5)->where('type_users_id',1)->get();
+            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/seller')]);
+        }
+        
+        return $this->view("showUser", ['records' => $records, 'roles' => $role,
+            'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
+            'statuts' => $statuts, 'userRole' => $userRole]);
     }
 
     /**
@@ -72,6 +219,16 @@ class UserController extends Controller {
             return redirect()->route('admin.profile');
         }
         return $this->view("info", ['user' => $user]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @return  \Illuminate\Http\Response
+     */
+    public function showPart(Request $request, $role, User $user) {
+        
+        return $this->view("infoPart", ['user' => $user, 'role'=>$role]);
     }
 
     /**
