@@ -11,7 +11,7 @@
                 <a href="#">Role</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('v2/admin.role.index') }}">Listes</a>
+                <a href="{{ route('admin.role.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Ajout</strong>
@@ -32,7 +32,7 @@
                 <h5>Ajouter un nouveau Role</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-validation form-padding" action="{{ route('v2/admin.role.store') }}" method="post">
+                <form class="form-validation form-padding" action="{{ route('admin.role.store') }}" method="post">
 
                     {{ csrf_field() }}
                                                         

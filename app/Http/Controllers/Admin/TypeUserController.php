@@ -42,7 +42,7 @@ class TypeUserController extends Controller
 
         # notification
         Notify::success('Type User a été créer avec succès');
-        return redirect(route('v2.admin.type-user.index'));
+        return redirect(route('admin.type-user.index'));
     }
 
     /**
@@ -89,7 +89,7 @@ class TypeUserController extends Controller
 
         # notification
         Notify::success('Type User a été mise à jour avec succès');
-        return redirect(route('v2.admin.type-user.index'));
+        return redirect(route('admin.type-user.index'));
     }
 
     /**
@@ -103,7 +103,7 @@ class TypeUserController extends Controller
 
         # notification
         Notify::success('Type User a été supprimer avec succès');
-        return redirect(route('v2.admin.type-user.index'));
+        return redirect(route('admin.type-user.index'));
     }
 
     protected function view($view, $data = [])
