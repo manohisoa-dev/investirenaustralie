@@ -42,7 +42,7 @@ class RoleController extends Controller
 
         # notification
         Notify::success('Role a été créer avec succès');
-        return redirect(route('v2.admin.role.index'));
+        return redirect(route('admin.role.index'));
     }
 
     /**
@@ -89,7 +89,7 @@ class RoleController extends Controller
 
         # notification
         Notify::success('Role a été mise à jour avec succès');
-        return redirect(route('v2.admin.role.index'));
+        return redirect(route('admin.role.index'));
     }
 
     /**
@@ -103,7 +103,7 @@ class RoleController extends Controller
 
         # notification
         Notify::success('Role a été supprimer avec succès');
-        return redirect(route('v2.admin.role.index'));
+        return redirect(route('admin.role.index'));
     }
 
     protected function view($view, $data = [])
