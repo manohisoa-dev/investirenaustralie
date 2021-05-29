@@ -31,7 +31,16 @@ class ProductController extends Controller {
     }
 
     public function programme() {
-        //echo $this->get_lonlat('Samberstraat 69, Antwerpen, Belgium');
+        //echo $this->get_lonlat('Samberstraat+69+Antwerpen+Belgium');
+        /*$data = $this->geocodeAddress('509 Pitt Street');
+        var_dump($data);
+        $latitude = $data['lat'];
+        $longitude = $data['lng'];
+        $city = $data['city'];
+        $department = $data['department'];
+        $region = $data['region'];
+        $country = $data['country'];
+        $postal_code = $data['postal_code'];*/
         $records = Product::allProgramme();
         $status = Product::groupBy('status')->pluck('status', 'status');
         return $this->view("programme", ['records' => $records, 'status' => $status]);
@@ -180,19 +189,55 @@ class ProductController extends Controller {
         }
     }
 
-    function get_lonlat($address) {
-        try {
-            //Converts address into Lat and Lng
-            $client = new Client(); //GuzzleHttp\Client
-            $result = (string )$client->post("https://maps.googleapis.com/maps/api/geocode/json?address=$address", ['form_params' => ['key' =>
-                'AIzaSyC7t58Gd0iEOXO6H0K_YGLqjEx1u7Z4c0U'],'verify' => false])->getBody();
-            $json = json_decode($result);
-            $address->lat = $json->results[0]->geometry->location->lat;
-            $address->lng = $json->results[0]->geometry->location->lng;
-            return $result;
+    public function geocodeAddress($address) {
+        //valeurs vide par défaut
+        $apikey = 'AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA';
+        $data = array(
+            'address' => '',
+            'lat' => '',
+            'lng' => '',
+            'city' => '',
+            'department' => '',
+            'region' => '',
+            'country' => '',
+            'postal_code' => '');
+        //on formate l'adresse
+        $address = str_replace(" ", "+", $address);
+        //on fait l'appel à l'API google map pour géocoder cette adresse
+        $json = file_get_contents("https://maps.google.com/maps/api/geocode/json?key=" .
+            $apikey . "&address=$address&sensor=false&region=fr");
+        $json = json_decode($json);
+        //on enregistre les résultats recherchés
+        if ($json->status == 'OK' && count($json->results) > 0) {
+            $res = $json->results[0];
+            //adresse complète et latitude/longitude
+            $data['address'] = $res->formatted_address;
+            $data['lat'] = $res->geometry->location->lat;
+            $data['lng'] = $res->geometry->location->lng;
+            foreach ($res->address_components as $component) {
+                //ville
+                if ($component->types[0] == 'locality') {
+                    $data['city'] = $component->long_name;
+                }
+                //départment
+                if ($component->types[0] == 'administrative_area_level_2') {
+                    $data['department'] = $component->long_name;
+                }
+                //région
+                if ($component->types[0] == 'administrative_area_level_1') {
+                    $data['region'] = $component->long_name;
+                }
+                //pays
+                if ($component->types[0] == 'country') {
+                    $data['country'] = $component->long_name;
+                }
+                //code postal
+                if ($component->types[0] == 'postal_code') {
+                    $data['postal_code'] = $component->long_name;
+                }
+            }
         }
-        catch (exception $e) {
-        }
+        return $data;
     }
 
     function save_location($country, $suburb, $postalCode, $longitude, $latitude, $locality) {
@@ -468,7 +513,7 @@ class ProductController extends Controller {
         $product->validated_at = Carbon::now();
         $product->save();
         Notify::success('Le produit a été publié avec succés');
-        
+
         return back();
     }
 
@@ -613,7 +658,7 @@ class ProductController extends Controller {
                 $request->id_programme, $id_location, 0, $avoir_parking, 0);
 
             return response()->json(['success' => 'true']);
-        }else{
+        } else {
             return response()->json(['success' => 'false']);
         }
     }
