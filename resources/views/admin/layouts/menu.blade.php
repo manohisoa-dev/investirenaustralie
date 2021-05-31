@@ -202,6 +202,11 @@
 			</a>
 		</li>
 		<li>
+			<a href="{{route('admin.media')}}">
+				<span class="nav-label">Media</span>
+			</a>
+		</li>
+		<li>
 			<a href="{{route('admin.firb.index')}}">
 				<span class="nav-label">Firb</span>
 			</a>
