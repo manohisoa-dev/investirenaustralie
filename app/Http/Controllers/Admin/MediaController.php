@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 
 use Jleon\LaravelPnotify\Notify;
 use itskodinger\midia;
+use App\Models\Image;
 
 class MediaController extends Controller {
     protected $directory;
@@ -68,13 +69,33 @@ class MediaController extends Controller {
 
         $path = $base_path . '/' . $directory;
         $content = '';
+        $menu = preg_split('#/#', $directory);
+        $content .= '<div style="margin-bottom: 10px">';
+        $content .= '<ol class="breadcrumb" style="background-color: #f3f3f4;margin-bottom: 10px;">';
+        $content .= '<li class="breadcrumb-item">';
+        $content .= '<a href="javascript:void(0)" onclick="read_folder(this)" data-href="">Public</a>';
+        $content .= '</li>';
+        if (!empty($menu)) {
+            for ($m = 0; $m < count($menu); $m++) {
+                $content .= '<li class="breadcrumb-item">';
+                $content .= '<a href="javascript:void(0)" onclick="read_folder(this)" data-href="' .
+                    $menu[$m] . '">' . $menu[$m] . '</a>';
+                $content .= '</li>';
+            }
+        }
+        $content .= '</ol>';
+        $content .= '<input type="hidden" name="path_directory" id="path_directory" value="' .
+            $directory . '" />';
+        $content .= '<a class="btn btn-primary" onclick="show_upload()">Upload Files</a>';
+        $content .= '<div style="clear:both"></div></div>';
+
         $dirs = array();
         $dir = dir($path);
         while (false !== ($folder = $dir->read())) {
             if ($folder != '.' && $folder != '..') {
                 if (is_dir($path . '/' . $folder)) {
                     if ($folder != 'css' && $folder != 'js' && $folder != 'xml' && $folder !=
-                        'style') {
+                        'style' && $folder != 'plugin') {
                         $dirs[] = $folder;
                     }
                 }
@@ -85,8 +106,8 @@ class MediaController extends Controller {
                 $new_directory = $directory . '/' . $value;
                 $content .= '<div class="file-box">';
                 $content .= '<div class="file">';
-                $content .= '<a href="javascript:void(0)" onclick="read_folder(this)" data-href="' . $new_directory .
-                    '">';
+                $content .= '<a href="javascript:void(0)" onclick="read_folder(this)" data-href="' .
+                    $new_directory . '">';
                 $content .= '<span class="corner"></span>';
                 $content .= '<div class="icon">';
                 $content .= '<i class="fa fa-folder"></i>';
@@ -104,16 +125,40 @@ class MediaController extends Controller {
         $fichier = $this->file_list($path);
         if (!empty($fichier)) {
             foreach ($fichier as $file) {
+                $id_base = Image::where('filename', $file['fullname'])->first();
+                if (!empty($id_base)) {
+                    $id_file = $id_base->id;
+                } else {
+                    $id_file = 0;
+                }
                 $content .= '<div class="file-box">';
                 $content .= '<div class="file">';
-                $content .= '<a href="#">';
+                $content .= '<a href="#" data-href="' . $path . '/' . $file['fullname'] . '">';
                 $content .= '<span class="corner"></span>';
-                $content .= '<div class="icon">';
-                $content .= '<i class="fa '.$this->set_icon_file($file['extension']).'"></i>';
-                $content .= '</div>';
+                if ($file['extension'] == 'png' || $file['extension'] == 'jpg') {
+                    $content .= '<div class="image">';
+                    $content .= '<img alt="image" class="img-fluid" src="' . $file['thumbnail'] .
+                        '">';
+                    $content .= '</div>';
+                } else {
+                    $content .= '<div class="icon">';
+                    $content .= '<i class="fa ' . $this->set_icon_file($file['extension']) .
+                        '"></i>';
+                    $content .= '</div>';
+                }
                 $content .= '<div class="file-name">';
-                $content .= str_limit($file['fullname'],10) . '<br/>';
+                $content .= str_limit($file['fullname'], 10) . '<br/>';
                 $content .= '<small>' . $file['size'] . '</small>';
+                //suppression
+                $content .= '<a class="btn btn-default btn-circle pull-right" href="javascript:void(0)" data-info="' .
+                    $directory . '" data-name="' . $file['fullname'] . '" data-base="' . $id_file .
+                    '" onclick="delete_file(this)">';
+                $content .= '<i class="fa fa-times text-danger"></i></a>';
+
+                //modification
+                $content .= '<a class="btn btn-default btn-circle pull-right" style="margin-right:5px" href="">';
+                $content .= '<i class="fa fa-pencil"></i></a>';
+
                 $content .= '</div>';
                 $content .= '</a>';
                 $content .= '</div>';
@@ -145,11 +190,12 @@ class MediaController extends Controller {
         foreach ($exec as $i => $item) {
             if (!is_dir($dir . '/' . $item)) {
                 if (in_array(mime_content_type($dir . '/' . $item), $this->imageTypes)) {
+                    $path = $this->getRelativePath($dir);
+                    $path = str_replace('public', "", $path);
                     $_files[$i]['fullname'] = $item;
                     $_files[$i]['name'] = pathinfo($item, PATHINFO_FILENAME);
                     $_files[$i]['url'] = $this->url($dir . '/' . $item);
-                    $_files[$i]['thumbnail'] = $this->url($dir . '/' . $this->default_thumb . '/' .
-                        $item);
+                    $_files[$i]['thumbnail'] = $path . '/' . $item;
                     $_files[$i]['extension'] = strtolower(pathinfo($item, PATHINFO_EXTENSION));
                     $_files[$i]['size'] = $this->toMb(filesize($dir . '/' . $item));
                     $_files[$i]['filetime'] = midia_time_elapsed(filemtime($dir . '/' . $item));
@@ -157,6 +203,19 @@ class MediaController extends Controller {
             }
         }
         return ($_files);
+    }
+
+    function getRelativePath($path, $from = __file__) {
+        $path = explode(DIRECTORY_SEPARATOR, $path);
+        $from = explode(DIRECTORY_SEPARATOR, dirname($from . '.'));
+        $common = array_intersect_assoc($path, $from);
+
+        $base = array('.');
+        if ($pre_fill = count(array_diff_assoc($from, $common))) {
+            $base = array_fill(0, $pre_fill, '..');
+        }
+        $path = array_merge($base, array_diff_assoc($path, $common));
+        return implode(DIRECTORY_SEPARATOR, $path);
     }
 
     public function url($path = '') {
@@ -170,7 +229,7 @@ class MediaController extends Controller {
             if ($folder != '.' && $folder != '..') {
                 if (is_dir($path . '/' . $folder)) {
                     if ($folder != 'css' && $folder != 'js' && $folder != 'xml' && $folder !=
-                        'style') {
+                        'style' && $folder != 'plugin') {
                         $dirs[] = $folder;
                     }
                 }
@@ -188,15 +247,63 @@ class MediaController extends Controller {
 
     function set_icon_file($mime_type) {
 
-        $type_image = array('jpg','gif','png','jpeg');
+        $type_image = array(
+            'jpg',
+            'gif',
+            'png',
+            'jpeg');
         $type_pdf = array('pdf');
-        
-        if (in_array($mime_type, $type_image)){
+
+        if (in_array($mime_type, $type_image)) {
             return 'fa-file-image-o';
-        }elseif(in_array($mime_type, $type_pdf)){
+        } elseif (in_array($mime_type, $type_pdf)) {
             return 'fa-file-pdf-o';
-        }else{
+        } else {
             return "fa-file-o";
+        }
+    }
+
+    public function ajaxFile(Request $request) {
+        //echo(public_path().$request->dir_name).'<br>';
+        //dd($request->All());
+        $image = $request->file('file');
+        if ($request->dir_name) {
+            $dir = $request->dir_name;
+            $path = public_path() . $dir;
+        } else {
+            $dir = '';
+            $path = public_path();
+        }
+        $imageName = time() . $image->getClientOriginalName();
+        $upload_success = $image->move($path, $imageName);
+
+        if ($upload_success) {
+            return response()->json(['success' => $dir]);
+        }
+        // Else, return error 400
+        else {
+            return response()->json('error', 400);
+        }
+    }
+
+    public function ajaxDeleteFile(Request $request) {
+        if (empty($request->folder)) {
+            $link_file = public_path() . '/' . $request->file_name;
+            $dir = '';
+        } else {
+            $link_file = public_path() . $request->folder . '/' . $request->file_name;
+            $dir = $request->folder;
+        }
+        
+        if($request->id_file_base != 0){
+            Image::where('id', $request->id_file_base)->delete();
+        }
+        
+        $delete_file = unlink($link_file);
+        if ($delete_file) {
+            return response()->json(['success' => $dir]);
+        } else {
+            return response()->json('error', 400);
         }
     }
 }
