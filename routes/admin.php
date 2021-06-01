@@ -123,4 +123,6 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     });
 
     Route::resource('firb','FirbController');
+    Route::get('media', 'MediaController@show')->name('media');
+    Route::get('get/{limit?}', 'MediaController@index')->name('midia.get');
 });

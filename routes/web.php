@@ -242,3 +242,5 @@ Route::middleware(["auth", "role:5"] || ["auth", "role:3"])->group(function(){
     Route::post('message/contact', 'MessageController@sendContactMessage')->name('send.contact.message');
 
 });
+
+
