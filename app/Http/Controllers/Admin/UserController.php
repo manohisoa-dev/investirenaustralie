@@ -74,10 +74,10 @@ class UserController extends Controller {
 
         if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
             $users_array = User::findRequested()->where('role',3);
-            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/seller')]);
+            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/afa')]);
         }else{
             $users_array = User::where('role',3)->get();
-            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/seller')]);
+            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/afa')]);
         }
         
         return $this->view("showUser", ['records' => $records, 'roles' => $role,
@@ -98,10 +98,10 @@ class UserController extends Controller {
 
         if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
             $users_array = User::findRequested()->where('role',4);
-            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/seller')]);
+            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/apl')]);
         }else{
             $users_array = User::where('role',4)->get();
-            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/seller')]);
+            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/apl')]);
         }
         
         return $this->view("showUser", ['records' => $records, 'roles' => $role,
@@ -122,10 +122,10 @@ class UserController extends Controller {
 
         if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
             $users_array = User::findRequested()->where('role',5);
-            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/seller')]);
+            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/member')]);
         }else{
             $users_array = User::where('role',5)->get();
-            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/seller')]);
+            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/member')]);
         }
         
         return $this->view("showUser", ['records' => $records, 'roles' => $role,
@@ -148,10 +148,10 @@ class UserController extends Controller {
 
         if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
             $users_array = User::findRequested()->where('role',5)->where('type_users_id',2);
-            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/seller')]);
+            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/member/type/particulier')]);
         }else{
             $users_array = User::where('role',5)->where('type_users_id',2)->get();
-            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/seller')]);
+            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/member/type/particulier')]);
         }
         
         return $this->view("showUser", ['records' => $records, 'roles' => $role,
@@ -172,10 +172,34 @@ class UserController extends Controller {
 
         if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
             $users_array = User::findRequested()->where('role',5)->where('type_users_id',1);
-            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/seller')]);
+            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/member/type/organisation')]);
         }else{
             $users_array = User::where('role',5)->where('type_users_id',1)->get();
-            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/seller')]);
+            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/member/type/organisation')]);
+        }
+        
+        return $this->view("showUser", ['records' => $records, 'roles' => $role,
+            'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
+            'statuts' => $statuts, 'userRole' => $userRole]);
+    }
+
+    public function showCollaborator() {
+        $this->middleware('auth');
+        $this->middleware('role:1');
+
+        $role = Role::all();
+        $statuts = User::groupBy('status')->pluck('status', 'status');
+        $countries = Country::all();
+        $states = State::all();
+        $typeUser = TypeUser::all();
+        $userRole = 'collaborator';
+
+        if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
+            $users_array = User::findRequested()->where('role',6);
+            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/collaborator')]);
+        }else{
+            $users_array = User::where('role',6)->get();
+            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path'=>url('admin/user/show/collaborator')]);
         }
         
         return $this->view("showUser", ['records' => $records, 'roles' => $role,

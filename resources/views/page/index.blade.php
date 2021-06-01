@@ -195,7 +195,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6 m-15px-tb">
-                                <div class="p-50px-tb p-35px-lr box-shadow-hover hover-top hover-rotate white-bg text-center border-radius-5">
+                                <div style="height:500px;" class="p-50px-tb p-35px-lr box-shadow-hover hover-top hover-rotate white-bg text-center border-radius-5">
                                     <div class="ef-1 icon-80 theme-bg border-radius-50 theme2nd-color d-inline-block m-20px-b hr-rotate-after"> 
                                         <i class="white-color fa fa-podcast"></i>
                                     </div>

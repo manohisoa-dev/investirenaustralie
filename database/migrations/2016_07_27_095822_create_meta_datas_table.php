@@ -18,7 +18,7 @@ class CreateMetaDatasTable extends Migration
             $table->string('object_type', 128);
 
             $table->text('key');
-            $table->text('value');
+            $table->text('value')->nullable();
         });
     }
 

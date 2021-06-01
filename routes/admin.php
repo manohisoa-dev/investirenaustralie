@@ -76,6 +76,7 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::get('trash_blog/{blog}', 'BlogController@trash')->name('blog.trash');  
     Route::get('restore_blog/{blog}', 'BlogController@restore')->name('blog.restore');
     Route::post('save_blog', 'BlogController@store')->name('blog.store');
+    Route::get('update_order', 'BlogController@updateBlogOrder')->name('blog.update.order');
     
     Route::resource('comment','CommentController');
     //Route::get('comments/{blog}/{filter?}', 'CommentController@all')->name('comment.list');
@@ -92,6 +93,7 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::get('user/show/member', 'UserController@showMember')->name('user.show.member');
     Route::get('user/show/member/type/particulier', 'UserController@showMemberParticulier')->name('user.show.member.particulier');
     Route::get('user/show/member/type/organisation', 'UserController@showMemberOrganisation')->name('user.show.member.organisation');
+    Route::get('user/show/collaborator', 'UserController@showCollaborator')->name('user.show.collaborator');
 
     Route::resource('sale','SaleController');
     Route::get('pay/{sale}/{role}', 'SaleController@pay')->name('sale.pay');
@@ -102,7 +104,7 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::get('slider/desactiver/{slider}', 'SliderController@desactiver')->name('slider.desactiver');
     Route::get('slider/activer/{slider}', 'SliderController@activer')->name('slider.activer');
 
-    // Confi Controller
+    // Config Controller
     Route::prefix('config')->as('config.')->group(function () {
         Route::get('site', 'ConfigController@site')->name('site');
         Route::post('site', 'ConfigController@site')->name('site.update');

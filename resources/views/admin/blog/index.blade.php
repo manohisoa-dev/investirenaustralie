@@ -91,9 +91,9 @@
                     </tr>
                     </thead>
 
-                    <tbody>
+                    <tbody id="current-files">
                         @forelse ( $records as $record )
-                            <tr>
+                            <tr id="{{ $record->id }}" order="{{ $record->view_order }}">
                                 <td>{{ $record->id }}</td>
 								<td>
 									<a href="{{route('blog.index',$record->slug)}}" target="_blank">
@@ -196,12 +196,55 @@
                 </table>
 
                 @include('vendor.crud.single-page-templates.common.pagination', [ 'records' => $records ] )
-
 				<script>
-					$(".editable").editable({ajaxOptions:{method:'PUT'}});
+					// $(".editable").editable({ajaxOptions:{method:'PUT'}});
 				</script>
 			</div>
 		</div>
 	</div>
 </div>
+@endsection
+@section('custom-script')
+	<style>
+		#current-files tr:hover {
+			cursor: pointer;
+		}
+
+		#current-files tr.ui-sortable-helper{
+			cursor: move;
+		}
+	</style>
+	
+	<script>
+		$("#current-files").sortable({
+			connectWith: "#selected-files",
+			update: function(event, ui){
+				var blog_id = ui.item.attr('id');
+				var order = ui.item.attr('order');
+				var new_order = ui.item[0].rowIndex - 1;
+				var datas = {
+					'blog_id' : blog_id,
+					'view_order' : new_order,
+					'old_view_order' : order,
+				};
+
+				$.ajax({
+					url : "{{ route('admin.blog.update.order') }}",
+					method : "get",
+					data : datas,
+					dataType : 'json',
+					success : function(data){
+						var msg = data.msg;
+						location.reload();
+						console.log(msg);
+					}
+				})	
+			}
+		});
+		// $("#selected-files").sortable();
+
+		// $("#current-files li").dblclick(function(ev){
+		// 	$(this).prependTo("#selected-files");
+		// });
+	</script>
 @endsection

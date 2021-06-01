@@ -41,10 +41,10 @@ class Config extends BaseModel
             'longitude' => 'required|max:100',
             
             'admin' => 'required|integer',
-            'admin_email' => 'required|max:100',
-            'admin_phone' => 'required|max:100',
+            'admin_email' => 'max:100',
+            'admin_phone' => 'max:100',
             'admin_name' => 'required|max:100',
-            'admin_fax' => 'required|max:100',
+            'admin_fax' => 'max:100',
             'admin_address' => 'required|max:100',
             
             'meta_title'    => 'required|max:100',
