@@ -293,4 +293,48 @@ class BlogController extends Controller {
         return redirect(route('admin.blog.index'));
     }
 
+    public function updateBlogOrder(Request $request){
+        $old_view_order = $request->old_view_order;
+        $view_order = $request->view_order;
+        $id = $request->blog_id;
+
+        // Update order item if order item is affected
+        $countItem = Blog::where('view_order','>=',$view_order)->count();
+        $oldItemOrder = Blog::select('id')->where('view_order','=',$view_order)->first();
+        $i=1;
+
+        if($old_view_order > $view_order){
+            $item = Blog::select('id','view_order')->where('view_order','>=',$view_order)->orderBy('view_order','ASC')->get();
+            
+            foreach ($item as $value) {
+                if($i < $old_view_order){
+                    Blog::where('id','=',$value->id)->update(['view_order'=>$value->view_order+1]);
+                    $i++;
+                }else{
+                    break;
+                }
+            }
+        }else{
+            $item = Blog::select('id','view_order')->where('view_order','>',$old_view_order)->orderBy('view_order','ASC')->get();
+            
+            foreach ($item as $value) {
+                if($i < $view_order){
+                    Blog::where('id','=',$value->id)->update(['view_order'=>$value->view_order-1]);
+                    $i++;
+                }else{
+                    break;
+                }
+            }
+            
+        }
+        
+
+        // Update this order
+        Blog::where('id','=',$id)->update(['view_order'=>$view_order]);
+        
+        # notification
+        // return response()->json(['msg'=>'Blog a été mise à jour avec succès']);
+        return response()->json(['msg'=>$id, $view_order]);
+    }
+
 }

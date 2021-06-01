@@ -519,14 +519,21 @@ class ProductController extends Controller {
         }
     }
 
-    public function ajaxCheckTitreProgramme() {
-        $titre_programme = $_GET['title_programme'];
-        //echo $titre_programme;
-        $slug = generateSlug($titre_programme);
-        $slug_exist = Product::where('slug', $slug)->get();
-        if (count($slug_exist) > 0) {
-            echo "false";
-        } else {
+    public function ajaxCheckTitreProgramme(Request $request) {
+        $datas = $request->get('datas');
+        $datasSplit = explode('|;|',$datas);
+        $titre_programme = $datasSplit[0];
+        $titre_programme_now = $datasSplit[1];
+
+        if($titre_programme_now !== $titre_programme){
+            $slug = generateSlug($titre_programme);
+            $slug_exist = Product::where('slug', $slug)->get();
+            if (count($slug_exist) > 0) {
+                echo "false";
+            } else {
+                echo "true";
+            }
+        }else{
             echo "true";
         }
     }

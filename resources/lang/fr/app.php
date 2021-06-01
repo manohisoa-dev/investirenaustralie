@@ -1016,4 +1016,13 @@ return
 	'txt.list_organisation' => 'Liste des organisations',
 	'txt.member.particulier' => 'Membre  /  Particulier',
 	'txt.member.organisation' => 'Membre  /  Organisation',
+	'txt.active' => 'Actif',
+	'txt.disabled' => 'Suspendu',
+	'txt.pinged' => 'Pinged',
+	'collaborator' => 'Collaborateur',
+	'collaborators' => 'Collaborateurs',
+	'txt.collaborator' => 'Collaborateur',
+	'txt.grid' => 'Grille',
+	'txt.list' => 'Liste',
+	'txt.random' => 'Aléatoire',
 ];

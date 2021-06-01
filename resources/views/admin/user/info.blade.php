@@ -57,12 +57,8 @@
 									<td>{{$user->language=='en'?'English':'Français'}}</td>
 								</tr>
 								<tr>
-									<th width="45%">@lang('app.user.ontrial')</th>
-									<td><?php /*?>{{$user->onTrial()?'oui':'non'}}<?php */?></td>
-								</tr>
-								<tr>
-									<th width="45%">@lang('app.user.trial_end_at')</th>
-									<td>{{$user->trial_ends_at}}</td>
+									<th width="45%">@lang('app.status')</th>
+									<td>{{ $user->status?trans('app.txt.'.$user->status):'-' }}</td>
 								</tr>
 							</table>
 						</div>

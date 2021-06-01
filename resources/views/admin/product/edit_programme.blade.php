@@ -77,6 +77,7 @@
 						<div class="col-md-12">                              
 							<div class="form-group">
 								<label for="title">@lang('app.form.programme_title') *</label>
+								<input name="title_programme_now" id="title_programme_now" class="form-control" type="hidden" value="{{$product->title}}">
 								<input name="title_programme" id="title_programme" class="form-control" type="text" value="{{$product->title}}">
 							</div>
 						</div>
@@ -145,7 +146,7 @@
 						<div class="col-lg-3">
 							<div class="form-group">
 								<label for="title">@lang('app.form.programme_cp') *</label>
-								<input name="postalCode" id="postalCode" class="form-control" type="text" value="{{$product->postalCode}}">
+								<input name="postalCode" id="postalCode" class="form-control" type="text" value="{{$localisation->postalCode}}">
 							</div>
 						</div>
 						<div class="col-lg-3">
@@ -477,8 +478,12 @@
 							url: "{{ route('admin.ajaxCheckTitreProgramme') }}",
 							type: "get",
 							data: {
-								title_programme: function () {
-									return $("input[name='title_programme']").val();
+								// title_programme: function () {
+								// 	return $("input[name='title_programme']").val();
+								// }
+
+								datas: function () {
+									return $("input[name='title_programme']").val()+'|;|'+$("input[name='title_programme_now']").val();
 								}
 							}
 						}
@@ -725,7 +730,7 @@
 										return prg_text+'-'+prd_text;
 									}else{
 										return $("input[name='title_product']").val();
-									}									
+									}	
 								}
 							}
 						}

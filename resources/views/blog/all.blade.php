@@ -55,7 +55,12 @@
                                     </select>
                                 </div>
                                 <div  class="pull-right">
-                                    <p class="layout-view"> @lang('app.form.vue'): <a href="javascript:void(0)" id="grid"><i class="fa fa-th-large selected" data-layout="6"></i></a> <a href="javascript:void(0)" id="list"><i class="fa fa-list-ul" data-layout="12"></i></a> </p>
+                                    <p class="layout-view"> 
+                                        @lang('app.form.vue'): 
+                                        <a href="javascript:void(0)" id="grid" title="@lang('app.txt.grid')"><i class="fa fa-th-large selected" data-layout="6"></i></a> 
+                                        <a href="javascript:void(0)" id="list" title="@lang('app.txt.list')"><i class="fa fa-list-ul" data-layout="12"></i></a> 
+                                        <a href="{{ route('blog.all.random') }}" id="random" title="@lang('app.txt.random')"><i class="fa fa-random" data-layout="12"></i></a>
+                                    </p>
                                 </div>
                             </form>
                         </div>           

@@ -50,6 +50,7 @@ Route::get('programme/{slug?}', 'ProgrammeController@show')->name('programme.sho
 
 /// Blog
 Route::get('blogs/{filter?}', 'BlogController@all')->name('blog.all');
+Route::get('blogs/show/random/{filter?}', 'BlogController@allRandom')->name('blog.all.random');
 Route::get('blog/{slug}', 'BlogController@index')->name('blog.index');
 
 // Contact Page

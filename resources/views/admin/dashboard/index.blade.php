@@ -134,7 +134,7 @@
                                 <tbody>
                                 @foreach($recent['users'] as $user)
                                     <tr>
-                                        <td><small>{{$user->status }}</small></td>
+                                        <td><small>{{ $user->status?trans('app.txt.'.$user->status):'-' }}</small></td>
                                         <td><i class="fa fa-clock-o"></i> {{$user->created_at }}</td>
                                         <td>{{$user->name}}</td>
                                     </tr>

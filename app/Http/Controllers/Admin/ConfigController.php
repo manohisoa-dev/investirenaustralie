@@ -52,7 +52,28 @@ class ConfigController extends Controller
 
             // Save Config into MetaData By Validator rules key
             foreach($keys as $key=>$val){
-                if($value = $request->input($key)) $item->update_meta($key, $value);
+                if($key == 'admin_email'){
+                    if($request->input('admin_email') === null){
+                        $item->update_meta('admin_email', "");
+                    }else{
+                        if($value = $request->input($key)) $item->update_meta('admin_email', $value);    
+                    }
+                }elseif($key == 'admin_phone'){
+                    if($request->input('admin_phone') === null){
+                        $item->update_meta('admin_phone', "");
+                    }else{
+                        if($value = $request->input($key)) $item->update_meta('admin_phone', $value);    
+                    }
+                }elseif($key == 'admin_fax'){
+                    if($request->input('admin_fax') === null){
+                        $item->update_meta('admin_fax', "");
+                    }else{
+                        if($value = $request->input($key)) $item->update_meta('admin_fax', $value);    
+                    }
+                }else{
+                    if($value = $request->input($key)) $item->update_meta($key, $value);
+                }
+
             }
 
             # notification

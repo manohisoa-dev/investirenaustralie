@@ -768,4 +768,13 @@ return
 	'txt.detail' => 'Detail',
 	'txt.member.particulier' => 'Member  /  Individual',
 	'txt.member.organisation' => 'Member  /  Organization',
+	'txt.active' => 'Active',
+	'txt.disabled' => 'Suspended',
+	'txt.pinged' => 'Pinged',
+	'collaborator' => 'Collaborator',
+	'collaborators' => 'Collaborators',
+	'txt.collaborator' => 'Collaborator',
+	'txt.grid' => 'Grille',
+	'txt.list' => 'List',
+	'txt.random' => 'Random',
 ];

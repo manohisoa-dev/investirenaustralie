@@ -170,6 +170,77 @@ class BlogController extends Controller
 
     /**
      * Show the list of blog.
+     * Public Acces
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  String $filter
+     * @return \Illuminate\Http\Response
+     */
+    public function allRandom(Request $request, $filter='all')
+    {
+        $page = $request->get('page');
+        if(!$page) $page = 1;
+        
+        $orderBy = $request->get('orderBy');
+        if(!in_array($orderBy, ['created_at', 'view_count'])) $orderBy = 'created_at';
+        
+        $order = $request->get('order');
+        if(!in_array($order, ['desc', 'asc'])) $order = 'desc';
+
+        $show = $request->get('show');
+        if(!in_array($show, ['10', '20', '50', '100'])) $show = ' ';
+        
+        $items = Blog::inRandomOrder()->ofStatus('published')
+            ->where('post_type','=', $this->post_type)
+            ->withCount('comments')
+            ->paginate($show?(int)$show:$this->pageSize);
+        
+        if($request->ajax()){
+            return response()->json(array(
+                'html' => view('ajax.blog.all', compact('items'))->render()
+            ));
+        }
+        
+        $products = Product::ofStatus('published')
+            ->with('location')
+            ->isProduct()
+            ->where('quantity', '>', 0)
+            ->orderBy('created_at','desc')
+            ->take($this->recentSize)
+            ->get();
+        
+        $categories = Category::orderBy('created_at', 'desc')
+            ->has('products')
+            ->withCount(['products'])
+            ->take($this->recentSize)
+            ->get();
+        
+        $page2 = Page::where('path', '=', '/blogs*')
+            ->first();
+
+        $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','4')
+                ->groupBy('localizations.locality')
+                ->get();
+        
+        if($page2){$pubs = $page->pubs;}else{$pubs = [];}
+
+        return view('blog.all')
+                ->with('items', $items)
+                ->with('orderBy', $orderBy)
+                ->with('order', $order)
+                ->with('show', $show)
+                ->with('filter', $filter)
+                ->with('page', $page)
+                ->with('pubs', $pubs)
+                ->with('products', $products)
+                ->with('lapls', $lapls)
+                ->with('categories', $categories); 
+    }
+
+    /**
+     * Show the list of blog.
      * Admin Only
      *
      * @param  \Illuminate\Http\Request  $request
