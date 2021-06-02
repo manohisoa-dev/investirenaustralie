@@ -97,7 +97,7 @@
                                 <td>{{ $record->id }}</td>
 								<td>
 									<a href="{{route('blog.index',$record->slug)}}" target="_blank">
-										<img class="thumb" src="{{$record->imageUrl(true)}}" width="50">
+										<img class="thumb" src="{{$record->getImageUrl('thumb')}}">
 									</a>
 								</td>
 								<td>
@@ -241,10 +241,5 @@
 				})	
 			}
 		});
-		// $("#selected-files").sortable();
-
-		// $("#current-files li").dblclick(function(ev){
-		// 	$(this).prependTo("#selected-files");
-		// });
 	</script>
 @endsection

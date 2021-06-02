@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pub;
 use Illuminate\Http\Request;
 use Validator;
 use Auth;
@@ -110,10 +111,10 @@ class BlogController extends Controller
         if(!$page) $page = 1;
         
         $orderBy = $request->get('orderBy');
-        if(!in_array($orderBy, ['created_at', 'view_count'])) $orderBy = 'created_at';
+        if(!in_array($orderBy, ['created_at', 'view_count'])) $orderBy = 'view_order';
         
         $order = $request->get('order');
-        if(!in_array($order, ['desc', 'asc'])) $order = 'desc';
+        if(!in_array($order, ['desc', 'asc'])) $order = 'asc';
 
         $show = $request->get('show');
         if(!in_array($show, ['10', '20', '50', '100'])) $show = ' ';

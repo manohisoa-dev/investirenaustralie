@@ -2,9 +2,22 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Helpers\ImageResizer ;
 
 class Blog extends Model {
+    use ImageResizer;
+
+    protected static $directory = 'blog';
+    protected static $directoryResize = 'blog/blog-resize';
+
+    protected static $aImageSize = array(
+        'mini'              => [25, 25],
+        'thumb'             => [50, 37],
+        'medium'            => [374, 200],
+        'large'             => [598, 418]
+    );
+
+    protected $table = "blogs";
 
     public $guarded = ["id","created_at","updated_at"];
 
@@ -143,6 +156,10 @@ class Blog extends Model {
     public function image()
     {
         return $this->belongsTo(Image::class, 'image_id', 'id');
+    }
+
+    public function getImageUrl($imageSizeName = "medium"){
+        return $this->getAvatar($imageSizeName);
     }
 
 }

@@ -5,13 +5,13 @@
             <form role="search" class="navbar-form-custom" action="{{route('admin.product.programme')}}">
                 <input type="hidden" name="{{csrf_token()}}">
                 <div class="form-group">
-                    <input type="text" placeholder="Cherchez un programme/produit ..." class="form-control" id="top-search" name="title" style="width: 17rem !important;" value="{{Request::input("title")}}">
+                    <input type="text" placeholder="@lang('app.txt.head_title_admin')" class="form-control" id="top-search" name="title" style="width: 17rem !important;" value="{{Request::input("title")}}">
                 </div>
             </form>
         </div>
         <ul class="nav navbar-top-links navbar-right">
             <li style="padding: 20px">
-                <span class="m-r-sm text-muted welcome-message">Bienvenue dans IEA | e-marketplace.</span>
+                <span class="m-r-sm text-muted welcome-message">@lang('app.txt.head_welcome_admin') | e-marketplace.</span>
             </li>
             <li class="dropdown">
                 <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
@@ -79,7 +79,7 @@
                     <li>
                         <div class="text-center link-block">
                             <a href="{{route('admin.mail.index')}}" class="dropdown-item">
-                                <i class="fa fa-envelope"></i> <strong>Lire tous les messages</strong>
+                                <i class="fa fa-envelope"></i> <strong>@lang('app.txt.read_all_messages')</strong>
                             </a>
                         </div>
                     </li>
