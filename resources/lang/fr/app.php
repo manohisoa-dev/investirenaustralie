@@ -1028,9 +1028,7 @@ return
 	'txt.grid' => 'Grille',
 	'txt.list' => 'Liste',
 	'txt.random' => 'Aléatoire',
-<<<<<<< HEAD
     'media.titre' => 'Media',
-=======
 	'txt.head_title_admin' => 'Cherchez un programme/produit ...',
 	'txt.head_welcome_admin' => 'Bienvenue dans IEA',
 	'txt.read_all_messages' => 'Lire tous les messages',
@@ -1041,5 +1039,4 @@ return
 	'txt.firb_recommendation' => 'Le Vendeur certifie sous sa seule responsabilité que cette propriété peut être vendue à des étrangers non-résidents conformément à la loi australienne et aux règles applicables par le Foreign Investment Review Board (FIRB).',
 	'form.choose_file' => 'Choisir un fichier',
 	'form.no_file_chosen' => 'Aucun fichier choisi',
->>>>>>> beb9a629b8cccf6fa1631df1b8b930323f8c93f8
 ];

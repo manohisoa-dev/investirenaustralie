@@ -780,9 +780,7 @@ return
 	'txt.grid' => 'Grille',
 	'txt.list' => 'List',
 	'txt.random' => 'Random',
-<<<<<<< HEAD
     'media.titre' => 'Media',
-=======
 	'txt.head_title_admin' => 'Find a program/product ...',
 	'txt.head_welcome_admin' => 'Welcome to IEA',
 	'txt.read_all_messages' => 'Read all messages',
@@ -793,5 +791,4 @@ return
 	'txt.firb_recommendation' => 'The Seller certifies under their sole responsibilitythatthis property canbe sold to non-residentforeigners in accordance with Australian law and the rules applicable by the Foreign Investment Review Board (FIRB).',
 	'form.choose_file' => 'Choose file',
 	'form.no_file_chosen' => 'No file chosen',
->>>>>>> beb9a629b8cccf6fa1631df1b8b930323f8c93f8
 ];
