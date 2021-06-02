@@ -43,7 +43,7 @@
 								<select class="form-control" name="cat_programmme_id" id="cat_programmme_id">
 									<option value="">@lang('app.form.choix_txt')</option>
 									@foreach(\App\Models\Category::all() as $category)
-										<option value="{{$category->id}}">{{$category->title}}</option>
+										<option value="{{$category->id}}">{{ trans('app.txt.'.$category->title) }}</option>
 									@endforeach
 								</select>
 							</div>
@@ -52,8 +52,8 @@
 							<div class="form-group">
 								<label for="title">@lang('app.form.programme_choix_anciennete') *</label>
 								<select class="form-control" name="ancienneteBien" id="ancienneteBien" disabled="disabled">
-									<option value="Neuf">Neuf</option>
-									<option value="Ancien">Ancien</option>
+									<option value="@lang('app.txt.new')">@lang('app.txt.new')</option>
+									<option value="@lang('app.txt.old')">@lang('app.txt.old')</option>
 								</select>
 								<input type="hidden" name="ancienneteBien" value="Neuf" />
 							</div>
@@ -63,10 +63,10 @@
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_choix_nature') *</label>
 									<select class="form-control" name="natureBien" id="natureBien" disabled="disabled">
-										<option value="Programme immobilier">Programme immobilier</option>
-										<option value="Produit isolé">Produit isolé</option>
+										<option value="@lang('app.txt.real_estate_program')">@lang('app.txt.real_estate_program')</option>
+										<option value="@lang('app.txt.isolated_product')">@lang('app.txt.isolated_product')</option>
 									</select>
-									<input type="hidden" name="natureBien" value="Programme immobilier" />
+									<input type="hidden" name="natureBien" value="@lang('app.txt.real_estate_program')" />
 								</div>
 							</div>
 						</div>
@@ -172,7 +172,12 @@
 							<div class="col-lg-4">
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_fond_dossier')</label>
-									<input name="fond_dossier" class="form-control" type="file" accept="image/png, image/jpeg,.pdf,video/mp4,video/x-m4v,video/*">
+									<div class="custom-file" id="customFile">
+										<input name="fond_dossier" id="fond_dossier" class="form-control custom-file-input" type="file" accept="image/png, image/jpeg,.pdf,video/mp4,video/x-m4v,video/*">
+										<label class="custom-file-label" for="fond_dossier">
+											<label for="title">@lang('app.form.no_file_chosen')</label>
+										</label>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -193,7 +198,7 @@
 						<div class="row">
 							<div class="col-lg-12" style="margin-top:15px">
 								<label class="chk_firb"> 
-									<input type="checkbox" value="" name="chk_firb"> The Seller certifies under their sole responsibilitythatthis property canbe sold to non-residentforeigners in accordance with Australian law and the rules applicable by the Foreign Investment Review Board (FIRB).
+									<input type="checkbox" value="" name="chk_firb"> @lang('app.txt.firb_recommendation')
 								</label>
 							</div>
 						</div>
@@ -210,6 +215,11 @@
 
 @endsection
 @section('custom-script')
+	<style>
+		.custom-file-input ~ .custom-file-label::after {
+			content: "{{ trans('app.form.choose_file') }}";
+		}
+	</style>
 	<script src="{{asset('administrator/plugins/ckeditor/ckeditor.js')}}"></script>
 	<!-- Jquery Validate -->
     <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>

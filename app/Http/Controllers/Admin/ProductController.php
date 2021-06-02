@@ -16,6 +16,7 @@ use App\Models\Localisation;
 use App\Models\Type;
 use App\Models\ProductsImage;
 use Auth;
+use App;
 use Carbon\Carbon;
 
 use GuzzleHttp;
@@ -52,6 +53,9 @@ class ProductController extends Controller {
      * @return  \Illuminate\Http\Response
      */
     public function create() {
+        // Set locale langage to English
+        App::setLocale('en');
+
         if ($_GET['type'] == 'produit') {
             return $this->view("create", ['type' => $_GET['type']]);
         } else {

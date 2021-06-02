@@ -98,7 +98,6 @@
                         <div class="row md-m-25px-b m-45px-b justify-content-center text-center">
                             <div class="col-lg-8">
                                 <h3 class="h1 m-20px-b p-20px-b theme-after after-50px">{{$child->title}}</h3>
-                                <p class="m-0px font-2">{!!$child->content!!}</p>
                             </div>
                         </div>
                         <div class="tab-style-3">
@@ -128,60 +127,81 @@
                                     </a>
                                 </li>
                             </ul>
+
                             <div class="tab-content">
-                                <div id="tab3_sec1" class="tab-pane fade in active show">
-                                    <div class="row align-items-center p-25px-t lg-p-15px-t">
-                                        <div class="col-lg-6 text-center">
-                                            <img src="{{ asset('images/page/step1.png') }}" title="" alt="">
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="p-70px-l lg-p-0px-l lg-m-30px-t">
-                                                <h2 class="h1 m-25px-b">@lang('app.home.step1.large.title')</u></h2>
-                                                <p class="m-5px-b text-justify">@lang('app.home.step1.content')</p>
+
+                                @php
+                                    $htmlContent = $child->content;
+                                    preg_match('/<div class="home-step">(.*?)<\/div>/s', $htmlContent, $match);
+                                    preg_match_all( '|<h[^>]+>(.*)</h[^>]+>|iU', $match[1], $titles );
+                                    preg_match_all( '|<p>(.*)</p>|iU', $match[1], $contents );
+                                    $getTitle = $titles[1];
+                                    $getContent = $contents[1];
+                                @endphp
+                                
+                                @for ($i=0; $i <sizeOf($getTitle) ; $i++)
+                                    @if($i+1 === 1)
+                                        <div id="tab3_sec1" class="tab-pane fade in active show">
+                                            <div class="row align-items-center p-25px-t lg-p-15px-t">
+                                                <div class="col-lg-6 text-center">
+                                                    <img src={{ asset("images/page/step1.png") }} title="" alt="">
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="p-70px-l lg-p-0px-l lg-m-30px-t">
+                                                        <h2 class="h1 m-25px-b" style="overflow-wrap: break-word;">{{ $getTitle[$i] }}</h2>
+                                                        <p class="m-5px-b text-justify" style="overflow-wrap: break-word;">{{ $getContent[$i] }}</p>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div id="tab3_sec2" class="tab-pane fade in">
-                                    <div class="row align-items-center p-25px-t lg-p-15px-t">
-                                        <div class="col-lg-6">
-                                            <div class="p-70px-r lg-p-0px-r lg-m-30px-t">
-                                                <h2 class="h1 m-25px-b">@lang('app.home.step2.large.title')</u></h2>
-                                                <p class="m-5px-b text-justify">@lang('app.home.step2.content')</p>
+                                    @elseif($i+1 === 2)
+                                        <div id="tab3_sec2" class="tab-pane fade in">
+                                            <div class="row align-items-center p-25px-t lg-p-15px-t">
+                                                <div class="col-lg-6">
+                                                    <div class="p-70px-r lg-p-0px-r lg-m-30px-t">
+                                                        <h2 class="h1 m-25px-b" style="overflow-wrap: break-word;">{{ $getTitle[$i] }}</u></h2>
+                                                        <p class="m-5px-b text-justify" style="overflow-wrap: break-word;">{{ $getContent[$i] }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 order-lg-2 order-first text-center">
+                                                    <img src="{{ asset('images/page/step2.png') }}" title="" alt="">
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-6 order-lg-2 order-first text-center">
-                                            <img src="{{ asset('images/page/step2.png') }}" title="" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="tab3_sec3" class="tab-pane fade in">
-                                    <div class="row align-items-center p-25px-t lg-p-15px-t">
-                                        <div class="col-lg-6 text-center">
-                                            <img src="{{ asset('images/page/step3.png') }}" title="" alt="">
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="p-70px-l lg-p-0px-l lg-m-30px-t">
-                                                <h2 class="h1 m-25px-b">@lang('app.home.step3.large.title')</u></h2>
-                                                <p class="m-5px-b text-justify">@lang('app.home.step3.content')</p>
+                                    @elseif($i+1 === 3)
+                                        <div id="tab3_sec3" class="tab-pane fade in">
+                                            <div class="row align-items-center p-25px-t lg-p-15px-t">
+                                                <div class="col-lg-6 text-center">
+                                                    <img src="{{ asset('images/page/step3.png') }}" title="" alt="">
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="p-70px-l lg-p-0px-l lg-m-30px-t">
+                                                        <h2 class="h1 m-25px-b" style="overflow-wrap: break-word;">{{ $getTitle[$i] }}</h2>
+                                                        <p class="m-5px-b text-justify" style="overflow-wrap: break-word;">{{ $getContent[$i] }}</p>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div id="tab3_sec4" class="tab-pane fade in">
-                                    <div class="row align-items-center p-25px-t lg-p-15px-t">
-                                        <div class="col-lg-6">
-                                            <div class="p-70px-r lg-p-0px-r lg-m-30px-t">
-                                                <h2 class="h1 m-25px-b">@lang('app.home.step4.large.title')</u></h2>
-                                                <p class="m-5px-b text-justify">@lang('app.home.step4.content')</p>
+                                    @else
+                                        <div id="tab3_sec4" class="tab-pane fade in">
+                                            <div class="row align-items-center p-25px-t lg-p-15px-t">
+                                                <div class="col-lg-6">
+                                                    <div class="p-70px-r lg-p-0px-r lg-m-30px-t">
+                                                        <h2 class="h1 m-25px-b" style="overflow-wrap: break-word;">{{ $getTitle[$i] }}</h2>
+                                                        <p class="m-5px-b text-jusfify" style="overflow-wrap: break-word;">{{ $getContent[$i] }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 order-lg-2 order-first text-center">
+                                                    <img src="{{ asset('images/page/step4.png') }}" title="" alt="">
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-6 order-lg-2 order-first text-center">
-                                            <img src="{{ asset('images/page/step4.png') }}" title="" alt="">
-                                        </div>
-                                    </div>
-                                </div>
+                                            
+                                    @endif
+                                    
+                                @endfor
                             </div>
+                            
                         </div>
                     </div>
                 </section>
