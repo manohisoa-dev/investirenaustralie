@@ -35,8 +35,6 @@
 			<div class="ibox ">
 				<div class="ibox-content">
 					<div class="file-manager">
-						<button class="btn btn-primary btn-block">Upload Files</button>
-						<div class="hr-line-dashed"></div>
 						<h5>Folders media</h5>
 						<ul class="folder-list" style="padding: 0">
 							@php
@@ -51,8 +49,17 @@
 		</div>
 		<div class="col-lg-9 animated fadeInRight">
 			<div class="row">
+				<div class="col-lg-12" id="zone_drop" style="display:none">
+					<form action="{{ route('admin.ajaxFile') }}" class="dropzone" id="fileupload">
+						{{ csrf_field() }}
+						<input type="hidden" name="dir_name" id="dir_nam" value="" />
+						<div class="fallback">						
+						<input name="file" type="file" multiple />
+						</div>
+					</form>
+				</div>
             	<div class="col-lg-12" id="fileContent">
-					
+
 				</div>
 			</div>
 		</div>
@@ -61,10 +68,34 @@
 @endsection
 
 @section('custom-script')
+<script src="{{ asset('administrator/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
+<script>
+Dropzone.options.fileupload = {
+  paramName: "file", // The name that will be used to transfer the file
+  maxFilesize: 2, // MB
+  dictDefaultMessage: "@lang('app.dropzone.libelle')",
+  success: function(file, response){
+      console.log($('#dir_name').val());
+	  set_content_file(response.success);
+	  this.removeAllFiles();
+      $('#zone_drop').hide();
+	  
+  },
+};
+</script>
 <script type="text/javascript">
 $(document).ready(function(){
+    console.log($('#dir_name').val());
 	set_content_file('');
+	$('#zone_drop').hide();
 });
+
+function show_upload()
+{
+	var dir = $('#path_directory').val();
+	$('[name="dir_name"]').val(dir);
+	$('#zone_drop').show();
+}
 
 function read_folder(folder)
 {
@@ -85,9 +116,36 @@ function set_content_file(folder_name,parent='')
 	   url:"{{ route('admin.midia.get') }}",
 	   data: {"_token": "{{ csrf_token() }}","directory_name": folder_name,"directory_parent":parent},
 	   success:function(data) {
-		  $('#fileContent').html(data);	  
+	   	  $('#zone_drop').hide();
+		  $('#fileContent').html(data);		  
 	   }
 	});
+}
+
+function delete_file(file)
+{
+	var file_name = file.getAttribute("data-name");
+	var folder = file.getAttribute("data-info");
+	var id_file_base = file.getAttribute("data-base");
+	
+	//file.preventDefault();
+    swal({
+            title: "Are you sure!",
+            type: "error",
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes!",
+            showCancelButton: true,
+        },
+        function() {
+            $.ajax({
+                type: "POST",
+                url:"{{ route('admin.ajaxDeleteFile') }}",
+                data: {"_token": "{{ csrf_token() }}","file_name": file_name,"folder":folder,"id_file_base":id_file_base},
+                success: function (data) {
+                	set_content_file(data.success); 
+                }         
+            });
+    });
 }
 </script>
 @endsection
