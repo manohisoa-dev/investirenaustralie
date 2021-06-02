@@ -2,9 +2,21 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Helpers\ImageResizer ;
 
 
 class Pub extends Model {
+    use ImageResizer;
+
+    protected static $directory = 'pub';
+    protected static $directoryResize = 'pub/pub-resize';
+
+    protected static $aImageSize = array(
+        'mini'              => [25, 25],
+        'thumb'             => [50, 50],
+        'medium'            => [374, 200],
+        'large'             => [598, 418]
+    );
 
 
     public $guarded = ["id","created_at","updated_at"];
@@ -95,6 +107,10 @@ class Pub extends Model {
     public function image()
     {
         return $this->belongsTo(Image::class, 'image_id', 'id');
+    }
+
+    public function getImageUrl($imageSizeName = "medium"){
+        return $this->getAvatar($imageSizeName);
     }
 
 }
