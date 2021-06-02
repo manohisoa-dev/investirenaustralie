@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pub;
 use Illuminate\Http\Request;
 use Validator;
 use Auth;
