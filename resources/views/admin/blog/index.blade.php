@@ -241,10 +241,5 @@
 				})	
 			}
 		});
-		// $("#selected-files").sortable();
-
-		// $("#current-files li").dblclick(function(ev){
-		// 	$(this).prependTo("#selected-files");
-		// });
 	</script>
 @endsection
