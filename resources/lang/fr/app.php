@@ -1025,4 +1025,5 @@ return
 	'txt.grid' => 'Grille',
 	'txt.list' => 'Liste',
 	'txt.random' => 'Aléatoire',
+    'media.titre' => 'Media',
 ];

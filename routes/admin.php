@@ -127,4 +127,6 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::get('get/{limit?}', 'MediaController@index')->name('midia.get');
     Route::post('ajaxFile', 'MediaController@ajaxFile')->name('ajaxFile');
     Route::post('ajaxDeleteFile', 'MediaController@ajaxDeleteFile')->name('ajaxDeleteFile');
+    Route::post('ajaxGetFile', 'MediaController@ajaxGetFile')->name('ajaxGetFile');
+    Route::post('ajaxSaveFileEdit', 'MediaController@ajaxSaveFileEdit')->name('ajaxSaveFileEdit');
 });

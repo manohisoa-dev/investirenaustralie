@@ -6,21 +6,19 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Menus</h2>
+        <h2>@lang('app.media.titre')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.menu.index') }}">Menus</a>
+                <a href="{{route('admin.media')}}">@lang('app.media.titre')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Listes</strong>
+                <strong>@lang('app.txt.lists')</strong>
             </li>
         </ol>
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <?php /*?><a href="{{ route('admin.menu.create') }}" type="button" class="btn btn-primary btn-block">
-                <i class="fa fa-plus"></i> @lang('app.admin.menu.createBtn')            
-			</a><?php */?>
+		
         </div>
     </div>
 </div>
@@ -130,10 +128,11 @@ function delete_file(file)
 	
 	//file.preventDefault();
     swal({
-            title: "Are you sure!",
+            title: "@lang('app.table.confirm_delete')",
             type: "error",
             confirmButtonClass: "btn-danger",
-            confirmButtonText: "Yes!",
+            confirmButtonText: "@lang('app.yes')",
+			cancelButtonText: "@lang('app.btn.cancel')",
             showCancelButton: true,
         },
         function() {
@@ -147,5 +146,85 @@ function delete_file(file)
             });
     });
 }
+
+function edit_file(file)
+{
+	$('#form_file')[0].reset();
+	var file_name = file.getAttribute("data-name");
+	var folder = file.getAttribute("data-info");
+	var id_file_base = file.getAttribute("data-base");
+	var mime_file = file.getAttribute("data-mime");
+	
+	$.ajax({
+		type: "POST",
+		url:"{{ route('admin.ajaxGetFile') }}",
+		data: {"_token": "{{ csrf_token() }}","file_name": file_name,"folder":folder,"id_file_base":id_file_base},
+		success: function (data) {
+			$('#info_image').html(data);
+			$('#new_file').html('<input type="file" class="form-control" name="new_file" accept=".'+mime_file+'">');
+			$('#editFile').modal('show'); 
+		}         
+	});
+}
+
+function save_file()
+{
+	var formData = new FormData($('#form_file')[0]);
+	var url = "{{ route('admin.ajaxSaveFileEdit') }}";
+	var dir = $('#dir_name_file_edit').val();
+	$.ajax({
+		url : url,
+		type: "POST",
+		data: formData,
+		async: true,
+		cache: false,
+		contentType: false,
+		processData: false,
+		dataType: "JSON",
+		success: function(data)
+		{
+			console.log(data.success);
+			$('#editFile').modal('hide'); 
+			set_content_file(data.success); 
+		},
+		error: function (jqXHR, textStatus, errorThrown)
+		{
+			$('#btnSave').text('Enregistrer'); //change button text
+			$('#btnSave').attr('disabled',false); //set button enable 
+
+		}
+	});
+}
 </script>
+
+<div class="modal inmodal" id="editFile" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+	<div class="modal-content animated bounceInRight">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title">Edit file</h4>
+			</div>
+			<div class="modal-body">
+			<form action="#" id="form_file" class="form-horizontal" enctype="multipart/form-data">
+				{{ csrf_field() }}
+				<div class="row" id="info_image">
+					
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="form-group">
+							<label>Upload file</label> 
+							<div id="new_file"></div>
+						</div>
+					</div>
+				</div>
+			</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" onclick="save_file()">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
 @endsection
