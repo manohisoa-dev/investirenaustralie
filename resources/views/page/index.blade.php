@@ -10,7 +10,7 @@
         @component('includes.breadcrumb')
             {{$item->title}}
         @endcomponent
-    @endif    
+    @endif
 
 
     <!-- Content home -->
@@ -22,7 +22,7 @@
             <div class="row">
                 <div class="property-single-metax">{!!$item->content!!}</div>
                 @if(Auth::check()&&Auth::user()->isAdmin())
-                <a href="{{route('admin.page.update',$item)}}" class="more pull-right"><i class="fa fa-pencil"></i> @lang('app.btn.edit')</a> 
+                <a href="{{route('admin.page.update',$item)}}" class="more pull-right"><i class="fa fa-pencil"></i> @lang('app.btn.edit')</a>
                 @endif
             </div>
         </section>
@@ -61,7 +61,7 @@
                     </div>
                 </section>
             @empty
-                
+
             @endforelse
             <!--End Section show pubs pages -->
         @else
@@ -133,12 +133,14 @@
                                 @php
                                     $htmlContent = $child->content;
                                     preg_match('/<div class="home-step">(.*?)<\/div>/s', $htmlContent, $match);
-                                    preg_match_all( '|<h[^>]+>(.*)</h[^>]+>|iU', $match[1], $titles );
-                                    preg_match_all( '|<p>(.*)</p>|iU', $match[1], $contents );
-                                    $getTitle = $titles[1];
-                                    $getContent = $contents[1];
+                                    if(count($match) > 0){
+                                        preg_match_all( '|<h[^>]+>(.*)</h[^>]+>|iU', $match[1], $titles );
+                                        preg_match_all( '|<p>(.*)</p>|iU', $match[1], $contents );
+                                    }
+                                    $getTitle = isset($titles) && count($titles) ? $titles[1] : [];
+                                    $getContent = isset($contents) && count($contents) ? $contents[1] : [];
                                 @endphp
-                                
+
                                 @for ($i=0; $i <sizeOf($getTitle) ; $i++)
                                     @if($i+1 === 1)
                                         <div id="tab3_sec1" class="tab-pane fade in active show">
@@ -148,7 +150,7 @@
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="p-70px-l lg-p-0px-l lg-m-30px-t">
-                                                        <h2 class="h1 m-25px-b" style="overflow-wrap: break-word;">{{ $getTitle[$i] }}</h2>
+                                                        <h2 class="h1 m-25px-b" style="overflow-wrap: break-word;">{{ array_key_exists($i, $getTitle) ? $getTitle[$i]  : ''}}</h2>
                                                         <p class="m-5px-b text-justify" style="overflow-wrap: break-word;">{{ $getContent[$i] }}</p>
                                                     </div>
                                                 </div>
@@ -196,12 +198,12 @@
                                                 </div>
                                             </div>
                                         </div>
-                                            
+
                                     @endif
-                                    
+
                                 @endfor
                             </div>
-                            
+
                         </div>
                     </div>
                 </section>
@@ -216,7 +218,7 @@
                         <div class="row">
                             <div class="col-md-6 m-15px-tb">
                                 <div style="height:500px;" class="p-50px-tb p-35px-lr box-shadow-hover hover-top hover-rotate white-bg text-center border-radius-5">
-                                    <div class="ef-1 icon-80 theme-bg border-radius-50 theme2nd-color d-inline-block m-20px-b hr-rotate-after"> 
+                                    <div class="ef-1 icon-80 theme-bg border-radius-50 theme2nd-color d-inline-block m-20px-b hr-rotate-after">
                                         <i class="white-color fa fa-podcast"></i>
                                     </div>
                                     <h5 class="h3 m-10px-b">@lang('app.txt.mission.title')</h5>
@@ -262,7 +264,7 @@
                     </div>
                 </section>
                 <!--End Section -->
-            @endif    
+            @endif
         @endif
     @endforeach
 
