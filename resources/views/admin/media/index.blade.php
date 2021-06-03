@@ -83,7 +83,6 @@ Dropzone.options.fileupload = {
 </script>
 <script type="text/javascript">
 $(document).ready(function(){
-    console.log($('#dir_name').val());
 	set_content_file('');
 	$('#zone_drop').hide();
 });
@@ -103,19 +102,20 @@ function read_folder(folder)
 		var parent = folder.getAttribute("data-href")+'/'+folder.getAttribute("data-parent");
 	}
 		
-	set_content_file(folder.getAttribute("data-href"),parent);
+	set_content_file(folder.getAttribute("data-href"));
 	//alert(d.getAttribute("data-href"));
 }
 
-function set_content_file(folder_name,parent='')
+function set_content_file(folder_name)
 {
 	$.ajax({
 	   type:'GET',
 	   url:"{{ route('admin.midia.get') }}",
-	   data: {"_token": "{{ csrf_token() }}","directory_name": folder_name,"directory_parent":parent},
+	   data: {"_token": "{{ csrf_token() }}","directory_name": folder_name},
+	   cache: false,
 	   success:function(data) {
 	   	  $('#zone_drop').hide();
-		  $('#fileContent').html(data);		  
+		  $('#fileContent').html(data);			    
 	   }
 	});
 }
@@ -159,9 +159,10 @@ function edit_file(file)
 		type: "POST",
 		url:"{{ route('admin.ajaxGetFile') }}",
 		data: {"_token": "{{ csrf_token() }}","file_name": file_name,"folder":folder,"id_file_base":id_file_base},
+		timeout : 6000,
 		success: function (data) {
 			$('#info_image').html(data);
-			$('#new_file').html('<input type="file" class="form-control" name="new_file" accept=".'+mime_file+'">');
+			$('#new_file').html('<input type="file" class="form-control" name="new_file" id="new_file" accept=".'+mime_file+'">');
 			$('#editFile').modal('show'); 
 		}         
 	});
@@ -171,29 +172,19 @@ function save_file()
 {
 	var formData = new FormData($('#form_file')[0]);
 	var url = "{{ route('admin.ajaxSaveFileEdit') }}";
-	var dir = $('#dir_name_file_edit').val();
-	$.ajax({
-		url : url,
-		type: "POST",
-		data: formData,
-		async: true,
-		cache: false,
-		contentType: false,
-		processData: false,
-		dataType: "JSON",
-		success: function(data)
-		{
-			console.log(data.success);
-			$('#editFile').modal('hide'); 
-			set_content_file(data.success); 
-		},
-		error: function (jqXHR, textStatus, errorThrown)
-		{
-			$('#btnSave').text('Enregistrer'); //change button text
-			$('#btnSave').attr('disabled',false); //set button enable 
-
-		}
-	});
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: formData,
+        success: function (data) {		   	
+            set_content_file(data.success); 
+			 $("#fileContent").trigger('create');
+			setTimeout(function() {$('#editFile').modal('hide');}, 2000);
+        },
+        contentType: false,
+        processData: false,
+		cache: false
+    });
 }
 </script>
 

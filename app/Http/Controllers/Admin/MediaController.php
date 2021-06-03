@@ -272,7 +272,7 @@ class MediaController extends Controller {
         $image = $request->file('file');
         if ($request->dir_name) {
             $dir = $request->dir_name;
-            $path = public_path() . $dir;
+            $path = public_path() . '/' . $dir;
         } else {
             $dir = '';
             $path = public_path();
@@ -294,7 +294,7 @@ class MediaController extends Controller {
             $link_file = public_path() . '/' . $request->file_name;
             $dir = '';
         } else {
-            $link_file = public_path() . $request->folder . '/' . $request->file_name;
+            $link_file = public_path() . '/' . $request->folder . '/' . $request->file_name;
             $dir = $request->folder;
         }
 
@@ -357,10 +357,10 @@ class MediaController extends Controller {
             '</small></p>';
         $content .= '</div>';
 
-        $content .= '<input type="hidden" name="dir_name_file_edit" id="dir_name_file_edit" value="' . $request->folder .
-            '" />';
-        $content .= '<input type="hidden" name="name_file_edit" value="' . $request->file_name .
-            '" />';
+        $content .= '<input type="hidden" name="dir_name_file_edit" id="dir_name_file_edit" value="' .
+            $request->folder . '" />';
+        $content .= '<input type="hidden" name="name_file_edit" id="name_file_edit" value="' .
+            $request->file_name . '" />';
 
         echo $content;
     }
@@ -372,7 +372,7 @@ class MediaController extends Controller {
 
         if ($dir_file) {
             $dir = $dir_file;
-            $path = public_path() . $dir;
+            $path = public_path() . '/' . $dir;
             $link_file = public_path() . '/' . $dir_file . '/' . $name_file;
         } else {
             $dir = '';
@@ -385,7 +385,7 @@ class MediaController extends Controller {
             if ($delete_file) {
                 $upload_success = $image->move($path, $name_file);
                 if ($upload_success) {
-                    return response()->json(['success' => ltrim($dir_file, '/') ]);
+                    return response()->json(['success' => ltrim($dir_file, '/')]);
                 }
                 // Else, return error 400
                 else {
@@ -394,7 +394,7 @@ class MediaController extends Controller {
             } else {
                 return response()->json('error', 400);
             }
-        }else{
+        } else {
             return response()->json(['success' => $dir_file]);
         }
     }
