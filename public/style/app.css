@@ -48,3 +48,7 @@ background-color: #fafafa;
   padding: 100px 0 0 0;
   z-index: 9999999;
 }
+
+#home{
+  height: 42rem;
+}
