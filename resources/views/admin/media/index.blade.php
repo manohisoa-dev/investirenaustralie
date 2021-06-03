@@ -33,7 +33,7 @@
 			<div class="ibox ">
 				<div class="ibox-content">
 					<div class="file-manager">
-						<h5>Folders media</h5>
+						<h5>Folders media {{ Session::get('dirFile') }}</h5>
 						<ul class="folder-list" style="padding: 0">
 							@php
 								foreach($folder as $key=>$val){
@@ -83,7 +83,11 @@ Dropzone.options.fileupload = {
 </script>
 <script type="text/javascript">
 $(document).ready(function(){
+    @if(Session::has('dirFile'))
+	set_content_file("{{ Session::get('dirFile') }}");
+	@else
 	set_content_file('');
+	@endif
 	$('#zone_drop').hide();
 });
 
@@ -95,14 +99,20 @@ function show_upload()
 }
 
 function read_folder(folder)
-{
-    /*if(folder.getAttribute("data-parent") == ''){
-		var parent = folder.getAttribute("data-href");
-	}else{
-		var parent = folder.getAttribute("data-href")+'/'+folder.getAttribute("data-parent");
-	}*/		
-	set_content_file(folder.getAttribute("data-href"));
-	//alert(d.getAttribute("data-href"));
+{	
+	//set_content_file(folder.getAttribute("data-href"));
+	var directory = folder.getAttribute("data-href");
+	$.ajax({
+	   type:'GET',
+	   url:"{{ route('admin.ajaxReadFile') }}",
+	   data: {"_token": "{{ csrf_token() }}","directory_name": directory},
+	   cache: false,
+	   success:function(data) {
+	   	  	location.reload();	    
+	   }
+	});
+	
+	return false
 }
 
 function set_content_file(folder_name)
@@ -117,6 +127,8 @@ function set_content_file(folder_name)
 		  $('#fileContent').html(data);			    
 	   }
 	});
+	
+	return false
 }
 
 function delete_file(file)
@@ -177,8 +189,10 @@ function save_file()
         data: formData,
 		contentType: false,
         success: function (data) {	 	
-            set_content_file(data.success);
+            //set_content_file(data.success);
 			setTimeout(function() {$('#editFile').modal('hide');}, 2000);
+			location.reload();
+			//window.location = "{{route('admin.media')}}";
         },
         contentType: false,
         processData: false,

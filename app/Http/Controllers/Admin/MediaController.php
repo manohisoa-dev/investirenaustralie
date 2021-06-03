@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Jleon\LaravelPnotify\Notify;
 use itskodinger\midia;
 use App\Models\Image;
+use Session;
 
 class MediaController extends Controller {
     protected $directory;
@@ -285,7 +286,6 @@ class MediaController extends Controller {
         }
         $imageName = time() . $image->getClientOriginalName();
         $upload_success = $image->move($path, $imageName);
-
         if ($upload_success) {
             return response()->json(['success' => $dir]);
         }
@@ -385,11 +385,8 @@ class MediaController extends Controller {
             $path = public_path();
             $link_file = public_path() . '/' . $dir_file . '/' . $name_file;
         }
-
-        /*$info = pathinfo($link_file);
-        $copy = public_path() . '/' . $dir_file . '/' . 'old-' . time() . $info['basename'];
-        rename($link_file, $copy);*/
-
+        
+        Session::flash('dirFile', $dir); 
         if ($request->file('new_file')) {
             $delete = unlink($link_file);
             if ($delete) {
@@ -407,5 +404,21 @@ class MediaController extends Controller {
         } else {
             return response()->json(['success' => $dir_file]);
         }
+    }
+    
+    public function ajaxReadFile()
+    {
+        if (isset($_GET['directory_name'])) {
+            if ($_GET['directory_name'] == '') {
+                $directory = '';
+            } else {
+                $directory = $_GET['directory_name'];
+            }
+        } else {
+            $directory = '';
+        }
+        
+        Session::flash('dirFile', ltrim($directory, '/')); 
+        return response()->json(['success' => '']);
     }
 }
