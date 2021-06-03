@@ -96,12 +96,11 @@ function show_upload()
 
 function read_folder(folder)
 {
-    if(folder.getAttribute("data-parent") == ''){
+    /*if(folder.getAttribute("data-parent") == ''){
 		var parent = folder.getAttribute("data-href");
 	}else{
 		var parent = folder.getAttribute("data-href")+'/'+folder.getAttribute("data-parent");
-	}
-		
+	}*/		
 	set_content_file(folder.getAttribute("data-href"));
 	//alert(d.getAttribute("data-href"));
 }
@@ -176,9 +175,9 @@ function save_file()
         url: url,
         type: 'POST',
         data: formData,
-        success: function (data) {		   	
-            set_content_file(data.success); 
-			 $("#fileContent").trigger('create');
+		contentType: false,
+        success: function (data) {	 	
+            set_content_file(data.success);
 			setTimeout(function() {$('#editFile').modal('hide');}, 2000);
         },
         contentType: false,

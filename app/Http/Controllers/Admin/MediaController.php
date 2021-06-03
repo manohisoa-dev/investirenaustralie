@@ -61,10 +61,14 @@ class MediaController extends Controller {
 
     public function index() {
         $base_path = public_path();
-        if ($_GET['directory_name'] == '') {
-            $directory = '';
+        if (isset($_GET['directory_name'])) {
+            if ($_GET['directory_name'] == '') {
+                $directory = '';
+            } else {
+                $directory = $_GET['directory_name'];
+            }
         } else {
-            $directory = $_GET['directory_name'];
+            $directory = '';
         }
 
         $path = $base_path . '/' . $directory;
@@ -87,6 +91,8 @@ class MediaController extends Controller {
         $content .= '<input type="hidden" name="path_directory" id="path_directory" value="' .
             $directory . '" />';
         $content .= '<a class="btn btn-primary" onclick="show_upload()">Upload Files</a>';
+        $content .= '<a class="btn btn-default" data-href="' . ltrim($directory, '/') .
+            '" onclick="read_folder(this)"><i class="fa fa-refresh"></i></a>';
         $content .= '<div style="clear:both"></div></div>';
 
         $dirs = array();
@@ -377,12 +383,16 @@ class MediaController extends Controller {
         } else {
             $dir = '';
             $path = public_path();
-            $link_file = public_path() . $dir_file . '/' . $name_file;
+            $link_file = public_path() . '/' . $dir_file . '/' . $name_file;
         }
 
+        /*$info = pathinfo($link_file);
+        $copy = public_path() . '/' . $dir_file . '/' . 'old-' . time() . $info['basename'];
+        rename($link_file, $copy);*/
+
         if ($request->file('new_file')) {
-            $delete_file = unlink($link_file);
-            if ($delete_file) {
+            $delete = unlink($link_file);
+            if ($delete) {
                 $upload_success = $image->move($path, $name_file);
                 if ($upload_success) {
                     return response()->json(['success' => ltrim($dir_file, '/')]);
@@ -391,7 +401,7 @@ class MediaController extends Controller {
                 else {
                     return response()->json('error', 400);
                 }
-            } else {
+            }else{
                 return response()->json('error', 400);
             }
         } else {
