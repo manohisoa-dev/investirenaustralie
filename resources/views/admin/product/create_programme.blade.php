@@ -175,7 +175,7 @@
 									<div class="custom-file" id="customFile">
 										<input name="fond_dossier" id="fond_dossier" class="form-control custom-file-input" type="file" accept="image/png, image/jpeg,.pdf,video/mp4,video/x-m4v,video/*">
 										<label class="custom-file-label" for="fond_dossier">
-											<label for="title">@lang('app.form.no_file_chosen')</label>
+											<label for="title"></label>
 										</label>
 									</div>
 								</div>
@@ -226,6 +226,13 @@
     <script>
 	Dropzone.autoDiscover = false;
 	$(document).ready(function(){
+		$('#fond_dossier').on('change',function(){
+			//get the file name
+			var fileName = $(this).val();
+			//replace the "Choose a file" label
+			$(this).next('.custom-file-label').html(fileName);
+		});
+			
 		CKEDITOR.replace( 'description' );
 		$("#category_id").select2();
 		$("#type_id").select2();
