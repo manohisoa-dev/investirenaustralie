@@ -569,22 +569,34 @@ class ProductController extends Controller {
     }
 
     public function ajaxCheckTitreProgramme(Request $request) {
-        $datas = $request->get('datas');
-        $datasSplit = explode('|;|',$datas);
-        $titre_programme = $datasSplit[0];
-        $titre_programme_now = $datasSplit[1];
 
-        if($titre_programme_now !== $titre_programme){
-            $slug = generateSlug($titre_programme);
+        if ($request->get('datas')) {
+            $datas = $request->get('datas');
+            $datasSplit = explode('|;|', $datas);
+            $titre_programme = $datasSplit[0];
+            $titre_programme_now = $datasSplit[1];
+
+            if ($titre_programme_now !== $titre_programme) {
+                $slug = generateSlug($titre_programme);
+                $slug_exist = Product::where('slug', $slug)->get();
+                if (count($slug_exist) > 0) {
+                    echo "false";
+                } else {
+                    echo "true";
+                }
+            } else {
+                echo "true";
+            }
+        } else {
+            $slug = generateSlug($request->title_programme);
             $slug_exist = Product::where('slug', $slug)->get();
             if (count($slug_exist) > 0) {
                 echo "false";
             } else {
                 echo "true";
             }
-        }else{
-            echo "true";
         }
+        /**/
     }
 
     public function ajaxDropZone(Request $request) {
@@ -593,7 +605,7 @@ class ProductController extends Controller {
         $filename = pathinfo($fileInfo, PATHINFO_FILENAME);
         $extension = pathinfo($fileInfo, PATHINFO_EXTENSION);
         $file_name = $filename . '-' . time() . '.' . $extension;
-        //$image->move(public_path('uploads/product'), $file_name);
+        $image->move(public_path('uploads/product'), $file_name);
 
         return response()->json(['success' => $file_name]);
     }

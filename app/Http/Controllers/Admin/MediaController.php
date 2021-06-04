@@ -91,7 +91,7 @@ class MediaController extends Controller {
         $content .= '</ol>';
         $content .= '<input type="hidden" name="path_directory" id="path_directory" value="' .
             $directory . '" />';
-        $content .= '<a class="btn btn-primary" onclick="show_upload()">Upload Files</a>';
+        $content .= '<a class="btn btn-primary" onclick="show_upload()">'.__('app.media.lab_fileinput').'</a>';
         $content .= '<a class="btn btn-default" data-href="' . ltrim($directory, '/') .
             '" onclick="read_folder(this)"><i class="fa fa-refresh"></i></a>';
         $content .= '<div style="clear:both"></div></div>';
