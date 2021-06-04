@@ -2,7 +2,7 @@
 {{-- <section id="home" class="effect-section parallax" style="background-image: url({{ asset('images/slider/1.jpg') }});height: 42rem;">
 </section> --}}
 
-<section id="home" class="effect-section parallax" style="height:42rem;">
+<section id="home" class="effect-section parallax">
     <!--Carousel Wrapper-->
     <div id="carousel-example-1z" class="carousel slide carousel-fade" data-ride="carousel" style="z-index: 0;">
         <!--Indicators-->

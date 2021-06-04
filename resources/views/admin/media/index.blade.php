@@ -6,21 +6,19 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Menus</h2>
+        <h2>@lang('app.media.titre')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.menu.index') }}">Menus</a>
+                <a href="{{route('admin.media')}}">@lang('app.media.titre')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Listes</strong>
+                <strong>@lang('app.txt.lists')</strong>
             </li>
         </ol>
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <?php /*?><a href="{{ route('admin.menu.create') }}" type="button" class="btn btn-primary btn-block">
-                <i class="fa fa-plus"></i> @lang('app.admin.menu.createBtn')            
-			</a><?php */?>
+		
         </div>
     </div>
 </div>
@@ -35,7 +33,7 @@
 			<div class="ibox ">
 				<div class="ibox-content">
 					<div class="file-manager">
-						<h5>Folders media</h5>
+						<h5>Folders media {{ Session::get('dirFile') }}</h5>
 						<ul class="folder-list" style="padding: 0">
 							@php
 								foreach($folder as $key=>$val){
@@ -85,8 +83,11 @@ Dropzone.options.fileupload = {
 </script>
 <script type="text/javascript">
 $(document).ready(function(){
-    console.log($('#dir_name').val());
+    @if(Session::has('dirFile'))
+	set_content_file("{{ Session::get('dirFile') }}");
+	@else
 	set_content_file('');
+	@endif
 	$('#zone_drop').hide();
 });
 
@@ -98,28 +99,36 @@ function show_upload()
 }
 
 function read_folder(folder)
-{
-    if(folder.getAttribute("data-parent") == ''){
-		var parent = folder.getAttribute("data-href");
-	}else{
-		var parent = folder.getAttribute("data-href")+'/'+folder.getAttribute("data-parent");
-	}
-		
-	set_content_file(folder.getAttribute("data-href"),parent);
-	//alert(d.getAttribute("data-href"));
+{	
+	//set_content_file(folder.getAttribute("data-href"));
+	var directory = folder.getAttribute("data-href");
+	$.ajax({
+	   type:'GET',
+	   url:"{{ route('admin.ajaxReadFile') }}",
+	   data: {"_token": "{{ csrf_token() }}","directory_name": directory},
+	   cache: false,
+	   success:function(data) {
+	   	  	location.reload();	    
+	   }
+	});
+	
+	return false
 }
 
-function set_content_file(folder_name,parent='')
+function set_content_file(folder_name)
 {
 	$.ajax({
 	   type:'GET',
 	   url:"{{ route('admin.midia.get') }}",
-	   data: {"_token": "{{ csrf_token() }}","directory_name": folder_name,"directory_parent":parent},
+	   data: {"_token": "{{ csrf_token() }}","directory_name": folder_name},
+	   cache: false,
 	   success:function(data) {
 	   	  $('#zone_drop').hide();
-		  $('#fileContent').html(data);		  
+		  $('#fileContent').html(data);			    
 	   }
 	});
+	
+	return false
 }
 
 function delete_file(file)
@@ -130,10 +139,11 @@ function delete_file(file)
 	
 	//file.preventDefault();
     swal({
-            title: "Are you sure!",
+            title: "@lang('app.table.confirm_delete')",
             type: "error",
             confirmButtonClass: "btn-danger",
-            confirmButtonText: "Yes!",
+            confirmButtonText: "@lang('app.yes')",
+			cancelButtonText: "@lang('app.btn.cancel')",
             showCancelButton: true,
         },
         function() {
@@ -147,5 +157,78 @@ function delete_file(file)
             });
     });
 }
+
+function edit_file(file)
+{
+	$('#form_file')[0].reset();
+	var file_name = file.getAttribute("data-name");
+	var folder = file.getAttribute("data-info");
+	var id_file_base = file.getAttribute("data-base");
+	var mime_file = file.getAttribute("data-mime");
+	
+	$.ajax({
+		type: "POST",
+		url:"{{ route('admin.ajaxGetFile') }}",
+		data: {"_token": "{{ csrf_token() }}","file_name": file_name,"folder":folder,"id_file_base":id_file_base},
+		timeout : 6000,
+		success: function (data) {
+			$('#info_image').html(data);
+			$('#new_file').html('<input type="file" class="form-control" name="new_file" id="new_file" accept=".'+mime_file+'">');
+			$('#editFile').modal('show'); 
+		}         
+	});
+}
+
+function save_file()
+{
+	var formData = new FormData($('#form_file')[0]);
+	var url = "{{ route('admin.ajaxSaveFileEdit') }}";
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: formData,
+		contentType: false,
+        success: function (data) {	 	
+            //set_content_file(data.success);
+			setTimeout(function() {$('#editFile').modal('hide');}, 2000);
+			location.reload();
+			//window.location = "{{route('admin.media')}}";
+        },
+        contentType: false,
+        processData: false,
+		cache: false
+    });
+}
 </script>
+
+<div class="modal inmodal" id="editFile" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+	<div class="modal-content animated bounceInRight">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title">Edit file</h4>
+			</div>
+			<div class="modal-body">
+			<form action="#" id="form_file" class="form-horizontal" enctype="multipart/form-data">
+				{{ csrf_field() }}
+				<div class="row" id="info_image">
+					
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="form-group">
+							<label>Upload file</label> 
+							<div id="new_file"></div>
+						</div>
+					</div>
+				</div>
+			</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" onclick="save_file()">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
 @endsection

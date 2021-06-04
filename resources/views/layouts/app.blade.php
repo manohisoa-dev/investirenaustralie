@@ -27,6 +27,7 @@
 <!-- theme css -->
 <link href="{{ asset('style/master.css') }}" rel="stylesheet">
 <link href="{{ asset('style/app.css') }}" rel="stylesheet">
+<link href="{{ asset('style/responsive.css') }}" rel="stylesheet">
 <!-- Fin Mombo -->
 
 <style>

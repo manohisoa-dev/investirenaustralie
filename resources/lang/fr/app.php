@@ -1028,6 +1028,7 @@ return
 	'txt.grid' => 'Grille',
 	'txt.list' => 'Liste',
 	'txt.random' => 'Aléatoire',
+    'media.titre' => 'Media',
 	'txt.head_title_admin' => 'Cherchez un programme/produit ...',
 	'txt.head_welcome_admin' => 'Bienvenue dans IEA',
 	'txt.read_all_messages' => 'Lire tous les messages',

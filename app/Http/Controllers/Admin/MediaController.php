@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Jleon\LaravelPnotify\Notify;
 use itskodinger\midia;
 use App\Models\Image;
+use Session;
 
 class MediaController extends Controller {
     protected $directory;
@@ -61,10 +62,14 @@ class MediaController extends Controller {
 
     public function index() {
         $base_path = public_path();
-        if ($_GET['directory_name'] == '') {
-            $directory = '';
+        if (isset($_GET['directory_name'])) {
+            if ($_GET['directory_name'] == '') {
+                $directory = '';
+            } else {
+                $directory = $_GET['directory_name'];
+            }
         } else {
-            $directory = $_GET['directory_name'];
+            $directory = '';
         }
 
         $path = $base_path . '/' . $directory;
@@ -87,6 +92,8 @@ class MediaController extends Controller {
         $content .= '<input type="hidden" name="path_directory" id="path_directory" value="' .
             $directory . '" />';
         $content .= '<a class="btn btn-primary" onclick="show_upload()">Upload Files</a>';
+        $content .= '<a class="btn btn-default" data-href="' . ltrim($directory, '/') .
+            '" onclick="read_folder(this)"><i class="fa fa-refresh"></i></a>';
         $content .= '<div style="clear:both"></div></div>';
 
         $dirs = array();
@@ -135,7 +142,8 @@ class MediaController extends Controller {
                 $content .= '<div class="file">';
                 $content .= '<a href="#" data-href="' . $path . '/' . $file['fullname'] . '">';
                 $content .= '<span class="corner"></span>';
-                if ($file['extension'] == 'png' || $file['extension'] == 'jpg') {
+                if ($file['extension'] == 'png' || $file['extension'] == 'jpg' || $file['extension'] ==
+                    'gif') {
                     $content .= '<div class="image">';
                     $content .= '<img alt="image" class="img-fluid" src="' . $file['thumbnail'] .
                         '">';
@@ -156,7 +164,9 @@ class MediaController extends Controller {
                 $content .= '<i class="fa fa-times text-danger"></i></a>';
 
                 //modification
-                $content .= '<a class="btn btn-default btn-circle pull-right" style="margin-right:5px" href="">';
+                $content .= '<a class="btn btn-default btn-circle pull-right" style="margin-right:5px" href="javascript:void(0)" data-info="' .
+                    $directory . '" data-name="' . $file['fullname'] . '" data-base="' . $id_file .
+                    '" onclick="edit_file(this)" data-mime="' . $file['extension'] . '">';
                 $content .= '<i class="fa fa-pencil"></i></a>';
 
                 $content .= '</div>';
@@ -269,14 +279,13 @@ class MediaController extends Controller {
         $image = $request->file('file');
         if ($request->dir_name) {
             $dir = $request->dir_name;
-            $path = public_path() . $dir;
+            $path = public_path() . '/' . $dir;
         } else {
             $dir = '';
             $path = public_path();
         }
         $imageName = time() . $image->getClientOriginalName();
         $upload_success = $image->move($path, $imageName);
-
         if ($upload_success) {
             return response()->json(['success' => $dir]);
         }
@@ -291,19 +300,125 @@ class MediaController extends Controller {
             $link_file = public_path() . '/' . $request->file_name;
             $dir = '';
         } else {
-            $link_file = public_path() . $request->folder . '/' . $request->file_name;
+            $link_file = public_path() . '/' . $request->folder . '/' . $request->file_name;
             $dir = $request->folder;
         }
-        
-        if($request->id_file_base != 0){
+
+        if ($request->id_file_base != 0) {
             Image::where('id', $request->id_file_base)->delete();
         }
-        
+
         $delete_file = unlink($link_file);
         if ($delete_file) {
             return response()->json(['success' => $dir]);
         } else {
             return response()->json('error', 400);
         }
+    }
+
+    public function ajaxGetFile(Request $request) {
+        $base_path = public_path();
+        $path_file = $request->folder . '/' . $request->file_name;
+        $file = $base_path . '/' . $path_file;
+        $info = pathinfo($file);
+
+        $dir = $base_path . '/' . $request->folder;
+        $path = $this->getRelativePath($dir);
+        $path = str_replace('public', "", $path);
+
+        $content = '';
+        $content .= '<div class="col-lg-6">';
+        $content .= '<div class="file-box">';
+        $content .= '<div class="file">';
+        $content .= '<a>';
+        $content .= '<span class="corner"></span>';
+        if ($info['extension'] == 'png' || $info['extension'] == 'jpg' || $info['extension'] ==
+            'gif') {
+            $content .= '<div class="image">';
+            $content .= '<img alt="image" class="img-fluid" src="' . $path . '/' . $request->file_name .
+                '">';
+            $content .= '</div>';
+        } else {
+            $content .= '<div class="icon">';
+            $content .= '<i class="fa ' . $this->set_icon_file($info['extension']) .
+                '"></i>';
+            $content .= '</div>';
+        }
+
+        $content .= '<div class="file-name">';
+        $content .= $info['filename'];
+        $content .= '<br>';
+        $content .= '<small>' . midia_time_elapsed(filemtime($file)) . '</small>';
+        $content .= '</div>';
+        $content .= '</a>';
+        $content .= '</div>';
+        $content .= '</div>';
+        $content .= '</div>';
+        $content .= '<div class="col-lg-6">';
+        $content .= '<p><b>Date : </b><small>' . date("F d Y H:i:s.", filemtime($file)) .
+            '</small></p>';
+        $content .= '<p><b>Size : </b><small>' . $this->toMb(filesize($file)) .
+            '</small></p>';
+        $content .= '<p style="overflow-wrap: break-word"><b>Url : </b><small>' . asset($path_file) .
+            '</small></p>';
+        $content .= '</div>';
+
+        $content .= '<input type="hidden" name="dir_name_file_edit" id="dir_name_file_edit" value="' .
+            $request->folder . '" />';
+        $content .= '<input type="hidden" name="name_file_edit" id="name_file_edit" value="' .
+            $request->file_name . '" />';
+
+        echo $content;
+    }
+
+    public function ajaxSaveFileEdit(Request $request) {
+        $image = $request->file('new_file');
+        $name_file = $request->name_file_edit;
+        $dir_file = $request->dir_name_file_edit;
+
+        if ($dir_file) {
+            $dir = $dir_file;
+            $path = public_path() . '/' . $dir;
+            $link_file = public_path() . '/' . $dir_file . '/' . $name_file;
+        } else {
+            $dir = '';
+            $path = public_path();
+            $link_file = public_path() . '/' . $dir_file . '/' . $name_file;
+        }
+        
+        Session::flash('dirFile', $dir); 
+        if ($request->file('new_file')) {
+            $delete = unlink($link_file);
+            if ($delete) {
+                $upload_success = $image->move($path, $name_file);
+                if ($upload_success) {
+                    return response()->json(['success' => ltrim($dir_file, '/')]);
+                }
+                // Else, return error 400
+                else {
+                    return response()->json('error', 400);
+                }
+            }else{
+                return response()->json('error', 400);
+            }
+        } else {
+            return response()->json(['success' => $dir_file]);
+        }
+    }
+    
+    public function ajaxReadFile()
+    {
+        if (isset($_GET['directory_name'])) {
+            if ($_GET['directory_name'] == '') {
+                $directory = '';
+            } else {
+                $directory = $_GET['directory_name'];
+            }
+        } else {
+            $directory = '';
+        }
+        
+        Session::flash('dirFile', ltrim($directory, '/')); 
+        return response()->json(['success' => '']);
     }
 }
