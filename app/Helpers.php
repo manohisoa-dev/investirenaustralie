@@ -332,5 +332,21 @@ if (!function_exists('midia_time_elapsed')) {
     }
 }
 
+if (!function_exists('genMdpAleatoire')) {
+	function genMdpAleatoire()
+	{
+		// Liste des caractères possibles
+		$cars="!(){}*^%AZERTYUIOPQSDFGHJKLMWXCVBN?&#@azertyiopqsdfghjklmwxcvbn0123456789$";
+		$mdp='';
+		$long=strlen($cars);
+
+		srand((double)microtime()*1000000); 
+		//Initialise le générateur de nombres aléatoires
+		for($i=0;$i<24;$i++)$mdp=$mdp.substr($cars,rand(0,$long-1),1);
+
+		return $mdp;
+	}
+}
+
 
 

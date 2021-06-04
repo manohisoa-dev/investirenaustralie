@@ -1038,4 +1038,12 @@ return
 	'txt.firb_recommendation' => 'Le Vendeur certifie sous sa seule responsabilité que cette propriété peut être vendue à des étrangers non-résidents conformément à la loi australienne et aux règles applicables par le Foreign Investment Review Board (FIRB).',
 	'form.choose_file' => 'Choisir un fichier',
 	'form.no_file_chosen' => 'Aucun fichier choisi',
+	'txt.add_collaborator' => 'Ajouter un collaborateur',
+	'txt.login_info' => 'Informations de connexion',
+	'txt.managing_director' => 'Administrateur Délégué',
+	'txt.blog_admin' => 'Administrateur du Blog',
+	'txt.send_user_notification' => 'Envoyer une notification à l&lsquo;utilisateur',
+	'txt.send_new_user_an_email_about_their_account' => 'Envoyer au nouvel utilisateur un e-mail concernant son compte.',
+	'txt.show_password' => 'Afficher le mot de passe',
+	'txt.hide_password' => 'Masquer le mot de passe',
 ];

@@ -790,4 +790,12 @@ return
 	'txt.firb_recommendation' => 'The Seller certifies under their sole responsibilitythatthis property canbe sold to non-residentforeigners in accordance with Australian law and the rules applicable by the Foreign Investment Review Board (FIRB).',
 	'form.choose_file' => 'Choose file',
 	'form.no_file_chosen' => 'No file chosen',
+	'txt.add_collaborator' => 'Add a collaborator',
+	'txt.login_info' => 'Login Info',
+	'txt.managing_director' => 'Managing Director',
+	'txt.blog_admin' => 'Blog Admin',
+	'txt.send_user_notification' => 'Send User Notification',
+	'txt.send_new_user_an_email_about_their_account' => 'Send the new user an email about their account.',
+	'txt.show_password' => 'Show password',
+	'txt.hide_password' => 'Hide password',
 ];

@@ -94,6 +94,7 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::get('user/show/member/type/particulier', 'UserController@showMemberParticulier')->name('user.show.member.particulier');
     Route::get('user/show/member/type/organisation', 'UserController@showMemberOrganisation')->name('user.show.member.organisation');
     Route::get('user/show/collaborator', 'UserController@showCollaborator')->name('user.show.collaborator');
+    Route::get('user/create/collaborator', 'UserController@createCollaborator')->name('user.create.collaborator');
 
     Route::resource('sale','SaleController');
     Route::get('pay/{sale}/{role}', 'SaleController@pay')->name('sale.pay');

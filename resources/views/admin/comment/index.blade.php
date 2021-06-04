@@ -129,7 +129,7 @@
                                           data-value="{{ $record->blog_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
                                           data-url="{{ route('admin.comment.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->blog->title }}</span>
+                                          >{{ $record->blog['title']?$record->blog->title:'' }}</span>
                                </td>
                                
                                 <td>{{ $record->created_at }}</td>

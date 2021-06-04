@@ -97,6 +97,33 @@ class User extends Authenticatable{
         return $query->paginate(15);
     }
 
+    public static function validationRulesAdmin( $attributes = null )
+    {
+        $rules = [
+            'login' => 'required|string|max:100',
+            'email' => 'required|string|max:100|email',
+            'first_name' => 'string|max:100',
+            'last_name' => 'string|max:191',
+            'language' => 'required',
+            'password' => 'required|integer',
+            'permission' => 'required',
+        ];
+
+        // no list is provided
+        if(!$attributes)
+            return $rules;
+
+        // a single attribute is provided
+        if(!is_array($attributes))
+            return [ $attributes => $rules[$attributes] ];
+
+        // a list of attributes is provided
+        $newRules = [];
+        foreach ( $attributes as $attr )
+            $newRules[$attr] = $rules[$attr];
+        return $newRules;
+    }
+
     public static function validationRules( $attributes = null )
     {
         $rules = [
