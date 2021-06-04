@@ -1043,4 +1043,12 @@ return
     'media.lab_fileinput' => 'Téléverser un fichier',
     'media.btn_close' => 'Fermer',
     'media.btn_save' => 'Sauvegarder',
+	'txt.add_collaborator' => 'Ajouter un collaborateur',
+	'txt.login_info' => 'Informations de connexion',
+	'txt.managing_director' => 'Administrateur Délégué',
+	'txt.blog_admin' => 'Administrateur du Blog',
+	'txt.send_user_notification' => 'Envoyer une notification à l&lsquo;utilisateur',
+	'txt.send_new_user_an_email_about_their_account' => 'Envoyer au nouvel utilisateur un e-mail concernant son compte.',
+	'txt.show_password' => 'Afficher le mot de passe',
+	'txt.hide_password' => 'Masquer le mot de passe',
 ];

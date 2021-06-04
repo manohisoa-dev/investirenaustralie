@@ -44,12 +44,12 @@
 			<a href="{{route('admin.user.index')}}">Tous</a>
 		</li>
         @forelse (App\Models\Role::where('role_initial','!=','admin')->get() as $item)
-            @if($item->role_initial !== 'member')
+            @if($item->role_initial !== 'member' && $item->role_initial !== 'collaborator')
                 <li class="">
                     <a href="{{route('admin.user.show.'.$item->role_initial)}}">@lang('app.txt.'.$item->role_initial)</a>
                 </li>
             @else
-                <li class="{{Request::is('*/user/show/'.$item->role_initial) || Request::is('*/user/show/'.$item->role_initial.'/*') ? 'active' : ''}}">
+                <li class="{{Request::is('*/user/show/'.$item->role_initial) || Request::is('*/user/show/'.$item->role_initial.'/*') || Request::is('*/user/create/'.$item->role_initial) ? 'active' : ''}}">
                     <a href="#"> 
                         <span class="nav-label">@lang('app.txt.'.$item->role_initial) </span><span class="fa arrow"></span>
                     </a>
@@ -63,6 +63,10 @@
                             </li>
                             <li class="">
                                 <a href="{{route('admin.user.show.member.organisation')}}">@lang('app.txt.list_organisation')</a>
+                            </li>
+                        @else
+                            <li class="">
+                                <a href="{{route('admin.user.create.collaborator')}}">@lang('app.txt.add_collaborator')</a>
                             </li>
                         @endif
                     </ul>

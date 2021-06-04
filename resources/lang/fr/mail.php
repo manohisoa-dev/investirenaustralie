@@ -29,6 +29,7 @@ return [
     'btn.invoice' => 'Télécharger la facture',
     'btn.view.user' => 'Voir :role',
     'btn.contact_admin' => 'Contacter Admin',
+    'btn.login' => 'Se connecter',
     
     'default_password' => 'Votre mot de passe par défaut est &ldquo;<b>:password</b>&rdquo;',
     'quantity' => 'Quantité :value',
@@ -45,6 +46,7 @@ return [
     
     'activated.subject' => '[:app] Inscription confirmée',
     'activated.content' => 'Votre inscription a été bien confirmée.',
+    'activated.collaborator.account.content' => 'Votre compte en tant que Collaborateur est activé.',
     
     'reseted.subject' => "[:app] Demande d&lsquo;un nouveau mot de passe",
     'reseted.content' => "Nous avons reçu une demande de réinitialisation de votre mot de passe. Si vous n&lsquo;avez pas fait la demande, ignorez simplement cet e-mail. Sinon, vous pouvez réinitialiser votre mot de passe en utilisant ce lien :",
@@ -72,5 +74,6 @@ return [
     'suspended.user.logged' => 'Un utilisateur suspendu vient de se connecter.',
     'suspended.user' => 'Nom d&lsquo;utilisateur: <b>&ldquo; :user &rdquo;</b>',
     'txt.contact_admin' => 'Pour la récupération de votre compte, Veuillez contacter l&lsquo;admin par l&lsquo;adresse e-mail <b>&ldquo; :mail &rdquo;</b>.',
+    'activated.login.info' => 'Ci-dessous vos informations de connexion : </br> -Login: <b>:login</b> </br> -Password: <b>:password</b>',
 
 ];

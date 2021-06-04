@@ -17,6 +17,8 @@ use App\Models\State;
 use App\Models\Role;
 use App\Models\TypeUser;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Notifications\AccountAdminActivated;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller {
     public $viewDir = "admin.user";
@@ -208,6 +210,15 @@ class UserController extends Controller {
     }
 
     /**
+     * Show the form for creating a new collaborator.
+     *
+     * @return  \Illuminate\Http\Response
+     */
+    public function createCollaborator() {
+        return $this->view("createCollaborator");
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return  \Illuminate\Http\Response
@@ -223,14 +234,73 @@ class UserController extends Controller {
      * @return  \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        dd($request);
-        /*$this->validate($request, User::validationRules());
+        $this->middleware('auth');
+        $this->middleware('role:1');
 
-        User::create($request->all());
+        // $validator = $this->validate($request, User::validationRulesAdmin());
+        
+        // Get post datas
+        $datas = $request->all();
+
+        $validator = Validator::make($datas, [
+            'login' => 'required|string|max:100',
+            'email' => 'required|string|max:100|email',
+            'first_name' => 'string|max:100',
+            'last_name' => 'string|max:191',
+            'language' => 'required',
+            'password' => 'required|integer',
+            'permission' => 'required',
+            ]);
+        if ($validator->fails()) {
+            return back()->withErrors($validator)
+                        ->withInput();
+        }
+
+        // Store Name
+        $datas['name'] = $datas['first_name'].' '.$datas['last_name'];
+
+        // Store Localization
+        $datas['location_id'] = 0;
+        
+        // Store image file
+        $datas['image_id'] = 0;
+        if($file=$request->file('image')){
+            $image = Image::storeAndSave($file);
+            $datas['image_id'] = $image->id>0?$image->id:0;
+        }
+
+        // Store role
+        $datas['role'] = 6;
+        
+        // More info
+        $oRole = Role::where('role_initial',$role)->first() ;
+        $typeUser = TypeUser::where('type_user_name',$datas['type'])->first() ;
+        
+        // $datas['password'] = Hash::make($password = str_random(10));
+        $datas['use_default_password'] = 0;
+        $datas['status'] = 'active';
+
+        try{
+            // Create user
+            unset($datas['type']);
+            $user = User::create($datas);
+            // $user->handles($request);
+            
+        }catch (\Exception $exception) {
+            logger()->error($exception);
+            return back()->with('info', trans('app.txt.errorcreateuser'));
+        }
+
+        if(isset($request->send_notification)){
+            // Notify User
+            try{
+                $user->notify(new AccountAdminActivated($user, $password));
+            }catch(\Exception $e){}
+        }
 
         # notification
         Notify::success('User a été créer avec succès');
-        return redirect(route('admin.user.index'));*/
+        return redirect(route('admin.user.index'));
     }
 
     /**

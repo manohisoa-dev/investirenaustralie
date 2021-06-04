@@ -795,4 +795,12 @@ return
     'media.lab_fileinput' => 'Upload file',
     'media.btn_close' => 'Close',
     'media.btn_save' => 'Save changes',
+	'txt.add_collaborator' => 'Add a collaborator',
+	'txt.login_info' => 'Login Info',
+	'txt.managing_director' => 'Managing Director',
+	'txt.blog_admin' => 'Blog Admin',
+	'txt.send_user_notification' => 'Send User Notification',
+	'txt.send_new_user_an_email_about_their_account' => 'Send the new user an email about their account.',
+	'txt.show_password' => 'Show password',
+	'txt.hide_password' => 'Hide password',
 ];

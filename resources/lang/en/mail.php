@@ -29,6 +29,7 @@ return [
     'btn.invoice' => 'Download the invoice',
     'btn.view.user' => 'See :role',
     'btn.contact_admin' => 'Contact Admin',
+    'btn.login' => 'Login',
     
     'default_password' => 'Your default password is &ldquo;<b>:password</b>&rdquo;',
     'quantity' => 'Amount :value',
@@ -45,6 +46,7 @@ return [
     
     'activated.subject' => '[:app] Confirmed registration',
     'activated.content' => 'Your registration has been confirmed.',
+    'activated.collaborator.account.content' => 'Your account as a Collaborator is activated.',
     
     'reseted.subject' => '[:app] Request new password',
     'reseted.content' => "We&lsquo;ve received a request to reset your password. If you didn&lsquo;t make the request, just ignore this email. Otherwise, you can rest your password using this link :",
@@ -73,5 +75,6 @@ return [
     'suspended.user.logged' => 'A suspended user has just logged in',
     'suspended.user' => 'Username: <b>&ldquo; :user &rdquo;</b>',
     'txt.contact_admin' => 'For the recovery of your account, please contact the admin by the e-mail address <b>&ldquo; :mail &rdquo; </b>.',
+    'activated.login.info' => 'Below are your login details:</br> -Login: <b>:login</b></br> -Password: <b>:password</b>',
 
 ];
