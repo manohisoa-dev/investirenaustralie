@@ -20,9 +20,9 @@
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <?php /*?><a href="{{ route('admin.user.create') }}" type="button" class="btn btn-primary"><!--btn-block-->
-                <i class="fa fa-plus"></i> Ajouter un partie prenante           
-			</a><?php */?>
+            <a href="{{ route('admin.user.create.collaborator') }}" type="button" class="btn btn-primary btn-block">
+                <i class="fa fa-plus"></i>@lang('app.txt.add_collaborator')            
+			</a>
         </div>
     </div>
 </div>
@@ -164,13 +164,13 @@
 								data-pk="{{ $record->{$record->getKeyName()} }}"
 								data-url="{{ route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
 								>
-								@if($record->type_users_id == 2)
+								@if($record->type_users_id == 5)
 								<a href="">
-									<span class="label label-success">{{$record->typeUser['type_user_name']}}</span>
+									<span class="label label-success">{{ trans('app.txt.'.str_replace(' ','_',$record->typeUser['type_user_name'])) }}</span>
 								</a>
 								@else
 								<a href="">
-									<span class="label label-primary">{{$record->typeUser['type_user_name']}}</span>
+									<span class="label label-primary">{{ trans('app.txt.'.str_replace(' ','_',$record->typeUser['type_user_name'])) }}</span>
 								</a>
 								@endif
 								</span>

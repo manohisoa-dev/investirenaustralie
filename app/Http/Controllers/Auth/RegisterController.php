@@ -242,12 +242,18 @@ class RegisterController extends Controller
 
             $request->session()->put("step", "register");
             $action = route('register',['role'=>$role]);
+            $lapls = Localisation::select('localizations.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('users.role','=','4')
+                ->groupBy('localizations.locality')
+                ->get();
 
 
             return view('login.'.$role)
                     ->with('action', $action)
                     ->with('role', trans('app.'.$role))
                     ->with('states', State::all())
+                    ->with('lapls', $lapls)
                     ->with('countries', Country::all());
             
         }

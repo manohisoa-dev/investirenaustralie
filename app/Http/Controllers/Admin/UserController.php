@@ -19,6 +19,8 @@ use App\Models\TypeUser;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Notifications\AccountAdminActivated;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+use App\Models\Image;
 
 class UserController extends Controller {
     public $viewDir = "admin.user";
@@ -47,7 +49,7 @@ class UserController extends Controller {
         $statuts = User::groupBy('status')->pluck('status', 'status');
         $countries = Country::all();
         $states = State::all();
-        $typeUser = TypeUser::all();
+        $typeUser = TypeUser::where('type_user_name','!=','Admin blog')->where('type_user_name','!=','Admin delegate')->get();
         $userRole = 'seller';
 
         if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
@@ -71,7 +73,7 @@ class UserController extends Controller {
         $statuts = User::groupBy('status')->pluck('status', 'status');
         $countries = Country::all();
         $states = State::all();
-        $typeUser = TypeUser::all();
+        $typeUser = TypeUser::where('type_user_name','!=','Admin blog')->where('type_user_name','!=','Admin delegate')->get();
         $userRole = 'afa';
 
         if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
@@ -95,7 +97,7 @@ class UserController extends Controller {
         $statuts = User::groupBy('status')->pluck('status', 'status');
         $countries = Country::all();
         $states = State::all();
-        $typeUser = TypeUser::all();
+        $typeUser = TypeUser::where('type_user_name','!=','Admin blog')->where('type_user_name','!=','Admin delegate')->get();
         $userRole = 'apl';
 
         if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
@@ -119,7 +121,7 @@ class UserController extends Controller {
         $statuts = User::groupBy('status')->pluck('status', 'status');
         $countries = Country::all();
         $states = State::all();
-        $typeUser = TypeUser::all();
+        $typeUser = TypeUser::where('type_user_name','!=','Admin blog')->where('type_user_name','!=','Admin delegate')->get();
         $userRole = 'member';
 
         if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
@@ -143,7 +145,7 @@ class UserController extends Controller {
         $statuts = User::groupBy('status')->pluck('status', 'status');
         $countries = Country::all();
         $states = State::all();
-        $typeUser = TypeUser::all();
+        $typeUser = TypeUser::where('type_user_name','!=','Admin blog')->where('type_user_name','!=','Admin delegate')->get();
         $userRole = 'member.particulier';
         
         // $records = User::findRequested();
@@ -169,7 +171,7 @@ class UserController extends Controller {
         $statuts = User::groupBy('status')->pluck('status', 'status');
         $countries = Country::all();
         $states = State::all();
-        $typeUser = TypeUser::all();
+        $typeUser = TypeUser::where('type_user_name','!=','Admin blog')->where('type_user_name','!=','Admin delegate')->get();
         $userRole = 'member.organisation';
 
         if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
@@ -193,7 +195,7 @@ class UserController extends Controller {
         $statuts = User::groupBy('status')->pluck('status', 'status');
         $countries = Country::all();
         $states = State::all();
-        $typeUser = TypeUser::all();
+        $typeUser = TypeUser::whereIn('type_user_name', ['Admin blog','Admin delegate'])->get();
         $userRole = 'collaborator';
 
         if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
@@ -248,7 +250,7 @@ class UserController extends Controller {
             'first_name' => 'string|max:100',
             'last_name' => 'string|max:191',
             'language' => 'required',
-            'password' => 'required|integer',
+            'password' => 'required|string',
             'permission' => 'required',
             ]);
         if ($validator->fails()) {
@@ -256,8 +258,20 @@ class UserController extends Controller {
                         ->withInput();
         }
 
+        // Store Type User
+        $datas['type_users_id'] = TypeUser::where('type_user_name','Admin blog')->first()->id;
+
+        if($request->get('permission') === 1){
+            $datas['type_users_id'] = TypeUser::where('type_user_name','Admin delegate')->first()->id;
+        }else
+
         // Store Name
         $datas['name'] = $datas['first_name'].' '.$datas['last_name'];
+
+        // Crypte password
+        $password = $datas['password'];
+        $passCrypte = Hash::make($datas['password']);
+        $datas['password'] = $passCrypte;
 
         // Store Localization
         $datas['location_id'] = 0;
@@ -271,14 +285,17 @@ class UserController extends Controller {
 
         // Store role
         $datas['role'] = 6;
-        
-        // More info
-        $oRole = Role::where('role_initial',$role)->first() ;
-        $typeUser = TypeUser::where('type_user_name',$datas['type'])->first() ;
-        
+                
         // $datas['password'] = Hash::make($password = str_random(10));
         $datas['use_default_password'] = 0;
         $datas['status'] = 'active';
+
+        // Store image file
+        $datas['image_id'] = 0;
+        if($file=$request->file('avatar')){
+            $image = Image::storeAndSave($file);
+            $datas['image_id'] = $image->id>0?$image->id:0;
+        }
 
         try{
             // Create user
@@ -299,8 +316,8 @@ class UserController extends Controller {
         }
 
         # notification
-        Notify::success('User a été créer avec succès');
-        return redirect(route('admin.user.index'));
+        Notify::success(trans('app.txt.add.collaborator.success'));
+        return redirect(route('admin.user.show.collaborator'));
     }
 
     /**
@@ -370,13 +387,13 @@ class UserController extends Controller {
         
         if($user->id==1){
             Notify::error("Cette action ne peut pas etre réalisée.");
-            return redirect(route('admin.user.index'));
+            return back();
         }
         $user->delete();
 
         # notification
         Notify::success('Utilisateur a été supprimer avec succès');
-        return redirect(route('admin.user.index'));
+        return back();
     }
 
     protected function view($view, $data = []) {

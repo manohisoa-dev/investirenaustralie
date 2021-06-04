@@ -799,4 +799,7 @@ return
 	'txt.send_new_user_an_email_about_their_account' => 'Send the new user an email about their account.',
 	'txt.show_password' => 'Show password',
 	'txt.hide_password' => 'Hide password',
+	'txt.Admin_delegate' => 'Admin delegate',
+	'txt.Admin_blog' => 'Admin blog',
+	'txt.add.collaborator.success' => 'A new employee has been created',
 ];

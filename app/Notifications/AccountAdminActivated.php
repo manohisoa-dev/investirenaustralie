@@ -22,7 +22,7 @@ class AccountAdminActivated extends Notification
     public function __construct($user , $password)
     {
         $this->user = $user;
-        $this->status = $password;
+        $this->password = $password;
     }
 
     /**

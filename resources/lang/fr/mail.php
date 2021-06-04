@@ -74,6 +74,6 @@ return [
     'suspended.user.logged' => 'Un utilisateur suspendu vient de se connecter.',
     'suspended.user' => 'Nom d&lsquo;utilisateur: <b>&ldquo; :user &rdquo;</b>',
     'txt.contact_admin' => 'Pour la récupération de votre compte, Veuillez contacter l&lsquo;admin par l&lsquo;adresse e-mail <b>&ldquo; :mail &rdquo;</b>.',
-    'activated.login.info' => 'Ci-dessous vos informations de connexion : </br> -Login: <b>:login</b> </br> -Password: <b>:password</b>',
+    'activated.login.info' => 'Ci-dessous vos informations de connexion : <br /> - Login: <b> :login </b> <br /> - Password: <b> :password </b>',
 
 ];

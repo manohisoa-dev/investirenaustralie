@@ -75,6 +75,6 @@ return [
     'suspended.user.logged' => 'A suspended user has just logged in',
     'suspended.user' => 'Username: <b>&ldquo; :user &rdquo;</b>',
     'txt.contact_admin' => 'For the recovery of your account, please contact the admin by the e-mail address <b>&ldquo; :mail &rdquo; </b>.',
-    'activated.login.info' => 'Below are your login details:</br> -Login: <b>:login</b></br> -Password: <b>:password</b>',
+    'activated.login.info' => 'Below are your login details: <br /> - Login: <b> :login </b> <br /> - Password: <b> :password </b>',
 
 ];

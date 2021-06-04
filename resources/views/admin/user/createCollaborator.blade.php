@@ -18,9 +18,6 @@
             </li>
         </ol>
     </div>
-    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-
-    </div>
 </div>
 @endsection
 
@@ -32,7 +29,7 @@
                 <h5>@lang('app.txt.add_collaborator')</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-validation form-padding" action="{{ route('admin.user.store') }}" method="post">
+                <form class="form-validation form-padding" action="{{ route('admin.user.store') }}" method="post"  enctype="multipart/form-data">
 					<h3 class="m-t-none m-b">@lang('app.txt.login_info')</h3>
                     {{ csrf_field() }}
                     <div class="row">
@@ -77,11 +74,10 @@
 							</div>
 						</div> 
 						<div class="col-md-12 col-lg-6">
-							
 							<div class="form-group">
 								<label for="send_notification">@lang('app.txt.send_user_notification')</label>
 								<div class="form-check">
-									<input class="form-check-input" type="checkbox" value="1" id="send_notification" name="send_notification" {{ old('send_notification')?'checked':'' }}>
+									<input class="form-check-input" type="checkbox" value="1" id="send_notification" name="send_notification" {{ old('send_notification')?'checked':'' }} checked>
 									<label class="form-check-label" for="flexCheckChecked">
 										@lang('app.txt.send_new_user_an_email_about_their_account')
 									</label>
@@ -92,8 +88,8 @@
 							<div class="form-group">
 								<label for="language">@lang('app.language') *</label>
 								<select name="language" class="form-control" id="language">
-									<option value="fr">Français</option>
-									<option value="en">English</option>
+									<option value="fr">@lang('app.txt.fr')</option>
+									<option value="en">@lang('app.txt.en')</option>
 								</select>
 							</div>
 						</div>
@@ -119,6 +115,17 @@
 								<span class="text-danger">{{ $errors->has('permission') ? $errors->first('permission') : '' }}</span>
 							</div>
 						</div>
+						<div class="col-md-12 col-lg-6">  
+							<div class="form-group">
+								<label for="avatar">@lang('app.avatar')</label>
+								<div class="custom-file" id="customFile">
+									<input name="avatar" id="avatar" class="form-control custom-file-input" type="file" >
+									<label class="custom-file-label" for="avatar">
+										<label for="title">@lang('app.form.no_file_chosen')</label>
+									</label>
+								</div>
+							</div>
+						</div>
 					</div>
                     
 					<div class="hr-line-dashed"></div>    
@@ -132,6 +139,11 @@
 
 @endsection
 @section('custom-script')
+<style>
+	.custom-file-input ~ .custom-file-label::after {
+		content: "{{ trans('app.form.choose_file') }}";
+	}
+</style>
 <script>
 $(document).ready(function(){
 	$('#role').change(function() {

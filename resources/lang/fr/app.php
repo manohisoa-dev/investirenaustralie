@@ -1047,4 +1047,7 @@ return
 	'txt.send_new_user_an_email_about_their_account' => 'Envoyer au nouvel utilisateur un e-mail concernant son compte.',
 	'txt.show_password' => 'Afficher le mot de passe',
 	'txt.hide_password' => 'Masquer le mot de passe',
+	'txt.Admin_delegate' => 'Administrateur délégué',
+	'txt.Admin_blog' => 'Administrateur de blog',
+	'txt.add.collaborator.success' => 'Un nouveau Collaborateur a été créé',
 ];
