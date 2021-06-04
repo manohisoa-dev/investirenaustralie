@@ -791,4 +791,8 @@ return
 	'txt.firb_recommendation' => 'The Seller certifies under their sole responsibilitythatthis property canbe sold to non-residentforeigners in accordance with Australian law and the rules applicable by the Foreign Investment Review Board (FIRB).',
 	'form.choose_file' => 'Choose file',
 	'form.no_file_chosen' => 'No file chosen',
+    'media.btn_edit' => 'Edit file',
+    'media.lab_fileinput' => 'Upload file',
+    'media.btn_close' => 'Close',
+    'media.btn_save' => 'Save changes',
 ];

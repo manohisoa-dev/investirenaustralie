@@ -206,7 +206,7 @@ function save_file()
 	<div class="modal-content animated bounceInRight">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-				<h4 class="modal-title">Edit file</h4>
+				<h4 class="modal-title">@lang('app.media.btn_edit')</h4>
 			</div>
 			<div class="modal-body">
 			<form action="#" id="form_file" class="form-horizontal" enctype="multipart/form-data">
@@ -217,7 +217,7 @@ function save_file()
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="form-group">
-							<label>Upload file</label> 
+							<label>@lang('app.media.lab_fileinput')</label> 
 							<div id="new_file"></div>
 						</div>
 					</div>
@@ -225,8 +225,8 @@ function save_file()
 			</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" onclick="save_file()">Save changes</button>
+				<button type="button" class="btn btn-white" data-dismiss="modal">@lang('app.media.btn_close')</button>
+				<button type="button" class="btn btn-primary" onclick="save_file()">@lang('app.media.btn_save')</button>
 			</div>
 		</div>
 	</div>
