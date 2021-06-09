@@ -65,9 +65,9 @@
                     </thead>
 
                     <tbody>
-                        @forelse ( $records as $record )
+                        @forelse ( $records as $index =>$record )
                             <tr>
-                                <td>{{ $record->id }}</td>
+                                <td>{{ $index + $records->firstItem() }}</td>
                                 <td>
                                     <span class="editable"
                                           data-type="text"

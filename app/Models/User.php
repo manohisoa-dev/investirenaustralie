@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use AstritZeqiri\Metadata\Traits\HasManyMetaDataTrait;
 use App\Notifications\PasswordReseted;
 use Session;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable{
     use Notifiable;
     use HasManyMetaDataTrait;
+    use SoftDeletes;
+    
 
     /**
      * The attributes that are mass assignable.

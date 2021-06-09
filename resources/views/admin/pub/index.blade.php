@@ -63,10 +63,12 @@
                     </thead>
 
                     <tbody>
-                        @forelse ( $records as $record )
+                        @forelse ( $records as $index =>$record )
                             <tr>
-                                <td>{{ $record->id }}</td>
-								<td><img class="thumb" src="{{$record->imageUrl()}}" width="50"></td>
+                                <td>{{ $index + $records->firstItem() }}</td>
+								<td>
+									<img src="{{$record->getImageUrl('thumb')}}" class="img-responsive"/>
+								</td>
                                 <td>
                                      <span class="editable"
                                           data-type="text"
@@ -109,12 +111,11 @@
 										<form class="form-inline" action="{{route('admin.pub.index')}}/{{$record->id}}" method="POST">
 											<a href="{{route('admin.pub.index')}}/{{$record->id}}/edit" class="btn btn-default btn-circle" title="Modification">
 												<i class="fa fa-pencil-square-o"></i>
-											</a>										
+											</a>&nbsp;&nbsp;										
 											{{ csrf_field() }}
 											{{ method_field('DELETE') }}
-											<button class="btn btn-default btn-circle"
-												onclick="return confirm('Vous êtes sur?')"
-												type="submit" title="Suppression"><i class="fa fa-times text-danger"></i></button>
+											<button type="button" class="btn btn-default btn-circle" title="Suppression" id="delRecord"><i class="fa fa-times text-danger"></i>
+											</button>
 										</form>
 									</td>
                             </tr>
@@ -134,4 +135,26 @@
 		</div>
 	</div>
 </div>
+@endsection
+
+@section('custom-script')
+	<script src="{{ asset('administrator/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
+	<script>
+		$(document.body).on('click', '#delRecord', function (event) {
+        	event.preventDefault();
+        	var $form = $(this).closest('form');
+				swal({
+					title: "@lang('app.table.confirm_delete')",
+					type: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#DD6B55",
+					confirmButtonText: "@lang('app.yes')",
+					cancelButtonText: "@lang('app.btn.cancel')",
+					closeOnConfirm: true
+				},
+				function () {
+                    $form.submit();
+                });
+      });
+	</script>
 @endsection

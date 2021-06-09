@@ -63,12 +63,12 @@
                     </thead>
 
                     <tbody>
-                        @forelse ( $records as $record )
+                        @forelse ( $records as $index =>$record )
                             <tr>
-                            	<td>{{ $record->id }} </td>
+                            	<td>{{ $index + $records->firstItem() }} </td>
 								<td>
 									<a href="{{route('admin.product.index')}}/{{$record->id}}">
-										<img class="thumb" src="{{$record->product->imageUrl()}}" width="50">
+										<img class="thumb" src="{{asset('img/500x500.jpg')}}" width="50">
 									</a>
 								</td>
 								<td>
@@ -122,8 +122,7 @@
 										@endif
 										{{ csrf_field() }}
 										{{ method_field('DELETE') }}
-										<button onclick="return confirm('Vous êtes sur?')" class="btn btn-default btn-circle" title="@lang('app.btn.delete')">
-											<i class="fa fa-trash-o text-danger"></i>
+										<button type="button" class="btn btn-default btn-circle" title="Suppression" id="delRecord"><i class="fa fa-times text-danger"></i>
 										</button>
 										
 										<?php /*?><a href="{{route('admin.sale.index')}}/{{$record->id}}" title="Détail"><i class="fa fa-eye"></i></a>&nbsp;&nbsp;
@@ -155,4 +154,26 @@
 		</div>
 	</div>
 </div>
+@endsection
+
+@section('custom-script')
+<script src="{{ asset('administrator/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
+<script>
+	$(document.body).on('click', '#delRecord', function (event) {
+		event.preventDefault();
+		var $form = $(this).closest('form');
+			swal({
+				title: "@lang('app.table.confirm_delete')",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#DD6B55",
+				confirmButtonText: "@lang('app.yes')",
+				cancelButtonText: "@lang('app.btn.cancel')",
+				closeOnConfirm: true
+			},
+			function () {
+				$form.submit();
+			});
+  });
+</script>
 @endsection

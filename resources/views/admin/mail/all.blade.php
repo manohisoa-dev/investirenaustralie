@@ -58,10 +58,10 @@
                     </thead>
 
                     <tbody>
-                        @forelse ( $records as $record )
+                        @forelse ( $records as $index =>$record )
                             <tr>
                                 <td>
-                                    {{ $record->id }}
+                                    {{ $index + $records->firstItem() }}
                                 </td>
                                 <td>
                                     <span class="editable"
@@ -113,9 +113,7 @@
 								
 									{{ csrf_field() }}
 									{{ method_field('DELETE') }}
-									<button class="btn btn-default btn-circle"
-											onclick="return confirm('Are You Sure?')"
-											type="submit" class="fa fa-trash text-danger"><i class="fa fa-times text-danger"></i>
+									<button type="button" class="btn btn-default btn-circle" title="Suppression" id="delRecord"><i class="fa fa-times text-danger"></i>
 									</button>
 								</form>
 								</td>
@@ -136,4 +134,26 @@
 		</div>
 	</div>
 </div>
+@endsection
+
+@section('custom-script')
+	<script src="{{ asset('administrator/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
+	<script>
+		$(document.body).on('click', '#delRecord', function (event) {
+        	event.preventDefault();
+        	var $form = $(this).closest('form');
+				swal({
+					title: "@lang('app.table.confirm_delete')",
+					type: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#DD6B55",
+					confirmButtonText: "@lang('app.yes')",
+					cancelButtonText: "@lang('app.btn.cancel')",
+					closeOnConfirm: true
+				},
+				function () {
+                    $form.submit();
+                });
+      });
+	</script>
 @endsection

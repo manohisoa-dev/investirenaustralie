@@ -3,12 +3,13 @@ namespace App\Models;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Model {
 
-
+    use SoftDeletes;
     public $guarded = ["id","created_at","updated_at"];
+    protected $dates = ['deleted_at'];
 
     public static function findRequested()
     {
