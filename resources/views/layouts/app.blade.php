@@ -14,7 +14,7 @@
 <link rel="shortcut icon" href="{{asset('images/favicon.png')}}">
 <meta name="description" content="{{option('site.meta_desc', 'IEA')}}">
 <meta name="keywords" content="{{option('site.meta_keywords', 'IEA, Investir')}}">
-    
+
 <!-- Mombo -->
 {{-- <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"> --}}
     <!-- plugin CSS -->
@@ -105,7 +105,7 @@
 </style>
 
 @yield('style')
-    
+
 @yield('style-stripe')
 </head>
 <!-- Body Start -->
@@ -124,10 +124,14 @@
             <div class="header-top dark-bg">
                 <div class="container">
                     <div class="row align-items-center p-10px-tb">
-                        <div class="col-md-5 ht-info">
+                        <div class="col-md-5 ht-info" id="contact-top">
                             <ul class="nav justify-content-md-start justify-content-center links-white">
-                                <li class="small"><a href="#"><i class="fas fa-mobile-alt"></i> @lang('app.contact_us_phone', ['phone'=>option('site.admin_phone', App\Models\Config::site()->get_meta('admin_phone')?App\Models\Config::site()->get_meta('admin_phone'):'-')])</a></li>
-                                <li class="small m-10px-l"><a href="mailto:info@admin.com"><i class="fas fa-envelope"></i> {{ App\Models\Config::site()->get_meta('admin_email')?App\Models\Config::site()->get_meta('admin_email')->value:'-' }}</a></li>
+                                @if(App\Models\Config::site()->get_meta('admin_phone')->value != "")
+                                    <li class="small"><a href="#"><i class="fas fa-mobile-alt"></i> @lang('app.contact_us_phone', ['phone'=>option('site.admin_phone', App\Models\Config::site()->get_meta('admin_phone')?App\Models\Config::site()->get_meta('admin_phone'):'-')])</a></li>
+                                @endif
+                                @if(App\Models\Config::site()->get_meta('admin_email')->value != "")
+                                    <li class="small m-10px-l"><a href="mailto:info@admin.com"><i class="fas fa-envelope"></i> {{ App\Models\Config::site()->get_meta('admin_email')?App\Models\Config::site()->get_meta('admin_email')->value:'-' }}</a></li>
+                                @endif
                             </ul>
                         </div>
                         <div class="col-md-7 d-none d-md-block">
@@ -136,7 +140,7 @@
                                 <li class="small m-10px-l"><i class="fas fa-mouse-pointer"></i> <a href="{{route('login')}}">@lang('app.connexion')</a>
                                 </li>
 
-                                <li class="small m-10px-l"><i class="fas fa-sign-in-alt"></i> @lang('app.sinscrire') : 
+                                <li class="small m-10px-l"><i class="fas fa-sign-in-alt"></i> @lang('app.sinscrire') :
                                     <select id="currency-dropdown" onChange="location.href=''+this.options[this.selectedIndex].value;" class="white-bg-alt border-color-dark-gray border-radius-0 white-color">
                                         <option class="dark-color" value="#" selected="true" disabled="disabled">@lang('app.as')</option>
                                         <option class="dark-color" value="{{route('register', ['role'=>'member'])}}" @if(isset($role)) {{ $role==trans('app.member')?"selected":""  }}@endif>@lang('app.member')</option>
@@ -153,7 +157,7 @@
                                         {{ trans('app.txt.connected_role', ['connect'=>isset(Auth::user()->userinfos) && Auth::user()->userinfos->sexe?(Auth::user()->userinfos->sexe=='M'?trans('app.txt.connecte'):trans('app.txt.connectee')):trans('app.txt.connected'), 'role'=>trans('app.'.str_replace(' ', '',\App\Models\User::find(Auth::id())->roleUser->role_name))]) }}
                                     </li>
                                 @endif
-                                <li class="small m-10px-l"><i class="fas fa-globe"></i> @lang('app.language') : 
+                                <li class="small m-10px-l"><i class="fas fa-globe"></i> @lang('app.language') :
                                     <div class="dropdown pull-right">
                                       <a href="#" class="font-weight-bold dropdown-toggle" type="button" data-toggle="dropdown">
                                         @php $ico_fr= asset('images/ico/fr.png');$ico_en= asset('images/ico/en.png'); @endphp
@@ -215,8 +219,8 @@
                                     <li><a href="@if(!Auth::user()->isAdmin() && !Auth::user()->isAdminBlog() && !Auth::user()->isAdminDelegate()) {{ route('profile') }} @else {{ Auth::user()->isAdmin() ? route('admin.profile') : route('admin.collaborator.admin.profile') }} @endif">@lang('app.profile')</a></li>
                                     <li><a href="{{route('logout')}}">@lang('app.logout')</a></li>
                                 </ul>
-                            </li>   
-                            
+                            </li>
+
                             <!-- // add this dropdown // -->
                             <li class="mm-in px-dropdown">
                                 <a id="notifications" aria-haspopup="true" aria-expanded="true">
@@ -227,7 +231,7 @@
                                 <ul class="px-dropdown-menu mm-dorp-in" aria-labelledby="notificationsMenu" id="notificationsMenu">
                                     <li>@lang('app.no_notification')</li>
                                 </ul>
-                            </li> 
+                            </li>
                             @endif
                         </ul>
                     </div>
@@ -247,7 +251,7 @@
         </div>
     </header>
     <!-- Header End -->
-    
+
     @yield('content')
 
     <div id="mybutton">
@@ -288,6 +292,7 @@
                             {{ Illuminate\Support\Str::upper(trans('app.txt.aboutus')) }}
                         </h6>
                         <ul class="list-unstyled links-white footer-link-1">
+                            <li><a href="{{route('about')}}">@lang('app.about')</a></li>
                             <li><a href="{{route('terms')}}">@lang('app.terms')</a></li>
                             <li><a href="{{route('confidentialities')}}">@lang('app.confidential')</a></li>
                             <li><a href="{{route('help')}}">@lang('app.user_guide')</a></li>
@@ -335,10 +340,10 @@
                 <div class="col-md-12 text-center" id="apl_list">
                     <ul class="nav justify-content-center justify-content-md-start p-25px-b links-white footer-link-1 font-color-theme4rd">
                         <li style="margin:auto;">
-                            <a href="{{route('apls')}}" style="color:#008A3E;">@lang('app.apls')</a> :
+                            <a href="{{route('apls')}}" style="color:#01E367;font-size: 1.5rem;">@lang('app.apls')</a> :
                             @if(isset($lapls))
                                 @foreach($lapls as $apl)
-                                    <a class="apl_item" href="#" value="{{ $apl->locality }}" data-toggle="modal" data-target="#listAplModal" style="color:#008A3E;">{{ $apl->locality }}</a> @if(!$loop->last) - @endif
+                                    <a class="apl_item" href="#" value="{{ $apl->locality }}" data-toggle="modal" data-target="#listAplModal" style="color:#01E367;font-size: 1.5rem;">{{ $apl->locality }}</a> @if(!$loop->last) - @endif
                                 @endforeach
                             @endif
                         </li>
@@ -435,10 +440,10 @@
                     var envoi = $.get( uri );
 
                     envoi.done( function(url) {
-                        $('#listAplModal .modal-body').append('<a href="'+url.res+'" target="_blank" class="nav-item nav-link white-color"><i class="fa fa-map-marker"></i> '+value.name+'</a>');    
+                        $('#listAplModal .modal-body').append('<a href="'+url.res+'" target="_blank" class="nav-item nav-link white-color"><i class="fa fa-map-marker"></i> '+value.name+'</a>');
                     });
 
-                    
+
                     // $('#listAplModal .modal-body').append('<a href={{route("member.select.apl")}} class="nav-item nav-link white-color"><i class="fa fa-building"></i> '+value.name+'</a>');
                 });
             });

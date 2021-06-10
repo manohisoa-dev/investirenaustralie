@@ -28,47 +28,47 @@
             <div class="col-lg-8">
                 <div class="row">
                     <div class="col-md-12 m-10px-l p-25px-b">
-                        <div class="property-sorting">        
+                        <div class="property-sorting">
                             <form id="filter-form" method="get" action="">
                                 <div  class="pull-left form-group col-md-3">
-                                    <label for="orderBy"> @lang('app.form.filterBy'):   </label>  
-                                    <select class="form-control" name="orderBy" id="orderBy" onchange="document.getElementById('filter-form').submit();"> 
-                                        <option value="created_at" {{$orderBy=='created_at'?'selected':''}}>@lang('app.pub_date')</option>  
+                                    <label for="orderBy"> @lang('app.form.filterBy'):   </label>
+                                    <select class="form-control" name="orderBy" id="orderBy" onchange="document.getElementById('filter-form').submit();">
+                                        <option value="created_at" {{$orderBy=='created_at'?'selected':''}}>@lang('app.pub_date')</option>
                                         <option value="view_count" {{$orderBy=='view_count'?'selected':''}}>@lang('app.most_view')</option>
                                     </select>
                                 </div>
                                 <div  class="pull-left ml-4 form-group col-md-3">
-                                    <label for="order"> @lang('app.form.order'):   </label>  
-                                    <select class="form-control" name="order" id="order" onchange="document.getElementById('filter-form').submit();"> 
-                                        <option value="asc" {{$order=='asc'?'selected':''}}>@lang('app.form.asc')</option> 
-                                        <option value="desc" {{$order=='desc'?'selected':''}}>@lang('app.form.desc')</option> 
+                                    <label for="order"> @lang('app.form.order'):   </label>
+                                    <select class="form-control" name="order" id="order" onchange="document.getElementById('filter-form').submit();">
+                                        <option value="asc" {{$order=='asc'?'selected':''}}>@lang('app.form.asc')</option>
+                                        <option value="desc" {{$order=='desc'?'selected':''}}>@lang('app.form.desc')</option>
                                     </select>
                                 </div>
                                 <div  class="pull-left ml-4 form-group col-md-3">
-                                    <label for="show"> @lang('app.form.show'):   </label>  
-                                    <select class="form-control" name="show" id="show" onchange="document.getElementById('filter-form').submit();"> 
-                                        <option value="0" {{$show=='0'?'selected':''}}>@lang('app.txt.any')</option> 
-                                        <option value="10" {{$show=='10'?'selected':''}}>10</option> 
-                                        <option value="20" {{$show=='20'?'selected':''}}>20</option> 
-                                        <option value="50" {{$show=='50'?'selected':''}}>50</option> 
-                                        <option value="100" {{$show=='100'?'selected':''}}>100</option> 
+                                    <label for="show"> @lang('app.form.show'):   </label>
+                                    <select class="form-control" name="show" id="show" onchange="document.getElementById('filter-form').submit();">
+                                        <option value="0" {{$show=='0'?'selected':''}}>@lang('app.txt.any')</option>
+                                        <option value="10" {{$show=='10'?'selected':''}}>10</option>
+                                        <option value="20" {{$show=='20'?'selected':''}}>20</option>
+                                        <option value="50" {{$show=='50'?'selected':''}}>50</option>
+                                        <option value="100" {{$show=='100'?'selected':''}}>100</option>
                                     </select>
                                 </div>
                                 <div  class="pull-right">
-                                    <p class="layout-view"> 
-                                        @lang('app.form.vue'): 
-                                        <a href="javascript:void(0)" id="grid" title="@lang('app.txt.grid')"><i class="fa fa-th-large selected" data-layout="6"></i></a> 
-                                        <a href="javascript:void(0)" id="list" title="@lang('app.txt.list')"><i class="fa fa-list-ul" data-layout="12"></i></a> 
+                                    <p class="layout-view">
+                                        @lang('app.form.vue'):
+                                        <a href="javascript:void(0)" id="grid" title="@lang('app.txt.grid')"><i class="fa fa-th-large selected" data-layout="6"></i></a>
+                                        <a href="javascript:void(0)" id="list" title="@lang('app.txt.list')"><i class="fa fa-list-ul" data-layout="12"></i></a>
                                         <a href="{{ route('blog.all.random') }}" id="random" title="@lang('app.txt.random')"><i class="fa fa-random" data-layout="12"></i></a>
                                     </p>
                                 </div>
                             </form>
-                        </div>           
+                        </div>
                     </div>
 
                     <!-- Show all blog -->
                     @include('ajax.blog.all',['items'=>$items])
-                    
+
                 </div>
             </div>
             <div class="col-lg-4 md-m-15px-tb m-35px-t">
@@ -115,42 +115,42 @@
         </div>
         <div class="row">
             <div class="col-md-12 m-10px-l p-25px-b">
-                <div class="property-sorting">        
+                <div class="property-sorting">
                     <form id="filter-form" method="get" action="">
                         <div  class="pull-left form-group col-md-3">
-                            <label for="orderBy"> @lang('app.form.filterBy'):   </label>  
-                            <select class="form-control" name="orderBy" id="orderBy" onchange="document.getElementById('filter-form').submit();"> 
-                                <option value="created_at" {{$orderBy=='created_at'?'selected':''}}>@lang('app.pub_date')</option>  
+                            <label for="orderBy"> @lang('app.form.filterBy'):   </label>
+                            <select class="form-control" name="orderBy" id="orderBy" onchange="document.getElementById('filter-form').submit();">
+                                <option value="created_at" {{$orderBy=='created_at'?'selected':''}}>@lang('app.pub_date')</option>
                                 <option value="view_count" {{$orderBy=='view_count'?'selected':''}}>@lang('app.most_view')</option>
                             </select>
                         </div>
                         <div  class="pull-left ml-4 form-group col-md-3">
-                            <label for="order"> @lang('app.form.order'):   </label>  
-                            <select class="form-control" name="order" id="order" onchange="document.getElementById('filter-form').submit();"> 
-                                <option value="asc" {{$order=='asc'?'selected':''}}>@lang('app.form.asc')</option> 
-                                <option value="desc" {{$order=='desc'?'selected':''}}>@lang('app.form.desc')</option> 
+                            <label for="order"> @lang('app.form.order'):   </label>
+                            <select class="form-control" name="order" id="order" onchange="document.getElementById('filter-form').submit();">
+                                <option value="asc" {{$order=='asc'?'selected':''}}>@lang('app.form.asc')</option>
+                                <option value="desc" {{$order=='desc'?'selected':''}}>@lang('app.form.desc')</option>
                             </select>
                         </div>
                         <div  class="pull-left ml-4 form-group col-md-3">
-                            <label for="show"> @lang('app.form.show'):   </label>  
-                            <select class="form-control" name="show" id="show" onchange="document.getElementById('filter-form').submit();"> 
-                                <option value="0" {{$show=='0'?'selected':''}}>@lang('app.txt.any')</option> 
-                                <option value="10" {{$show=='10'?'selected':''}}>10</option> 
-                                <option value="20" {{$show=='20'?'selected':''}}>20</option> 
-                                <option value="50" {{$show=='50'?'selected':''}}>50</option> 
-                                <option value="100" {{$show=='100'?'selected':''}}>100</option> 
+                            <label for="show"> @lang('app.form.show'):   </label>
+                            <select class="form-control" name="show" id="show" onchange="document.getElementById('filter-form').submit();">
+                                <option value="0" {{$show=='0'?'selected':''}}>@lang('app.txt.any')</option>
+                                <option value="10" {{$show=='10'?'selected':''}}>10</option>
+                                <option value="20" {{$show=='20'?'selected':''}}>20</option>
+                                <option value="50" {{$show=='50'?'selected':''}}>50</option>
+                                <option value="100" {{$show=='100'?'selected':''}}>100</option>
                             </select>
                         </div>
                         <div  class="pull-right">
                             <p class="layout-view"> @lang('app.form.vue'): <a href="javascript:void(0)" id="grid"><i class="fa fa-th-large selected" data-layout="6"></i></a> <a href="javascript:void(0)" id="list"><i class="fa fa-list-ul" data-layout="12"></i></a> </p>
                         </div>
                     </form>
-                </div>           
+                </div>
             </div>
 
             <!-- Show all blog -->
             @include('ajax.blog.all',['items'=>$items])
-            
+
             <!-- <div class="col-12 p-30px-t">
                 <ul class="pagination justify-content-center">
                     <li class="page-item disabled">
@@ -171,7 +171,7 @@
 </section> --}}
 <!-- End Section no sidebar -->
 
-    @push('script') 
+    @push('script')
         <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
     @endpush
 

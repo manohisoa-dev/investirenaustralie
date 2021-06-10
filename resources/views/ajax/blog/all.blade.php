@@ -5,8 +5,8 @@
             {{-- Show blog image --}}
             <a href="{{route('blog.index',$item->slug)}}" target="_blank">
                 @php
-                    if(@getimagesize($item->imageUrl())){
-                        $img=$item->imageUrl();
+                    if($item->getImageUrl("medium") != ""){
+                        $img=$item->getImageUrl("medium");
                     }else{
                         $img=asset('images/blog/iea.png');
                     }

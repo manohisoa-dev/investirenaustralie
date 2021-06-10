@@ -22,6 +22,7 @@ Route::get('localization/{locale}', 'LocalizationController@index')->name('local
 // Static pages
 Route::get('/', 'IndexController@index')->name('home');
 Route::get('services', 'IndexController@services')->name('services');
+Route::get('about', 'IndexController@about')->name('about');
 Route::get('terms', 'IndexController@terms')->name('terms');
 Route::get('help', 'IndexController@help')->name('help');
 Route::get('publicities', 'IndexController@publicities')->name('publicities');

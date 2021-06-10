@@ -358,6 +358,49 @@ class IndexController extends Controller
             ->with('categories', $categories);
     }
 
+    /**
+     * Show the about and condition page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function about(Request $request)
+    {
+        $id_page = 45;
+        $page = Page::findOrFail($id_page);
+        $blogs = Blog::ofStatus('published')
+            ->orderBy('created_at', 'desc')
+            ->take(6)->get();
+
+        $page->load(['childs', 'childs.pubs', 'pubs']);
+
+        $products = Product::orderBy('created_at','desc')
+            ->ofStatus('published')
+            ->isProduct()
+            ->take($this->recentSize)
+            ->get();
+
+        $categories = Category::orderBy('created_at', 'desc')
+            ->has('products')
+            ->withCount('products')
+            ->take($this->recentSize)
+            ->get();
+
+        $lapls = Localisation::select('localizations.*')
+            ->join('users','users.location_id','=','localizations.id')
+            ->where('users.role','=','4')
+            ->groupBy('localizations.locality')
+            ->get();
+
+        if($page){$pubs = $page->pubs;}else{$pubs = [];}
+
+        return view('index.about')
+            ->with('item', $page)
+            ->with('pubs', $page->pubs)
+            ->with('products', $products)
+            ->with('lapls', $lapls)
+            ->with('categories', $categories);
+    }
+
 
     /**
      * Show the term and condition page.

@@ -37,7 +37,7 @@
     <!-- Section -->
     <section class="section">
         <div class="container">
-            <div class="row"> 
+            <div class="row">
                 <div class="col-lg-8">
                     <span>
                         @include('includes.alerts')
@@ -47,9 +47,9 @@
                         <span class="dark-color font-w-600"><i class="fas fa-calendar-alt "></i> {{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $item->created_at)->format('d F')}},{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $item->created_at)->year }}</span>
                         <!-- <a class="dark-color font-w-600 m-15px-l" href="#"><i class="far fa-folder-open"></i> Categories</a> -->
                     </div>
-                    
+
                     <div class="text-justify">{!! $item->content !!}</div>
-                    
+
                     <div class="p-25px-tb m-35px-tb border-top-1 border-bottom-1 border-color-gray">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
@@ -99,7 +99,7 @@
                                                 </div>
                                             @endif
                                         </article>
-                                        
+
                                         @if ($comment->replies)
                                             @foreach ($comment->replies as $repl)
                                                 <ul class="children">
