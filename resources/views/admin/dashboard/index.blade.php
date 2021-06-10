@@ -7,6 +7,7 @@
 @section('title', 'Tableau de bord')
 
 @section('content')
+@if(Auth::user()->isAdmin() || Auth::user()->isAdminDelegate())
     <div class="row">
         <div class="col-lg-3">
             <div class="ibox ">
@@ -14,7 +15,7 @@
                     {{--<div class="ibox-tools">--}}
                         {{--<span class="label label-success float-right">Monthly</span>--}}
                     {{--</div>--}}
-                    <h5>Utilisateurs</h5>
+                    <h5>@lang('app.users')</h5>
                 </div>
                 <div class="ibox-content">
                     <h1 class="no-margins">{{$count['users']}}</h1>
@@ -110,7 +111,6 @@
         </div>
 
         <div class="col-lg-8">
-
             <div class="row">
                 <div class="col-lg-6">
                     <div class="ibox ">
@@ -372,6 +372,102 @@
             </div>
         </div>
     </div>
+@endif
+
+@if (Auth::user()->isAdminBlog())
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>@lang('app.txt.recent_publication')</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content table-responsive">
+                    <table class="table table-hover no-margins">
+                        <thead>
+                        <tr>
+                            <th>@lang('app.status')</th>
+                            <th>@lang('app.date')</th>
+                            <th>@lang('app.txt.title')</th>
+                            <th>@lang('app.user')</th>
+                            <th>@lang('app.txt.role')</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($recent['blogs'] as $blog)
+                            <tr>
+                                <td><small>{{ $blog->status?trans('app.txt.'.$blog->status):'-' }}</small></td>
+                                <td><i class="fa fa-clock-o"></i> {{$blog->created_at }}</td>
+                                <td>{{$blog->title}}</td>
+                                <td>{{$blog->author_id?App\Models\User::find($blog->author_id)->name:'-'}}</td>
+                                <td>{{$blog->author_id?App\Models\TypeUser::find(App\Models\User::find($blog->author_id)->type_users_id)->type_user_name:'-'}}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5><i class="fa fa-line-chart"></i> Repartition des publications par date </h5>
+                    <div class="ibox-tools">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-xs btn-white active">Aujourd'hui</button>
+                            <button type="button" class="btn btn-xs btn-white">Mensuel</button>
+                            <button type="button" class="btn btn-xs btn-white">Annuel</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <div class="flot-chart">
+                                <canvas id="canvas_user" height="60"></canvas>                                
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <ul class="stat-list">
+                                <li>
+                                    <h2 class="no-margins">2,346</h2>
+                                    <small>Total orders in period</small>
+                                    <div class="stat-percent">48% <i class="fa fa-level-up text-navy"></i></div>
+                                    <div class="progress progress-mini">
+                                        <div style="width: 48%;" class="progress-bar"></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <h2 class="no-margins ">4,422</h2>
+                                    <small>Orders in last month</small>
+                                    <div class="stat-percent">60% <i class="fa fa-level-down text-navy"></i></div>
+                                    <div class="progress progress-mini">
+                                        <div style="width: 60%;" class="progress-bar"></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <h2 class="no-margins ">9,180</h2>
+                                    <small>Monthly income from orders</small>
+                                    <div class="stat-percent">22% <i class="fa fa-bolt text-navy"></i></div>
+                                    <div class="progress progress-mini">
+                                        <div style="width: 22%;" class="progress-bar"></div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+@endif
 @endsection
 
 @section('custom-script')	
@@ -382,7 +478,7 @@
                 labels: data.label,
                 datasets: [
                     {
-                        label: {{$count['users']}}+" Utilisateurs inscrit",
+                        label: {{$count['users']}}+" Articles publiés",
                         backgroundColor: "rgba(26,179,148,0.5)",
                         borderColor: "rgba(26,179,148,0.7)",
                         pointBackgroundColor: "rgba(26,179,148,1)",

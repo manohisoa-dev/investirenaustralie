@@ -31,9 +31,9 @@ class ProfileController extends Controller {
      */
     public function index() {
         //var_dump(Auth::user()->location);
-        if (Auth::user()->isAdmin()) {
+        if (Auth::user()->isAdmin() || Auth::user()->isAdminBlog() || Auth::user()->isAdminDelegate()) {
             $view = view('admin.user.profile');
-        } else {
+        }else {
             $view = view('backend.user.profile');
         }
 

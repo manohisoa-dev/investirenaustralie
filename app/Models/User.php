@@ -311,6 +311,26 @@ class User extends Authenticatable{
     {
       return $this->hasRole(1);
     }
+
+    /**
+     * If user admin is admin blog
+     *
+     * @return Boolean
+     */
+    public function isAdminBlog()
+    {
+      return $this->hasTypeUser(5);
+    }
+
+    /**
+     * If user admin is admin delegate
+     *
+     * @return Boolean
+     */
+    public function isAdminDelegate()
+    {
+        return $this->hasTypeUser(6);
+    }
     
     /**
      * A user is admin || AFA || APL || member
@@ -320,6 +340,16 @@ class User extends Authenticatable{
     public function hasRole($role)
     {
       return ($this->role == $role);
+    }
+
+    /**
+     * A admin is Admin bolg || Admin delegate
+     *
+     * @return Boolean
+     */
+    public function hasTypeUser($type_users_id)
+    {
+      return ($this->type_users_id == $type_users_id);
     }
     
     /**

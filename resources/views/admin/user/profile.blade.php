@@ -6,7 +6,7 @@
             <h2>@lang('app.profile')</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="{{url('V2/admin')}}">Accueil</a>
+                    <a href="{{Auth::user()->isAdmin()?url('/admin'):url('/collaborator')}}">Accueil</a>
                 </li>
                 <li class="breadcrumb-item active">
                     <strong>@lang('app.profile')</strong>
@@ -168,18 +168,22 @@
 							<label>@lang('app.country')</label>
 							<select class="form-control" name="country" id="country">
 								<option value="0">@lang('app.select_country')</option>
-								@foreach(\App\Models\Country::all() as $country)
-									<option value="{{$country->id}}" {{ ( $country->content == $location->country) ? 'selected' : '' }}> {{$country->content}}</option>
-								@endforeach
+								@if (Auth::user()->isAdmin())
+									@foreach(\App\Models\Country::all() as $country)
+										<option value="{{$country->id}}" {{ ( $country->content == $location->country) ? 'selected' : '' }}> {{$country->content}}</option>
+									@endforeach
+								@endif
 							</select>
 						</div>
 						<div class="form-group">
 							<label>@lang('app.area_level_1')</label>
 							<select class="form-control" name="area_level_1" id="area_level_1">
 								<option value="0">@lang('app.select_country')</option>
-								@foreach(\App\Models\State::all() as $state)
-									<option value="{{$state->id}}" {{ ( $country->states == $location->state) ? 'selected' : '' }}> {{$state->content}}</option>
-								@endforeach
+								@if (Auth::user()->isAdmin())
+									@foreach(\App\Models\State::all() as $state)
+										<option value="{{$state->id}}" {{ ( $country->states == $location->state) ? 'selected' : '' }}> {{$state->content}}</option>
+									@endforeach
+								@endif
 							</select>
 						</div>
 					</div>

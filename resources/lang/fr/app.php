@@ -1054,4 +1054,11 @@ return
 	'txt.Admin_delegate' => 'Administrateur délégué',
 	'txt.Admin_blog' => 'Administrateur de blog',
 	'txt.add.collaborator.success' => 'Un nouveau Collaborateur a été créé',
+	'Collaborateur' => 'Collaborateur',
+	'Collaborator' => 'Collaborateur',
+	'txt.recent_publication' => 'Publication récente',
+	'txt.published' => 'Publié',
+	'txt.title' => 'Titre',
+	'txt.titles' => 'Titres',
+	'region' => 'Région',
 ];

@@ -806,4 +806,11 @@ return
 	'txt.Admin_delegate' => 'Admin delegate',
 	'txt.Admin_blog' => 'Admin blog',
 	'txt.add.collaborator.success' => 'A new employee has been created',
+	'Collaborateur' => 'Collaborator',
+	'Collaborator' => 'Collaborator',
+	'txt.recent_publication' => 'Recent publication',
+	'txt.published' => 'Published',
+	'txt.title' => 'Title',
+	'txt.titles' => 'Titles',
+	'region' => 'Region',
 ];

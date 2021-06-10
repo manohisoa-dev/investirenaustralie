@@ -202,6 +202,11 @@
                                     @endif
 
                                 @endfor
+                                @if(Auth::check()&&Auth::user()->isAdmin())
+                                    <div class="btn-bar p-15px-t">
+                                        <a class="m-btn-theme" href="{{route('admin.page.index')}}/{{ App::getLocale()=='fr'?11:38 }}/edit"><i class="icon-edit"></i> @lang('app.btn.edit')</a>
+                                    </div>
+                                @endif
                             </div>
 
                         </div>

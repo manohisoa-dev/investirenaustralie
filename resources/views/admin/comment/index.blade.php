@@ -134,7 +134,7 @@
                                
                                 <td>{{ $record->created_at }}</td>
                                 <td>{{ $record->updated_at }}</td>
-                                @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('admin.comment.index'), 'record' => $record ] )
+                                @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => Auth::user()->isAdmin() ? route('admin.comment.index') : route('admin.collaborator.admin.comment.index'), 'record' => $record ] )
                             </tr>
                         @empty
                             @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 11])

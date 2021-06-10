@@ -8,7 +8,7 @@
         <h2>Blogs</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.blog.index') }}">Blogs</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.blog.index') : route('admin.collaborator.admin.blog.index') }}">Blogs</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Listes</strong>
@@ -17,7 +17,7 @@
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ route('admin.blog.create') }}" type="button" class="btn btn-primary btn-block">
+            <a href="{{ Auth::user()->isAdmin()?route('admin.blog.create') : route('admin.collaborator.admin.blog.create') }}" type="button" class="btn btn-primary btn-block">
                 <i class="fa fa-plus"></i> Ajouter un nouveau Blog            
 			</a>
         </div>
@@ -155,27 +155,27 @@
                                    </td>
 								   <td>{{$record->created_at ? $record->created_at->diffForHumans() : ""}}</td>
 								   <td class="actions-cell text-center" width="12%">
-									<form class="form-inline" action="{{route('admin.blog.index')}}/{{$record->id}}" method="POST">
-										<a href="{{route('admin.blog.index')}}/{{$record->id}}/edit" title="Modification" class="btn btn-default btn-circle">
+									<form class="form-inline" action="{{ Auth::user()->isAdmin() ? route('admin.blog.index') : route('admin.collaborator.admin.blog.index') }}/{{$record->id}}" method="POST">
+										<a href="{{Auth::user()->isAdmin() ? route('admin.blog.index') : route('admin.collaborator.admin.blog.index')}}/{{$record->id}}/edit" title="Modification" class="btn btn-default btn-circle">
 											<i class="fa fa-pencil-square-o"></i>
 										</a>&nbsp;&nbsp;
 										@if($record->status=='pinged' || $record->status=='archived')
-											<a href="{{route('admin.blog.publish', $record)}}" class="btn btn-default btn-circle" title="@lang('app.btn.publish')">
+											<a href="{{Auth::user()->isAdmin() ? route('admin.blog.publish', $record) : route('admin.collaborator.admin.blog.publish', $record)}}" class="btn btn-default btn-circle" title="@lang('app.btn.publish')">
 												<i class="fa fa-check"></i>
 											</a>&nbsp;
-											<a href="{{route('admin.blog.trash', $record)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
+											<a href="{{Auth::user()->isAdmin() ? route('admin.blog.trash', $record) : route('admin.collaborator.admin.blog.trash', $record)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
 												<i class="fa fa-trash-o"></i>
 											</a>&nbsp;&nbsp;
 										 @elseif($record->status=='trashed')
-											<a href="{{route('admin.blog.restore', $record)}}" class="btn btn-default btn-circle" title="Restore">
+											<a href="{{Auth::user()->isAdmin() ? route('admin.blog.restore', $record) : route('admin.collaborator.admin.blog.restore', $record)}}" class="btn btn-default btn-circle" title="Restore">
 												<i class="fa fa-window-restore"></i>
 											</a>&nbsp;&nbsp;
 										 @endif
 										 @if($record->status=='published')
-										 	<a href="{{route('admin.blog.archive',$record)}}" class="btn btn-default btn-circle" title="@lang('app.btn.archive')">
+										 	<a href="{{Auth::user()->isAdmin() ? route('admin.blog.archive',$record) : route('admin.collaborator.admin.blog.archive', $record)}}" class="btn btn-default btn-circle" title="@lang('app.btn.archive')">
 												<i class="fa fa-archive"></i>
 											</a>&nbsp;&nbsp;
-											<a href="{{route('admin.blog.trash', $record)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
+											<a href="{{Auth::user()->isAdmin() ? route('admin.blog.trash', $record) : route('admin.collaborator.admin.blog.trash', $record)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
 												<i class="fa fa-trash-o"></i>
 											</a>&nbsp;&nbsp;
 										 @endif
@@ -229,7 +229,7 @@
 				};
 
 				$.ajax({
-					url : "{{ route('admin.blog.update.order') }}",
+					url : "{{ Auth::user()->isAdmin() ? route('admin.blog.update.order') : route('admin.collaborator.admin.blog.update.order') }}",
 					method : "get",
 					data : datas,
 					dataType : 'json',

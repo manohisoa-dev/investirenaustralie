@@ -2,12 +2,14 @@
     <nav class="navbar navbar-static-top {{Request::is('*/admin') ? 'white-bg' : ''}}" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
             <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
-            <form role="search" class="navbar-form-custom" action="{{route('admin.product.programme')}}">
-                <input type="hidden" name="{{csrf_token()}}">
-                <div class="form-group">
-                    <input type="text" placeholder="@lang('app.txt.head_title_admin')" class="form-control" id="top-search" name="title" style="width: 17rem !important;" value="{{Request::input("title")}}">
-                </div>
-            </form>
+            @if(!Auth::user()->isAdminBlog())
+                <form role="search" class="navbar-form-custom" action="{{route('admin.product.programme')}}">
+                    <input type="hidden" name="{{csrf_token()}}">
+                    <div class="form-group">
+                        <input type="text" placeholder="@lang('app.txt.head_title_admin')" class="form-control" id="top-search" name="title" style="width: 17rem !important;" value="{{Request::input("title")}}">
+                    </div>
+                </form>
+            @endif
         </div>
         <ul class="nav navbar-top-links navbar-right">
             <li style="padding: 20px">

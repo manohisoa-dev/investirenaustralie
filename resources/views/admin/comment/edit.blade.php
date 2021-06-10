@@ -32,7 +32,7 @@
                 <h5>Mise à jour Comment : {{$comment->content}}</h5>
             </div>
             <div class="ibox-content">
-                <form action="{{ route('admin.comment.index')}}/{{$comment->id}}" method="post">
+                <form action="{{ Auth::user()->isAdmin() ? route('admin.comment.index') : route('admin.collaborator.admin.comment.index') }}/{{$comment->id}}" method="post">
 
                     {{ csrf_field() }}
 

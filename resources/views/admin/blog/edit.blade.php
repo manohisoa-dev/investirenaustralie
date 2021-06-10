@@ -32,7 +32,7 @@
                 <h5>Mise à jour Blog : {{$blog->slug}}</h5>
             </div>
             <div class="ibox-content">
-                <form action="{{ route('admin.blog.index')}}/{{$blog->id}}" id="formBlog" method="post" enctype="multipart/form-data">
+                <form action="{{ Auth::user()->isAdmin() ? route('admin.blog.index') : route('admin.collaborator.admin.blog.index') }}/{{$blog->id}}" id="formBlog" method="post" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     {{ method_field("PUT") }}
 					<div class="form-group">

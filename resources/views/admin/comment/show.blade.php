@@ -11,7 +11,7 @@
                 <a href="#">Commentaires</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.comment.index') }}">Listes</a>
+                <a href="{{ Auth::user()->isAdmin() ? route('admin.comment.index') : route('admin.collaborator.admin.comment.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Détail</strong>

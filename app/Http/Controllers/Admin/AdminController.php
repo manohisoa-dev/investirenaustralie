@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\User;
 use App\Models\Mail;
 use App\Models\MailUser;
+use App\Models\Blog;
 use App\Role;
 
 use App\Notifications\NewMail;
@@ -25,7 +26,10 @@ class AdminController extends Controller {
      */
     public function __construct() {
         $this->middleware('auth');
-        $this->middleware('role:1');
+        $this->middleware('role', ['only' => [
+            '1',
+            '6',
+        ]]);
     }
 
     /**
@@ -48,6 +52,7 @@ class AdminController extends Controller {
 
         $recent = [];
         $recent['users'] = User::orderBy('created_at', 'desc')->take($this->recentSize)->get();
+        $recent['blogs'] = Blog::orderBy('created_at', 'desc')->take($this->recentSize)->get();
         $recent['products'] = Product::orderBy('created_at', 'desc')->ofStatus('published')->take($this->recentSize)->get();
         $recent['sales'] = Product::orderBy('created_at', 'desc')->ofStatus('paid')->take($this->recentSize)->get();
         $recent['orders'] = Product::orderBy('created_at', 'desc')->ofStatus('ordered')->take($this->recentSize)->get();

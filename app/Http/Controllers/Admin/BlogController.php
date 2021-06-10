@@ -42,7 +42,10 @@ class BlogController extends Controller {
      */
     public function store(Request $request) {
         $this->middleware('auth');
-        $this->middleware('role:1');
+        $this->middleware('role', ['only' => [
+            '1',
+            '6',
+        ]]);
         
         //$this->validate($request, Blog::validationRules());
         $blog = new Blog();
@@ -74,6 +77,7 @@ class BlogController extends Controller {
         $blog->meta_description = $request->meta_description;
         $blog->post_type = $this->post_type;
         $blog->status = 'published';
+        $blog->author_id = Auth::user()->id;
         $blog->view_order = $request->view_order;
         $blog->save();
         
@@ -93,7 +97,7 @@ class BlogController extends Controller {
 
         # notification
         Notify::success("L'article a été bien enregistré.");
-        return redirect(route('admin.blog.index'));
+        return redirect(Auth::user()->isAdmin() ? route('admin.blog.index') : route('admin.collaborator.admin.blog.index'));
     }
 
     /**
@@ -196,7 +200,7 @@ class BlogController extends Controller {
 
         # notification
         Notify::success('Blog a été mise à jour avec succès');
-        return redirect(route('admin.blog.index'));
+        return redirect(Auth::user()->isAdmin() ? route('admin.blog.index') : route('admin.collaborator.admin.blog.index'));
     }
 
     /**
@@ -206,13 +210,16 @@ class BlogController extends Controller {
      */
     public function destroy(Request $request, Blog $blog) {
         $this->middleware('auth');
-        $this->middleware('role:1');
+        $this->middleware('role', ['only' => [
+            '1',
+            '6',
+        ]]);
         
         $blog->delete();
 
         # notification
         Notify::success('Blog a été supprimer avec succès');
-        return redirect(route('admin.blog.index'));
+        return redirect(Auth::user()->isAdmin() ? route('admin.blog.index') : route('admin.collaborator.admin.blog.index'));
     }
 
     protected function view($view, $data = []) {
@@ -228,12 +235,15 @@ class BlogController extends Controller {
      */
     public function archive(Request $request, Blog $blog) {
         $this->middleware('auth');
-        $this->middleware('role:1');
+        $this->middleware('role', ['only' => [
+            '1',
+            '6',
+        ]]);
 
         $blog->status = "archived";
         $blog->save();
         Notify::success('L\'article a été achivé avec succés');
-        return redirect(route('admin.blog.index'));
+        return redirect(Auth::user()->isAdmin() ? route('admin.blog.index') : route('admin.collaborator.admin.blog.index'));
     }
     
     /**
@@ -246,13 +256,16 @@ class BlogController extends Controller {
     public function publish(Request $request,Blog $blog)
     {
         $this->middleware('auth');
-        $this->middleware('role:1');
+        $this->middleware('role', ['only' => [
+            '1',
+            '6',
+        ]]);
 
         $blog->status = "published";
         $blog->save();
         
         Notify::success("L'article a été publié avec succés");
-        return redirect(route('admin.blog.index'));
+        return redirect(Auth::user()->isAdmin() ? route('admin.blog.index') : route('admin.collaborator.admin.blog.index'));
     }
     
     /**
@@ -265,13 +278,16 @@ class BlogController extends Controller {
     public function trash(Request $request,Blog $blog)
     {
         $this->middleware('auth');
-        $this->middleware('role:1');
+        $this->middleware('role', ['only' => [
+            '1',
+            '6',
+        ]]);
 
         $blog->status = "trashed";
         $blog->save();
         
         Notify::success("L'article a été ajouté aux corbeilles avec succés");
-        return redirect(route('admin.blog.index'));
+        return redirect(Auth::user()->isAdmin() ? route('admin.blog.index') : route('admin.collaborator.admin.blog.index'));
     }
     
     /**
@@ -284,13 +300,16 @@ class BlogController extends Controller {
     public function restore(Request $request,Blog $blog)
     {
         $this->middleware('auth');
-        $this->middleware('role:1');
+        $this->middleware('role', ['only' => [
+            '1',
+            '6',
+        ]]);
 
         $blog->status = "pinged";
         $blog->save();
         
         Notify::success("L'article a été restoré avec succés");
-        return redirect(route('admin.blog.index'));
+        return redirect(Auth::user()->isAdmin() ? route('admin.blog.index') : route('admin.collaborator.admin.blog.index'));
     }
 
     public function updateBlogOrder(Request $request){

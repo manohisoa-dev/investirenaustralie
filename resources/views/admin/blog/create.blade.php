@@ -11,7 +11,7 @@
                 <a href="#">Blogs</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.blog.index') }}">Listes</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.blog.index') : route('admin.collaborator.admin.blog.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Ajout</strong>
@@ -32,7 +32,7 @@
                 <h5>Ajouter un nouveau Blog</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-validation form-padding" action="{{ route('admin.blog.store') }}" id="formBlog" method="post" enctype="multipart/form-data">
+                <form class="form-validation form-padding" action="{{ Auth::user()->isAdmin()?route('admin.blog.store') : route('admin.collaborator.admin.blog.store') }}" id="formBlog" method="post" enctype="multipart/form-data">
 
                     {{ csrf_field() }}
                                                         

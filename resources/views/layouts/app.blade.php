@@ -212,7 +212,7 @@
                                 <i class="fa fa-angle-down px-nav-toggle"></i>
                                 <ul class="px-dropdown-menu mm-dorp-in">
                                     <li><a href="{{url(\App\Models\User::find(Auth::id())->roleUser->role_initial)}}">@lang('app.dashboard')</a></li>
-                                    <li><a href="{{route('profile')}}">@lang('app.profile')</a></li>
+                                    <li><a href="@if(!Auth::user()->isAdmin() && !Auth::user()->isAdminBlog() && !Auth::user()->isAdminDelegate()) {{ route('profile') }} @else {{ Auth::user()->isAdmin() ? route('admin.profile') : route('admin.collaborator.admin.profile') }} @endif">@lang('app.profile')</a></li>
                                     <li><a href="{{route('logout')}}">@lang('app.logout')</a></li>
                                 </ul>
                             </li>   

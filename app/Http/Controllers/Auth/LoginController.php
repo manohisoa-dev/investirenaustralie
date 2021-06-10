@@ -104,7 +104,8 @@ class LoginController extends Controller
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
     public function login(Request $request)
-    {
+    {   
+
         $this->validateLogin($request);
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
@@ -114,7 +115,6 @@ class LoginController extends Controller
             $this->fireLockoutEvent($request);
 
             return $this->sendLockoutResponse($request);
-
         }
 
         /*
@@ -185,6 +185,9 @@ class LoginController extends Controller
 
         $this->clearLoginAttempts($request);
 
+        // return $this->authenticated($request, $this->guard()->user())
+        //     ?: redirect()->intended($this->redirectPath());
+        
         return $this->authenticated($request, $this->guard()->user())
             ?: redirect()->intended($this->redirectPath());
     }

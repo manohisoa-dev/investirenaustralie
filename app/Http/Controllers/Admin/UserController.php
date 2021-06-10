@@ -49,7 +49,7 @@ class UserController extends Controller {
         $statuts = User::groupBy('status')->pluck('status', 'status');
         $countries = Country::all();
         $states = State::all();
-        $typeUser = TypeUser::where('type_user_name','!=','Admin blog')->where('type_user_name','!=','Admin delegate')->get();
+        $typeUser = TypeUser::where('type_user_name','!=','Admin blog')->where('type_user_name','!=','Admin delegate')->where('type_user_name','!=','Super Admin')->get();
         $userRole = 'seller';
 
         if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
@@ -73,7 +73,7 @@ class UserController extends Controller {
         $statuts = User::groupBy('status')->pluck('status', 'status');
         $countries = Country::all();
         $states = State::all();
-        $typeUser = TypeUser::where('type_user_name','!=','Admin blog')->where('type_user_name','!=','Admin delegate')->get();
+        $typeUser = TypeUser::where('type_user_name','!=','Admin blog')->where('type_user_name','!=','Admin delegate')->where('type_user_name','!=','Super Admin')->get();
         $userRole = 'afa';
 
         if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
@@ -97,7 +97,7 @@ class UserController extends Controller {
         $statuts = User::groupBy('status')->pluck('status', 'status');
         $countries = Country::all();
         $states = State::all();
-        $typeUser = TypeUser::where('type_user_name','!=','Admin blog')->where('type_user_name','!=','Admin delegate')->get();
+        $typeUser = TypeUser::where('type_user_name','!=','Admin blog')->where('type_user_name','!=','Admin delegate')->where('type_user_name','!=','Super Admin')->get();
         $userRole = 'apl';
 
         if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
@@ -121,7 +121,7 @@ class UserController extends Controller {
         $statuts = User::groupBy('status')->pluck('status', 'status');
         $countries = Country::all();
         $states = State::all();
-        $typeUser = TypeUser::where('type_user_name','!=','Admin blog')->where('type_user_name','!=','Admin delegate')->get();
+        $typeUser = TypeUser::where('type_user_name','!=','Admin blog')->where('type_user_name','!=','Admin delegate')->where('type_user_name','!=','Super Admin')->get();
         $userRole = 'member';
 
         if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
@@ -145,7 +145,7 @@ class UserController extends Controller {
         $statuts = User::groupBy('status')->pluck('status', 'status');
         $countries = Country::all();
         $states = State::all();
-        $typeUser = TypeUser::where('type_user_name','!=','Admin blog')->where('type_user_name','!=','Admin delegate')->get();
+        $typeUser = TypeUser::where('type_user_name','!=','Admin blog')->where('type_user_name','!=','Admin delegate')->where('type_user_name','!=','Super Admin')->get();
         $userRole = 'member.particulier';
         
         // $records = User::findRequested();
@@ -171,7 +171,7 @@ class UserController extends Controller {
         $statuts = User::groupBy('status')->pluck('status', 'status');
         $countries = Country::all();
         $states = State::all();
-        $typeUser = TypeUser::where('type_user_name','!=','Admin blog')->where('type_user_name','!=','Admin delegate')->get();
+        $typeUser = TypeUser::where('type_user_name','!=','Admin blog')->where('type_user_name','!=','Admin delegate')->where('type_user_name','!=','Super Admin')->get();
         $userRole = 'member.organisation';
 
         if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){
@@ -195,7 +195,7 @@ class UserController extends Controller {
         $statuts = User::groupBy('status')->pluck('status', 'status');
         $countries = Country::all();
         $states = State::all();
-        $typeUser = TypeUser::whereIn('type_user_name', ['Admin blog','Admin delegate'])->get();
+        $typeUser = TypeUser::whereIn('type_user_name', ['Admin blog','Admin delegate','Show Admin'])->get();
         $userRole = 'collaborator';
 
         if(isset($request->country_id) || isset($request->state_id) || isset($request->name) || isset($request->type_users_id) || isset($request->status)){

@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Jleon\LaravelPnotify\Notify;
+use Auth;
 
 class CommentController extends Controller
 {
@@ -67,7 +68,7 @@ class CommentController extends Controller
 
         # notification
         Notify::success('Comment a été créer avec succès');
-        return redirect(route('admin.comment.index'));
+        return redirect(Auth::user()->isAdmin() ? route('admin.comment.index') : route('admin.collaborator.admin.comment.index'));
     }
 
     /**
@@ -114,7 +115,7 @@ class CommentController extends Controller
 
         # notification
         Notify::success('Comment a été mise à jour avec succès');
-        return redirect(route('admin.comment.index'));
+        return redirect(Auth::user()->isAdmin() ? route('admin.comment.index') : route('admin.collaborator.admin.comment.index'));
     }
 
     /**
@@ -128,7 +129,7 @@ class CommentController extends Controller
 
         # notification
         Notify::success('Comment a été supprimer avec succès');
-        return redirect(route('admin.comment.index'));
+        return redirect(Auth::user()->isAdmin() ? route('admin.comment.index') : route('admin.collaborator.admin.comment.index'));
     }
 
     protected function view($view, $data = [])
