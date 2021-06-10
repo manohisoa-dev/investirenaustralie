@@ -113,9 +113,9 @@
                     </thead>
 
                     <tbody>
-					@forelse ( $records as $record )
+					@forelse ( $records as $index =>$record )
 						<tr>
-							<td>{{ $record->id }}</td>
+							<td>{{ $index + $records->firstItem() }}</td>
 							<td>
 							@if (@getimagesize($record->imageUrl()))
 								<a href="{{route('admin.user.show', $record)}}">

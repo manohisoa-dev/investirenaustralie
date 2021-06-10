@@ -68,10 +68,10 @@
 
                     <tbody>
 						
-                        @forelse ( $records as $record )
+                        @forelse ( $records as $index =>$record )
                         <tr>
                             <td align="center">
-                                {{ $record->id }}
+                                {{ $index + $records->firstItem() }}
                             </td>
 							<td>
 							@php

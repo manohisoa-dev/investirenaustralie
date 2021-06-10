@@ -68,10 +68,10 @@
 
                     <tbody>
 						
-                        @forelse ( $records as $record )
+                        @forelse ( $records as $index =>$record )
                         <tr>
                             <td align="center">
-                                {{ $record->id }}
+                                {{ $index + $records->firstItem() }}
                             </td>
 							<td>
 								@if (@getimagesize($record->imageUrl()))
@@ -225,12 +225,12 @@
         	event.preventDefault();
         	var $form = $(this).closest('form');
 				swal({
-					title: "Voulez-vous supprimer ?",
+					title: "@lang('app.table.confirm_delete')",
 					type: "warning",
 					showCancelButton: true,
 					confirmButtonColor: "#DD6B55",
-					confirmButtonText: "Oui",
-					cancelButtonText: "Annuler",
+					confirmButtonText: "@lang('app.yes')",
+					cancelButtonText: "@lang('app.btn.cancel')",
 					closeOnConfirm: true
 				},
 				function () {

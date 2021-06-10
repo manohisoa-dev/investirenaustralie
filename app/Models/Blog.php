@@ -3,12 +3,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Helpers\ImageResizer ;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Blog extends Model {
     use ImageResizer;
-
+    use SoftDeletes;
     protected static $directory = 'blog';
     protected static $directoryResize = 'blog/blog-resize';
+    protected $dates = ['deleted_at'];
 
     protected static $aImageSize = array(
         'mini'              => [25, 25],

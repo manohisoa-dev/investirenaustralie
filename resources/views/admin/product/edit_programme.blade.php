@@ -277,9 +277,9 @@
 						</tr>
 					</thead>
 					<tbody>
-					@foreach($product_lies as $product_lie)
+					@foreach($product_lies as $key=>$product_lie)
 						<tr>
-							<td>{{$product_lie->id}}</td>
+							<td>{{$key + 1}}</td>
 							<td>
 								@if (@getimagesize($product_lie->imageUrl()))
 									<a href="{{route('admin.product.index')}}/{{$product_lie->id}}">

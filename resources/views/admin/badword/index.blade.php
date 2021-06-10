@@ -36,49 +36,49 @@
                 <table class="table table-striped grid-view-tbl">
                 <thead>
                     <tr class="header-row">
-                                                    {!!\Nvd\Crud\Html::sortableTh('id','admin.badword.index','Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('content','admin.badword.index','LIbellé')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','admin.badword.index','Créer le')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','admin.badword.index','Mise à jour le')!!}
-                                            <th><a href="javascript:void(0)">Actions</a></th>
+						{!!\Nvd\Crud\Html::sortableTh('id','admin.badword.index','Id')!!}
+						{!!\Nvd\Crud\Html::sortableTh('content','admin.badword.index','LIbellé')!!}
+						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.badword.index','Créer le')!!}
+						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.badword.index','Mise à jour le')!!}
+						<th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">
-                                                            <td><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
-                                                            <td><input type="text" class="form-control" name="content" value="{{Request::input("content")}}"></td>
-                                                            <td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>
-                                                            <td><input type="text" class="form-control" name="updated_at" value="{{Request::input("updated_at")}}"></td>
-                                                        <td style="min-width: 6em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>
+							<td><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
+							<td><input type="text" class="form-control" name="content" value="{{Request::input("content")}}"></td>
+							<td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>
+							<td><input type="text" class="form-control" name="updated_at" value="{{Request::input("updated_at")}}"></td>
+							<td style="min-width: 6em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>
                         </form>
                     </tr>
                     </thead>
 
                     <tbody>
-                        @forelse ( $records as $record )
-                            <tr>
-                                                                <td>
-                                                                            {{ $record->id }}
-                                                                    </td>
-                                                                <td>
-                                                                        <span class="editable"
-                                          data-type="text"
-                                          data-name="content"
-                                          data-value="{{ $record->content }}"
-                                          data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.badword.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ str_limit(strip_tags($record->content), "100", "...") }}</span>
-                                                                    </td>
-                                                                <td>
-                                                                            {{ $record->created_at ? $record->created_at->diffForHumans() : '' }}
-                                                                    </td>
-                                                                <td>
-                                                                            {{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}
-                                                                    </td>
-                                                                @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('admin.badword.index'), 'record' => $record ] )
-                            </tr>
-                        @empty
-                            @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 5])
-                        @endforelse
+						@forelse ( $records as $index =>$record )
+							<tr>
+								<td>
+								{{ $index + $records->firstItem() }}
+								</td>
+								<td>
+									<span class="editable"
+									data-type="text"
+									data-name="content"
+									data-value="{{ $record->content }}"
+									data-pk="{{ $record->{$record->getKeyName()} }}"
+									data-url="{{ route('admin.badword.index')}}/{{ $record->{$record->getKeyName()} }}"
+									>{{ str_limit(strip_tags($record->content), "100", "...") }}</span>
+								</td>
+								<td>
+									{{ $record->created_at ? $record->created_at->diffForHumans() : '' }}
+								</td>
+								<td>
+									{{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}
+								</td>
+								@include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('admin.badword.index'), 'record' => $record ] )
+							</tr>
+						@empty
+							@include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 5])
+						@endforelse
                     </tbody>
 
                 </table>

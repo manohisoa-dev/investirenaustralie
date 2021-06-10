@@ -121,9 +121,9 @@
                     </thead>
 
                     <tbody>
-					@forelse ( $records as $record )
+					@forelse ( $records as $index =>$record )
 						<tr>
-							<td>{{ $record->id }}</td>
+							<td>{{ $index + $records->firstItem() }}</td>
 							<td>
 							@if (@getimagesize($record->imageUrl()))
 								<a href="{{route('admin.user.show', $record)}}">
@@ -223,9 +223,8 @@
 								</a>&nbsp;&nbsp;
 								{{ csrf_field() }}
 								{{ method_field('DELETE') }}
-								<button class="btn btn-default btn-circle"
-									onclick="return confirm('Vous êtes sur?')"
-									type="submit" title="Suppression"><i class="fa fa-times text-danger"></i></button>
+								<button type="button" class="btn btn-default btn-circle" title="Suppression" id="delRecord"><i class="fa fa-times text-danger"></i>
+								</button>
 							</form>	
 							</td>
 						</tr>
@@ -269,6 +268,25 @@
 		var role = $('#new_role').val();
 		window.location.href = "{{ route('admin.user.create') }}?type="+role;
 	}
+</script>
+<script src="{{ asset('administrator/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
+<script>
+	$(document.body).on('click', '#delRecord', function (event) {
+		event.preventDefault();
+		var $form = $(this).closest('form');
+			swal({
+				title: "@lang('app.table.confirm_delete')",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#DD6B55",
+				confirmButtonText: "@lang('app.yes')",
+				cancelButtonText: "@lang('app.btn.cancel')",
+				closeOnConfirm: true
+			},
+			function () {
+				$form.submit();
+			});
+  });
 </script>
 <div class="modal fade" id="modal_form" role="dialog" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog modal-default">
