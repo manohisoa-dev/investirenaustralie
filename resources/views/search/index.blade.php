@@ -85,14 +85,14 @@
             <div class="product-data"> 
                 @php $i = 0; @endphp
                 @forelse($items as $item)
-                    @if($i%3 === 0)
+                    @if($i%2 === 0)
                         <div class="row" id="txtHint">
                     @endif
-                    <div class="col-md-4 layout-item-wrap">
+                    <div class="col-md-6 layout-item-wrap">
                         @include('product.single', ['item'=>$item])
                     </div>
                     @php $i++; @endphp
-                    @if($i%3 === 0)
+                    @if($i%2 === 0)
                         </div>
                     @endif
                 @empty
