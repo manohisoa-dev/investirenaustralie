@@ -379,7 +379,7 @@ class SearchController extends Controller
                 ->where('products.state_id','!=',0);
         
         if($state){
-            $items = $items->where('localizations.area_level_1','=',$state);
+            $items = $items->where('state_id','=',State::where('content','=',$state)->first()->id);
         }
 
         if($city){
