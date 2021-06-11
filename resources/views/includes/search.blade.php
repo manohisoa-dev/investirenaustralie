@@ -33,7 +33,16 @@
                 @if (session()->exists('search_session') && sizeOf(session()->get('search_session'))!==0)
                     <div class="section-search">
                         <hr>
-                        <p>@lang('app.txt.recent_searches')</p>
+                        <div class="row col-lg-12">
+                            <div class="col-lg-6">
+                                <p>@lang('app.txt.recent_searches')</p>
+                            </div>
+                            <div class="col-lg-6">
+                                <a href="{{url('shop/search?state=&city=&suburb=&sub_env=on&prod=Tous') }}" class="close float-right btn-refresh" aria-label="refresh" title="@lang('app.txt.reset_search')">
+                                    <span aria-hidden="true" class="small"><i class="icon-refresh"></i></span>
+                                </a>
+                            </div>
+                        </div>
                         <div class="row">
                             @foreach (session('search_session') as $key=>$item)
                                 @php

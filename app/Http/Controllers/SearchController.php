@@ -10,6 +10,7 @@ use App\Models\Localisation;
 use App\Models\State;
 use App\Models\Type;
 use App\Models\Page;
+use App\Models\Pub;
 use Auth;
 class SearchController extends Controller
 {
@@ -497,6 +498,28 @@ class SearchController extends Controller
             
         $items = $items->paginate(20);
 
+        // Search pub
+        $serializeData = $request->all();
+        $req = "";
+
+        $pubItems = Pub::select('*')
+            ->where('title','like',$req);
+        
+        if($request->state){
+            $pubItems=$pubItems->orWhere('title','like','%'.$request->state.'%');
+        }
+        
+        if($request->city){
+            $pubItems=$pubItems->orWhere('title','like','%'.$request->city.'%');
+        }
+
+        if($request->suburb){
+            $pubItems=$pubItems->orWhere('title','like','%'.$request->suburb.'%');
+        }
+
+
+        $pubItems = $pubItems->paginate(20);
+
 
         // Set url in request array
         $currentUrl = url('/').$_SERVER['REQUEST_URI'];
@@ -687,6 +710,7 @@ class SearchController extends Controller
         ->with('pubs', $pubs)
         ->with('products', $products)
         ->with('categories', $categories)
+        ->with('pubItems', $pubItems)
         ->with('items', $items);
             
     }

@@ -1058,5 +1058,8 @@ return
 	'txt.title' => 'Titre',
 	'txt.titles' => 'Titres',
 	'region' => 'Région',
+	'txt.about' => 'Qui nous sommes',
 	'about' => 'Qui nous sommes',
+	'txt.reset_search' => 'Réinitialiser la recherche',
+	'txt.result_for_ads' => 'Résultat pour les pubs',
 ];

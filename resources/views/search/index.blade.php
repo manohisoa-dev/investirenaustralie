@@ -100,11 +100,60 @@
                         @lang('app.txt.noinfo')
                     </div>
                 @endforelse
-
                 @if((($i%3) > 0))
                 </div>
                 @endif
             </div>
+
+            {{-- Show pub search --}}
+            <div class="p-50px-t">
+                <h5 class="border-bottom-1 border-color-light-gray p-15px-b">@lang('app.txt.result_for_ads')</h5>
+                <p class="font-1"><span class="p-25px-r">{{ count($pubItems) }} {{ count($pubItems)>1?trans('app.txt.resultats'):trans('app.txt.resultat') }}</span></p>
+            </div>
+            <div class="row col-lg-12">
+                
+                @forelse ($pubItems as $pub)
+                    <div class="col-lg-6 md-m-15px-tb m-25px-b">
+                        <div class="m-35px-t">
+                            <div class="card">
+                                <p class="text-center" style="font-size: 11px;">@lang('app.txt.advertisement')</p>
+                                <div id="ads" class="ads-section col-lg-12 p-15px-b white-bg">
+                                    <div class="ads-header col-lg-12 float-left p-5px-t p-20px-l p-10px-b border-top-1 border-color-gray">
+                                        <div class="row col-lg-12">
+                                            <div class="col-lg-6">
+                                                <img src="{{ asset('images/ads-logo.png') }}" alt="logo_iea">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ads-content">
+                                        <div class="pub col-lg-12 col-sm-12">
+                                            <div class="thumb-wrapper">
+                                                <div class="img-box p-10px-b m-15px-b border-bottom-2 border-color-gray">
+                                                    @php
+                                                        if(@getimagesize($pub->imageUrl())) {
+                                                            $img_pub=$pub->imageUrl();                            
+                                                        } else {
+                                                            $img_pub=asset('images/pub/iea.png');
+                                                        }
+                                                    @endphp
+                                                    <a href="{{ $pub->links }}" target="_blank"><img src="{{$img_pub}}" alt="{{$pub->title}}" class="img-fluid"></a>
+                                                </div>
+                                                <div class="thumb-content">
+                                                    <p><span>{{ $pub->title }}</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+
+                @endforelse
+                
+            </div>
+            {{-- End Show pub search --}}
         </div>
         {{-- <!-- Sidebar -->
         @include('includes.sidebar')
