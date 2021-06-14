@@ -21,4 +21,6 @@ return [
     de sa traduction en français. Il vous est impérativement demandé d'imprimer le formulaire Form 6
     en anglais, d'en parapher les pages, de le dater et le signer, d&lsquo;en faire une copie scannée au
     format PDF à envoyer à l&lsquo;AFA pour la nécessaire validation de son mandat de recherche.",
+    "programme.menu"  => "Programmes",
+    "programme.title"  => "Mes programmes",
 ];

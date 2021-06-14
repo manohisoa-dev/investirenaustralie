@@ -19,4 +19,6 @@ return [
     printable copies of your pledge, the official Form 6 search warrant in English and
     of its translation into French. You are required to print the Form 6 form
     in English, initial the pages, date and sign it, make a scanned copy at PDF format to be sent to the AFA for the necessary validation of its research mandate.",
+    "programme.menu"  => "Programmes",
+    "programme.title"  => "My programs",
 ];
