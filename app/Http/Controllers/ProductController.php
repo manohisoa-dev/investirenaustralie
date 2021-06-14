@@ -365,4 +365,16 @@ class ProductController extends Controller
         return redirect()->route('admin.dashboard')
             ->with('success',"Le produit a été supprimé avec succés");
     }
+    
+    public function mesProgramme()
+    {
+        return view('backend.product.all_programme')
+            ->with('title', __('afa.programme.title'));
+    }
+    
+    public function nouveauProgrammes()
+    {
+        return view('backend.product.nouveau_programme')
+            ->with('title', __('afa.programme.title'));
+    }
 }
