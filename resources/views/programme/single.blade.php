@@ -53,6 +53,84 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
+                    {{-- Show progam image --}}
+                    @if(count($item->images))
+                    <div id="myCarousel" class="carousel slide w-100" data-ride="carousel">
+                        <div class="carousel-inner w-100" role="listbox">
+                            @foreach ($item->images as $key=>$it)
+                                <div class="carousel-item carousel-item-prod @if($loop->first) active @endif">
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="thumb-wrapper">
+                                            <div class="img-box p-10px-b m-15px-b border-bottom-2 border-color-gray">
+                                            <div class="grid-item product branding">
+                                                <div class="portfolio-box-02">
+                                                    <div class="portfolio-img">
+                                                    @php
+                                                        $img_prod = "";
+                                                        if(@getimagesize(App\Models\Image::whereId($it->pivot->image_id)->first()->filepath)) { 
+                                                            $img_prod=App\Models\Image::whereId($it->pivot->image_id)->first()->filepath;
+                                                        } else {
+                                                            $img_prod=asset('images/iea.png');
+                                                        }   
+                                                    @endphp
+                                                    <a href="javascript:void(0)"><img src="{{asset($img_prod)}}" alt="{{$it->title}}" class="img-fluid imageresource{{ $key }}"></a>
+                                                    </div>
+                                                    <div class="portfolio-info">
+                                                        <div class="portfolio-desc">
+                                                            <h5><a href="#">{{ $item->title }}</a></h5>
+                                                        </div>
+                                                        <a href="javascript:void(0)" value="{{ $key }}" class="gallery-link pop">
+                                                            <i class="ti-plus"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>    
+                            @endforeach                            
+                            <a class="carousel-control-prev bg-dark w-auto" href="#myCarousel" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">@lang('app.btn.prev')</span>
+                            </a>
+                            <a class="carousel-control-next bg-dark w-auto" href="#myCarousel" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">@lang('app.btn.next')</span>
+                            </a>
+                        </div> 
+                    </div>
+                    @else
+                        <div class="col-md-12 col-sm-12">
+                        <div class="thumb-wrapper">
+                            <div class="img-box p-10px-b m-15px-b border-bottom-2 border-color-gray">
+                                <div class="grid-item product branding">
+                                <div class="portfolio-box-02">
+                                    <div class="portfolio-img">
+                                        @php
+                                            if(@getimagesize($item->imageUrl())) {
+                                                $img=$item->imageUrl();
+                                            } else {
+                                                $img=asset('images/iea.png');
+                                            } 
+                                        @endphp
+                                        <a href="javascript:void(0)"><img src="{{$img}}" alt="{{$item->title}}" class="img-fluid imageresource0"></a>
+                                    </div>
+                                    <div class="portfolio-info">
+                                        <div class="portfolio-desc">
+                                            <h5><a href="#">{{ $item->title }}</a></h5>
+                                        </div>
+                                        <a href="javascript:void(0)" value="0" class="gallery-link pop">
+                                            <i class="ti-plus"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+
                     <div class="nav p-25px-b">
                         <p class="h4 dark-color font-w-600">@lang('app.description')</p>
                     </div>
