@@ -813,4 +813,8 @@ return
 	'txt.title' => 'Title',
 	'txt.titles' => 'Titles',
 	'region' => 'Region',
+	'txt.about' => 'About us',
+	'about' => 'About us',
+	'txt.reset_search' => 'Reset search',
+	'txt.result_for_ads' => 'Result for ads',
 ];
