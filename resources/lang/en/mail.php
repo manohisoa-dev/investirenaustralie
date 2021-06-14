@@ -31,7 +31,7 @@ return [
     'btn.contact_admin' => 'Contact Admin',
     'btn.login' => 'Login',
     
-    'default_password' => 'Your default password is &ldquo;<b>:password</b>&rdquo;',
+    'default_password' => 'Your default password is &ldquo;<b>:password</b>&rdquo; <br />',
     'quantity' => 'Amount :value',
     'amount' => 'Value :value',
     'tma' => 'TMA :value',

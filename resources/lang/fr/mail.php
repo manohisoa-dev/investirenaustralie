@@ -31,7 +31,7 @@ return [
     'btn.contact_admin' => 'Contacter Admin',
     'btn.login' => 'Se connecter',
     
-    'default_password' => 'Votre mot de passe par défaut est &ldquo;<b>:password</b>&rdquo;',
+    'default_password' => 'Votre mot de passe par défaut est &ldquo;<b>:password</b>&rdquo;<br />',
     'quantity' => 'Quantité :value',
     'amount' => 'Valeur :value',
     'tma' => 'TMA :value',
