@@ -44,9 +44,12 @@ Route::get('shop/{category?}', 'ShopController@index')->name('shop.index');// Li
 Route::get('product/{slug}', 'ProductController@index')->name('product.index');// View Product
 Route::get('get/show/product/{slug}', 'ProductController@getShowProduct')->name('get.show.product');
 
-Route::get('mes_programmes', 'ProductController@mesProgramme')->name('mes_programmes');
-Route::get('nouveau_programmes', 'ProductController@nouveauProgrammes')->name('nouveau_programmes');
-
+Route::get('mes-programmes', 'ProductController@mesProgramme')->name('mes-programmes');
+Route::get('nouveau-programmes', 'ProductController@nouveauProgrammes')->name('nouveau-programmes');
+Route::post('ajaxGetTypeProduitCategorie', 'ProductController@ajaxGetTypeProduitCategorie')->name('ajaxGetTypeProduitCategorie');
+Route::post('ajaxDropZone', 'ProductController@ajaxDropZone')->name('ajaxDropZone'); 
+Route::get('ajaxCheckTitreProgramme', 'ProductController@ajaxCheckTitreProgramme')->name('ajaxCheckTitreProgramme'); 
+Route::post('save-programme', 'ProductController@saveProgramme')->name('save-programme');   
 // Programme
 Route::get('programmes/{filter?}', 'ProgrammeController@all')->name('programme.all');// List programme by filter OR no
 Route::get('get/show/programme/{slug}', 'ProgrammeController@getShowProgramme')->name('get.show.programme');

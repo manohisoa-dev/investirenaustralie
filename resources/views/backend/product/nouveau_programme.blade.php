@@ -1,7 +1,7 @@
 @extends('layouts.backend')
 
 @section('subcontent')
-<div class="col-lg-8 col-xl-9">
+<div class="col-lg-8 col-xl-9">						
     <div class="profile-content-area m-40px-tb">
 		<div class="card m-40px-b">
 			<div class="card-header">
@@ -12,7 +12,7 @@
 				</div>
 			</div>
 			<div class="card-body">
-				<form class="form-validation form-padding" action="" method="post" id="programmeForm" enctype="multipart/form-data">
+				<form class="form-validation form-padding" action="{{route('save-programme')}}" method="post" id="programmeForm" enctype="multipart/form-data">
 					{{ csrf_field() }}
 					<div class="form-group">
 						<label>@lang('app.form.programme_choix_categorie') *</label>
@@ -168,12 +168,18 @@
 </div>
 @endsection
 
-@section('custom-script')
+@push('script')
 <style>
 	.custom-file-input ~ .custom-file-label::after {
 		content: "{{ trans('app.form.choose_file') }}";
 	}
+	.error{color:red !important}
 </style>
+<!-- dropzone -->
+<script src="{{ asset('administrator/js/plugins/dropzone/dropzone.js') }}"></script>
+<!-- jquery select2-->
+<script src="{{ asset('administrator/js/plugins/select2/select2.full.min.js') }}"></script>
+
 <script src="{{asset('administrator/plugins/ckeditor/ckeditor.js')}}"></script>
 <!-- Jquery Validate -->
 <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
@@ -190,6 +196,168 @@
 		CKEDITOR.replace( 'description' );
 		$("#category_id").select2();
 		$("#type_id").select2();
+		
+		$('#cat_programmme_id').on('change', function() {
+			var category = this.value;
+			$.ajax({
+			   type:'POST',
+			   url:"{{ route('ajaxGetTypeProduitCategorie') }}",
+			   data: {"_token": "{{ csrf_token() }}","categoryId": category, "type_id_active": 0},
+			   success:function(data) {
+				  console.log(data);
+				  $('#type_id').html(data);
+				  $('#product_type_id').html(data);
+				  
+			   }
+			});
+		});
+		
+		$("#image_upload").dropzone({
+			maxFiles: 20, 
+            maxFilesize: 20,
+			dictDefaultMessage: "@lang('app.dropzone.libelle')",
+            url: "{{ route('ajaxDropZone') }}",
+			params: {"_token": "{{ csrf_token() }}"},
+            acceptedFiles: ".jpeg,.jpg,.png,.gif",
+            addRemoveLinks: true,
+            timeout: 50000,
+            init:function() {
+				// Get images
+				var myDropzone = this;
+			},
+            removedfile: function(file) 
+            {
+				if (this.options.dictRemoveFile) {
+				  return Dropzone.confirm("Are You Sure to "+this.options.dictRemoveFile, function() {
+					if(file.previewElement.id != ""){
+						var name = file.previewElement.id;
+					}else{
+						var name = file.name;
+					}
+					//console.log(name);
+					var fileRef;
+						return (fileRef = file.previewElement) != null ? 
+						fileRef.parentNode.removeChild(file.previewElement) : void 0;
+				  });
+			    }		
+            },
+       
+            success: function(file, response) 
+            {
+				file.previewElement.id = response.success;
+				//console.log(file.previewElement.id); 
+				// set new images names in dropzone’s preview box.
+                var olddatadzname = file.previewElement.querySelector("[data-dz-name]");   
+				file.previewElement.querySelector("img").alt = response.success;
+				file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'><input value='"+response.success+"' type='radio' name='radioDrop' style='display:inline-block'> @lang('app.dropzone.photoIcon_tex')</label>");
+				file.previewElement.appendChild(file._captionBox);
+				$('#programmeForm').append('<input type="hidden" name="dropPhoto[]" value="'+response.success +'">');
+				olddatadzname.innerHTML = response.success;
+            },
+            error: function(file, response)
+            {
+               if($.type(response) === "string")
+					var message = response; //dropzone sends it's own error messages in string
+				else
+					var message = response.message;
+				file.previewElement.classList.add("dz-error");
+				_ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+				_results = [];
+				for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+					node = _ref[_i];
+					_results.push(node.textContent = message);
+				}
+				return _results;
+            }
+		});
+		
+		$('#programmeForm').validate({
+			ignore: [],
+			rules: {
+				cat_programmme_id: {
+					required: true
+				},
+				prix_min: {
+					required: true
+				},
+				prix_max: {
+					required: true,
+					number: true,
+					min: function ()  { return parseInt($("#prix_min").val())}
+				},
+				image_programme: {
+					required: true
+				},
+				type_id: {
+					required: true
+				},
+				display_address: {
+					required: true
+				},
+				postalCode: {
+					required: true
+				},
+				state_id: {
+					required: true
+				},
+				title_programme: {
+					required: true,
+					remote: {
+						url: "{{ route('ajaxCheckTitreProgramme') }}",
+						type: "get",
+						data: {
+							title_programme: function () {
+								return $("input[name='title_programme']").val();
+							}
+						}
+					}
+				},
+				chk_firb: {
+					required: true
+				}
+			},
+			messages: {
+				cat_programmme_id: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				prix_min: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				prix_max: {
+					required: "@lang('app.txt.champobligatoire')",
+					min: jQuery.validator.format("@lang('app.form.programme_validate_prix_max') {0}")
+				},
+				image_programme: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				type_id: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				display_address: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				postalCode: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				state_id: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				title_programme: {
+					required: "@lang('app.txt.champobligatoire')",
+					remote: jQuery.validator.format("{0} @lang('app.form.programme_validate_titre')")
+				},
+				chk_firb: {
+					required: "@lang('app.txt.champobligatoire')"
+				}
+			},
+			errorPlacement: function ( error, element ) {
+				if(element.parent().hasClass('input-group')){
+					error.insertBefore( element.parent() );
+				}else{
+					error.insertAfter( element );
+				}
+			},
+		});
 	});
 </script>
-@endsection
+@endpush

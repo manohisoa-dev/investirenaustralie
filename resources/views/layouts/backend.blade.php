@@ -227,7 +227,7 @@
                             @endif
 
                             @If(Auth::user()->hasRole(3))
-							  <a href="{{route('mes_programmes')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+							  <a href="{{route('mes-programmes')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
 							  	  <div>
                                       <i class="fa fa-industry m-10px-r"></i>
                                       <span>@lang('afa.programme.menu')</span>

@@ -56,6 +56,7 @@ return
 	'location.latitude' => 'Latitude',
 	'location.longitude' => 'Longitude',
 	'published' => 'Publié',
+    'waiting' => 'En attente',
 	'Archived' => 'Archivé',
 	'trashed' => 'Au corbeille',
 	'active' => 'Activé',

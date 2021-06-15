@@ -30,6 +30,14 @@
 <link href="{{ asset('style/responsive.css') }}" rel="stylesheet">
 <!-- Fin Mombo -->
 
+<!-- dropzone -->
+<link href="{{ asset('administrator/css/plugins/dropzone/basic.css') }}" rel="stylesheet">
+<link href="{{ asset('administrator/css/plugins/dropzone/dropzone.css') }}" rel="stylesheet">
+
+<!-- select2 -->
+<link href="{{ asset('administrator/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
+<link href="{{ asset('administrator/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
+
 <style>
     .feedback {
         background-color : #AE4435;
