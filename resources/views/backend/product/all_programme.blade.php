@@ -65,7 +65,10 @@
 							@endif
 							</td>
 							<td align="center">
-								<a href="" title="@lang('app.table.btn_title_modification')">
+								<a href="{{route('produit.programme', $record->id)}}" title="Produits programme">
+									<i class="fa fa-building"></i>
+								</a>&nbsp;
+								<a href="{{route('edit.programme', $record->id)}}" title="@lang('app.table.btn_title_modification')">
 									<i class="fa fa-edit"></i>
 								</a>&nbsp;
 								<a href="" title="@lang('app.table.btn_title_modification')">

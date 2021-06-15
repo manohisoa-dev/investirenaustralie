@@ -299,7 +299,7 @@ class ProductController extends Controller {
     }
 
     public function mesProgramme(Request $request) {
-        $records = Product::allProgramme();
+        $records = Product::allProgrammeUser();
         return view('backend.product.all_programme')->with('title', __('afa.programme.title'))->with('records',
             $records);
     }
@@ -380,7 +380,8 @@ class ProductController extends Controller {
     }
 
     function save_programme($categorie, $ancienete, $nature, $prix_min, $prix_max, $type_id,
-        $display_address, $postalCode, $state_id, $title, $content, $location_id, $fond_dossier,$status) {
+        $display_address, $postalCode, $state_id, $title, $content, $location_id, $fond_dossier,
+        $status) {
         $slug = generateSlug($title);
         $programme = new Product();
         if ($file = $fond_dossier) {
@@ -435,7 +436,7 @@ class ProductController extends Controller {
         $id_programme = $this->save_programme($request->cat_programmme_id, $request->ancienneteBien,
             $request->natureBien, $request->prix_min, $request->prix_max, $request->type_id,
             $request->display_address, $request->postalCode, $request->state_id, $request->title_programme,
-            $request->description, $id_location, $request->file('fond_dossier'),'waiting');
+            $request->description, $id_location, $request->file('fond_dossier'), 'waiting');
 
         if ($request->dropPhoto) {
             foreach ($request->dropPhoto as $key => $value) {
@@ -455,5 +456,196 @@ class ProductController extends Controller {
         # notification
         return redirect()->route('mes-programmes')->with('success',
             "Produit a été créer avec succès");
+    }
+
+    public function ajaxDropZoneEdit(Request $request) {
+        $id_programme = $request->id_programme;
+        $image = $request->file('file');
+
+        $fileInfo = $image->getClientOriginalName();
+        $filename = pathinfo($fileInfo, PATHINFO_FILENAME);
+        $extension = pathinfo($fileInfo, PATHINFO_EXTENSION);
+        $file_name = $filename . '-' . time() . '.' . $extension;
+        $image->move(public_path('uploads/product'), $file_name);
+
+        $this->save_photo_programme($file_name, $id_programme, 0);
+        return response()->json(['success' => 'true']);
+    }
+
+    public function ajaxChangeIconPhotoActive(Request $request) {
+        ProductsImage::where('product_id', $request->id_prd)->update(['is_principal' =>
+            0]);
+        ProductsImage::where('id', $request->id_photo_prd)->update(['is_principal' => 1]);
+        return response()->json(['success' => 'true']);
+    }
+
+    public function ajaxDropPhotoIcon(Request $request) {
+        ProductsImage::where('id', $request->id_photo_prd_image)->delete();
+        return response()->json(['success' => 'true']);
+    }
+
+    public function editProgramme(Request $request, Product $product) {
+        $localisation = Localisation::find($product->location_id);
+        $produit_lie = Product::where('parent_id', $product->id)->get();
+        $photo = ProductsImage::where('products_images.product_id', '=', $product->id)->join('images',
+            'products_images.image_id', '=', 'images.id')->select('*',
+            'products_images.id as prdImageId')->get();
+        return view('backend.product.edit_programme', ['product' => $product,
+            'localisation' => $localisation, 'photos' => $photo, 'product_lies' => $produit_lie,
+            'title' => __('afa.programme.title')]);
+    }
+
+    public function updateProgramme(Request $request) {
+        $product = Product::find($request->id);
+        //modification localisation
+        Localisation::where('id', $request->location_Id)->update(['area_level_1' => $request->suburb,
+            'country' => $request->countryId, 'postalCode' => $request->postalCode,
+            'locality' => $request->ville]);
+
+        $slug = generateSlug($request->title_programme);
+        $product->title = $request->title_programme;
+        $product->slug = $slug;
+        $product->content = $request->description;
+        $product->min_price = $request->prix_min;
+        $product->max_price = $request->prix_max;
+        $product->display_address = $request->display_address;
+        $product->type_id = $request->type_id;
+        $product->save();
+
+        return redirect()->route('edit.programme', $product->id)->with('success',
+            "Produit a été créer avec succès");
+    }
+
+    public function produitProgramme(Request $request, Product $product) {
+        $produit_lie = Product::where('parent_id', $product->id)->get();
+        return view('backend.product.produit_programme', ['product' => $product, 'title' =>
+            __('afa.programme.title'), 'product_lies' => $produit_lie]);
+    }
+
+    public function ajaxGetProductById(Request $request) {
+        $product = Product::find($request->id_produit);
+        $localisation = Localisation::find($product->location_id);
+        return response()->json(['product' => $product, 'localisation' => $localisation]);
+    }
+
+    function save_new_produit($anciennete, $nature, $title, $photo, $content, $qty,
+        $area, $interior_area, $exterior_area, $total_area, $carport_spaces, $garage_spaces,
+        $bathrooms, $bedrooms, $sweet, $number_of_floors, $new_construction, $year_built,
+        $display_address, $min_price, $max_price, $currency, $status, $type_id, $cat_programmme_id,
+        $postalCode, $state_id, $programme_id, $location_id, $superficie_jardin, $avoir_parking_voie_public,
+        $avoir_piscine) {
+
+        $product = new Product();
+        $lastId = Product::latest('id')->first();
+        $new_id = $lastId->id + 1;
+        if ($photo) {
+            $file = $photo;
+            $image = Image::storeAndSave($file, 'product');
+            $product->image_id = $image->id;
+        }
+        $slug = generateSlug($title);
+        $product->ancienneteBien = $anciennete;
+        $product->natureBien = $nature;
+        $product->reference = 'ref-p00000' . $new_id;
+        $product->title = $title;
+        $product->slug = $slug;
+        $product->content = $content;
+        $product->quantity = $qty;
+        $product->is_new = 1;
+        $product->view_count = 0;
+        $product->area = $area;
+        $product->interior_area = $interior_area;
+        $product->exterior_area = $exterior_area;
+        $product->total_area = $total_area;
+        $product->carport_spaces = $carport_spaces;
+        $product->garage_spaces = $garage_spaces;
+        $product->bathrooms = $bathrooms;
+        $product->bedrooms = $bedrooms;
+        $product->ensuite = $sweet;
+        $product->number_of_floors = $number_of_floors;
+        $product->new_construction = $new_construction;
+        $product->year_built = $year_built;
+        $product->display_address = $display_address;
+        $product->min_price = $min_price;
+        $product->max_price = $max_price;
+        $product->currency = $currency;
+        $product->tma = 0.20;
+        $product->status = $status;
+        $product->type_id = $type_id;
+        $product->category_id = $cat_programmme_id;
+        $product->author_id = Auth::user()->id;
+        $product->postalCode = $postalCode;
+        $product->state_id = $state_id;
+        $product->parent_id = $programme_id;
+        $product->location_id = $location_id;
+        $product->superficie_jardin = $superficie_jardin;
+        $product->avoir_parking_voie_public = $avoir_parking_voie_public;
+        $product->avoir_piscine = $avoir_piscine;
+        $product->validated_at = Carbon::now();
+        $product->save();
+    }
+
+    public function ajaxSaveProduct(Request $request) {
+        $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
+            $request->postalCode_product, '', '', $request->ville_product);
+        $titre_product = $request->title_new_programme . '-' . $request->title_product;
+
+        if (isset($request->chk_parking)) {
+            $avoir_parking = 1;
+        } else {
+            $avoir_parking = 0;
+        }
+
+        if ($request->prg_anciennete && $request->prg_nature) {
+            $this->save_new_produit($request->prg_anciennete, $request->prg_nature, $titre_product,
+                $request->file('image'), $request->desc_product, 1, 0, $request->interior_area,
+                $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
+                $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
+                $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
+                $request->prg_cat_id, $request->postalCode_product, $request->state_id_product,
+                $request->id_programme, $id_location, 0, $avoir_parking, 0);
+
+            return response()->json(['success' => 'true']);
+        } else {
+            return response()->json(['success' => 'false']);
+        }
+    }
+
+    public function ajaxModifProduct(Request $request) {
+        //modification localisation
+        Localisation::where('id', $request->id_location_product)->update(['area_level_1' =>
+            $request->suburb_product, 'country' => $request->countryId_product, 'postalCode' =>
+            $request->postalCode_product, 'locality' => $request->ville_product]);
+
+        $titre_product = $request->title_new_programme . '-' . $request->title_product;
+        if (isset($request->chk_parking)) {
+            $avoir_parking = 1;
+        } else {
+            $avoir_parking = 0;
+        }
+
+        Product::where('id', $request->id_product)->update(['title' => $titre_product,
+            'content' => $request->desc_product, 'type_id' => $request->product_type_id,
+            'postalCode' => $request->postalCode_product, 'display_address' => $request->display_address_product,
+            'state_id' => $request->state_id_product, 'min_price' => $request->price,
+            'max_price' => $request->price_max_prd, 'status' => $request->status, 'quantity' =>
+            $request->quantity, 'bedrooms' => $request->bedrooms, 'ensuite' => $request->ensuite,
+            'bathrooms' => $request->bathrooms, 'interior_area' => $request->interior_area,
+            'exterior_area' => $request->exterior_area, 'total_area' => $request->total_area,
+            'garage_spaces' => $request->garage_spaces, 'carport_spaces' => $request->carport_spaces]);
+
+
+        if ($request->file('image')) {
+            $photo = $request->file('image');
+            $image_prod = Image::storeAndSave($photo, 'product');
+            Product::where('id', $request->id_product)->update(['image_id' => $image_prod->id]);
+        }
+
+        return response()->json(['success' => 'true']);
+    }
+    
+    public function ajaxDropProduit(Request $request) {
+        Product::where('id', $request->id_produit)->delete();
+        return response()->json(['success' => 'true']);
     }
 }

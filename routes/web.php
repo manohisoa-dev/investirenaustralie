@@ -48,8 +48,18 @@ Route::get('mes-programmes', 'ProductController@mesProgramme')->name('mes-progra
 Route::get('nouveau-programmes', 'ProductController@nouveauProgrammes')->name('nouveau-programmes');
 Route::post('ajaxGetTypeProduitCategorie', 'ProductController@ajaxGetTypeProduitCategorie')->name('ajaxGetTypeProduitCategorie');
 Route::post('ajaxDropZone', 'ProductController@ajaxDropZone')->name('ajaxDropZone'); 
-Route::get('ajaxCheckTitreProgramme', 'ProductController@ajaxCheckTitreProgramme')->name('ajaxCheckTitreProgramme'); 
-Route::post('save-programme', 'ProductController@saveProgramme')->name('save-programme');   
+Route::get('ajaxCheckTitreProgramme', 'ProductController@ajaxCheckTitreProgramme')->name('ajaxCheckTitreProgramme');
+Route::post('ajaxDropZoneEdit', 'ProductController@ajaxDropZoneEdit')->name('ajaxDropZoneEdit');  
+Route::post('ajaxChangeIconPhotoActive', 'ProductController@ajaxChangeIconPhotoActive')->name('ajaxChangeIconPhotoActive');
+Route::post('ajaxDropPhotoIcon', 'ProductController@ajaxDropPhotoIcon')->name('ajaxDropPhotoIcon');
+Route::post('ajaxGetProductById', 'ProductController@ajaxGetProductById')->name('ajaxGetProductById');  
+Route::post('ajaxSaveProduct', 'ProductController@ajaxSaveProduct')->name('ajaxSaveProduct');
+Route::post('ajaxModifProduct', 'ProductController@ajaxModifProduct')->name('ajaxModifProduct');
+Route::post('ajaxDropProduit', 'ProductController@ajaxDropProduit')->name('ajaxDropProduit');  
+Route::post('save-programme', 'ProductController@saveProgramme')->name('save-programme');  
+Route::get('edit-programme/{product}', 'ProductController@editProgramme')->name('edit.programme'); 
+Route::get('produit-programme/{product}', 'ProductController@produitProgramme')->name('produit.programme'); 
+Route::post('updateProgramme', 'ProductController@updateProgramme')->name('updateProgramme'); 
 // Programme
 Route::get('programmes/{filter?}', 'ProgrammeController@all')->name('programme.all');// List programme by filter OR no
 Route::get('get/show/programme/{slug}', 'ProgrammeController@getShowProgramme')->name('get.show.programme');
