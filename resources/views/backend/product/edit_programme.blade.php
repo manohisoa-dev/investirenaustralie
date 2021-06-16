@@ -9,7 +9,7 @@
 				<a href="{{route('mes-programmes')}}">@lang('app.txt.all_programmes')</a>
 			</li>
 			<li class="breadcrumb-item active">
-				<strong>@lang('app.txt.new_programme')</strong>
+				<strong>@lang('app.form.programme_edition')</strong>
 			</li>
 		</ol>
 
@@ -23,14 +23,16 @@
 				</div>
 			</div>
 			<div class="card-body">
-				<form class="form-validation form-padding" action="{{route('save-programme')}}" method="post" id="programmeForm" enctype="multipart/form-data">
+				<form class="form-validation form-padding" action="{{route('updateProgramme')}}" method="post" id="programmeForm" enctype="multipart/form-data">
 					{{ csrf_field() }}
+					<input type="hidden"  name="location_Id" value="{{$product->location_id}}" />  
+					<input type="hidden" name="id" value="{{$product->id}}" />     
 					<div class="form-group">
 						<label>@lang('app.form.programme_choix_categorie') *</label>
-						<select class="form-control" name="cat_programmme_id" id="cat_programmme_id">
+						<select class="form-control" name="cat_programmme_id" id="cat_programmme_id" disabled>
 							<option value="">@lang('app.form.choix_txt')</option>
 							@foreach(\App\Models\Category::all() as $category)
-								<option value="{{$category->id}}">{{ trans('app.txt.'.$category->title) }}</option>
+								<option value="{{$category->id}}" {{$category->id == $product->category_id ? 'selected' : ''}}>{{$category->title}}</option>
 							@endforeach
 						</select>
 					</div>
@@ -38,8 +40,8 @@
 					<div class="form-group">
 						<label for="title">@lang('app.form.programme_choix_anciennete') *</label>
 						<select class="form-control" name="ancienneteBien" id="ancienneteBien" disabled="disabled">
-							<option value="@lang('app.txt.new')">@lang('app.txt.new')</option>
-							<option value="@lang('app.txt.old')">@lang('app.txt.old')</option>
+							<option value="@lang('app.txt.new')" {{$product->ancienneteBien == 'Neuf' ? 'selected' : ''}}>@lang('app.txt.new')</option>
+							<option value="@lang('app.txt.old')" {{$product->ancienneteBien == 'Ancien' ? 'selected' : ''}}>@lang('app.txt.old')</option>
 						</select>
 						<input type="hidden" name="ancienneteBien" value="Neuf" />
 					</div>
@@ -47,20 +49,21 @@
 					<div class="form-group">
 						<label for="title">@lang('app.form.programme_choix_nature') *</label>
 						<select class="form-control" name="natureBien" id="natureBien" disabled="disabled">
-							<option value="@lang('app.txt.real_estate_program')">@lang('app.txt.real_estate_program')</option>
-							<option value="@lang('app.txt.isolated_product')">@lang('app.txt.isolated_product')</option>
+							<option value="@lang('app.txt.real_estate_program')" {{$product->natureBien == 'Programme immobilier' ? 'selected' : ''}}>@lang('app.txt.real_estate_program')</option>
+							<option value="@lang('app.txt.isolated_product')" {{$product->natureBien == 'Produit isolé' ? 'selected' : ''}}>@lang('app.txt.isolated_product')</option>
 						</select>
 						<input type="hidden" name="natureBien" value="@lang('app.txt.real_estate_program')" />
 					</div>
 					
 					<div class="form-group">
 						<label for="title">@lang('app.form.programme_title') *</label>
-						<input name="title_programme" id="title_programme" class="form-control" type="text" value="">
+						<input name="title_programme_now" id="title_programme_now" class="form-control" type="hidden" value="{{$product->title}}">
+						<input name="title_programme" id="title_programme" class="form-control" type="text" value="{{$product->title}}">
 					</div>
 					
 					<div class="form-group">
 						<label for="title">@lang('app.form.programme_content')</label>
-						<textarea class="form-control" rows="10" name="description" id="description"></textarea>
+						<textarea class="form-control" rows="10" name="description" id="description">{{$product->content}}</textarea>
 					</div>
 								
 								
@@ -68,7 +71,7 @@
 						<div class="col-lg-4">
 							<label for="title">@lang('app.form.programme_price_min') *</label>
 							<div class="input-group">
-								<input type="number" class="form-control" name="prix_min" id="prix_min">
+								<input type="number" class="form-control" name="prix_min" id="prix_min" value="{{$product->min_price}}">
 								<div class="input-group-append">
 									<span class="input-group-text">AUD</span>
 								</div>
@@ -78,7 +81,7 @@
 							<div class="form-group">
 								<label for="title">@lang('app.form.programme_price_max') *</label>
 								<div class="input-group">
-									<input type="number" class="form-control" name="prix_max" id="prix_max">
+									<input type="number" class="form-control" name="prix_max" id="prix_max" value="{{$product->max_price}}">
 									<div class="input-group-append">
 										<span class="input-group-text">AUD</span>
 									</div>
@@ -97,26 +100,26 @@
 					
 					<div class="form-group">
 						<label for="title">@lang('app.form.programme_adresse') *</label>
-						<input name="display_address" id="display_address" class="form-control" type="text" value="">
+						<input name="display_address" id="display_address" class="form-control" type="text" value="{{$product->display_address}}">
 					</div>
 					
 					<div class="row">
 						<div class="col-lg-4">
 							<div class="form-group">
 								<label for="title">@lang('app.form.programme_suburb')</label>
-								<input name="suburb" id="suburb" class="form-control" type="text" value="">
+								<input name="suburb" id="suburb" class="form-control" type="text" value="{{$localisation->area_level_1}}">
 							</div>
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
 								<label for="title">@lang('app.form.programme_ville')</label>
-								<input name="ville" id="ville" class="form-control" type="text">
+								<input name="ville" id="ville" class="form-control" type="text" value="{{$localisation->locality}}">
 							</div>  
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
 								<label for="title">@lang('app.form.programme_cp') *</label>
-								<input name="postalCode" id="postalCode" class="form-control" type="text" value="">
+								<input name="postalCode" id="postalCode" class="form-control" type="text" value="{{$localisation->postalCode}}">
 							</div>
 						</div>
 					</div>
@@ -127,7 +130,7 @@
 								<label for="title">@lang('app.form.programme_pays')</label>
 								<select class="form-control" name="countryId" id="countryId" style="width:100%">
 									@foreach(\App\Models\Country::where('id',12)->get() as $country)
-										<option value="{{$country->id}}">{{$country->content}}</option>
+										<option value="{{$country->id}}" {{$country->id == $localisation->country ? 'selected' : ''}}>{{$country->content}}</option>
 									@endforeach
 								</select>
 							</div>
@@ -137,7 +140,7 @@
 								<label for="title">@lang('app.form.programme_etat') *</label>
 								<select class="form-control" name="state_id" id="state_id" style="width:100%">
 									@foreach(\App\Models\State::all() as $state)
-										<option value="{{$state->id}}">{{$state->content}}</option>
+										<option value="{{$state->id}}" {{$state->id == $product->state_id ? 'selected' : ''}}>{{$state->content}}</option>
 									@endforeach
 								</select>
 							</div> 
@@ -155,6 +158,39 @@
 						</div>
 					</div>
 					
+					@if ($photos)
+					<div class="row">
+						<div class="col-lg-12">
+						@foreach ( $photos as $photo )					
+						<div class="file-box">
+							<div class="file">
+								<a href="{{asset($photo->filepath)}}">
+									<span class="corner"></span>						
+									<div class="image">
+										<img alt="image" class="img-fluid" src="{{asset($photo->filepath)}}">
+									</div>
+									<div class="file-name">
+										<label> 
+											@if($photo->is_principal == 1)
+											<input type="radio" checked="" value="{{$photo->prdImageId}}" name="radioDrop"> @lang('app.dropzone.photoIcon_tex')
+											@else
+											<input type="radio" value="{{$photo->prdImageId}}" name="radioDrop"> @lang('app.dropzone.photoIcon_tex')
+											@endif
+										</label>
+										<a class="pull-right" href="javascript:void(0)" onclick="delete_photo({{$photo->prdImageId}})">
+											<i class="fa fa-trash"></i>
+										</a>
+										<br>
+										<small>{{$photo->created_at ? $photo->created_at->diffForHumans() : ""}}</small>
+									</div>
+								</a>						
+							</div>
+						</div>
+						@endforeach
+						</div>
+					</div>
+					@endif  
+					
 					<div class="row">
 						<div class="col-lg-12">
 							<div class="dropzone" id="image_upload" multiple>
@@ -170,7 +206,7 @@
 						</div>
 					</div>
 					<button type="submit" id="savePro" class="btn btn-primary btn-lg pull-right">
-						<i class="fa fa-save"></i> @lang('app.form.programme_btn_create')
+						<i class="fa fa-save"></i> @lang('app.form.programme_btn_edit')
 					</button>			
 				</form>
 			</div>
@@ -194,19 +230,16 @@
 <script src="{{asset('administrator/plugins/ckeditor/ckeditor.js')}}"></script>
 <!-- Jquery Validate -->
 <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+<script src="{{ asset('administrator/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
 <script>
 	Dropzone.autoDiscover = false;
-	$(document).ready(function(){
-		$('#fond_dossier').on('change',function(){
-			//get the file name
-			var fileName = $(this).val();
-			//replace the "Choose a file" label
-			$(this).next('.custom-file-label').html(fileName);
-		});
-			
+	$(document).ready(function(){					
 		CKEDITOR.replace( 'description' );
 		$("#category_id").select2();
 		$("#type_id").select2();
+		$(".fancyboxLink").fancybox();
+		set_type_programme($('#cat_programmme_id').val(),{{$product->type_id}});
 		
 		$('#cat_programmme_id').on('change', function() {
 			var category = this.value;
@@ -225,19 +258,19 @@
 		
 		$("#image_upload").dropzone({
 			maxFiles: 20, 
-            maxFilesize: 20,
+			maxFilesize: 20,
 			dictDefaultMessage: "@lang('app.dropzone.libelle')",
-            url: "{{ route('ajaxDropZone') }}",
-			params: {"_token": "{{ csrf_token() }}"},
-            acceptedFiles: ".jpeg,.jpg,.png,.gif",
-            addRemoveLinks: true,
-            timeout: 50000,
-            init:function() {
+			url: "{{ route('ajaxDropZoneEdit') }}",
+			params: {"_token": "{{ csrf_token() }}","id_programme": "{{ $product->id }}"},
+			acceptedFiles: ".jpeg,.jpg,.png,.gif",
+			addRemoveLinks: true,
+			timeout: 50000,
+			init:function() {
 				// Get images
 				var myDropzone = this;
 			},
-            removedfile: function(file) 
-            {
+			removedfile: function(file) 
+			{
 				if (this.options.dictRemoveFile) {
 				  return Dropzone.confirm("Are You Sure to "+this.options.dictRemoveFile, function() {
 					if(file.previewElement.id != ""){
@@ -250,24 +283,16 @@
 						return (fileRef = file.previewElement) != null ? 
 						fileRef.parentNode.removeChild(file.previewElement) : void 0;
 				  });
-			    }		
-            },
-       
-            success: function(file, response) 
-            {
-				file.previewElement.id = response.success;
-				//console.log(file.previewElement.id); 
-				// set new images names in dropzone’s preview box.
-                var olddatadzname = file.previewElement.querySelector("[data-dz-name]");   
-				file.previewElement.querySelector("img").alt = response.success;
-				file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'><input value='"+response.success+"' type='radio' name='radioDrop' style='display:inline-block'> @lang('app.dropzone.photoIcon_tex')</label>");
-				file.previewElement.appendChild(file._captionBox);
-				$('#programmeForm').append('<input type="hidden" name="dropPhoto[]" value="'+response.success +'">');
-				olddatadzname.innerHTML = response.success;
-            },
-            error: function(file, response)
-            {
-               if($.type(response) === "string")
+				}		
+			},
+	   
+			success: function(file, response) 
+			{
+				location.reload();	
+			},
+			error: function(file, response)
+			{
+			   if($.type(response) === "string")
 					var message = response; //dropzone sends it's own error messages in string
 				else
 					var message = response.message;
@@ -279,9 +304,20 @@
 					_results.push(node.textContent = message);
 				}
 				return _results;
-            }
+			}
 		});
 		
+		$('input[type=radio][name=radioDrop]').change(function() {
+			$.ajax({
+			   type:'POST',
+			   url:"{{ route('ajaxChangeIconPhotoActive') }}",
+			   data: {"_token": "{{ csrf_token() }}","id_photo_prd": this.value, "id_prd": {{$product->id}}},
+			   success:function(data) {
+				  
+				  
+			   }
+			})
+		});
 		$('#programmeForm').validate({
 			ignore: [],
 			rules: {
@@ -317,8 +353,12 @@
 						url: "{{ route('ajaxCheckTitreProgramme') }}",
 						type: "get",
 						data: {
-							title_programme: function () {
-								return $("input[name='title_programme']").val();
+							// title_programme: function () {
+							// 	return $("input[name='title_programme']").val();
+							// }
+
+							datas: function () {
+								return $("input[name='title_programme']").val()+'|;|'+$("input[name='title_programme_now']").val();
 							}
 						}
 					}
@@ -370,5 +410,55 @@
 			},
 		});
 	});
+	
+	function set_type_programme(categorie_id,type_id_active)
+	{
+		$.ajax({
+		   type:'POST',
+		   url:"{{ route('ajaxGetTypeProduitCategorie') }}",
+		   data: {"_token": "{{ csrf_token() }}","categoryId": categorie_id, "type_id_active": type_id_active},
+		   success:function(data) {
+			  $('#type_id').html(data);
+			  $('#product_type_id').html(data);
+		   }
+		});
+	}
+	
+	function delete_photo(id_photo_prd_image)
+	{
+		swal({
+			title: "@lang('app.table.produit_image')",
+			text: "@lang('app.dropzone.delete_photo_confirme')",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: '#ff3547',
+			confirmButtonText: "@lang('app.yes')",
+			cancelButtonText: "@lang('app.no')",
+			closeOnConfirm: false,
+			closeOnCancel: false
+		 },
+		 function(isConfirm){	
+		   if (isConfirm){
+				 $.ajax({
+					url : "{{ route('ajaxDropPhotoIcon') }}",
+					type: "POST",
+					dataType: "JSON",
+					data:{"_token": "{{ csrf_token() }}",'id_photo_prd_image':id_photo_prd_image},
+					success: function(data)
+					{
+						swal("@lang('app.table.produit_image')", "@lang('app.dropzone.delete_photo_yes')", "success");
+						location.reload();	
+					},
+					error: function (jqXHR, textStatus, errorThrown)
+					{
+						swal("@lang('app.table.produit_image')", "@lang('app.jquery.error_delete')", "error");
+						location.reload();	
+					}
+				}); 
+			} else {
+				swal("@lang('app.table.produit_image')", "@lang('app.jquery.delete_cancel')", "error");
+			}
+		 });
+	}
 </script>
 @endpush

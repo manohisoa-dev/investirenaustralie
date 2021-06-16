@@ -812,6 +812,7 @@ return
 	'Collaborator' => 'Collaborator',
 	'txt.recent_publication' => 'Recent publication',
 	'txt.published' => 'Published',
+    'waiting' => 'En attente',
 	'txt.title' => 'Title',
 	'txt.titles' => 'Titles',
 	'region' => 'Region',

@@ -253,8 +253,8 @@
 		});
 			
 		$("#image_upload").dropzone({
-			maxFiles: 5, 
-            maxFilesize: 4,
+			maxFiles: 20, 
+            maxFilesize: 20,
 			dictDefaultMessage: "@lang('app.dropzone.libelle')",
             url: "{{ route('admin.ajaxDropZone') }}",
 			params: {"_token": "{{ csrf_token() }}"},
