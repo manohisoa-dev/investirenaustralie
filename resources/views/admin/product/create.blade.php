@@ -332,7 +332,7 @@
 									<label for="title">@lang('app.form.product_status')</label>
 									<select class="form-control" name="status" id="status">
 										<option value="published">Publier</option>
-										<option value="En attente">En attente</option>
+										<option value="waiting">En attente</option>
 									</select>
 								</div>
 							</div>

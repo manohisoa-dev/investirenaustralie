@@ -23,4 +23,7 @@ return [
     format PDF à envoyer à l&lsquo;AFA pour la nécessaire validation de son mandat de recherche.",
     "programme.menu"  => "Programmes",
     "programme.title"  => "Mes programmes",
+    "product.menu"  => "Produits",
+    "product.title"  => "Mes produits",
+    "new.product.title"  => "Nouveau produit",
 ];

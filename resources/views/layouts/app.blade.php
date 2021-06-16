@@ -39,6 +39,8 @@
 <link href="{{ asset('administrator/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
 <!-- Sweet Alert -->
 <link href="{{ asset('administrator/css/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet">
+<!-- step -->
+<link href="{{ asset('administrator/css/plugins/steps/jquery.steps.css') }}" rel="stylesheet">
 
 <style>
     .feedback {

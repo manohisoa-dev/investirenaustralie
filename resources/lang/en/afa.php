@@ -21,4 +21,7 @@ return [
     in English, initial the pages, date and sign it, make a scanned copy at PDF format to be sent to the AFA for the necessary validation of its research mandate.",
     "programme.menu"  => "Programmes",
     "programme.title"  => "My programs",
+    "product.menu"  => "Products",
+    "product.title"  => "My products",
+    "new.product.title"  => "New product",
 ];
