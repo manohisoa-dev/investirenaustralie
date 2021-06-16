@@ -31,6 +31,21 @@ class Localisation extends Model
         'longitude',
         'latitude', 
         'altitude',
+        'building_name',
+        'route_number',
+        'num_rooms',
+        'num_floor',
+        'neighborhood',
+        'adrpost_postal_box',
+        'adrpost_locality',
+        'adrpost_postalCode',
+        'adrpost_area_level_1',
+        'adrpost_country',
+        'bank_postal_box',
+        'bank_locality',
+        'bank_postalCode',
+        'bank_area_level_1',
+        'bank_country',
     ];
     
     

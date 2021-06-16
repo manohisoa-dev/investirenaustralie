@@ -155,7 +155,7 @@ class RegisterController extends Controller
     public function index(Request $request, $role)
     {
         $roles = trans('app.'.$role);
-        $action = route('register',['role'=>$role]);
+        $action = route('register.store',['role'=>$role]);
         $page = Page::where('path', '/register/'.$role)
             ->locale()
             ->first();
@@ -210,8 +210,6 @@ class RegisterController extends Controller
      */
     public function register(Request $request, $role)
     {
-        if($role=='member') return $this->storeByRole($request, $role);
-        
         // Switch to get Condition and Term count
         $conditionCount = 0;
         switch($role){
@@ -225,9 +223,9 @@ class RegisterController extends Controller
                 $conditionCount = 2;
             break;
         }
-        
-        // Shown condition form
-        if($request->session()->get("step") == "condition"){
+
+        // Shown register form
+        if($request->session()->get("step") == "condition" || $request->session()->get("step") == "register"){
             // Validate term check
             $count = 0;
             if(($conditions = $request->condition) && is_array($conditions)){
@@ -243,11 +241,11 @@ class RegisterController extends Controller
             $request->session()->put("step", "register");
             $action = route('register',['role'=>$role]);
             $lapls = Localisation::select('localizations.*')
-                ->join('users','users.location_id','=','localizations.id')
-                ->where('users.role','=','4')
-                ->groupBy('localizations.locality')
-                ->get();
-
+            ->join('users','users.location_id','=','localizations.id')
+            ->where('users.role','=','4')
+            ->groupBy('localizations.locality')
+            ->get();
+        
 
             return view('login.'.$role)
                     ->with('action', $action)
@@ -258,14 +256,30 @@ class RegisterController extends Controller
             
         }
         
-        // Shown Register form
+        
+        // Open First Page of registration
+        return redirect()->route('register',['role'=>$role]);
+        
+    }
+
+        /**
+     * Store user information into database
+     *
+     * @param  Illuminate\Http\Request  $request
+     * @param  String $role
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request, $role)
+    {
+        if($role=='member') return $this->storeByRole($request, $role);
+
+        // save registration
         if($request->session()->get("step") == "register"){
             return $this->storeByRole($request, $role);
         }
         
         // Open First Page of registration
         return redirect()->route('register',['role'=>$role]);
-        
     }
 
     /*
@@ -358,27 +372,50 @@ class RegisterController extends Controller
             case 'apl':
                 $rules = [
                     'orga_name'         => 'required|max:100',
-                    'orga_presentation' => 'required|max:100',
-                    'orga_email'        => 'required|email|max:100',
-                    'orga_phone'        => 'required|max:100',
-                    'orga_website'      => 'required|url|max:100',
+                    'orga_registration_number'         => 'required|max:100',
+                    'orga_type'         => 'required',
+                    'orga_license_number'         => 'required|max:100',
+                    'orga_operation_range' => 'required',
+                    'orga_presentation' => 'nullable|max:1000',
                     
-                    'orga_operation_range' => 'required|max:100',
-
-                    'country'      => 'required|max:100',
-                    'area_level_1' => 'nullable|max:100',
-                    'area_level_2' => 'nullable|max:100',
+                    'route'        => 'required|max:100',
+                    'route_number'        => 'required',
                     'locality'     => 'required|max:100',
-                    'route'        => 'nullable|max:100',
-                    'postalCode'   => 'nullable|max:100',
-
+                    'postalCode'   => 'required|max:100',
+                    'area_level_1' => 'nullable|max:100',
+                    'country'      => 'required|max:100',
+                    
                     'contact_name'  => 'required|max:100',
-                    'contact_email' => 'required|email|max:100',
                     'contact_phone' => 'required|max:100',
+                    'contact_email' => 'required|email|max:100',
 
-                    'bank_iban' => 'max:100',
-                    'bank_bic' => 'max:100',
+                    'bank_name' => 'required|max:100',
+                    'bank_agency' => 'required|max:100',
+                    'bank_postal_box' => 'required|max:100',
+                    'bank_locality' => 'required|max:100',
+                    'bank_postalCode' => 'required|max:100',
+                    'bank_country' => 'required|max:100',
+                    'bank_iban' => 'required|alpha_num|min:27|max:27',
+                    'bank_bic' => 'required|alpha|min:8|max:8',
                 ];
+
+                if($request->orga_type == 'society'){
+                    $rules += ['orga_form' => 'required',];
+                }
+
+                if($request->orga_form == 'other'){
+                    $rules += ['define_orga_form' => 'required',];
+                }
+
+                if($request->postal_address_below){
+                   $rules += [
+                    'adrpost_locality'     => 'required|max:100',
+                    'adrpost_postalCode'   => 'required|max:100',
+                    'adrpost_area_level_1' => 'nullable|max:100',
+                    'adrpost_country'      => 'required|max:100',
+                   ];
+                }
+
                 break;
             case 'seller':
                 $rules = [
@@ -418,10 +455,9 @@ class RegisterController extends Controller
 
         $validator = Validator::make($datas, $rules);
         if ($validator->fails()) {
-            return back()->withErrors($validator)
-                        ->withInput();
+            return back()->withErrors($validator)->withInput();
         }
-        
+
         // Create Localization
         $datas['location_id'] = 0;
         if($location = Localisation::create($datas)){
@@ -453,7 +489,11 @@ class RegisterController extends Controller
             $user = User::create($datas);
 
             // Create user info
-            $userInfo = Userinfo::create(['user_id' => $user->id]) ;
+            $datas['user_id'] = $user->id;
+            if($userInfo = Userinfo::create($datas)){
+                unset($datas['user_id']);
+            }
+
             $request->merge([
                 'userinfos_id' => $userInfo->id,
             ]);
