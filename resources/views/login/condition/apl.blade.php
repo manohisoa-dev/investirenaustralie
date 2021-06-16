@@ -33,6 +33,7 @@
             <div class="container text-center"> 
                 <div class="jumbotron"> 
                         <h2>@lang('app.apl')</h2> 
+                        <p>@lang('apl.local_partner_agencies_acceptance_page')</p>
                 </div>                     
             </div>                 
         </div>             
@@ -42,72 +43,44 @@
             <div class="col-md-12">
                 <div class="col-md-12">
                     <h4 class="title wow slideInLeft" style="visibility: hidden; animation-name: none;">
-                        Page d'acceptation des Agences Partenaires Locales</h4>
+                        @lang('apl.local_partner_agencies_acceptance_page')</h4>
                 </div>
                 <!-- Faq start from here -->
                 <section class="at-faq-sec">
                     <div class="container">
                         <div class="row">
                             <div class="col-md-12">
-                                <form class="form-horizontal" role="form" id="particulierForm" action="" method="post" enctype="multipart/form-data">
+                                <form class="form-horizontal" role="form" id="particulierForm" action="{{ route('register.show', ['role'=>'apl']) }}" method="get" enctype="multipart/form-data">
                                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                                     <div class="panel-group">
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
                                                 <h4 class="panel-title">
                                                     <i class="more-less glyphicon glyphicon-plus"></i>
-                                                    POINT 1 – Mission d'Information, d'Orientation et de Promotion (MIOP)
-
+                                                    @lang('apl.condition.point_1')
                                                 </h4>
                                             </div>
                                             <div class="panel-body">
-                                                L'Agence Partenaire Locale accepte la Mission d'Information, d'Orientation et de Promotion qui consiste d'une part à informer et orienter les Membres du site IEA qui sont engagés dans une relation exclusive avec elles, et d'autre part d'assurer le placement des produits affichés par des initiatives promotionnelles ciblées propres. <br>
-                                                <label data-pg-collapsed>
-                                                    <input class="control-label jm" type="checkbox" value="1" required name="condition[]">   &nbsp;     J'accepte *
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <h4 class="panel-title">
-                                                        <i class="more-less glyphicon glyphicon-plus"></i>
-                                                        POINT 2 - Sécurisation du marché des APL
-                                                </h4>
-                                            </div>
-                                            <div class="panel-body">
-                                                L'Agence Partenaire Locale accepte la sécurisation du lien que des Membres ont établi en choisissant d'établir une relation d'exclusivité avec elle. Ceci sera détaillé dans le contrat qui lui sera proposé dans la suite de la procédure. <br>
-                                                <label data-pg-collapsed>
-                                                    <input class="control-label jm" type="checkbox" value="1" required name="condition[]">   &nbsp;     J'accepte *
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <h4 class="panel-title">
-                                                        <i class="more-less glyphicon glyphicon-plus"></i>
-                                                        POINT 3 - Sécurisation de la relation d'affaires entre IEA et l'APL
-                                                </h4>
-                                            </div>
-                                            <div class="panel-body">
-                                                L'Agence Partenaire Locale accepte la sécurisation de la relation d'affaires entre IEA et elle-même qui comporte des clauses de non concurrence et de loyauté nécessaires et essentielles dans un marché virtuel. Ceci sera détaillé dans le contrat qui lui sera proposé dans la suite de la procédure. <br>
-                                                <label data-pg-collapsed>
-                                                    <input class="control-label jm" type="checkbox" value="1" required name="condition[]">   &nbsp;     J'accepte *
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <h4 class="panel-title">
-                                                        <i class="more-less glyphicon glyphicon-plus"></i>
-                                                        POINT 4 – Rémunération de l'APL
-                                                </h4>
-                                            </div>
-                                            <div class="panel-body">
-                                                L'Agence Partenaire Locale accepte les montants et la procédure de la rémunération établis par IEA. En cas d'achat d'un bien par un des Membres qui lui est lié par une relation d'exclusivité, le taux de rémunération normal de l'APL est de 0,5% du prix de vente du bien exprimé en dollars australiens. Si l'APL a été à l'origine d'un volume d'affaires égal ou supérieur à 2 500 000 dollars australiens au cours d'un exercice, le taux de sa rémunération est porté à 1% du prix de vente du bien exprimé en dollars australiens. Le versement de la rémunération s'effectue par une procédure automatisée à 30 jours fin de mois après la perception par IEA de sa propre rémunération.
+                                                @lang('apl.condition.point_1.content')
                                                 <br>
                                                 <label data-pg-collapsed>
-                                                    <input class="control-label jm" type="checkbox" value="1" required name="condition[]">   &nbsp;     J'accepte *
+                                                    <input class="control-label jm" type="checkbox" value="1" required name="condition[]">   &nbsp;     @lang('app.txt.agree') *
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                        <i class="more-less glyphicon glyphicon-plus"></i>
+                                                        @lang('apl.condition.point_2')
+                                                </h4>
+                                            </div>
+                                            <div class="panel-body">
+                                                @lang('apl.condition.point_2.content')
+                                                <br>
+                                                <label data-pg-collapsed>
+                                                    <input class="control-label jm" type="checkbox" value="1" required name="condition[]">   &nbsp;     @lang('app.txt.agree') *
                                                 </label>
                                             </div>
                                         </div>
@@ -115,21 +88,51 @@
                                             <div class="panel-heading">
                                                 <h4 class="panel-title">
                                                         <i class="more-less glyphicon glyphicon-plus"></i>
-                                                        POINT 5
+                                                        @lang('apl.condition.point_3')
                                                 </h4>
                                             </div>
                                             <div class="panel-body">
-                                                L'Agence Partenaire Locale reconnaît avoir pris connaissance des Termes et Conditions d'Utilisation du site "Investir en Australie" et déclare les accepter sans aucune réserve.
+                                                @lang('apl.condition.point_3.content')
                                                 <br>
                                                 <label data-pg-collapsed>
-                                                    <input class="control-label jm" type="checkbox" value="1" required name="condition[]">   &nbsp;     J'accepte *
+                                                    <input class="control-label jm" type="checkbox" value="1" required name="condition[]">   &nbsp;     @lang('app.txt.agree') *
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                        <i class="more-less glyphicon glyphicon-plus"></i>
+                                                        @lang('apl.condition.point_4')
+                                                </h4>
+                                            </div>
+                                            <div class="panel-body">
+                                                @lang('apl.condition.point_4.content')
+                                                <br>
+                                                <label data-pg-collapsed>
+                                                    <input class="control-label jm" type="checkbox" value="1" required name="condition[]">   &nbsp;     @lang('app.txt.agree') *
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                        <i class="more-less glyphicon glyphicon-plus"></i>
+                                                        @lang('apl.condition.point_5')
+                                                </h4>
+                                            </div>
+                                            <div class="panel-body">
+                                                @lang('apl.condition.point_5.content')
+                                                <br>
+                                                <label data-pg-collapsed>
+                                                    <input class="control-label jm" type="checkbox" value="1" required name="condition[]">   &nbsp;     @lang('app.txt.agree') *
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
 
                                     <p class="help-block">
-                                      <em>(*) Champ obligatoire</em>
+                                      <em>(*) @lang('app.txt.champobligatoire')</em>
                                     </p>
                                      <a class="pull-left m-btn m-btn-theme btn-lg text-center" href="{{route('home')}}">@lang('app.btn.abandonner')</a>
                                      <button type="submit" class="pull-right m-btn m-btn-theme2nd btn-lg text-center btnNextProcedure">@lang('app.btn.continuer')</button>

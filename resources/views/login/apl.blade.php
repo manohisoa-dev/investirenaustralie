@@ -27,40 +27,102 @@
                             <div id="breadcrumbs" class="group font-size-14">
                                 <div id="entry" class="group">
                                     <div class="hasfloat aligncenter">
-                                        <b>@lang('app.form.register.apl.desc')</b>
+                                        {{-- <b>@lang('app.form.register.apl.desc')</b> --}}
                                     </div>
                                     <div class="hasfloat">
-                                    <form class="form-horizontal" role="form" method="post" action="{{route('register', ['role'=>'apl'])}}" enctype="multipart/form-data">
+                                    <form class="form-horizontal" role="form" method="post" action="{{route('register.store', ['role'=>'apl'])}}" enctype="multipart/form-data">
                                         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                                         <input type="hidden" name="type" value="organization">
-                                        <fieldset>
-                                            <legend>Login Information</legend>
+
+                                        {{-- Login info --}}
+                                        <fieldset class="m-25px-t">
+                                            <legend>@lang('app.txt.logininfo')</legend>
                                             <div class="form-group">
-                                                <label class="col-sm-3 control-label" for="name">Login *</label>
+                                                <label class="col-sm-3 control-label" for="name">@lang('app.txt.login') *</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="name" name="name" placeholder="Votre nom d'utilisateur" required>
+                                                    <input type="text" class="form-control" id="name" name="name" placeholder="@lang('app.txt.your_login')" value="{{ old('name')?old('name'):'' }}" required>
+                                                    <span class="text-danger">{{ $errors->first('name') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="col-sm-3 control-label" for="email">Adresse Email *</label>
+                                                <label class="col-sm-3 control-label" for="email">@lang('app.txt.email') *</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="email" name="email" placeholder="you@exemple.com" required>
+                                                    <input type="text" class="form-control" id="email" name="email" placeholder="Ex: iea@email.com" value="{{ old('email')?old('email'):'' }}" required>
+                                                    <span class="text-danger">{{ $errors->first('email') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="language" class="col-sm-3 control-label" for="language">@lang('app.txt.langage') *</label>
                                                 <div class="col-sm-9">
                                                     <select class="form-control" id="language" name="language">
-                                                        <option value="fr">Français</option>
-                                                        <option value="en">Anglais</option>
+                                                        <option value="fr" {{ old('language')=='fr'?'selected':'' }}>@lang('app.txt.fr')</option>
+                                                        <option value="en" {{ old('language')=='en'?'selected':'' }}>@lang('app.txt.en')</option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </fieldset>
-                                        <fieldset>
-                                            <legend>Business Details</legend>
+
+                                        {{-- Agency details --}}
+                                        <fieldset class="m-25px-t">
+                                            <legend>@lang('app.txt.agencydetail')</legend>
                                             <div class="form-group">
-                                                <label class="col-md-3 control-label" for="image"> @lang('app.txt.logo') *</label>
+                                                <label for="orga_name" class="col-sm-3 control-label">@lang('app.txt.agencyname') *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="orga_name" name="orga_name" placeholder="@lang('app.txt.agencyname')" value="{{ old('orga_name')?old('orga_name'):'' }}" required>
+                                                    <span class="text-danger">{{ $errors->first('orga_name') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="orga_registration_number" class="col-sm-12 control-label">@lang('app.txt.agencyregistrationnumber') *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="orga_registration_number" name="orga_registration_number" placeholder="RCS XXX XXX XXX XXX" value="{{ old('orga_registration_number')?old('orga_registration_number'):'' }}" required>
+                                                    <span class="text-danger">{{ $errors->first('orga_registration_number') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="orga_type" class="col-sm-12 control-label">@lang('app.txt.type_of_company') *</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" id="orga_type" name="orga_type" required>
+                                                        <option value="" selected disabled>@lang('app.form.choix_txt')</option>
+                                                        <option value="individual" {{ old('orga_type')=='individual'?'selected':'' }}>@lang('app.txt.individual')</option>
+                                                        <option value="society" {{ old('orga_type')=='society'?'selected':'' }}>@lang('app.txt.society')</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" id="orgaForm" hidden="hidden">
+                                                <label for="orga_form" class="col-sm-12 control-label">@lang('app.txt.company_form') *</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" id="orga_form" name="orga_form">
+                                                        <option value="" selected disabled>@lang('app.form.choix_txt')</option>
+                                                        <option value="sarl" {{ old('orga_form')=='sarl'?'selected':'' }}>SARL</option>
+                                                        <option value="sa" {{ old('orga_form')=='sa'?'selected':'' }}>SA</option>
+                                                        <option value="other" {{ old('orga_form')=='other'?'selected':'' }}>@lang('app.txt.other')</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" id="defineOrgaForm" hidden="hidden">
+                                                <label for="define_orga_form" class="col-sm-12 control-label">@lang('app.txt.define') *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="define_orga_form" name="define_orga_form" placeholder="@lang('app.txt.define')" value="{{ old('define_orga_form')?old('define_orga_form'):'' }}">
+                                                    <span class="text-danger">{{ $errors->first('define_orga_form') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="orga_license_number" class="col-sm-12 control-label">@lang('app.txt.professional_license_number_of_apl') *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="orga_license_number" name="orga_license_number" placeholder="@lang('app.txt.professional_license_number_of_apl')" value="{{ old('orga_license_number')?old('orga_license_number'):'' }}" required>
+                                                    <span class="text-danger">{{ $errors->first('orga_license_number') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="orga_presentation" class="col-sm-12 control-label">@lang('app.txt.agencypresentation')</label>
+                                                <div class="col-sm-9">
+                                                    <textarea class="form-control" maxlength="1000" id="orga_presentation" name="orga_presentation" placeholder="@lang('app.txt.agencypresentation')" rows="5">{{ old('orga_presentation')?old('orga_presentation'):'' }}</textarea>
+                                                    <span class="text-danger">{{ $errors->first('orga_presentation') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label" for="image"> @lang('app.txt.agencylogo')</label>
                                                 <div class="input-group mb-3 col-md-9">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text">@lang('app.txt.upload')</span>
@@ -73,151 +135,279 @@
                                                 <span class="text-danger">{{ $errors->first('image') }}</span>
                                             </div>
                                             <div class="form-group">
-                                                <label for="orga_name" class="col-sm-3 control-label">Business Name *</label>
+                                                <label for="orga_operation_range" class="col-sm-12 control-label">@lang('app.txt.scope_of_intervention_around_establishment') *</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="orga_name" name="orga_name" placeholder="Business Name" required>
-                                                    <span class="text-danger">{{ $errors->first('orga_name') }}</span>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="orga_email" class="col-sm-3 control-label">Business Email *</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="orga_email" name="orga_email" placeholder="Business Email" required>
-                                                    <span class="text-danger">{{ $errors->first('orga_email') }}</span>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="orga_phone" class="col-sm-3 control-label">Business Phone *</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="orga_phone" name="orga_phone" placeholder="Business Phone" required>
-                                                    <span class="text-danger">{{ $errors->first('orga_phone') }}</span>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="orga_website" class="col-sm-3 control-label">Website URL *</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="orga_website" name="orga_website" placeholder="Business Website" required>
-                                                    <span class="text-danger">{{ $errors->first('orga_website') }}</span>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="orga_presentation" class="col-sm-3 control-label">Business Presentation *</label>
-                                                <div class="col-sm-9">
-                                                    <textarea class="form-control" id="orga_presentation" name="orga_presentation" placeholder="Business Presentation" rows="5"></textarea>
-                                                    <span class="text-danger">{{ $errors->first('orga_presentation') }}</span>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="orga_operation_range" class="col-sm-3 control-label">Range of operation of your present office *</label>
-                                                <div class="col-sm-9">
-                                                    <select class="form-control" name="orga_operation_range" id="orga_operation_range">
-                                                        <option value="10"> 10km</option>
-                                                        <option value="25"> 25km</option>
-                                                        <option value="50"> 50km</option>
-                                                        <option value="100"> 100km</option>
-                                                        <option value="250"> 250km</option>
+                                                    <select class="form-control" name="orga_operation_range" id="orga_operation_range" required>
+                                                        <option value="10" {{ old('orga_operation_range')=='10'?'selected':'' }}> 10km</option>
+                                                        <option value="25" {{ old('orga_operation_range')=='25'?'selected':'' }}> 25km</option>
+                                                        <option value="50" {{ old('orga_operation_range')=='50'?'selected':'' }}> 50km</option>
+                                                        <option value="100" {{ old('orga_operation_range')=='100'?'selected':'' }}> 100km</option>
+                                                        <option value="250" {{ old('orga_operation_range')=='250'?'selected':'' }}> 250km</option>
+                                                        <option value="+250" {{ old('orga_operation_range')=='+250'?'selected':'' }}>@lang('app.txt.more_than',['number'=>'250 Km'])</option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </fieldset>
-                                        <fieldset>
-                                            <legend>Locality Information</legend>
+
+                                        {{-- Physical address --}}
+                                        <fieldset class="m-25px-t">
+                                            <legend>@lang('app.txt.physical_address')</legend>
                                             <div class="form-group">
-                                                <label for="country" class="col-sm-3 control-label">Pays *</label>
+                                                <label for="building_name" class="col-sm-3 control-label">@lang('app.txt.name_building')</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="building_name" name="building_name" placeholder="@lang('app.txt.name_building')" value="{{ old('building_name')?old('building_name'):'' }}">
+                                                    <span class="text-danger">{{ $errors->first('building_name') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="route" class="col-sm-3 control-label">@lang('app.txt.name_of_the_road') *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="route" name="route" placeholder="@lang('app.txt.name_of_the_road')" value="{{ old('route')?old('route'):'' }}" required>
+                                                    <span class="text-danger">{{ $errors->first('route') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="route_number" class="col-sm-3 control-label">@lang('app.txt.number_of_the_road') *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="route_number" name="route_number" placeholder="@lang('app.txt.number_of_the_road')" value="{{ old('route_number')?old('route_number'):'' }}" required>
+                                                    <span class="text-danger">{{ $errors->first('route_number') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="num_rooms" class="col-sm-12 control-label">@lang('app.txt.number_of_rooms')</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="num_rooms" name="num_rooms" placeholder="@lang('app.txt.number_of_rooms')" value="{{ old('num_rooms')?old('num_rooms'):'' }}">
+                                                    <span class="text-danger">{{ $errors->first('num_rooms') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="num_floor" class="col-sm-3 control-label">@lang('app.txt.floor')</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="num_floor" name="num_floor" placeholder="@lang('app.txt.floor')" value="{{ old('num_floor')?old('num_floor'):'' }}">
+                                                    <span class="text-danger">{{ $errors->first('num_floor') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="neighborhood" class="col-sm-12 control-label">@lang('app.txt.neighborhood_district_borough')</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="neighborhood" name="neighborhood" placeholder="@lang('app.txt.neighborhood_district_borough')" value="{{ old('neighborhood')?old('neighborhood'):'' }}">
+                                                    <span class="text-danger">{{ $errors->first('neighborhood') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="locality" class="col-sm-3 control-label">@lang('app.txt.city') *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="locality" name="locality" placeholder="@lang('app.txt.city')" value="{{ old('locality')?old('locality'):'' }}" required>
+                                                    <span class="text-danger">{{ $errors->first('locality') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="postalCode" class="col-sm-3 control-label">@lang('app.txt.codepostal') *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="postalCode" name="postalCode" placeholder="@lang('app.txt.codepostal')" value="{{ old('postalCode')?old('postalCode'):'' }}" required>
+                                                    <span class="text-danger">{{ $errors->first('postalCode') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label" for="state">@lang('app.txt.etat') (@lang('app.txt.etat.libelle'))</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" name="area_level_1" id="area_level_1" value="{{ old('area_level_1')?old('area_level_1'):'' }}">
+                                                    <span class="text-danger">{{ $errors->first('area_level_1') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="country" class="col-sm-3 control-label">@lang('app.txt.country') *</label>
                                                 <div class="col-md-9">
-                                                    <select class="form-control" name="country">
-                                                        <option value="0">@lang('app.select_country')</option>
+                                                    <select class="form-control" name="country" required>
+                                                        <option value="" selected disabled>@lang('app.select_country')</option>
                                                         @foreach($countries as $country)
                                                             @if($country->prefixPhone)
-                                                                <option value="{{$country->id}}"> {{$country->content}} ({{$country->code}})</option>
+                                                                <option value="{{$country->id}}" {{ old('country')==$country->id?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
                                                             @endif
                                                         @endforeach
                                                     </select>
                                                     <span class="text-danger">{{ $errors->first('country') }}</span>
                                                 </div>
                                             </div>
+                                        </fieldset>
+
+                                        {{-- Postal Address --}}
+                                        <fieldset class="m-25px-t">
+                                            <legend>@lang('app.txt.postal_address')</legend>
                                             <div class="form-group">
-                                                <label for="area_level_1" class="col-sm-3 control-label">State *</label>
-                                                <div class="col-sm-9">
-                                                    <select class="form-control" name="area_level_1">
-                                                        <option value="0">@lang('app.select_state')</option>
-                                                        @foreach($states as $state)
-                                                        <option value="{{$state->id}}"> {{$state->content}}</option>
-                                                        @endforeach
-                                                    </select>
+                                                <div class="row col-sm-offset-3 col-sm-9">
+                                                    <div class="col-sm-6">
+                                                        <div class="checkbox">
+                                                            <div class="custom-control custom-switch">
+                                                                <input type="checkbox" name="postal_address_above" class="custom-control-input" id="shop-notification-1" checked="checked">
+                                                                <label class="custom-control-label" for="shop-notification-1">@lang('app.txt.as_above')</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="checkbox">
+                                                            <div class="custom-control custom-switch">
+                                                                <input type="checkbox" name="postal_address_below" class="custom-control-input" id="shop-notification-2">
+                                                                <label class="custom-control-label" for="shop-notification-2">@lang('app.txt.detail_below')</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label for="area_level_2" class="col-sm-3 control-label">Suburb *</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="area_level_2" name="area_level_2" placeholder="Suburb" required>
-                                                    <span class="text-danger">{{ $errors->first('area_level_2') }}</span>
+                                            <div id="postalAddress" hidden="hidden">
+                                                <div class="form-group">
+                                                    <label for="adrpost_postal_box" class="col-sm-3 control-label">@lang('app.txt.postal_box')</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="adrpost_postal_box" name="adrpost_postal_box" placeholder="@lang('app.txt.postal_box')" value="{{ old('adrpost_postal_box')?old('adrpost_postal_box'):'' }}">
+                                                        <span class="text-danger">{{ $errors->first('adrpost_postal_box') }}</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="locality" class="col-sm-3 control-label">City *</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="locality" name="locality" placeholder="City" required>
-                                                    <span class="text-danger">{{ $errors->first('locality') }}</span>
+                                                <div class="form-group">
+                                                    <label for="adrpost_locality" class="col-sm-3 control-label">@lang('app.txt.city') *</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="adrpost_locality" name="adrpost_locality" value="{{ old('adrpost_locality')?old('adrpost_locality'):'' }}" placeholder="@lang('app.txt.city')">
+                                                        <span class="text-danger">{{ $errors->first('adrpost_locality') }}</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="route" class="col-sm-3 control-label">Street Address *</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="route" name="route" placeholder="Street Address" required>
-                                                    <span class="text-danger">{{ $errors->first('route') }}</span>
+                                                <div class="form-group">
+                                                    <label for="adrpost_postalCode" class="col-sm-3 control-label">@lang('app.txt.codepostal') *</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="adrpost_postalCode" name="adrpost_postalCode" value="{{ old('adrpost_postalCode')?old('adrpost_postalCode'):'' }}" placeholder="@lang('app.txt.codepostal')">
+                                                        <span class="text-danger">{{ $errors->first('adrpost_postalCode') }}</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="postalCode" class="col-sm-3 control-label">Post Code *</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="postalCode" name="postalCode" placeholder="Post Code" required>
-                                                    <span class="text-danger">{{ $errors->first('postalCode') }}</span>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label" for="adrpost_area_level_1">@lang('app.txt.etat') (@lang('app.txt.etat.libelle'))</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" name="adrpost_area_level_1" id="adrpost_area_level_1" value="{{ old('adrpost_area_laravel_1')?old('adrpost_area_laravel_1'):'' }}">
+                                                        <span class="text-danger">{{ $errors->first('adrpost_area_level_1') }}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="adrpost_country" class="col-sm-3 control-label">@lang('app.txt.country') *</label>
+                                                    <div class="col-md-9">
+                                                        <select class="form-control" name="adrpost_country"> 
+                                                            <option value="" selected disabled>@lang('app.select_country')</option>
+                                                            @foreach($countries as $country)
+                                                                @if($country->prefixPhone)
+                                                                    <option value="{{$country->id}}" {{ old('adrpost_country')==$country->id?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
+                                                                @endif
+                                                            @endforeach
+                                                        </select>
+                                                        <span class="text-danger">{{ $errors->first('adrpost_country') }}</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </fieldset>
-                                        <fieldset>
-                                            <legend>Contact Details</legend>
+
+                                        {{-- Contact Information --}}
+                                        <fieldset class="m-25px-t">
+                                            <legend>@lang('app.txt.contact_information')</legend>
                                             <div class="form-group">
-                                                <label for="contact_name" class="col-sm-3 control-label">Contact Name *</label>
+                                                <label for="contact_name" class="col-sm-3 control-label">@lang('app.txt.contactname') *</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="contact_name" name="contact_name" placeholder="Contact Name" required>
+                                                    <input type="text" class="form-control" id="contact_name" name="contact_name" placeholder="@lang('app.txt.contactname')" value="{{ old('contact_name')?old('contact_name'):'' }}" required>
                                                     <span class="text-danger">{{ $errors->first('contact_name') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="contact_email" class="col-sm-3 control-label">Contact Email *</label>
+                                                <label for="contact_phone" class="col-sm-3 control-label">@lang('app.txt.contactmobile') *</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="contact_email" name="contact_email" placeholder="Contact Email" required>
-                                                    <span class="text-danger">{{ $errors->first('contact_email') }}</span>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="contact_phone" class="col-sm-3 control-label">Contact Phone *</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="contact_phone" name="contact_phone" placeholder="Contact Phone" required>
+                                                    <input type="text" class="form-control" id="contact_phone" name="contact_phone" placeholder="@lang('app.txt.contactmobile')" value="{{ old('contact_phone')?old('contact_phone'):'' }}" required>
                                                     <span class="text-danger">{{ $errors->first('contact_phone') }}</span>
                                                 </div>
                                             </div>
-                                        </fieldset>
-                                        <fieldset>
-                                            <legend>Bank Information</legend>
                                             <div class="form-group">
-                                                <label for="bank_iban" class="col-sm-3 control-label">Compte bancaire IBAN</label>
+                                                <label for="contact_email" class="col-sm-3 control-label">@lang('app.txt.contactemailaddress') *</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="bank_iban" name="bank_iban" placeholder="Compte bancaire IBAN">
+                                                    <input type="text" class="form-control" id="contact_email" name="contact_email" placeholder="@lang('app.txt.contactemailaddress')" value="{{ old('contact_email')?old('contact_email'):'' }}" required>
+                                                    <span class="text-danger">{{ $errors->first('contact_email') }}</span>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        
+                                        {{-- Bank Account --}}
+                                        <fieldset class="m-25px-t">
+                                            <legend>@lang('app.txt.bank_account')</legend>
+                                            <div class="form-group">
+                                                <label for="bank_name" class="col-sm-3 control-label">@lang('app.txt.bank') *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="bank_name" name="bank_name" placeholder="@lang('app.txt.bank')" value="{{ old('bank_name')?old('bank_name'):'' }}" required>
+                                                    <span class="text-danger">{{ $errors->first('bank_name') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="bank_bic" class="col-sm-3 control-label">Code BIC</label>
+                                                <label for="bank_agency" class="col-sm-3 control-label">@lang('app.txt.agency') *</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="bank_bic" name="bank_bic" placeholder="Code BIC">
+                                                    <input type="text" class="form-control" id="bank_agency" name="bank_agency" placeholder="@lang('app.txt.agency')" value="{{ old('bank_agency')?old('bank_agency'):'' }}" required>
+                                                    <span class="text-danger">{{ $errors->first('bank_agency') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">@lang('app.txt.address') :</label>
+                                                <fieldset>
+                                                    <div class="form-group">
+                                                        <label for="bank_postal_box" class="col-sm-3 control-label">@lang('app.txt.postal_box') *</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" class="form-control" id="bank_postal_box" name="bank_postal_box" placeholder="@lang('app.txt.postal_box')" value="{{ old('bank_postal_box')?old('bank_postal_box'):'' }}" required>
+                                                            <span class="text-danger">{{ $errors->first('bank_postal_box') }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="bank_locality" class="col-sm-3 control-label">@lang('app.txt.city') *</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" class="form-control" id="bank_locality" name="bank_locality" placeholder="@lang('app.txt.city')" value="{{ old('bank_locality')?old('bank_locality'):'' }}" required>
+                                                            <span class="text-danger">{{ $errors->first('bank_locality') }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="bank_postalCode" class="col-sm-3 control-label">@lang('app.txt.codepostal') *</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" class="form-control" id="bank_postalCode" name="bank_postalCode" placeholder="@lang('app.txt.codepostal')" value="{{ old('bank_postalCode')?old('bank_postalCode'):'' }}" required>
+                                                            <span class="text-danger">{{ $errors->first('bank_postalCode') }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="bank_area_level_1">@lang('app.txt.etat') (@lang('app.txt.etat.libelle'))</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" class="form-control" name="bank_area_level_1" id="bank_area_level_1" value="{{ old('bank_area_level_1')?old('bank_area_level_1'):'' }}">
+                                                            <span class="text-danger">{{ $errors->first('bank_area_level_1') }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="bank_country" class="col-sm-3 control-label">@lang('app.txt.country') *</label>
+                                                        <div class="col-md-9">
+                                                            <select class="form-control" name="bank_country" required>
+                                                                <option value="" selected disabled>@lang('app.select_country')</option>
+                                                                @foreach($countries as $country)
+                                                                    @if($country->prefixPhone)
+                                                                        <option value="{{$country->id}}" {{ old('bank_country')==$country->id?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
+                                                                    @endif
+                                                                @endforeach
+                                                            </select>
+                                                            <span class="text-danger">{{ $errors->first('bank_country') }}</span>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="bank_iban" class="col-sm-3 control-label">@lang('app.txt.iban_bank_account') *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="bank_iban" name="bank_iban" maxlength="27" placeholder="XXXX XXXX XXXX XXXX XXXX XXXX XXX" value="{{ old('bank_iban')?old('bank_iban'):'' }}" required>
+                                                    <span class="text-danger">{{ $errors->first('bank_iban') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="bank_bic" class="col-sm-3 control-label">@lang('app.txt.bic_code') *</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="bank_bic" name="bank_bic" maxlength="8" placeholder="XXXXXXXX" value="{{ old('bank_bic')?old('bank_bic'):'' }}" required>
+                                                    <span class="text-danger">{{ $errors->first('bank_bic') }}</span>
                                                 </div>
                                             </div>
                                         </fieldset>
                                         <div class="form-group">
                                             <div class="col-sm-offset-3 col-sm-9">
-                                                <em class="help-block">@lang('app.form.required')</em>
+                                                <em class="help-block">(*) @lang('app.txt.champobligatoire')</em>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -263,6 +453,59 @@
                 }, 1000);
                 return false;
             }
+        }
+    });
+</script>
+<script>
+    $('#orga_type').change(function(){
+        if($(this).val() === $("#orga_type option:eq(2)").val()){
+            $('#orgaForm').removeAttr('hidden');
+            $('#orga_form').attr('required','required');
+        }else{
+            $('#orgaForm').attr('hidden','hidden');
+            $('#orga_form').removeAttr('required');
+            $('#defineOrgaForm').attr('hidden','hidden');
+            $('#define_orga_form').removeAttr('required');
+            $('#define_orga_form').val('');
+            $('#orga_form option:eq(0)').prop('selected', true);
+        }
+    });
+
+    $('#orga_form').change(function(){
+        $('#define_orga_form').val('');
+        
+        if($(this).val() === $("#orga_form option:eq(3)").val()){
+            $('#defineOrgaForm').removeAttr('hidden');
+            $('#define_orga_form').attr('required','required');
+        }else{
+            $('#defineOrgaForm').attr('hidden','hidden');
+            $('#define_orga_form').removeAttr('required');
+        }
+    });
+
+    $('#shop-notification-1').change(function(){
+        if($('#shop-notification-1').is(":checked"))
+        {
+            $('#shop-notification-2').prop('checked',false);
+            $('#postalAddress').attr('hidden','hidden');
+
+            // unset required input
+            $('#adrpost_locality').removeAttr('required');
+            $('#adrpost_postalCode').removeAttr('required');
+            $('#adrpost_country').removeAttr('required');
+        }
+    });
+
+    $('#shop-notification-2').change(function(){
+        if($('#shop-notification-2').is(":checked"))
+        {
+            $('#shop-notification-1').prop('checked',false);
+            $('#postalAddress').removeAttr('hidden');
+            
+            // set required input
+            $('#adrpost_locality').attr('required','required');
+            $('#adrpost_postalCode').attr('required','required');
+            $('#adrpost_country').attr('required','required');
         }
     });
 </script>

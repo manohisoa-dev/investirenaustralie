@@ -34,7 +34,7 @@
                                         <b>@lang('app.form.register.seller.desc')</b>
                                     </div>
                                     <div class="hasfloat">
-                                    <form class="form-horizontal" role="form" method="post" action="{{route('register', ['role'=>'seller'])}}" enctype="multipart/form-data">
+                                    <form class="form-horizontal" role="form" method="post" action="{{route('register.store', ['role'=>'seller'])}}" enctype="multipart/form-data">
                                         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                                         <fieldset>
                                             <legend>Login Information</legend>

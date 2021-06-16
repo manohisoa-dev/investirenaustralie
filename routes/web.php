@@ -64,7 +64,9 @@ Route::post('contact','MailController@contact')->name('contact');
 // Register
 Route::middleware('guest')->group(function(){
     Route::get('register/{role}', 'Auth\RegisterController@index')->name('register');
-    Route::post('register/{role}', 'Auth\RegisterController@register');
+    // Route::post('register/{role}', 'Auth\RegisterController@register');
+    Route::get('register/{role}/show', 'Auth\RegisterController@register')->name('register.show');
+    Route::post('register/{role}/store', 'Auth\RegisterController@store')->name('register.store');
     Route::get('verify-user/{code}', 'Auth\RegisterController@activateUser')->name('activate.user');
     Route::get('resend-code/{user}', 'Auth\RegisterController@resendActivation')->name('resend_code');
 });

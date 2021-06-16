@@ -50,47 +50,47 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-md-12">
-                                <form action="" method="post">
-                                <div class="panel-group">
-                                    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title">
-                                                <i class="more-less glyphicon glyphicon-plus"></i>
-                                                STEP 1 – Terms and Conditions of Use
-                                            </h4>
-                                        </div>
-                                            <div class="panel-body">
-                                                The Seller acknowledges having read the Terms and Conditions of Use of the site
-                                                "Investir en Australie" and declares to accept them without any reservation
-                                                <br>
-                                                <label data-pg-collapsed>
-                                                    <input class="control-label" type="checkbox" name="condition[]" value="1" id="condition1" >    I agree   *
-                                                </label>
-                                            </div>
-                                    </div>
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title">
+                                <form action="{{ route('register.show', ['role'=>'seller']) }}" method="get">
+                                    <div class="panel-group">
+                                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
                                                     <i class="more-less glyphicon glyphicon-plus"></i>
-                                                    STEP 2 – Legal compliance of products
-                                            </h4>
-                                        </div>
-                                            <div class="panel-body">
-                                                The Seller makes the commitment, under its sole responsibility, to display on "Investir en Australie"
-                                                site only products that can be sold to non-resident foreigners in accordance with Australian law and the
-                                                rules applicable by the Foreign Investment Review Board (FIRB).<br>
-                                                <label data-pg-collapsed>
-                                                    <input class="control-label" type="checkbox" value="1" id="condition2" name="condition[]">   &nbsp;I agree   *
-                                                </label>
+                                                    STEP 1 – Terms and Conditions of Use
+                                                </h4>
                                             </div>
+                                                <div class="panel-body">
+                                                    The Seller acknowledges having read the Terms and Conditions of Use of the site
+                                                    "Investir en Australie" and declares to accept them without any reservation
+                                                    <br>
+                                                    <label data-pg-collapsed>
+                                                        <input class="control-label" type="checkbox" name="condition[]" value="1" id="condition1" >    I agree   *
+                                                    </label>
+                                                </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                        <i class="more-less glyphicon glyphicon-plus"></i>
+                                                        STEP 2 – Legal compliance of products
+                                                </h4>
+                                            </div>
+                                                <div class="panel-body">
+                                                    The Seller makes the commitment, under its sole responsibility, to display on "Investir en Australie"
+                                                    site only products that can be sold to non-resident foreigners in accordance with Australian law and the
+                                                    rules applicable by the Foreign Investment Review Board (FIRB).<br>
+                                                    <label data-pg-collapsed>
+                                                        <input class="control-label" type="checkbox" value="1" id="condition2" name="condition[]">   &nbsp;I agree   *
+                                                    </label>
+                                                </div>
+                                        </div>
                                     </div>
-                                </div>
-                                 <p class="help-block">
-                                        <em>(*) Required field</em>
-                                 </p>
-                                <a class="pull-left m-btn m-btn-theme btn-lg text-center" href="/">@lang('app.btn.cancel')</a>
-                                <button type="submit" class="m-btn m-btn-theme2nd btn-lg text-center pull-right">@lang('app.btn.continuer')</button>
+                                    <p class="help-block">
+                                            <em>(*) Required field</em>
+                                    </p>
+                                    <a class="pull-left m-btn m-btn-theme btn-lg text-center" href="/">@lang('app.btn.cancel')</a>
+                                    <button type="submit" class="m-btn m-btn-theme2nd btn-lg text-center pull-right">@lang('app.btn.continuer')</button>
                                 </form>
                             </div>
                         </div>

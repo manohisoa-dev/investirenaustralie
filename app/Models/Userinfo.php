@@ -19,15 +19,23 @@ class Userinfo extends Model
         'orga_website',
         'orga_operation_state',
         'orga_operation_range',
+        'orga_type',
+        'orga_registration_number',
+        'orga_form',
+        'orga_license_number',
         'contact_name',
         'contact_email',
         'contact_phone',
         'crm_name',
         'crm_email',
+        'bank_name',
+        'bank_agency',
+        'bank_bic',
+        'bank_iban',
         'bank_iban',
         'bank_bic',
         'allow_sharing',
-        'user_id'
+        'user_id',
     ];
 
 

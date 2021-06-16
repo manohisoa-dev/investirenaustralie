@@ -47,7 +47,7 @@
                         <div class="row">
                             <div class="col-md-12">
 
-                            <form action="" method="post">
+                            <form action="{{ route('register.show', ['role'=>'afa']) }}" method="get">
                                 <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                                 <div class="panel-group">
                                     <div class="panel panel-default">
