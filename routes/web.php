@@ -56,10 +56,14 @@ Route::post('ajaxGetProductById', 'ProductController@ajaxGetProductById')->name(
 Route::post('ajaxSaveProduct', 'ProductController@ajaxSaveProduct')->name('ajaxSaveProduct');
 Route::post('ajaxModifProduct', 'ProductController@ajaxModifProduct')->name('ajaxModifProduct');
 Route::post('ajaxDropProduit', 'ProductController@ajaxDropProduit')->name('ajaxDropProduit');  
+Route::get('ajaxCheckFirb', 'ProductController@ajaxCheckFirb')->name('ajaxCheckFirb'); 
 Route::post('save-programme', 'ProductController@saveProgramme')->name('save-programme');  
 Route::get('edit-programme/{product}', 'ProductController@editProgramme')->name('edit.programme'); 
 Route::get('produit-programme/{product}', 'ProductController@produitProgramme')->name('produit.programme'); 
-Route::post('updateProgramme', 'ProductController@updateProgramme')->name('updateProgramme'); 
+Route::post('updateProgramme', 'ProductController@updateProgramme')->name('updateProgramme');
+Route::get('mes-produits', 'ProductController@mesProduits')->name('mes-produits'); 
+Route::get('nouveau-produit', 'ProductController@nouveauProduit')->name('nouveau-produit');
+Route::post('save-product', 'ProductController@saveProduct')->name('save-product'); 
 // Programme
 Route::get('programmes/{filter?}', 'ProgrammeController@all')->name('programme.all');// List programme by filter OR no
 Route::get('get/show/programme/{slug}', 'ProgrammeController@getShowProgramme')->name('get.show.programme');

@@ -16,6 +16,7 @@ use App\Models\User;
 use App\Models\State;
 use App\Models\Type;
 use App\Models\Localisation;
+use App\Models\Firb;
 
 use Jleon\LaravelPnotify\Notify;
 use Carbon\Carbon;
@@ -643,9 +644,112 @@ class ProductController extends Controller {
 
         return response()->json(['success' => 'true']);
     }
-    
+
     public function ajaxDropProduit(Request $request) {
         Product::where('id', $request->id_produit)->delete();
         return response()->json(['success' => 'true']);
+    }
+
+    public function ajaxCheckFirb() {
+        $code_postal = $_GET['postal_code'];
+        $firb = Firb::where('codePostal', $code_postal)->get();
+        if (count($firb) > 0) {
+            echo "true";
+        } else {
+            echo "false";
+        }
+    }
+
+    public function mesProduits(Request $request) {
+        $records = Product::allProductUser();
+        return view('backend.product.all_product')->with('title', __('afa.programme.title'))->with('records',
+            $records);
+    }
+
+    public function nouveauProduit() {
+        return view('backend.product.nouveau_produit')->with('title', __('afa.new.product.title'));
+    }
+
+    public function saveProduct(Request $request) {
+        $anciennete = $request->ancienneteBien;
+        $nature = $request->natureBien;
+
+        if (isset($request->chk_parking)) {
+            $avoir_parking = 1;
+        } else {
+            $avoir_parking = 0;
+        }
+
+        if (isset($request->chk_picine)) {
+            $avoir_piscine = 1;
+        } else {
+            $avoir_piscine = 0;
+        }
+
+        if ($anciennete == 'Neuf') {
+            if ($nature == 'Programme immobilier') {
+                //creation programme
+                $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
+                    '', '', $request->ville);
+
+                $id_programme = $this->save_programme($request->cat_programmme_id, $request->ancienneteBien,
+                    $request->natureBien, $request->prix_min, $request->prix_max, $request->type_id,
+                    $request->display_address, $request->postalCode, $request->state_id, $request->title_programme,
+                    $request->description, $id_location, $request->file('fond_dossier'), 'waiting');
+
+                //save photo programme
+                if ($request->dropPhoto) {
+                    foreach ($request->dropPhoto as $key => $value) {
+                        if ($request->radioDrop) {
+                            if ($request->radioDrop == $value) {
+                                $is_principal = 1;
+                            } else {
+                                $is_principal = 0;
+                            }
+                        } else {
+                            $is_principal = 0;
+                        }
+                        $this->save_photo_programme($value, $id_programme, $is_principal);
+                    }
+                }
+                //creation produit
+                $titre_product = $request->title_programme . '-' . $request->title_product;
+                $this->save_new_produit($anciennete, $nature, $titre_product, $request->file('image'),
+                    $request->desc_product, 1, 0, $request->interior_area, $request->exterior_area,
+                    $request->total_area, $request->carport_spaces, $request->garage_spaces, $request->bathrooms,
+                    $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
+                    $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
+                    $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
+                    $id_programme, $id_location, 0, $avoir_parking, 0);
+            } else {
+                //creation location produit isolé
+                $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
+                    $request->postalCode_product, '', '', $request->ville_product);
+
+                $this->save_new_produit($anciennete, $nature, $request->title_product, $request->file
+                    ('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
+                    $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
+                    $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
+                    $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
+                    $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
+                    -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine);
+            }
+        } else {
+            //si ancienneté == ancien
+            $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
+                $request->postalCode_product, '', '', $request->ville_product);
+
+            $this->save_new_produit($anciennete, '', $request->title_product, $request->file
+                ('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
+                $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
+                $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
+                $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
+                $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
+                -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine);
+        }
+
+
+        return redirect()->route('mes-produits')->with('success',
+            "Produit a été créer avec succès");
     }
 }

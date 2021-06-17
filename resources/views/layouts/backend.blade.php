@@ -236,6 +236,15 @@
                                       <i class="fas fa-chevron-right"></i>
                                   </div>
 							  </a>
+							  <a href="{{route('mes-produits')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
+							  	  <div>
+                                      <i class="fa fa-bookmark m-10px-r"></i>
+                                      <span>@lang('afa.product.menu')</span>
+                                  </div>
+                                  <div>
+                                      <i class="fas fa-chevron-right"></i>
+                                  </div>
+							  </a>
                               <a href="{{route('afa.orders')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('afa/orders')) ? 'menu-active' : '' }}">
                                   <div>
                                       <i class="fa fa-cart-plus m-10px-r"></i>

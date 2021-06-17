@@ -16,6 +16,58 @@ class Product extends Model {
     {
         $query = Product::query();
         $query->where('parent_id','!=',0);
+        // search results based on user input
+        \Request::input('id') and $query->where('id',\Request::input('id'));
+        \Request::input('reference') and $query->where('reference','like','%'.\Request::input('reference').'%');
+        \Request::input('slug') and $query->where('slug','like','%'.\Request::input('slug').'%');
+        \Request::input('title') and $query->where('title','like','%'.\Request::input('title').'%');
+        \Request::input('content') and $query->where('content',\Request::input('content'));
+        \Request::input('quantity') and $query->where('quantity',\Request::input('quantity'));
+        \Request::input('is_new') and $query->where('is_new',\Request::input('is_new'));
+        \Request::input('view_count') and $query->where('view_count',\Request::input('view_count'));
+        \Request::input('area') and $query->where('area',\Request::input('area'));
+        \Request::input('carport_spaces') and $query->where('carport_spaces',\Request::input('carport_spaces'));
+        \Request::input('garage_spaces') and $query->where('garage_spaces',\Request::input('garage_spaces'));
+        \Request::input('off_street_spaces') and $query->where('off_street_spaces',\Request::input('off_street_spaces'));
+        \Request::input('bathrooms') and $query->where('bathrooms',\Request::input('bathrooms'));
+        \Request::input('bedrooms') and $query->where('bedrooms',\Request::input('bedrooms'));
+        \Request::input('ensuite') and $query->where('ensuite',\Request::input('ensuite'));
+        \Request::input('land_area') and $query->where('land_area',\Request::input('land_area'));
+        \Request::input('floor_area') and $query->where('floor_area',\Request::input('floor_area'));
+        \Request::input('number_of_floors') and $query->where('number_of_floors',\Request::input('number_of_floors'));
+        \Request::input('new_construction') and $query->where('new_construction',\Request::input('new_construction'));
+        \Request::input('year_built') and $query->where('year_built','like','%'.\Request::input('year_built').'%');
+        \Request::input('display_address') and $query->where('display_address','like','%'.\Request::input('display_address').'%');
+        \Request::input('price') and $query->where('price',\Request::input('price'));
+        \Request::input('currency') and $query->where('currency','like','%'.\Request::input('currency').'%');
+        \Request::input('tma') and $query->where('tma',\Request::input('tma'));
+        \Request::input('commision') and $query->where('commision',\Request::input('commision'));
+        \Request::input('commision_edited') and $query->where('commision_edited',\Request::input('commision_edited'));
+        \Request::input('status') and $query->where('status','like','%'.\Request::input('status').'%');
+        \Request::input('type_id') and $query->where('type_id',\Request::input('type_id'));
+        \Request::input('location_type_id') and $query->where('location_type_id',\Request::input('location_type_id'));
+        \Request::input('category_id') and $query->where('category_id',\Request::input('category_id'));
+        \Request::input('buyer_id') and $query->where('buyer_id',\Request::input('buyer_id'));
+        \Request::input('seller_id') and $query->where('seller_id',\Request::input('seller_id'));
+        \Request::input('author_id') and $query->where('author_id',\Request::input('author_id'));
+        \Request::input('postalCode') and $query->where('postalCode','like','%'.\Request::input('postalCode').'%');
+        \Request::input('state_id') and $query->where('state_id',\Request::input('state_id'));
+        \Request::input('location_id') and $query->where('location_id',\Request::input('location_id'));
+        \Request::input('image_id') and $query->where('image_id',\Request::input('image_id'));
+        \Request::input('created_at') and $query->where('created_at',\Request::input('created_at'));
+        \Request::input('updated_at') and $query->where('updated_at',\Request::input('updated_at'));
+        
+        // sort results
+        \Request::input("sort") and $query->orderBy(\Request::input("sort"),\Request::input("sortType","asc"));
+
+        // paginate results
+        return $query->paginate(15);
+    }
+    
+    public static function allProductUser()
+    {
+        $query = Product::query();
+        $query->where('parent_id','!=',0);
         $query->where('author_id', Auth::id());
         // search results based on user input
         \Request::input('id') and $query->where('id',\Request::input('id'));
