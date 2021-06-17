@@ -21,6 +21,7 @@ return [
     in English, initial the pages, date and sign it, make a scanned copy at PDF format to be sent to the AFA for the necessary validation of its research mandate.",
     "programme.menu"  => "Programmes",
     "programme.title"  => "My programs",
+	'condition.step_1' => 'STEP 1 – Francophone service',
 	'condition.step_2' => 'STEP 2 – Clientele Introductory Fee',
 	'condition.step_3' => 'STEP 3 – Terms and Conditions of Use',
 	'condition.step_4' => 'STEP 4 - Legal compliance of products',

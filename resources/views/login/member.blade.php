@@ -447,6 +447,8 @@
             }            
         });
     </script>
+
+    {{-- Google map location --}}
     <script>
         $('form').on('change','.country-select',function(){
             var country_id = $(this).val();
@@ -597,7 +599,7 @@
         });
 
     </script>
-
-
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA&callback=initMap"></script>
+    {{-- Fin google map location --}}
+
 @endpush

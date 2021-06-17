@@ -28,12 +28,15 @@
 
 <div id="section1" class="p-100px-tb">
 <div id="property-single">
+    <div class="container text-center col-lg-6">
+        @include('includes.alerts')
+    </div>
     <div class="main-slider-wrapper clearfix content corps gery"> 
         <div id="slider"> 
             <div class="container text-center"> 
                 <div class="jumbotron"> 
-                        <h2>@lang('app.apl')</h2> 
-                        <p>@lang('apl.local_partner_agencies_acceptance_page')</p>
+                    <h2>@lang('app.apl')</h2> 
+                    <p>@lang('apl.local_partner_agencies_acceptance_page')</p>
                 </div>                     
             </div>                 
         </div>             

@@ -138,11 +138,12 @@
                                                 <label for="orga_operation_range" class="col-sm-12 control-label">@lang('app.txt.scope_of_intervention_around_establishment') *</label>
                                                 <div class="col-sm-9">
                                                     <select class="form-control" name="orga_operation_range" id="orga_operation_range" required>
-                                                        <option value="10" {{ old('orga_operation_range')=='10'?'selected':'' }}> 10km</option>
-                                                        <option value="25" {{ old('orga_operation_range')=='25'?'selected':'' }}> 25km</option>
-                                                        <option value="50" {{ old('orga_operation_range')=='50'?'selected':'' }}> 50km</option>
-                                                        <option value="100" {{ old('orga_operation_range')=='100'?'selected':'' }}> 100km</option>
-                                                        <option value="250" {{ old('orga_operation_range')=='250'?'selected':'' }}> 250km</option>
+                                                        <option value="10" {{ old('orga_operation_range')=='5'?'selected':'' }}> 5 Km</option>
+                                                        <option value="10" {{ old('orga_operation_range')=='10'?'selected':'' }}> 10 Km</option>
+                                                        <option value="25" {{ old('orga_operation_range')=='25'?'selected':'' }}> 25 Km</option>
+                                                        <option value="50" {{ old('orga_operation_range')=='50'?'selected':'' }}> 50 Km</option>
+                                                        <option value="100" {{ old('orga_operation_range')=='100'?'selected':'' }}> 100 Km</option>
+                                                        <option value="250" {{ old('orga_operation_range')=='250'?'selected':'' }}> 250 Km</option>
                                                         <option value="+250" {{ old('orga_operation_range')=='+250'?'selected':'' }}>@lang('app.txt.more_than',['number'=>'250 Km'])</option>
                                                     </select>
                                                 </div>
@@ -493,6 +494,14 @@
             $('#adrpost_locality').removeAttr('required');
             $('#adrpost_postalCode').removeAttr('required');
             $('#adrpost_country').removeAttr('required');
+        }else{
+            $('#shop-notification-2').prop('checked',true);
+            $('#postalAddress').removeAttr('hidden');
+
+            // set required input
+            $('#adrpost_locality').attr('required','required');
+            $('#adrpost_postalCode').attr('required','required');
+            $('#adrpost_country').attr('required','required');
         }
     });
 
@@ -506,6 +515,14 @@
             $('#adrpost_locality').attr('required','required');
             $('#adrpost_postalCode').attr('required','required');
             $('#adrpost_country').attr('required','required');
+        }else{
+            $('#shop-notification-1').prop('checked',true);
+            $('#postalAddress').attr('hidden','hidden');
+
+            // unset required input
+            $('#adrpost_locality').removeAttr('required');
+            $('#adrpost_postalCode').removeAttr('required');
+            $('#adrpost_country').removeAttr('required');
         }
     });
 </script>

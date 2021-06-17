@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Auth;
 use Event;
+use App;
 
 use App\Notifications\AccountCreated;
 use Illuminate\Support\Facades\Hash;
@@ -176,6 +177,7 @@ class RegisterController extends Controller
                     ->with('lapls', $lapls);
                 break;
             case "afa":
+                App::setLocale('en');
                 $request->session()->put("step", "condition");
                 return view('login.condition.afa')
                     ->with('role', $roles)
@@ -214,6 +216,7 @@ class RegisterController extends Controller
         $conditionCount = 0;
         switch($role){
             case "afa":
+                App::setLocale('en');
                 $conditionCount = 4;
             break;
             case "apl":
