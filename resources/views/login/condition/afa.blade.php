@@ -34,7 +34,7 @@
         <div id="slider"> 
             <div class="container text-center"> 
                 <div class="jumbotron"> 
-                        <h2>Australian Francophone Agents</h2> 
+                        <h2>@lang('app.afa')</h2> 
                 </div>                     
             </div>                 
         </div>             
@@ -54,14 +54,14 @@
                                         <div class="panel-heading">
                                             <h4 class="panel-title">
                                                     <i class="more-less glyphicon glyphicon-plus"></i>
-                                                    STEP 1 – Francophone service
+                                                    @lang('afa.condition.step_1')
                                             </h4>
                                         </div>
                                             <div class="panel-body">
-                                                The Australian francophone Agent commits to providing a service in french to
-                                                prospectice or actual purchasers. <br>
+                                                @lang('afa.condition.step_1.content')
+                                            <br>
                                                 <label data-pg-collapsed> 
-                                                    <input class="control-label" type="checkbox" name="condition[]" id="condition1" value="1" >   &nbsp;     I agree *
+                                                    <input class="control-label" type="checkbox" name="condition[]" id="condition1" value="1" >   &nbsp;     @lang('app.txt.agree') *
                                                 </label>
                                             </div>
                                     </div>
@@ -70,18 +70,14 @@
                                         <div class="panel-heading">
                                             <h4 class="panel-title">
                                                     <i class="more-less glyphicon glyphicon-plus"></i>
-                                                    STEP 2 – Clientele Introductory Fee
+                                                    @lang('afa.condition.step_2')
                                             </h4>
                                         </div>
                                             <div class="panel-body">
-                                                The Australian Francophone Agent accepts that a clientele introductory fee
-                                                ("Commission de Présentation de Clientèle" - CPC) will be due to the company
-                                                managing IEA website in case of actual sale of products. Therefore they
-                                                commit to have the buyer pay that fee at the same time they sign the sale
-                                                contract, and to pay it back to IEA website managing company without delay .
+                                                @lang('afa.condition.step_2.content')
                                                 <br>
                                                 <label data-pg-collapsed> 
-                                                    <input class="control-label" type="checkbox" name="condition[]" id="condition2" value="1" >   &nbsp;     I agree *
+                                                    <input class="control-label" type="checkbox" name="condition[]" id="condition2" value="1" >   &nbsp;     @lang('app.txt.agree') *
                                                 </label>
                                             </div>
                                     </div>
@@ -89,14 +85,14 @@
                                         <div class="panel-heading">
                                             <h4 class="panel-title">
                                                     <i class="more-less glyphicon glyphicon-plus"></i>
-                                                    STEP 3 – Terms and Conditions of Use
+                                                    @lang('afa.condition.step_3')
                                             </h4>
                                         </div>
                                             <div class="panel-body">
-                                                The Australian Francophone Agent acknowledges having read the Terms and Conditions of Use of the
-                                                site "Investir en Australie" and declares to accept them without any reservation. <br>
+                                                @lang('afa.condition.step_3.content')
+                                                <br>
                                                 <label data-pg-collapsed> 
-                                                    <input class="control-label" type="checkbox" name="condition[]" id="condition3" value="1" >   &nbsp;     I agree *
+                                                    <input class="control-label" type="checkbox" name="condition[]" id="condition3" value="1" >   &nbsp;     @lang('app.txt.agree') *
                                                 </label>
                                             </div>
                                     </div>
@@ -104,23 +100,20 @@
                                         <div class="panel-heading">
                                             <h4 class="panel-title">
                                                     <i class="more-less glyphicon glyphicon-plus"></i>
-                                                    STEP 4 - Legal compliance of products
+                                                    @lang('afa.condition.step_4')
                                             </h4>
                                         </div>
                                             <div class="panel-body">
-                                                The Australian francophone Agent makes the commitment to verify and guarantee that the products
-                                                for the sale of which they are the operating agent are effectively residential, land, industrial
-                                                or commercial properties which may be sold to non-resident foreigners in accordance with the
-                                                Australian law and the rules applicable to foreign investment by the Foreign Investment
-                                                Review Board (FIRB).<br>
+                                                @lang('afa.condition.step_4.content')
+                                                <br>
                                                 <label data-pg-collapsed> 
-                                                    <input class="control-label" type="checkbox" name="condition[]" id="condition4" value="1" >   &nbsp;     I agree *
+                                                    <input class="control-label" type="checkbox" name="condition[]" id="condition4" value="1" >   &nbsp;     @lang('app.txt.agree') *
                                                 </label>
                                             </div>
                                     </div>
                                 </div>
                                  <p class="help-block">
-                                        <em>(*) Required field</em>
+                                    <em>(*) @lang('app.txt.champobligatoire')</em>
                                  </p>
                                 <a class="pull-left m-btn m-btn-theme btn-lg text-center" href="/">@lang('app.btn.abandonner')</a>
                                  <button  type="submit" class="pull-right m-btn m-btn-theme2nd btn-lg text-center">@lang('app.btn.continuer')</button>
