@@ -30,7 +30,6 @@ class ProductController extends Controller {
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-
     public function index(Request $request, $slug) {
         $products = Product::where('slug', '=', $slug)->get();
 
@@ -301,12 +300,28 @@ class ProductController extends Controller {
 
     public function mesProgramme(Request $request) {
         $records = Product::allProgrammeUser();
-        return view('backend.product.all_programme')->with('title', __('afa.programme.title'))->with('records',
-            $records);
+        $lapls = Localisation::select('localizations.*')
+                    ->join('users','users.location_id','=','localizations.id')
+                    ->where('users.role','=','4')
+                    ->groupBy('localizations.locality')
+                    ->get();
+
+        return view('backend.product.all_programme')
+            ->with('title', __('afa.programme.title'))
+            ->with('records',$records)
+            ->with('lapls',$lapls);
     }
 
     public function nouveauProgrammes() {
-        return view('backend.product.nouveau_programme')->with('title', __('afa.programme.title'));
+        $lapls = Localisation::select('localizations.*')
+                    ->join('users','users.location_id','=','localizations.id')
+                    ->where('users.role','=','4')
+                    ->groupBy('localizations.locality')
+                    ->get();
+
+        return view('backend.product.nouveau_programme')
+        ->with('title', __('afa.programme.title'))
+        ->with('lapls',$lapls);
     }
 
     public function ajaxGetTypeProduitCategorie(Request $request) {

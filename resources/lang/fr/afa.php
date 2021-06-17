@@ -23,7 +23,6 @@ return [
     format PDF à envoyer à l&lsquo;AFA pour la nécessaire validation de son mandat de recherche.",
     "programme.menu"  => "Programmes",
     "programme.title"  => "Mes programmes",
-<<<<<<< HEAD
     'condition.step_1' => 'STEP 1 – Francophone service',
 	'condition.step_2' => 'STEP 2 – Clientele Introductory Fee',
 	'condition.step_3' => 'STEP 3 – Terms and Conditions of Use',
@@ -39,9 +38,7 @@ return [
     which they are the operating agent are effectively residential, land, industrial or commercial properties which may be
     sold to non-resident foreigners in accordance with the Australian law and the rules applicable to foreign investment by
     the Foreign Investment Review Board (FIRB).',
-=======
     "product.menu"  => "Produits",
     "product.title"  => "Mes produits",
     "new.product.title"  => "Nouveau produit",
->>>>>>> 3826b9b919a5f198a960bddf6fc6f320bac140c4
 ];

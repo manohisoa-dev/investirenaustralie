@@ -21,8 +21,6 @@ return [
     in English, initial the pages, date and sign it, make a scanned copy at PDF format to be sent to the AFA for the necessary validation of its research mandate.",
     "programme.menu"  => "Programmes",
     "programme.title"  => "My programs",
-<<<<<<< HEAD
-    'condition.step_1' => 'STEP 1 – Francophone service',
 	'condition.step_2' => 'STEP 2 – Clientele Introductory Fee',
 	'condition.step_3' => 'STEP 3 – Terms and Conditions of Use',
 	'condition.step_4' => 'STEP 4 - Legal compliance of products',
@@ -37,9 +35,6 @@ return [
     which they are the operating agent are effectively residential, land, industrial or commercial properties which may be
     sold to non-resident foreigners in accordance with the Australian law and the rules applicable to foreign investment by
     the Foreign Investment Review Board (FIRB).',
-=======
     "product.menu"  => "Products",
-    "product.title"  => "My products",
     "new.product.title"  => "New product",
->>>>>>> 3826b9b919a5f198a960bddf6fc6f320bac140c4
 ];
