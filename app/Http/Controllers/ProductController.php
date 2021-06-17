@@ -23,6 +23,14 @@ use Carbon\Carbon;
 use App\Models\ProductsImage;
 
 class ProductController extends Controller {
+
+    public function __construct(){
+        $this->middleware('auth');
+        $this->middleware('role', ['only' => [
+            '3',
+        ]]);
+    }
+
     /**
      * Show the row product at the front.
      *

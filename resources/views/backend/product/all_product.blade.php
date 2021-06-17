@@ -386,7 +386,7 @@
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_etat') *</label>
 									<select class="form-control" name="state_id_product" id="state_id_product" style="width:100%">
-										<option value="">Sélectionner état...</option>
+										<option value="">Sï¿½lectionner ï¿½tat...</option>
 										@foreach(\App\Models\State::all() as $state)
 											<option value="{{$state->id}}">{{$state->content}}</option>
 										@endforeach
@@ -554,7 +554,7 @@
 							</div>
 						</div>
 						<div class="alert alert-danger alert-dismissable" id="info_error" style="display:none">
-							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">ï¿½</button>
 							<h4><i class="icon fa fa-ban"></i> @lang('app.form.product_error_title') !</h4>
 							@lang('app.form.product_error_content')
 						</div>
