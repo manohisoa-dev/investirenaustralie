@@ -121,11 +121,11 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="language" class="col-sm-3 control-label" for="language">@lang('app.txt.langage') *</label>
-                                            <div class="col-md-3">
+                                            <label for="language" class="col-sm-12 control-label" for="language">@lang('app.language') *</label>
+                                            <div class="col-md-9">
                                                 <select class="form-control" name="language">
-                                                    <option value="fr">@lang('app.txt.francais')</option>
-                                                    <option value="en">@lang('app.txt.anglais')</option>
+                                                    <option value="fr" {{ app()->getLocale()=='fr'? 'selected' : '' }}>@lang('app.txt.francais')</option>
+                                                    <option value="en" {{ app()->getLocale()=='en'? 'selected' : '' }}>@lang('app.txt.anglais')</option>
                                                 </select>
                                             </div>
                                         </div>

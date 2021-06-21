@@ -89,7 +89,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="form-group" id="orgaForm" hidden="hidden">
+                                            <div class="form-group" id="orgaForm" {{ old('orga_type')?'': 'hidden="hidden"'}} >
                                                 <label for="orga_form" class="col-sm-12 control-label">@lang('app.txt.company_form') *</label>
                                                 <div class="col-sm-9">
                                                     <select class="form-control" id="orga_form" name="orga_form">
@@ -100,7 +100,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="form-group" id="defineOrgaForm" hidden="hidden">
+                                            <div class="form-group" id="defineOrgaForm" {{ old('orga_form')?'': 'hidden="hidden"'}}>
                                                 <label for="define_orga_form" class="col-sm-12 control-label">@lang('app.txt.define') *</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" class="form-control" id="define_orga_form" name="define_orga_form" placeholder="@lang('app.txt.define')" value="{{ old('define_orga_form')?old('define_orga_form'):'' }}">
@@ -240,7 +240,7 @@
                                                     <div class="col-sm-6">
                                                         <div class="checkbox">
                                                             <div class="custom-control custom-switch">
-                                                                <input type="checkbox" name="postal_address_above" class="custom-control-input" id="shop-notification-1" checked="checked">
+                                                                <input type="checkbox" name="postal_address_above" class="custom-control-input" id="shop-notification-1" {{ old('postal_address_below') ? '' : 'checked="checked"' }} {{ old('postal_address_above') ? 'checked="checked"' : '' }}>
                                                                 <label class="custom-control-label" for="shop-notification-1">@lang('app.txt.as_above')</label>
                                                             </div>
                                                         </div>
@@ -248,14 +248,14 @@
                                                     <div class="col-sm-6">
                                                         <div class="checkbox">
                                                             <div class="custom-control custom-switch">
-                                                                <input type="checkbox" name="postal_address_below" class="custom-control-input" id="shop-notification-2">
+                                                                <input type="checkbox" name="postal_address_below" class="custom-control-input" id="shop-notification-2" {{ old('postal_address_below') ? 'checked="checked"' : '' }}>
                                                                 <label class="custom-control-label" for="shop-notification-2">@lang('app.txt.detail_below')</label>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div id="postalAddress" hidden="hidden">
+                                            <div id="postalAddress" {{ old('postal_address_below') ? '' : 'hidden="hidden"' }}>
                                                 <div class="form-group">
                                                     <label for="adrpost_postal_box" class="col-sm-3 control-label">@lang('app.txt.postal_box')</label>
                                                     <div class="col-sm-9">

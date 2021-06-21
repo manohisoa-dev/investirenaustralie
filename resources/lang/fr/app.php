@@ -174,7 +174,7 @@ return
 	'detail' => 'Detail',
 	'description' => 'Description',
 	'select_state' => 'Selectionner un Etat',
-	'select_country' => 'Selectionner un pays',
+	'select_country' => 'Selectionner le pays',
 	'select_phone' => 'Selectionner un code',
 	'select_role' => 'Selectionner le role',
 	'select_category' => 'Selectionner la categorie',

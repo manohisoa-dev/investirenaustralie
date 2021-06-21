@@ -214,6 +214,8 @@ class RegisterController extends Controller
     {
         // Switch to get Condition and Term count
         $conditionCount = 0;
+        App::setLocale(getLocale());
+        
         switch($role){
             case "afa":
                 App::setLocale('en');
