@@ -348,29 +348,54 @@ class RegisterController extends Controller
                 break;
             case 'afa':
                 $rules = [
+                    'type'         => 'required',
                     'orga_name'         => 'required|max:100',
-                    'orga_presentation' => 'required|max:100',
+                    'orga_trading_name'         => 'required|max:100',
+                    'orga_abn'         => 'required|digits_between:11,11|numeric',
+                    'orga_acn'         => 'nullable|digits_between:9,9|numeric',
+                    'orga_license_number'  => 'required|max:100',
                     'orga_email'        => 'required|email|max:100',
-                    'orga_phone'        => 'required|max:100',
+                    'orga_phone'        => 'required|digits_between:8,8|numeric',
+                    'orga_fax'        => 'nullable|max:100',
+                    'orga_mobile_phone'        => 'required|digits_between:8,8|numeric',
                     'orga_website'      => 'required|url|max:100',
-                    
-                    'orga_operation_state' => 'required|max:100',
-                    'orga_operation_range' => 'required|max:100',
+                    'orga_presentation' => 'max:1000',
+                    'orga_operation_state' => 'required',
+                    'orga_operation_range' => 'required',
 
-                    'country'      => 'required|max:100',
-                    'area_level_1' => 'nullable|max:100',
-                    'area_level_2' => 'nullable|max:100',
+                    'route'        => 'required|max:100',
+                    'route_number'        => 'required',
+
+                    'area_level_2' => 'required|max:100',
                     'locality'     => 'required|max:100',
-                    'route'        => 'nullable|max:100',
-                    'postalCode'   => 'nullable|max:100',
-
+                    'postalCode'   => 'required|integer',
+                    'area_level_1' => 'required|max:100',
+                    'country'      => 'required',
+                    
                     'contact_name'  => 'required|max:100',
-                    'contact_email' => 'required|max:100',
-                    'contact_phone' => 'required|max:100',
-
-                    'crm_name'   => 'required|max:100',
-                    'crm_email'  => 'required|max:100',
+                    'contact_email' => 'required|email|max:100',
+                    'contact_phone' => 'required|digits_between:8,8|numeric',
                 ];
+
+                if($request->postal_address_below){
+                    $rules += [
+                     'adrpost_postal_box'     => 'required|max:100',
+                     'adrpost_locality'      => 'required|max:100',
+                     'adrpost_area_level_1' => 'required|max:100',
+                     'adrpost_postalCode'   => 'required|max:100',
+                    ];
+                 }
+
+                 if($request->postal_address_above){
+                    $datas['adrpost_locality'] = $datas['locality'];
+                    $datas['adrpost_area_level_1'] = $datas['area_level_1'];
+                    $datas['adrpost_postalCode'] = $datas['postalCode'];
+                 }
+
+                 if(is_array($datas['orga_operation_state'])){
+                    $datas['orga_operation_state']=serialize($datas['orga_operation_state']);
+                 }
+
                 break;
             case 'apl':
                 $rules = [
@@ -497,10 +522,12 @@ class RegisterController extends Controller
                 unset($datas['user_id']);
             }
 
-            $request->merge([
-                'userinfos_id' => $userInfo->id,
-            ]);
-            $user->handles($request);
+            // $request->merge([
+            //     'userinfos_id' => $userInfo->id,
+            // ]);
+            $rqst=$request;
+            unset($rqst['orga_operation_state']);
+            $user->handles($rqst);
             
         }catch (\Exception $exception) {
             logger()->error($exception);

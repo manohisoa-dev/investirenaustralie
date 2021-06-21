@@ -1119,5 +1119,8 @@ return
 	'txt.office_address' => 'Adresse de Bureau',
 	'txt.level' => 'Niveau',
 	'txt.contact_details' => 'Détails du Contact',
+	'txt.abn_number' => 'N° ABN (11 chiffres)',
+	'txt.acn_number' => 'N° ACN (9 chiffres)',
+	'txt.loading' => 'Chargement...',
 
 ];

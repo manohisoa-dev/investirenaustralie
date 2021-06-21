@@ -875,5 +875,8 @@ return
 	'txt.office_address' => 'Office Address',
 	'txt.level' => 'Level',
 	'txt.contact_details' => 'Contact Details',
+	'txt.abn_number' => 'ABN number (11 digits)',
+	'txt.acn_number' => 'ACN number (9 digits)',
+	'txt.loading' => 'Loading...',
 
 ];

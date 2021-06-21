@@ -30,7 +30,7 @@
                                         {{-- <b>@lang('app.form.register.apl.desc')</b> --}}
                                     </div>
                                     <div class="hasfloat">
-                                    <form class="form-horizontal" role="form" method="post" action="{{route('register.store', ['role'=>'apl'])}}" enctype="multipart/form-data">
+                                    <form class="form-horizontal" id="formAplRegistrator" role="form" method="post" action="{{route('register.store', ['role'=>'apl'])}}" enctype="multipart/form-data">
                                         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                                         <input type="hidden" name="type" value="organization">
 
@@ -413,7 +413,7 @@
                                         </div>
                                         <div class="form-group">
                                             <div class="col-sm-offset-3 col-sm-9 p-25px-b">
-                                                <button type="submit" class="m-btn m-btn-theme">@lang('app.btn.register')</button>
+                                                <button type="submit" class="m-btn m-btn-theme" id='btn_register'>@lang('app.btn.register')</button>
                                             </div>
                                         </div>
                                     </form>
@@ -525,5 +525,12 @@
             $('#adrpost_country').removeAttr('required');
         }
     });
+</script>
+<script>
+    $('#formAplRegistrator').submit(function(){
+        // set btn submit to loading btn
+        $('#btn_register').attr('disabled','disabled');
+        $('#btn_register').html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>@lang("app.txt.loading")');
+    })
 </script>
 @endpush

@@ -48,7 +48,7 @@
                                         <b>@lang('app.form.register.afa.desc')</b>
                                     </div>
                                     <div class="hasfloat">
-                                    <form class="form-horizontal" role="form" onclick="myFunction()" method="post" action="{{route('register.store', ['role'=>'afa'])}}" enctype="multipart/form-data">
+                                    <form class="form-horizontal" role="form" id="formAfaRegistrator" onclick="myFunction()" method="post" action="{{route('register.store', ['role'=>'afa'])}}" enctype="multipart/form-data">
                                         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
                                         {{-- Login Information --}}
@@ -109,51 +109,66 @@
                                             <div class="form-group">
                                                 <label for="orga_abn" class="col-sm-12 control-label">@lang('app.txt.business_abn') *</label>
                                                 <div class="col-sm-9">
-                                                    <input type="number" minlength="11" maxlength="11" class="form-control" id="orga_abn" name="orga_abn" placeholder="@lang('app.txt.businesstradingname')" value="{{ old('orga_abn')?old('orga_abn'):'' }}" required>
+                                                    <input type="text" minlength="11" maxlength="11" pattern="[0-9]{1}[0-9]{10}" class="form-control" id="orga_abn" name="orga_abn" placeholder="@lang('app.txt.abn_number')" value="{{ old('orga_abn')?old('orga_abn'):'' }}" required>
                                                     <span class="text-danger">{{ $errors->first('orga_abn') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="orga_acn" class="col-sm-12 control-label">@lang('app.txt.business_acn')</label>
                                                 <div class="col-sm-9">
-                                                    <input type="number" minlength="9" maxlength="9" class="form-control" id="orga_acn" name="orga_acn" placeholder="@lang('app.txt.businesstradingname')" value="{{ old('orga_acn')?old('orga_acn'):'' }}" >
+                                                    <input type="text" minlength="9" maxlength="9" pattern="[0-9]{1}[0-9]{8}" class="form-control" id="orga_acn" name="orga_acn" placeholder="@lang('app.txt.acn_number')" value="{{ old('orga_acn')?old('orga_acn'):'' }}" >
                                                     <span class="text-danger">{{ $errors->first('orga_acn') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="orga_license_number" class="col-sm-12 control-label">@lang('app.txt.real_estate_agent_licence_number') *</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" minlength="9" maxlength="9" class="form-control" id="orga_license_number" name="orga_license_number" placeholder="@lang('app.txt.businesstradingname')" value="{{ old('orga_license_number')?old('orga_license_number'):'' }}" required>
+                                                    <input type="text" maxlength="100" class="form-control" id="orga_license_number" name="orga_license_number" placeholder="@lang('app.txt.real_estate_agent_licence_number')" value="{{ old('orga_license_number')?old('orga_license_number'):'' }}" required>
                                                     <span class="text-danger">{{ $errors->first('orga_license_number') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="orga_email" class="col-sm-3 control-label">@lang('app.txt.businessemail') *</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="orga_email" name="orga_email" placeholder="business@email.com" value="{{ old('orga_email')?old('orga_email'):'' }}" required>
+                                                    <input type="email" class="form-control" id="orga_email" name="orga_email" placeholder="business@email.com" value="{{ old('orga_email')?old('orga_email'):'' }}" required>
                                                     <span class="text-danger">{{ $errors->first('orga_email') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="orga_phone" class="col-sm-3 control-label">@lang('app.txt.businessphone') *</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="orga_phone" name="orga_phone" placeholder="(+61) ………………" value="{{ old('orga_phone')?old('orga_phone'):'' }}" required>
-                                                    <span class="text-danger">{{ $errors->first('orga_phone') }}</span>
+                                                <div class="input-group mb-3 col-md-9">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text form-control">(+61)</span>
+                                                    </div>
+                                                    <div class="custom-file">
+                                                        <input type="text" pattern="[0-9]{1}[0-9]{7}" minlength="8" maxlength="8" placeholder="XXXXXXXX" class="form-control m-15px-t" id="orga_phone" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):'' }}" required>
+                                                    </div>
                                                 </div>
+                                                <span class="text-danger m-5px-l">{{ $errors->first('orga_phone') }}</span>
                                             </div>
                                             <div class="form-group">
                                                 <label for="orga_fax" class="col-sm-3 control-label">@lang('app.txt.businessfax')</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="orga_fax" name="orga_fax" placeholder="(+61) ………………" value="{{ old('orga_fax')?old('orga_fax'):'' }}">
-                                                    <span class="text-danger">{{ $errors->first('orga_fax') }}</span>
+                                                <div class="input-group mb-3 col-md-9">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text form-control">(+61)</span>
+                                                    </div>
+                                                    <div class="custom-file">
+                                                        <input type="text" class="form-control m-15px-t" id="orga_fax" name="orga_fax" value="{{ old('orga_fax')?old('orga_fax'):'' }}">
+                                                    </div>
+                                                    <span class="text-danger m-5px-l">{{ $errors->first('orga_fax') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="orga_mobile_phone" class="col-sm-3 control-label">@lang('app.txt.businessmobile') *</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="orga_mobile_phone" name="orga_mobile_phone" placeholder="(+61) ………………" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):'' }}" required>
-                                                    <span class="text-danger">{{ $errors->first('orga_mobile_phone') }}</span>
+                                                <div class="input-group mb-3 col-md-9">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text form-control">(+61)</span>
+                                                    </div>
+                                                    <div class="custom-file">
+                                                        <input type="text" pattern="[0-9]{1}[0-9]{7}" minlength="8" maxlength="8" placeholder="XXXXXXXX" class="form-control m-15px-t" id="orga_mobile_phone" name="orga_mobile_phone" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):'' }}" required>
+                                                    </div>
                                                 </div>
+                                                <span class="text-danger m-5px-l">{{ $errors->first('orga_mobile_phone') }}</span>
                                             </div>
                                             <div class="form-group">
                                                 <label for="orga_website" class="col-sm-3 control-label">@lang('app.txt.websiteurl') *</label>
@@ -185,12 +200,17 @@
                                             <div class="form-group">
                                                 <label for="orga_operation_state" class="col-sm-12 control-label">@lang('app.txt.stateoflegaloperation') *</label>
                                                 <div class="col-md-9">
-                                                    <select class="form-control" name="orga_operation_state" required>
-                                                        <option selected disabled>@lang('app.select_state')</option>
+                                                    <select class="form-control selectpicker col-md-12" multiple data-live-search="true" name="orga_operation_state[]" required>
+                                                        @foreach($states as $state)
+                                                            <option value="{{$state->content}}" {{ old('orga_operation_state')==$state->content?'selected':'' }}> {{$state->content}} </option>
+                                                        @endforeach
+                                                    </select>
+                                                    {{-- <select class="form-control" name="orga_operation_state" required>
+                                                        <option value="" selected disabled>@lang('app.select_state')</option>
                                                         @foreach($states as $state)
                                                         <option value="{{$state->id}}" {{ old('orga_operation_state')==$state->id?'selected':'' }}> {{$state->content}}</option>
                                                         @endforeach
-                                                    </select>
+                                                    </select> --}}
                                                     <span class="text-danger">{{ $errors->first('orga_operation_state') }}</span>
                                                 </div>
                                             </div>
@@ -208,8 +228,7 @@
                                                 </div>
                                             </div>
                                         </fieldset>
-
-
+                                        
                                         {{-- Office Address --}}
                                         <fieldset class="m-25px-t">
                                             <legend>@lang('app.txt.office_address')</legend>
@@ -251,7 +270,7 @@
                                             <div class="form-group">
                                                 <label for="locality" class="col-sm-12 control-label">@lang('app.txt.suburb') *</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="locality" name="locality" placeholder="@lang('app.txt.suburb')" value="{{ old('locality')?old('locality'):'' }}">
+                                                    <input type="text" class="form-control" id="locality" name="locality" placeholder="@lang('app.txt.suburb')" value="{{ old('locality')?old('locality'):'' }}" required>
                                                     <span class="text-danger">{{ $errors->first('locality') }}</span>
                                                 </div>
                                             </div>
@@ -300,7 +319,7 @@
                                                     <div class="col-sm-6">
                                                         <div class="checkbox">
                                                             <div class="custom-control custom-switch">
-                                                                <input type="checkbox" name="postal_address_above" class="custom-control-input" id="shop-notification-1" checked="checked">
+                                                                <input type="checkbox" name="postal_address_above" class="custom-control-input" id="shop-notification-1" {{ old('postal_address_below') ? '' : 'checked="checked"' }} {{ old('postal_address_above') ? 'checked="checked"' : '' }}>
                                                                 <label class="custom-control-label" for="shop-notification-1">@lang('app.txt.as_above')</label>
                                                             </div>
                                                         </div>
@@ -308,7 +327,7 @@
                                                     <div class="col-sm-6">
                                                         <div class="checkbox">
                                                             <div class="custom-control custom-switch">
-                                                                <input type="checkbox" name="postal_address_below" class="custom-control-input" id="shop-notification-2">
+                                                                <input type="checkbox" name="postal_address_below" class="custom-control-input" id="shop-notification-2" {{ old('postal_address_below') ? 'checked="checked"' : '' }}>
                                                                 <label class="custom-control-label" for="shop-notification-2">@lang('app.txt.detail_below')</label>
                                                             </div>
                                                         </div>
@@ -316,7 +335,7 @@
                                                 </div>
                                             </div>
                                             {{-- for detail below --}}
-                                            <div id="mailAddress" hidden="hidden">
+                                            <div id="mailAddress" {{ old('postal_address_below') ? '' : 'hidden="hidden"' }} >
                                                 <div class="form-group">
                                                     <label for="adrpost_postal_box" class="col-sm-3 control-label">@lang('app.txt.postal_box') *</label>
                                                     <div class="col-sm-9">
@@ -325,23 +344,23 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="adrpost_area_level_2" class="col-sm-12 control-label">@lang('app.txt.suburb') *</label>
+                                                    <label for="adrpost_locality" class="col-sm-12 control-label">@lang('app.txt.suburb') *</label>
                                                     <div class="col-sm-9">
-                                                        <input type="text" class="form-control" id="adrpost_area_level_2" name="adrpost_area_level_2" placeholder="@lang('app.txt.suburb')" value="{{ old('adrpost_area_level_2')?old('adrpost_area_level_2'):'' }}">
-                                                        <span class="text-danger">{{ $errors->first('adrpost_area_level_2') }}</span>
+                                                        <input type="text" class="form-control" id="adrpost_locality" name="adrpost_locality" placeholder="@lang('app.txt.suburb')" value="{{ old('adrpost_locality')?old('adrpost_locality'):'' }}">
+                                                        <span class="text-danger">{{ $errors->first('adrpost_locality') }}</span>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="adrpost_postalCode" class="col-sm-3 control-label">@lang('app.txt.codepostal') *</label>
                                                     <div class="col-sm-9">
-                                                        <input type="text" class="form-control" id="adrpost_postalCode" name="adrpost_postalCode" value="{{ old('adrpost_postalCode')?old('adrpost_postalCode'):'' }}" placeholder="@lang('app.txt.codepostal')">
+                                                        <input type="text" class="form-control" id="adrpost_postal_code" name="adrpost_postalCode" value="{{ old('adrpost_postalCode')?old('adrpost_postalCode'):'' }}" placeholder="@lang('app.txt.codepostal')">
                                                         <span class="text-danger">{{ $errors->first('adrpost_postalCode') }}</span>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="country" class="col-sm-3 control-label">@lang('app.txt.state') *</label>
+                                                    <label for="country" class="col-sm-3 control-label">@lang('app.txt.etat') *</label>
                                                     <div class="col-md-9">
-                                                        <select id="adrpost_area_level_1" class="form-control" name="adrpost_area_level_1">
+                                                        <select id="adrpost_administrative_area_level_1" class="form-control" name="adrpost_area_level_1">
                                                             <option selected disabled>@lang('app.select_state')</option>
                                                             @foreach ($states as $state)
                                                                 <option value="{{ $state->content }}" {{ old('adrpost_area_level_1')==$state->content?'selected':'' }}>{{ trans('app.txt.'.$state->content) }} ({{ $state->content }})</option>
@@ -353,7 +372,7 @@
                                                 <div class="form-group">
                                                     <label for="adrpost_country" class="col-sm-3 control-label">@lang('app.txt.country') *</label>
                                                     <div class="col-md-9">
-                                                        <select class="form-control" name="adrpost_country"> 
+                                                        <select class="form-control" name="adrpost_country">
                                                             <option value="AUS" {{ old('country')=='AUS'?'selected':'' }}> @lang('app.txt.aus') (AUS)</option>
                                                         </select>
                                                         <span class="text-danger">{{ $errors->first('adrpost_country') }}</span>
@@ -381,10 +400,15 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="contact_phone" class="col-sm-3 control-label">@lang('app.txt.contactphone') *</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="contact_phone" name="contact_phone" placeholder="(+61) ………………" value="{{ old('contat_phone')?old('contat_phone'):'' }}" required>
-                                                    <span class="text-danger">{{ $errors->first('contact_phone') }}</span>
+                                                <div class="input-group mb-3 col-md-9">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text form-control">(+61)</span>
+                                                    </div>
+                                                    <div class="custom-file">
+                                                        <input type="text" pattern="[0-9]{1}[0-9]{7}" minlength="8" maxlength="8" placeholder="XXXXXXXX" class="form-control m-15px-t" id="contact_phone" name="contact_phone" value="{{ old('contact_phone')?old('contact_phone'):'' }}" required>
+                                                    </div>
                                                 </div>
+                                                <span class="text-danger m-5px-l">{{ $errors->first('contact_phone') }}</span>
                                             </div>
                                         </fieldset>
                                         <div class="form-group">
@@ -507,6 +531,7 @@
         let placeSearch;
         let autocomplete;
         let autocomplete2;
+        let autocomplete3;
         var input;
         const componentForm = {
             locality: "long_name",
@@ -552,16 +577,21 @@
             // Create the autocomplete object, restricting the search predictions to
             // geographical location types.
             autocomplete = new google.maps.places.Autocomplete(document.getElementById("administrative_area_level_2"),options);
-
+            
             autocomplete2 = new google.maps.places.Autocomplete(document.getElementById("locality"),options2);
+            
+            autocomplete3 = new google.maps.places.Autocomplete(document.getElementById("adrpost_locality"),options);
+
             // Avoid paying for data that you don't need by restricting the set of
             // place fields that are returned to just the address components.
             autocomplete.setFields(["address_component"]);
             autocomplete2.setFields(["address_component"]);
+            autocomplete3.setFields(["address_component"]);
             // When the user selects an address from the drop-down, populate the
             // address fields in the form.
             autocomplete.addListener("place_changed", fillInAddress);
             autocomplete2.addListener("place_changed", fillInAddress);
+            autocomplete3.addListener("place_changed", fillInAddress);
 
             // delimite contry autocomplete
             // autocomplete.setComponentRestrictions({'country': ['au']});
@@ -569,29 +599,40 @@
         }
 
         function fillInAddress() {
-            console.log(input);
-
             // Get the place details from the autocomplete object.
-            const place = input!=='locality'?autocomplete.getPlace():autocomplete2.getPlace();
+            const place = input!=='locality'?(input!=='adrpost_locality'?autocomplete.getPlace():autocomplete3.getPlace()):autocomplete2.getPlace();
+            var prefix = '';
 
             for (const component in componentForm) {
-            document.getElementById(component).value = "";
-            document.getElementById(component).disabled = false;
+                if(input==='adrpost_locality'){
+                    prefix = 'adrpost_';
+                }
+                
+                if(prefix == 'adrpost_' && component!=='administrative_area_level_2'){
+                    document.getElementById(prefix+component).value = "";
+                    document.getElementById(prefix+component).disabled = false;
+                }else{
+                    document.getElementById(component).value = "";
+                    document.getElementById(component).disabled = false;
+                }
             }
 
             // Get each component of the address from the place details,
             // and then fill-in the corresponding field on the form.
             for (const component of place.address_components) {
-            const addressType = component.types[0];
-
-            if (componentForm[addressType]) {
-                const val = component[componentForm[addressType]];
-                if(addressType !== "administrative_area_level_1"){
-                document.getElementById(addressType).value = val;
-                }else{
-                $('#administrative_area_level_1 option[value="'+val+'"]').prop('selected', true);
+                const addressType = component.types[0];
+                if (componentForm[addressType]) {
+                    const val = component[componentForm[addressType]];
+                    if(addressType !== "administrative_area_level_1"){
+                        if(prefix == 'adrpost_' && addressType!=='administrative_area_level_2'){
+                            document.getElementById(prefix+addressType).value = val;
+                        }else{
+                            document.getElementById(addressType).value = val;
+                        }
+                    }else{
+                        $('#'+prefix+'administrative_area_level_1 option[value="'+val+'"]').prop('selected', true);
+                    }
                 }
-            }
             }
         }
 
@@ -620,5 +661,17 @@
         })
     </script>
     {{-- End google map autocomplete --}}
+
+    <script>
+        $('#formAfaRegistrator').submit(function(){
+            // set btn submit to loading btn
+            $('#btn_register').attr('disabled','disabled');
+            $('#btn_register').html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>@lang("app.txt.loading")');
+        })
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 
 @endpush
