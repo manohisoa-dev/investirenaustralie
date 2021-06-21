@@ -526,7 +526,9 @@ class RegisterController extends Controller
             //     'userinfos_id' => $userInfo->id,
             // ]);
             $rqst=$request;
-            unset($rqst['orga_operation_state']);
+            if($role === 'afa'){
+                unset($rqst['orga_operation_state']);
+            }
             $user->handles($rqst);
             
         }catch (\Exception $exception) {
