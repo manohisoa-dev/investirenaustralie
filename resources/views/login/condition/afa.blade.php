@@ -28,8 +28,10 @@
 
 <!-- content -->
 <div id="section1" class="p-100px-tb">
-    @include('includes.alerts')
 <div id="property-single"> 
+    <div class="container text-center col-lg-6">
+        @include('includes.alerts')
+    </div>
     <div class="main-slider-wrapper clearfix content corps"> 
         <div id="slider"> 
             <div class="container text-center"> 
@@ -61,7 +63,7 @@
                                                 @lang('afa.condition.step_1.content')
                                             <br>
                                                 <label data-pg-collapsed> 
-                                                    <input class="control-label" type="checkbox" name="condition[]" id="condition1" value="1" >   &nbsp;     @lang('app.txt.agree') *
+                                                    <input class="control-label" type="checkbox" name="condition[]" id="condition1" value="1" required>   &nbsp;     @lang('app.txt.agree') *
                                                 </label>
                                             </div>
                                     </div>
@@ -77,7 +79,7 @@
                                                 @lang('afa.condition.step_2.content')
                                                 <br>
                                                 <label data-pg-collapsed> 
-                                                    <input class="control-label" type="checkbox" name="condition[]" id="condition2" value="1" >   &nbsp;     @lang('app.txt.agree') *
+                                                    <input class="control-label" type="checkbox" name="condition[]" id="condition2" value="1" required>   &nbsp;     @lang('app.txt.agree') *
                                                 </label>
                                             </div>
                                     </div>
@@ -92,7 +94,7 @@
                                                 @lang('afa.condition.step_3.content')
                                                 <br>
                                                 <label data-pg-collapsed> 
-                                                    <input class="control-label" type="checkbox" name="condition[]" id="condition3" value="1" >   &nbsp;     @lang('app.txt.agree') *
+                                                    <input class="control-label" type="checkbox" name="condition[]" id="condition3" value="1" required>   &nbsp;     @lang('app.txt.agree') *
                                                 </label>
                                             </div>
                                     </div>
@@ -107,7 +109,7 @@
                                                 @lang('afa.condition.step_4.content')
                                                 <br>
                                                 <label data-pg-collapsed> 
-                                                    <input class="control-label" type="checkbox" name="condition[]" id="condition4" value="1" >   &nbsp;     @lang('app.txt.agree') *
+                                                    <input class="control-label" type="checkbox" name="condition[]" id="condition4" value="1" required>   &nbsp;     @lang('app.txt.agree') *
                                                 </label>
                                             </div>
                                     </div>

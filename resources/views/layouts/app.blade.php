@@ -155,10 +155,10 @@
                                 <li class="small m-10px-l"><i class="fas fa-sign-in-alt"></i> @lang('app.sinscrire') :
                                     <select id="currency-dropdown" onChange="location.href=''+this.options[this.selectedIndex].value;" class="white-bg-alt border-color-dark-gray border-radius-0 white-color">
                                         <option class="dark-color" value="#" selected="true" disabled="disabled">@lang('app.as')</option>
-                                        <option class="dark-color" value="{{route('register', ['role'=>'member'])}}" @if(isset($role)) {{ $role==trans('app.member')?"selected":""  }}@endif>@lang('app.member')</option>
-                                        <option class="dark-color" value="{{route('register', ['role'=>'seller'])}}" @if(isset($role)) {{ $role==trans('app.seller')?"selected":""  }}@endif>@lang('app.seller')</option>
-                                        <option class="dark-color" value="{{route('register', ['role'=>'afa'])}}" @if(isset($role)) {{ $role==trans('app.afa')?"selected":""  }}@endif>@lang('app.afa')</option>
-                                        <option class="dark-color" value="{{route('register', ['role'=>'apl'])}}" @if(isset($role)) {{ $role==trans('app.apl')?"selected":""  }}@endif>@lang('app.apl')</option>
+                                        <option class="dark-color" value="{{route('register', ['role'=>'member'])}}" @if(isset($role)) {{ trans('app.'.$role)==trans('app.member')?"selected":""  }}@endif>@lang('app.member')</option>
+                                        <option class="dark-color" value="{{route('register', ['role'=>'seller'])}}" @if(isset($role)) {{ trans('app.'.$role)==trans('app.seller')?"selected":""  }}@endif>@lang('app.seller')</option>
+                                        <option class="dark-color" value="{{route('register', ['role'=>'afa'])}}" @if(isset($role)) {{ trans('app.'.str_replace(' ','_',$role))==trans('app.afa')?"selected":""  }}@endif>@lang('app.afa')</option>
+                                        <option class="dark-color" value="{{route('register', ['role'=>'apl'])}}" @if(isset($role)) {{ trans('app.'.str_replace(' ','_',$role))==trans('app.apl')?"selected":""  }}@endif>@lang('app.apl')</option>
                                     </select>
                                 </li>
                                 @else

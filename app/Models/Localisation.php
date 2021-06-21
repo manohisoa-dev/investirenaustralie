@@ -40,6 +40,7 @@ class Localisation extends Model
         'adrpost_locality',
         'adrpost_postalCode',
         'adrpost_area_level_1',
+        'adrpost_area_level_2',
         'adrpost_country',
         'bank_postal_box',
         'bank_locality',
