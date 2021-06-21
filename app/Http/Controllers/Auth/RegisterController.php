@@ -214,8 +214,7 @@ class RegisterController extends Controller
     {
         // Switch to get Condition and Term count
         $conditionCount = 0;
-        App::setLocale(getLocale());
-        
+
         switch($role){
             case "afa":
                 App::setLocale('en');
@@ -323,8 +322,10 @@ class RegisterController extends Controller
                     $rules = [
                         'first_name' => 'required|max:100',
                         'last_name'  => 'required|max:100',
-                        'sexe'       => 'required',
                         'country'    => 'required|max:100',
+                        'nationality'  => 'required|max:100',
+                        'sexe'       => 'required',
+                        'civility'  => 'required|max:3',
                     ];
                 }else{
                     $rules = [

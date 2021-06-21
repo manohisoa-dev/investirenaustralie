@@ -31,4 +31,5 @@ return [
     "accept_term_and_condition_apl"  => "Accept the terms and conditions",
     "accept_term_and_condition_afa"  => "Accept the terms and conditions",
     "select_afa"  => "If you click on the &ldquo;Select&rdquo; button it will select definitely this particular AFA for any subsequent interaction regarding a program.",
+    "member_identity"  => "Member Identity",
 ];

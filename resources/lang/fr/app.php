@@ -1122,5 +1122,11 @@ return
 	'txt.abn_number' => 'N° ABN (11 chiffres)',
 	'txt.acn_number' => 'N° ACN (9 chiffres)',
 	'txt.loading' => 'Chargement...',
+	'txt.nationality' => 'Nationalité',
+	'txt.civility' => 'Civilité',
+	'txt.mr' => 'M',
+	'txt.mrs' => 'Mme',
+	'txt.choose_civility' => 'Choisissez la civilité',
+	'txt.choose_avatar' => 'Choisissez un avatar pour représenter votre profil',
 
 ];

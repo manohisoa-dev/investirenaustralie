@@ -878,5 +878,11 @@ return
 	'txt.abn_number' => 'ABN number (11 digits)',
 	'txt.acn_number' => 'ACN number (9 digits)',
 	'txt.loading' => 'Loading...',
+	'txt.nationality' => 'Nationality',
+	'txt.civility' => 'Civility',
+	'txt.mr' => 'Mr.',
+	'txt.mrs' => 'Mrs',
+	'txt.choose_civility' => 'Choose civility',
+	'txt.choose_avatar' => 'Choose an avatar to represent your profile',
 
 ];

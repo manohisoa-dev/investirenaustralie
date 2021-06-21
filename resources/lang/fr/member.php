@@ -31,4 +31,5 @@ return [
     "accept_term_and_condition_apl"  => "Acceptez les termes et les conditions",
     "accept_term_and_condition_afa"  => "Acceptez les termes et les conditions",
     "select_afa"  => "Si vous cliquez sur le bouton &ldquo;Selectionner&rdquo; cela sélectionnera définitivement cette AFA particulière pour toute interaction ultérieure concernant un programme.",
+    "member_identity"  => "Identité Membre",
 ];
