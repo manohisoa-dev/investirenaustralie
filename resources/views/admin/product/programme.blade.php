@@ -179,9 +179,9 @@
                             </td>
 							<td class="actions-cell text-center" width="12%">
 								<form class="form-inline" action="{{route('admin.product.index')}}/{{$record->id}}" method="POST">
-									<a href="{{route('admin.product.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="@lang('app.table.btn_title_detail')">
+									<?php /*?><a href="{{route('admin.product.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="@lang('app.table.btn_title_detail')">
 										<i class="fa fa-eye"></i>
-									</a>&nbsp;&nbsp;
+									</a>&nbsp;&nbsp;<?php */?>
 									<a href="{{route('admin.product.index')}}/{{$record->id}}/edit" class="btn btn-default btn-circle" title="@lang('app.table.btn_title_modification')">
 										<i class="fa fa-pencil-square-o"></i>
 									</a>&nbsp;&nbsp;

@@ -171,35 +171,43 @@
 						</div>
 					</div> 
 					
+					@if ($dossier)
 					<div class="row">
-						@if ($dossier)
-						<div class="col-lg-3">
-							<div class="file-box">
-								<div class="file">
-									<a href="{{asset($dossier->filepath)}}" class="fancyboxLink">
-										<span class="corner"></span>
-										<div class="icon">
-											<i class="fa fa-file"></i>
-										</div>
-										<div class="file-name">
-											@lang('app.form.programme_fond_dossier')<br><small>{{$dossier->created_at ? $dossier->created_at->diffForHumans() : ""}}</small>
-										</div>
-									</a>
-								</div>
+						 <div class="col-lg-12">
+						 <h5>@lang('app.form.programme_fond_dossier')</h5>
+						 @foreach ( $dossier as $dossie )
+						 <div class="file-box">
+							<div class="file">
+								<a href="{{asset($dossie->filepath)}}" class="fancyboxLink">
+									<span class="corner"></span>						
+									<div class="icon">
+										<i class="fa fa-file"></i>
+									</div>
+									<div class="file-name">
+										<label>{{$dossie->created_at ? $dossie->created_at->diffForHumans() : ""}}</label>
+										<a class="pull-right" href="javascript:void(0)" onclick="delete_photo({{$dossie->prdFondId}})">
+											<i class="fa fa-trash"></i>
+										</a>
+									</div>
+								</a>
 							</div>
 						</div>
-						@endif  
-						<div class="col-lg-4">
-							<div class="form-group">
-								<label for="title">@lang('app.form.programme_fond_dossier_edit')</label>
-								<input name="fond_dossier" class="form-control" type="file" accept="image/png, image/jpeg,.pdf,video/mp4,video/x-m4v,video/*">
+						 @endforeach		
+						 </div>
+					</div>  
+					@endif 
+					<div class="row" style="margin-bottom:15px">
+						<div class="col-lg-12">
+							<div class="dropzone" id="fond_dossier" multiple style="margin-bottom:25px">
+								<div id="template" class="file-row"></div>
 							</div>
 						</div>
-					</div>     
+					</div>  
 					
 					@if ($photos)
 					<div class="row">
 						<div class="col-lg-12">
+						<h5>@lang('app.txt.photo_programme')</h5>
 						@foreach ( $photos as $photo )					
 						<div class="file-box">
 							<div class="file">
@@ -354,9 +362,60 @@
 				});
 			});
 			
+			$("#fond_dossier").dropzone({
+				maxFiles: 20, 
+				maxFilesize: 20,
+				dictDefaultMessage: "@lang('app.txt.fond_dossier')",
+				url: "{{ route('admin.AjaxFonDossierEdit') }}",
+				params: {"_token": "{{ csrf_token() }}","id_programme": "{{ $product->id }}"},
+				acceptedFiles: ".jpeg,.jpg,.png,.gif,.pdf,video/mp4,video/x-m4v",
+				addRemoveLinks: true,
+				timeout: 50000,
+				init:function() {
+					// Get images
+					var myDropzone1 = this;
+				},
+				removedfile: function(file) 
+				{
+					if (this.options.dictRemoveFile) {
+					  return Dropzone.confirm("Are You Sure to "+this.options.dictRemoveFile, function() {
+						if(file.previewElement.id != ""){
+							var name = file.previewElement.id;
+						}else{
+							var name = file.name;
+						}
+						//console.log(name);
+						var fileRef;
+							return (fileRef = file.previewElement) != null ? 
+							fileRef.parentNode.removeChild(file.previewElement) : void 0;
+					  });
+					}		
+				},
+		   
+				success: function(file, response) 
+				{
+					location.reload();	
+				},
+				error: function(file, response)
+				{
+				   if($.type(response) === "string")
+						var message = response; //dropzone sends it's own error messages in string
+					else
+						var message = response.message;
+					file.previewElement.classList.add("dz-error");
+					_ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+					_results = [];
+					for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+						node = _ref[_i];
+						_results.push(node.textContent = message);
+					}
+					return _results;
+				}
+			});
+			
 			$("#image_upload").dropzone({
-				maxFiles: 5, 
-				maxFilesize: 4,
+				maxFiles: 20, 
+				maxFilesize: 20,
 				dictDefaultMessage: "@lang('app.dropzone.libelle')",
 				url: "{{ route('admin.ajaxDropZoneEdit') }}",
 				params: {"_token": "{{ csrf_token() }}","id_programme": "{{ $product->id }}"},

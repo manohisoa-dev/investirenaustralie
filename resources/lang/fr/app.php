@@ -1100,5 +1100,7 @@ return
 	'txt.country' => 'Pays',
 	'txt.your_login' => 'Votre login',
 	'txt.define' => 'Définir',
+    'txt.fond_dossier' => 'Choisissez un ou plusieurs photos pour le fond de dossier',
+    'txt.photo_programme' => 'Photos programme',
 
 ];

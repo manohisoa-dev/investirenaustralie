@@ -856,5 +856,6 @@ return
 	'form.required' => '(*) Required field',
 	'txt.your_login' => 'Your login',
 	'txt.define' => 'Define',
-
+    'txt.fond_dossier' => 'Choose one or more photos for the folder background',
+    'txt.photo_programme' => 'Program photos',
 ];
