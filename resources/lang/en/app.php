@@ -668,6 +668,7 @@ return
     'table.product_programme_title' => 'Program products',
     'form.product_add_ajax' => 'Add a new Product',
     'table.produit_image' => 'Picture',
+    'table.fond_dossier' => 'Backrest',
     'table.produit_titre' => 'Title',
     'table.produit_prix_min' => 'Min price',
     'table.produit_prix_max' => 'Max price',
@@ -710,6 +711,7 @@ return
 	'table.customers' => 'Customers',
     'dropzone.delete_photo_confirme' => 'Do you want to delete ?',
     'dropzone.delete_photo_yes' => 'Well deleted photo',
+    'dropzone.delete_fonds_yes' => 'File well deleted',
     'jquery.error_delete' => 'Operation not possible',
     'jquery.delete_cancel' => 'You just canceled the operation',
     'jquery.delete_product_yes' => 'Product well deleted',
@@ -863,6 +865,8 @@ return
 	'form.required' => '(*) Required field',
 	'txt.your_login' => 'Your login',
 	'txt.define' => 'Define',
+    'txt.fond_dossier' => 'Choose one or more photos for the folder background',
+    'txt.photo_programme' => 'Program photos',
 	'Agence_Francophone_Australienne' => 'Australian Francophone Agency',
 	'Agence_Partenaire_Locale' => 'Local Partner Agency',
 	'Australian_Francophone_Agency' => 'Australian Francophone Agency',
@@ -887,6 +891,4 @@ return
 	'txt.mrs' => 'Mrs',
 	'txt.choose_civility' => 'Choose civility',
 	'txt.choose_avatar' => 'Choose an avatar to represent your profile',
-	'txt.organization_details' => 'Organization Details',
-
-];
+	'txt.organization_details' => 'Organization Details',];

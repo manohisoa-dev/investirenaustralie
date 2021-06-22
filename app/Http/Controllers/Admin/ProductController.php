@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Models\Localisation;
 use App\Models\Type;
 use App\Models\ProductsImage;
+use App\Models\FondsDossier;
 use Auth;
 use App;
 use Carbon\Carbon;
@@ -81,7 +82,7 @@ class ProductController extends Controller {
             $id_programme = $this->save_programme($request->cat_programmme_id, $request->ancienneteBien,
                 $request->natureBien, $request->prix_min, $request->prix_max, $request->type_id,
                 $request->display_address, $request->postalCode, $request->state_id, $request->title_programme,
-                $request->description, $id_location, $request->file('fond_dossier'));
+                $request->description, $id_location);
             //save photo programme
             if ($request->dropPhoto) {
                 foreach ($request->dropPhoto as $key => $value) {
@@ -95,6 +96,11 @@ class ProductController extends Controller {
                         $is_principal = 0;
                     }
                     $this->save_photo_programme($value, $id_programme, $is_principal);
+                }
+            }
+            if ($request->fondDossier) {
+                foreach ($request->fondDossier as $key => $value) {
+                    $this->save_fond_dossier($value, $id_programme);
                 }
             }
             # notification
@@ -122,7 +128,7 @@ class ProductController extends Controller {
                         $id_programme = $this->save_programme($request->cat_programmme_id, $request->ancienneteBien,
                             $request->natureBien, $request->prix_min, $request->prix_max, $request->type_id,
                             $request->display_address, $request->postalCode, $request->state_id, $request->title_programme,
-                            $request->description, $id_location, $request->file('fond_dossier'));
+                            $request->description, $id_location);
                         //save photo programme
                         if ($request->dropPhoto) {
                             foreach ($request->dropPhoto as $key => $value) {
@@ -136,6 +142,12 @@ class ProductController extends Controller {
                                     $is_principal = 0;
                                 }
                                 $this->save_photo_programme($value, $id_programme, $is_principal);
+                            }
+                        }
+
+                        if ($request->fondDossier) {
+                            foreach ($request->fondDossier as $key => $value) {
+                                $this->save_fond_dossier($value, $id_programme);
                             }
                         }
                         //creation produit
@@ -259,13 +271,9 @@ class ProductController extends Controller {
     }
 
     function save_programme($categorie, $ancienete, $nature, $prix_min, $prix_max, $type_id,
-        $display_address, $postalCode, $state_id, $title, $content, $location_id, $fond_dossier) {
+        $display_address, $postalCode, $state_id, $title, $content, $location_id) {
         $slug = generateSlug($title);
         $programme = new Product();
-        if ($file = $fond_dossier) {
-            $fond_dossier = Image::storeAndSave($fond_dossier, 'product');
-            $programme->image_fond_dossier_id = $fond_dossier->id;
-        }
         $programme->category_id = $categorie;
         $programme->ancienneteBien = $ancienete;
         $programme->natureBien = $nature;
@@ -360,7 +368,9 @@ class ProductController extends Controller {
         $localisation = Localisation::find($product->location_id);
         if ($product->parent_id == 0) {
             //modification programme
-            $fonDossier = Image::find($product->image_fond_dossier_id);
+            $fonDossier = FondsDossier::where('products_fond_dossier.product_id', '=', $product->id)->join('images',
+                'products_fond_dossier.image_id', '=', 'images.id')->select('*',
+                'products_fond_dossier.id as prdFondId')->get();
             $produit_lie = Product::where('parent_id', $product->id)->get();
             $photo = ProductsImage::where('products_images.product_id', '=', $product->id)->join('images',
                 'products_images.image_id', '=', 'images.id')->select('*',
@@ -434,6 +444,9 @@ class ProductController extends Controller {
             $product->exterior_area = $request->exterior_area;
             if ($product->ancienneteBien == 'Ancien') {
                 $product->year_built = $request->year_built;
+            }
+            if($product->ancienneteBien == 'Neuf' && $product->natureBien == 'Produit isolé'){
+                $product->superficie_jardin = $request->superficie_jardin;
             }
             $product->total_area = $request->total_area;
 
@@ -624,8 +637,28 @@ class ProductController extends Controller {
         return response()->json(['success' => 'true']);
     }
 
+    public function AjaxFonDossierEdit(Request $request) {
+        $id_programme = $request->id_programme;
+        $image = $request->file('file');
+
+        $fileInfo = $image->getClientOriginalName();
+        $filename = pathinfo($fileInfo, PATHINFO_FILENAME);
+        $extension = pathinfo($fileInfo, PATHINFO_EXTENSION);
+        $file_name = $filename . '-' . time() . '.' . $extension;
+        $image->move(public_path('uploads/product'), $file_name);
+
+        $this->save_fond_dossier($file_name, $id_programme);
+        return response()->json(['success' => 'true']);
+    }
+
     public function ajaxDropPhotoIcon(Request $request) {
         ProductsImage::where('id', $request->id_photo_prd_image)->delete();
+        return response()->json(['success' => 'true']);
+    }
+    
+    public function ajaxDropFondDossier(Request $request)
+    {
+        FondsDossier::where('id', $request->id_fond_dossier)->delete();
         return response()->json(['success' => 'true']);
     }
 
@@ -658,6 +691,24 @@ class ProductController extends Controller {
         $image_programme->is_principal = $is_principale;
         $image_programme->author_id = Auth::user()->id;
         $image_programme->save();
+    }
+
+    public function save_fond_dossier($nom_photo, $id_programme) {
+        //save image "table image"
+        $image = new Image();
+        $image->url = $nom_photo;
+        $image->filename = $nom_photo;
+        $image->filemime = '';
+        $image->filepath = 'uploads/product/' . $nom_photo;
+        $image->author_id = Auth::user()->id;
+        $image->save();
+
+        //save photo programme "table products_fond_dossier"
+        $fond_dossier = new FondsDossier();
+        $fond_dossier->product_id = $id_programme;
+        $fond_dossier->image_id = $image->id;
+        $fond_dossier->author_id = Auth::user()->id;
+        $fond_dossier->save();
     }
 
     public function ajaxSaveProduct(Request $request) {

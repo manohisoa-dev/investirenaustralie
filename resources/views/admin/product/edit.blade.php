@@ -238,7 +238,7 @@
 						</div>
 						
 						<div class="col-lg-4">
-							<div id="jardin_info" style="display:none">
+							@if($product->ancienneteBien == 'Neuf' && $product->natureBien == 'Produit isolé')
 								<div class="form-group">
 									<label for="title">@lang('app.form.product_jardin_space')</label>
 									<div class="input-group m-b">
@@ -248,7 +248,7 @@
 										</div>
 									</div>
 								</div>
-							</div>
+							@endif
 						</div>
 					</div>
 					

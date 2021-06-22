@@ -169,20 +169,16 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-lg-4">
-								<div class="form-group">
-									<label for="title">@lang('app.form.programme_fond_dossier')</label>
-									<div class="custom-file" id="customFile">
-										<input name="fond_dossier" id="fond_dossier" class="form-control custom-file-input" type="file" accept="image/png, image/jpeg,.pdf,video/mp4,video/x-m4v,video/*">
-										<label class="custom-file-label" for="fond_dossier">
-											<label for="title"></label>
-										</label>
-									</div>
+							<div class="col-lg-12">
+								<h5>@lang('app.form.programme_fond_dossier')</h5>
+								<div class="dropzone" id="fond_dossier" multiple style="margin-bottom:25px">
+									<div id="template" class="file-row"></div>
 								</div>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-lg-12">
+								<h5>@lang('app.txt.photo_programme')</h5>
 								<div class="dropzone" id="image_upload" multiple>
 									<!--<div class="fallback">
 										<input name='file' type='file' multiple />
@@ -196,7 +192,7 @@
 							</div>
 						</div>						
 						<div class="row">
-							<div class="col-lg-12" style="margin-top:15px">
+							<div class="col-lg-12" style="margin-top:15px">							
 								<label class="chk_firb"> 
 									<input type="checkbox" value="" name="chk_firb"> @lang('app.txt.firb_recommendation')
 								</label>
@@ -223,16 +219,12 @@
 	<script src="{{asset('administrator/plugins/ckeditor/ckeditor.js')}}"></script>
 	<!-- Jquery Validate -->
     <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
+	 <!-- BS custom file -->
+    <script src="{{ asset('administrator/js/plugins/bs-custom-file/bs-custom-file-input.min.js') }}"></script>
     <script>
 	Dropzone.autoDiscover = false;
 	$(document).ready(function(){
-		$('#fond_dossier').on('change',function(){
-			//get the file name
-			var fileName = $(this).val();
-			//replace the "Choose a file" label
-			$(this).next('.custom-file-label').html(fileName);
-		});
-			
+	    bsCustomFileInput.init();			
 		CKEDITOR.replace( 'description' );
 		$("#category_id").select2();
 		$("#type_id").select2();
@@ -250,6 +242,65 @@
 				  
 			   }
 			});
+		});
+		
+		$("#fond_dossier").dropzone({
+			maxFiles: 20, 
+            maxFilesize: 20,
+			dictDefaultMessage: "@lang('app.txt.fond_dossier')",
+			url: "{{ route('admin.ajaxDropZone') }}",
+			params: {"_token": "{{ csrf_token() }}"},
+            acceptedFiles: ".jpeg,.jpg,.png,.gif,.pdf,video/mp4,video/x-m4v",
+            addRemoveLinks: true,
+            timeout: 50000,
+            init:function() {
+				// Get images
+				var myDropzone = this;
+			},
+            removedfile: function(file) 
+            {
+				if (this.options.dictRemoveFile) {
+				  return Dropzone.confirm("Are You Sure to "+this.options.dictRemoveFile, function() {
+					if(file.previewElement.id != ""){
+						var name = file.previewElement.id;
+					}else{
+						var name = file.name;
+					}
+					//console.log(name);
+					var fileRef;
+						return (fileRef = file.previewElement) != null ? 
+						fileRef.parentNode.removeChild(file.previewElement) : void 0;
+				  });
+			    }		
+            },
+       
+            success: function(file, response) 
+            {
+				file.previewElement.id = response.success;
+				//console.log(file.previewElement.id); 
+				// set new images names in dropzone’s preview box.
+                var olddatadzname = file.previewElement.querySelector("[data-dz-name]");   
+				file.previewElement.querySelector("img").alt = response.success;
+				file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'>"+response.success+"</label>");
+				file.previewElement.appendChild(file._captionBox);
+				$('#programmeForm').append('<input type="hidden" name="fondDossier[]" value="'+response.success +'">');
+				olddatadzname.innerHTML = response.success;
+            },
+            error: function(file, response)
+            {
+               if($.type(response) === "string")
+					var message = response; //dropzone sends it's own error messages in string
+				else
+					var message = response.message;
+				file.previewElement.classList.add("dz-error");
+				_ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+				_results = [];
+				for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+					node = _ref[_i];
+					_results.push(node.textContent = message);
+				}
+				return _results;
+            }
 		});
 			
 		$("#image_upload").dropzone({

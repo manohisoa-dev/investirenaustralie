@@ -82,7 +82,7 @@ Route::prefix('collaborator')->namespace('Admin')->as('admin.')->middleware(["au
     Route::post('ajaxRequestProduct', 'ProductController@ajaxRequestPost')->name('ajaxRequestProduct.post');  
     Route::post('ajaxRequestProgramme', 'ProductController@ajaxRequestProgramme')->name('ajaxRequestProgramme.post'); 
     Route::post('ajaxGetTypeProduitCategorie', 'ProductController@ajaxGetTypeProduitCategorie')->name('ajaxGetTypeProduitCategorie'); 
-    Route::post('ajaxDropZone', 'ProductController@ajaxDropZone')->name('ajaxDropZone');  
+    Route::post('ajaxDropZone', 'ProductController@ajaxDropZone')->name('ajaxDropZone');
     Route::post('ajaxDropZoneEdit', 'ProductController@ajaxDropZoneEdit')->name('ajaxDropZoneEdit');    
     Route::get('ajaxCheckFirb', 'ProductController@ajaxCheckFirb')->name('ajaxCheckFirb');  
     Route::post('ajaxDropPhotoIcon', 'ProductController@ajaxDropPhotoIcon')->name('ajaxDropPhotoIcon');  
@@ -194,9 +194,11 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::post('ajaxRequestProgramme', 'ProductController@ajaxRequestProgramme')->name('ajaxRequestProgramme.post'); 
     Route::post('ajaxGetTypeProduitCategorie', 'ProductController@ajaxGetTypeProduitCategorie')->name('ajaxGetTypeProduitCategorie'); 
     Route::post('ajaxDropZone', 'ProductController@ajaxDropZone')->name('ajaxDropZone');  
-    Route::post('ajaxDropZoneEdit', 'ProductController@ajaxDropZoneEdit')->name('ajaxDropZoneEdit');    
+    Route::post('ajaxDropZoneEdit', 'ProductController@ajaxDropZoneEdit')->name('ajaxDropZoneEdit');  
+    Route::post('AjaxFonDossierEdit', 'ProductController@AjaxFonDossierEdit')->name('AjaxFonDossierEdit');      
     Route::get('ajaxCheckFirb', 'ProductController@ajaxCheckFirb')->name('ajaxCheckFirb');  
-    Route::post('ajaxDropPhotoIcon', 'ProductController@ajaxDropPhotoIcon')->name('ajaxDropPhotoIcon');  
+    Route::post('ajaxDropPhotoIcon', 'ProductController@ajaxDropPhotoIcon')->name('ajaxDropPhotoIcon'); 
+    Route::post('ajaxDropFondDossier', 'ProductController@ajaxDropFondDossier')->name('ajaxDropFondDossier');  
     Route::post('ajaxDropProduit', 'ProductController@ajaxDropProduit')->name('ajaxDropProduit');  
     Route::post('ajaxChangeIconPhotoActive', 'ProductController@ajaxChangeIconPhotoActive')->name('ajaxChangeIconPhotoActive');
     Route::post('ajaxSaveProduct', 'ProductController@ajaxSaveProduct')->name('ajaxSaveProduct');
