@@ -440,7 +440,7 @@ class ProductController extends Controller {
         $image_programme->author_id = Auth::user()->id;
         $image_programme->save();
     }
-    
+
     public function save_fond_dossier($nom_photo, $id_programme) {
         //save image "table image"
         $image = new Image();
@@ -522,15 +522,38 @@ class ProductController extends Controller {
         return response()->json(['success' => 'true']);
     }
 
+    public function ajaxDropFondDossier(Request $request) {
+        FondsDossier::where('id', $request->id_fond_dossier)->delete();
+        return response()->json(['success' => 'true']);
+    }
+
+    public function AjaxFonDossierEdit(Request $request) {
+        $id_programme = $request->id_programme;
+        $image = $request->file('file');
+
+        $fileInfo = $image->getClientOriginalName();
+        $filename = pathinfo($fileInfo, PATHINFO_FILENAME);
+        $extension = pathinfo($fileInfo, PATHINFO_EXTENSION);
+        $file_name = $filename . '-' . time() . '.' . $extension;
+        $image->move(public_path('uploads/product'), $file_name);
+
+        $this->save_fond_dossier($file_name, $id_programme);
+        return response()->json(['success' => 'true']);
+    }
+
     public function editProgramme(Request $request, Product $product) {
         $localisation = Localisation::find($product->location_id);
         $produit_lie = Product::where('parent_id', $product->id)->get();
         $photo = ProductsImage::where('products_images.product_id', '=', $product->id)->join('images',
             'products_images.image_id', '=', 'images.id')->select('*',
             'products_images.id as prdImageId')->get();
+        $fonDossier = FondsDossier::where('products_fond_dossier.product_id', '=', $product->id)->join('images',
+            'products_fond_dossier.image_id', '=', 'images.id')->select('*',
+            'products_fond_dossier.id as prdFondId')->get();
+
         return view('backend.product.edit_programme', ['product' => $product,
             'localisation' => $localisation, 'photos' => $photo, 'product_lies' => $produit_lie,
-            'title' => __('afa.programme.title')]);
+            'title' => __('afa.programme.title'), 'dossier' => $fonDossier]);
     }
 
     public function updateProgramme(Request $request) {
@@ -749,6 +772,13 @@ class ProductController extends Controller {
                         $this->save_photo_programme($value, $id_programme, $is_principal);
                     }
                 }
+                //save fond dossier programme
+                if ($request->fondDossier) {
+                    foreach ($request->fondDossier as $key => $value) {
+                        $this->save_fond_dossier($value, $id_programme);
+                    }
+                }
+
                 //creation produit
                 $titre_product = $request->title_programme . '-' . $request->title_product;
                 $this->save_new_produit($anciennete, $nature, $titre_product, $request->file('image'),
@@ -788,5 +818,11 @@ class ProductController extends Controller {
 
         return redirect()->route('mes-produits')->with('success',
             "Produit a été créer avec succès");
+    }
+
+    public function ajaxDropZoneDeleteFile(Request $request) {
+        $fileName = public_path('uploads/product') . '/' . $_POST['name'];
+        unlink($fileName);
+        return response()->json(['success' => 'true']);
     }
 }

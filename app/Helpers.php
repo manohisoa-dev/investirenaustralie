@@ -348,5 +348,21 @@ if (!function_exists('genMdpAleatoire')) {
 	}
 }
 
+if (!function_exists('setIconFile')) {
+	function setIconFile($filename)
+	{
+       $mime = mime_content_type($filename);
+       if($mime == 'image/gif' || $mime == 'image/jpeg' || $mime == 'image/png'){
+            $type = 'images';
+       }elseif($mime == 'application/pdf'){
+            $type = 'pdf';
+       }else{
+            $type = 'file';
+       }
+       
+       return $type;
+	}
+}
+
 
 

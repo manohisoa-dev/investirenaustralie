@@ -146,21 +146,67 @@
 							</div> 
 						</div>
 						<div class="col-lg-4">
-							<div class="form-group">
-								<label for="title">@lang('app.form.programme_fond_dossier')</label>
-								<div class="custom-file" id="customFile">
-									<input name="fond_dossier" multiple id="fond_dossier" class="form-control custom-file-input" type="file" accept="image/png, image/jpeg,.pdf,video/mp4,video/x-m4v,video/*">
-									<label class="custom-file-label" for="fond_dossier">
-										<label for="title"></label>
-									</label>
-								</div>
+							
+						</div>
+					</div>
+					
+					@if ($dossier)
+					<div class="row">
+						 <div class="col-lg-12">
+						 <h5 style="font-weight:normal; font-size:17px; color:#718096">@lang('app.form.programme_fond_dossier')</h5>
+						 @foreach ( $dossier as $dossie )						 	
+						 <div class="file-box">
+							<div class="file">
+								<a href="{{asset($dossie->filepath)}}" class="fancyboxLink">
+									<span class="corner"></span>	
+									@if(setIconFile($dossie->filepath) == 'images')
+										<div class="image">
+											<img alt="image" class="img-fluid" src="{{asset($dossie->filepath)}}">
+										</div>
+									@endif	
+									@if(setIconFile($dossie->filepath) == 'pdf')
+										<div class="icon">
+											<i class="fa fa-file-pdf"></i>
+										</div>
+									@endif	
+									@if(setIconFile($dossie->filepath) == 'file')
+										<div class="icon">
+											<i class="fa fa-file"></i>
+										</div>
+									@endif									
+									<div class="file-name">
+										@php
+											$filename = $dossie->filename;
+											$filename = preg_replace('/^(.*)\-\d{8,}\.(gif|jpg|png|pdf)$/', '$1.$2', $filename);
+										@endphp
+										<label style="text-transform:lowercase">{{str_limit($filename, 15)}}</label>
+										<a class="pull-right" href="javascript:void(0)" onclick="delete_fond_dossier({{$dossie->prdFondId}})">
+											<i class="fa fa-trash"></i>
+										</a>
+										<br>
+										<small>{{$dossie->created_at ? $dossie->created_at->diffForHumans() : ""}}</small>
+									</div>
+								</a>
+							</div>
+						</div>
+						 @endforeach		
+						 </div>
+					</div>  
+					@endif 
+					
+					<div class="row">
+						<div class="col-lg-12">
+							<label for="title">@lang('app.form.programme_fond_dossier')</label>
+							<div class="dropzone" id="fond_dossier" multiple style="margin-bottom:15px">
+								<div id="template" class="file-row"></div>
 							</div>
 						</div>
 					</div>
 					
 					@if ($photos)
-					<div class="row">
-						<div class="col-lg-12">
+					<div class="row">						
+						<div class="col-lg-12">		
+						<h5 style="font-weight:normal; font-size:17px; color:#718096">@lang('app.txt.photo_programme')</h5>				
 						@foreach ( $photos as $photo )					
 						<div class="file-box">
 							<div class="file">
@@ -254,6 +300,57 @@
 				  
 			   }
 			});
+		});
+		
+		$("#fond_dossier").dropzone({
+			maxFiles: 20, 
+			maxFilesize: 20,
+			dictDefaultMessage: "@lang('app.txt.fond_dossier')",
+			url: "{{ route('AjaxFonDossierEdit') }}",
+			params: {"_token": "{{ csrf_token() }}","id_programme": "{{ $product->id }}"},
+			acceptedFiles: ".jpeg,.jpg,.png,.gif,.pdf,video/mp4,video/x-m4v",
+			addRemoveLinks: true,
+			timeout: 50000,
+			init:function() {
+				// Get images
+				var myDropzone1 = this;
+			},
+			removedfile: function(file) 
+			{
+				if (this.options.dictRemoveFile) {
+				  return Dropzone.confirm("Are You Sure to "+this.options.dictRemoveFile, function() {
+					if(file.previewElement.id != ""){
+						var name = file.previewElement.id;
+					}else{
+						var name = file.name;
+					}
+					//console.log(name);
+					var fileRef;
+						return (fileRef = file.previewElement) != null ? 
+						fileRef.parentNode.removeChild(file.previewElement) : void 0;
+				  });
+				}		
+			},
+	   
+			success: function(file, response) 
+			{
+				location.reload();	
+			},
+			error: function(file, response)
+			{
+			   if($.type(response) === "string")
+					var message = response; //dropzone sends it's own error messages in string
+				else
+					var message = response.message;
+				file.previewElement.classList.add("dz-error");
+				_ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+				_results = [];
+				for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+					node = _ref[_i];
+					_results.push(node.textContent = message);
+				}
+				return _results;
+			}
 		});
 		
 		$("#image_upload").dropzone({
@@ -422,6 +519,43 @@
 			  $('#product_type_id').html(data);
 		   }
 		});
+	}
+	
+	function delete_fond_dossier(id_fond_dossier)
+	{
+		swal({
+			title: "@lang('app.table.fond_dossier')",
+			text: "@lang('app.dropzone.delete_photo_confirme')",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: '#ff3547',
+			confirmButtonText: "@lang('app.yes')",
+			cancelButtonText: "@lang('app.no')",
+			closeOnConfirm: false,
+			closeOnCancel: false
+		 },
+		 function(isConfirm){	
+		   if (isConfirm){
+				 $.ajax({
+					url : "{{ route('ajaxDropFondDossier') }}",
+					type: "POST",
+					dataType: "JSON",
+					data:{"_token": "{{ csrf_token() }}",'id_fond_dossier':id_fond_dossier},
+					success: function(data)
+					{
+						swal("@lang('app.table.fond_dossier')", "@lang('app.dropzone.delete_fonds_yes')", "success");
+						location.reload();	
+					},
+					error: function (jqXHR, textStatus, errorThrown)
+					{
+						swal("@lang('app.table.fond_dossier')", "@lang('app.jquery.error_delete')", "error");
+						location.reload();	
+					}
+				}); 
+			} else {
+				swal("@lang('app.table.fond_dossier')", "@lang('app.jquery.delete_cancel')", "error");
+			}
+		 });
 	}
 	
 	function delete_photo(id_photo_prd_image)

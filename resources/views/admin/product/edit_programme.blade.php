@@ -180,14 +180,32 @@
 							<div class="file">
 								<a href="{{asset($dossie->filepath)}}" class="fancyboxLink">
 									<span class="corner"></span>						
-									<div class="icon">
-										<i class="fa fa-file"></i>
-									</div>
+									@if(setIconFile($dossie->filepath) == 'images')
+										<div class="image">
+											<img alt="image" class="img-fluid" src="{{asset($dossie->filepath)}}">
+										</div>
+									@endif	
+									@if(setIconFile($dossie->filepath) == 'pdf')
+										<div class="icon">
+											<i class="fa fa-file-pdf-o"></i>
+										</div>
+									@endif	
+									@if(setIconFile($dossie->filepath) == 'file')
+										<div class="icon">
+											<i class="fa fa-file"></i>
+										</div>
+									@endif		
 									<div class="file-name">
-										<label>{{$dossie->created_at ? $dossie->created_at->diffForHumans() : ""}}</label>
+										@php
+											$filename = $dossie->filename;
+											$filename = preg_replace('/^(.*)\-\d{8,}\.(gif|jpg|png|pdf)$/', '$1.$2', $filename);
+										@endphp
+										<label style="text-transform:lowercase">{{str_limit($filename, 15)}}</label>
 										<a class="pull-right" href="javascript:void(0)" onclick="delete_fond_dossier({{$dossie->prdFondId}})">
 											<i class="fa fa-trash"></i>
 										</a>
+										<br>
+										<small>{{$dossie->created_at ? $dossie->created_at->diffForHumans() : ""}}</small>
 									</div>
 								</a>
 							</div>
