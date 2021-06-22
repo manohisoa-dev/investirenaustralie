@@ -32,4 +32,7 @@ return [
     "accept_term_and_condition_afa"  => "Acceptez les termes et les conditions",
     "select_afa"  => "Si vous cliquez sur le bouton &ldquo;Selectionner&rdquo; cela sélectionnera définitivement cette AFA particulière pour toute interaction ultérieure concernant un programme.",
     "member_identity"  => "Identité Membre",
+    "public_organization" => 'Organisme public',
+    "private_entreprise" => 'Entreprise privée',
+    "mixed_organization" => 'Organisation mixte',
 ];

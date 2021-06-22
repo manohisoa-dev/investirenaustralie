@@ -89,7 +89,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="form-group" id="orgaForm" {{ old('orga_type')?'': 'hidden="hidden"'}} >
+                                            <div class="form-group" id="orgaForm" {{ old('orga_type')=='society'?'': 'hidden="hidden"'}} >
                                                 <label for="orga_form" class="col-sm-12 control-label">@lang('app.txt.company_form') *</label>
                                                 <div class="col-sm-12">
                                                     <select class="form-control" id="orga_form" name="orga_form">
@@ -100,10 +100,10 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="form-group" id="defineOrgaForm" {{ old('orga_form')?'': 'hidden="hidden"'}}>
+                                            <div class="form-group" id="defineOrgaForm" {{ old('orga_form')=='other'?'': 'hidden="hidden"'}}>
                                                 <label for="define_orga_form" class="col-sm-12 control-label">@lang('app.txt.define') *</label>
                                                 <div class="col-sm-12">
-                                                    <input type="text" class="form-control" id="define_orga_form" name="define_orga_form" placeholder="@lang('app.txt.define')" value="{{ old('define_orga_form')?old('define_orga_form'):'' }}">
+                                                    <input type="text" class="form-control" id="define_orga_form" placeholder="@lang('app.txt.define')" value="{{ old('define_orga_form')?old('define_orga_form'):'' }}">
                                                     <span class="text-danger">{{ $errors->first('define_orga_form') }}</span>
                                                 </div>
                                             </div>
@@ -476,11 +476,15 @@
         $('#define_orga_form').val('');
         
         if($(this).val() === $("#orga_form option:eq(3)").val()){
+            $(this).removeAttr('name');
             $('#defineOrgaForm').removeAttr('hidden');
             $('#define_orga_form').attr('required','required');
+            $('#define_orga_form').attr('name','orga_form');
         }else{
+            $(this).attr('name','orga_form');
             $('#defineOrgaForm').attr('hidden','hidden');
             $('#define_orga_form').removeAttr('required');
+            $('#define_orga_form').removeAttr('name');
         }
     });
 

@@ -329,24 +329,41 @@ class RegisterController extends Controller
                     ];
                 }else{
                     $rules = [
-                        'prefixPhone' => 'required|max:100',
-                        'first_name' => 'nullable|max:100',
-                        'last_name'  => 'nullable|max:100',
-
-                        'contact_name'       => 'required|max:100',
-                        'contact_email'        => 'required|email|max:100',
-                        'contact_phone'       => 'required|max:100',
-
+                        'orga_phone' => 'required|max:100',
+                        'orga_mobile_phone' => 'required|max:100',
                         'orga_name'         => 'required|max:100',
-                        'orga_presentation' => 'required|max:100',
-
-                        'country'      => 'required|max:100',
-                        'area_level_1' => 'nullable|max:100',
-                        'area_level_2' => 'nullable|max:100',
+                        'orga_registration_number'         => 'required|max:100',
+                        'orga_rep_official_registration'         => 'required|max:100',
+                        'orga_type'         => 'required',
+                        'orga_presentation' => 'nullable|max:1000',
+                        'route'        => 'required|max:100',
+                        'route_number'        => 'required',
                         'locality'     => 'required|max:100',
-                        'route'        => 'nullable|max:100',
-                        'postalCode'   => 'nullable|max:100',
+                        'postalCode'   => 'required|max:100',
+                        'area_level_1' => 'nullable|max:100',
+                        'country'      => 'required|max:100',
+                        'contact_name'       => 'required|max:100',
+                        'contact_phone'       => 'required|max:100',
+                        'contact_email'        => 'required|email|max:100',
                     ];
+
+                    if($request->orga_type == 'private' || $request->orga_type == 'mixte'){
+                        $rules += ['orga_form' => 'required',];
+                    }
+    
+                    if($request->orga_form == 'other'){
+                        $rules += ['define_orga_form' => 'required',];
+                    }
+    
+                    if($request->postal_address_below){
+                       $rules += [
+                        'adrpost_postal_box'     => 'required|max:100',
+                        'adrpost_locality'     => 'required|max:100',
+                        'adrpost_postalCode'   => 'required|max:100',
+                        'adrpost_area_level_1' => 'nullable|max:100',
+                        'adrpost_country'      => 'required|max:100',
+                       ];
+                    }
                 }
                 break;
             case 'afa':

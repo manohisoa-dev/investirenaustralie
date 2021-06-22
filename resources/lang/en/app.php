@@ -827,6 +827,8 @@ return
 	'txt.result_for_ads' => 'Result for ads',
 	'txt.agencydetail' => 'Agency details',
 	'txt.agencyregistrationnumber' => 'Registration number of the Agency in the Trade and Companies Register',
+	'txt.organizationregistrationnumber' => 'Official registration number of the organization',
+	'txt.organizationrepregistrationofficial' => 'Name of official registration directory',
 	'txt.agencyname' => 'Name of the Agency',
 	'txt.type_of_company' => 'Type of company',
 	'txt.individual' => 'Individual',
@@ -867,6 +869,7 @@ return
 	'Local_Partner_Agency' => 'Local Partner Agency',
 	'txt.business_details' => 'Business Details',
 	'txt.type_of_business' => 'Type of Business',
+	'txt.type_of_organization' => 'Type of organization',
 	'txt.builder' => 'Builder',
 	'txt.developer' => 'Developer',
 	'txt.business_abn' => 'Business ABN',
@@ -884,5 +887,6 @@ return
 	'txt.mrs' => 'Mrs',
 	'txt.choose_civility' => 'Choose civility',
 	'txt.choose_avatar' => 'Choose an avatar to represent your profile',
+	'txt.organization_details' => 'Organization Details',
 
 ];
