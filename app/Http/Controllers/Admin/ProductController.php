@@ -655,6 +655,12 @@ class ProductController extends Controller {
         ProductsImage::where('id', $request->id_photo_prd_image)->delete();
         return response()->json(['success' => 'true']);
     }
+    
+    public function ajaxDropFondDossier(Request $request)
+    {
+        FondsDossier::where('id', $request->id_fond_dossier)->delete();
+        return response()->json(['success' => 'true']);
+    }
 
     public function ajaxDropProduit(Request $request) {
         Product::where('id', $request->id_produit)->delete();

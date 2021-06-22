@@ -17,6 +17,7 @@ use App\Models\State;
 use App\Models\Type;
 use App\Models\Localisation;
 use App\Models\Firb;
+use App\Models\FondsDossier;
 
 use Jleon\LaravelPnotify\Notify;
 use Carbon\Carbon;
@@ -24,11 +25,9 @@ use App\Models\ProductsImage;
 
 class ProductController extends Controller {
 
-    public function __construct(){
+    public function __construct() {
         $this->middleware('auth');
-        $this->middleware('role', ['only' => [
-            '3',
-        ]]);
+        $this->middleware('role', ['only' => ['3', ]]);
     }
 
     /**
@@ -308,28 +307,19 @@ class ProductController extends Controller {
 
     public function mesProgramme(Request $request) {
         $records = Product::allProgrammeUser();
-        $lapls = Localisation::select('localizations.*')
-                    ->join('users','users.location_id','=','localizations.id')
-                    ->where('users.role','=','4')
-                    ->groupBy('localizations.locality')
-                    ->get();
+        $lapls = Localisation::select('localizations.*')->join('users',
+            'users.location_id', '=', 'localizations.id')->where('users.role', '=', '4')->groupBy('localizations.locality')->get();
 
-        return view('backend.product.all_programme')
-            ->with('title', __('afa.programme.title'))
-            ->with('records',$records)
-            ->with('lapls',$lapls);
+        return view('backend.product.all_programme')->with('title', __('afa.programme.title'))->with('records',
+            $records)->with('lapls', $lapls);
     }
 
     public function nouveauProgrammes() {
-        $lapls = Localisation::select('localizations.*')
-                    ->join('users','users.location_id','=','localizations.id')
-                    ->where('users.role','=','4')
-                    ->groupBy('localizations.locality')
-                    ->get();
+        $lapls = Localisation::select('localizations.*')->join('users',
+            'users.location_id', '=', 'localizations.id')->where('users.role', '=', '4')->groupBy('localizations.locality')->get();
 
-        return view('backend.product.nouveau_programme')
-        ->with('title', __('afa.programme.title'))
-        ->with('lapls',$lapls);
+        return view('backend.product.nouveau_programme')->with('title', __('afa.programme.title'))->with('lapls',
+            $lapls);
     }
 
     public function ajaxGetTypeProduitCategorie(Request $request) {
@@ -450,6 +440,24 @@ class ProductController extends Controller {
         $image_programme->author_id = Auth::user()->id;
         $image_programme->save();
     }
+    
+    public function save_fond_dossier($nom_photo, $id_programme) {
+        //save image "table image"
+        $image = new Image();
+        $image->url = $nom_photo;
+        $image->filename = $nom_photo;
+        $image->filemime = '';
+        $image->filepath = 'uploads/product/' . $nom_photo;
+        $image->author_id = Auth::user()->id;
+        $image->save();
+
+        //save photo programme "table products_fond_dossier"
+        $fond_dossier = new FondsDossier();
+        $fond_dossier->product_id = $id_programme;
+        $fond_dossier->image_id = $image->id;
+        $fond_dossier->author_id = Auth::user()->id;
+        $fond_dossier->save();
+    }
 
     public function saveProgramme(Request $request) {
         $anciennete = $request->ancienneteBien;
@@ -460,7 +468,7 @@ class ProductController extends Controller {
         $id_programme = $this->save_programme($request->cat_programmme_id, $request->ancienneteBien,
             $request->natureBien, $request->prix_min, $request->prix_max, $request->type_id,
             $request->display_address, $request->postalCode, $request->state_id, $request->title_programme,
-            $request->description, $id_location, $request->file('fond_dossier'), 'waiting');
+            $request->description, $id_location, '', 'waiting');
 
         if ($request->dropPhoto) {
             foreach ($request->dropPhoto as $key => $value) {
@@ -474,6 +482,12 @@ class ProductController extends Controller {
                     $is_principal = 0;
                 }
                 $this->save_photo_programme($value, $id_programme, $is_principal);
+            }
+        }
+
+        if ($request->fondDossier) {
+            foreach ($request->fondDossier as $key => $value) {
+                $this->save_fond_dossier($value, $id_programme);
             }
         }
 

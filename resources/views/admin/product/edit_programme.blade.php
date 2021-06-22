@@ -185,7 +185,7 @@
 									</div>
 									<div class="file-name">
 										<label>{{$dossie->created_at ? $dossie->created_at->diffForHumans() : ""}}</label>
-										<a class="pull-right" href="javascript:void(0)" onclick="delete_photo({{$dossie->prdFondId}})">
+										<a class="pull-right" href="javascript:void(0)" onclick="delete_fond_dossier({{$dossie->prdFondId}})">
 											<i class="fa fa-trash"></i>
 										</a>
 									</div>
@@ -654,6 +654,43 @@
 					}); 
 				} else {
 					swal("@lang('app.table.produit_image')", "@lang('app.jquery.delete_cancel')", "error");
+				}
+			 });
+		}
+		
+		function delete_fond_dossier(id_fond_dossier)
+		{
+			swal({
+				title: "@lang('app.table.fond_dossier')",
+				text: "@lang('app.dropzone.delete_photo_confirme')",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: '#ff3547',
+				confirmButtonText: "@lang('app.yes')",
+				cancelButtonText: "@lang('app.no')",
+				closeOnConfirm: false,
+				closeOnCancel: false
+			 },
+			 function(isConfirm){	
+			   if (isConfirm){
+					 $.ajax({
+						url : "{{ route('admin.ajaxDropFondDossier') }}",
+						type: "POST",
+						dataType: "JSON",
+						data:{"_token": "{{ csrf_token() }}",'id_fond_dossier':id_fond_dossier},
+						success: function(data)
+						{
+							swal("@lang('app.table.fond_dossier')", "@lang('app.dropzone.delete_fonds_yes')", "success");
+							location.reload();	
+						},
+						error: function (jqXHR, textStatus, errorThrown)
+						{
+							swal("@lang('app.table.fond_dossier')", "@lang('app.jquery.error_delete')", "error");
+							location.reload();	
+						}
+					}); 
+				} else {
+					swal("@lang('app.table.fond_dossier')", "@lang('app.jquery.delete_cancel')", "error");
 				}
 			 });
 		}
