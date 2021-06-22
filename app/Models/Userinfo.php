@@ -23,6 +23,7 @@ class Userinfo extends Model
         'orga_operation_range',
         'orga_type',
         'orga_registration_number',
+        'orga_rep_official_registration',
         'orga_form',
         'orga_license_number',
         'orga_trading_name',
