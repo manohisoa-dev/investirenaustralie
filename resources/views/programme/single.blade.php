@@ -135,7 +135,63 @@
                         <p class="h4 dark-color font-w-600">@lang('app.description')</p>
                     </div>
                     
-                    <div class="text-justify">{!! $item->content !!}</div>
+                    <div class="text-justify">{!! $item->content !!}</div><br />
+					
+					<!-- fond de dossier -->
+					@if ($dossier)
+					<div class="nav p-25px-b">
+						<p class="h4 dark-color font-w-600">@lang('app.form.programme_fond_dossier') {{Auth::user()->id}}</p>
+					</div>
+					<div>
+					@foreach ($dossier as $dossie )		
+						<div class="file-box">
+							<div class="file">
+								@if(setIconFile($dossie->filepath) == 'images')
+									<a href="{{asset($dossie->filepath)}}" class="fancyboxLink">
+								@else
+									<a href="https://docs.google.com/viewer?url={{asset($dossie->filepath)}}&embedded=true" class="fancyboxLink">
+								@endif	
+									<span class="corner"></span>	
+									@if(setIconFile($dossie->filepath) == 'images')
+										<div class="image">
+											<img alt="image" class="img-fluid" src="{{asset($dossie->filepath)}}">
+										</div>
+									@endif	
+									@if(setIconFile($dossie->filepath) == 'pdf')
+										<div class="icon">
+											<i class="fa fa-file-pdf"></i>
+										</div>
+									@endif	
+									@if(setIconFile($dossie->filepath) == 'doc')
+										<div class="icon">
+											<i class="fa fa-file-word"></i>
+										</div>
+									@endif
+									@if(setIconFile($dossie->filepath) == 'excel')
+										<div class="icon">
+											<i class="fa fa-file-excel"></i>
+										</div>
+									@endif	
+									@if(setIconFile($dossie->filepath) == 'file')
+										<div class="icon">
+											<i class="fa fa-file"></i>
+										</div>
+									@endif									
+									<div class="file-name">
+										@php
+											$filename = $dossie->filename;
+											$filename = preg_replace('/^(.*)\-\d{8,}\.(gif|jpg|png|pdf)$/', '$1.$2', $filename);
+										@endphp
+										<label style="text-transform:lowercase">{{str_limit($filename, 15)}}</label>
+									</div>
+								</a>
+							</div>
+						</div>
+					@endforeach	
+						<div style="clear:both"></div>
+					</div>
+					@endif 
+					<!-- fond de dossier -->
 
                     
                     <div class="comments-area m-40px-t m-50px-b">
@@ -260,11 +316,28 @@
 
 
 @push('script')
+	@php
+		if(isset($location) && $location->latitude != '' && $location->longitude != ''){
+			$latitude = $location->latitude;
+			$longitude = $location->longitude;
+		}else{
+			$latitude = -25.647467468105795;
+			$longitude = 146.89921517372136;
+		}
+	@endphp
     <link rel="stylesheet" href="{{ asset('carousel/style.css') }}">
+	<link rel="stylesheet" href="{{ asset('plugin/fancybox/jquery.fancybox.css') }}" type="text/css" media="screen" />
     <script src="{{ asset('carousel/popper.min.js') }}"></script>
     <script src="{{ asset('carousel/carousel.js') }}"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script type="text/javascript">
+		$(document).ready(function(){
+			$(".fancyboxLink").fancybox({
+			    'padding': 0,
+				'type': 'iframe'
+			});
+		});
         $('#btn_comment').click(function(){
             $('#loginModal').modal('show');
         });
@@ -311,8 +384,8 @@
           var _geocoder;
           var _marker;
           var _circle;
-          var _lat = {{isset($location)?$location->latitude:-25.647467468105795}};
-          var _long = {{isset($location)?$location->longitude:146.89921517372136}};
+          var _lat = {{$latitude}};
+          var _long = {{$longitude}};
           var _btnSubmit = document.getElementById("submit");
           var _inputApl = document.getElementById("apl");
           var _contentApl = document.getElementById("apl-content");

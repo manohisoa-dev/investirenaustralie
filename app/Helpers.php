@@ -356,6 +356,10 @@ if (!function_exists('setIconFile')) {
             $type = 'images';
        }elseif($mime == 'application/pdf'){
             $type = 'pdf';
+       }elseif($mime == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'){
+            $type = 'doc';
+       }elseif($mime == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
+            $type = 'excel';
        }else{
             $type = 'file';
        }

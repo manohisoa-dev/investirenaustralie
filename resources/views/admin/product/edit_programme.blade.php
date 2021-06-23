@@ -178,7 +178,11 @@
 						 @foreach ( $dossier as $dossie )
 						 <div class="file-box">
 							<div class="file">
-								<a href="{{asset($dossie->filepath)}}" class="fancyboxLink">
+								@if(setIconFile($dossie->filepath) == 'images')
+									<a href="{{asset($dossie->filepath)}}" class="fancyboxLink">
+								@else
+									<a href="https://docs.google.com/viewer?url={{asset($dossie->filepath)}}&embedded=true" class="fancyboxLink">
+								@endif								
 									<span class="corner"></span>						
 									@if(setIconFile($dossie->filepath) == 'images')
 										<div class="image">
@@ -188,6 +192,16 @@
 									@if(setIconFile($dossie->filepath) == 'pdf')
 										<div class="icon">
 											<i class="fa fa-file-pdf-o"></i>
+										</div>
+									@endif	
+									@if(setIconFile($dossie->filepath) == 'doc')
+										<div class="icon">
+											<i class="fa fa-file-word-o"></i>
+										</div>
+									@endif
+									@if(setIconFile($dossie->filepath) == 'excel')
+										<div class="icon">
+											<i class="fa fa-file-excel-o"></i>
 										</div>
 									@endif	
 									@if(setIconFile($dossie->filepath) == 'file')
@@ -361,7 +375,10 @@
         $(document).ready(function(){
             CKEDITOR.replace( 'description' );
 			$("#category_id").select2();
-			$(".fancyboxLink").fancybox();
+			$(".fancyboxLink").fancybox({
+				'padding': 0,
+				'type': 'iframe',
+			});
 			set_type_programme($('#cat_programmme_id').val(),{{$product->type_id}});
 			//set_type_produit($('#cat_programmme_id').val());
 			
@@ -381,12 +398,12 @@
 			});
 			
 			$("#fond_dossier").dropzone({
-				maxFiles: 20, 
-				maxFilesize: 20,
+				maxFiles: 25, 
+				maxFilesize: 25,
 				dictDefaultMessage: "@lang('app.txt.fond_dossier')",
 				url: "{{ route('admin.AjaxFonDossierEdit') }}",
 				params: {"_token": "{{ csrf_token() }}","id_programme": "{{ $product->id }}"},
-				acceptedFiles: ".jpeg,.jpg,.png,.gif,.pdf,video/mp4,video/x-m4v",
+				acceptedFiles: ".jpeg,.jpg,.png,.gif,.doc,.docx,.xls,.xlsx,.pdf",
 				addRemoveLinks: true,
 				timeout: 50000,
 				init:function() {

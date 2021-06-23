@@ -157,7 +157,11 @@
 						 @foreach ( $dossier as $dossie )						 	
 						 <div class="file-box">
 							<div class="file">
-								<a href="{{asset($dossie->filepath)}}" class="fancyboxLink">
+								@if(setIconFile($dossie->filepath) == 'images')
+									<a href="{{asset($dossie->filepath)}}" class="fancyboxLink">
+								@else
+									<a href="https://docs.google.com/viewer?url={{asset($dossie->filepath)}}&embedded=true" class="fancyboxLink">
+								@endif	
 									<span class="corner"></span>	
 									@if(setIconFile($dossie->filepath) == 'images')
 										<div class="image">
@@ -167,6 +171,16 @@
 									@if(setIconFile($dossie->filepath) == 'pdf')
 										<div class="icon">
 											<i class="fa fa-file-pdf"></i>
+										</div>
+									@endif	
+									@if(setIconFile($dossie->filepath) == 'doc')
+										<div class="icon">
+											<i class="fa fa-file-word"></i>
+										</div>
+									@endif
+									@if(setIconFile($dossie->filepath) == 'excel')
+										<div class="icon">
+											<i class="fa fa-file-excel"></i>
 										</div>
 									@endif	
 									@if(setIconFile($dossie->filepath) == 'file')
@@ -303,12 +317,12 @@
 		});
 		
 		$("#fond_dossier").dropzone({
-			maxFiles: 20, 
-			maxFilesize: 20,
+			maxFiles: 25, 
+			maxFilesize: 25,
 			dictDefaultMessage: "@lang('app.txt.fond_dossier')",
 			url: "{{ route('AjaxFonDossierEdit') }}",
 			params: {"_token": "{{ csrf_token() }}","id_programme": "{{ $product->id }}"},
-			acceptedFiles: ".jpeg,.jpg,.png,.gif,.pdf,video/mp4,video/x-m4v",
+			acceptedFiles: ".jpeg,.jpg,.png,.gif,.doc,.docx,.xls,.xlsx,.pdf",
 			addRemoveLinks: true,
 			timeout: 50000,
 			init:function() {
@@ -354,8 +368,8 @@
 		});
 		
 		$("#image_upload").dropzone({
-			maxFiles: 20, 
-			maxFilesize: 20,
+			maxFiles: 25, 
+			maxFilesize: 25,
 			dictDefaultMessage: "@lang('app.dropzone.libelle')",
 			url: "{{ route('ajaxDropZoneEdit') }}",
 			params: {"_token": "{{ csrf_token() }}","id_programme": "{{ $product->id }}"},
