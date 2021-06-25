@@ -387,11 +387,11 @@
                 <div class="modal-content dark-bg">
                     <div class="modal-header" style="background-color: #AE4435 !important;">
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" style="background-color: #323232 !important;">
                         <div class="nav flex-sm-column flex-row">
                         </div>
                     </div>
-                    <div class="modal-footer">
+                    <div class="modal-footer" style="background-color: #555658 !important;">
                         <button type="button" class="m-btn m-btn-theme2nd" data-dismiss="modal">@lang('app.txt.close')</button>
                     </div>
                 </div>
