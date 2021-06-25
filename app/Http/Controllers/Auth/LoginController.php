@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\Localisation;
+use App\Models\Page;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -14,6 +15,7 @@ use App\Notifications\NotifyAdmin;
 use App\Notifications\NotifyUserDisabled;
 use Session;
 use Cookie;
+use App;
 
 class LoginController extends Controller
 {
@@ -191,6 +193,61 @@ class LoginController extends Controller
         return $this->authenticated($request, $this->guard()->user())
             ?: redirect()->intended($this->redirectPath());
     }
+
+    /**
+    * Handle a login request to the application.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
+    */
+   public function loginSellerByAfa(Request $request)
+   {   
+
+    $this->validateLogin($request);
+
+    // If the class is using the ThrottlesLogins trait, we can automatically throttle
+    // the login attempts for this application. We'll key this by the username and
+    // the IP address of the client making these requests into this application.
+    if ($this->hasTooManyLoginAttempts($request)) {
+        $this->fireLockoutEvent($request);
+
+        return $this->sendLockoutResponse($request);
+    }
+
+    /*
+    * Method 2: Login Active user only
+    */
+    if($this->guard()->validate($this->credentials($request))) {
+        if(Auth::attempt(['name' => $request->name, 'immat' => $request->immat, 'email' => $request->email, 'password' => $request->password, 'status' => 'active'])) {
+            // set lang en
+            App::setLocale('en');
+            
+            // set info afa in session
+            session()->put('afa_name',Auth::user()->name);
+            session()->put('afa_id',Auth::user()->immat);
+
+            // logout
+            $this->guard()->logout();
+            
+            $roles = trans('app.seller');
+            $page = Page::where('path', '/register/seller')
+                ->locale()
+                ->first();
+            $lapls = Localisation::select('localizations.*')
+                    ->join('users','users.location_id','=','localizations.id')
+                    ->where('users.role','=','4')
+                    ->groupBy('localizations.locality')
+                    ->get();
+
+            return view('login.condition.sellerbyafa')
+                ->with('role', $roles)
+                ->with('page', $page)
+                ->with('lapls', $lapls);
+        }
+    }
+
+    return $this->sendFailedLoginResponse($request);
+   }
 
     /**
      * Log the user out of the application.

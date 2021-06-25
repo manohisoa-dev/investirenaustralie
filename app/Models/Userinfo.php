@@ -15,6 +15,7 @@ class Userinfo extends Model
         'civility',
         'newsletter',
         'orga_name',
+        'orga_parent_name',
         'orga_presentation',
         'orga_email',
         'orga_phone',

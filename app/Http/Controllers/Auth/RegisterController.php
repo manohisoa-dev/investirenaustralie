@@ -192,11 +192,23 @@ class RegisterController extends Controller
                     ->with('lapls', $lapls);
                 break;
             case "seller":
+                App::setLocale('en');
                 $request->session()->put("step", "condition");
-                return view('login.condition.seller')
-                    ->with('role', $roles)
-                    ->with('page', $page)
-                    ->with('lapls', $lapls);
+
+                if($request->get('class')){
+                    session()->forget('afa_id');
+                    session()->forget('afa_name');
+                    
+                    return view('login.condition.sellerbyafa')
+                        ->with('role', $roles)
+                        ->with('page', $page)
+                        ->with('lapls', $lapls);
+                }else{
+                    return view('login.condition.seller')
+                        ->with('role', $roles)
+                        ->with('page', $page)
+                        ->with('lapls', $lapls);
+                }
                 break;
             default:
                 abort(404);
@@ -214,6 +226,7 @@ class RegisterController extends Controller
     {
         // Switch to get Condition and Term count
         $conditionCount = 0;
+        $view = view('login.'.$role);
 
         switch($role){
             case "afa":
@@ -224,7 +237,15 @@ class RegisterController extends Controller
                 $conditionCount = 5;
             break;
             case "seller":
-                $conditionCount = 2;
+                App::setLocale('en');
+                $request->session()->put("seller_class", $request->class);
+                
+                if(session('seller_class')!=='seller_by_afa'){
+                    $conditionCount = 2;
+                }else{
+                    $view = view('login.sellerbyafa');
+                    $conditionCount = 3;
+                }
             break;
         }
 
@@ -249,9 +270,10 @@ class RegisterController extends Controller
             ->where('users.role','=','4')
             ->groupBy('localizations.locality')
             ->get();
-        
 
-            return view('login.'.$role)
+            if(session('seller_class'))
+
+            return $view
                     ->with('action', $action)
                     ->with('role', trans('app.'.$role))
                     ->with('states', State::all())
@@ -452,7 +474,7 @@ class RegisterController extends Controller
                 }
 
                 if($request->orga_form == 'other'){
-                    $rules += ['define_orga_form' => 'required',];
+                    $rules += ['orga_form' => 'required',];
                 }
 
                 if($request->postal_address_below){
@@ -464,35 +486,104 @@ class RegisterController extends Controller
                    ];
                 }
 
+                if($request->postal_address_above){
+                    $datas['adrpost_locality'] = $datas['locality'];
+                    $datas['adrpost_postalCode'] = $datas['postalCode'];
+                    $datas['adrpost_area_level_1'] = $datas['area_level_1'];
+                    $datas['adrpost_country'] = $datas['country'];
+                 }
+
                 break;
             case 'seller':
+
                 $rules = [
-                    'name'     => 'required|unique:users,name|max:100',
-                    'email'    => 'required|email|unique:users,email|max:100',
-                    'language' => 'required|max:100',
-                    'type'     => 'required|max:100',
-                    'image'    => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-
-                    'orga_name'         => 'required|max:100',
-                    'orga_presentation' => 'required|max:100',
-                    'orga_email'        => 'required|email|max:100',
-                    'orga_phone'        => 'required|max:100',
-                    'orga_website'      => 'required|url|max:100',
-
-                    'country'      => 'nullable|max:100',
-                    'area_level_1' => 'required|max:100',
-                    'area_level_2' => 'required|max:100',
+                    // Même champs
+                    'route'        => 'required|max:100',
                     'locality'     => 'required|max:100',
-                    'route'        => 'nullable|max:100',
-                    'postalCode'   => 'nullable|max:100',
-
-                    'contact_name'  => 'required|max:100',
-                    'contact_email' => 'required|max:100',
-                    'contact_phone' => 'required|max:100',
-
-                    'crm_name'   => 'required|max:100',
-                    'crm_email'  => 'required|max:100',
+                    'area_level_2' => 'required|max:100',
+                    'postalCode'   => 'required|integer',
+                    'area_level_1' => 'required|max:100',
+                    'country'      => 'required',
+                    // Fin Même champs
                 ];
+
+                if(session('seller_class')!=='non_professional_natural_persons'){
+                    $rules += [
+                        'type'     => 'required|max:100',
+                        'orga_name'         => 'required|max:100',
+                        'orga_trading_name'         => 'required|max:100',
+                        'orga_abn'         => 'required|digits_between:11,11|numeric',
+                        'orga_acn'         => 'nullable|digits_between:9,9|numeric',
+                        'orga_parent_name'         => 'required|max:100',
+                        'orga_email'        => 'required|email|max:100',
+                        'orga_phone'        => 'required|digits_between:8,8|numeric',
+                        'orga_fax'        => 'nullable|max:100',
+                        'orga_mobile_phone'        => 'required|digits_between:8,8|numeric',
+                        'orga_website'      => 'required|url|max:100',
+                        'orga_presentation' => 'max:1000',
+
+                        'route_number'        => 'required',
+
+                        'contact_name'  => 'required|max:100',
+                        'contact_email' => 'required|email|max:100',
+                        'contact_phone' => 'required|max:100',
+    
+                    ];
+    
+                    if($request->postal_address_below){
+                        $rules += [
+                         'adrpost_postal_box'     => 'required|max:100',
+                         'adrpost_locality'     => 'required|max:100',
+                         'adrpost_postalCode'   => 'required|max:100',
+                         'adrpost_area_level_1' => 'nullable|max:100',
+                         'adrpost_country'      => 'required|max:100',
+                        ];
+                     }
+    
+                     if($request->postal_address_above){
+                        $datas['adrpost_locality'] = $datas['locality'];
+                        $datas['adrpost_postalCode'] = $datas['postalCode'];
+                        $datas['adrpost_area_level_1'] = $datas['area_level_1'];
+                        $datas['adrpost_country'] = $datas['country'];
+                     }
+                }else{
+                    if(session('seller_class')!=='seller_by_afa'){
+                        $rules += [
+                            'last_name'  => 'required|max:100',
+                            'first_name' => 'required|max:100',
+                            'date_of_birth' => 'required|max:100',
+                            'place_of_birth' => 'required|max:100',
+                            'nationality' => 'required|date|max:100',
+                        ];
+                    }else{
+                        $rules += [
+                            'login'  => 'required|max:100',
+                            'immat' => 'required|max:100',
+
+                            'date_of_birth' => 'required|dmax:100',
+                            'place_of_birth' => 'required|date|max:100',
+                            'nationality' => 'required|date|max:100',
+                        ];
+
+                        if($request->seller_type == 'business'){
+                            $rules += [
+                                'orga_name' => 'required|max:100',
+                                'orga_phone'        => 'required|digits_between:8,8|numeric',
+                                'orga_mobile_phone'        => 'required|digits_between:8,8|numeric',
+                                'orga_email'        => 'required|email|max:100',
+                            ];
+                        }else{
+                            $rules += [
+                                'last_name'  => 'required|max:100',
+                                'first_name' => 'required|max:100',
+                                'date_of_birth' => 'required|max:100',
+                                'place_of_birth' => 'required|max:100',
+                                'nationality' => 'required|date|max:100',
+                            ];
+                        }
+                    }
+                }
+
                 break;
             default:
                 abort(404);
