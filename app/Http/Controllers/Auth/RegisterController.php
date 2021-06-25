@@ -496,19 +496,8 @@ class RegisterController extends Controller
                 break;
             case 'seller':
 
-                $rules = [
-                    // Même champs
-                    'route'        => 'required|max:100',
-                    'locality'     => 'required|max:100',
-                    'area_level_2' => 'required|max:100',
-                    'postalCode'   => 'required|integer',
-                    'area_level_1' => 'required|max:100',
-                    'country'      => 'required',
-                    // Fin Même champs
-                ];
-
                 if(session('seller_class')!=='non_professional_natural_persons'){
-                    $rules += [
+                    $rules = [
                         'type'     => 'required|max:100',
                         'orga_name'         => 'required|max:100',
                         'orga_trading_name'         => 'required|max:100',
@@ -523,6 +512,12 @@ class RegisterController extends Controller
                         'orga_presentation' => 'max:1000',
 
                         'route_number'        => 'required',
+                        'route'        => 'required|max:100',
+                        'locality'     => 'required|max:100',
+                        'area_level_2' => 'required|max:100',
+                        'postalCode'   => 'required|integer',
+                        'area_level_1' => 'required|max:100',
+                        'country'      => 'required',
 
                         'contact_name'  => 'required|max:100',
                         'contact_email' => 'required|email|max:100',
@@ -548,37 +543,54 @@ class RegisterController extends Controller
                      }
                 }else{
                     if(session('seller_class')!=='seller_by_afa'){
-                        $rules += [
+                        $rules = [
                             'last_name'  => 'required|max:100',
                             'first_name' => 'required|max:100',
                             'date_of_birth' => 'required|max:100',
                             'place_of_birth' => 'required|max:100',
-                            'nationality' => 'required|date|max:100',
+                            'nationality' => 'required|max:100',
+                            'street_adr' => 'required|max:100',
+                            'suburb' => 'required|max:100',
+                            'city' => 'required|max:100',
+                            'post_code' => 'required|max:100',
+                            'state' => 'required|max:100',
+                            'country' => 'required|max:100',
+                            'phone' => 'required|max:15',
+                            'mobile' => 'required|max:15',
+                            'email_adr' => 'required|email|max:100',
                         ];
                     }else{
-                        $rules += [
-                            'login'  => 'required|max:100',
-                            'immat' => 'required|max:100',
-
-                            'date_of_birth' => 'required|dmax:100',
-                            'place_of_birth' => 'required|date|max:100',
-                            'nationality' => 'required|date|max:100',
+                        $rules = [
+                            'login'  => 'required',
+                            'immat' => 'required',
                         ];
 
                         if($request->seller_type == 'business'){
                             $rules += [
-                                'orga_name' => 'required|max:100',
-                                'orga_phone'        => 'required|digits_between:8,8|numeric',
-                                'orga_mobile_phone'        => 'required|digits_between:8,8|numeric',
-                                'orga_email'        => 'required|email|max:100',
+                                'business_name' => 'required|max:100',
+                                'street_adr'        => 'required|max:100',
+                                'suburb'        => 'required|max:100',
+                                'city'        => 'required|max:100',
+                                'post_code' => 'required|max:100',
+                                'state' => 'required|max:100',
+                                'country' => 'required|max:100',
+                                'phone' => 'required|max:15',
+                                'mobile' => 'required|max:15',
+                                'email_adr' => 'required|email|max:100',
                             ];
                         }else{
                             $rules += [
                                 'last_name'  => 'required|max:100',
                                 'first_name' => 'required|max:100',
-                                'date_of_birth' => 'required|max:100',
-                                'place_of_birth' => 'required|max:100',
-                                'nationality' => 'required|date|max:100',
+                                'street_adr' => 'required|max:100',
+                                'suburb' => 'required|max:100',
+                                'city' => 'required|max:100',
+                                'post_code' => 'required|max:100',
+                                'state' => 'required|max:100',
+                                'country' => 'required|max:100',
+                                'phone' => 'required|max:15',
+                                'mobile' => 'required|max:15',
+                                'email_adr' => 'required|email|max:100',
                             ];
                         }
                     }

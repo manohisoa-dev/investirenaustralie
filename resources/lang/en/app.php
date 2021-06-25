@@ -910,5 +910,6 @@ return
 	'txt.afa_password' => 'AFA password',
 	'Seller' => 'Seller',
 	'txt.sellerclass' => 'Seller Class',
+	'txt.mobile' => 'Mobile',
 
 ];

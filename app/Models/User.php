@@ -6,8 +6,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use AstritZeqiri\Metadata\Traits\HasManyMetaDataTrait;
 use App\Notifications\PasswordReseted;
-use Session;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Session;
 
 class User extends Authenticatable{
     use Notifiable;
@@ -838,6 +838,26 @@ class User extends Authenticatable{
     public function afa()
     {
       return $this->hasOne(User::class, 'id', 'afa_id');
+    }
+
+    /**
+     * An user can have any seller individual
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function sellerIndividual()
+    {
+        return $this->hasOne(SellerIndividual::class,'user_id','id');
+    }
+
+    /**
+     * An user can have any seller Business
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function sellerBusiness()
+    {
+        return $this->hasOne(SellerBusiness::class,'user_id','id');
     }
 
 }
