@@ -178,16 +178,48 @@
 						 @foreach ( $dossier as $dossie )
 						 <div class="file-box">
 							<div class="file">
-								<a href="{{asset($dossie->filepath)}}" class="fancyboxLink">
+								@if(setIconFile($dossie->filepath) == 'images')
+									<a href="{{asset($dossie->filepath)}}" class="fancyboxLink">
+								@else
+									<a href="https://docs.google.com/viewer?url={{asset($dossie->filepath)}}&embedded=true" class="fancyboxLink">
+								@endif								
 									<span class="corner"></span>						
-									<div class="icon">
-										<i class="fa fa-file"></i>
-									</div>
+									@if(setIconFile($dossie->filepath) == 'images')
+										<div class="image">
+											<img alt="image" class="img-fluid" src="{{asset($dossie->filepath)}}">
+										</div>
+									@endif	
+									@if(setIconFile($dossie->filepath) == 'pdf')
+										<div class="icon">
+											<i class="fa fa-file-pdf-o"></i>
+										</div>
+									@endif	
+									@if(setIconFile($dossie->filepath) == 'doc')
+										<div class="icon">
+											<i class="fa fa-file-word-o"></i>
+										</div>
+									@endif
+									@if(setIconFile($dossie->filepath) == 'excel')
+										<div class="icon">
+											<i class="fa fa-file-excel-o"></i>
+										</div>
+									@endif	
+									@if(setIconFile($dossie->filepath) == 'file')
+										<div class="icon">
+											<i class="fa fa-file"></i>
+										</div>
+									@endif		
 									<div class="file-name">
-										<label>{{$dossie->created_at ? $dossie->created_at->diffForHumans() : ""}}</label>
+										@php
+											$filename = $dossie->filename;
+											$filename = preg_replace('/^(.*)\-\d{8,}\.(gif|jpg|png|pdf)$/', '$1.$2', $filename);
+										@endphp
+										<label style="text-transform:lowercase">{{str_limit($filename, 15)}}</label>
 										<a class="pull-right" href="javascript:void(0)" onclick="delete_fond_dossier({{$dossie->prdFondId}})">
 											<i class="fa fa-trash"></i>
 										</a>
+										<br>
+										<small>{{$dossie->created_at ? $dossie->created_at->diffForHumans() : ""}}</small>
 									</div>
 								</a>
 							</div>
@@ -343,7 +375,10 @@
         $(document).ready(function(){
             CKEDITOR.replace( 'description' );
 			$("#category_id").select2();
-			$(".fancyboxLink").fancybox();
+			$(".fancyboxLink").fancybox({
+				'padding': 0,
+				'type': 'iframe',
+			});
 			set_type_programme($('#cat_programmme_id').val(),{{$product->type_id}});
 			//set_type_produit($('#cat_programmme_id').val());
 			
@@ -363,12 +398,12 @@
 			});
 			
 			$("#fond_dossier").dropzone({
-				maxFiles: 20, 
-				maxFilesize: 20,
+				maxFiles: 25, 
+				maxFilesize: 25,
 				dictDefaultMessage: "@lang('app.txt.fond_dossier')",
 				url: "{{ route('admin.AjaxFonDossierEdit') }}",
 				params: {"_token": "{{ csrf_token() }}","id_programme": "{{ $product->id }}"},
-				acceptedFiles: ".jpeg,.jpg,.png,.gif,.pdf,video/mp4,video/x-m4v",
+				acceptedFiles: ".jpeg,.jpg,.png,.gif,.doc,.docx,.xls,.xlsx,.pdf",
 				addRemoveLinks: true,
 				timeout: 50000,
 				init:function() {

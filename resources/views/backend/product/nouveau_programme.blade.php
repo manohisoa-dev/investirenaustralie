@@ -226,12 +226,12 @@
 		});
 		
 		$("#fond_dossier").dropzone({
-			maxFiles: 20, 
-            maxFilesize: 20,
+			maxFiles: 25, 
+            maxFilesize: 25,
 			dictDefaultMessage: "@lang('app.txt.fond_dossier')",
 			url: "{{ route('ajaxDropZone') }}",
 			params: {"_token": "{{ csrf_token() }}"},
-            acceptedFiles: ".jpeg,.jpg,.png,.gif,.pdf,video/mp4,video/x-m4v",
+            acceptedFiles: ".jpeg,.jpg,.png,.gif,.doc,.docx,.xls,.xlsx,.pdf",
             addRemoveLinks: true,
             timeout: 50000,
             init:function() {
@@ -285,8 +285,8 @@
 		});
 		
 		$("#image_upload").dropzone({
-			maxFiles: 20, 
-            maxFilesize: 20,
+			maxFiles: 25, 
+            maxFilesize: 25,
 			dictDefaultMessage: "@lang('app.dropzone.libelle')",
             url: "{{ route('ajaxDropZone') }}",
 			params: {"_token": "{{ csrf_token() }}"},
