@@ -148,9 +148,11 @@
 							<div class="file">
 								@if(setIconFile($dossie->filepath) == 'images')
 									<a href="{{asset($dossie->filepath)}}" class="fancyboxLink">
+								@elseif(setIconFile($dossie->filepath) == 'pdf')
+									<a class="fancybox-pdf" data-fancybox-type="iframe" href="http://docs.google.com/viewer?embedded=true&url={{asset(urlencode($dossie->filepath))}}">
 								@else
-									<a href="https://docs.google.com/viewer?url={{asset($dossie->filepath)}}&embedded=true" class="fancyboxLink">
-								@endif	
+									<a href="https://docs.google.com/viewer?url={{asset(urlencode($dossie->filepath))}}&embedded=true" class="fancyboxLinkDoc" data-fancybox-type="iframe">
+								@endif
 									<span class="corner"></span>	
 									@if(setIconFile($dossie->filepath) == 'images')
 										<div class="image">
@@ -333,9 +335,16 @@
     <script src="{{ asset('js/app.js') }}"></script>
     <script type="text/javascript">
 		$(document).ready(function(){
-			$(".fancyboxLink").fancybox({
-			    'padding': 0,
-				'type': 'iframe'
+			$("a.fancyboxLink").fancybox();			
+			$("#fancybox-pdf").fancybox({
+				openEffect  : 'none',
+				closeEffect : 'none',
+				iframe : {
+					preload: false
+				}
+			});
+			$("a.fancyboxLinkDoc").fancybox({
+				type: "iframe"
 			});
 		});
         $('#btn_comment').click(function(){

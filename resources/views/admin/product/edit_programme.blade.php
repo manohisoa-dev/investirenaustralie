@@ -180,8 +180,10 @@
 							<div class="file">
 								@if(setIconFile($dossie->filepath) == 'images')
 									<a href="{{asset($dossie->filepath)}}" class="fancyboxLink">
+								@elseif(setIconFile($dossie->filepath) == 'pdf')
+									<a class="fancybox-pdf" data-fancybox-type="iframe" href="http://docs.google.com/viewer?embedded=true&url={{asset(urlencode($dossie->filepath))}}">
 								@else
-									<a href="https://docs.google.com/viewer?url={{asset($dossie->filepath)}}&embedded=true" class="fancyboxLink">
+									<a href="https://docs.google.com/viewer?url={{asset(urlencode($dossie->filepath))}}&embedded=true" class="fancyboxLinkDoc" data-fancybox-type="iframe">
 								@endif								
 									<span class="corner"></span>						
 									@if(setIconFile($dossie->filepath) == 'images')
@@ -243,26 +245,26 @@
 						@foreach ( $photos as $photo )					
 						<div class="file-box">
 							<div class="file">
-								<a href="#">
-									<span class="corner"></span>						
-									<div class="image">
-										<img alt="image" class="img-fluid" src="{{asset($photo->filepath)}}">
-									</div>
-									<div class="file-name">
-										<label> 
-											@if($photo->is_principal == 1)
-											<input type="radio" checked="" value="{{$photo->prdImageId}}" name="radioDrop"> @lang('app.dropzone.photoIcon_tex')
-											@else
-											<input type="radio" value="{{$photo->prdImageId}}" name="radioDrop"> @lang('app.dropzone.photoIcon_tex')
-											@endif
-										</label>
-										<a class="pull-right" href="javascript:void(0)" onclick="delete_photo({{$photo->prdImageId}})">
-											<i class="fa fa-trash"></i>
-										</a>
-										<br>
-										<small>{{$photo->created_at ? $photo->created_at->diffForHumans() : ""}}</small>
-									</div>
-								</a>						
+								<span class="corner"></span>						
+								<div class="image">
+									<a href="{{asset($photo->filepath)}}" class="fancyboxLink">
+									<img alt="image" class="img-fluid" src="{{asset($photo->filepath)}}">
+									</a>
+								</div>
+								<div class="file-name">
+									<label> 
+										@if($photo->is_principal == 1)
+										<input type="radio" checked="" value="{{$photo->prdImageId}}" name="radioDrop"> @lang('app.dropzone.photoIcon_tex')
+										@else
+										<input type="radio" value="{{$photo->prdImageId}}" name="radioDrop"> @lang('app.dropzone.photoIcon_tex')
+										@endif
+									</label>
+									<a class="pull-right" href="javascript:void(0)" onclick="delete_photo({{$photo->prdImageId}})">
+										<i class="fa fa-trash"></i>
+									</a>
+									<br>
+									<small>{{$photo->created_at ? $photo->created_at->diffForHumans() : ""}}</small>
+								</div>				
 							</div>
 						</div>
 						@endforeach
@@ -372,12 +374,20 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 	<script>
 		Dropzone.autoDiscover = false;
+		var pdfOpenParams = "#page=1&pagemode=none";
         $(document).ready(function(){
             CKEDITOR.replace( 'description' );
-			$("#category_id").select2();
-			$(".fancyboxLink").fancybox({
-				'padding': 0,
-				'type': 'iframe',
+			$("#category_id").select2();			
+			$("a.fancyboxLink").fancybox();			
+			$("#fancybox-pdf").fancybox({
+				openEffect  : 'none',
+				closeEffect : 'none',
+				iframe : {
+					preload: false
+				}
+			});
+			$("a.fancyboxLinkDoc").fancybox({
+				type: "iframe"
 			});
 			set_type_programme($('#cat_programmme_id').val(),{{$product->type_id}});
 			//set_type_produit($('#cat_programmme_id').val());
@@ -825,6 +835,47 @@
 					$('[name="id_product"]').val(data.product.id);
 					$('[name="id_location_product"]').val(data.product.location_id);
 					
+					if(data.product.ancienneteBien == 'Ancien'){
+						$('#yearConstruct').show();
+						$('[name="year_built"]').val(data.product.year_built);
+					}else{
+						$('#yearConstruct').hide();
+						$('[name="year_built"]').val(0);
+					}
+					
+					if(data.product.ancienneteBien == 'Neuf' && data.product.natureBien == 'Produit isolé'){
+						$('#jardin_info').show();
+						$('[name="superficie_jardin"]').val(data.product.superficie_jardin);
+					}else{
+						$('#jardin_info').hide();
+						$('[name="superficie_jardin"]').val(0);
+					}
+					
+					if(data.product.natureBien == 'Produit isolé'){
+						$('#chk_picine').show();
+						if(data.product.avoir_piscine == 1){
+							$('input[name *= chk_picine]').prop('checked', true);
+						}else{
+							$('input[name *= chk_picine]').prop('checked', false);
+						}
+					}else{
+						$('#chk_picine').hide();
+					}
+					
+					if(data.product.avoir_parking_voie_public == 1){
+						$('input[name *= chk_parking]').prop('checked', true);
+					}else{
+						$('input[name *= chk_parking]').prop('checked', false);
+					}
+					
+					if(data.product.garage_spaces != 0 || data.product.carport_spaces != 0){
+						 console.log('tokony disabled');
+						$("#chk_parking").attr('disabled','disabled');
+					}else{
+						console.log('normal');
+						$("#chk_parking").removeAttr('disabled');
+					}	
+				
 					$('#modal_form_product').modal('show'); 
 					$('.modal-title').text("@lang('app.form.product_edit_title')"); 
 				},

@@ -77,6 +77,18 @@
 <script src="{{asset('administrator/plugins/ckeditor/ckeditor.js')}}"></script>
 <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
 <script type="text/javascript">
+	$(document).ready(function(){
+		$('#garage_spaces, #carport_spaces').bind('keyup mouseup', function (){
+			if($('#garage_spaces').val() != 0 || $('#carport_spaces').val() != 0){
+				 console.log('tokony disabled');
+				$("#chk_parking").attr('disabled','disabled');
+			}else{
+				console.log('normal');
+				$("#chk_parking").removeAttr('disabled');
+			}
+		});	
+	});
+			
 	function set_type_programme(categorie_id,type_id_active)
 	{
 		$.ajax({
@@ -133,6 +145,46 @@
 				$('[name="id_programme"]').val(data.product.parent_id);
 				$('[name="id_product"]').val(data.product.id);
 				$('[name="id_location_product"]').val(data.product.location_id);
+				if(data.product.ancienneteBien == 'Ancien'){
+					$('#yearConstruct').show();
+					$('[name="year_built"]').val(data.product.year_built);
+				}else{
+					$('#yearConstruct').hide();
+					$('[name="year_built"]').val(0);
+				}
+				
+				if(data.product.ancienneteBien == 'Neuf' && data.product.natureBien == 'Produit isolé'){
+					$('#jardin_info').show();
+					$('[name="superficie_jardin"]').val(data.product.superficie_jardin);
+				}else{
+					$('#jardin_info').hide();
+					$('[name="superficie_jardin"]').val(0);
+				}
+				
+				if(data.product.natureBien == 'Produit isolé'){
+					$('#chk_picine').show();
+					if(data.product.avoir_piscine == 1){
+						$('input[name *= chk_picine]').prop('checked', true);
+					}else{
+						$('input[name *= chk_picine]').prop('checked', false);
+					}
+				}else{
+					$('#chk_picine').hide();
+				}
+				
+				if(data.product.avoir_parking_voie_public == 1){
+					$('input[name *= chk_parking]').prop('checked', true);
+				}else{
+					$('input[name *= chk_parking]').prop('checked', false);
+				}
+				
+				if(data.product.garage_spaces != 0 || data.product.carport_spaces != 0){
+					 console.log('tokony disabled');
+					$("#chk_parking").attr('disabled','disabled');
+				}else{
+					console.log('normal');
+					$("#chk_parking").removeAttr('disabled');
+				}	
 				
 				set_type_programme({{$record->category_id}},data.product.type_id);
 				$('#modal_form_product').modal('show'); 
