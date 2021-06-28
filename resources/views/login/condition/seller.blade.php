@@ -16,7 +16,7 @@
             <div id="slider"> 
                 <div class="container text-center"> 
                     <div class="jumbotron"> 
-                            <h2>Acceptance Page - Seller</h2> 
+                        <h2>@lang('seller.acceptance_page')</h2>
                     </div>                     
                 </div>                 
             </div>             
@@ -30,6 +30,18 @@
                 </div>
                 <div class="modal-body">
                     <p class="text-justify">{{$page->content}}</p>
+                    <div class="row m-50px-t">
+                        <div class="col-md-12">
+                            <select class="form-control" id="seller_class" name="seller_class">
+                                <option value="" selected disabled>@lang('seller.choose_your_seller_class')</option>
+                                <option value="real_estate_professionals" {{ old('seller_class')=='real_estate_professionals'?'selected':'' }}>@lang('seller.real_estate_professionals')</option>
+                                <option value="non_professional_legal_persons" {{ old('seller_class')=='non_professional_legal_persons'?'selected':'' }}>@lang('seller.non_professional_legal_persons')</option>
+                                <option value="non_professional_natural_persons" {{ old('seller_class')=='non_professional_natural_persons'?'selected':'' }}>@lang('seller.non_professional_natural_persons')</option>
+                                <option value="seller_by_afa" {{ old('seller_class')=='seller_by_afa'?'selected':'' }}>@lang('seller.seller_by_afa')</option>
+                            </select>
+                        </div>
+                    </div>
+                    <span class="error-msg text-danger p-25px-t"></span>
                 </div>
                 <div class="modal-footer">
                     <a type="button" class="pull-left m-btn m-btn-theme" href="javascript:history.back()">@lang('app.btn.abandonner')</a>
@@ -44,7 +56,7 @@
             <div class="col-md-12">
                 <div class="col-md-12">
                     <h4 class="title wow slideInLeft" style="visibility: hidden; animation-name: none;">
-                        SELLER'S AGREEMENT</h4>
+                        {{ strtoupper(trans('seller.sellers_aggreement')) }}</h4>
                 </div>
                 <section class="at-faq-sec">
                     <div class="container">
@@ -53,19 +65,19 @@
                                 <form action="{{ route('register.show', ['role'=>'seller']) }}" method="get">
                                     <div class="panel-group">
                                         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                                        <input type="hidden" id="class" name="class">
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
                                                 <h4 class="panel-title">
                                                     <i class="more-less glyphicon glyphicon-plus"></i>
-                                                    STEP 1 – Terms and Conditions of Use
+                                                    @lang('seller.condition.step_1')
                                                 </h4>
                                             </div>
                                                 <div class="panel-body">
-                                                    The Seller acknowledges having read the Terms and Conditions of Use of the site
-                                                    "Investir en Australie" and declares to accept them without any reservation
+                                                    @lang('seller.condition.step_1.content')
                                                     <br>
                                                     <label data-pg-collapsed>
-                                                        <input class="control-label" type="checkbox" name="condition[]" value="1" id="condition1" >    I agree   *
+                                                        <input class="control-label" type="checkbox" name="condition[]" value="1" id="condition1" required>    @lang('app.txt.agree')   *
                                                     </label>
                                                 </div>
                                         </div>
@@ -73,23 +85,22 @@
                                             <div class="panel-heading">
                                                 <h4 class="panel-title">
                                                         <i class="more-less glyphicon glyphicon-plus"></i>
-                                                        STEP 2 – Legal compliance of products
+                                                        @lang('seller.condition.step_2')
                                                 </h4>
                                             </div>
                                                 <div class="panel-body">
-                                                    The Seller makes the commitment, under its sole responsibility, to display on "Investir en Australie"
-                                                    site only products that can be sold to non-resident foreigners in accordance with Australian law and the
-                                                    rules applicable by the Foreign Investment Review Board (FIRB).<br>
+                                                    @lang('seller.condition.step_2.content')
+                                                    <br>
                                                     <label data-pg-collapsed>
-                                                        <input class="control-label" type="checkbox" value="1" id="condition2" name="condition[]">   &nbsp;I agree   *
+                                                        <input class="control-label" type="checkbox" value="1" id="condition2" name="condition[]" required>   &nbsp; @lang('app.txt.agree')   *
                                                     </label>
                                                 </div>
                                         </div>
                                     </div>
                                     <p class="help-block">
-                                            <em>(*) Required field</em>
+                                            <em>(*) @lang('app.txt.champobligatoire')</em>
                                     </p>
-                                    <a class="pull-left m-btn m-btn-theme btn-lg text-center" href="/">@lang('app.btn.cancel')</a>
+                                    <a class="pull-left m-btn m-btn-theme btn-lg text-center" href="{{ route('home') }}" id="btn_cancel">@lang('app.btn.cancel')</a>
                                     <button type="submit" class="m-btn m-btn-theme2nd btn-lg text-center pull-right">@lang('app.btn.continuer')</button>
                                 </form>
                             </div>
@@ -107,13 +118,46 @@
     <script src="{{asset('js/myJs.js')}}"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-            $('#myModal').modal('show');
+            var classSess = sessionStorage.getItem("class");
+            
+            if(classSess == null){
+                $('#myModal').modal('show');
+            }else{
+                if(classSess == 'seller_by_afa'){
+                    return location.href=("{{ route('register', ['role'=>'seller']) }}?class=seller_by_afa");
+                }
+            }          
         });
 
-        //fermeture du modal
         $("#custom-close").on('click', function() {
-            $('#myModal').modal('hide');
+            var val = $('#seller_class').val();
+            sessionStorage.setItem("class",val);
+
+            if(val!==null){
+                $('#class').val(val);
+                if(val == 'seller_by_afa'){
+                    
+                    return location.href=("{{ route('register', ['role'=>'seller']) }}?class=seller_by_afa");
+                }
+                
+                $('#myModal').modal('hide');
+            }else{
+                $('.error-msg').html('* Please choose your seller class');
+            }
+
+            return false;
         });
+
+        $("#seller_class").on('change', function() {
+            // Reinitialize error message
+            return $('.error-msg').html('');
+        });
+
+        $("#btn_cancel").on('click', function() {
+            return sessionStorage.removeItem('class');
+        });
+
+
     </script>
     <script type="text/javascript">
         $('body').scrollspy({

@@ -191,17 +191,17 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="first_name" class="col-sm-3 control-label">@lang('app.txt.nom') *</label>
-                                            <div class="col-sm-12">
-                                                <input type="text" class="form-control" name="first_name" value="{{ old('first_name')?old('first_name'):'' }}" required>
-                                                <span class="text-danger">{{ $errors->first('first_name') }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label" for="last_name">@lang('app.txt.prenom') *</label>
+                                            <label class="col-sm-3 control-label" for="last_name">@lang('app.txt.nom') *</label>
                                             <div class="col-sm-12">
                                                 <input type="text" class="form-control"  name="last_name" value="{{ old('last_name')?old('last_name'):'' }}" required>
                                                 <span class="text-danger">{{ $errors->first('last_name') }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="first_name" class="col-sm-3 control-label">@lang('app.txt.prenom') *</label>
+                                            <div class="col-sm-12">
+                                                <input type="text" class="form-control" name="first_name" value="{{ old('first_name')?old('first_name'):'' }}" required>
+                                                <span class="text-danger">{{ $errors->first('first_name') }}</span>
                                             </div>
                                         </div>
                                         

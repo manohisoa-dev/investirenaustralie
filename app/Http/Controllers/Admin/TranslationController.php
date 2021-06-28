@@ -119,7 +119,7 @@ class TranslationController extends Controller
         $lang = $request->get('lang');
         $file = strtolower($request->get('file'));
         $key = $request->get('key');
-        $value = $request->get('new_content');
+        $value = str_replace("'","&rsquo;",$request->get('new_content'));
 
         if(is_array($lang)){
             $value_fr = $request->get('new_content_fr');

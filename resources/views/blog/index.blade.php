@@ -227,7 +227,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label">@lang('app.txt.password')</label>
-                    <input name="password"  type="password" placeholder="Votre mot de passe *" class="form-control" placeholder="***********" required="required">
+                    <input name="password"  type="password" placeholder="Votre mot de passe *" class="form-control" required="required">
                     <span>{{ $errors->has('password') ? ' has-error' : '' }}</span>
                 </div>
                 <div class="form-group">

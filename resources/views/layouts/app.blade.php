@@ -136,23 +136,29 @@
             <div class="header-top dark-bg">
                 <div class="container">
                     <div class="row align-items-center p-10px-tb">
-                        <div class="col-md-5 ht-info" id="contact-top">
-                            <ul class="nav justify-content-md-start justify-content-center links-white">
-                                @if(App\Models\Config::site()->get_meta('admin_phone')->value != "")
-                                    <li class="small"><a href="#"><i class="fas fa-mobile-alt"></i> @lang('app.contact_us_phone', ['phone'=>option('site.admin_phone', App\Models\Config::site()->get_meta('admin_phone')?App\Models\Config::site()->get_meta('admin_phone'):'-')])</a></li>
-                                @endif
-                                @if(App\Models\Config::site()->get_meta('admin_email')->value != "")
-                                    <li class="small m-10px-l"><a href="mailto:info@admin.com"><i class="fas fa-envelope"></i> {{ App\Models\Config::site()->get_meta('admin_email')?App\Models\Config::site()->get_meta('admin_email')->value:'-' }}</a></li>
-                                @endif
-                            </ul>
-                        </div>
-                        <div class="col-md-7 d-none d-md-block">
+                        @if(App\Models\Config::site()->get_meta('admin_phone')->value != "")
+                            <div class="col-md-5 ht-info" id="contact-top">
+                                <ul class="nav justify-content-md-start justify-content-center links-white">
+                                    @if(App\Models\Config::site()->get_meta('admin_phone')->value != "")
+                                        <li class="small"><a href="#"><i class="fas fa-mobile-alt"></i> @lang('app.contact_us_phone', ['phone'=>option('site.admin_phone', App\Models\Config::site()->get_meta('admin_phone')?App\Models\Config::site()->get_meta('admin_phone'):'-')])</a></li>
+                                    @endif
+                                    @if(App\Models\Config::site()->get_meta('admin_email')->value != "")
+                                        <li class="small m-10px-l"><a href="mailto:info@admin.com"><i class="fas fa-envelope"></i> {{ App\Models\Config::site()->get_meta('admin_email')?App\Models\Config::site()->get_meta('admin_email')->value:'-' }}</a></li>
+                                    @endif
+                                </ul>
+                            </div>
+                        @endif
+                        @if(App\Models\Config::site()->get_meta('admin_phone')->value != "")
+                            <div class="col-md-7 bloc-login-registration">
+                        @else
+                            <div class="col-md-12 bloc-login-registration">
+                        @endif
                             <ul class="nav justify-content-end links-white dropdown-dark-header">
                                 @if(!Auth::check())
                                 <li class="small m-10px-l"><i class="fas fa-mouse-pointer"></i> <a href="{{route('login')}}">@lang('app.connexion')</a>
                                 </li>
 
-                                <li class="small m-10px-l"><i class="fas fa-sign-in-alt"></i> @lang('app.sinscrire') :
+                                <li class="small m-40px-l bloc-registration"><i class="fas fa-sign-in-alt"></i> @lang('app.sinscrire') :
                                     <select id="currency-dropdown" onChange="location.href=''+this.options[this.selectedIndex].value;" class="white-bg-alt border-color-dark-gray border-radius-0 white-color">
                                         <option class="dark-color" value="#" selected="true" disabled="disabled">@lang('app.as')</option>
                                         <option class="dark-color" value="{{route('register', ['role'=>'member'])}}" @if(isset($role)) {{ trans('app.'.$role)==trans('app.member')?"selected":""  }}@endif>@lang('app.member')</option>
@@ -387,11 +393,11 @@
                 <div class="modal-content dark-bg">
                     <div class="modal-header" style="background-color: #AE4435 !important;">
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" style="background-color: #323232 !important;">
                         <div class="nav flex-sm-column flex-row">
                         </div>
                     </div>
-                    <div class="modal-footer">
+                    <div class="modal-footer" style="background-color: #555658 !important;">
                         <button type="button" class="m-btn m-btn-theme2nd" data-dismiss="modal">@lang('app.txt.close')</button>
                     </div>
                 </div>

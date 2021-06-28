@@ -213,7 +213,7 @@
                 $('#lang').val(lang);
                 $('#file').val(file);
                 $('#key').val(key);
-                $('#new_content').val(oldContent);
+                $('#new_content').val(oldContent.replace("&rsquo;","'"));
             });
 
             $('#btn_cancel').click(function(){
