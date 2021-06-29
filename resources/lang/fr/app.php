@@ -1156,4 +1156,9 @@ return
 	'txt.mobile' => 'Mobile',
 	'txt.last_name' => 'Nom',
 	'txt.first_name' => 'Prénom',
+	'txt.yes' => 'OUI',
+	'txt.no' => 'NON',
+	'form.register.politic' => 'J&rsquo;ai pris connaissance de la &ldquo;Politique de Confidentialité&rdquo; et en accepte sans réserves tous les termes;',
+	'form.register.condition' => 'J&rsquo;ai pris connaissance des &ldquo;Conditions Générales d&rsquo;Utilisation&rdquo; et en accepte sans réserves tous les termes',
+	
 ];
