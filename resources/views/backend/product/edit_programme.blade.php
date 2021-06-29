@@ -159,8 +159,10 @@
 							<div class="file">
 								@if(setIconFile($dossie->filepath) == 'images')
 									<a href="{{asset($dossie->filepath)}}" class="fancyboxLink">
+								@elseif(setIconFile($dossie->filepath) == 'pdf')
+									<a class="fancybox-pdf" data-fancybox-type="iframe" href="http://docs.google.com/viewer?embedded=true&url={{asset(urlencode($dossie->filepath))}}">
 								@else
-									<a href="https://docs.google.com/viewer?url={{asset($dossie->filepath)}}&embedded=true" class="fancyboxLink">
+									<a href="https://docs.google.com/viewer?url={{asset(urlencode($dossie->filepath))}}&embedded=true" class="fancyboxLinkDoc" data-fancybox-type="iframe">
 								@endif	
 									<span class="corner"></span>	
 									@if(setIconFile($dossie->filepath) == 'images')
@@ -223,27 +225,27 @@
 						<h5 style="font-weight:normal; font-size:17px; color:#718096">@lang('app.txt.photo_programme')</h5>				
 						@foreach ( $photos as $photo )					
 						<div class="file-box">
-							<div class="file">
-								<a href="{{asset($photo->filepath)}}">
-									<span class="corner"></span>						
-									<div class="image">
-										<img alt="image" class="img-fluid" src="{{asset($photo->filepath)}}">
-									</div>
-									<div class="file-name">
-										<label> 
-											@if($photo->is_principal == 1)
-											<input type="radio" checked="" value="{{$photo->prdImageId}}" name="radioDrop"> @lang('app.dropzone.photoIcon_tex')
-											@else
-											<input type="radio" value="{{$photo->prdImageId}}" name="radioDrop"> @lang('app.dropzone.photoIcon_tex')
-											@endif
-										</label>
-										<a class="pull-right" href="javascript:void(0)" onclick="delete_photo({{$photo->prdImageId}})">
-											<i class="fa fa-trash"></i>
-										</a>
-										<br>
-										<small>{{$photo->created_at ? $photo->created_at->diffForHumans() : ""}}</small>
-									</div>
-								</a>						
+							<div class="file">								
+								<span class="corner"></span>						
+								<div class="image">
+									<a href="{{asset($photo->filepath)}}" class="fancyboxLink">
+									<img alt="image" class="img-fluid" src="{{asset($photo->filepath)}}">
+									</a>
+								</div>
+								<div class="file-name">
+									<label> 
+										@if($photo->is_principal == 1)
+										<input type="radio" checked="" value="{{$photo->prdImageId}}" name="radioDrop"> @lang('app.dropzone.photoIcon_tex')
+										@else
+										<input type="radio" value="{{$photo->prdImageId}}" name="radioDrop"> @lang('app.dropzone.photoIcon_tex')
+										@endif
+									</label>
+									<a class="pull-right" href="javascript:void(0)" onclick="delete_photo({{$photo->prdImageId}})">
+										<i class="fa fa-trash"></i>
+									</a>
+									<br>
+									<small>{{$photo->created_at ? $photo->created_at->diffForHumans() : ""}}</small>
+								</div>				
 							</div>
 						</div>
 						@endforeach
@@ -298,7 +300,17 @@
 		CKEDITOR.replace( 'description' );
 		$("#category_id").select2();
 		$("#type_id").select2();
-		$(".fancyboxLink").fancybox();
+		$("a.fancyboxLink").fancybox();			
+		$("#fancybox-pdf").fancybox({
+			openEffect  : 'none',
+			closeEffect : 'none',
+			iframe : {
+				preload: false
+			}
+		});
+		$("a.fancyboxLinkDoc").fancybox({
+			type: "iframe"
+		});
 		set_type_programme($('#cat_programmme_id').val(),{{$product->type_id}});
 		
 		$('#cat_programmme_id').on('change', function() {

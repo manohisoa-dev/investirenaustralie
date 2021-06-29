@@ -314,3 +314,12 @@ a.compose-mail {
 .modal-footer {
   margin-top: 0;
 }
+
+.bloc-login-registration{
+  margin-left: -20%;
+  font-size: 1.2rem;
+  padding-top: 0.3rem;
+}
+.bloc-registration{
+
+}

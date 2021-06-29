@@ -3,6 +3,13 @@
     .light-logo,.dark-logo{width : 6rem;}
     .carousel{margin-top: 3rem;}
     #home{height: 16rem;}
+    .mission-content{height: auto!important;}
+
+    .bloc-login-registration {
+        margin-left: -5%;
+        font-size: 1.2rem;
+        padding-top: 0.3rem;
+    }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */

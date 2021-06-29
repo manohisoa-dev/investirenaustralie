@@ -678,11 +678,17 @@ class ProductController extends Controller {
             $request->suburb_product, 'country' => $request->countryId_product, 'postalCode' =>
             $request->postalCode_product, 'locality' => $request->ville_product]);
 
-        $titre_product = $request->title_new_programme . '-' . $request->title_product;
+        $titre_product = $request->title_product;
         if (isset($request->chk_parking)) {
             $avoir_parking = 1;
         } else {
             $avoir_parking = 0;
+        }
+        
+        if (isset($request->chk_picine)) {
+            $avoir_piscine = 1;
+        } else {
+            $avoir_piscine = 0;
         }
 
         Product::where('id', $request->id_product)->update(['title' => $titre_product,
@@ -693,7 +699,9 @@ class ProductController extends Controller {
             $request->quantity, 'bedrooms' => $request->bedrooms, 'ensuite' => $request->ensuite,
             'bathrooms' => $request->bathrooms, 'interior_area' => $request->interior_area,
             'exterior_area' => $request->exterior_area, 'total_area' => $request->total_area,
-            'garage_spaces' => $request->garage_spaces, 'carport_spaces' => $request->carport_spaces]);
+            'year_built' => $request->year_built, 'superficie_jardin' => $request->superficie_jardin,
+            'garage_spaces' => $request->garage_spaces, 'carport_spaces' => $request->carport_spaces,
+            'avoir_parking_voie_public' => $avoir_parking,'avoir_piscine'=>$avoir_piscine]);
 
 
         if ($request->file('image')) {
