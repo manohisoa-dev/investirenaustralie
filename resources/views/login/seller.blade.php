@@ -425,7 +425,7 @@
                                             </fieldset>
 
                                             {{-- Seller Details --}}
-                                            <fieldset>
+                                            <fieldset class="m-25px-t">
                                                 <legend>@lang('app.txt.seller_details')</legend>
 
                                                 {{-- seller #1 --}}
@@ -448,7 +448,7 @@
                                                     <div class="form-group">
                                                         <label for="date_of_birth" class="col-sm-3 control-label">@lang('app.txt.date_of_birth') *</label>
                                                         <div class="col-sm-12">
-                                                            <input type="text" class="form-control" name="date_of_birth" value="{{ old('date_of_birth')?old('date_of_birth'):'' }}" required>
+                                                            <input type="text" class="form-control datepickerfrom" name="date_of_birth" placeholder="MM/DD/YYYY" value="{{ old('date_of_birth')?old('date_of_birth'):'' }}" required>
                                                             <span class="text-danger">{{ $errors->first('date_of_birth') }}</span>
                                                         </div>
                                                     </div>
@@ -558,7 +558,7 @@
                                                     <div class="form-group">
                                                         <label for="date_of_birth_2" class="col-sm-3 control-label">@lang('app.txt.date_of_birth') *</label>
                                                         <div class="col-sm-12">
-                                                            <input type="text" class="form-control" name="date_of_birth_2" value="{{ old('date_of_birth_2')?old('date_of_birth_2'):'' }}" required>
+                                                            <input type="text" class="form-control datepickerfrom" placeholder="MM/DD/YYYY" name="date_of_birth_2" value="{{ old('date_of_birth_2')?old('date_of_birth_2'):'' }}" required>
                                                             <span class="text-danger">{{ $errors->first('date_of_birth_2') }}</span>
                                                         </div>
                                                     </div>
@@ -674,6 +674,21 @@
 
 @push('script')
 <script src="{{asset('js/myJs.js')}}"></script>
+
+<!-- Include Bootstrap Datepicker -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<script>
+    $('.datepickerfrom').datepicker({
+        uiLibrary: 'bootstrap4'
+    });
+</script>
+
+
+
+
+
+
 <script type="text/javascript">
     $(window).on('load',function(){
         $('#myModal').modal('show');

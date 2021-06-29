@@ -24,6 +24,7 @@ use App\Models\TypeUser;
 use App\Models\Userinfo;
 use App\Models\SellerBusiness;
 use App\Models\SellerIndividual;
+use Carbon\Carbon;
 use Session;
 
 class RegisterController extends Controller
@@ -670,7 +671,11 @@ class RegisterController extends Controller
         try{
             
             // Create user
-            $type= $datas['type']; 
+            $type= $datas['type'];
+
+            // generate immatriculation user
+            $datas['immat'] = $this->generateImmat($role,$type);
+
             unset($datas['type']);
             $user = User::create($datas);
             $datas['user_id'] = $user->id;
@@ -697,12 +702,14 @@ class RegisterController extends Controller
                 if(session('seller_class') == 'non_professional_natural_persons' || (session('seller_class') == 'seller_by_afa' && $type == 'individual' )){
                     for($i=0;$i<2;$i++){
                         $sfx = $i!=1?'':'_2';
+                        $dtOfbirth = $datas['date_of_birth'.$sfx];
+                        $dt = new Carbon($dtOfbirth);
             
                         $si= SellerIndividual::create([
                             'user_id'=>$user->id, 
                             'last_name'=>$datas['last_name'.$sfx], 
                             'first_name'=>$datas['first_name'.$sfx], 
-                            'date_of_birth'=>session('seller_class')!=='seller_by_afa'?$datas['date_of_birth'.$sfx]:'', 
+                            'date_of_birth'=>session('seller_class')!=='seller_by_afa'?$dt->toDateString():'', 
                             'place_of_birth'=>session('seller_class')!=='seller_by_afa'?$datas['place_of_birth'.$sfx]:'', 
                             'nationality'=>session('seller_class')!=='seller_by_afa'?$datas['nationality'.$sfx]:'', 
                             'street_adr'=>$datas['street_adr'.$sfx], 
@@ -756,6 +763,63 @@ class RegisterController extends Controller
             ->with('success', trans('app.txt.createuser.success').'<br>'
                   .'<a class="btn btn-default" href="'.route('resend_code', $user).'">'.trans('app.txt.resendcode').'</a>');
         
+    }
+
+    /*
+    * Generate user immat
+    *
+    */
+    private function generateImmat($role,$type){
+        $immatPrefix = "";
+        $immatNum = 00000;
+        $roleId=0;
+
+        switch($role){
+            case 'member':
+                $roleId=5;
+                $immatPrefix = 'MEM-';
+
+                break;
+            case 'afa':
+                $roleId=3;
+                $immatPrefix = 'AFA-';
+
+                break;
+            case 'apl':
+                $roleId=4;
+                $immatPrefix = 'APL-';
+
+                break;
+            case 'seller':
+                $roleId=2;
+                if(session('seller_class')=='non_professional_natural_persons'){
+                    $immatPrefix = 'SNP-';
+                }elseif(session('seller_class')=='seller_by_afa'){
+                    $immatPrefix = 'SBA-';
+                }elseif(session('seller_class')=='non_professional_legal_persons'){
+                    $immatPrefix = 'SLP-';
+                }else{
+                    if($type == 'builder'){
+                        $immatPrefix = 'SBU-';
+                    }else{
+                        $immatPrefix = 'SDE-';
+                    }
+                }
+
+                break;
+            default:
+                abort(404);
+        }
+        
+        $userMax = User::where('role',$roleId)->where('immat', 'like', '%'.$immatPrefix.'%')->orderBy('immat','DESC')->first();
+
+        if($userMax !== null){
+            $userImmat = $userMax->immat;
+            $explodeImmat = explode('-',$userImmat);
+            $immatNum = $explodeImmat[1];
+        }
+
+        return $immatPrefix . str_pad($immatNum+1, 5, "0", STR_PAD_LEFT);
     }
 
     /*
