@@ -847,7 +847,7 @@ class User extends Authenticatable{
      */
     public function sellerIndividual()
     {
-        return $this->hasOne(SellerIndividual::class,'user_id','id');
+        // return $this->hasOne(SellerIndividual::class,'user_id','id');
     }
 
     /**
@@ -857,7 +857,7 @@ class User extends Authenticatable{
      */
     public function sellerBusiness()
     {
-        return $this->hasOne(SellerBusiness::class,'user_id','id');
+        // return $this->hasOne(SellerBusiness::class,'user_id','id');
     }
 
 }

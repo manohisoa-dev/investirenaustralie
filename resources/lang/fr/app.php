@@ -1154,4 +1154,6 @@ return
 	'Seller' => 'Vendeur',
 	'txt.sellerclass' => 'Classe du Vendeur',
 	'txt.mobile' => 'Mobile',
+	'txt.last_name' => 'Nom',
+	'txt.first_name' => 'Prénom',
 ];

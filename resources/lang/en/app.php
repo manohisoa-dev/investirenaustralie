@@ -911,5 +911,7 @@ return
 	'Seller' => 'Seller',
 	'txt.sellerclass' => 'Seller Class',
 	'txt.mobile' => 'Mobile',
+	'txt.last_name' => 'Last name',
+	'txt.first_name' => 'First name',
 
 ];

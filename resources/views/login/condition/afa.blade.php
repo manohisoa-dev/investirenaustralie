@@ -19,7 +19,7 @@
                 <p class="text-justify">{{$page->content}}</p>
             </div>
             <div class="modal-footer">
-                <a type="button" class="pull-left m-btn m-btn-theme" href="javascript:history.back()">@lang('app.btn.abandonner')</a>
+                <a type="button" class="pull-left m-btn m-btn-theme" href="{{ route('home') }}">@lang('app.btn.abandonner')</a>
                 <a type="button" class="m-btn m-btn-theme2nd" href="#section1" id="custom-close">@lang('app.btn.continuer')</a>
             </div>
         </div>
@@ -117,7 +117,7 @@
                                  <p class="help-block">
                                     <em>(*) @lang('app.txt.champobligatoire')</em>
                                  </p>
-                                <a class="pull-left m-btn m-btn-theme btn-lg text-center" href="/">@lang('app.btn.abandonner')</a>
+                                <a class="pull-left m-btn m-btn-theme btn-lg text-center" href="{{ route('home') }}">@lang('app.btn.abandonner')</a>
                                  <button  type="submit" class="pull-right m-btn m-btn-theme2nd btn-lg text-center">@lang('app.btn.continuer')</button>
                             </form>
 
