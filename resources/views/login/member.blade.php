@@ -204,29 +204,61 @@
                                                 <span class="text-danger">{{ $errors->first('first_name') }}</span>
                                             </div>
                                         </div>
-                                        
                                     </fieldset>
-                                    <div class="form-group">
-                                        <div class="col-sm-offset-3 col-sm-9">
-                                            <div class="checkbox">
-                                                <p class="help-block">
-                                                    <em>(*) @lang('app.txt.champobligatoire')</em>
-                                                </p>
-                                            </div>
-                                            <div class="checkbox">
-                                                <div class="custom-control custom-switch">
-                                                    <input type="checkbox" name="newsletter" class="custom-control-input" id="shop-notification-3" checked="checked">
-                                                    <label class="custom-control-label" for="shop-notification-3">@lang('app.form.register.newsletter')</label>
+                                    
+                                    <div class="form-group m-25px-tb">
+                                        <div class="col-sm-offset-3 col-sm-12">
+                                            <div class="form-group m-50px-t">
+                                                <div class="row col-lg-12">
+                                                    <div class="col-lg-2">
+                                                        <select name="newsletter" class="form-control">
+                                                            <option value="yes" {{ old('allow_sharing')=='yes'?'selected':'' }}>@lang('app.txt.yes')</option>
+                                                            <option value="no" {{ old('allow_sharing')=='no'?'selected':'' }}>@lang('app.txt.no')</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-lg-10">
+                                                        <label class="control-label" for="newsletter">@lang('app.form.register.newsletter')</label>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="checkbox">
-                                                <div class="custom-control custom-switch">
-                                                    <input type="checkbox" name="allow_sharing" class="custom-control-input" id="shop-notification-4">
-                                                    <label class="custom-control-label" for="shop-notification-4">@lang('app.form.register.shareinfo')</label>
+                                            <div class="form-group m-50px-t">
+                                                <div class="row col-lg-12">
+                                                    <div class="col-lg-2">
+                                                        <select name="allow_sharing" class="form-control">
+                                                            <option value="yes" {{ old('allow_sharing')=='yes'?'selected':'' }}>@lang('app.txt.yes')</option>
+                                                            <option value="no" {{ old('allow_sharing')=='no'?'selected':'' }}>@lang('app.txt.no')</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-lg-10">
+                                                        <label class="control-label" for="newsletter">@lang('app.form.register.shareinfo')</label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="form-group m-50px-t">
+                                        <div class="col-sm-offset-3 col-sm-9">
+                                            <em class="help-block">@lang('app.form.required')</em>
+                                        </div>
+                                    </div>
+                                    
+                                    <hr>
+
+                                    {{-- Politic and condition --}}
+                                    <div>
+                                        <div class="form-group m-25px-t m-50px-b">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" name="politic" id="checkbox-3" required>
+                                                <label class="custom-control-label" for="checkbox-3"><b>@lang('app.form.register.politic') *</b></label>
+                                            </div>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" name="politic" id="checkbox-4" required>
+                                                <label class="custom-control-label" for="checkbox-4"><b>@lang('app.form.register.condition') *</b></label>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="form-group">
                                         <div class="col-sm-offset-3 col-sm-9">
                                             <button type="submit" class="m-btn m-btn-theme" id="btn_member_part_register"> @lang('app.btn.validerinscription') </button>
@@ -552,27 +584,58 @@
                                             </div>
                                         </div>
                                     </fieldset>
-                                    <div class="form-group">
-                                        <div class="col-sm-offset-3 col-sm-9">
-                                            <div class="checkbox">
-                                                <p class="help-block">
-                                                    <em>(*) @lang('app.txt.champobligatoire')</em>
-                                                </p>
-                                            </div>
-                                            <div class="checkbox">
-                                                <div class="custom-control custom-switch">
-                                                    <input type="checkbox" name="newsletter" class="custom-control-input" id="newsletter-notification" checked="checked">
-                                                    <label class="custom-control-label" for="newsletter-notification">@lang('app.form.register.newsletter')</label>
+                                    <div class="form-group m-25px-t">
+                                        <div class="col-sm-offset-3 col-sm-12">
+                                            <div class="form-group m-50px-t">
+                                                <div class="row col-lg-12">
+                                                    <div class="col-lg-2">
+                                                        <select name="newsletter" class="form-control">
+                                                            <option value="yes" {{ old('allow_sharing')=='yes'?'selected':'' }}>@lang('app.txt.yes')</option>
+                                                            <option value="no" {{ old('allow_sharing')=='no'?'selected':'' }}>@lang('app.txt.no')</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-lg-10">
+                                                        <label class="control-label" for="newsletter">@lang('app.form.register.newsletter')</label>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="checkbox">
-                                                <div class="custom-control custom-switch">
-                                                    <input type="checkbox" name="allow_sharing" class="custom-control-input" id="shop-notification">
-                                                    <label class="custom-control-label" for="shop-notification">@lang('app.form.register.shareinfo')</label>
+                                            <div class="form-group m-50px-t">
+                                                <div class="row col-lg-12">
+                                                    <div class="col-lg-2">
+                                                        <select name="allow_sharing" class="form-control">
+                                                            <option value="yes" {{ old('allow_sharing')=='yes'?'selected':'' }}>@lang('app.txt.yes')</option>
+                                                            <option value="no" {{ old('allow_sharing')=='no'?'selected':'' }}>@lang('app.txt.no')</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-lg-10">
+                                                        <label class="control-label" for="newsletter">@lang('app.form.register.shareinfo')</label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="form-group m-50px-t">
+                                        <div class="col-sm-offset-3 col-sm-9">
+                                            <em class="help-block">@lang('app.form.required')</em>
+                                        </div>
+                                    </div>
+
+                                    <hr>
+
+                                    {{-- Politic and condition --}}
+                                    <div>
+                                        <div class="form-group m-25px-t m-50px-b">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" name="politic" id="checkbox-1" required>
+                                                <label class="custom-control-label" for="checkbox-1"><b>@lang('app.form.register.politic') *</b></label>
+                                            </div>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" name="politic" id="checkbox-2" required>
+                                                <label class="custom-control-label" for="checkbox-2"><b>@lang('app.form.register.condition') *</b></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
                                     <div class="form-group">
                                         <div class="col-sm-offset-3 col-sm-9">
                                             <button type="submit" class="m-btn m-btn-theme" id="btn_member_org_register">@lang('app.btn.register')</button>

@@ -913,5 +913,9 @@ return
 	'txt.mobile' => 'Mobile',
 	'txt.last_name' => 'Last name',
 	'txt.first_name' => 'First name',
+	'txt.yes' => 'YES',
+	'txt.no' => 'NO',
+	'form.register.politic' => 'I have read the &ldquo;Confidentiality Policy&rdquo; and fully accept all of its terms;',
+	'form.register.condition' => 'I have read the &ldquo;General Conditions of Use&rdquo; and fully accept all the terms',
 
 ];

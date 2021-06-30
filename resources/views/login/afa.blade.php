@@ -416,6 +416,22 @@
                                                 <em class="help-block">@lang('app.form.required')</em>
                                             </div>
                                         </div>
+                                        <hr>
+
+                                        {{-- Politic and condition --}}
+                                        <div>
+                                            <div class="form-group m-25px-t m-50px-b">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" name="politic" id="checkbox-1" required>
+                                                    <label class="custom-control-label" for="checkbox-1"><b>@lang('app.form.register.politic') *</b></label>
+                                                </div>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" name="politic" id="checkbox-2" required>
+                                                    <label class="custom-control-label" for="checkbox-2"><b>@lang('app.form.register.condition') *</b></label>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="form-group">
                                             <div class="col-sm-offset-3 col-sm-9 p-25px-b">
                                                 <button type="submit" class="m-btn m-btn-theme" id="btn_register">@lang('app.btn.register')</button>
