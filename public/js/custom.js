@@ -387,7 +387,7 @@
             text: "Nous utilisons des cookies pour vous garantir la meilleure expérience sur notre site Web.Si vous continuez à naviguer, vous serez d'accord avec notre",
             scroll: false,
             expireDays: 30,
-            link: "#"
+            link: "confidentialities"
         });
       });
     }
