@@ -303,6 +303,7 @@
 				<div style="clear:both"></div>
 			</div>
 			<div class="ibox-content">
+				<div class="table-responsive">
 				<table class="table table-striped grid-view-tbl">
 					<thead>
                         <tr class="header-row">
@@ -362,6 +363,7 @@
 					@endforeach
 					</tbody>
 				</table>
+				</div>
 			</div>
 		</div>
 	</div>
