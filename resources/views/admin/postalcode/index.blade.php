@@ -33,22 +33,23 @@
 				<h5>Code postaux</h5>
 			</div>
 			<div class="ibox-content">
+				<div class="table-responsive">
                 <table class="table table-striped grid-view-tbl">
                 <thead>
                     <tr class="header-row">
-                                                    {!!\Nvd\Crud\Html::sortableTh('id','admin.postalcode.index','Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('content','admin.postalcode.index','Content')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','admin.postalcode.index','Créer le')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','admin.postalcode.index','Mise à jour le')!!}
-                                            <th><a href="javascript:void(0)">Actions</a></th>
+						{!!\Nvd\Crud\Html::sortableTh('id','admin.postalcode.index','Id')!!}
+						{!!\Nvd\Crud\Html::sortableTh('content','admin.postalcode.index','Content')!!}
+						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.postalcode.index','Créer le')!!}
+						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.postalcode.index','Mise à jour le')!!}
+						 <th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">
-                                                            <td><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
-                                                            <td><input type="text" class="form-control" name="content" value="{{Request::input("content")}}"></td>
-                                                            <td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>
-                                                            <td><input type="text" class="form-control" name="updated_at" value="{{Request::input("updated_at")}}"></td>
-                                                        <td style="min-width: 6em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>
+							<td><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
+							<td><input type="text" class="form-control" name="content" value="{{Request::input("content")}}"></td>
+							<td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>
+							<td><input type="text" class="form-control" name="updated_at" value="{{Request::input("updated_at")}}"></td>
+							<td style="min-width: 6em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>
                         </form>
                     </tr>
                     </thead>
@@ -88,6 +89,7 @@
 				<script>
 					$(".editable").editable({ajaxOptions:{method:'PUT'}});
 				</script>
+				</div>
 			</div>
 		</div>
 	</div>

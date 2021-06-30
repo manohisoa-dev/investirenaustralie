@@ -33,6 +33,7 @@
 				<h5>Mot interdits</h5>
 			</div>
 			<div class="ibox-content">
+				<div class="table-responsive">
                 <table class="table table-striped grid-view-tbl">
                 <thead>
                     <tr class="header-row">
@@ -84,7 +85,7 @@
                 </table>
 
                 @include('vendor.crud.single-page-templates.common.pagination', [ 'records' => $records ] )
-
+				</div>
 				<script>
 					$(".editable").editable({ajaxOptions:{method:'PUT'}});
 				</script>

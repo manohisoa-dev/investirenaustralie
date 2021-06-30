@@ -64,6 +64,7 @@
                         </div>
 
                         <div class="ibox-content">
+							<div class="table-responsive">
                             <table class="table table-striped grid-view-tbl datatable yajra-datatable" id="tablelang">
                                 <thead>
                                     <tr class="header-row">
@@ -76,6 +77,7 @@
                                     </tr>
                                 </thead>
                             </table>
+							</div>
                         </div>
                     </div>
                 </div>

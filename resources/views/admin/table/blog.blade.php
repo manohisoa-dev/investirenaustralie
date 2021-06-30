@@ -1,4 +1,5 @@
 <div class="widget widget-simple widget-table">
+	<div class="table-responsive">
     <table class="table table-striped table-hover">
         <thead>
             <tr>
@@ -52,4 +53,5 @@
            @endforeach
         </tbody>
     </table>
+	</div>
 </div>

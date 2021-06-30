@@ -33,28 +33,29 @@
 				<h5>Pays</h5>
 			</div>
 			<div class="ibox-content">
+				<div class="table-responsive">
                 <table class="table table-striped grid-view-tbl">
                 <thead>
                     <tr class="header-row">
-                                                    {!!\Nvd\Crud\Html::sortableTh('id','admin.country.index','Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('code','admin.country.index','Code')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('content','admin.country.index','Content')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('prefixPhone','admin.country.index','PrefixPhone')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('placeholder','admin.country.index','Placeholder')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','admin.country.index','Créer le')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','admin.country.index','Mise à jour le')!!}
-                                            <th><a href="javascript:void(0)">Actions</a></th>
+						{!!\Nvd\Crud\Html::sortableTh('id','admin.country.index','Id')!!}
+						{!!\Nvd\Crud\Html::sortableTh('code','admin.country.index','Code')!!}
+						{!!\Nvd\Crud\Html::sortableTh('content','admin.country.index','Content')!!}
+						{!!\Nvd\Crud\Html::sortableTh('prefixPhone','admin.country.index','PrefixPhone')!!}
+						{!!\Nvd\Crud\Html::sortableTh('placeholder','admin.country.index','Placeholder')!!}
+						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.country.index','Créer le')!!}
+						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.country.index','Mise à jour le')!!}
+						<th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">
-                                                            <td><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
-                                                            <td><input type="text" class="form-control" name="code" value="{{Request::input("code")}}"></td>
-                                                            <td><input type="text" class="form-control" name="content" value="{{Request::input("content")}}"></td>
-                                                            <td><input type="text" class="form-control" name="prefixPhone" value="{{Request::input("prefixPhone")}}"></td>
-                                                            <td><input type="text" class="form-control" name="placeholder" value="{{Request::input("placeholder")}}"></td>
-                                                            <td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>
-                                                            <td><input type="text" class="form-control" name="updated_at" value="{{Request::input("updated_at")}}"></td>
-                                                        <td style="min-width: 6em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>
+							<td><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
+							<td><input type="text" class="form-control" name="code" value="{{Request::input("code")}}"></td>
+							<td><input type="text" class="form-control" name="content" value="{{Request::input("content")}}"></td>
+							<td><input type="text" class="form-control" name="prefixPhone" value="{{Request::input("prefixPhone")}}"></td>
+							<td><input type="text" class="form-control" name="placeholder" value="{{Request::input("placeholder")}}"></td>
+							<td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>
+							<td><input type="text" class="form-control" name="updated_at" value="{{Request::input("updated_at")}}"></td>
+							<td style="min-width: 6em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>
                         </form>
                     </tr>
                     </thead>
@@ -121,6 +122,7 @@
 				<script>
 					$(".editable").editable({ajaxOptions:{method:'PUT'}});
 				</script>
+				</div>
 			</div>
 		</div>
 	</div>
