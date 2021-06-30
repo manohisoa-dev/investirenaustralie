@@ -379,8 +379,11 @@
     THE.Cookis = function () {
       loadScript(plugin_track + 'cookie/herbyCookie.js', function() {
         $(document).herbyCookie({
-            btnText: "Accept",
+            // btnText: "Accept",
+            btnText: "J'accepte les cookies",
+            btnText2: "Je refuse les cookies",
             policyText: "Politique de confidentialité",
+            title : "Cookies",
             text: "Nous utilisons des cookies pour vous garantir la meilleure expérience sur notre site Web.Si vous continuez à naviguer, vous serez d'accord avec notre",
             scroll: false,
             expireDays: 30,

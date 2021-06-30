@@ -1105,17 +1105,20 @@ figcaption {
   z-index: 9999;
   margin-left: 250px;
   margin-right: 250px;
+  border: solid 1px rgba(255,255,255, 0.7);
+  height: 185px;
 }
 .herbyCookieConsent p {
   display: inline;
-  color: #171347;
+  color: #ffffff;
+  font-size: 14px;
 }
 .herbyCookieConsent a {
   text-decoration: underline;
-  color: #171347;
+  color: #ffffff;
   font-weight: 600;
 }
-.herbyCookieConsent .herbyBtn {
+.herbyCookieConsent .herbyBtn,.herbyBtn2{
   display: inline-block;
   padding: 4px 10px;
   vertical-align: middle;
@@ -1125,7 +1128,7 @@ figcaption {
   font-size: 16px;
   font-weight: normal;
   color: #ffffff !important;
-  border-radius: 15px;
+  border-radius: 0px;
   cursor: pointer;
 }
 
