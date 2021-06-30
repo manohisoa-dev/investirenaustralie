@@ -22,6 +22,9 @@ use App\Models\State;
 use App\Models\Role;
 use App\Models\TypeUser;
 use App\Models\Userinfo;
+use App\Models\SellerBusiness;
+use App\Models\SellerIndividual;
+use Carbon\Carbon;
 use Session;
 
 class RegisterController extends Controller
@@ -336,7 +339,7 @@ class RegisterController extends Controller
             'language' => 'required|max:100',
             'image'    => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
-        
+
         switch($role){
             case 'member':
                 $type=$request->input('type');
@@ -495,8 +498,7 @@ class RegisterController extends Controller
 
                 break;
             case 'seller':
-
-                if(session('seller_class')!=='non_professional_natural_persons'){
+                if(session('seller_class')!=='non_professional_natural_persons' && session('seller_class')!=='seller_by_afa'){
                     $rules = [
                         'type'     => 'required|max:100',
                         'orga_name'         => 'required|max:100',
@@ -544,6 +546,7 @@ class RegisterController extends Controller
                 }else{
                     if(session('seller_class')!=='seller_by_afa'){
                         $rules = [
+                            // Seller #1
                             'last_name'  => 'required|max:100',
                             'first_name' => 'required|max:100',
                             'date_of_birth' => 'required|max:100',
@@ -553,44 +556,76 @@ class RegisterController extends Controller
                             'suburb' => 'required|max:100',
                             'city' => 'required|max:100',
                             'post_code' => 'required|max:100',
-                            'state' => 'required|max:100',
+                            'state' => 'nullable|max:100',
                             'country' => 'required|max:100',
                             'phone' => 'required|max:15',
                             'mobile' => 'required|max:15',
                             'email_adr' => 'required|email|max:100',
+
+                            // Seller #2
+                            'last_name_2'  => 'required|max:100',
+                            'first_name_2' => 'required|max:100',
+                            'date_of_birth_2' => 'required|max:100',
+                            'place_of_birth_2' => 'required|max:100',
+                            'nationality_2' => 'required|max:100',
+                            'street_adr_2' => 'required|max:100',
+                            'suburb_2' => 'required|max:100',
+                            'city_2' => 'required|max:100',
+                            'post_code_2' => 'required|max:100',
+                            'state_2' => 'nullable|max:100',
+                            'country_2' => 'required|max:100',
+                            'phone_2' => 'required|max:15',
+                            'mobile_2' => 'required|max:15',
+                            'email_adr_2' => 'required|email|max:100',
+
                         ];
                     }else{
                         $rules = [
-                            'login'  => 'required',
-                            'immat' => 'required',
+                            'login_afa'  => 'required',
+                            'immat_afa' => 'required',
                         ];
 
-                        if($request->seller_type == 'business'){
+                        if($request->type == 'business'){
                             $rules += [
                                 'business_name' => 'required|max:100',
-                                'street_adr'        => 'required|max:100',
-                                'suburb'        => 'required|max:100',
-                                'city'        => 'required|max:100',
-                                'post_code' => 'required|max:100',
-                                'state' => 'required|max:100',
-                                'country' => 'required|max:100',
-                                'phone' => 'required|max:15',
-                                'mobile' => 'required|max:15',
-                                'email_adr' => 'required|email|max:100',
+                                'street_adr_bs'        => 'required|max:100',
+                                'suburb_bs'        => 'required|max:100',
+                                'city_bs'        => 'required|max:100',
+                                'post_code_bs' => 'required|max:100',
+                                'state_bs' => 'required|max:100',
+                                'country_bs' => 'required|max:100',
+                                'phone_bs' => 'required|max:15',
+                                'mobile_bs' => 'required|max:15',
+                                'email_adr_bs' => 'required|email|max:100',
                             ];
                         }else{
+                            
                             $rules += [
+                                // Seller #1
                                 'last_name'  => 'required|max:100',
                                 'first_name' => 'required|max:100',
                                 'street_adr' => 'required|max:100',
                                 'suburb' => 'required|max:100',
                                 'city' => 'required|max:100',
                                 'post_code' => 'required|max:100',
-                                'state' => 'required|max:100',
+                                'state' => 'nullable|max:100',
                                 'country' => 'required|max:100',
                                 'phone' => 'required|max:15',
                                 'mobile' => 'required|max:15',
                                 'email_adr' => 'required|email|max:100',
+
+                                // Seller #2
+                                'last_name_2'  => 'required|max:100',
+                                'first_name_2' => 'required|max:100',
+                                'street_adr_2' => 'required|max:100',
+                                'suburb_2' => 'required|max:100',
+                                'city_2' => 'required|max:100',
+                                'post_code_2' => 'required|max:100',
+                                'state_2' => 'nullable|max:100',
+                                'country_2' => 'required|max:100',
+                                'phone_2' => 'required|max:15',
+                                'mobile_2' => 'required|max:15',
+                                'email_adr_2' => 'required|email|max:100',
                             ];
                         }
                     }
@@ -631,18 +666,25 @@ class RegisterController extends Controller
         $datas['activation_code'] = md5(str_random(30).(time()*32));
         $datas['use_default_password'] = 1;
         $datas['type_users_id'] = isset($typeUser) ? $typeUser->id : '';
-
+        
 
         try{
-                        
+            
             // Create user
+            $type= $datas['type'];
+
+            // generate immatriculation user
+            $datas['immat'] = $this->generateImmat($role,$type);
+
             unset($datas['type']);
             $user = User::create($datas);
+            $datas['user_id'] = $user->id;
 
             // Create user info
-            $datas['user_id'] = $user->id;
-            if($userInfo = Userinfo::create($datas)){
-                unset($datas['user_id']);
+            if($role !== 'seller' || session('seller_class')!=='non_professional_natural_persons' && session('seller_class')!=='seller_by_afa'){
+                if($userInfo = Userinfo::create($datas)){
+                    unset($datas['user_id']);
+                }
             }
 
             // $request->merge([
@@ -653,6 +695,52 @@ class RegisterController extends Controller
                 unset($rqst['orga_operation_state']);
             }
             $user->handles($rqst);
+
+
+            // Save info in seller_individual or seller_business table where registrator is seller non professional natural persons or seller by afa
+            if($role == 'seller'){
+                if(session('seller_class') == 'non_professional_natural_persons' || (session('seller_class') == 'seller_by_afa' && $type == 'individual' )){
+                    for($i=0;$i<2;$i++){
+                        $sfx = $i!=1?'':'_2';
+                        $dtOfbirth = $datas['date_of_birth'.$sfx];
+                        $dt = new Carbon($dtOfbirth);
+            
+                        $si= SellerIndividual::create([
+                            'user_id'=>$user->id, 
+                            'last_name'=>$datas['last_name'.$sfx], 
+                            'first_name'=>$datas['first_name'.$sfx], 
+                            'date_of_birth'=>session('seller_class')!=='seller_by_afa'?$dt->toDateString():'', 
+                            'place_of_birth'=>session('seller_class')!=='seller_by_afa'?$datas['place_of_birth'.$sfx]:'', 
+                            'nationality'=>session('seller_class')!=='seller_by_afa'?$datas['nationality'.$sfx]:'', 
+                            'street_adr'=>$datas['street_adr'.$sfx], 
+                            'suburb'=>$datas['suburb'.$sfx], 
+                            'city'=>$datas['city'.$sfx], 
+                            'post_code'=>$datas['post_code'.$sfx], 
+                            'state'=>$datas['state'.$sfx], 
+                            'country'=>$datas['country'.$sfx], 
+                            'phone'=>$datas['phone'.$sfx], 
+                            'mobile'=>$datas['mobile'.$sfx], 
+                            'email_adr'=>$datas['email_adr'.$sfx]
+                        ]);
+                    }
+                }else{
+                    if($type == 'business'){
+                        $sb = SellerBusiness::create([
+                            'user_id'=>$user->id, 
+                            'business_name'=>$datas['business_name'], 
+                            'street_adr'=>$datas['street_adr_bs'], 
+                            'suburb'=>$datas['suburb_bs'], 
+                            'city'=>$datas['city_bs'], 
+                            'post_code'=>$datas['post_code_bs'], 
+                            'state'=>$datas['state_bs'], 
+                            'country'=>$datas['country_bs'], 
+                            'phone'=>$datas['phone_bs'], 
+                            'mobile'=>$datas['mobile_bs'], 
+                            'email_adr'=>$datas['email_adr_bs']
+                        ]);
+                    }
+                }
+            }
             
         }catch (\Exception $exception) {
             logger()->error($exception);
@@ -675,6 +763,63 @@ class RegisterController extends Controller
             ->with('success', trans('app.txt.createuser.success').'<br>'
                   .'<a class="btn btn-default" href="'.route('resend_code', $user).'">'.trans('app.txt.resendcode').'</a>');
         
+    }
+
+    /*
+    * Generate user immat
+    *
+    */
+    private function generateImmat($role,$type){
+        $immatPrefix = "";
+        $immatNum = 00000;
+        $roleId=0;
+
+        switch($role){
+            case 'member':
+                $roleId=5;
+                $immatPrefix = 'MEM-';
+
+                break;
+            case 'afa':
+                $roleId=3;
+                $immatPrefix = 'AFA-';
+
+                break;
+            case 'apl':
+                $roleId=4;
+                $immatPrefix = 'APL-';
+
+                break;
+            case 'seller':
+                $roleId=2;
+                if(session('seller_class')=='non_professional_natural_persons'){
+                    $immatPrefix = 'SNP-';
+                }elseif(session('seller_class')=='seller_by_afa'){
+                    $immatPrefix = 'SBA-';
+                }elseif(session('seller_class')=='non_professional_legal_persons'){
+                    $immatPrefix = 'SLP-';
+                }else{
+                    if($type == 'builder'){
+                        $immatPrefix = 'SBU-';
+                    }else{
+                        $immatPrefix = 'SDE-';
+                    }
+                }
+
+                break;
+            default:
+                abort(404);
+        }
+        
+        $userMax = User::where('role',$roleId)->where('immat', 'like', '%'.$immatPrefix.'%')->orderBy('immat','DESC')->first();
+
+        if($userMax !== null){
+            $userImmat = $userMax->immat;
+            $explodeImmat = explode('-',$userImmat);
+            $immatNum = $explodeImmat[1];
+        }
+
+        return $immatPrefix . str_pad($immatNum+1, 5, "0", STR_PAD_LEFT);
     }
 
     /*

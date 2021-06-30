@@ -44,7 +44,7 @@
                     <span class="error-msg text-danger p-25px-t"></span>
                 </div>
                 <div class="modal-footer">
-                    <a type="button" class="pull-left m-btn m-btn-theme" href="javascript:history.back()">@lang('app.btn.abandonner')</a>
+                    <a type="button" class="pull-left m-btn m-btn-theme" href="{{ route('home') }}">@lang('app.btn.abandonner')</a>
                     <a type="button" class="m-btn m-btn-theme2nd" href="#section1" id="custom-close">@lang('app.btn.continuer')</a>
                 </div>
             </div>
