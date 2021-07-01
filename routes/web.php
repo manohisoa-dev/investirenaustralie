@@ -32,7 +32,8 @@ Route::get('apls', 'IndexController@apl')->name('apls');
 Route::get('get/show/apl/{id}', 'IndexController@getShowApl')->name('get.show.apl');
 Route::get('show/apl/{id}', 'IndexController@showApl')->name('show.apl');
 // Get APL footer
-Route::get('getApl/{apl}', 'IndexController@getApl')->name('getapl');
+Route::get('getApl/{country}/{locality}', 'IndexController@getApl')->name('getapl');
+Route::get('getListAplGrpByCity/{country}', 'IndexController@getListAplGrpByCity')->name('getListAplGrpByCity');
 
 // Shop and Product
 Route::post('shop/search', 'SearchController@search')->name('c.search');

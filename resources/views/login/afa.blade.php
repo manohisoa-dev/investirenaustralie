@@ -289,7 +289,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="country" class="col-sm-3 control-label">@lang('app.txt.etat') *</label>
+                                                <label for="area_level_1" class="col-sm-3 control-label">@lang('app.txt.etat') *</label>
                                                 <div class="col-sm-12">
                                                     <select id="administrative_area_level_1" class="form-control" name="area_level_1">
                                                         <option selected disabled>@lang('app.select_state')</option>
@@ -358,7 +358,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="country" class="col-sm-3 control-label">@lang('app.txt.etat') *</label>
+                                                    <label for="adrpost_area_level_1" class="col-sm-3 control-label">@lang('app.txt.etat') *</label>
                                                     <div class="col-sm-12">
                                                         <select id="adrpost_administrative_area_level_1" class="form-control" name="adrpost_area_level_1">
                                                             <option selected disabled>@lang('app.select_state')</option>

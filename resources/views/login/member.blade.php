@@ -137,7 +137,7 @@
                                                 <select class="form-control" name="country" required>
                                                     <option value="" selected disabled>@lang('app.select_country')</option>
                                                     @foreach($countries as $country)
-                                                    <option value="{{$country->id}}" {{ old('country')==$country->id?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
+                                                    <option value="{{$country->code}}" {{ old('country')==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
                                                     @endforeach
                                                 </select>
                                                 <span class="text-danger">{{ $errors->first('country') }}</span>
@@ -481,7 +481,7 @@
                                                     <option value="" selected disabled>@lang('app.select_country')</option>
                                                     @foreach($countries as $country)
                                                         @if($country->prefixPhone)
-                                                            <option value="{{$country->id}}" {{ old('country')==$country->id?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
+                                                            <option value="{{$country->code}}" {{ old('country')==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
                                                         @endif
                                                     @endforeach
                                                 </select>
@@ -549,7 +549,7 @@
                                                         <option value="" selected disabled>@lang('app.select_country')</option>
                                                         @foreach($countries as $country)
                                                             @if($country->prefixPhone)
-                                                                <option value="{{$country->id}}" {{ old('adrpost_country')==$country->id?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
+                                                                <option value="{{$country->code}}" {{ old('adrpost_country')==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
                                                             @endif
                                                         @endforeach
                                                     </select>
@@ -700,9 +700,9 @@
     {{-- Google map location --}}
     <script>
         $('form').on('change','.country-select',function(){
-            var country_id = $(this).val();
+            var country_code = $(this).val();
 
-            if(country_id==12){
+            if(country_code=='AUS'){
                 $('#countrySelectModal').modal('show');
             }
 

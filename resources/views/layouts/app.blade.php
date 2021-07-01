@@ -320,18 +320,6 @@
                             @endif
                         </ul>
                     </div>
-                    {{-- <div class="col-lg-2 col-sm-5 m-15px-tb" id="apl_list">
-                        <h6 class="white-color">
-                            {{ Illuminate\Support\Str::upper(trans('app.apls')) }}
-                        </h6>
-                        <ul class="list-unstyled links-white footer-link-1">
-                            @forelse($lapls as $apl)
-                                <li><a class="apl_item" href="#" value="{{ $apl->locality }}" data-toggle="modal" data-target="#listAplModal">{{ $apl->locality }}</a></li>
-                            @empty
-                                <li></li>
-                            @endforelse
-                        </ul>
-                    </div> --}}
                     <div class="col-lg-3 col-sm-5 m-15px-tb">
                         <h6 class="white-color">
                             {{ Illuminate\Support\Str::upper(trans('app.txt.information')) }}
@@ -359,10 +347,15 @@
                     <ul class="nav justify-content-center justify-content-md-start p-25px-b links-white footer-link-1 font-color-theme4rd">
                         <li style="margin:auto;">
                             <a href="{{route('apls')}}" style="color:#01E367;font-size: 1.5rem;">@lang('app.apls')</a> :
-                            @if(isset($lapls))
-                                @foreach($lapls as $apl)
-                                    <a class="apl_item" href="#" value="{{ $apl->locality }}" data-toggle="modal" data-target="#listAplModal" style="color:#01E367;font-size: 1.5rem;">{{ $apl->locality }}</a> @if(!$loop->last) - @endif
-                                @endforeach
+                            @if(getListAplGrpByCountry() !== null)
+                                @forelse(getListAplGrpByCountry() as $apl)
+                                    @php
+                                        $countryContent = App\Models\Country::where('code',$apl->country)->first()->content;
+                                    @endphp
+                                    <a class="country_apl_item" href="javascript:void(0)" value="{{ $apl->country }}" data-country="{{ $countryContent }}" data-toggle="tooltip" data-placement="top" data-html="true" title="<p class='text-center'> {{ trans('app.txt.click_to_show_city') }} {{ $countryContent }}</p>" style="color:#01E367;font-size: 1.5rem;">{{ $countryContent }}</a> @if(!$loop->last) - @endif
+                                @empty
+                                    <span style="color:#01E367;font-size: 1.2rem;">@lang('app.txt.noinfo')</span>
+                                @endforelse
                             @endif
                         </li>
                         <li></li>
@@ -434,38 +427,128 @@
     <!-- Bootstrap 3 slider -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/css/bootstrap-slider.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/bootstrap-slider.min.js"></script>
+    {{-- Bootstrap popper --}}
+    <script src="{{ asset('js/popper.min.js') }}"></script>
     <!-- end -->
 
+    {{-- Tooltip css style --}}
+    <style>
+        .tooltip-inner {
+        max-width: 250px !important;
+        width: 250px !important;
+        height: auto !important;
+        font-size: 12px;
+        padding: 10px 15px 10px 20px;
+        background: #01E056;
+        color: #ffffff !important;
+        border: none;
+        border-radius: none;
+        text-align: left;
+        }
+
+        .tooltip-inner a,p{
+            color: #323232 !important;
+            font-size: 16px !important;
+        }
+
+        .tooltip-inner a:hover{
+            color: #000000 !important;
+        }
+
+        .tooltip.show {
+        opacity: 1;
+        }
+    </style>
+
+    {{-- Popup style --}}
+    <style>
+        a span{
+            position:absolute;       
+            margin-top:23px;
+            margin-left:-35px;
+            color:#ffffff;
+            background:rgba(0,0,0,.9);
+            padding:15px;
+            border-radius:3px;
+            box-shadow:0 0 2px rgba(0,0,0,.5); 
+            transform:scale(0) rotate(-12deg);      
+            transition:all .25s;
+            opacity:0;
+        }
+
+        a:hover span, a:focus span{
+            opacity:1;
+            transform:scale(1) rotate(0);        
+        }
+    </style>
+
     <script type="text/javascript">
-        $('#apl_list').on('click','.apl_item',function(){
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+        $('#apl_list').on('click','.country_apl_item',function(){
             var val = $(this).attr('value');
-            var uri = '{{ URL::to("getApl") }}'+'/'+val;
+            var countryContent = $(this).attr('data-country');
+            var uri = '{{ URL::to("getListAplGrpByCity") }}'+'/'+val;
             var envoi = $.get( uri );
-
+            
+            // Reinitalize data in tooltip
+            $('.tooltip-inner').html('');
+            $('.tooltip-inner').append('<p class="text-center border-bottom-1 border-gray">{{ trans("app.txt.apl_city") }} '+countryContent+'</p>');
+            $('.tooltip-inner').append('<div id="city_list"><div class="load-circle"><span class="one"></span></div></div>');
+            
             envoi.done( function(data) {
-                // set apl title
-                $('#listAplModal .modal-header').html('<h4 class="white-color">'+val+'</h4>');
-
-                // initialize apl items
-                $('#listAplModal .modal-body').html('');
-
-                // set apl items
-                $('#listAplModal .modal-body').append("<h6 class='white-color'>@lang('app.txt.aplfound') : "+data.res.length+"</h6>");
+                $('.tooltip-inner #city_list').html('');
                 $.each(data.res,function(key,value){
-                    console.log(value.id);
-                    var id= value.id;
-                    var uri = '{{ URL::to("get/show/apl") }}'+'/'+id;
-                    var envoi = $.get( uri );
-
-                    envoi.done( function(url) {
-                        $('#listAplModal .modal-body').append('<a href="'+url.res+'" target="_blank" class="nav-item nav-link white-color"><i class="fa fa-map-marker"></i> '+value.name+'</a>');
-                    });
-
-
-                    // $('#listAplModal .modal-body').append('<a href={{route("member.select.apl")}} class="nav-item nav-link white-color"><i class="fa fa-building"></i> '+value.name+'</a>');
+                    ctry=(value.country).replaceAll(' ','_');
+                    loc=(value.locality).replaceAll(' ','_');
+                    $('.tooltip-inner #city_list').append('<p><a href="javascript:void(0)" onclick=getApl("'+ctry+'","'+loc+'") class="apl_item"><i class="fa fa-building"></i> '+value.locality+'</a></p>');
                 });
             });
         });
+
+        function getApl(ctry,loc){
+            var uri = '{{ URL::to("getApl") }}'+'/'+ctry+'/'+loc;
+            var envoi = $.get( uri );
+
+            // show list apl modal
+            $('#listAplModal').modal('show');
+
+            $.ajaxSetup({
+                headers: {
+                'X-CSRF-Token': $('meta[name="_token"]').attr('content')
+                }
+            });
+
+            // set apl title
+            $('#listAplModal .modal-header').html('<h4 class="white-color">'+loc.replaceAll('_',' ')+'</h4>');
+
+            // initialize apl items
+            $('#listAplModal .modal-body').html('<div class="load-circle"><span class="one"></span></div>');
+
+            envoi.done( function(data) {
+                // set apl items
+                $('#listAplModal .modal-body').html("<h6 class='white-color'>@lang('app.txt.aplfound') : "+data.res.length+"</h6>");
+
+                $.each(data.res,function(key,value){
+                    var id= value.id;
+                    var uri = '{{ URL::to("get/show/apl") }}'+'/'+id;
+                    var envoi = $.get( uri );
+                    var nl = "{{ trans('app.txt.noinfo') }}";
+                    var aplInfo ="";
+                    var apl_phone = data.infos[key]?+data.infos[key]['orga_phone']:nl;
+                    var apl_email = data.infos[key]?+data.infos[key]['orga_email']:nl;
+                    var apl_website = data.infos[key]?+data.infos[key]['orga_website']:nl;
+
+                    aplInfo = '- Phone : '+apl_phone+'<br/>- Email : '+apl_email+'<br/>- Site internet : '+apl_website;
+                    envoi.done( function(url) {
+                        $('#listAplModal .modal-body').append('<a href="'+url.res+'" target="_blank" class="nav-item nav-link white-color tip-top"><i class="fa fa-map-marker"></i> '+value.name+'<span>'+aplInfo+'</span></a>');
+                    });
+
+                });
+            });
+        }
 
         $('#btn_devise').click(function(){
             $('#form_devise').show();
@@ -482,7 +565,7 @@
                 });
             },1000);
             $(this).attr('hidden','true');
-        })
+        });
     </script>
 
 
