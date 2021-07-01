@@ -17,7 +17,7 @@ class MailController extends Controller {
 
     public function index() {
         $records = Mail::findRequested();
-        return $this->view("index", ['records' => $records]);
+        return $this->view("index", ['records' => $records,'filter'=>'']);
     }
 
     /**
@@ -26,15 +26,16 @@ class MailController extends Controller {
      * @param  Request $request
      * @return Response
      */
-    public function all(Request $request, $filter) {        
+    public function all(Request $request, $filter) {
         $user = Auth::user();
-        $records = Mail::listeEmailByStatuts($filter,$user->id);
-        if($filter == ''){
+        $records = Mail::listeEmailByStatuts($filter, $user->id);
+        if ($filter == '') {
             $title = __('app.admin.mail.list');
-        }else{
-            $title = __('app.admin.mail.'.$filter);
+        } else {
+            $title = __('app.admin.mail.' . $filter);
         }
-        return $this->view("all", ['records' => $records,'title'=>$title]);
+        return $this->view("all", ['records' => $records, 'title' => $title, 'filter' =>
+            $filter]);
     }
 
     /**
@@ -43,11 +44,10 @@ class MailController extends Controller {
      * @return  \Illuminate\Http\Response
      */
     public function create() {
-        $users = User::all()
-            ->where('id', '<>', \Auth::user()->id)
-            ->where('status', '=', 'active');
-            
-        return $this->view("create",['users'=>$users]);
+        $users = User::all()->where('id', '<>', \Auth::user()->id)->where('status', '=',
+            'active');
+
+        return $this->view("create", ['users' => $users]);
     }
 
     /**
@@ -72,8 +72,8 @@ class MailController extends Controller {
      * @return  \Illuminate\Http\Response
      */
     public function show(Request $request, Mail $mail) {
-        $mail_user = MailUser::where(['user_id' => Auth::id(), 'mail_id' => $mail->id])->first() ;
-        if($mail_user){
+        $mail_user = MailUser::where(['user_id' => Auth::id(), 'mail_id' => $mail->id])->first();
+        if ($mail_user) {
             $mail_user->read = 1;
             $mail_user->save();
         }
@@ -124,7 +124,11 @@ class MailController extends Controller {
 
         # notification
         Notify::success('Mail a été supprimer avec succès');
-        return redirect(route('admin.mail.index'));
+        if(isset($_GET['filter'])){
+            return redirect(route('admin.mail.list',['filter'=>$_GET['filter']]));
+        }else{
+            return redirect(route('admin.mail.index'));
+        }        
     }
 
     protected function view($view, $data = []) {

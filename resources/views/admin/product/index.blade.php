@@ -28,6 +28,7 @@
                 <h5>Produits</h5>
             </div>
             <div class="ibox-content">
+				<div class="table-responsive">
                 <table class="table table-striped grid-view-tbl">
                     <thead>
                         <tr class="header-row">
@@ -210,7 +211,7 @@
                         @empty @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 40]) @endforelse
                     </tbody>
                 </table>
-
+				</div>
                 @include('vendor.crud.single-page-templates.common.pagination', [ 'records' => $records ] )
             </div>
         </div>

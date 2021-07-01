@@ -33,6 +33,7 @@
 				<h5>Mails</h5>
 			</div>
 			<div class="ibox-content">
+				<div class="table-responsive">
                 <table class="table table-striped grid-view-tbl">
                 <thead>
                     <tr class="header-row">	
@@ -114,7 +115,7 @@
                                 </td>
 								<td width="10%">
 								<form class="form-inline" action="{{route('admin.mail.index')}}/{{$record->id}}" method="POST">
-									<a href="{{route('admin.mail.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="@lang('app.btn.view')">
+									<a href="{{route('admin.mail.index')}}/{{$record->id}}?filter={{$filter}}" class="btn btn-default btn-circle" title="@lang('app.btn.view')">
 										<i class="fa fa-eye"></i>
 									</a>&nbsp;&nbsp;								
 									<a href="{{route('admin.mail.compose', $record)}}" class="btn btn-default btn-circle" title="@lang('app.btn.send')">
@@ -140,6 +141,7 @@
 				<script>
 					$(".editable").editable({ajaxOptions:{method:'PUT'}});
 				</script>
+				</div>
 			</div>
 		</div>
 	</div>

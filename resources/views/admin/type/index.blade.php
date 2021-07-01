@@ -33,30 +33,31 @@
 				<h5>Types</h5>
 			</div>
 			<div class="ibox-content">
+				<div class="table-responsive">
                 <table class="table table-striped grid-view-tbl">
                 <thead>
                     <tr class="header-row">
-                                                    {!!\Nvd\Crud\Html::sortableTh('id','admin.type.index','Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('slug','admin.type.index','Slug')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('title','admin.type.index','Title')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('content','admin.type.index','Content')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('object_type','admin.type.index','Object Type')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('author_id','admin.type.index','Author Id')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('created_at','admin.type.index','Créer le')!!}
-                                                    {!!\Nvd\Crud\Html::sortableTh('updated_at','admin.type.index','Mise à jour le')!!}
-                                            <th><a href="javascript:void(0)">Actions</a></th>
+						{!!\Nvd\Crud\Html::sortableTh('id','admin.type.index','Id')!!}
+						{!!\Nvd\Crud\Html::sortableTh('slug','admin.type.index','Slug')!!}
+						{!!\Nvd\Crud\Html::sortableTh('title','admin.type.index','Title')!!}
+						{!!\Nvd\Crud\Html::sortableTh('content','admin.type.index','Content')!!}
+						{!!\Nvd\Crud\Html::sortableTh('object_type','admin.type.index','Object Type')!!}
+						{!!\Nvd\Crud\Html::sortableTh('author_id','admin.type.index','Author Id')!!}
+						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.type.index','Créer le')!!}
+						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.type.index','Mise à jour le')!!}
+						<th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">
-                                                            <td><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
-                                                            <td><input type="text" class="form-control" name="slug" value="{{Request::input("slug")}}"></td>
-                                                            <td><input type="text" class="form-control" name="title" value="{{Request::input("title")}}"></td>
-                                                            <td><input type="text" class="form-control" name="content" value="{{Request::input("content")}}"></td>
-                                                            <td><input type="text" class="form-control" name="object_type" value="{{Request::input("object_type")}}"></td>
-                                                            <td><input type="text" class="form-control" name="author_id" value="{{Request::input("author_id")}}"></td>
-                                                            <td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>
-                                                            <td><input type="text" class="form-control" name="updated_at" value="{{Request::input("updated_at")}}"></td>
-                                                        <td style="min-width: 6em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>
+							<td><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
+							<td><input type="text" class="form-control" name="slug" value="{{Request::input("slug")}}"></td>
+							<td><input type="text" class="form-control" name="title" value="{{Request::input("title")}}"></td>
+							<td><input type="text" class="form-control" name="content" value="{{Request::input("content")}}"></td>
+							<td><input type="text" class="form-control" name="object_type" value="{{Request::input("object_type")}}"></td>
+							<td><input type="text" class="form-control" name="author_id" value="{{Request::input("author_id")}}"></td>
+							<td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>
+							<td><input type="text" class="form-control" name="updated_at" value="{{Request::input("updated_at")}}"></td>
+							<td style="min-width: 6em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>
                         </form>
                     </tr>
                     </thead>
@@ -132,6 +133,7 @@
 				<script>
 					$(".editable").editable({ajaxOptions:{method:'PUT'}});
 				</script>
+				</div>
 			</div>
 		</div>
 	</div>

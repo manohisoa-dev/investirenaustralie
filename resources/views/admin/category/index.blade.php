@@ -34,6 +34,7 @@
 				<h5>Categories</h5>
 			</div>
 			<div class="ibox-content">
+				<div class="table-responsive">
                 <table class="table table-striped grid-view-tbl">
                 <thead>
                     <tr class="header-row">
@@ -110,6 +111,7 @@
 				<script>
 					$(".editable").editable({ajaxOptions:{method:'PUT'}});
 				</script>
+				</div>
 			</div>
 		</div>
 	</div>

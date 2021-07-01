@@ -11,7 +11,11 @@
                 <a href="#">Mails</a>
             </li>
             <li class="breadcrumb-item">
+				@if($_GET['filter'] == '')
                 <a href="{{ route('admin.mail.index') }}">Listes</a>
+				@else
+				<a href="{{route('admin.mail.list',['filter'=>$_GET['filter']])}}">Listes</a>
+				@endif
             </li>
             <li class="breadcrumb-item active">
                 <strong>Détail</strong>
@@ -31,12 +35,14 @@
         <!-- header -->
 		<div class="mail-box-header">
 			<div class="float-right">
+			@if($mail->status == 'send')
 				<a href="{{route('admin.mail.compose', $mail)}}" class="btn btn-white btn-sm" title="@lang('app.reply')">
 					<i class="fa fa-reply"></i> @lang('app.reply')
 				</a>
 				<a href="#" class="btn btn-white btn-sm" title="@lang('app.btn.delete')">
 					<i class="fa fa-trash-o"></i> 
 				</a>
+			@endif
 			</div>
 			<div class="mail-tools tooltip-demo m-t-md">
 				<h3>
