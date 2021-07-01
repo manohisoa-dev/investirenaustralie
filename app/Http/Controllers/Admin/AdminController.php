@@ -97,10 +97,8 @@ class AdminController extends Controller {
         if (!$mail || !$mail->id) {
             $mail = new Mail();
         }
-
         //$users = User::isActive()->where('id', '<>', \Auth::user()->id)->get();
         $users = User::where('id', '<>', \Auth::user()->id)->where('status','active')->get();
-
         return view('admin.mail.compose')->with('item', $mail)->with('users', $users);
     }
 

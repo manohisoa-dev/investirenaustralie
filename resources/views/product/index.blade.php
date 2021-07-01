@@ -183,7 +183,7 @@
                       </div>
                       <ul class="comment-list">
                           <li class="comment">
-                            <p>{{$item->content}}</p>
+                            <p>{!! $item->content !!}</p>
                           </li>
                       </ul>
                   </div>

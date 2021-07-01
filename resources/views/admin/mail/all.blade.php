@@ -104,8 +104,8 @@
                                 {{ $record->created_at ? $record->created_at->diffForHumans() : '' }}
                                 </td>
                                 <td width="10%">
-								<form class="form-inline" action="{{route('admin.mail.index')}}/{{$record->id}}" method="POST">
-									<a href="{{route('admin.mail.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="@lang('app.btn.view')">
+								<form class="form-inline" action="{{route('admin.mail.index')}}/{{$record->id}}?filter={{$filter}}" method="POST">
+									<a href="{{route('admin.mail.index')}}/{{$record->id}}?filter={{$filter}}" class="btn btn-default btn-circle" title="@lang('app.btn.view')">
 										<i class="fa fa-eye"></i>
 									</a>&nbsp;&nbsp;								
 									<a href="{{route('admin.mail.compose', $record)}}" class="btn btn-default btn-circle" title="@lang('app.btn.send')">
@@ -127,10 +127,6 @@
                 </table>
 
                 @include('vendor.crud.single-page-templates.common.pagination', [ 'records' => $records ] )
-
-				<script>
-					$(".editable").editable({ajaxOptions:{method:'PUT'}});
-				</script>
 				</div>
 			</div>
 		</div>

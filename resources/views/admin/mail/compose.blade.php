@@ -54,7 +54,7 @@
 						<div class="form-group row">
 							<label class="col-sm-2 col-form-label">Message:</label>
                             <div class="col-sm-10">
-								<textarea id="message" class="input-block-level ckeditor" rows="10" name="content" placeholder="@lang('app.message')" >{{$item->content}}</textarea>
+								<textarea id="ckeditor" class="form-control" name="content" placeholder="@lang('app.message')">{{$item->content}}</textarea>
 							</div>
                         </div>
 						
@@ -74,9 +74,12 @@
     <script src="{{asset('administrator/plugins/ckeditor/ckeditor.js')}}"></script>
 
     <script>
-        $(document).ready(function(){
-            CKEDITOR.replace( 'content' );
+        $(document).ready(function(){            
 			$("#users").select2();
+			if (CKEDITOR.instances['content']) {
+				CKEDITOR.instances['content'].destroy(true);
+			}
+			CKEDITOR.replace('content');
         }) ;
     </script>
 @endsection
