@@ -474,6 +474,7 @@
             transform:scale(0) rotate(-12deg);      
             transition:all .25s;
             opacity:0;
+            font-size: 12px;
         }
 
         a:hover span, a:focus span{
@@ -537,11 +538,11 @@
                     var envoi = $.get( uri );
                     var nl = "{{ trans('app.txt.noinfo') }}";
                     var aplInfo ="";
-                    var apl_phone = data.infos[key]?+data.infos[key]['orga_phone']:nl;
-                    var apl_email = data.infos[key]?+data.infos[key]['orga_email']:nl;
-                    var apl_website = data.infos[key]?+data.infos[key]['orga_website']:nl;
+                    var apl_phone = data.infos[key]?data.infos[key]['orga_phone']:nl;
+                    var apl_email = data.infos[key]?data.infos[key]['orga_email']:nl;
+                    var apl_website = data.infos[key]?data.infos[key]['orga_website']:nl;
 
-                    aplInfo = '- Phone : '+apl_phone+'<br/>- Email : '+apl_email+'<br/>- Site internet : '+apl_website;
+                    aplInfo = '<i class="fa fa-phone"></i> Phone : '+apl_phone+'<br/><i class="fa fa-envelope"></i> Email : '+apl_email+'<br/><i class="fa fa-globe"></i> Site internet : '+apl_website;
                     envoi.done( function(url) {
                         $('#listAplModal .modal-body').append('<a href="'+url.res+'" target="_blank" class="nav-item nav-link white-color tip-top"><i class="fa fa-map-marker"></i> '+value.name+'<span>'+aplInfo+'</span></a>');
                     });
