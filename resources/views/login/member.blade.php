@@ -211,7 +211,8 @@
                                             <div class="form-group m-50px-t">
                                                 <div class="row col-lg-12">
                                                     <div class="col-lg-2">
-                                                        <select name="newsletter" class="form-control">
+                                                        <select name="newsletter" class="form-control" required>
+                                                            <option value="" selected disabled>@lang('app.txt.select')</option>
                                                             <option value="yes" {{ old('allow_sharing')=='yes'?'selected':'' }}>@lang('app.txt.yes')</option>
                                                             <option value="no" {{ old('allow_sharing')=='no'?'selected':'' }}>@lang('app.txt.no')</option>
                                                         </select>
@@ -224,7 +225,8 @@
                                             <div class="form-group m-50px-t">
                                                 <div class="row col-lg-12">
                                                     <div class="col-lg-2">
-                                                        <select name="allow_sharing" class="form-control">
+                                                        <select name="allow_sharing" class="form-control" required>
+                                                            <option value="" selected disabled>@lang('app.txt.select')</option>
                                                             <option value="yes" {{ old('allow_sharing')=='yes'?'selected':'' }}>@lang('app.txt.yes')</option>
                                                             <option value="no" {{ old('allow_sharing')=='no'?'selected':'' }}>@lang('app.txt.no')</option>
                                                         </select>
@@ -589,7 +591,8 @@
                                             <div class="form-group m-50px-t">
                                                 <div class="row col-lg-12">
                                                     <div class="col-lg-2">
-                                                        <select name="newsletter" class="form-control">
+                                                        <select name="newsletter" class="form-control" required>
+                                                            <option value="" selected disabled>@lang('app.txt.select')</option>
                                                             <option value="yes" {{ old('allow_sharing')=='yes'?'selected':'' }}>@lang('app.txt.yes')</option>
                                                             <option value="no" {{ old('allow_sharing')=='no'?'selected':'' }}>@lang('app.txt.no')</option>
                                                         </select>
@@ -602,7 +605,8 @@
                                             <div class="form-group m-50px-t">
                                                 <div class="row col-lg-12">
                                                     <div class="col-lg-2">
-                                                        <select name="allow_sharing" class="form-control">
+                                                        <select name="allow_sharing" class="form-control" required>
+                                                            <option value="" selected disabled>@lang('app.txt.select')</option>
                                                             <option value="yes" {{ old('allow_sharing')=='yes'?'selected':'' }}>@lang('app.txt.yes')</option>
                                                             <option value="no" {{ old('allow_sharing')=='no'?'selected':'' }}>@lang('app.txt.no')</option>
                                                         </select>

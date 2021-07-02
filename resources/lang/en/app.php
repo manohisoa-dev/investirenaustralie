@@ -919,5 +919,6 @@ return
 	'form.register.condition' => 'I have read the &ldquo;General Conditions of Use&rdquo; and fully accept all the terms',
 	'txt.apl_city' => 'APL cities for',
 	'txt.click_to_show_city' => 'Click to display cities for',
+	'txt.select' => 'Select',
 
 ];

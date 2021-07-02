@@ -1162,5 +1162,6 @@ return
 	'form.register.condition' => 'J&rsquo;ai pris connaissance des &ldquo;Conditions Générales d&rsquo;Utilisation&rdquo; et en accepte sans réserves tous les termes',
 	'txt.apl_city' => 'Villes APL pour',
 	'txt.click_to_show_city' => 'Cliquez pour afficher les villes pour',
+	'txt.select' => 'Selectionner',
 	
 ];
