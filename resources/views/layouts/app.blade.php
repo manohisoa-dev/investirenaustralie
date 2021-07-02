@@ -149,7 +149,7 @@
                             </div>
                         @endif
                         @if(App\Models\Config::site()->get_meta('admin_phone')->value != "")
-                            <div class="col-md-7 bloc-login-registration">
+                            <div class="col-md-8 bloc-login-registration">
                         @else
                             <div class="col-md-12 bloc-login-registration">
                         @endif
