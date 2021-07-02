@@ -461,7 +461,7 @@
 
     {{-- Popup style --}}
     <style>
-        a span{
+        a .show-apl-info{
             position:absolute;       
             margin-top:23px;
             margin-left:-35px;
@@ -476,7 +476,7 @@
             font-size: 12px;
         }
 
-        a:hover span, a:focus span{
+        a:hover .show-apl-info, a:focus .show-apl-info{
             opacity:1;
             transform:scale(1) rotate(0);        
         }
@@ -543,7 +543,7 @@
 
                     aplInfo = '<i class="fa fa-phone"></i> Phone : '+apl_phone+'<br/><i class="fa fa-envelope"></i> Email : '+apl_email+'<br/><i class="fa fa-globe"></i> Site internet : '+apl_website;
                     envoi.done( function(url) {
-                        $('#listAplModal .modal-body').append('<a href="'+url.res+'" target="_blank" class="nav-item nav-link white-color tip-top"><i class="fa fa-map-marker"></i> '+value.name+'<span>'+aplInfo+'</span></a>');
+                        $('#listAplModal .modal-body').append('<a href="'+url.res+'" target="_blank" class="nav-item nav-link white-color tip-top"><i class="fa fa-map-marker"></i> '+value.name+'<span class="show-apl-info">'+aplInfo+'</span></a>');
                     });
 
                 });
