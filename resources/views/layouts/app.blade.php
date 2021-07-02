@@ -399,7 +399,7 @@
     <!-- Fin modal -->
 
     <!-- jquery -->
-    <script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ asset('js/jquery-3.0.0.min.js') }}"></script>
     <script src="{{ asset('js/jquery-migrate-3.0.0.min.js') }}"></script>
     <!-- end jquery -->
     <!-- appear -->
@@ -422,7 +422,7 @@
     <script src="{{ asset('plugin/owl-carousel/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('plugin/counter/jquery.countTo.js') }}"></script>
     <!-- bootstrap-slider.js -->
-    <script src="{{ asset('js/bootstrap-slider.js') }}"></script>
+    {{-- <script src="{{ asset('js/bootstrap-slider.js') }}"></script> --}}
     <!-- Bootstrap 3 slider -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/css/bootstrap-slider.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/bootstrap-slider.min.js"></script>

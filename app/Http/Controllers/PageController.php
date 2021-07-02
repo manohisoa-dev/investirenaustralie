@@ -49,12 +49,6 @@ class PageController extends Controller
         
         $page->load(['childs', 'childs.pubs', 'pubs']);
 
-        $lapls = Localisation::select('localizations.*')
-                ->join('users','users.location_id','=','localizations.id')
-                ->where('users.role','=','4')
-                ->groupBy('localizations.locality')
-                ->get();
-
         $states = State::all();
         
         return view('page.index')
@@ -64,8 +58,7 @@ class PageController extends Controller
             ->with('blogs', $blogs)
             ->with('recentProducts', $recentProducts)
             ->with('categories', $categories)
-            ->with('states', $states)
-            ->with('lapls', $lapls);
+            ->with('states', $states);
     }
     
 

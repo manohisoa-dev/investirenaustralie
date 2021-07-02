@@ -176,6 +176,7 @@ class IndexController extends Controller
         $page = Page::findOrFail(1);
         $page->load(['childs', 'childs.pubs', 'pubs']);
 
+
         return $this->render($request, 1)
         ->with('states',$states)
         ->with('locationTypes',$locationTypes)
