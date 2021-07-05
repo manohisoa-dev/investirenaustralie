@@ -246,7 +246,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="country" class="col-sm-3 control-label">@lang('app.txt.etat') *</label>
+                                                    <label for="area_level_1" class="col-sm-3 control-label">@lang('app.txt.etat') *</label>
                                                     <div class="col-sm-12">
                                                         <select id="administrative_area_level_1" class="form-control" name="area_level_1">
                                                             <option selected disabled>@lang('app.select_state')</option>
@@ -315,7 +315,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="country" class="col-sm-3 control-label">@lang('app.txt.etat') *</label>
+                                                        <label for="adrpost_area_level_1" class="col-sm-3 control-label">@lang('app.txt.etat') *</label>
                                                         <div class="col-sm-12">
                                                             <select id="adrpost_administrative_area_level_1" class="form-control" name="adrpost_area_level_1">
                                                                 <option selected disabled>@lang('app.select_state')</option>
@@ -524,7 +524,7 @@
                                                                 <option value="" selected disabled>@lang('app.select_country')</option>
                                                                 @foreach($countries as $country)
                                                                     @if($country->prefixPhone)
-                                                                        <option value="{{$country->id}}" {{ old('country')==$country->id?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
+                                                                        <option value="{{$country->code}}" {{ old('country')==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
                                                                     @endif
                                                                 @endforeach
                                                             </select>
@@ -634,7 +634,7 @@
                                                                 <option value="" selected disabled>@lang('app.select_country')</option>
                                                                 @foreach($countries as $country)
                                                                     @if($country->prefixPhone)
-                                                                        <option value="{{$country->id}}" {{ old('country_2')==$country->id?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
+                                                                        <option value="{{$country->code}}" {{ old('country_2')==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
                                                                     @endif
                                                                 @endforeach
                                                             </select>

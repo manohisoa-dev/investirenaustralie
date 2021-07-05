@@ -78,7 +78,7 @@
         @if (!App\Models\Slider::where('type','video')->where('status',1)->first())
             <a class="carousel-control-prev" href="#carousel-example-1z" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">@lang('app.btn.perv')</span>
+                <span class="sr-only">@lang('app.btn.prev')</span>
             </a>
             <a class="carousel-control-next" href="#carousel-example-1z" role="button" data-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>

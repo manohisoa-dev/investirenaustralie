@@ -160,7 +160,7 @@
                                                                     <option value="" selected disabled>@lang('app.select_country')</option>
                                                                     @foreach($countries as $country)
                                                                         @if($country->prefixPhone)
-                                                                            <option value="{{$country->id}}" {{ old('country')==$country->id?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
+                                                                            <option value="{{$country->code}}" {{ old('country')==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
                                                                         @endif
                                                                     @endforeach
                                                                 </select>
@@ -249,7 +249,7 @@
                                                                     <option value="" selected disabled>@lang('app.select_country')</option>
                                                                     @foreach($countries as $country)
                                                                         @if($country->prefixPhone)
-                                                                            <option value="{{$country->id}}" {{ old('country_2')==$country->id?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
+                                                                            <option value="{{$country->code}}" {{ old('country_2')==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
                                                                         @endif
                                                                     @endforeach
                                                                 </select>

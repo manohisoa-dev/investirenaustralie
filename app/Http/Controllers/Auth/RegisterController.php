@@ -253,7 +253,7 @@ class RegisterController extends Controller
         }
 
         // Shown register form
-        if($request->session()->get("step") == "condition" || $request->session()->get("step") == "register"){
+        if($request->session()->get("step") == "condition"){
             // Validate term check
             $count = 0;
             if(($conditions = $request->condition) && is_array($conditions)){

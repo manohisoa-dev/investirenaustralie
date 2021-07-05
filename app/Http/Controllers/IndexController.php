@@ -16,6 +16,7 @@ use App\Models\Type;
 use App\Models\State;
 use App\Models\Localisation;
 use App\Models\Menu;
+use App\Models\Userinfo;
 use Session;
 use View;
 
@@ -174,6 +175,7 @@ class IndexController extends Controller
 
         $page = Page::findOrFail(1);
         $page->load(['childs', 'childs.pubs', 'pubs']);
+
 
         return $this->render($request, 1)
         ->with('states',$states)
@@ -640,23 +642,43 @@ class IndexController extends Controller
             ->with('lapls',$lapls);
     }
     
-    public function getApl($apl)
+    public function getApl($country,$locality)
     {
+        $aplInfo=[];
+        $country= str_replace('_',' ', $country);
+        $locality= str_replace('_',' ', $locality);
         $lapls = Localisation::select('users.*')
                 ->join('users','users.location_id','=','localizations.id')
-                ->where('localizations.locality', '=', $apl)
+                ->where('localizations.country','=',$country)
+                ->where('localizations.locality', '=', $locality)
                 ->where('users.role','=','4')
                 ->get();
-
-        return response()->json(['res'=>$lapls]);
+        
+        foreach ($lapls as $key => $value) {
+            $aplInfo[$key] = Userinfo::select('*')->where('user_id','=',$value->id)->first();
+        }
+        
+        return response()->json(['res'=>$lapls, 'infos'=>$aplInfo]);
     }
-
+    
     public static function getListApls()
     {
         return $lapls = Localisation::select('localizations.*')
-                ->join('users','users.location_id','=','localizations.id')
-                ->where('users.role','=','4')
-                ->groupBy('localizations.locality')
-                ->get();
+        ->join('users','users.location_id','=','localizations.id')
+        ->where('users.role','=','4')
+        ->groupBy('localizations.locality')
+        ->get();
+    }
+    
+    public function getListAplGrpByCity($country)
+    {
+        $lcity = Localisation::select('localizations.*')
+            ->join('users','users.location_id','=','localizations.id')
+            ->where('users.role','=','4')
+            ->where('localizations.country','=',$country)
+            ->groupBy('localizations.locality')
+            ->get();
+    
+        return response()->json(['res'=>$lcity]);
     }
 }

@@ -368,5 +368,19 @@ if (!function_exists('setIconFile')) {
 	}
 }
 
+if (!function_exists('getListAplGrpByCountry')) {
+	function getListAplGrpByCountry()
+	{
+		$lcountry = App\Models\Localisation::select('localizations.*')
+		->join('users','users.location_id','=','localizations.id')
+		->where('users.role','=','4')
+		->groupBy('localizations.country')
+		->get();
+
+       
+       return $lcountry;
+	}
+}
+
 
 

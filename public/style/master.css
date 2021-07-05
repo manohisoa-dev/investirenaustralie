@@ -1110,7 +1110,7 @@ figcaption {
 }
 .herbyCookieConsent p {
   display: inline;
-  color: #ffffff;
+  color: #ffffff !important;
   font-size: 14px;
 }
 .herbyCookieConsent a {

@@ -137,7 +137,7 @@
                                                 <select class="form-control" name="country" required>
                                                     <option value="" selected disabled>@lang('app.select_country')</option>
                                                     @foreach($countries as $country)
-                                                    <option value="{{$country->id}}" {{ old('country')==$country->id?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
+                                                    <option value="{{$country->code}}" {{ old('country')==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
                                                     @endforeach
                                                 </select>
                                                 <span class="text-danger">{{ $errors->first('country') }}</span>
@@ -211,7 +211,8 @@
                                             <div class="form-group m-50px-t">
                                                 <div class="row col-lg-12">
                                                     <div class="col-lg-2">
-                                                        <select name="newsletter" class="form-control">
+                                                        <select name="newsletter" class="form-control" required>
+                                                            <option value="" selected disabled>@lang('app.txt.select')</option>
                                                             <option value="yes" {{ old('allow_sharing')=='yes'?'selected':'' }}>@lang('app.txt.yes')</option>
                                                             <option value="no" {{ old('allow_sharing')=='no'?'selected':'' }}>@lang('app.txt.no')</option>
                                                         </select>
@@ -224,7 +225,8 @@
                                             <div class="form-group m-50px-t">
                                                 <div class="row col-lg-12">
                                                     <div class="col-lg-2">
-                                                        <select name="allow_sharing" class="form-control">
+                                                        <select name="allow_sharing" class="form-control" required>
+                                                            <option value="" selected disabled>@lang('app.txt.select')</option>
                                                             <option value="yes" {{ old('allow_sharing')=='yes'?'selected':'' }}>@lang('app.txt.yes')</option>
                                                             <option value="no" {{ old('allow_sharing')=='no'?'selected':'' }}>@lang('app.txt.no')</option>
                                                         </select>
@@ -481,7 +483,7 @@
                                                     <option value="" selected disabled>@lang('app.select_country')</option>
                                                     @foreach($countries as $country)
                                                         @if($country->prefixPhone)
-                                                            <option value="{{$country->id}}" {{ old('country')==$country->id?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
+                                                            <option value="{{$country->code}}" {{ old('country')==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
                                                         @endif
                                                     @endforeach
                                                 </select>
@@ -549,7 +551,7 @@
                                                         <option value="" selected disabled>@lang('app.select_country')</option>
                                                         @foreach($countries as $country)
                                                             @if($country->prefixPhone)
-                                                                <option value="{{$country->id}}" {{ old('adrpost_country')==$country->id?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
+                                                                <option value="{{$country->code}}" {{ old('adrpost_country')==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
                                                             @endif
                                                         @endforeach
                                                     </select>
@@ -589,7 +591,8 @@
                                             <div class="form-group m-50px-t">
                                                 <div class="row col-lg-12">
                                                     <div class="col-lg-2">
-                                                        <select name="newsletter" class="form-control">
+                                                        <select name="newsletter" class="form-control" required>
+                                                            <option value="" selected disabled>@lang('app.txt.select')</option>
                                                             <option value="yes" {{ old('allow_sharing')=='yes'?'selected':'' }}>@lang('app.txt.yes')</option>
                                                             <option value="no" {{ old('allow_sharing')=='no'?'selected':'' }}>@lang('app.txt.no')</option>
                                                         </select>
@@ -602,7 +605,8 @@
                                             <div class="form-group m-50px-t">
                                                 <div class="row col-lg-12">
                                                     <div class="col-lg-2">
-                                                        <select name="allow_sharing" class="form-control">
+                                                        <select name="allow_sharing" class="form-control" required>
+                                                            <option value="" selected disabled>@lang('app.txt.select')</option>
                                                             <option value="yes" {{ old('allow_sharing')=='yes'?'selected':'' }}>@lang('app.txt.yes')</option>
                                                             <option value="no" {{ old('allow_sharing')=='no'?'selected':'' }}>@lang('app.txt.no')</option>
                                                         </select>
@@ -700,9 +704,9 @@
     {{-- Google map location --}}
     <script>
         $('form').on('change','.country-select',function(){
-            var country_id = $(this).val();
+            var country_code = $(this).val();
 
-            if(country_id==12){
+            if(country_code=='AUS'){
                 $('#countrySelectModal').modal('show');
             }
 

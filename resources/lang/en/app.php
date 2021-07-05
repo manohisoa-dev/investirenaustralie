@@ -917,5 +917,8 @@ return
 	'txt.no' => 'NO',
 	'form.register.politic' => 'I have read the &ldquo;Confidentiality Policy&rdquo; and fully accept all of its terms;',
 	'form.register.condition' => 'I have read the &ldquo;General Conditions of Use&rdquo; and fully accept all the terms',
+	'txt.apl_city' => 'APL cities for',
+	'txt.click_to_show_city' => 'Click to display cities for',
+	'txt.select' => 'Select',
 
 ];
