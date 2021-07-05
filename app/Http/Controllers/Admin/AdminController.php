@@ -26,10 +26,7 @@ class AdminController extends Controller {
      */
     public function __construct() {
         $this->middleware('auth');
-        $this->middleware('role', ['only' => [
-            '1',
-            '6',
-        ]]);
+        $this->middleware('role', ['only' => ['1', '6', ]]);
     }
 
     /**
@@ -57,23 +54,23 @@ class AdminController extends Controller {
         $recent['sales'] = Product::orderBy('created_at', 'desc')->ofStatus('paid')->take($this->recentSize)->get();
         $recent['orders'] = Product::orderBy('created_at', 'desc')->ofStatus('ordered')->take($this->recentSize)->get();
         $recent['mails'] = Mail::orderBy('created_at', 'desc')->take($this->recentSize)->get();
-        
+
         $info = \DB::table('users')->select(\DB::raw('DATE(created_at) as date'), \DB::raw
             ('count(*) as count'))->groupBy('date')->get();
         $info_p = \DB::table('products')->select(\DB::raw('DATE(created_at) as date'), \DB::raw
             ('count(*) as count'))->groupBy('date')->get();
-            
+
         $lb = array();
         $cnt = array();
         $p_lb = array();
         $p_cnt = array();
-        
-        foreach($info as $in){
+
+        foreach ($info as $in) {
             $lb[] = $in->date;
             $cnt[] = $in->count;
         }
-        
-        foreach($info_p as $ip){
+
+        foreach ($info_p as $ip) {
             $p_lb[] = $ip->date;
             $p_cnt[] = $ip->count;
         }
@@ -81,7 +78,7 @@ class AdminController extends Controller {
         $data['count'] = $cnt;
         $data['p_label'] = $p_lb;
         $data['p_count'] = $p_cnt;
-        
+
         return view('admin.dashboard.index')->with('recent', $recent)->with('count', $count)->with('data',
             json_encode($data));
     }
@@ -98,7 +95,7 @@ class AdminController extends Controller {
             $mail = new Mail();
         }
         //$users = User::isActive()->where('id', '<>', \Auth::user()->id)->get();
-        $users = User::where('id', '<>', \Auth::user()->id)->where('status','active')->get();
+        $users = User::where('id', '<>', \Auth::user()->id)->where('status', 'active')->get();
         return view('admin.mail.compose')->with('item', $mail)->with('users', $users);
     }
 
@@ -110,7 +107,7 @@ class AdminController extends Controller {
         $this->middleware('auth:admin');
         //echo var_dump($request->request);
         //exit;
-        
+
         // Validate request
         $datas = $request->all();
         $validator = Validator::make($datas, ['method' => 'required', 'subject' =>

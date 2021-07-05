@@ -158,7 +158,7 @@
             <li><a href="{{route('admin.slider.create')}}">Ajouter un slider</a></li>
         </ul>
     </li>
-    <li class="{{Request::is('*/mail/*') || Request::is('*/mail') || Request::is('*/mailtype/*') ? 'active' : ''}}">
+    <li class="{{Request::is('*/mail/*') || Request::is('*/mail') || Request::is('*/mails-template/*') || Request::is('*/mails-template') || Request::is('*/mailtype/*') ? 'active' : ''}}">
         <a href="#"><i class="fa fa-envelope" title="Liste des mails"></i> <span class="nav-label">@lang('app.admin.mail.list')</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
             <li><a href="{{route('admin.mail.index')}}">@lang('app.admin.mail.list')</a></li>{{-- Liste des mails --}}
@@ -166,7 +166,7 @@
             <li><a href="{{route('admin.mail.list',['filter'=>'outbox'])}}">@lang('app.admin.mail.outbox')</a></li>{{-- Boite d'envoie --}}
             <li><a href="{{route('admin.mail.list',['filter'=>'draft'])}}">@lang('app.admin.mail.draft')</a></li>{{-- Brouillon --}}
             <li><a href="{{route('admin.mail.list',['filter'=>'spam'])}}">@lang('app.admin.mail.spam')</a></li>{{-- Spam --}}
-            <li><a href="{{route('admin.mail.list',['filter'=>'model'])}}">@lang('app.admin.mail.model')</a></li>{{-- Messages enregistrees --}}
+            <li><a href="{{route('admin.mails-template.index')}}">@lang('app.admin.mail.model')</a></li>{{-- Messages enregistrees --}}
         </ul>
     </li>
     <li class="{{Request::is('*/badword/*') || Request::is('*/badword') ? 'active' : ''}}">
