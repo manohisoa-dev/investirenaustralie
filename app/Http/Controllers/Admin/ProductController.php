@@ -468,7 +468,7 @@ class ProductController extends Controller {
             $product->save();
             # notification
             Notify::success('Produit a été mise à jour avec succès');
-            return redirect(route('admin.product.index'));
+            return redirect(route('admin.product.index').'?nature='.$product->natureBien);
         }
     }
 
@@ -485,9 +485,10 @@ class ProductController extends Controller {
             Notify::success('Programme a été supprimer avec succès');
             return redirect(route('admin.product.programme'));
         } else {
+            $nature = $product->natureBien;
             $product->delete(); # notification
             Notify::success('Produit a été supprimer avec succès');
-            return redirect(route('admin.product.programme'));
+            return redirect(route('admin.product.index').'?nature='.$nature);
         }
     }
 
@@ -506,10 +507,11 @@ class ProductController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function trash(Request $request, Product $product) {
+        $nature = $product->natureBien;
         $product->status = 'trashed';
         $product->save();
         Notify::success('Le produit a été ajouté au corbeille avec succés');
-        return redirect(route('admin.product.index'));
+        return redirect(route('admin.product.index').'?nature='.$nature);
     }
 
     /**
@@ -522,10 +524,11 @@ class ProductController extends Controller {
     public function restore(Request $request, Product $product) {
         $this->middleware('auth');
         $this->middleware('role:admin');
+        $nature = $product->natureBien;
         $product->status = 'pinged';
         $product->save();
         Notify::success('Le produit a été restoré avec succés');
-        return redirect(route('admin.product.index'));
+        return redirect(route('admin.product.index').'?nature='.$nature);
     }
 
     /**
