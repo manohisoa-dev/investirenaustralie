@@ -27,9 +27,20 @@ class ProductController extends Controller {
     public $viewDir = "admin.product";
 
     public function index() {
-        $records = Product::findRequested();
+        if(isset($_GET['nature'])){
+            $nature = $_GET['nature'];
+            if($_GET['nature'] == 'Programme immobilier'){
+                $records = Product::allProduitByNatureProgramme('Programme immobilier');
+            }else{
+                $records = Product::allProduitByNatureProgramme('Produit isolé');
+            }
+        }else{
+            $nature = 'Programme immobilier';
+            $records = Product::allProduitByNatureProgramme('Programme immobilier');
+        }
+        
         $status = Product::groupBy('status')->pluck('status', 'status');
-        return $this->view("index", ['records' => $records, 'status' => $status]);
+        return $this->view("index", ['records' => $records, 'status' => $status,'nature'=>$nature]);
     }
 
     public function programme() {
@@ -201,7 +212,7 @@ class ProductController extends Controller {
 
             # notification
             Notify::success('Produit a été créer avec succès');
-            return redirect(route('admin.product.index'));
+            return redirect(route('admin.product.index').'?nature='.$nature);
         }
     }
 

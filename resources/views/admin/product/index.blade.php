@@ -19,202 +19,205 @@
         </div>
     </div>
 </div>
-
 @endsection @section('content')
 <div class="row">
 	<div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>Produits</h5>
-            </div>
-            <div class="ibox-content">
-				<div class="table-responsive">
-                <table class="table table-striped grid-view-tbl">
-                    <thead>
-                        <tr class="header-row">
-							{!!\Nvd\Crud\Html::sortableTh('id','admin.product.index','Id')!!}
-							{!!\Nvd\Crud\Html::sortableTh('image_id','admin.product.index','Image')!!}
-							{!!\Nvd\Crud\Html::sortableTh('title','admin.product.index','Titre')!!}
-							{!!\Nvd\Crud\Html::sortableTh('price','admin.product.index','Prix')!!}
-							{!!\Nvd\Crud\Html::sortableTh('created_at','admin.product.index','Date')!!}
-							{!!\Nvd\Crud\Html::sortableTh('status','admin.product.index','Statut')!!}
-							{!!\Nvd\Crud\Html::sortableTh('seller_id','admin.product.index','Vendeur')!!}
-							{!!\Nvd\Crud\Html::sortableTh('author_id','admin.product.index','Auteur')!!}
-							<th>Programme</th>
-                            <th><a href="javascript:void(0)">Actions</a></th>
-							
-                        </tr>
-                        <tr class="search-row">
-                            <form class="search-form">
-                                <td style="width:2%"><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
-								<td><input type="text" class="form-control" name="image_id" value="{{Request::input("image_id")}}"></td>
-								<td><input type="text" class="form-control" name="title" value="{{Request::input("title")}}"></td>
-								<td><input type="text" class="form-control" name="price" value="{{Request::input("price")}}"></td>    
-								<td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>  
-								<td>
-									<select class="form-control" name="status">
-										<option value="">Choisir statut</option>
-										@foreach($status as $st)
-										<option value="{{$st}}" {{@$_GET['status']==$st?'selected':''}}>{{$st}}</option>
-										@endforeach
-									</select>
-								</td>
-								<td><input type="text" class="form-control" name="seller_id" value="{{Request::input("seller_id")}}"></td>
-								<td><input type="text" class="form-control" name="author_id" value="{{Request::input("author_id")}}"></td>
-								<td></td>
-                                <td style="min-width: 6em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>
-                            </form>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-						
-                        @forelse ( $records as $index =>$record )
-                        <tr>
-                            <td align="center">
-                                {{ $index + $records->firstItem() }}
-                            </td>
-							<td>
-								@if (@getimagesize($record->imageUrl()))
-									<a href="{{route('admin.product.index')}}/{{$record->id}}">
-										<img src="{{$record->imageUrl()}}" class="img-responsive" style="height:80px" />
-									</a>
-								@else
-									<a href="{{route('admin.product.index')}}/{{$record->id}}">
-										<img class="img-responsive" src="{{asset('img/500x500.jpg')}}" width="80">
-									</a>
-								@endif
+        <div class="tabs-container">
+			<ul class="nav nav-tabs" role="tablist">
+				<li><a class="nav-link {{$nature == 'Programme immobilier' ? 'active' : ''}}" href="{{route('admin.product.index')}}?nature=Programme immobilier"> Programme immobilier</a></li>
+				<li><a class="nav-link {{$nature == 'Produit isolé' ? 'active' : ''}}" href="{{route('admin.product.index')}}?nature=Produit isolé">Produit isolé</a></li>
+			</ul>
+			<div class="tab-content">
+				<div class="ibox-content">
+					<div class="table-responsive">
+					<table class="table table-striped grid-view-tbl">
+						<thead>
+							<tr class="header-row">
+								{!!\Nvd\Crud\Html::sortableTh('id','admin.product.index','Id')!!}
+								{!!\Nvd\Crud\Html::sortableTh('image_id','admin.product.index','Image')!!}
+								{!!\Nvd\Crud\Html::sortableTh('title','admin.product.index','Titre')!!}
+								{!!\Nvd\Crud\Html::sortableTh('price','admin.product.index','Prix')!!}
+								{!!\Nvd\Crud\Html::sortableTh('created_at','admin.product.index','Date')!!}
+								{!!\Nvd\Crud\Html::sortableTh('status','admin.product.index','Statut')!!}
+								{!!\Nvd\Crud\Html::sortableTh('seller_id','admin.product.index','Vendeur')!!}
+								{!!\Nvd\Crud\Html::sortableTh('author_id','admin.product.index','Auteur')!!}
+								<th>Programme</th>
+								<th><a href="javascript:void(0)">Actions</a></th>
 								
-                            </td>
-							<td>
-								<a href="{{route('admin.product.index')}}/{{$record->id}}">
-                                <span
-                                    class="editable"
-                                    data-type="text"
-                                    data-name="title"
-                                    data-value="{{ $record->title }}"
-                                    data-pk="{{ $record->{$record->getKeyName()} }}"
-                                    data-url="{{ route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                >
-                                    {{ $record->title }}
-                                </span></a><br />
-								{!! $record->excerpt() !!}
-                                </span>                            
-							</td>
-							<td>
-                                <span
-                                    class="editable"
-                                    data-type="text"
-                                    data-name="price"
-                                    data-value="{{ $record->price }}"
-                                    data-pk="{{ $record->{$record->getKeyName()} }}"
-                                    data-url="{{ route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                >
-                                    {{ $record->currency }}&nbsp;{{ number_format($record->price, 0, '.', ' ') }}
-                                </span>
-                            </td>
-							<td>
-                                {{ $record->created_at ? $record->created_at->diffForHumans() : '' }}
-                            </td>
-							<td>
-                                <span
-                                    class="editable"
-                                    data-type="text"
-                                    data-name="status"
-                                    data-value="{{ $record->status }}"
-                                    data-pk="{{ $record->{$record->getKeyName()} }}"
-                                    data-url="{{ route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                >
-									@if($record->status=='published')
-									<span class="label label-success">@lang('app.'.$record->status)</span>
-									@elseif($record->status=='waiting')
-									<span class="label label-danger">@lang('app.'.$record->status)</span>
-                                    @else
-                                    <span class="label label-warning">@lang('app.'.$record->status)</span>
-									@endif
-                                </span>
-                            </td>
-                            <td>
-							@if($record->seller_id != 0)
-                                <span
-                                    class="editable"
-                                    data-type="text"
-                                    data-name="seller_id"
-                                    data-value="{{ $record->seller_id }}"
-                                    data-pk="{{ $record->{$record->getKeyName()} }}"
-                                    data-url="{{ route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                >
-                                    {{ $record->seller->name }}
-                                </span>
-							@endif
-                            </td>
-							<td>
-                                <span
-                                    class="editable"
-                                    data-type="text"
-                                    data-name="author_id"
-                                    data-value="{{ $record->author_id }}"
-                                    data-pk="{{ $record->{$record->getKeyName()} }}"
-                                    data-url="{{ route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                >
-                                    {{ $record->author->name }}
-                                </span>
-                            </td>
-							<td>
-								@if($record->parent_id != 0)
-									{{\App\Models\Product::where('id',$record->parent_id)->value('title') }}
-								@endif								
-							</td>
-							<td class="actions-cell text-center" width="12%">
-								<form class="form-inline" action="{{route('admin.product.index')}}/{{$record->id}}" method="POST">
-									<?php /*?><a href="{{route('admin.product.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="Détail">
-										<i class="fa fa-eye"></i>
-									</a>&nbsp;&nbsp;<?php */?>
-									<a href="{{route('admin.product.index')}}/{{$record->id}}/edit" class="btn btn-default btn-circle" title="Modification">
-										<i class="fa fa-pencil-square-o"></i>
-									</a>&nbsp;&nbsp;
-									@if($record->status=='pinged' || $record->status=='archived')
-										<a href="{{route('admin.product.publish', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.publish')">
-											<i class="fa fa-check"></i>
-										</a>&nbsp;&nbsp;
-										<a href="{{route('admin.product.trash', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
-											<i class="fa fa-trash-o"></i>
-										</a>&nbsp;&nbsp;
-									@elseif($record->status=='trashed')
-										<a href="{{route('admin.product.restore', $record->id)}}" class="btn btn-default btn-circle" title="Restore">
-											<i class="fa fa-window-restore"></i>
-										</a>&nbsp;&nbsp;
-									@endif
-									@if($record->status=='published')
-										<a href="{{route('admin.product.archive', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.archive')">
-											<i class="fa fa-archive"></i>
-										</a>&nbsp;&nbsp;
-										<a href="{{route('admin.product.trash', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
-											<i class="fa fa-trash-o"></i>
-										</a>&nbsp;&nbsp;
-									@endif
-                                    @if($record->status=='waiting')
-										<a href="{{route('admin.product.publish', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.validate')">
-											<i class="fa fa-check text-info"></i>
-										</a>&nbsp;&nbsp;
-									@endif
-									
-									{{ csrf_field() }}
-									{{ method_field('DELETE') }}
-									
-									
-									<button type="button" class="btn btn-default btn-circle" title="Suppression" id="delRecord"><i class="fa fa-times text-danger"></i>
-									</button>
+							</tr>
+							<tr class="search-row">
+								<form class="search-form">
+									<td style="width:2%"><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
+									<td><input type="text" class="form-control" name="image_id" value="{{Request::input("image_id")}}"></td>
+									<td><input type="text" class="form-control" name="title" value="{{Request::input("title")}}"></td>
+									<td><input type="text" class="form-control" name="price" value="{{Request::input("price")}}"></td>    
+									<td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>  
+									<td>
+										<select class="form-control" name="status">
+											<option value="">Choisir statut</option>
+											@foreach($status as $st)
+											<option value="{{$st}}" {{@$_GET['status']==$st?'selected':''}}>{{$st}}</option>
+											@endforeach
+										</select>
+									</td>
+									<td><input type="text" class="form-control" name="seller_id" value="{{Request::input("seller_id")}}"></td>
+									<td><input type="text" class="form-control" name="author_id" value="{{Request::input("author_id")}}"></td>
+									<td></td>
+									<td style="min-width: 6em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>
 								</form>
-							</td>
-                        </tr>
-                        @empty @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 40]) @endforelse
-                    </tbody>
-                </table>
+							</tr>
+						</thead>
+	
+						<tbody>
+							
+							@forelse ( $records as $index =>$record )
+							<tr>
+								<td align="center">
+									{{ $index + $records->firstItem() }}
+								</td>
+								<td>
+									@if (@getimagesize($record->imageUrl()))
+										<a href="{{route('admin.product.index')}}/{{$record->id}}">
+											<img src="{{$record->imageUrl()}}" class="img-responsive" style="height:80px" />
+										</a>
+									@else
+										<a href="{{route('admin.product.index')}}/{{$record->id}}">
+											<img class="img-responsive" src="{{asset('img/500x500.jpg')}}" width="80">
+										</a>
+									@endif
+									
+								</td>
+								<td>
+									<a href="{{route('admin.product.index')}}/{{$record->id}}">
+									<span
+										class="editable"
+										data-type="text"
+										data-name="title"
+										data-value="{{ $record->title }}"
+										data-pk="{{ $record->{$record->getKeyName()} }}"
+										data-url="{{ route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+									>
+										{{ $record->title }}
+									</span></a><br />
+									{!! $record->excerpt() !!}
+									</span>                            
+								</td>
+	
+								<td>
+									<span
+										class="editable"
+										data-type="text"
+										data-name="price"
+										data-value="{{ $record->price }}"
+										data-pk="{{ $record->{$record->getKeyName()} }}"
+										data-url="{{ route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+									>
+										{{ $record->currency }}&nbsp;{{ number_format($record->price, 0, '.', ' ') }}
+									</span>
+								</td>
+								<td>
+									{{ $record->created_at ? $record->created_at->diffForHumans() : '' }}
+								</td>
+								<td>
+									<span
+										class="editable"
+										data-type="text"
+										data-name="status"
+										data-value="{{ $record->status }}"
+										data-pk="{{ $record->{$record->getKeyName()} }}"
+										data-url="{{ route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+									>
+										@if($record->status=='published')
+										<span class="label label-success">@lang('app.'.$record->status)</span>
+										@elseif($record->status=='waiting')
+										<span class="label label-danger">@lang('app.'.$record->status)</span>
+										@else
+										<span class="label label-warning">@lang('app.'.$record->status)</span>
+										@endif
+									</span>
+								</td>
+								<td>
+								@if($record->seller_id != 0)
+									<span
+										class="editable"
+										data-type="text"
+										data-name="seller_id"
+										data-value="{{ $record->seller_id }}"
+										data-pk="{{ $record->{$record->getKeyName()} }}"
+										data-url="{{ route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+									>
+										{{ $record->seller->name }}
+									</span>
+								@endif
+								</td>
+								<td>
+									<span
+										class="editable"
+										data-type="text"
+										data-name="author_id"
+										data-value="{{ $record->author_id }}"
+										data-pk="{{ $record->{$record->getKeyName()} }}"
+										data-url="{{ route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+									>
+										{{ $record->author->name }}
+									</span>
+								</td>
+								<td>
+									@if($record->parent_id != 0)
+										{{\App\Models\Product::where('id',$record->parent_id)->value('title') }}
+									@endif								
+								</td>
+								<td class="actions-cell text-center" width="12%">
+									<form class="form-inline" action="{{route('admin.product.index')}}/{{$record->id}}" method="POST">
+										<?php /*?><a href="{{route('admin.product.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="Détail">
+											<i class="fa fa-eye"></i>
+										</a>&nbsp;&nbsp;<?php */?>
+										<a href="{{route('admin.product.index')}}/{{$record->id}}/edit" class="btn btn-default btn-circle" title="Modification">
+											<i class="fa fa-pencil-square-o"></i>
+										</a>&nbsp;&nbsp;
+										@if($record->status=='pinged' || $record->status=='archived')
+											<a href="{{route('admin.product.publish', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.publish')">
+												<i class="fa fa-check"></i>
+											</a>&nbsp;&nbsp;
+											<a href="{{route('admin.product.trash', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
+												<i class="fa fa-trash-o"></i>
+											</a>&nbsp;&nbsp;
+										@elseif($record->status=='trashed')
+											<a href="{{route('admin.product.restore', $record->id)}}" class="btn btn-default btn-circle" title="Restore">
+												<i class="fa fa-window-restore"></i>
+											</a>&nbsp;&nbsp;
+										@endif
+										@if($record->status=='published')
+											<a href="{{route('admin.product.archive', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.archive')">
+												<i class="fa fa-archive"></i>
+											</a>&nbsp;&nbsp;
+											<a href="{{route('admin.product.trash', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
+												<i class="fa fa-trash-o"></i>
+											</a>&nbsp;&nbsp;
+										@endif
+										@if($record->status=='waiting')
+											<a href="{{route('admin.product.publish', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.validate')">
+												<i class="fa fa-check text-info"></i>
+											</a>&nbsp;&nbsp;
+										@endif
+										
+										{{ csrf_field() }}
+										{{ method_field('DELETE') }}
+										
+										
+										<button type="button" class="btn btn-default btn-circle" title="Suppression" id="delRecord"><i class="fa fa-times text-danger"></i>
+										</button>
+									</form>
+								</td>
+							</tr>
+							@empty @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 40]) @endforelse
+						</tbody>
+					</table>
+					</div>
+					@include('vendor.crud.single-page-templates.common.pagination', [ 'records' => $records ] )
 				</div>
-                @include('vendor.crud.single-page-templates.common.pagination', [ 'records' => $records ] )
-            </div>
-        </div>
+			</div>
+		</div>
     </div>
 </div>
 @endsection
