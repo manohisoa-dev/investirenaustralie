@@ -29,7 +29,8 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Ajouter un nouveau Mail</h5>
+                <h5>Ajouter un nouveau Mail</h5><br />
+				<a href="{{route('sendmail')}}">Test email</a>
             </div>
             <div class="ibox-content">
                 <form action="{{route('admin.mail.compose')}}" method="post" id="commentform" class="contact-form" >

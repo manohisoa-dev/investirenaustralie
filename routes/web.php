@@ -82,6 +82,8 @@ Route::get('blog/{slug}', 'BlogController@index')->name('blog.index');
 Route::get('contact','MailController@contact');
 Route::post('contact','MailController@contact')->name('contact');
 
+Route::post('sendmail', 'SendMailController@sendMail')->name('sendmail');
+
 // Register
 Route::middleware('guest')->group(function(){
     Route::get('register/{role}', 'Auth\RegisterController@index')->name('register');
@@ -270,5 +272,6 @@ Route::middleware(["auth", "role:5"] || ["auth", "role:3"])->group(function(){
     Route::post('message/contact', 'MessageController@sendContactMessage')->name('send.contact.message');
 
 });
+
 
 
