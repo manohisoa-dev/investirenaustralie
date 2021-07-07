@@ -36,6 +36,7 @@ class Localisation extends Model
         'num_rooms',
         'num_floor',
         'neighborhood',
+        'adrphy_country',
         'adrpost_postal_box',
         'adrpost_locality',
         'adrpost_postalCode',
