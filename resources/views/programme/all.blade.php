@@ -19,7 +19,7 @@
                     <div class="transition blog-grid-overlay border-radius-0" style="background-image: url({{ $img }}); ">
                         <div class="blog-gird-info">
                             <h5>{{ $item->title?$item->title:'' }}</h5>
-                            <p>{{ $item->location ? Illuminate\Support\Str::upper($item->location->locality.' '.$item->location->area_level_2.', '.$item->location->area_level_1.' '.$item->location->postalCode) : '' }}</p>            
+                            <p><span class="white-color">{{ $item->location ? Illuminate\Support\Str::upper($item->location->locality.' '.$item->location->area_level_2.', '.$item->location->area_level_1.' '.$item->location->postalCode) : '' }}</span></p>            
                         </div>
                     </div>
 

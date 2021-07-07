@@ -200,7 +200,7 @@ return
 	'btn.login' => 'Login',
 	'btn.send' => 'Send',
 	'btn.send_mail' => 'Send mail',
-	'btn.add_to_cart' => 'I want to buy this Product',
+	'btn.add_to_cart' => 'I would like to buy this property',
 	'btn.reply' => 'Reply',
 	'btn.draft' => 'Draft',
 	'btn.next' => 'Next',
@@ -920,5 +920,13 @@ return
 	'txt.apl_city' => 'APL cities for',
 	'txt.click_to_show_city' => 'Click to display cities for',
 	'txt.select' => 'Select',
+	'txt.complete_registration' => 'Please complete your registration',
+	'txt.member_contacts' => 'Member Contacts',
+	'orga.fix_phone' => 'Fix Phone',
+	'txt.skype_nickname' => 'Skype Nickname',
+	'txt.fb_page' => 'Facebook Page (Messenger)',
+	'txt.email_adr' => 'Email Address',
+	'txt.accept_politic' => 'Please accept the Privacy Policy',
+	'txt.accept_condition' => 'Please accept the General Conditions of Use',
 
 ];

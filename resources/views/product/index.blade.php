@@ -19,7 +19,7 @@
                     <h1 class="display-4 white-color m-25px-b">{{$item->title}}</h1>
                     <div class="d-flex align-items-center m-25px-t justify-content-center text-left">
                         <div class="p-15px-l">
-                            <p class="white-color m-0px">{{ $item->location ? Illuminate\Support\Str::upper($item->location->locality.' '.$item->location->area_level_2.', '.$item->location->area_level_1.' '.$item->location->postalCode) : '' }}</p>
+                            <p class="white-color m-0px"><span class="white-color">{{ $item->location ? Illuminate\Support\Str::upper($item->location->locality.' '.$item->location->area_level_2.', '.$item->location->area_level_1.' '.$item->location->postalCode) : '' }}</span></p>
                         </div>
                     </div>
 
@@ -54,7 +54,6 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
-                  @include('includes.alerts')
                   @if(count($item->images))
                   <div id="myCarousel" class="carousel slide w-100" data-ride="carousel">
                       <div class="carousel-inner w-100" role="listbox">
@@ -135,10 +134,9 @@
                   <section class="property-meta-wrapper common">
                     <div class="row m-15px-t">
                         <div class="col-sm-6">
-                            <form action="{{route('shop.order', ['product'=>$item->slug])}}" method="post">
-                                {{csrf_field()}}
-                                <button type="submit" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12"><i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')</button>
-                            </form>
+                          @if(Auth::user()->hasRole(5))
+                            <button type="button" id="btn_buy" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12"><i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')</button>
+                          @endif
                         </div>
                         <div class="col-sm-6">
                           <a href="{{route('member.go.there')}}" id="btn_go_there" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme flex-shrink-0 col-md-12" title="@lang('app.txt.go_to_location')" @if(Auth::user()) {{ Auth::user()->isMove()?'disabled':'' }} @endif><i class="fa fa-map-marker"></i> @lang('app.btn.go_to_location')</a>
@@ -164,6 +162,8 @@
                           <p class="m-0px"><span>@lang('app.txt.price'):</span>{{$item->price}}</p>
                           @if(isset($location))
                             <p class="m-0px"><span>@lang('app.txt.product_location'):</span> {{$location?$location->formatted:'Localisation inconnue'}}</p>
+                            <input type="hidden" id="prod_loc_lat" value="{{ $location->latitude }}">
+                            <input type="hidden" id="prod_loc_long" value="{{ $location->longitude }}">
                           @endif
                           <p class="m-0px"><span>@lang('app.txt.area'):</span> {{$item->area}}</p>
                           <p class="m-0px"><span>@lang('app.txt.carport_spaces'):</span> {{$item->carport_spaces}}</p>
@@ -317,6 +317,21 @@
       </div>
   </div>
 </div>
+
+<!-- Modal for particular member registration -->
+<div id="registratorMemberFormModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="registratorMemberFormLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
+          <h4 class="modal-title white-color">@lang('app.txt.complete_registration')</h4>
+      </div>
+      <div class="modal-body">
+          @include('login.memberpart',['user'=>Auth::user()])
+      </div>
+      {{-- <div class="modal-footer"></div> --}}
+    </div>
+  </div>
+</div>
 @endsection
     
 @push('script')
@@ -370,8 +385,8 @@
       var _geocoder;
       var _marker;
       var _circle;
-      var _lat = {{isset($location)?$location->latitude:-25.647467468105795}};
-      var _long = {{isset($location)?$location->longitude:146.89921517372136}};
+      var _lat = $('#prod_loc_lat').val()?$('#prod_loc_lat').val():-25.647467468105795;
+      var _long = $('#prod_loc_long').val()?$('#prod_loc_long').val():146.89921517372136;
       var _btnSubmit = document.getElementById("submit");
       var _inputApl = document.getElementById("apl");
       var _contentApl = document.getElementById("apl-content");
@@ -399,7 +414,6 @@
       var data = {!!(isset($data) ? $data : '')!!};
       
       function initMap() {
-          
           _map = new google.maps.Map(document.getElementById('map'), {
               center: {lat: _lat, lng:  _long},
               zoom: 10
@@ -432,4 +446,19 @@
 
   </script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA&callback=initMap"></script>
+  <script>
+    $('#btn_buy').click(function(){
+       var usrIsCplt = '{{  Auth::user()->isComplete()  }}';
+
+       console.log(usrIsCplt);
+       
+       if(usrIsCplt === ''){
+          // Show particular member registration Modal
+          $('#registratorMemberFormModal').modal('show');
+       }else{
+         
+       }
+
+    });
+  </script>
 @endpush

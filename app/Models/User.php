@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use AstritZeqiri\Metadata\Traits\HasManyMetaDataTrait;
 use App\Notifications\PasswordReseted;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Carbon\Carbon;
 use Session;
 
 class User extends Authenticatable{
@@ -32,6 +33,7 @@ class User extends Authenticatable{
         'role', 
         'activation_code', 
         'use_default_password',
+        'is_complete',
         'trial_ends_at',
         'type_users_id'
     ];
@@ -666,6 +668,56 @@ class User extends Authenticatable{
                         $userinfos->update(["last_name"=> $value]);
                     if($value = $request->input('sexe'))
                         $userinfos->update(["sexe"=> $value]);
+                }elseif($type=='person_complete'){
+                    $userloc = Localisation::whereId($user->location_id);
+
+                    // Update userinfo
+                    if($value = $request->input('last_name'))
+                        $userinfos->update(["last_name"=> $value]);
+                    if($value = $request->input('first_name'))
+                        $userinfos->update(["first_name"=> $value]);
+                    if($value = $request->input('civility'))
+                        $userinfos->update(["civility"=> $value]);
+                    if($value = $request->input('nationality'))
+                        $userinfos->update(["nationality"=> $value]);
+                    if($value = $request->input('date_of_birth'))
+                        $userinfos->update(["date_of_birth"=> (new Carbon($value))->toDateString()]);
+                    if($value = $request->input('place_of_birth'))
+                        $userinfos->update(["place_of_birth"=> $value]);
+                    if($value = $request->input('orga_phone'))
+                        $userinfos->update(["orga_phone"=> $value]);
+                    if($value = $request->input('orga_mobile_phone'))
+                        $userinfos->update(["orga_mobile_phone"=> $value]);
+                    if($value = $request->input('orga_email'))
+                        $userinfos->update(["orga_email"=> $value]);
+                    if($value = $request->input('orga_skype'))
+                            $userinfos->update(["orga_skype"=> $value]);
+                    if($value = $request->input('orga_fb'))
+                        $userinfos->update(["orga_fb"=> $value]);
+                    
+                    // Update location
+                    if($value = $request->input('country'))
+                        $userloc->update(["country"=> $value]);
+                    if($value = $request->input('route'))
+                        $userloc->update(["route"=> $value]);
+                    if($value = $request->input('route_number'))
+                        $userloc->update(["route_number"=> $value]);
+                    if($value = $request->input('area_level_2'))
+                        $userloc->update(["area_level_2"=> $value]);
+                    if($value = $request->input('postalCode'))
+                        $userloc->update(["postalCode"=> $value]);
+                    if($value = $request->input('area_level_2'))
+                        $userloc->update(["area_level_2"=> $value]);
+                    if($value = $request->input('adrphy_country'))
+                        $userloc->update(["adrphy_country"=> $value]);
+                    if($value = $request->input('adrpost_postal_box'))
+                        $userloc->update(["adrpost_postal_box"=> $value]);
+                    if($value = $request->input('adrpost_area_level_2'))
+                        $userloc->update(["adrpost_area_level_2"=> $value]);
+                    if($value = $request->input('adrpost_postalCode'))
+                        $userloc->update(["adrpost_postalCode"=> $value]);
+                    if($value = $request->input('adrpost_country'))
+                        $userloc->update(["adrpost_country"=> $value]);
                 }else{
                     // Update MetaData
                     if($value = $request->input('orga_name'))
@@ -838,6 +890,27 @@ class User extends Authenticatable{
     public function afa()
     {
       return $this->hasOne(User::class, 'id', 'afa_id');
+    }
+
+    /**
+     * Check if user info is complete 
+     * 0:complete 1:uncomplete
+     *
+     * @return Boolean
+     */
+    public function isComplete()
+    {
+        return ($this->is_complete===0);
+    }
+
+    /**
+     * Check if user has avatar
+     *
+     * @return Boolean
+     */
+    public function hasAvatar()
+    {
+        return ($this->image_id!==0);
     }
 
     /**

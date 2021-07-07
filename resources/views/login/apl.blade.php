@@ -421,7 +421,7 @@
                                                     <label class="custom-control-label" for="checkbox-1"><b>@lang('app.form.register.politic') *</b></label>
                                                 </div>
                                                 <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" name="politic" id="checkbox-2" required>
+                                                    <input type="checkbox" class="custom-control-input" name="condition" id="checkbox-2" required>
                                                     <label class="custom-control-label" for="checkbox-2"><b>@lang('app.form.register.condition') *</b></label>
                                                 </div>
                                             </div>

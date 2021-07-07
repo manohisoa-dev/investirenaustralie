@@ -311,7 +311,7 @@
                                             </div>
                                         </fieldset>
 
-                                        {{-- Mail Address --}}
+                                        {{-- Postal Address --}}
                                         <fieldset class="m-25px-t">
                                             <legend>@lang('app.txt.postal_address')</legend>
                                             <div class="form-group">
@@ -411,6 +411,7 @@
                                                 <span class="text-danger m-5px-l">{{ $errors->first('contact_phone') }}</span>
                                             </div>
                                         </fieldset>
+                                        
                                         <div class="form-group">
                                             <div class="col-sm-offset-3 col-sm-9">
                                                 <em class="help-block">@lang('app.form.required')</em>
@@ -426,7 +427,7 @@
                                                     <label class="custom-control-label" for="checkbox-1"><b>@lang('app.form.register.politic') *</b></label>
                                                 </div>
                                                 <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" name="politic" id="checkbox-2" required>
+                                                    <input type="checkbox" class="custom-control-input" name="condition" id="checkbox-2" required>
                                                     <label class="custom-control-label" for="checkbox-2"><b>@lang('app.form.register.condition') *</b></label>
                                                 </div>
                                             </div>

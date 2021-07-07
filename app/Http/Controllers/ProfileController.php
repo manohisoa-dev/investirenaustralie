@@ -93,6 +93,7 @@ class ProfileController extends Controller
     {    
         $user = Auth::user();
         $role = $user->role;
+        $type="";
         
         // Get post datas
         $datas = $request->all();
@@ -121,6 +122,34 @@ class ProfileController extends Controller
                         'first_name' => 'required|max:100',
                         'last_name'  => 'required|max:100',
                     ];
+                }elseif($type==='person_complete'){
+                    $rules = [
+                        'country'    => 'required|max:100',
+                        'civility'  => 'required|max:3',
+                        'last_name'  => 'required|max:100',
+                        'first_name' => 'required|max:100',
+                        'nationality'  => 'required|max:100',
+                        'route'       => 'required',
+                        'route_number'       => 'required',
+                        'area_level_2' => 'required|max:100',
+                        'postalCode'   => 'required|integer',
+                        'adrphy_country'      => 'required',
+                        'orga_phone'        => 'nullable|digits_between:8,8|numeric',
+                        'orga_mobile_phone'        => 'required|digits_between:8,8|numeric',
+                        'orga_email'        => 'required|email|max:100',
+                        'orga_fb'        => 'nullable|url',
+                        'politic'    => 'required',
+                    ];
+
+                    if($request->postal_address_below){
+                        $rules += [
+                         'adrpost_postal_box'     => 'required|max:100',
+                         'adrpost_area_level_2' => 'nullable|max:100',
+                         'adrpost_postalCode'   => 'required|max:100',
+                         'adrpost_country'      => 'required|max:100',
+                        ];
+                    }
+
                 }else{
                     $rules = [
                         'orga_name'         => 'required|max:100',
@@ -219,8 +248,11 @@ class ProfileController extends Controller
         }
         
         try{
-
+            
             // Update user
+            if($request->type === 'person_complete'){
+                User::whereId($user->id)->update(["is_complete"=> 0]);
+            }
             // $user->fill($datas);
             // $user->save();
             
@@ -237,7 +269,7 @@ class ProfileController extends Controller
                 ]);
                 $user->handles($request);
             }
-            
+ 
         }catch (\Exception $exception) {
             logger()->error($exception);
             return back()->with('info', trans('app.txt.editprofil_unable'));
