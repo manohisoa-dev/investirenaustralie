@@ -35,4 +35,5 @@ return [
     "public_organization" => 'Public organization',
     "private_entreprise" => 'Private entreprise',
     "mixed_organization" => 'Mixed organization',
+    "menu_temoignage" => 'Testimonial',
 ];
