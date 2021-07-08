@@ -419,6 +419,11 @@ class ProductController extends Controller {
         $programme->author_id = Auth::user()->id;
         $programme->validated_at = Carbon::now();
         $programme->save();
+
+        // // save translation
+        // $detectLang = getGTranslateLangDetect($content);
+        // $detectLang==='fr'?setTranslate('fr','en',$content,'programme',$programme):setTranslate('en','fr',$content,'programme',$programme);
+
         return $programme->id;
     }
 
@@ -573,6 +578,9 @@ class ProductController extends Controller {
         $product->type_id = $request->type_id;
         $product->save();
 
+        // // update translation
+        // updateTranslate('programme',$product,$request->description);
+
         return redirect()->route('edit.programme', $product->id)->with('success',
             "Produit a été créer avec succès");
     }
@@ -644,6 +652,10 @@ class ProductController extends Controller {
         $product->avoir_piscine = $avoir_piscine;
         $product->validated_at = Carbon::now();
         $product->save();
+
+        // // save translation
+        // $detectLang = getGTranslateLangDetect($content);
+        // $detectLang==='fr'?setTranslate('fr','en',$content,'programme',$product):setTranslate('en','fr',$content,'programme',$product);
     }
 
     public function ajaxSaveProduct(Request $request) {
@@ -691,7 +703,7 @@ class ProductController extends Controller {
             $avoir_piscine = 0;
         }
 
-        Product::where('id', $request->id_product)->update(['title' => $titre_product,
+        $product = Product::where('id', $request->id_product)->update(['title' => $titre_product,
             'content' => $request->desc_product, 'type_id' => $request->product_type_id,
             'postalCode' => $request->postalCode_product, 'display_address' => $request->display_address_product,
             'state_id' => $request->state_id_product, 'min_price' => $request->price,
@@ -709,6 +721,9 @@ class ProductController extends Controller {
             $image_prod = Image::storeAndSave($photo, 'product');
             Product::where('id', $request->id_product)->update(['image_id' => $image_prod->id]);
         }
+
+        // // update translation
+        // updateTranslate('programme',$product,$request->desc_product);
 
         return response()->json(['success' => 'true']);
     }

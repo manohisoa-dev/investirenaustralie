@@ -19,6 +19,7 @@ use App\Models\Menu;
 use App\Models\Userinfo;
 use Session;
 use View;
+use App;
 
 
 class IndexController extends Controller
@@ -42,6 +43,10 @@ class IndexController extends Controller
      */
     public function index(Request $request)
     {
+        // $programme = Product::all()->first();
+        // $text = getTranslate('programme',$programme,App::getLocale());
+        // setTranslate('fr','es',$text,'programme',$programme);
+
         $typesRes = Type::orderBy('title', 'asc')
             ->where('object_type', 'type')
             ->where('categories_id', 1)
