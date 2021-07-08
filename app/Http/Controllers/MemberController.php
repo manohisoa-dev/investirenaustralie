@@ -17,6 +17,7 @@ use App\Models\Mail;
 use App\Models\MailUser;
 use App\Models\Localisation;
 use App\Models\Message;
+use App\Models\Temoignage;
 use Session;
 
 class MemberController extends Controller
@@ -679,7 +680,37 @@ class MemberController extends Controller
         
     }
 
-
-
+    public function testimonial()
+    {
+        $record = Temoignage::where('user_create', Auth::user()->id)
+            ->paginate($this->pageSize);
+        return view('backend.temoignage.all')
+            ->with('title', __('member.menu_temoignage'))
+            ->with('records', $record);
+    }
+    
+    public function ajaxSaveTestimonial(Request $request)
+    {
+        Temoignage::create($request->all());
+        return response()->json(['success' => 'true']);
+    }
+    
+    public function ajaxGetTestimonialById(Request $request)
+    {
+        $testimonial = Temoignage::find($request->id);
+        return response()->json(['testimonial' => $testimonial]);
+    }
+    
+    public function ajaxModifTestimonial(Request $request)
+    {
+        Temoignage::where('id', $request->id)->update(['contenu' => $request->contenu]);
+        return response()->json(['success' => 'true']);
+    }
+    
+    public function ajaxDropTestimonial(Request $request)
+    {
+        Temoignage::where('id', $request->id)->delete();
+        return response()->json(['success' => 'true']);
+    }
 
 }

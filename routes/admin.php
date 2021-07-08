@@ -274,4 +274,5 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::get('ajaxReadFile/{limit?}', 'MediaController@ajaxReadFile')->name('ajaxReadFile');
     Route::resource('mails-template','MailsTemplateController');
     Route::resource('parameters-email','ParametersEmailController');
+    Route::resource('temoignage','TemoignageController');
 });

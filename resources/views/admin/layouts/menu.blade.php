@@ -170,6 +170,12 @@
             <li><a href="{{route('admin.mails-template.index')}}">@lang('app.admin.mail.model')</a></li>{{-- Messages enregistrees --}}
         </ul>
     </li>
+	<li class="{{Request::is('*/temoignage/*') || Request::is('*/temoignage') ? 'active' : ''}}">
+		<a href="{{route('admin.temoignage.index')}}">
+			<i class="fa fa-quote-left" title="Tableau de bord"></i> 
+			<span class="nav-label">Témoignages</span>
+		</a>
+	</li>
     <li class="{{Request::is('*/badword/*') || Request::is('*/badword') ? 'active' : ''}}">
         <a href="#"><i class="fa fa-th-list" title="Liste des mots interdits"></i> <span class="nav-label">Liste des mots interdits</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">

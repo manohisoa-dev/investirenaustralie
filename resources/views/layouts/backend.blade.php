@@ -176,6 +176,15 @@
                                       </div>
                                   </a>
                                 @endif
+								<a href="{{route('member.testimonial')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('member/testimonial')) ? 'menu-active' : '' }}">
+                                    <div>
+                                        <i class="fa fa-quote-left m-10px-r"></i>
+                                        <span>@lang('member.menu_temoignage')</span>
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-chevron-right"></i>
+                                    </div>
+                                </a>
                             @endif
 
                             @If(Auth::user()->hasRole(4))
