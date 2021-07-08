@@ -1,6 +1,8 @@
 <?php
 
 use App\Entite\Membre;
+use Dedicated\GoogleTranslate\Translator;
+use Illuminate\Support\Str;
 
 /**
 * creer le lien css du dashboard ADMIN en ligne
@@ -381,6 +383,127 @@ if (!function_exists('getListAplGrpByCountry')) {
        return $lcountry;
 	}
 }
+
+if(!function_exists('getTranslate')){
+	function getTranslate($tabName,$tab,$lang){
+		$tabId = $tabName.'_id';
+		$ucfirstTabname = Str::ucfirst($tabName);
+		$tabNameModel = "App\Models\\".$ucfirstTabname."Translation";
+		$translation = "";
+		
+		// get list translation for tab id
+		$listTrans = $tabNameModel::where($tabId,'=',$tab->id)->get();
+		
+		foreach ($listTrans as $key => $value) {
+			$result = App\Models\Translation::whereId($value->translation_id)->where('lang','=',$lang)->first();
+			if($result !== null){
+				$translation=$result->content;
+				break;
+			}
+		}
+
+		return $translation;
+		
+	}
+}
+
+if(!function_exists('setTranslate')){
+	function setTranslate($sourceLang,$targetLang,$text,$tabName,$tab){
+		$translator = new Translator;
+		$tabId = $tabName.'_id';
+		$ucfirstTabname = Str::ucfirst($tabName);
+		$tabNameModel = "App\Models\\".$ucfirstTabname."Translation";
+		
+		// translate text with google translation
+		$content = getGTranslate($sourceLang,$targetLang,$text);
+		
+		// save translation in translation table
+		$_translation = App\Models\Translation::create(['key'=>$targetLang, 'lang'=>$targetLang, 'content'=>$content]);
+		$_translation->save();
+	
+		// save foreign key in association table
+		$_association = $tabNameModel::create([$tabId=>$tab->id, 'translation_id'=>$_translation->id]);
+		$_association->save();
+	
+	
+		return false;
+	}
+}
+
+if(!function_exists('updateTranslate')){
+	function updateTranslate($tabName,$tab,$content){
+		$tabId = $tabName.'_id';
+		$ucfirstTabname = Str::ucfirst($tabName);
+		$tabNameModel = "App\Models\\".$ucfirstTabname."Translation";
+		$detectLang = getGTranslateLangDetect($content);
+		$newContent = "";
+		$sourceLang = "";
+		$targetLang = "";
+
+		if($detectLang === 'fr'){
+			$sourceLang = 'fr';
+			$targetLang = 'en';
+		}else{
+			$sourceLang = 'en';
+			$targetLang = 'fr';
+		}
+
+		// translate content
+		$newContent = getGTranslate($sourceLang,$targetLang,$content);
+		
+		// get list translation for tab id
+		$listTrans = $tabNameModel::where($tabId,'=',$tab->id)->get();
+		
+		foreach ($listTrans as $key => $value) {
+			$result = App\Models\Translation::whereId($value->translation_id)->where('lang','=',$targetLang)->first();
+			if($result !== null){
+				$result->update(['content'=>$newContent]);
+				break;
+			}
+		}
+
+		return false;
+		
+	}
+}
+
+if(!function_exists('getGTranslate')){
+	function getGTranslate($sourceLang,$targetLang,$text){
+		$translator = new Translator;
+		$result = $translator->setSourceLang($sourceLang)
+							 ->setTargetLang($targetLang)
+							 ->translate($text);
+		return $result;
+	}
+}
+
+if(!function_exists('getGTranslateAutoDetect')){
+	function getGTranslateAutoDetect($targetLang,$text){
+		$translator = new Translator;
+		$result = $translator->setTargetLang($targetLang)
+							 ->translate($text);
+		return $result;
+	}
+}
+
+if(!function_exists('getGTranslateLangDetect')){
+	function getGTranslateLangDetect($text){
+		$translator = new Translator;
+		$result = $translator->detect($text);
+		return $result;
+	}
+}
+
+if(!function_exists('getGTranslateTest')){
+	function getGTranslateTest($targetLang,$text){
+		$translator = new Translator;
+		$result = $translator->setTargetLang($targetLang)
+							 ->translate($text);
+		return dd($result);
+	}
+}
+
+
 
 
 

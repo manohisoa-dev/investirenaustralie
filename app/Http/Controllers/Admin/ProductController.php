@@ -301,6 +301,11 @@ class ProductController extends Controller {
         $programme->author_id = Auth::user()->id;
         $programme->validated_at = Carbon::now();
         $programme->save();
+
+        // // save translation
+        // $detectLang = getGTranslateLangDetect($content);
+        // $detectLang==='fr'?setTranslate('fr','en',$content,'programme',$programme):setTranslate('en','fr',$content,'programme',$programme);
+
         return $programme->id;
     }
 
@@ -359,6 +364,10 @@ class ProductController extends Controller {
         $product->avoir_piscine = $avoir_piscine;
         $product->validated_at = Carbon::now();
         $product->save();
+
+        // // save translation
+        // $detectLang = getGTranslateLangDetect($content);
+        // $detectLang==='fr'?setTranslate('fr','en',$content,'programme',$product):setTranslate('en','fr',$content,'programme',$product);
     }
 
     /**
@@ -466,6 +475,10 @@ class ProductController extends Controller {
             $product->carport_spaces = $request->carport_spaces;
 
             $product->save();
+
+            // // update translation
+            // updateTranslate('programme',$product,$content);
+
             # notification
             Notify::success('Produit a été mise à jour avec succès');
             return redirect(route('admin.product.index').'?nature='.$product->natureBien);
