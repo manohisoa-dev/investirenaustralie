@@ -340,6 +340,54 @@
         </div>
     </section>
     <!-- End Section -->
+	
+	<!-- Section témoignage -->
+	@if (count($testimonials)) { 
+	<section class="section gray-bg overflow-hidden">
+		<div class="container">
+			<div class="row justify-content-between">
+				<div class="col-lg-5 m-15px-tb">
+					<label class="theme2nd-color m-15px-b">Testimonials</label>
+					<h2 class="m-20px-b">Lorem Ipsum.</h2>
+					<p class="font-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum standard dummy text.</p>
+					@if(Auth::check() && Auth::user()->hasRole(5))
+					<div class="p-15px-t">
+						<a class="m-btn m-btn-theme m-btn-radius" href="{{route('member.testimonial')}}">Create Testimonials</a>
+					</div>
+					@endif
+				</div>
+				<div class="col-lg-6 m-15px-tb">
+					<div class="owl-carousel" data-items="2" data-nav-dots="true" data-md-items="2" data-sm-items="2" data-xs-items="2" data-xx-items="1" data-space="0">
+						@foreach($testimonials as $testimonial)
+						@php
+							$path = \App\Models\Image::find($testimonial->author->image_id);
+							if(@getimagesize(asset($path->filepath))){
+								$background = asset($path->filepath);
+							}else{
+								$background = asset('img/500x500.jpg');
+							}
+						@endphp
+						<div class="box-shadow m-10px overflow-hidden border-radius-5">
+							<div class="d-flex align-items-center h-100 min-h-150px bg-cover bg-no-repeat position-relative" style="background-image: url({{$background}});">
+								<div class="mask theme-bg opacity-5"></div>
+								<div class="position-relative w-100 text-center">
+									<h5 class="white-color m-0px font-w-600">{{ $testimonial->author->name }}</h5>
+									<label class="m-0px font-small white-color">{{\App\Models\User::find($testimonial->user_create)->roleUser->role_name}}</label>
+								</div>
+							</div>
+							<div class="mt-n4 p-20px-lr p-30px-b position-relative text-center">
+								<div class="icon-50 theme2nd-bg border-radius-50 d-inline-block white-color m-15px-b"><i class="fas fa-quote-left"></i></div>
+								<p class="m-0px">{{str_limit(strip_tags($testimonial->contenu),"250","...")}}</p>
+							</div>
+						</div>
+						@endforeach
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	@endif
+	<!-- End Section témoignage -->
 </main>
 <!-- End Main -->
 @endsection

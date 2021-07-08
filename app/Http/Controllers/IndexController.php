@@ -17,6 +17,7 @@ use App\Models\State;
 use App\Models\Localisation;
 use App\Models\Menu;
 use App\Models\Userinfo;
+use App\Models\Temoignage;
 use Session;
 use View;
 
@@ -175,7 +176,8 @@ class IndexController extends Controller
 
         $page = Page::findOrFail(1);
         $page->load(['childs', 'childs.pubs', 'pubs']);
-
+        
+        $testimonial = Temoignage::ofStatus('Actif')->orderBy('created_at', 'desc')->take(6)->get();
 
         return $this->render($request, 1)
         ->with('states',$states)
@@ -210,7 +212,8 @@ class IndexController extends Controller
         ->with('typesFonc',$typesFonc)
         ->with('typesInd',$typesInd)
         ->with('typesComm',$typesComm)
-        ->with('pubs',$page->pubs);
+        ->with('pubs',$page->pubs) 
+        ->with('testimonials',$testimonial);
 
     }
 

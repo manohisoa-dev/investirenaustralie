@@ -58,6 +58,11 @@ class Temoignage extends Model {
     {
         return $this->belongsTo(User::class, 'user_create', 'id');
     }
+    
+    public function scopeOfStatus($query, $status)
+    {
+        return $query->where('statut', $status);
+    }
 
 }
 
