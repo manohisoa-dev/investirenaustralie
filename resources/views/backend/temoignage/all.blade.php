@@ -45,7 +45,9 @@
 					@endforeach
 					</tbody>
 				</table>
-				@endif
+			@else
+			<small>@lang('app.txt.no_posted_satisfaction')</small> 
+			@endif
 			</div>
 		</div>
 	</div>
@@ -65,7 +67,7 @@ function ajouter()
 	$('.help-block').empty(); 
 	$('#modal_form_testimonial').modal('show'); 
 	CKEDITOR.replace( 'contenu' );
-	$('.modal-title').text("Nouveau message");
+	$('.modal-title').text("{{ trans('app.txt.satisfaction_testimonial') }}");
 }
 
 function edit_testimonial(id)
@@ -212,8 +214,8 @@ function supprimer(id)
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-white" data-dismiss="modal">@lang('app.txt.close')</button>
-				<button type="button" class="btn btn-primary" id="btnSave" onClick="save_temoignage()">@lang('app.form.product_btn_save')</button>
+				<button type="button" class="m-btn m-btn-theme" data-dismiss="modal">@lang('app.txt.close')</button>
+				<button type="button" class="m-btn m-btn-theme2nd" id="btnSave" onClick="save_temoignage()">@lang('app.form.product_btn_save')</button>
 			</div>
 		</div>
 	</div>

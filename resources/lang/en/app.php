@@ -928,5 +928,7 @@ return
 	'txt.email_adr' => 'Email Address',
 	'txt.accept_politic' => 'Please accept the Privacy Policy',
 	'txt.accept_condition' => 'Please accept the General Conditions of Use',
+	'txt.no_posted_satisfaction' => 'You have not yet posted a token of satisfaction',
+	'txt.satisfaction_testimonial' => 'Satisfaction testimonial',
 
 ];
