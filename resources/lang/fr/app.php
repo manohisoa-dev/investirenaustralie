@@ -1173,5 +1173,6 @@ return
 	'txt.email_adr' => 'Adresse Courriel',
 	'txt.no_posted_satisfaction' => 'Vous n&rsquo;avez pas encore mis un témoignage de satisfaction',
 	'txt.satisfaction_testimonial' => 'Témoignage de satisfaction',
+	'txt.our_testimonials' => 'Nos témoignages',
 	
 ];

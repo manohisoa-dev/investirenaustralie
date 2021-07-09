@@ -347,7 +347,7 @@
 		<div class="container">
 			<div class="row justify-content-between">
 				<div class="col-lg-5 m-15px-tb">
-					<label class="theme2nd-color m-15px-b">Testimonials</label>
+                    <label class="border-bottom-2 font-w-600 theme-color border-color-theme2nd">@lang('app.txt.our_testimonials')</label>
 					<h2 class="m-20px-b">Lorem Ipsum.</h2>
 					<p class="font-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum standard dummy text.</p>
 					@if(Auth::check() && Auth::user()->hasRole(5))
