@@ -198,6 +198,7 @@ return [
         Jleon\LaravelPnotify\NotifyServiceProvider::class,
 
         Dedicated\GoogleTranslate\GoogleTranslateProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
     ],
 
     /*
@@ -254,6 +255,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Notify' => Jleon\LaravelPnotify\Notify::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];

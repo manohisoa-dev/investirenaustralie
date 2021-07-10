@@ -42,7 +42,7 @@
 									</a>
 								@endif		
 							</td>
-							<td>{{ $record->title }}<br />{!! $record->excerpt() !!}</td>
+							<td>{{ $record->title }}<br />{{str_limit(strip_tags($record->excerpt()),"100","...")}}</td>
 							<td>{{ $record->currency }}&nbsp;{{ number_format($record->min_price, 0, '.', ' ') }}</td>
 							<td>{{ $record->currency }}&nbsp;{{ number_format($record->max_price, 0, '.', ' ') }}</td>
 							<td>
@@ -80,10 +80,8 @@
 	$(document).ready(function(){
 		$('#garage_spaces, #carport_spaces').bind('keyup mouseup', function (){
 			if($('#garage_spaces').val() != 0 || $('#carport_spaces').val() != 0){
-				 console.log('tokony disabled');
 				$("#chk_parking").attr('disabled','disabled');
 			}else{
-				console.log('normal');
 				$("#chk_parking").removeAttr('disabled');
 			}
 		});	
@@ -123,6 +121,9 @@
 				$('[name="title_product"]').val(data.product.title);
 				$('#desc_product').val(data.product.content);
 				CKEDITOR.replace( 'desc_product' );
+				$('[name="prg_anciennete"]').val(data.product.ancienneteBien);
+				$('[name="prg_nature"]').val(data.product.natureBien);
+				$('[name="prg_cat_id"]').val(data.product.category_id);
 				$('[name="product_type_id"]').val(data.product.type_id);
 				$('[name="suburb_product"]').val(data.localisation.area_level_1);
 				$('[name="ville_product"]').val(data.localisation.locality);
@@ -185,8 +186,7 @@
 					console.log('normal');
 					$("#chk_parking").removeAttr('disabled');
 				}	
-				
-				set_type_programme({{$record->category_id}},data.product.type_id);
+				set_type_programme(data.product.category_id,data.product.type_id);
 				$('#modal_form_product').modal('show'); 
 				$('.modal-title').text("@lang('app.form.product_edit_title')"); 
 			},
@@ -372,10 +372,10 @@
 				</div>
 				<div class="modal-body">
 					<form action="#" id="form_product" class="form-horizontal" enctype="multipart/form-data">
-						<input type="hidden" name="title_new_programme" value="{{$record->title}}" />
-						<input type="hidden" name="prg_anciennete" id="prg_anciennete" value="{{$record->ancienneteBien}}" />
-						<input type="hidden" name="prg_nature" id="prg_nature" value="{{$record->natureBien}}"/>
-						<input type="hidden" name="prg_cat_id" id="prg_cat_id" value="{{$record->category_id}}"/>
+						<input type="hidden" name="title_new_programme" value="" />
+						<input type="hidden" name="prg_anciennete" id="prg_anciennete" value="" />
+						<input type="hidden" name="prg_nature" id="prg_nature" value=""/>
+						<input type="hidden" name="prg_cat_id" id="prg_cat_id" value=""/>
 						<input type="hidden" name="id_programme" id="id_programme"/>
 						<input type="hidden" name="id_product" id="id_product" />
 						<input type="hidden" name="id_location_product" id="id_location_product" />
@@ -385,7 +385,7 @@
 								<label for="title">@lang('app.form.product_title') *</label>
 								<div class="input-group" style="margin-bottom:.5rem">
 									<div class="input-group-append">
-										<span class="input-group-text">{{$record->title}}</span>
+										<span class="input-group-text"></span>
 									</div>
 									<input name="title_product" id="title_product" class="form-control" type="text" value="" title="@lang('app.form.product_title_input')">									
 								</div>

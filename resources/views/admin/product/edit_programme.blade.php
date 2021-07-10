@@ -132,7 +132,7 @@
 						<div class="col-lg-4">
 							<div class="form-group">
 								<label for="title">@lang('app.form.programme_suburb')</label>
-								<input name="suburb" id="suburb" class="form-control" type="text" value="{{$localisation->area_level_1}}">
+								<input name="suburb" id="suburb" class="form-control" type="text" value="{{$localisation?$localisation->area_level_1:''}}">
 							</div>
 						</div>
 					</div>
@@ -140,21 +140,28 @@
 						<div class="col-lg-3">
 							<div class="form-group">
 								<label for="title">@lang('app.form.programme_ville')</label>
-								<input name="ville" id="ville" class="form-control" type="text" value="{{$localisation->locality}}">
+								<input name="ville" id="ville" class="form-control" type="text" value="{{$localisation?$localisation->locality:''}}">
 							</div>  
 						</div>
 						<div class="col-lg-3">
 							<div class="form-group">
 								<label for="title">@lang('app.form.programme_cp') *</label>
-								<input name="postalCode" id="postalCode" class="form-control" type="text" value="{{$localisation->postalCode}}">
+								<input name="postalCode" id="postalCode" class="form-control" type="text" value="{{$localisation?$localisation->postalCode:''}}">
 							</div>
 						</div>
 						<div class="col-lg-3">
 							<div class="form-group">
 								<label for="title">@lang('app.form.programme_pays')</label>
 								<select class="form-control" name="countryId" id="countryId" style="width:100%">
+									@php
+										if (!empty($localisation)) {
+											$id_country = $localisation->country;
+										}else{
+											$id_country = 0;
+										}
+									@endphp
 									@foreach(\App\Models\Country::where('id',12)->get() as $country)
-										<option value="{{$country->id}}" {{$country->id == $localisation->country ? 'selected' : ''}}>{{$country->content}}</option>
+										<option value="{{$country->id}}" {{$country->id == $id_country ? 'selected' : ''}}>{{$country->content}}</option>
 									@endforeach
 								</select>
 							</div>
@@ -871,10 +878,8 @@
 					}
 					
 					if(data.product.garage_spaces != 0 || data.product.carport_spaces != 0){
-						 console.log('tokony disabled');
 						$("#chk_parking").attr('disabled','disabled');
 					}else{
-						console.log('normal');
 						$("#chk_parking").removeAttr('disabled');
 					}	
 				

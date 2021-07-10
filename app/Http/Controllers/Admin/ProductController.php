@@ -20,6 +20,7 @@ use Auth;
 use App;
 use Carbon\Carbon;
 
+
 use GuzzleHttp;
 use GuzzleHttp\Client;
 
@@ -27,20 +28,21 @@ class ProductController extends Controller {
     public $viewDir = "admin.product";
 
     public function index() {
-        if(isset($_GET['nature'])){
+        if (isset($_GET['nature'])) {
             $nature = $_GET['nature'];
-            if($_GET['nature'] == 'Programme immobilier'){
+            if ($_GET['nature'] == 'Programme immobilier') {
                 $records = Product::allProduitByNatureProgramme('Programme immobilier');
-            }else{
+            } else {
                 $records = Product::allProduitByNatureProgramme('Produit isolé');
             }
-        }else{
+        } else {
             $nature = 'Programme immobilier';
             $records = Product::allProduitByNatureProgramme('Programme immobilier');
         }
-        
+
         $status = Product::groupBy('status')->pluck('status', 'status');
-        return $this->view("index", ['records' => $records, 'status' => $status,'nature'=>$nature]);
+        return $this->view("index", ['records' => $records, 'status' => $status,
+            'nature' => $nature]);
     }
 
     public function programme() {
@@ -88,6 +90,7 @@ class ProductController extends Controller {
         $nature = $request->natureBien;
         if ($request->type == 'programme') {
             //creation simple programme
+            dd($request->All());
             $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
                 '', '', $request->ville);
             $id_programme = $this->save_programme($request->cat_programmme_id, $request->ancienneteBien,
@@ -212,7 +215,7 @@ class ProductController extends Controller {
 
             # notification
             Notify::success('Produit a été créer avec succès');
-            return redirect(route('admin.product.index').'?nature='.$nature);
+            return redirect(route('admin.product.index') . '?nature=' . $nature);
         }
     }
 
@@ -481,7 +484,7 @@ class ProductController extends Controller {
 
             # notification
             Notify::success('Produit a été mise à jour avec succès');
-            return redirect(route('admin.product.index').'?nature='.$product->natureBien);
+            return redirect(route('admin.product.index') . '?nature=' . $product->natureBien);
         }
     }
 
@@ -501,7 +504,7 @@ class ProductController extends Controller {
             $nature = $product->natureBien;
             $product->delete(); # notification
             Notify::success('Produit a été supprimer avec succès');
-            return redirect(route('admin.product.index').'?nature='.$nature);
+            return redirect(route('admin.product.index') . '?nature=' . $nature);
         }
     }
 
@@ -524,7 +527,7 @@ class ProductController extends Controller {
         $product->status = 'trashed';
         $product->save();
         Notify::success('Le produit a été ajouté au corbeille avec succés');
-        return redirect(route('admin.product.index').'?nature='.$nature);
+        return redirect(route('admin.product.index') . '?nature=' . $nature);
     }
 
     /**
@@ -541,7 +544,7 @@ class ProductController extends Controller {
         $product->status = 'pinged';
         $product->save();
         Notify::success('Le produit a été restoré avec succés');
-        return redirect(route('admin.product.index').'?nature='.$nature);
+        return redirect(route('admin.product.index') . '?nature=' . $nature);
     }
 
     /**
@@ -782,7 +785,7 @@ class ProductController extends Controller {
         } else {
             $avoir_parking = 0;
         }
-        
+
         if (isset($request->chk_picine)) {
             $avoir_piscine = 1;
         } else {
@@ -798,7 +801,7 @@ class ProductController extends Controller {
             'bathrooms' => $request->bathrooms, 'interior_area' => $request->interior_area,
             'exterior_area' => $request->exterior_area, 'total_area' => $request->total_area,
             'garage_spaces' => $request->garage_spaces, 'carport_spaces' => $request->carport_spaces,
-            'avoir_parking_voie_public' => $avoir_parking,'avoir_piscine'=>$avoir_piscine]);
+            'avoir_parking_voie_public' => $avoir_parking, 'avoir_piscine' => $avoir_piscine]);
 
 
         if ($request->file('image')) {

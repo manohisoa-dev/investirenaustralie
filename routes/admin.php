@@ -275,4 +275,5 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::resource('mails-template','MailsTemplateController');
     Route::resource('parameters-email','ParametersEmailController');
     Route::resource('temoignage','TemoignageController');
+    Route::get('pdfTest/{id}', 'TemoignageController@pdfTest')->name('pdfTest');
 });

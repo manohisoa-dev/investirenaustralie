@@ -659,6 +659,7 @@ class ProductController extends Controller {
     }
 
     public function ajaxSaveProduct(Request $request) {
+        dd($request->All());
         $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
             $request->postalCode_product, '', '', $request->ville_product);
         $titre_product = $request->title_new_programme . '-' . $request->title_product;

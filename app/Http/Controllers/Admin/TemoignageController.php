@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\admin;
 
 use App\Models\Temoignage;
@@ -8,15 +9,14 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Jleon\LaravelPnotify\Notify;
 use Auth;
+use PDF;
 
-class TemoignageController extends Controller
-{
+class TemoignageController extends Controller {
     public $viewDir = "admin.temoignage";
 
-    public function index()
-    {
+    public function index() {
         $records = Temoignage::findRequested();
-        return $this->view( "index", ['records' => $records] );
+        return $this->view("index", ['records' => $records]);
     }
 
     /**
@@ -24,8 +24,7 @@ class TemoignageController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         return $this->view("create");
     }
 
@@ -35,8 +34,7 @@ class TemoignageController extends Controller
      * @param    \Illuminate\Http\Request  $request
      * @return  \Illuminate\Http\Response
      */
-    public function store( Request $request )
-    {
+    public function store(Request $request) {
         $this->validate($request, Temoignage::validationRules());
 
         Temoignage::create($request->all());
@@ -51,9 +49,8 @@ class TemoignageController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function show(Request $request, Temoignage $temoignage)
-    {
-        return $this->view("show",['temoignage' => $temoignage]);
+    public function show(Request $request, Temoignage $temoignage) {
+        return $this->view("show", ['temoignage' => $temoignage]);
     }
 
     /**
@@ -61,9 +58,8 @@ class TemoignageController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function edit(Request $request, Temoignage $temoignage)
-    {
-        return $this->view( "edit", ['temoignage' => $temoignage] );
+    public function edit(Request $request, Temoignage $temoignage) {
+        return $this->view("edit", ['temoignage' => $temoignage]);
     }
 
     /**
@@ -72,14 +68,12 @@ class TemoignageController extends Controller
      * @param    \Illuminate\Http\Request  $request
      * @return  \Illuminate\Http\Response
      */
-    public function update(Request $request, Temoignage $temoignage)
-    {
-        if( $request->isXmlHttpRequest() )
-        {
-            $data = [$request->name  => $request->value];
-            $validator = \Validator::make( $data, Temoignage::validationRules( $request->name ) );
-            if($validator->fails())
-                return response($validator->errors()->first( $request->name),403);
+    public function update(Request $request, Temoignage $temoignage) {
+        if ($request->isXmlHttpRequest()) {
+            $data = [$request->name => $request->value];
+            $validator = \Validator::make($data, Temoignage::validationRules($request->name));
+            if ($validator->fails())
+                return response($validator->errors()->first($request->name), 403);
             $temoignage->update($data);
             return "Record updated";
         }
@@ -98,8 +92,7 @@ class TemoignageController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Temoignage $temoignage)
-    {
+    public function destroy(Request $request, Temoignage $temoignage) {
         $temoignage->delete();
 
         # notification
@@ -107,9 +100,16 @@ class TemoignageController extends Controller
         return redirect(route('admin.temoignage.index'));
     }
 
-    protected function view($view, $data = [])
-    {
-        return view($this->viewDir.".".$view, $data);
+    protected function view($view, $data = []) {
+        return view($this->viewDir . "." . $view, $data);
+    }
+
+    public function pdfTest(Request $request) {
+        echo $request->id;
+        $temoignage = Temoignage::find($request->id);
+
+        $pdf = PDF::loadView('admin.temoignage.pdf', compact('temoignage'));
+        return $pdf->download('invoice.pdf');
     }
 
 }
