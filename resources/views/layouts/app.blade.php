@@ -154,10 +154,10 @@
                         @endif
                             <ul class="nav justify-content-end links-white dropdown-dark-header">
                                 @if(!Auth::check())
-                                <li class="small m-10px-l"><i class="fas fa-mouse-pointer"></i> <a href="{{route('login')}}">@lang('app.connexion')</a>
+                                <li class="text-white font-weight-bold m-10px-l"><i class="fas fa-mouse-pointer"></i> <a href="{{route('login')}}" class="text-white font-weight-bold ">@lang('app.connexion')</a>
                                 </li>
 
-                                <li class="small m-40px-l bloc-registration"><i class="fas fa-sign-in-alt"></i> @lang('app.sinscrire') :
+                                <li class="text-white font-weight-bold m-40px-l bloc-registration"><i class="fas fa-sign-in-alt"></i> @lang('app.sinscrire') :
                                     <select id="currency-dropdown" onChange="location.href=''+this.options[this.selectedIndex].value;" class="white-bg-alt border-color-dark-gray border-radius-0 white-color">
                                         <option class="dark-color" value="#" selected="true" disabled="disabled">@lang('app.as')</option>
                                         <option class="dark-color" value="{{route('register', ['role'=>'member'])}}" @if(isset($role)) {{ trans('app.'.$role)==trans('app.member')?"selected":""  }}@endif>@lang('app.member')</option>
@@ -167,25 +167,25 @@
                                     </select>
                                 </li>
                                 @else
-                                    <li class="small m-10px-l"><i class="fas fa-user"></i>
+                                    <li class="m-10px-l"><i class="fas fa-user"></i>
                                         <a href="{{ url(\App\Models\User::find(Auth::id())->roleUser->role_initial)}}">
                                             {{Auth::user()->name}}
                                         </a>
                                         {{ trans('app.txt.connected_role', ['connect'=>isset(Auth::user()->userinfos) && Auth::user()->userinfos->sexe?(Auth::user()->userinfos->sexe=='M'?trans('app.txt.connecte'):trans('app.txt.connectee')):trans('app.txt.connected'), 'role'=>trans('app.'.str_replace(' ', '',\App\Models\User::find(Auth::id())->roleUser->role_name))]) }}
                                     </li>
                                 @endif
-                                <li class="small m-10px-l"><i class="fas fa-globe"></i> @lang('app.language') :
+                                <li class="m-10px-l text-white font-weight-bold "><i class="fas fa-globe"></i> @lang('app.language') :
                                     <div class="dropdown pull-right">
                                       <a href="#" class="font-weight-bold dropdown-toggle" type="button" data-toggle="dropdown">
                                         @php $ico_fr= asset('images/ico/fr.png');$ico_en= asset('images/ico/en.png'); @endphp
-                                          <label class="m-10px-l"> {!! app()->getLocale()=='fr' ? '<img src="'.$ico_fr.'">' : '<img src="'.$ico_en.'">' !!}</label></a>
+                                          <label class="m-10px-l text-white font-weight-bold "> {!! app()->getLocale()=='fr' ? '<img src="'.$ico_fr.'">' : '<img src="'.$ico_en.'">' !!}</label></a>
                                           <ul class="dropdown-menu p-10px-l w-100" id="language-dropdown" >
                                             <li><a style="color:#555658;" href="{{route('localization', ['locale'=>'fr'])}}"><img src="{{ asset('images/ico/fr.png') }}"> Fr <span class="dark-color">(@lang('app.txt.fr'))</span></a></li>
                                             <li><a style="color:#555658;" href="{{route('localization', ['locale'=>'en'])}}"><img src="{{ asset('images/ico/en.png') }}"> En <span class="dark-color">(@lang('app.txt.en'))</span></a></li>
                                           </ul>
                                     </div>
                                 </li>
-                                <li class="small m-10px-l">
+                                <li class="m-10px-l text-white font-weight-bold ">
                                     @php $socialConfig = \App\Models\Config::social(); @endphp
                                     @foreach(\App\Models\Config::socialRules() as $key => $value)
                                         @if($metaConfig = $socialConfig->get_meta($key))

@@ -449,16 +449,12 @@
   <script>
     $('#btn_buy').click(function(){
        var usrIsCplt = '{{  Auth::user()->isComplete()  }}';
-
-       console.log(usrIsCplt);
-       
        if(usrIsCplt === ''){
           // Show particular member registration Modal
           $('#registratorMemberFormModal').modal('show');
        }else{
          
        }
-
     });
   </script>
 @endpush

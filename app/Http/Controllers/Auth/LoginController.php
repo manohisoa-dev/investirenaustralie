@@ -63,7 +63,12 @@ class LoginController extends Controller
             return url(url()->previous());
         }
 
-        return '/'. Role::find(Auth::user()->role)->role_initial;
+        $role_initial = Role::find(Auth::user()->role)->role_initial;
+
+        // If user is collaborator
+        Auth::user()->isAdminDelegate()?$role_initial='collaborators':$role_initial='collaborator';
+
+        return '/'. $role_initial;
     }
     
     /**

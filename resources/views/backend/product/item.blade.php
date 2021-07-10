@@ -51,7 +51,7 @@
         </div>
     </div>
 @elseif($type == 'favorites')
-    <div class="col-sm-6 col-xl-4 m-10px-tb">
+    <div class="col-sm-12 col-lg-12 m-10px-tb">
         <div class="card">
             <a href="{{route('product.index',['product'=>$product->slug])}}" class="media align-items-center lh-normal p-10px gray-bg">
                 <div class="avatar-50 border-radius-50">
