@@ -19,19 +19,19 @@
          <td>{{$cartitem->id}}</td>
          <td>
              @if($cartitem->product)
-                <a href="{{route('admin.product.show', ['product'=>$cartitem->product])}}"><img class="thumb" src="{{$cartitem->product->imageUrl()}}" width="50"></a>
+                <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.show', ['product'=>$cartitem->product]):route('admin.product.show', ['product'=>$cartitem->product])}}"><img class="thumb" src="{{$cartitem->product->imageUrl()}}" width="50"></a>
              @endif
          </td>
          <td>
              @if($cartitem->product)
-                 <a href="{{route('admin.product.show', ['product'=>$cartitem->product])}}">{{$cartitem->product->title}}</a><br>
+                 <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.show', ['product'=>$cartitem->product]):route('admin.product.show', ['product'=>$cartitem->product])}}">{{$cartitem->product->title}}</a><br>
                  {{$cartitem->product->excerpt()}}
              @endif
          </td>
          <td>{{$cartitem->currency}} {{$cartitem->price}} / {{$cartitem->tma}}</td>
          <td>{{$cartitem->created_at->diffForHumans()}}</td>
          <td>
-             <a href="{{route('admin.sale', ['filter'=>$cartitem->status])}}">
+             <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.sale', ['filter'=>$cartitem->status]):route('admin.sale', ['filter'=>$cartitem->status])}}">
                  @if($cartitem->status=='ordered')
                  <span class="label label-success">{{$cartitem->status}}</span>
                  @else
@@ -41,30 +41,30 @@
          </td>
          <td>
              @if($cartitem->apl)
-             <a href="{{route('admin.user.show', $cartitem->apl)}}">{{$cartitem->apl->name}}</a>
+             <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show', $cartitem->apl):route('admin.user.show', $cartitem->apl)}}">{{$cartitem->apl->name}}</a>
              <p>{{$cartitem->apl_paid_at?$cartitem->apl_paid_at->diffForHumans():''}}</p>
              @endif
          </td>
          <td>
              @if($cartitem->afa)
-             <a href="{{route('admin.user.show', $cartitem->afa)}}">{{$cartitem->afa->name}}</a>
+             <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show', $cartitem->afa):route('admin.user.show', $cartitem->afa)}}">{{$cartitem->afa->name}}</a>
              @endif
          </td>
          <td>
              @if($cartitem->author)
-             <a href="{{route('admin.user.show', $cartitem->author)}}">{{$cartitem->author->name}}</a>
+             <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show', $cartitem->author):route('admin.user.show', $cartitem->author)}}">{{$cartitem->author->name}}</a>
              @endif
          </td>
          <td>
-            <a href="{{route('admin.sale.delete', $cartitem)}}" class="btn btn-small btn-warning btn-delete">@lang('app.btn.delete')</a>
+            <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.sale.delete', $cartitem):route('admin.sale.delete', $cartitem)}}" class="btn btn-small btn-warning btn-delete">@lang('app.btn.delete')</a>
              
             @if($cartitem->status=='ordered')
                 @if(!$cartitem->apl_paid_at)
-                <a href="{{route('admin.sale.pay', ['cartitem'=>$cartitem, 'role'=>'apl'])}}" class="btn btn-small btn-info btn-delete">@lang('app.admin.sale.pay.apl')</a>
+                <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.sale.pay', ['cartitem'=>$cartitem, 'role'=>'apl']):route('admin.sale.pay', ['cartitem'=>$cartitem, 'role'=>'apl'])}}" class="btn btn-small btn-info btn-delete">@lang('app.admin.sale.pay.apl')</a>
                 @endif
 
                 @if(!$cartitem->afa_paid_at)
-                <a href="{{route('admin.sale.pay', ['cartitem'=>$cartitem, 'role'=>'afa'])}}" class="btn btn-small btn-info btn-delete">@lang('app.admin.sale.pay.afa')</a>
+                <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.sale.pay', ['cartitem'=>$cartitem, 'role'=>'afa']):route('admin.sale.pay', ['cartitem'=>$cartitem, 'role'=>'afa'])}}" class="btn btn-small btn-info btn-delete">@lang('app.admin.sale.pay.afa')</a>
                 @endif
             @endif
          </td>

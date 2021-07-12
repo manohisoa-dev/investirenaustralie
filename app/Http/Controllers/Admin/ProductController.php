@@ -116,7 +116,7 @@ class ProductController extends Controller {
             }
             # notification
             Notify::success('Programme a été créer avec succès');
-            return redirect(route('admin.product.programme'));
+            return redirect(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme'));
         } else {
             //creation produit
             if (isset($request->chk_parking)) {
@@ -212,7 +212,7 @@ class ProductController extends Controller {
 
             # notification
             Notify::success('Produit a été créer avec succès');
-            return redirect(route('admin.product.index').'?nature='.$nature);
+            return back();
         }
     }
 
@@ -435,7 +435,7 @@ class ProductController extends Controller {
             $product->save();
             # notification
             Notify::success('Programme a été mise à jour avec succès');
-            return redirect(route('admin.product.programme'));
+            return redirect(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme'));
         } else {
             Localisation::where('id', $request->location_id)->update(['area_level_1' => $request->suburb_product,
                 'country' => $request->countryId_product, 'postalCode' => $request->postalCode_product,
@@ -481,7 +481,7 @@ class ProductController extends Controller {
 
             # notification
             Notify::success('Produit a été mise à jour avec succès');
-            return redirect(route('admin.product.index').'?nature='.$product->natureBien);
+            return redirect( (Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')).'?nature='.$product->natureBien);
         }
     }
 
@@ -496,12 +496,12 @@ class ProductController extends Controller {
             Product::where('parent_id', $product->id)->delete(); //suppression programme
             $product->delete(); # notification
             Notify::success('Programme a été supprimer avec succès');
-            return redirect(route('admin.product.programme'));
+            return back();
         } else {
             $nature = $product->natureBien;
             $product->delete(); # notification
             Notify::success('Produit a été supprimer avec succès');
-            return redirect(route('admin.product.index').'?nature='.$nature);
+            return back();
         }
     }
 
@@ -509,7 +509,7 @@ class ProductController extends Controller {
         $product->status = 'archived';
         $product->save();
         Notify::success('Le produit a été archivé avec succés');
-        return redirect(route('admin.product.index'));
+        return back();
     }
 
     /**
@@ -524,7 +524,7 @@ class ProductController extends Controller {
         $product->status = 'trashed';
         $product->save();
         Notify::success('Le produit a été ajouté au corbeille avec succés');
-        return redirect(route('admin.product.index').'?nature='.$nature);
+        return back();
     }
 
     /**
@@ -541,7 +541,7 @@ class ProductController extends Controller {
         $product->status = 'pinged';
         $product->save();
         Notify::success('Le produit a été restoré avec succés');
-        return redirect(route('admin.product.index').'?nature='.$nature);
+        return back();
     }
 
     /**

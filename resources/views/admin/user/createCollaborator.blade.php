@@ -29,7 +29,7 @@
                 <h5>@lang('app.txt.add_collaborator')</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-validation form-padding" action="{{ route('admin.user.store') }}" method="post"  enctype="multipart/form-data">
+                <form class="form-validation form-padding" action="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.store'):route('admin.user.store') }}" method="post"  enctype="multipart/form-data">
 					<h3 class="m-t-none m-b">@lang('app.txt.login_info')</h3>
                     {{ csrf_field() }}
                     <div class="row">

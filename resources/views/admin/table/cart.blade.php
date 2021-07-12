@@ -20,7 +20,7 @@
             <td>{{$cart->totalQuantity}}</td>
             <td>{{$cart->created_at->diffForHumans()}}</td>
             <td>{{$cart->status}}</td>
-            <td><a class="btn btn-primary" href="{{route('admin.cart.show',$cart)}}">@lang('app.btn.view')</a></td>
+            <td><a class="btn btn-primary" href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.cart.show',$cart):route('admin.cart.show',$cart)}}">@lang('app.btn.view')</a></td>
         </tr>
        @endforeach
     </tbody>

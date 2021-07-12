@@ -5,16 +5,16 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Catégories</h2>
+        <h2>@lang('app.txt.categories')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Catégories</a>
+                <a href="#">@lang('app.txt.categories')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.category.index') }}">Listes</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.category.index'):route('admin.collaborators.admin.category.index') }}">@lang('app.txt.lists')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Ajout</strong>
+                <strong>@lang('app.txt.add')</strong>
             </li>
         </ol>
     </div>
@@ -29,10 +29,10 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Ajouter un nouveau Catégorie</h5>
+                <h5>@lang('app.txt.add_new_category')</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-validation form-padding" action="{{ route('admin.category.store') }}" method="post">
+                <form class="form-validation form-padding" action="{{ Auth::user()->isAdmin()?route('admin.category.store'):route('admin.collaborators.admin.category.store') }}" method="post">
 
                     {{ csrf_field() }}
                                                         
@@ -41,7 +41,7 @@
                                             
                     {!! \Nvd\Crud\Form::input('title','text')->show() !!}                                            
                     {!! \Nvd\Crud\Form::input('content','text')->show() !!}                                           
-                    <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-save"></i> Créer</button>
+                    <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-save"></i> @lang('app.btn.create')</button>
 
                 </form>
             </div>

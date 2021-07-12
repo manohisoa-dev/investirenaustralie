@@ -11,7 +11,7 @@
                 <a href="#">@lang('app.txt.programme')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.product.programme') }}">@lang('app.txt.liste')</a>
+                <a href="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme') }}">@lang('app.txt.liste')</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>@lang('app.form.programme_edition')</strong>
@@ -32,7 +32,7 @@
                 <h5>@lang('app.form.programme_edit_title') : {{$product->title}}</h5>
             </div>
             <div class="ibox-content">
-                <form action="{{ route('admin.product.index')}}/{{$product->id}}" method="post" id="programmeForm" enctype="multipart/form-data">
+                <form action="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{$product->id}}" method="post" id="programmeForm" enctype="multipart/form-data">
 
                     {{ csrf_field() }}
 
@@ -325,11 +325,11 @@
 							<td>{{$key + 1}}</td>
 							<td>
 								@if (@getimagesize($product_lie->imageUrl()))
-									<a href="{{route('admin.product.index')}}/{{$product_lie->id}}">
+									<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{$product_lie->id}}">
 										<img src="{{$product_lie->imageUrl()}}" class="img-responsive" style="height:80px" />
 									</a>
 								@else
-									<a href="{{route('admin.product.index')}}/{{$product_lie->id}}">
+									<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{$product_lie->id}}">
 										<img class="img-responsive" src="{{asset('img/500x500.jpg')}}" width="80">
 									</a>
 								@endif

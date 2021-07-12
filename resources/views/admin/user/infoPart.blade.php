@@ -14,7 +14,7 @@
                 <a href="#">@lang('app.txt.'.$role)</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.user.show.'.$role) }}">@lang('app.txt.lists')</a>
+                <a href="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show.'.$role):route('admin.user.show.'.$role) }}">@lang('app.txt.lists')</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>@lang('app.txt.detail')</strong>

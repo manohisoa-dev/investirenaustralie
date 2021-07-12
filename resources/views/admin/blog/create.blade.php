@@ -5,16 +5,16 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Blogs</h2>
+        <h2>@lang('app.txt.blogs')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Blogs</a>
+                <a href="#">@lang('app.txt.blogs')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ Auth::user()->isAdmin()?route('admin.blog.index') : route('admin.collaborator.admin.blog.index') }}">Listes</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.blog.index') : (Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.index'):route('admin.collaborator.admin.blog.index')) }}">@lang('app.txt.lists')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Ajout</strong>
+                <strong>@lang('app.txt.add')</strong>
             </li>
         </ol>
     </div>
@@ -29,10 +29,10 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Ajouter un nouveau Blog</h5>
+                <h5>@lang('app.txt.add_new_blog')</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-validation form-padding" action="{{ Auth::user()->isAdmin()?route('admin.blog.store') : route('admin.collaborator.admin.blog.store') }}" id="formBlog" method="post" enctype="multipart/form-data">
+                <form class="form-validation form-padding" action="{{ Auth::user()->isAdmin()?route('admin.blog.store') : (Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.store'):route('admin.collaborator.admin.blog.store')) }}" id="formBlog" method="post" enctype="multipart/form-data">
 
                     {{ csrf_field() }}
                                                         
@@ -90,7 +90,7 @@
 					</div>            
 					<div class="hr-line-dashed"></div>
                     <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-save"></i> @lang('app.btn.save')</button>
-					<a href="{{ route('admin.blog.index') }}" class="btn btn-outline btn-default btn-lg pull-right" type="submit">
+					<a href="{{ Auth::user()->isAdmin() ? route('admin.blog.index') : (Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.index'):route('admin.collaborator.admin.blog.index')) }}" class="btn btn-outline btn-default btn-lg pull-right" type="submit">
 						<i class="fa fa-chevron-circle-left"></i> @lang('app.btn.back')
 					</a>
                 </form>

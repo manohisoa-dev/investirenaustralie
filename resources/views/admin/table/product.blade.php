@@ -17,16 +17,17 @@
      <tr>
          <td>{{$product->id}}</td>
          <td>
-             <a href="{{route('admin.product.show', ['product'=>$product])}}"><img class="thumb" src="{{$product->imageUrl()}}" width="50"></a>
+             <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.show', ['product'=>$product]):route('admin.product.show', ['product'=>$product])}}"><img class="thumb" src="{{$product->imageUrl()}}" width="50"></a>
          </td>
          <td>
-             <a href="{{route('admin.product.show', ['product'=>$product])}}">{{$product->title}}</a><br>
+             <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.show', ['product'=>$product]):route('admin.product.show', ['product'=>$product])}}">{{$product->title}}</a><br>
              {{$product->excerpt()}}
          </td>
          <td>{{$product->currency}} {{$product->price}} / {{$product->tma}}</td>
          <td>{{$product->created_at->diffForHumans()}}</td>
          <td>
-             <a href="<?php /*?>{{route('admin.product.list', ['filter'=>$product->status])}}<?php */?>">
+             {{-- <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.list', ['filter'=>$product->status]):route('admin.product.list', ['filter'=>$product->status])}}"> --}}
+             <a href="#">
                  @if($product->status=='published')
                  <span class="label label-success">{{$product->status}}</span>
                  @else
@@ -36,25 +37,25 @@
          </td>
          <td>
              @if($product->seller)
-             <a href="{{route('admin.user.show', $product->seller)}}">{{$product->seller->name}}</a>
+             <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show', $product->seller):route('admin.user.show', $product->seller)}}">{{$product->seller->name}}</a>
              @endif
          </td>
          <td>
              @if($product->author)
-             <a href="{{route('admin.user.show', $product->author)}}">{{$product->author->name}}</a>
+             <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show', $product->author):route('admin.user.show', $product->author)}}">{{$product->author->name}}</a>
              @endif
          </td>
          <td>
-		 <form class="form-inline" action="{{route('admin.product.index')}}/{{$product->id}}" method="POST">
+		 <form class="form-inline" action="{{Auth::user()->isAdminDelegate()?route('admin.product.index'):route('admin.product.index')}}/{{$product->id}}" method="POST">
          @if($product->status=='pinged' || $product->status=='archived')
-            <a href="{{route('admin.product.publish', $product)}}" class="btn btn-default btn-circle" title="@lang('app.btn.publish')"><i class="fa fa-check"></i></a>&nbsp;&nbsp;
-            <a href="{{route('admin.product.trash', $product)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')"><i class="fa fa-trash-o"></i></a>&nbsp;&nbsp;
+            <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.publish', $product):route('admin.product.publish', $product)}}" class="btn btn-default btn-circle" title="@lang('app.btn.publish')"><i class="fa fa-check"></i></a>&nbsp;&nbsp;
+            <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.trash', $product):route('admin.product.trash', $product)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')"><i class="fa fa-trash-o"></i></a>&nbsp;&nbsp;
          @elseif($product->status=='trashed')
-            <a href="{{route('admin.product.restore', $product)}}" class="btn btn-default btn-circle" title="Restore"><i class="fa fa-window-restore"></i></a>&nbsp;&nbsp;
+            <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.restore', $product):route('admin.product.restore', $product)}}" class="btn btn-default btn-circle" title="Restore"><i class="fa fa-window-restore"></i></a>&nbsp;&nbsp;
          @endif
          @if($product->status=='published')
-            <a href="{{route('admin.product.archive', $product)}}" class="btn btn-default btn-circle" title="@lang('app.btn.archive')"><i class="fa fa-archive"></i></a>&nbsp;&nbsp;
-            <a href="{{route('admin.product.trash', $product)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')"><i class="fa fa-trash-o"></i></a>&nbsp;&nbsp;
+            <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.archive', $product):route('admin.product.archive', $product)}}" class="btn btn-default btn-circle" title="@lang('app.btn.archive')"><i class="fa fa-archive"></i></a>&nbsp;&nbsp;
+            <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.trash', $product):route('admin.product.trash', $product)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')"><i class="fa fa-trash-o"></i></a>&nbsp;&nbsp;
          @endif
 			{{ csrf_field() }}
 			{{ method_field('DELETE') }}

@@ -11,7 +11,7 @@
                 <a href="#">@lang('app.txt.programme')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{route('admin.product.programme')}}">@lang('app.txt.liste')</a>
+                <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme')}}">@lang('app.txt.liste')</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>@lang('app.txt.add_new_programme')</strong>
@@ -32,7 +32,7 @@
                 <h5>@lang('app.txt.new_programme')</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-validation form-padding" action="{{ route('admin.product.store') }}" method="post" id="programmeForm" enctype="multipart/form-data">
+                <form class="form-validation form-padding" action="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.store'):route('admin.product.store') }}" method="post" id="programmeForm" enctype="multipart/form-data">
 
                     {{ csrf_field() }}
                     <input type="hidden" name="type" value="{{$type}}" />  

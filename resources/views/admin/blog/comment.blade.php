@@ -5,13 +5,13 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Blogs</h2>
+        <h2>@lang('app.txt.blogs')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Blogs</a>
+                <a href="#">@lang('app.txt.blogs')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.blog.index') }}">Listes</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.blog.index'):(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.index'):route('admin.collaborators.admin.blog.index')) }}">@lang('app.txt.lists')</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>@lang('app.comment.list')</strong>
@@ -36,13 +36,13 @@
 				<table class="table table-striped grid-view-tbl">
                 	<thead>
                     	<tr class="header-row">
-							<th width="5%">ID</th>
-							<th>Commentaire</th>
-							<th>Statut</th>
-							<th>Auteur</th>
-							<th>Reponses</th>
-							<th>Créer le</th>
-							<th>Actions</th>
+							<th width="5%">@lang('app.table.id')</th>
+							<th>@lang('app.txt.commentaire')</th>
+							<th>@lang('app.txt.status')</th>
+							<th>@lang('app.txt.author')</th>
+							<th>@lang('app.txt.reply')</th>
+							<th>@lang('app.txt.created_on')</th>
+							<th>@lang('app.table.actions')</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -56,7 +56,7 @@
 							<td>{{$comment->created_at->diffForHumans()}}</td>
 							<td class="actions-cell text-center" width="12%">
 							 @if($comment->status=='pinged' || $comment->status=='archived')
-								<a href="{{route('admin.comment.publish', $comment)}}" class="btn btn-default btn-circle" title="@lang('app.btn.publish')">
+								<a href="{{ Auth::user()->isAdmin()?route('admin.comment.publish', $comment):(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.comment.publish', $comment):route('admin.collaborator.admin.comment.publish', $comment)) }}" class="btn btn-default btn-circle" title="@lang('app.btn.publish')">
 									<i class="fa fa-check"></i>
 								</a>&nbsp;&nbsp;
 								<a href="#" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">

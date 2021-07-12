@@ -5,20 +5,20 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Catégories</h2>
+        <h2>@lang('app.txt.categories')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.category.index') }}">Catégories</a>
+                <a href="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.category.index'):route('admin.category.index') }}">@lang('app.txt.categories')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Listes</strong>
+                <strong>@lang('app.txt.lists')</strong>
             </li>
         </ol>
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ route('admin.category.create') }}" type="button" class="btn btn-primary btn-block">
-                <i class="fa fa-plus"></i> Ajouter un nouveau catégorie           
+            <a href="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.category.create'):route('admin.category.create') }}" type="button" class="btn btn-primary btn-block">
+                <i class="fa fa-plus"></i> @lang('app.txt.add_new_category')           
 			</a>
         </div>
     </div>
@@ -31,7 +31,7 @@
 	<div class="col-lg-12">
 		<div class="ibox float-e-margins">
 			<div class="ibox-title">
-				<h5>Categories</h5>
+				<h5>@lang('app.txt.categories')</h5>
 			</div>
 			<div class="ibox-content">
 				<div class="table-responsive">
@@ -69,7 +69,7 @@
                                           data-name="title"
                                           data-value="{{ $record->title }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.category.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.category.index'):route('admin.category.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->title }}</span>
                                 </td>
 								<td>
@@ -83,12 +83,12 @@
                                           data-name="author_id"
                                           data-value="{{ $record->author_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.category.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.category.index'):route('admin.category.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->author->name }}</span>
                                </td>
 							   <td class="actions-cell text-center" width="12%">
-									<form class="form-inline" action="{{route('admin.category.destroy',$record)}}" method="POST">
-										<a href="{{route('admin.category.edit', $record)}}" title="Modification" class="btn btn-default btn-circle">
+									<form class="form-inline" action="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.category.destroy',$record):route('admin.category.destroy',$record)}}" method="POST">
+										<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.category.edit', $record):route('admin.category.edit', $record)}}" title="Modification" class="btn btn-default btn-circle">
 											<i class="fa fa-pencil-square-o"></i>
 										</a>&nbsp;&nbsp;								
 										{{ csrf_field() }}

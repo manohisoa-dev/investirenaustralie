@@ -5,16 +5,16 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Blogs</h2>
+        <h2>@lang('app.txt.blogs')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Blogs</a>
+                <a href="#">@lang('app.txt.blogs')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.blog.index') }}">Listes</a>
+                <a href="{{ route('admin.blog.index') }}">@lang('app.txt.lists')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Edition</strong>
+                <strong>@lang('app.txt.editing')</strong>
             </li>
         </ol>
     </div>
@@ -29,10 +29,10 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Mise à jour Blog : {{$blog->slug}}</h5>
+                <h5>@lang('app.txt.update_blog', ['blog'=>$blog->slug])</h5>
             </div>
             <div class="ibox-content">
-                <form action="{{ Auth::user()->isAdmin() ? route('admin.blog.index') : route('admin.collaborator.admin.blog.index') }}/{{$blog->id}}" id="formBlog" method="post" enctype="multipart/form-data">
+                <form action="{{ Auth::user()->isAdmin() ? route('admin.blog.index') : Auth::user()->isAdmin() ? route('admin.blog.index') : (Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.index'):route('admin.collaborator.admin.blog.index')) }}/{{$blog->id}}" id="formBlog" method="post" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     {{ method_field("PUT") }}
 					<div class="form-group">

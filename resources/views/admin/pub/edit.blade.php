@@ -5,16 +5,16 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Publicités</h2>
+        <h2>@lang('app.publicities')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Publicités</a>
+                <a href="#">@lang('app.publicities')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.pub.index') }}">Listes</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.pub.index'):route('admin.collaborators.admin.pub.index') }}">@lang('app.txt.lists')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Edition</strong>
+                <strong>@lang('app.txt.editing')</strong>
             </li>
         </ol>
     </div>
@@ -32,7 +32,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Mise à jour Publicités : {{$pub->title}}</h5>
+                <h5>@lang('app.txt.update_ad', ['pub'=>$pub->title])</h5>
             </div>
             <div class="ibox-content">
                 <form action="{{ route('admin.pub.index')}}/{{$pub->id}}" method="post" enctype="multipart/form-data">

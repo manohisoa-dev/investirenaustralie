@@ -5,20 +5,20 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Pages</h2>
+        <h2>@lang('app.pages')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.page.index') }}">Pages</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.page.index') :route('admin.collaborators.admin.page.index') }}">@lang('app.pages')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Listes</strong>
+                <strong>@lang('app.txt.lists')</strong>
             </li>
         </ol>
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ route('admin.page.create') }}" type="button" class="btn btn-primary btn-block">
-                <i class="fa fa-plus"></i> Ajouter un nouveau Page            
+            <a href="{{ Auth::user()->isAdmin()?route('admin.page.create'):route('admin.collaborators.admin.page.create') }}" type="button" class="btn btn-primary btn-block">
+                <i class="fa fa-plus"></i> @lang('app.txt.add_new_page')            
 			</a>
         </div>
     </div>
@@ -30,7 +30,7 @@
 	<div class="col-lg-12">
 		<div class="ibox float-e-margins">
 			<div class="ibox-title">
-				<h5>Pages</h5>
+				<h5>@lang('app.pages')</h5>
 			</div>
 			<div class="ibox-content">
 				<div class="table-responsive">
@@ -82,7 +82,7 @@
                                           data-name="title"
                                           data-value="{{ $record->title }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.page.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.page.index'):route('admin.collaborators.admin.page.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->title }}</span><br />
 										  @if($record->is_pub == 1)
 										  	<span class="label label-primary">PUB</span>
@@ -94,7 +94,7 @@
                                           data-name="content"
                                           data-value="{{ $record->content }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.page.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.page.index'):route('admin.collaborators.admin.page.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ str_limit(strip_tags($record->content), "100", "...") }}</span>
                                  </td>
                                  <td>
@@ -103,7 +103,7 @@
                                           data-name="path"
                                           data-value="{{ $record->path }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.page.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.page.index'):route('admin.collaborators.admin.page.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->path }}</span>
                                  </td>
                                  <td>
@@ -112,7 +112,7 @@
                                           data-name="page_order"
                                           data-value="{{ $record->page_order }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.page.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.page.index'):route('admin.collaborators.admin.page.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->page_order }}</span>
                                   </td>
                                   <td>
@@ -121,7 +121,7 @@
                                           data-name="language"
                                           data-value="{{ $record->language }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.page.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.page.index'):route('admin.collaborators.admin.page.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->language }}</span>
                                    </td>
                                    <td>
@@ -130,7 +130,7 @@
                                           data-name="parent_id"
                                           data-value="{{ $record->parent_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.page.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.page.index'):route('admin.collaborators.admin.page.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->parent ? $record->parent->title : ''}}</span>
                                     </td>
                                     <td>
@@ -139,14 +139,14 @@
                                           data-name="author_id"
                                           data-value="{{ $record->author_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.page.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.page.index'):route('admin.collaborators.admin.page.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->author ? $record->author->name : ''}}</span>
                                      </td>
                                      <td>{{ $record->created_at ? $record->created_at->diffForHumans() : ''}}</td>
                                      <td>{{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}</td>
 									 <td class="actions-cell text-center" width="7%">
-									 	<form class="form-inline" action="{{route('admin.page.index')}}/{{$record->id}}" method="POST">
-											<a href="{{route('admin.page.index')}}/{{$record->id}}/edit" title="Modification" class="btn btn-default btn-circle">
+									 	<form class="form-inline" action="{{Auth::user()->isAdmin()?route('admin.page.index'):route('admin.collaborators.admin.page.index')}}/{{$record->id}}" method="POST">
+											<a href="{{Auth::user()->isAdmin()?route('admin.page.index'):route('admin.collaborators.admin.page.index')}}/{{$record->id}}/edit" title="Modification" class="btn btn-default btn-circle">
 												<i class="fa fa-pencil-square-o"></i>
 											</a>&nbsp;&nbsp;
 											{{ csrf_field() }}

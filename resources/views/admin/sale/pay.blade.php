@@ -5,10 +5,10 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Ventes</h2>
+        <h2>@lang('app.sales')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.sale.index') }}">Ventes</a>
+                <a href="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.sale.index'):route('admin.sale.index') }}">@lang('app.sales')</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>{{$title}}</strong>
@@ -32,19 +32,19 @@
 				<div class="row">
 					<div class="col-md-4">
 						<div class="form-group">
-							<label>First Name</label> 
+							<label>@lang('app.txt.first_name')</label> 
 							<input class="form-control" required="required" name="first_name" type="text" value="">
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
-							<label>Last Name</label> 
+							<label>@lang('app.txt.last_name')</label> 
 							<input class="form-control" required="required" name="last_name" type="text" value="">
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
-							<label>Email address</label> 
+							<label>@lang('app.txt.email')</label> 
 							<input class="form-control" required="required" name="email" type="email" value="{{$user->email}}">
 						</div>
 					</div>
@@ -52,19 +52,19 @@
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group">
-							<label>Credit card number</label> 
+							<label>@lang('app.txt.credit_card_number')</label> 
 							<input class="form-control" required="required" data-parsley-type="number" maxlength="16" data-parsley-trigger="change focusout" data-parsley-class-handler="#cc-group" type="text" value="" data-parsley-id="11">
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
-							<label>Card Validation Code (3 or 4 digit number)</label> 
+							<label>@lang('app.txt.card_validation_code')</label> 
 							<input class="form-control" required="required" data-parsley-type="number" data-parsley-trigger="change focusout" maxlength="4" data-parsley-class-handler="#ccv-group" type="text" value="">
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
-							<label>Ex. Month</label> 
+							<label>@lang('app.txt.expiration_month')</label> 
 							{!! Form::selectMonth(null, null, [
                               'class'                 => 'form-control',
                               'required'              => 'required'
@@ -73,7 +73,7 @@
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
-							<label>Ex. Year</label> 
+							<label>@lang('app.txt.expiration_year')</label> 
 							{!! Form::selectYear(null, date('Y'), date('Y') + 10, null, [
                               'class'             => 'form-control',
                               'required'          => 'required'
@@ -82,7 +82,7 @@
 					</div>
 				</div>
 				<div class="hr-line-dashed"></div>
-				<button type="submit" class="btn btn-primary pull-right" id="submitBtn">Place order!</button>
+				<button type="submit" class="btn btn-primary pull-right" id="submitBtn">@lang('app.txt.place_order')</button>
 				<div style="clear:both"></div>
 			{!! Form::close() !!}
 			</div>

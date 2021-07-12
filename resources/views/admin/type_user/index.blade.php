@@ -5,20 +5,20 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Type utilisateur</h2>
+        <h2>@lang('app.txt.user_type')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.type-user.index') }}">Type utilisateur</a>
+                <a href="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.type-user.index'):route('admin.type-user.index') }}">@lang('app.txt.user_type')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Listes</strong>
+                <strong>@lang('app.txt.lists')</strong>
             </li>
         </ol>
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ route('admin.type-user.create') }}" type="button" class="btn btn-primary btn-block">
-                <i class="fa fa-plus"></i> Ajouter un nouveau Type utilisateur            
+            <a href="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.type-user.create'):route('admin.type-user.create') }}" type="button" class="btn btn-primary btn-block">
+                <i class="fa fa-plus"></i>@lang('app.txt.add_new_user_type')            
 			</a>
         </div>
     </div>
@@ -31,7 +31,7 @@
 	<div class="col-lg-12">
 		<div class="ibox float-e-margins">
 			<div class="ibox-title">
-				<h5>Type utilisateur</h5>
+				<h5>@lang('app.txt.user_type')</h5>
 			</div>
 			<div class="ibox-content">
 				<div class="table-responsive">
@@ -40,7 +40,7 @@
                     <tr class="header-row">
 						{!!\Nvd\Crud\Html::sortableTh('id','admin.type-user.index','Id')!!}
 						{!!\Nvd\Crud\Html::sortableTh('type_user_name','admin.type-user.index','Type utilisateur')!!}
-						<th><a href="javascript:void(0)">Actions</a></th>
+						<th><a href="javascript:void(0)">@lang('app.table.actions')</a></th>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">
@@ -65,11 +65,15 @@
                                           >{{ $record->type_user_name }}</span>
                                 </td>
 								<td class="actions-cell text-center" width="7%">
-								  	<a href="{{route('admin.type-user.index')}}/{{$record->id}}/edit" title="Modification" class="btn btn-default btn-circle">
-										<i class="fa fa-pencil-square-o"></i>
-									</a>
+                                    @if (Auth::user()->isAdminDelegate() && $record->id===7)
+                                        <small>@lang('app.txt.authorization_not_defined')</small>
+                                    @else
+                                        <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.type-user.edit', ['type_user'=>$record->id]):route('admin.type-user.edit', ['type-user'=>$record->id])}}" title="Modification" class="btn btn-default btn-circle">
+                                            <i class="fa fa-pencil-square-o"></i>
+                                        </a>
+                                    @endif
 								</td>
-                                <?php /*?>@include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('admin.type-user.index'), 'record' => $record ] )<?php */?>
+                                {{-- @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('admin.type-user.index'), 'record' => $record ] ) --}}
                             </tr>
                         @empty
                             @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 3])

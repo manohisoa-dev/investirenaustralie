@@ -5,10 +5,10 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Publicités</h2>
+        <h2>@lang('app.publicities')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.pub.index') }}">Publicités</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.pub.index') :route('admin.collaborators.admin.pub.index') }}">@lang('app.publicities')</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Listes</strong>
@@ -17,8 +17,8 @@
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ route('admin.pub.create') }}" type="button" class="btn btn-primary btn-block">
-                <i class="fa fa-plus"></i> Ajouter un nouveau Pub            
+            <a href="{{ Auth::user()->isAdmin()?route('admin.pub.create'):route('admin.collaborators.admin.pub.create') }}" type="button" class="btn btn-primary btn-block">
+                <i class="fa fa-plus"></i> @lang('app.txt.add_new_ad')            
 			</a>
         </div>
     </div>
@@ -31,7 +31,7 @@
 	<div class="col-lg-12">
 		<div class="ibox float-e-margins">
 			<div class="ibox-title">
-				<h5>Publicités</h5>
+				<h5>@lang('app.publicities')</h5>
 			</div>
 			<div class="ibox-content">
 				<div class="table-responsive">
@@ -46,7 +46,7 @@
 						<th>Pages</th>
 						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.pub.index','Créer le')!!}
 						{!!\Nvd\Crud\Html::sortableTh('author_id','admin.pub.index','Auteur')!!}
-						<th><a href="javascript:void(0)">Actions</a></th>
+						<th><a href="javascript:void(0)">@lang('app.table.actions')</a></th>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">
@@ -76,7 +76,7 @@
                                           data-name="title"
                                           data-value="{{ $record->title }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.pub.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.pub.index'):route('admin.collaborators.admin.pub.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->title }}</span>
                                  </td>
                                  <td>
@@ -85,7 +85,7 @@
                                           data-name="content"
                                           data-value="{{ $record->content }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.pub.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.pub.index'):route('admin.collaborators.admin.pub.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ strip_tags($record->content) }}</span>
                                  </td>
                                  <td>
@@ -94,7 +94,7 @@
                                           data-name="links"
                                           data-value="{{ $record->links }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.pub.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.pub.index'):route('admin.collaborators.admin.pub.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->links }}</span>
                                   </td>
 								  <td>{{count($record->pages)}}</td>
@@ -105,12 +105,12 @@
                                           data-name="author_id"
                                           data-value="{{ $record->author_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.pub.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.pub.index'):route('admin.collaborators.admin.pub.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{$record->author->name}}</span>
                                     </td>
 									<td class="actions-cell text-center" width="7%">
-										<form class="form-inline" action="{{route('admin.pub.index')}}/{{$record->id}}" method="POST">
-											<a href="{{route('admin.pub.index')}}/{{$record->id}}/edit" class="btn btn-default btn-circle" title="Modification">
+										<form class="form-inline" action="{{Auth::user()->isAdmin()?route('admin.pub.index'):route('admin.collaborators.admin.pub.index')}}/{{$record->id}}" method="POST">
+											<a href="{{Auth::user()->isAdmin()?route('admin.pub.index'):route('admin.collaborators.admin.pub.index')}}/{{$record->id}}/edit" class="btn btn-default btn-circle" title="Modification">
 												<i class="fa fa-pencil-square-o"></i>
 											</a>&nbsp;&nbsp;										
 											{{ csrf_field() }}

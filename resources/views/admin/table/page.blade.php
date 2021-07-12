@@ -18,21 +18,21 @@
             <tr>
                 <td>{{$page->id}}</td>
                 <td>
-                    <a href="{{route('admin.page.show', $page)}}">{{$page->title}}</a><br>
+                    <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.page.show', $page):route('admin.page.show', $page)}}">{{$page->title}}</a><br>
                     {{$page->excerpt()}}
                 </td>
                 <td>{{$page->path}}</td>
                 <td>{{$page->language}}</td>
-                <td>@if($page->parent)<a href="{{route('admin.page.show', $page->parent)}}">{{$page->parent->title}}</a>@endif</td>
+                <td>@if($page->parent)<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.page.show', $page->parent):route('admin.page.show', $page->parent)}}">{{$page->parent->title}}</a>@endif</td>
                 <td>{{$page->page_order}}</td>
-                <td>@if($page->author)<a href="{{route('admin.user.show', $page->author)}}">{{$page->author->name}}</a>@endif</td>
+                <td>@if($page->author)<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show', $page->author):route('admin.user.show', $page->author)}}">{{$page->author->name}}</a>@endif</td>
                 <td>{{$page->created_at->diffForHumans()}}</td>
                 <td>
-                    <a href="{{route('admin.page.edit', $page)}}" class="btn btn-small btn-info btn-update">@lang('app.btn.edit')</a>
+                    <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.page.edit', $page):route('admin.page.edit', $page)}}" class="btn btn-small btn-info btn-update">@lang('app.btn.edit')</a>
                     @if(isset($pub))
-                    <a href="{{route('admin.pub.detach', ['pub'=>$pub, 'page'=>$page])}}" class="btn btn-small btn-success btn-delete">@lang('app.btn.detach')</a>
+                    <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.pub.detach', ['pub'=>$pub, 'page'=>$page]):route('admin.pub.detach', ['pub'=>$pub, 'page'=>$page])}}" class="btn btn-small btn-success btn-delete">@lang('app.btn.detach')</a>
                     @endif
-                    <a href="{{route('admin.page.delete', $page)}}" class="btn btn-small btn-warning btn-delete">@lang('app.btn.delete')</a>
+                    <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.page.delete', $page):route('admin.page.delete', $page)}}" class="btn btn-small btn-warning btn-delete">@lang('app.btn.delete')</a>
                 </td>
             </tr>
            @endforeach
