@@ -5,13 +5,13 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Ventes</h2>
+        <h2>@lang('app.sales')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.sale.index') }}">Ventes</a>
+                <a href="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.sale.index'):route('admin.sale.index') }}">@lang('app.sales')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Listes</strong>
+                <strong>@lang('app.txt.lists')</strong>
             </li>
         </ol>
     </div>
@@ -29,7 +29,7 @@
 	<div class="col-lg-12">
 		<div class="ibox float-e-margins">
 			<div class="ibox-title">
-				<h5>Ventes</h5>
+				<h5>@lang('app.sales')</h5>
 			</div>
 			<div class="ibox-content">
 				<div class="table-responsive">
@@ -45,7 +45,7 @@
 						<th>@lang('app.table.apl')</th>
 						<th>@lang('app.table.afa')</th>
 						<th>@lang('app.table.customer')</th>
-						<th><a href="javascript:void(0)">Actions</a></th>
+						<th><a href="javascript:void(0)">@lang('app.table.action')</a></th>
                     </tr>
                     <?php /*?><tr class="search-row">
                         <form class="search-form">
@@ -68,13 +68,13 @@
                             <tr>
                             	<td>{{ $index + $records->firstItem() }} </td>
 								<td>
-									<a href="{{route('admin.product.index')}}/{{$record->id}}">
+									<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{$record->id}}">
 										<img class="thumb" src="{{asset('img/500x500.jpg')}}" width="50">
 									</a>
 								</td>
 								<td>
 								@if($record->product)
-									<a href="{{route('admin.product.index')}}/{{$record->id}}">
+									<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{$record->id}}">
 										{{$record->product->title}}
 									</a><br />{{$record->product->excerpt()}}
 								@endif
@@ -107,16 +107,16 @@
 									@endif
 								</td>
 								<td class="actions-cell text-center" width="12%">
-									<form class="form-inline" action="{{route('admin.sale.index')}}/{{$record->id}}" method="POST">
+									<form class="form-inline" action="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.sale.index'):route('admin.sale.index')}}/{{$record->id}}" method="POST">
 										@if($record->status=='ordered')
 											@if(!$record->apl_paid_at)
-												<a href="{{route('admin.sale.pay', ['cartitem'=>$record, 'role'=>'apl'])}}" class="btn btn-default btn-circle" title="@lang('app.admin.sale.pay.apl')">
+												<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.sale.pay', ['cartitem'=>$record, 'role'=>'apl']):route('admin.sale.pay', ['cartitem'=>$record, 'role'=>'apl'])}}" class="btn btn-default btn-circle" title="@lang('app.admin.sale.pay.apl')">
 													<i class="fa fa-credit-card" aria-hidden="true"></i>
 												</a>&nbsp;&nbsp;
 											@endif
 							
 											@if(!$record->afa_paid_at)
-												<a href="{{route('admin.sale.pay', ['cartitem'=>$record, 'role'=>'afa'])}}" class="btn btn-default btn-circle" title="@lang('app.admin.sale.pay.afa')">
+												<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.sale.pay', ['cartitem'=>$record, 'role'=>'afa']):route('admin.sale.pay', ['cartitem'=>$record, 'role'=>'afa'])}}" class="btn btn-default btn-circle" title="@lang('app.admin.sale.pay.afa')">
 													<i class="fa fa-cc-visa"></i>
 												</a>&nbsp;&nbsp;
 											@endif
@@ -126,9 +126,9 @@
 										<button type="button" class="btn btn-default btn-circle" title="Suppression" id="delRecord"><i class="fa fa-times text-danger"></i>
 										</button>
 										
-										<?php /*?><a href="{{route('admin.sale.index')}}/{{$record->id}}" title="Détail"><i class="fa fa-eye"></i></a>&nbsp;&nbsp;
+										<?php /*?><a href="{{Auth::user()->isAdminDelegate()?:route('admin.sale.index')}}/{{$record->id}}" title="Détail"><i class="fa fa-eye"></i></a>&nbsp;&nbsp;
 									
-										<a href="{{route('admin.sale.index')}}/{{$record->id}}/edit" title="Modification"><i class="fa fa-pencil-square-o"></i></a>
+										<a href="{{Auth::user()->isAdminDelegate()?:route('admin.sale.index')}}/{{$record->id}}/edit" title="Modification"><i class="fa fa-pencil-square-o"></i></a>
 									
 										{{ csrf_field() }}
 										{{ method_field('DELETE') }}

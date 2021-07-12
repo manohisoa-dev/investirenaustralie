@@ -5,20 +5,20 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Blogs</h2>
+        <h2>@lang('app.txt.blogs')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ Auth::user()->isAdmin()?route('admin.blog.index') : route('admin.collaborator.admin.blog.index') }}">Blogs</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.blog.index') : (Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.index'):route('admin.collaborator.admin.blog.index')) }}">@lang('app.txt.blogs')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Listes</strong>
+                <strong>@lang('app.txt.lists')</strong>
             </li>
         </ol>
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ Auth::user()->isAdmin()?route('admin.blog.create') : route('admin.collaborator.admin.blog.create') }}" type="button" class="btn btn-primary btn-block">
-                <i class="fa fa-plus"></i> Ajouter un nouveau Blog            
+            <a href="{{ Auth::user()->isAdmin()?route('admin.blog.create') : (Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.create'):route('admin.collaborator.admin.blog.create')) }}" type="button" class="btn btn-primary btn-block">
+                <i class="fa fa-plus"></i> @lang('app.txt.add_new_blog')            
 			</a>
         </div>
     </div>
@@ -97,7 +97,7 @@
                             <tr id="{{ $record->id }}" order="{{ $record->view_order }}">
                                 <td>{{ $index + $records->firstItem() }}</td>
 								<td>
-									<a href="{{route('blog.index',$record->slug)}}" target="_blank">
+									<a href="{{Auth::user()->isAdmin()?route('blog.index',$record->slug):(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.index',$record->slug):route('admin.collaborator.admin.blog.index',$record->slug))}}" target="_blank">
 										<img class="thumb" src="{{$record->getImageUrl('thumb')}}">
 									</a>
 								</td>
@@ -107,14 +107,14 @@
                                           data-name="title"
                                           data-value="{{ $record->title }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.blog.index'):(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.index'):route('admin.collaborator.admin.blog.index')) }}/{{ $record->{$record->getKeyName()} }}"
                                           >
-										  <a href="{{route('blog.index',$record->slug)}}" target="_blank">{{ $record->title }}</a><br />
+										  <a href="{{Auth::user()->isAdmin()?route('blog.index',$record->slug):(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.index',$record->slug):route('admin.collaborator.admin.blog.index',$record->slug))}}" target="_blank">{{ $record->title }}</a><br />
 										  {{str_limit(strip_tags($record->excerpt()),"100","...")}}
 									</span>
                                 </td>
 								<td style="text-align:center">
-									<a href="{{route('admin.comment.index').'?blog_id='.$record->id}}">{{count($record->comments)}}</a>
+									<a href="{{(Auth::user()->isAdmin()?route('admin.comment.index'):(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.comment.index'):route('admin.collaborator.admin.comment.index'))).'?blog_id='.$record->id}}">{{count($record->comments)}}</a>
 								</td>
 								<td>{{ $record->view_order }}</td>
 								<td>
@@ -123,7 +123,7 @@
                                           data-name="meta_tag"
                                           data-value="{{ $record->meta_tag }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{Auth::user()->isAdmin()?route('admin.blog.index'):(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.index'):route('admin.collaborator.admin.blog.index'))}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->meta_tag }}
 									 </span>
                                  </td>
@@ -133,7 +133,7 @@
                                           data-name="meta_description"
                                           data-value="{{ $record->meta_description }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{Auth::user()->isAdmin()?route('admin.blog.index'):(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.index'):route('admin.collaborator.admin.blog.index'))}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->meta_description }}
 									 </span>
                                   </td>
@@ -143,7 +143,7 @@
                                           data-name="status"
                                           data-value="{{ $record->status }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.blog.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{Auth::user()->isAdmin()?route('admin.blog.index'):(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.index'):route('admin.collaborator.admin.blog.index'))}}/{{ $record->{$record->getKeyName()} }}"
                                           >
 										  <a href="">
 											 @if($record->status=='published')
@@ -156,27 +156,27 @@
                                    </td>
 								   <td>{{$record->created_at ? $record->created_at->diffForHumans() : ""}}</td>
 								   <td class="actions-cell text-center" width="12%">
-									<form class="form-inline" action="{{ Auth::user()->isAdmin() ? route('admin.blog.index') : route('admin.collaborator.admin.blog.index') }}/{{$record->id}}" method="POST">
-										<a href="{{Auth::user()->isAdmin() ? route('admin.blog.index') : route('admin.collaborator.admin.blog.index')}}/{{$record->id}}/edit" title="Modification" class="btn btn-default btn-circle">
+									<form class="form-inline" action="{{ Auth::user()->isAdmin() ? route('admin.blog.index') : (Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.index'):route('admin.collaborator.admin.blog.index')) }}/{{$record->id}}" method="POST">
+										<a href="{{Auth::user()->isAdmin() ? route('admin.blog.index') : (Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.index'):route('admin.collaborator.admin.blog.index'))}}/{{$record->id}}/edit" title="Modification" class="btn btn-default btn-circle">
 											<i class="fa fa-pencil-square-o"></i>
 										</a>&nbsp;&nbsp;
 										@if($record->status=='pinged' || $record->status=='archived')
-											<a href="{{Auth::user()->isAdmin() ? route('admin.blog.publish', $record) : route('admin.collaborator.admin.blog.publish', $record)}}" class="btn btn-default btn-circle" title="@lang('app.btn.publish')">
+											<a href="{{Auth::user()->isAdmin() ? route('admin.blog.publish', $record) : (Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.publish', $record):route('admin.collaborator.admin.blog.publish', $record))}}" class="btn btn-default btn-circle" title="@lang('app.btn.publish')">
 												<i class="fa fa-check"></i>
 											</a>&nbsp;
-											<a href="{{Auth::user()->isAdmin() ? route('admin.blog.trash', $record) : route('admin.collaborator.admin.blog.trash', $record)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
+											<a href="{{Auth::user()->isAdmin() ? route('admin.blog.trash', $record) : (Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.trash', $record):route('admin.collaborator.admin.blog.trash', $record))}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
 												<i class="fa fa-trash-o"></i>
 											</a>&nbsp;&nbsp;
 										 @elseif($record->status=='trashed')
-											<a href="{{Auth::user()->isAdmin() ? route('admin.blog.restore', $record) : route('admin.collaborator.admin.blog.restore', $record)}}" class="btn btn-default btn-circle" title="Restore">
+											<a href="{{Auth::user()->isAdmin() ? route('admin.blog.restore', $record) : (Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.restore', $record):route('admin.collaborator.admin.blog.restore', $record))}}" class="btn btn-default btn-circle" title="Restore">
 												<i class="fa fa-window-restore"></i>
 											</a>&nbsp;&nbsp;
 										 @endif
 										 @if($record->status=='published')
-										 	<a href="{{Auth::user()->isAdmin() ? route('admin.blog.archive',$record) : route('admin.collaborator.admin.blog.archive', $record)}}" class="btn btn-default btn-circle" title="@lang('app.btn.archive')">
+										 	<a href="{{Auth::user()->isAdmin() ? route('admin.blog.archive',$record) : (Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.archive', $record):route('admin.collaborator.admin.blog.archive', $record))}}" class="btn btn-default btn-circle" title="@lang('app.btn.archive')">
 												<i class="fa fa-archive"></i>
 											</a>&nbsp;&nbsp;
-											<a href="{{Auth::user()->isAdmin() ? route('admin.blog.trash', $record) : route('admin.collaborator.admin.blog.trash', $record)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
+											<a href="{{Auth::user()->isAdmin() ? route('admin.blog.trash', $record) : (Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.trash', $record):route('admin.collaborator.admin.blog.trash', $record))}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
 												<i class="fa fa-trash-o"></i>
 											</a>&nbsp;&nbsp;
 										 @endif
@@ -230,7 +230,7 @@
 				};
 
 				$.ajax({
-					url : "{{ Auth::user()->isAdmin() ? route('admin.blog.update.order') : route('admin.collaborator.admin.blog.update.order') }}",
+					url : "{{ Auth::user()->isAdmin() ? route('admin.blog.update.order') : (Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.update.order'):route('admin.collaborator.admin.blog.update.order')) }}",
 					method : "get",
 					data : datas,
 					dataType : 'json',

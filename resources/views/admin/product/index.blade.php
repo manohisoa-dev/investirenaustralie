@@ -1,20 +1,20 @@
 @extends('admin.layouts.app') @section('title', 'Products - Listes ') @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Produits</h2>
+        <h2>@lang('app.txt.products')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.product.index') }}">Produits</a>
+                <a href="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index') }}">@lang('app.txt.products')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Listes</strong>
+                <strong>@lang('app.txt.lists')</strong>
             </li>
         </ol>
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ route('admin.product.create') }}?type=produit" type="button" class="btn btn-primary btn-block">
-				<i class="fa fa-plus"></i> Ajouter un nouveau Produit 
+            <a href="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.create'):route('admin.product.create') }}?type=produit" type="button" class="btn btn-primary btn-block">
+				<i class="fa fa-plus"></i> @lang('app.txt.add_new_product') 
 			</a>
         </div>
     </div>
@@ -24,8 +24,8 @@
 	<div class="col-lg-12">
         <div class="tabs-container">
 			<ul class="nav nav-tabs" role="tablist">
-				<li><a class="nav-link {{$nature == 'Programme immobilier' ? 'active' : ''}}" href="{{route('admin.product.index')}}?nature=Programme immobilier"> Programme immobilier</a></li>
-				<li><a class="nav-link {{$nature == 'Produit isolé' ? 'active' : ''}}" href="{{route('admin.product.index')}}?nature=Produit isolé">Produit isolé</a></li>
+				<li><a class="nav-link {{$nature == 'Programme immobilier' ? 'active' : ''}}" href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}?nature=Programme immobilier"> Programme immobilier</a></li>
+				<li><a class="nav-link {{$nature == 'Produit isolé' ? 'active' : ''}}" href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}?nature=Produit isolé">Produit isolé</a></li>
 			</ul>
 			<div class="tab-content">
 				<div class="ibox-content">
@@ -42,7 +42,7 @@
 								{!!\Nvd\Crud\Html::sortableTh('seller_id','admin.product.index','Vendeur')!!}
 								{!!\Nvd\Crud\Html::sortableTh('author_id','admin.product.index','Auteur')!!}
 								<th>Programme</th>
-								<th><a href="javascript:void(0)">Actions</a></th>
+								<th><a href="javascript:void(0)">@lang('app.table.actions')</a></th>
 								
 							</tr>
 							<tr class="search-row">
@@ -54,7 +54,7 @@
 									<td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>  
 									<td>
 										<select class="form-control" name="status">
-											<option value="">Choisir statut</option>
+											<option value="">@lang('app.form.choix_status')</option>
 											@foreach($status as $st)
 											<option value="{{$st}}" {{@$_GET['status']==$st?'selected':''}}>{{$st}}</option>
 											@endforeach
@@ -77,25 +77,25 @@
 								</td>
 								<td>
 									@if (@getimagesize($record->imageUrl()))
-										<a href="{{route('admin.product.index')}}/{{$record->id}}">
+										<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{$record->id}}">
 											<img src="{{$record->imageUrl()}}" class="img-responsive" style="height:80px" />
 										</a>
 									@else
-										<a href="{{route('admin.product.index')}}/{{$record->id}}">
+										<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{$record->id}}">
 											<img class="img-responsive" src="{{asset('img/500x500.jpg')}}" width="80">
 										</a>
 									@endif
 									
 								</td>
 								<td>
-									<a href="{{route('admin.product.index')}}/{{$record->id}}">
+									<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{$record->id}}">
 									<span
 										class="editable"
 										data-type="text"
 										data-name="title"
 										data-value="{{ $record->title }}"
 										data-pk="{{ $record->{$record->getKeyName()} }}"
-										data-url="{{ route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+										data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
 									>
 										{{ $record->title }}
 									</span></a><br />
@@ -110,7 +110,7 @@
 										data-name="price"
 										data-value="{{ $record->price }}"
 										data-pk="{{ $record->{$record->getKeyName()} }}"
-										data-url="{{ route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+										data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
 									>
 										{{ $record->currency }}&nbsp;{{ number_format($record->price, 0, '.', ' ') }}
 									</span>
@@ -125,7 +125,7 @@
 										data-name="status"
 										data-value="{{ $record->status }}"
 										data-pk="{{ $record->{$record->getKeyName()} }}"
-										data-url="{{ route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+										data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
 									>
 										@if($record->status=='published')
 										<span class="label label-success">@lang('app.'.$record->status)</span>
@@ -144,7 +144,7 @@
 										data-name="seller_id"
 										data-value="{{ $record->seller_id }}"
 										data-pk="{{ $record->{$record->getKeyName()} }}"
-										data-url="{{ route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+										data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
 									>
 										{{ $record->seller->name }}
 									</span>
@@ -157,7 +157,7 @@
 										data-name="author_id"
 										data-value="{{ $record->author_id }}"
 										data-pk="{{ $record->{$record->getKeyName()} }}"
-										data-url="{{ route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
+										data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{ $record->{$record->getKeyName()} }}"
 									>
 										{{ $record->author->name }}
 									</span>
@@ -168,35 +168,35 @@
 									@endif								
 								</td>
 								<td class="actions-cell text-center" width="12%">
-									<form class="form-inline" action="{{route('admin.product.index')}}/{{$record->id}}" method="POST">
-										<?php /*?><a href="{{route('admin.product.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="Détail">
+									<form class="form-inline" action="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{$record->id}}" method="POST">
+										{{-- <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.'):route('admin.product.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="Détail">
 											<i class="fa fa-eye"></i>
-										</a>&nbsp;&nbsp;<?php */?>
-										<a href="{{route('admin.product.index')}}/{{$record->id}}/edit" class="btn btn-default btn-circle" title="Modification">
+										</a>&nbsp;&nbsp; --}}
+										<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{$record->id}}/edit" class="btn btn-default btn-circle" title="Modification">
 											<i class="fa fa-pencil-square-o"></i>
 										</a>&nbsp;&nbsp;
 										@if($record->status=='pinged' || $record->status=='archived')
-											<a href="{{route('admin.product.publish', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.publish')">
+											<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.publish', $record->id):route('admin.product.publish', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.publish')">
 												<i class="fa fa-check"></i>
 											</a>&nbsp;&nbsp;
-											<a href="{{route('admin.product.trash', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
+											<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.trash', $record->id):route('admin.product.trash', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
 												<i class="fa fa-trash-o"></i>
 											</a>&nbsp;&nbsp;
 										@elseif($record->status=='trashed')
-											<a href="{{route('admin.product.restore', $record->id)}}" class="btn btn-default btn-circle" title="Restore">
+											<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.restore', $record->id):route('admin.product.restore', $record->id)}}" class="btn btn-default btn-circle" title="Restore">
 												<i class="fa fa-window-restore"></i>
 											</a>&nbsp;&nbsp;
 										@endif
 										@if($record->status=='published')
-											<a href="{{route('admin.product.archive', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.archive')">
+											<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.archive', $record->id):route('admin.product.archive', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.archive')">
 												<i class="fa fa-archive"></i>
 											</a>&nbsp;&nbsp;
-											<a href="{{route('admin.product.trash', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
+											<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.trash', $record->id):route('admin.product.trash', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')">
 												<i class="fa fa-trash-o"></i>
 											</a>&nbsp;&nbsp;
 										@endif
 										@if($record->status=='waiting')
-											<a href="{{route('admin.product.publish', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.validate')">
+											<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.product.publish', $record->id):route('admin.product.publish', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.validate')">
 												<i class="fa fa-check text-info"></i>
 											</a>&nbsp;&nbsp;
 										@endif

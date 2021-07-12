@@ -5,20 +5,20 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Sliders</h2>
+        <h2>@lang('app.txt.sliders')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.slider.index') }}">Sliders</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.slider.index'):route('admin.collaborators.admin.slider.index') }}">@lang('app.txt.sliders')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Listes</strong>
+                <strong>@lang('app.txt.lists')</strong>
             </li>
         </ol>
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ route('admin.slider.create') }}" type="button" class="btn btn-primary btn-block">
-                <i class="fa fa-plus"></i> Ajouter un nouveau Slider            </a>
+            <a href="{{ Auth::user()->isAdmin()?route('admin.slider.create'):route('admin.collaborators.admin.slider.create') }}" type="button" class="btn btn-primary btn-block">
+                <i class="fa fa-plus"></i> @lang('app.txt.add_new_slider') </a>
         </div>
     </div>
 </div>
@@ -30,7 +30,7 @@
 	<div class="col-lg-12">
 		<div class="ibox float-e-margins">
 			<div class="ibox-title">
-				<h5>Sliders</h5>
+				<h5>@lang('app.txt.sliders')</h5>
 			</div>
 			<div class="ibox-content">
 				<div class="table-responsive">
@@ -44,7 +44,7 @@
 						{!!\Nvd\Crud\Html::sortableTh('status','admin.slider.index','Statut')!!}						
 						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.slider.index','Créer le')!!}
 						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.slider.index','Mise à jour le')!!}
-						<thw width="40%"><a href="javascript:void(0)">Actions</a></thw>
+						<th width="40%"><a href="javascript:void(0)">@lang('app.table.actions')</a></th>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">
@@ -77,7 +77,7 @@
                                           data-name="content"
                                           data-value="{{ $record->content }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.slider.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{Auth::user()->isAdmin()?route('admin.slider.index'):route('admin.collaborators.admin.slider.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->content }}</span>
                                 </td>
                                 <td>
@@ -86,7 +86,7 @@
                                           data-name="type"
                                           data-value="{{ $record->type }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.slider.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.slider.index'):route('admin.collaborators.admin.slider.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->type }}</span>
                                 </td>
                                 <td>
@@ -95,25 +95,25 @@
                                           data-name="status"
                                           data-value="{{ $record->status }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.slider.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.slider.index'):route('admin.collaborators.admin.slider.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{!! $record->status == 1 ? '<label class="text-success">Activé</label>' : '<label class="text-danger">Désactivé</label>'  !!}</span>
                                  </td>
                                  <td>{{ $record->created_at ? $record->created_at->diffForHumans() : ''}}</td>
                                  <td>{{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}</td>
 								 <td class="actions-cell text-center" width="7%">
-									<form class="form-inline" action="{{route('admin.slider.index')}}/{{$record->id}}" method="POST">
+									<form class="form-inline" action="{{Auth::user()->isAdmin()?route('admin.slider.index'):route('admin.collaborators.admin.slider.index')}}/{{$record->id}}" method="POST">
                                         @if($record->status == 1)
-                                            <a href="{{route('admin.slider.desactiver', ['slider_id' => $record->id])}}" title="Désactiver ce slider" class="btn btn-default btn-circle">
+                                            <a href="{{Auth::user()->isAdmin()?route('admin.slider.desactiver', ['slider_id' => $record->id]):route('admin.collaborators.admin.slider.desactiver', ['slider_id' => $record->id])}}" title="Désactiver ce slider" class="btn btn-default btn-circle">
                                                 <i class="fa fa-times"></i>
                                             </a>&nbsp;
                                         @endif
 
                                         @if($record->status == 0)
-                                            <a href="{{route('admin.slider.activer', ['slider_id' => $record->id])}}" title="Activer ce slider" class="btn btn-default btn-circle">
+                                            <a href="{{Auth::user()->isAdmin()?route('admin.slider.activer', ['slider_id' => $record->id]):route('admin.collaborators.admin.slider.activer', ['slider_id' => $record->id])}}" title="Activer ce slider" class="btn btn-default btn-circle">
                                                 <i class="fa fa-check"></i>
                                             </a>&nbsp;
                                         @endif
-                                        <a href="{{route('admin.slider.index')}}/{{$record->id}}/edit" title="Modification" class="btn btn-default btn-circle">
+                                        <a href="{{Auth::user()->isAdmin()?route('admin.slider.index'):route('admin.collaborators.admin.slider.index')}}/{{$record->id}}/edit" title="Modification" class="btn btn-default btn-circle">
                                             <i class="fa fa-pencil-square-o"></i>
                                         </a>
                                         &nbsp;

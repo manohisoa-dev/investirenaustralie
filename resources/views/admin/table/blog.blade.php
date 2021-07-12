@@ -17,16 +17,16 @@
           @foreach($blogs as $blog) 
             <tr>
                 <td>
-                    <a href="{{route('blog.index', ['blog'=>$blog])}}"><img class="thumb" src="{{$blog->imageUrl(true)}}" width="50"></a>
+                    <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.index', ['blog'=>$blog]):route('blog.index', ['blog'=>$blog])}}"><img class="thumb" src="{{$blog->imageUrl(true)}}" width="50"></a>
                 <td>
-                    <a href="{{route('blog.index', ['blog'=>$blog])}}">{{$blog->title}}</a><br>
+                    <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.index', ['blog'=>$blog]):route('blog.index', ['blog'=>$blog])}}">{{$blog->title}}</a><br>
                      {{$blog->excerpt()}}
                 </td>
-                <td><a href="{{route('admin.comment.list', $blog)}}">{{$blog->comments_count}}</a></td>
+                <td><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.comment.list', $blog):route('admin.comment.list', $blog)}}">{{$blog->comments_count}}</a></td>
                 <td>{{$blog->meta_tag}}</td>
                 <td>{{$blog->meta_description}}</td>
                 <td>
-                     <a href="{{route('admin.blog.list', ['filter'=>$blog->status])}}">
+                     <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.list', ['filter'=>$blog->status]):route('admin.blog.list', ['filter'=>$blog->status])}}">
                          @if($blog->status=='published')
                          <span class="label label-success">{{$blog->status}}</span>
                          @else
@@ -36,18 +36,18 @@
                 </td>
                 <td>{{$blog->created_at->diffForHumans()}}</td>
                 <td>
-                    <a href="{{route('admin.blog.edit', $blog)}}" class="btn btn-small btn-default btn-delete">@lang('app.btn.edit')</a>
+                    <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.edit', $blog):route('admin.blog.edit', $blog)}}" class="btn btn-small btn-default btn-delete">@lang('app.btn.edit')</a>
                  @if($blog->status=='pinged' || $blog->status=='archived')
-                    <a href="{{route('admin.blog.publish', $blog)}}" class="btn btn-small btn-success btn-publish">@lang('app.btn.publish')</a>
-                    <a href="{{route('admin.blog.trash', $blog)}}" class="btn btn-small btn-info btn-trash">@lang('app.btn.trash')</a>
+                    <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.publish', $blog):route('admin.blog.publish', $blog)}}" class="btn btn-small btn-success btn-publish">@lang('app.btn.publish')</a>
+                    <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.trash', $blog):route('admin.blog.trash', $blog)}}" class="btn btn-small btn-info btn-trash">@lang('app.btn.trash')</a>
                  @elseif($blog->status=='trashed')
-                    <a href="{{route('admin.blog.restore', $blog)}}" class="btn btn-small btn-info btn-restore">Restore</a>
+                    <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.restore', $blog):route('admin.blog.restore', $blog)}}" class="btn btn-small btn-info btn-restore">Restore</a>
                  @endif
                  @if($blog->status=='published')
-                    <a href="{{route('admin.blog.archive', $blog)}}" class="btn btn-small btn-default  btn-archive">@lang('app.btn.archive')</a>
-                    <a href="{{route('admin.blog.trash', $blog)}}" class="btn btn-small btn-info btn-trash">@lang('app.btn.trash')</a>
+                    <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.archive', $blog):route('admin.blog.archive', $blog)}}" class="btn btn-small btn-default  btn-archive">@lang('app.btn.archive')</a>
+                    <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.trash', $blog):route('admin.blog.trash', $blog)}}" class="btn btn-small btn-info btn-trash">@lang('app.btn.trash')</a>
                  @endif
-                    <a href="{{route('admin.blog.delete', $blog)}}" class="btn btn-small btn-warning btn-delete">@lang('app.btn.delete')</a>
+                    <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.delete', $blog):route('admin.blog.delete', $blog)}}" class="btn btn-small btn-warning btn-delete">@lang('app.btn.delete')</a>
                 </td>
             </tr>
            @endforeach

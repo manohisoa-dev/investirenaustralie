@@ -11,7 +11,7 @@
                 <a href="#">@lang('app.products')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.product.index') }}">@lang('app.list')</a>
+                <a href="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index') }}">@lang('app.list')</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>@lang('app.form.programme_edition')</strong>
@@ -32,7 +32,7 @@
                 <h5>@lang('app.txt.produit_update_info') : {{$product->reference}}</h5>
             </div>
             <div class="ibox-content">
-                <form action="{{ route('admin.product.index')}}/{{$product->id}}" id="productForm" method="post" enctype="multipart/form-data">
+                <form action="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{$product->id}}" id="productForm" method="post" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     {{ method_field("PUT") }}
 					<input type="hidden" name="category_id" id="cat_programmme_id" value="{{$product->category_id}}" />

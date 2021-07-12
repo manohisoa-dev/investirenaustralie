@@ -5,16 +5,16 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Products</h2>
+        <h2>@lang('app.txt.products')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Products</a>
+                <a href="#">@lang('app.txt.products')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.product.index') }}">Listes</a>
+                <a href="{{ route('admin.product.index') }}">@lang('app.txt.lists')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Détail</strong>
+                <strong>@lang('app.txt.detail')</strong>
             </li>
         </ol>
     </div>

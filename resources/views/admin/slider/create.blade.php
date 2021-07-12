@@ -5,16 +5,16 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Sliders</h2>
+        <h2>@lang('app.txt.sliders')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Sliders</a>
+                <a href="#">@lang('app.txt.sliders')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.slider.index') }}">Listes</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.slider.index'):route('admin.collaborators.admin.slider.index') }}">@lang('app.txt.lists')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Ajout</strong>
+                <strong>@lang('app.txt.add')</strong>
             </li>
         </ol>
     </div>
@@ -29,27 +29,27 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Ajouter un nouveau Slider</h5>
+                <h5>@lang('app.txt.add_new_slider')</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-validation form-padding" action="{{ route('admin.slider.store') }}" method="post" enctype="multipart/form-data">
+                <form class="form-validation form-padding" action="{{ Auth::user()->isAdmin()?route('admin.slider.store'):route('admin.collaborators.admin.slider.store') }}" method="post" enctype="multipart/form-data">
 
                     {{ csrf_field() }}
                     <div class="form-group">
-                        <label for="Type">Type</label>
+                        <label for="Type">@lang('app.input.type')</label>
                         <select name="type" id="type" class="form-control">
-							<option value="">Choisir...</option>
-                            <option value="image">Image</option>
-                            <option value="video">Vidéo</option>
-							<option value="pub">Pub</option>
+							<option value="">@lang('app.form.choix_txt')</option>
+                            <option value="image">@lang('app.txt.picture')</option>
+                            <option value="video">@lang('app.txt.video')</option>
+							<option value="pub">@lang('app.txt.pub')</option>
                         </select>
                     </div>
 			
 					<div id="slideProduct" style="display:none">
 						<div class="form-group">
-							<label>Choisir produit</label>
+							<label>@lang('app.txt.choose_product')</label>
 							<select name="product_id" id="product_id" class="form-control" style="width:100%">
-								<option value="">Choisir...</option>
+								<option value="">@lang('app.form.choix_txt')</option>
 								@foreach(\App\Models\Product::all() as $prd)
 									<option value="{{$prd->id}}">{{$prd->title}}</option>
 								@endforeach
@@ -67,7 +67,7 @@
 							<input type="text" name="content" id="content" class="form-control"/>
 						</div>
 						<div class="form-group">
-							<label for="title">Image</label>
+							<label for="title">@lang('app.txt.picture')</label>
 							<input type="file" name="image" class="form-control"/>
 						</div>
 					</div>
@@ -77,18 +77,18 @@
 							<input type="text" name="content" id="content" class="form-control"/>
 						</div>
 						<div class="form-group">
-							<label for="title">Vidéo</label>
+							<label for="title">@lang('app.txt.video')</label>
 							<input type="file" name="video" class="form-control"/>
 						</div>
 					</div>
                     <div class="form-group">
-                        <label for="Type">Status</label>
+                        <label for="Type">@lang('app.txt.status')</label>
                         <select name="status" id="status" class="form-control">
-                            <option value="0">Non actif</option>
-							<option value="1">Actif</option>
+                            <option value="0">@lang('app.txt.no_active')</option>
+							<option value="1">@lang('app.txt.active')</option>
                         </select>
                     </div>                                                       
-                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Créer</button>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> @lang('app.btn.create')</button>
 
                 </form>
             </div>

@@ -24,7 +24,7 @@
     <!-- // DATATABLE - DTA -->
 </div>
 <div class="widget">
-    <form class="form-horizontal" method="post" action="{{route('admin.user.observe', ['user'=>$item])}}">
+    <form class="form-horizontal" method="post" action="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.observe', ['user'=>$item]):route('admin.user.observe', ['user'=>$item])}}">
         {{csrf_field()}}
         <textarea class="form-control" name="content">{{old('content')}}</textarea>
         <input class="btn btn-info" type="submit" value="Sauvegarder">

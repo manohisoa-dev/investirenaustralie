@@ -5,16 +5,16 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Type Users</h2>
+        <h2>@lang('app.txt.user_type')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Type Users</a>
+                <a href="#">@lang('app.txt.user_type')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.type-user.index') }}">Listes</a>
+                <a href="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.type-user.index'):route('admin.type-user.index') }}">@lang('app.txt.lists')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Détail</strong>
+                <strong>@lang('app.txt.detail')</strong>
             </li>
         </ol>
     </div>
@@ -30,19 +30,19 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Détail Type User : {{$typeUser->type_user_name}}</h5>
+                <h5>@lang('app.txt.detail_user_type', ['user_type'=>$typeUser->type_user_name])</h5>
             </div>
             <div class="ibox-content">
                 <ul class="list-group">
                                         <li class="list-group-item">
-                        <h4>Id</h4>
+                        <h4>@lang('app.table.id')</h4>
                         <h5>{{$typeUser->id}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Type User Name</h4>
+                        <h4>@lang('app.table.name')</h4>
                         <h5>{{$typeUser->type_user_name}}</h5>
                     </li>
-                                    </ul>
+                </ul>
             </div>
         </div>
     </div>

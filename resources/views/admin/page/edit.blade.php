@@ -5,16 +5,16 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Pages</h2>
+        <h2>@lang('app.pages')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Pages</a>
+                <a href="#">@lang('app.pages')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.page.index') }}">Listes</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.page.index'):route('admin.collaborators.admin.page.index') }}">@lang('app.txt.lists')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Edition</strong>
+                <strong>@lang('app.txt.editing')</strong>
             </li>
         </ol>
     </div>
@@ -29,26 +29,26 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Mise à jour Page : {{$page->title}}</h5>
+                <h5>@lang('app.txt.update_page', ['page'=>$page->title])</h5>
             </div>
             <div class="ibox-content">
-                <form action="{{ route('admin.page.index')}}/{{$page->id}}" method="post" id="formPage">
+                <form action="{{ Auth::user()->isAdmin()?route('admin.page.index'):route('admin.collaborators.admin.page.index')}}/{{$page->id}}" method="post" id="formPage">
 
                     {{ csrf_field() }}
                     {{ method_field("PUT") }}
 					<div class="form-group">
-                        <label for="language">Est un pub</label>
+                        <label for="language">@lang('app.txt.is_ad')</label>
                         <select name="is_pub" id="is_pub" class="form-control">
-							<option value="1" {{$page->is_pub == '1' ? 'selected' : ''}}>Oui</option>
-							<option value="0" {{$page->is_pub == '0' ? 'selected' : ''}}>Non</option>
+							<option value="1" {{$page->is_pub == '1' ? 'selected' : ''}}>@lang('app.yes')</option>
+							<option value="0" {{$page->is_pub == '0' ? 'selected' : ''}}>@lang('app.no')</option>
 						</select>
                     </div>
 					@if($page->is_pub == 1)					
 					<div id="liste_pub">
 						<div class="form-group">
-							<label for="language">Choisir pub</label>
+							<label for="language">@lang('app.txt.choose_ad')</label>
 							<select name="pubid" id="pubid" class="form-control" style="width:100%">
-								<option value="">Choisir...</option>								
+								<option value="">@lang('app.form.choix_txt')</option>								
 								@foreach(\App\Models\Pub::all() as $pub)
 									<option value="{{$pub->id}}" {{$page->pubs->first()->id == $pub->id ? 'selected' : ''}}>{{$pub->title}}</option>
 								@endforeach
@@ -85,14 +85,14 @@
                     <div class="form-group">
                         <label for="language">@lang('app.admin.language')</label>
                         <select name="language" id="language" class="form-control">
-							<option value="fr" {{$page->language == 'fr' ? 'selected' : ''}}>Fr</option>
-							<option value="en" {{$page->language == 'en' ? 'selected' : ''}}>En</option>
+							<option value="fr" {{$page->language == 'fr' ? 'selected' : ''}}>@lang('app.txt.fr')</option>
+							<option value="en" {{$page->language == 'en' ? 'selected' : ''}}>@lang('app.txt.en')</option>
 						</select>
                     </div>                                                                           
                     <input type="hidden" name="author_id" value="{{$page->author_id}}">        
 
                     <button type="submit" class="btn btn-primary btn-lg">
-						<i class="fa fa-save"></i> Enregistrer
+						<i class="fa fa-save"></i> @lang('app.btn.save')
 					</button>
 
                 </form>

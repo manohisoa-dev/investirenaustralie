@@ -5,13 +5,13 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Commentaires</h2>
+        <h2>@lang('app.txt.commentaires')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{-- {{ route('admin.comment.index') }} --}}">Commentaires</a>
+                <a href="javascript:void('0')">@lang('app.txt.commentaires')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Listes</strong>
+                <strong>@lang('app.txt.lists')</strong>
             </li>
         </ol>
     </div>
@@ -29,7 +29,7 @@
 	<div class="col-lg-12">
 		<div class="ibox float-e-margins">
 			<div class="ibox-title">
-				<h5>Commentaires</h5>
+				<h5>@lang('app.txt.commentaires')</h5>
 			</div>
 			<div class="ibox-content">
 				<div class="table-responsive">
@@ -46,7 +46,7 @@
 						{!!\Nvd\Crud\Html::sortableTh('blog_id','admin.comment.index','Blog')!!}
 						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.comment.index','Créée le ')!!}
 						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.comment.index','Mis à jour le')!!}
-						<th><a href="javascript:void(0)">Actions</a></th>
+						<th><a href="javascript:void(0)">@lang('app.table.actions')</a></th>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">
@@ -75,7 +75,7 @@
                                           data-name="content"
                                           data-value="{{ $record->content }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.comment.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.comment.index'):(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.comment.index'):route('admin.collaborator.admin.comment.index'))}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->content }}</span>
                                </td>
                                <td>
@@ -84,7 +84,7 @@
                                           data-name="status"
                                           data-value="{{ $record->status }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.comment.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.comment.index'):(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.comment.index'):route('admin.collaborator.admin.comment.index'))}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->status }}</span>
                                </td>
 							   <td>
@@ -93,7 +93,7 @@
                                           data-name="user_id"
                                           data-value="{{ $record->user_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.comment.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.comment.index'):(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.comment.index'):route('admin.collaborator.admin.comment.index'))}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->user?$record->user->name:'' }}</span>
                                 </td>
 							   <td>
@@ -102,7 +102,7 @@
                                           data-name="reply_id"
                                           data-value="{{ $record->reply_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.comment.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.comment.index'):(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.comment.index'):route('admin.collaborator.admin.comment.index'))}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{count($record->replies)}}</span>
                                </td>
                                <td>
@@ -111,7 +111,7 @@
                                           data-name="votes"
                                           data-value="{{ $record->votes }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.comment.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.comment.index'):(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.comment.index'):route('admin.collaborator.admin.comment.index'))}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->votes }}</span>
                                </td>
                                <td>
@@ -120,7 +120,7 @@
                                           data-name="spam"
                                           data-value="{{ $record->spam }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.comment.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.comment.index'):(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.comment.index'):route('admin.collaborator.admin.comment.index'))}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->spam }}</span>
                                </td>                               
                                <td>
@@ -129,13 +129,13 @@
                                           data-name="blog_id"
                                           data-value="{{ $record->blog_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.comment.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.comment.index'):(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.comment.index'):route('admin.collaborator.admin.comment.index'))}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->blog['title']?$record->blog->title:'' }}</span>
                                </td>
                                
                                 <td>{{ $record->created_at }}</td>
                                 <td>{{ $record->updated_at }}</td>
-                                @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => Auth::user()->isAdmin() ? route('admin.comment.index') : route('admin.collaborator.admin.comment.index'), 'record' => $record ] )
+                                @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => Auth::user()->isAdmin() ? route('admin.comment.index') : (Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.comment.index'):route('admin.collaborator.admin.comment.index')), 'record' => $record ] )
                             </tr>
                         @empty
                             @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 11])

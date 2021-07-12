@@ -4,7 +4,7 @@
         <h2>@lang('app.txt.all_programmes')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.product.index') }}">@lang('app.txt.programme') </a>
+                <a href="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index') }}">@lang('app.txt.programme') </a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>@lang('app.txt.liste') </strong>
@@ -13,7 +13,7 @@
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ route('admin.product.create') }}?type=programme" type="button" class="btn btn-primary btn-block">
+            <a href="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.create'):route('admin.product.create') }}?type=programme" type="button" class="btn btn-primary btn-block">
 				<i class="fa fa-plus"></i> @lang('app.txt.add_new_programme') 
 			</a>
         </div>
@@ -100,7 +100,7 @@
                                     data-name="title"
                                     data-value="{{ $record->title }}"
                                     data-pk="{{ $record->{$record->getKeyName()} }}"
-                                    data-url="{{ route('admin.product.programme')}}/{{ $record->{$record->getKeyName()} }}"
+                                    data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
                                     {{ $record->title }}
                                 </span><br />
@@ -114,7 +114,7 @@
                                     data-name="title"
                                     data-value="{{ $record->category_id }}"
                                     data-pk="{{ $record->{$record->getKeyName()} }}"
-                                    data-url="{{ route('admin.product.programme')}}/{{ $record->{$record->getKeyName()} }}"
+                                    data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
                                     @if ($record->category) 
 									{{ $record->category->title }}
@@ -131,7 +131,7 @@
                                     data-name="status"
                                     data-value="{{ $record->status }}"
                                     data-pk="{{ $record->{$record->getKeyName()} }}"
-                                    data-url="{{ route('admin.product.programme')}}/{{ $record->{$record->getKeyName()} }}"
+                                    data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
                                     @if($record->status=='published')
                                         <span class="label label-success">@lang('app.'.$record->status)</span>
@@ -149,7 +149,7 @@
                                     data-name="min_price"
                                     data-value="{{ $record->min_price }}"
                                     data-pk="{{ $record->{$record->getKeyName()} }}"
-                                    data-url="{{ route('admin.product.programme')}}/{{ $record->{$record->getKeyName()} }}"
+                                    data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
                                     {{ $record->min_price }}
                                 </span>
@@ -161,7 +161,7 @@
                                     data-name="max_price"
                                     data-value="{{ $record->max_price }}"
                                     data-pk="{{ $record->{$record->getKeyName()} }}"
-                                    data-url="{{ route('admin.product.programme')}}/{{ $record->{$record->getKeyName()} }}"
+                                    data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
                                     {{ $record->max_price }}
                                 </span>
@@ -173,21 +173,21 @@
                                     data-name="author_id"
                                     data-value="{{ $record->author_id }}"
                                     data-pk="{{ $record->{$record->getKeyName()} }}"
-                                    data-url="{{ route('admin.product.programme')}}/{{ $record->{$record->getKeyName()} }}"
+                                    data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme')}}/{{ $record->{$record->getKeyName()} }}"
                                 >
                                     {{ $record->author->name }}
                                 </span>
                             </td>
 							<td class="actions-cell text-center" width="12%">
-								<form class="form-inline" action="{{route('admin.product.index')}}/{{$record->id}}" method="POST">
+								<form class="form-inline" action="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{$record->id}}" method="POST">
 									<?php /*?><a href="{{route('admin.product.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="@lang('app.table.btn_title_detail')">
 										<i class="fa fa-eye"></i>
 									</a>&nbsp;&nbsp;<?php */?>
-									<a href="{{route('admin.product.index')}}/{{$record->id}}/edit" class="btn btn-default btn-circle" title="@lang('app.table.btn_title_modification')">
+									<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{$record->id}}/edit" class="btn btn-default btn-circle" title="@lang('app.table.btn_title_modification')">
 										<i class="fa fa-pencil-square-o"></i>
 									</a>&nbsp;&nbsp;
                                     @if($record->status=='waiting')
-										<a href="{{route('admin.product.publish', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.validate')">
+										<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.publish', $record->id):route('admin.product.publish', $record->id)}}" class="btn btn-default btn-circle" title="@lang('app.btn.validate')">
 											<i class="fa fa-check text-info"></i>
 										</a>&nbsp;&nbsp;
 									@endif

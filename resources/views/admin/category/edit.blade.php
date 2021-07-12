@@ -5,16 +5,16 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Categories</h2>
+        <h2>@lang('app.txt.categories')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Categories</a>
+                <a href="#">@lang('app.txt.categories')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.category.index') }}">Listes</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.category.index'):route('admin.collaborators.admin.category.index') }}">@lang('app.txt.lists')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Edition</strong>
+                <strong>@lang('app.txt.editing')</strong>
             </li>
         </ol>
     </div>
@@ -29,10 +29,10 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Mise à jour catégorie: {{$category->slug}}</h5>
+                <h5>@lang('app.txt.update_category', ['category'=>$category->slug])</h5>
             </div>
             <div class="ibox-content">
-                <form action="{{ route('admin.category.update',$category)}}" method="post">
+                <form action="{{ Auth::user()->isAdmin()?route('admin.category.update',$category):route('admin.collaborators.admin.category.update',$category)}}" method="post">
 
                     {{ csrf_field() }}
 
@@ -48,7 +48,7 @@
 					</div>
 					<input name="author_id" id="author_id" class="form-control" type="hidden" value="{{$category->author_id}}">
                                                                                                                                                 
-                    <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-save"></i> Enregistrer</button>
+                    <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-save"></i> @lang('app.btn.save')</button>
 
                 </form>
             </div>

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Jleon\LaravelPnotify\Notify;
+use Auth;
 
 class SliderController extends Controller {
     public $viewDir = "admin.slider";
@@ -58,7 +59,7 @@ class SliderController extends Controller {
 
         # notification
         Notify::success('Slider a été créer avec succès');
-        return redirect(route('admin.slider.index'));
+        return back();
     }
 
     /**
@@ -117,7 +118,7 @@ class SliderController extends Controller {
 
         # notification
         Notify::success('Slider a été mise à jour avec succès');
-        return redirect(route('admin.slider.index'));
+        return redirect(Auth::user()->isAdmin()?route('admin.slider.index'):route('admin.collaborators.admin.slider.index'));
     }
 
     /**
@@ -130,7 +131,7 @@ class SliderController extends Controller {
 
         # notification
         Notify::success('Slider a été supprimer avec succès');
-        return redirect(route('admin.slider.index'));
+        return back();
     }
 
     /**
@@ -145,7 +146,7 @@ class SliderController extends Controller {
         $slider->save();
 
         Notify::success("Le slider a été desactivé avec succés");
-        return redirect(route('admin.slider.index'));
+        return back();
     }
 
     public function activer(Request $request, Slider $slider) {
@@ -157,7 +158,7 @@ class SliderController extends Controller {
             ->update(['status' => 0]);
 
         Notify::success("Le slider a été activé avec succés");
-        return redirect(route('admin.slider.index'));
+        return back();
     }
 
     protected function view($view, $data = []) {

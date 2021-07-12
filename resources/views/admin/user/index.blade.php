@@ -8,7 +8,7 @@
         <h2>@lang('app.txt.stakeholders')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.user.index') }}">@lang('app.txt.stakeholders')</a>
+                <a href="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index') }}">@lang('app.txt.stakeholders')</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>@lang('app.txt.lists')</strong>
@@ -126,11 +126,11 @@
 							<td>{{ $index + $records->firstItem() }}</td>
 							<td>
 							@if (@getimagesize($record->imageUrl()))
-								<a href="{{route('admin.user.show', $record)}}">
+								<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show', $record):route('admin.user.show', $record)}}">
 									<img class="img-responsive" src="{{$record->imageUrl()}}" width="50">
 								</a>
 							@else
-								<a href="{{route('admin.user.show', $record)}}">
+								<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show', $record):route('admin.user.show', $record)}}">
 									<img class="img-responsive" src="{{asset('img/500x500.jpg')}}" width="50">
 								</a>
 							@endif
@@ -142,7 +142,7 @@
 								data-name="name"
 								data-value="{{ $record->name }}"
 								data-pk="{{ $record->{$record->getKeyName()} }}"
-								data-url="{{ route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
+								data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
 								>{{ $record->name }}</span>
 							</td>
 							<td>
@@ -151,7 +151,7 @@
 								data-name="email"
 								data-value="{{ $record->email }}"
 								data-pk="{{ $record->{$record->getKeyName()} }}"
-								data-url="{{ route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
+								data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
 								>{{ $record->email }}</span>
 							</td>
 							<td>{{$record->created_at->diffForHumans()}}</td>
@@ -161,7 +161,7 @@
 								data-name="role"
 								data-value="{{ $record->role }}"
 								data-pk="{{ $record->{$record->getKeyName()} }}"
-								data-url="{{ route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
+								data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
 								><a href=""><span class="label label-warning">{{$record->roleUser['role_initial']}}</span></a></span>
 							</td>
 							<td>
@@ -170,7 +170,7 @@
 								data-name="type_users_id"
 								data-value="{{ $record->type_users_id }}"
 								data-pk="{{ $record->{$record->getKeyName()} }}"
-								data-url="{{ route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
+								data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
 								>
 								@if($record->type_users_id == 2)
 								<a href="">
@@ -189,7 +189,7 @@
 								data-name="status"
 								data-value="{{ $record->status }}"
 								data-pk="{{ $record->{$record->getKeyName()} }}"
-								data-url="{{ route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
+								data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
 								>
 									<a href="#">
 									@if($record->status=='active')
@@ -205,27 +205,31 @@
 								</span>
 							</td>
 							<td>
-							<form class="form-inline" action="{{route('admin.user.index')}}/{{$record->id}}" method="POST">
-								<a href="{{route('admin.user.show', ['user_id' => $record->id])}}" class="btn btn-default btn-circle" title="@lang('app.btn.view')">
-									<i class="fa fa-info text-success"></i>
-								</a>&nbsp;&nbsp;
-								@if($record->status=='active')
-								<a href="{{route('admin.user.desactiver', ['user_id' => $record->id])}}" class="btn btn-default btn-circle" title="@lang('app.btn.disable')">
-									<i class="fa fa-eye-slash"></i>
-								</a>&nbsp;&nbsp;
-								@else
-								<a href="{{route('admin.user.active', ['user_id' => $record->id])}}" class="btn btn-default btn-circle" title="@lang('app.btn.active')">
-									<i class="fa fa-eye text-info"></i>
-								</a>&nbsp;&nbsp;
-								@endif
-								<a href="{{route('admin.user.contact', ['user_id' => $record->id])}}" class="btn btn-default btn-circle" title="@lang('app.btn.contact')">
-									<i class="fa fa-address-book-o" aria-hidden="true"></i>
-								</a>&nbsp;&nbsp;
-								{{ csrf_field() }}
-								{{ method_field('DELETE') }}
-								<button type="button" class="btn btn-default btn-circle" title="Suppression" id="delRecord"><i class="fa fa-times text-danger"></i>
-								</button>
-							</form>	
+							@if (Auth::user()->isAdminDelegate() && $record->role===1)
+								<small>@lang('app.txt.authorization_not_defined')</small>
+							@else
+								<form class="form-inline" action="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}/{{$record->id}}" method="POST">
+									<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show', ['user_id' => $record->id]):route('admin.user.show', ['user_id' => $record->id])}}" class="btn btn-default btn-circle" title="@lang('app.btn.view')">
+										<i class="fa fa-info text-success"></i>
+									</a>&nbsp;&nbsp;
+									@if($record->status=='active')
+									<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.desactiver', ['user_id' => $record->id]):route('admin.user.desactiver', ['user_id' => $record->id])}}" class="btn btn-default btn-circle" title="@lang('app.btn.disable')">
+										<i class="fa fa-eye-slash"></i>
+									</a>&nbsp;&nbsp;
+									@else
+									<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.active', ['user_id' => $record->id]):route('admin.user.active', ['user_id' => $record->id])}}" class="btn btn-default btn-circle" title="@lang('app.btn.active')">
+										<i class="fa fa-eye text-info"></i>
+									</a>&nbsp;&nbsp;
+									@endif
+									<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.contact', ['user_id' => $record->id]):route('admin.user.contact', ['user_id' => $record->id])}}" class="btn btn-default btn-circle" title="@lang('app.btn.contact')">
+										<i class="fa fa-address-book-o" aria-hidden="true"></i>
+									</a>&nbsp;&nbsp;
+									{{ csrf_field() }}
+									{{ method_field('DELETE') }}
+									<button type="button" class="btn btn-default btn-circle" title="Suppression" id="delRecord"><i class="fa fa-times text-danger"></i>
+									</button>
+								</form>
+							@endif
 							</td>
 						</tr>
 					@empty
@@ -267,7 +271,7 @@
 	function suivant()
 	{
 		var role = $('#new_role').val();
-		window.location.href = "{{ route('admin.user.create') }}?type="+role;
+		window.location.href = "{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.create'):route('admin.user.create') }}?type="+role;
 	}
 </script>
 <script src="{{ asset('administrator/js/plugins/sweetalert/sweetalert.min.js') }}"></script>

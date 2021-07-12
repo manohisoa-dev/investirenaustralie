@@ -5,16 +5,16 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Type utilisateur</h2>
+        <h2>@lang('app.txt.user_type')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Type utilisateur</a>
+                <a href="#">@lang('app.txt.user_type')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.type-user.index') }}">Listes</a>
+                <a href="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.type-user.index'):route('admin.type-user.index') }}">@lang('app.txt.lists')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Edition</strong>
+                <strong>@lang('app.txt.editing')</strong>
             </li>
         </ol>
     </div>
@@ -29,10 +29,10 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Mise à jour Type User : {{$typeUser->type_user_name}}</h5>
+                <h5>@lang('app.txt.update_user_type', ['type_user'=>$typeUser->type_user_name])</h5>
             </div>
             <div class="ibox-content">
-                <form action="{{ route('admin.type-user.index')}}/{{$typeUser->id}}" method="post">
+                <form action="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.type-user.index'):route('admin.type-user.index')}}/{{$typeUser->id}}" method="post">
 
                     {{ csrf_field() }}
 
@@ -40,7 +40,7 @@
                                                                                                 
 							{!! \Nvd\Crud\Form::input('type_user_name','text')->model($typeUser)->show() !!}
                                                 
-                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Enregistrer</button>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> @lang('app.btn.save')</button>
 
                 </form>
             </div>
