@@ -568,6 +568,7 @@ Route::prefix('collaborator')->namespace('Admin')->as('admin.')->middleware(["au
     //     Route::post('parameter', 'ParameterController@update')->name('update.parameter');
     // });
 
+<<<<<<< HEAD
     // Route::resource('firb','FirbController');
     // Route::get('media', 'MediaController@show')->name('media');
     // Route::get('get/{limit?}', 'MediaController@index')->name('midia.get');
@@ -577,3 +578,18 @@ Route::prefix('collaborator')->namespace('Admin')->as('admin.')->middleware(["au
     // Route::post('ajaxSaveFileEdit', 'MediaController@ajaxSaveFileEdit')->name('ajaxSaveFileEdit');
     // Route::get('ajaxReadFile/{limit?}', 'MediaController@ajaxReadFile')->name('ajaxReadFile');
 });
+=======
+    Route::resource('firb','FirbController');
+    Route::get('media', 'MediaController@show')->name('media');
+    Route::get('get/{limit?}', 'MediaController@index')->name('midia.get');
+    Route::post('ajaxFile', 'MediaController@ajaxFile')->name('ajaxFile');
+    Route::post('ajaxDeleteFile', 'MediaController@ajaxDeleteFile')->name('ajaxDeleteFile');
+    Route::post('ajaxGetFile', 'MediaController@ajaxGetFile')->name('ajaxGetFile');
+    Route::post('ajaxSaveFileEdit', 'MediaController@ajaxSaveFileEdit')->name('ajaxSaveFileEdit');
+    Route::get('ajaxReadFile/{limit?}', 'MediaController@ajaxReadFile')->name('ajaxReadFile');
+    Route::resource('mails-template','MailsTemplateController');
+    Route::resource('parameters-email','ParametersEmailController');
+    Route::resource('temoignage','TemoignageController');
+    Route::get('pdfTest/{id}', 'TemoignageController@pdfTest')->name('pdfTest');
+});
+>>>>>>> 588c89a91e62164edd5089c204e77b70eebf4b69
