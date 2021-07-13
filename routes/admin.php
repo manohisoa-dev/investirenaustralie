@@ -439,12 +439,8 @@ Route::prefix('collaborators')->namespace('Admin')->as('admin.')->middleware(["a
     Route::put('/admin/temoignage/{temoignage}', 'TemoignageController@update')->name('collaborators.admin.temoignage.update');
     Route::delete('/admin/temoignage/{temoignage}', 'TemoignageController@destroy')->name('collaborators.admin.temoignage.destroy');
     Route::get('/admin/temoignage/{temoignage}/edit', 'TemoignageController@edit')->name('collaborators.admin.temoignage.edit');
-
-<<<<<<< HEAD
     Route::get('pdfTest', 'TemoignageController@pdfTest')->name('pdfTest');
-=======
     Route::get('/admin/pdfTest/{id}', 'TemoignageController@pdfTest')->name('collaborators.admin.pdfTest');
->>>>>>> eab58c79dd917cddb1b05758e70453c7dcfb8ee3
 });
 
 
