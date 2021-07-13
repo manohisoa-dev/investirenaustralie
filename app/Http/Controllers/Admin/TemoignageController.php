@@ -11,6 +11,7 @@ use Jleon\LaravelPnotify\Notify;
 use Auth;
 use PDF;
 use setasign\Fpdi\Fpdi;
+use Carbon\Carbon;
 
 class TemoignageController extends Controller {
     public $viewDir = "admin.temoignage";
@@ -34,7 +35,7 @@ class TemoignageController extends Controller {
         $pdf->Cell(0, 10, 'Vicky RAZAFINDRAIBE', 1, 0, 'C'); // add the text, align to Center of cell
 
         $pdf->Output();*/
-        
+
         $records = Temoignage::findRequested();
         return $this->view("index", ['records' => $records]);
     }
@@ -124,12 +125,59 @@ class TemoignageController extends Controller {
         return view($this->viewDir . "." . $view, $data);
     }
 
-    public function pdfTest(Request $request) {
-        //echo $request->id;
-        $temoignage = Temoignage::find($request->id);
+    public function pdfTest() {
+        /*$temoignage = Temoignage::find($request->id);
 
         $pdf = PDF::loadView('admin.temoignage.pdf', compact('temoignage'));
-        return $pdf->download('invoice.pdf');
+        return $pdf->download('invoice.pdf');*/
+        return $this->view("testpdf");
+    }
+
+    public function infoPost(Request $request) {
+        $nom = $request->name;
+        $titre = $request->titre;
+        $dt = strtotime($request->dt);
+        $day = date('d', $dt);
+        $month = date('m', $dt);
+        $year = date('Y', $dt);
+
+        $pdf = new Fpdi('l');
+        $pdf_file = public_path('uploads/certificate.pdf');
+        $pagecount = $pdf->setSourceFile($pdf_file);
+        // Import the first page from the PDF and add to dynamic PDF
+        $tpl = $pdf->importPage(1);
+        $pdf->AddPage();
+
+        // Use the imported page as the template
+        $pdf->useTemplate($tpl);
+        // Set the default font to use
+        $pdf->SetFont('Helvetica');
+
+        // modifier nom
+        $pdf->SetFontSize('30'); // set font size
+        $pdf->SetXY(10, 89); // set the position of the box
+        $pdf->Cell(0, 10, $nom, 1, 0, 'C'); // add the text, align to Center of cell
+
+        // modifier titre
+        $pdf->SetFontSize('20');
+        $pdf->SetXY(80, 105);
+        $pdf->Cell(150, 10, $titre, 1, 0, 'C');
+
+        // modifier jour
+        $pdf->SetFontSize('20');
+        $pdf->SetXY(118, 122);
+        $pdf->Cell(20, 10, $day, 1, 0, 'C');
+
+        // modifier mois
+        $pdf->SetXY(160, 122);
+        $pdf->Cell(30, 10, $month, 1, 0, 'C');
+
+        // modifier année
+        $pdf->SetXY(200, 122);
+        $pdf->Cell(20, 10, $year, 1, 0, 'L');
+        
+        //generer pdf
+        $pdf->Output();
     }
 
 }
