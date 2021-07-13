@@ -430,7 +430,7 @@ Route::prefix('collaborators')->namespace('Admin')->as('admin.')->middleware(["a
     Route::delete('/admin/parameters-email/{parameters-email}', 'ParametersEmailController@destroy')->name('collaborators.admin.parameters-email.destroy');
     Route::get('/admin/parameters-email/{parameters-email}/edit', 'ParametersEmailController@edit')->name('collaborators.admin.parameters-email.edit');
 
-    Route::resource('temoignage','TemoignageController');
+    // Route::resource('temoignage','TemoignageController');
     Route::get('/admin/temoignage', 'TemoignageController@index')->name('collaborators.admin.temoignage.index');
     Route::post('/admin/temoignage', 'TemoignageController@store')->name('collaborators.admin.temoignage.store');
     Route::get('/admin/temoignage/create', 'TemoignageController@create')->name('collaborators.admin.temoignage.create');
