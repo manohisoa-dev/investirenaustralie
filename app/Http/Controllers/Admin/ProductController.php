@@ -216,6 +216,7 @@ class ProductController extends Controller {
             # notification
             Notify::success('Produit a été créer avec succès');
             return back();
+        }
     }
 
     public function geocodeAddress($address) {
