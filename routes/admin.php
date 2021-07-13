@@ -137,6 +137,7 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::resource('mails-template','MailsTemplateController');
     Route::resource('parameters-email','ParametersEmailController');
     Route::resource('temoignage','TemoignageController');
+    Route::get('pdfTest/{id}', 'TemoignageController@pdfTest')->name('pdfTest');
 });
 
 // ROUTE ADMIN DELEGATE
@@ -437,6 +438,8 @@ Route::prefix('collaborators')->namespace('Admin')->as('admin.')->middleware(["a
     Route::put('/admin/temoignage/{temoignage}', 'TemoignageController@update')->name('collaborators.admin.temoignage.update');
     Route::delete('/admin/temoignage/{temoignage}', 'TemoignageController@destroy')->name('collaborators.admin.temoignage.destroy');
     Route::get('/admin/temoignage/{temoignage}/edit', 'TemoignageController@edit')->name('collaborators.admin.temoignage.edit');
+
+    Route::get('pdfTest/{id}', 'TemoignageController@pdfTest')->name('pdfTest');
 });
 
 
@@ -575,8 +578,4 @@ Route::prefix('collaborator')->namespace('Admin')->as('admin.')->middleware(["au
     // Route::post('ajaxGetFile', 'MediaController@ajaxGetFile')->name('ajaxGetFile');
     // Route::post('ajaxSaveFileEdit', 'MediaController@ajaxSaveFileEdit')->name('ajaxSaveFileEdit');
     // Route::get('ajaxReadFile/{limit?}', 'MediaController@ajaxReadFile')->name('ajaxReadFile');
-    Route::resource('mails-template','MailsTemplateController');
-    Route::resource('parameters-email','ParametersEmailController');
-    Route::resource('temoignage','TemoignageController');
-    Route::get('pdfTest/{id}', 'TemoignageController@pdfTest')->name('pdfTest');
 });
