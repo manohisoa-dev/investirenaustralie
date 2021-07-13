@@ -176,7 +176,7 @@
             var tablelang = $('#tablelang').DataTable( {
                 order: [[ 0, "desc" ]],
                 ajax: {
-                    url: '{{ route("admin.config.get.translation") }}',
+                    url: '{{ Auth::user()->isAdminDelegate()?route("admin.collaborators.config.get.translation"):route("admin.config.get.translation") }}',
                     dataSrc: 'data'
                 },
                 columns: [
@@ -249,8 +249,7 @@
                     // newContent= $('#new_content').val();
 
                     $.ajax({
-                        // url: '{{ Auth::user()->isAdminDelegate()?route("admin.collaborators.config.translation"):route("admin.config.save.translation") }}',
-                        url: '{{ route("admin.config.save.translation") }}',
+                        url: '{{ Auth::user()->isAdminDelegate()?route("admin.collaborators.config.save.translation"):route("admin.config.save.translation") }}',
                         method: 'POST',
                         data: datas,
                         dataType: 'json',
@@ -339,7 +338,7 @@
                     };
 
                     $.ajax({
-                        url: '{{ route("admin.config.save.translation") }}',
+                        url: '{{ Auth::user()->isAdminDelegate()?route("admin.collaborators.config.save.translation"):route("admin.config.save.translation") }}',
                         method: 'POST',
                         data: datas,
                         dataType: 'json',
@@ -382,7 +381,7 @@
                     pageLength: 10,
                     order: [[ 0, "desc" ]],
                     ajax: {
-                        url: '{{ route("admin.config.get.translation") }}',
+                        url: '{{ Auth::user()->isAdminDelegate()?route("admin.collaborators.config.get.translation"):route("admin.config.get.translation") }}',
                         method: "GET",
                         data : {'select_file_name':file, 'select_lang':lang},
                     },
@@ -422,7 +421,7 @@
                     pageLength: 10,
                     order: [[ 0, "desc" ]],
                     ajax: {
-                        url: '{{ route("admin.config.get.translation") }}',
+                        url: '{{ Auth::user()->isAdminDelegate()?route("admin.collaborators.config.get.translation"):route("admin.config.get.translation") }}',
                         method: "GET",
                         data : {'select_file_name':file, 'select_lang':lang},
                     },
@@ -462,7 +461,7 @@
                     pageLength: 10,
                     order: [[ 0, "desc" ]],
                     ajax: {
-                        url: '{{ route("admin.config.get.translation") }}',
+                        url: '{{ Auth::user()->isAdminDelegate()?route("admin.collaborators.config.get.translation"):route("admin.config.get.translation") }}',
                         method: "GET",
                         data : {'select_file_name':file, 'select_lang':lang},
                     },

@@ -1301,6 +1301,8 @@ return
 	'txt.folders_media' => 'Dossiers multimédias',
 	'txt.add_new_firb' => 'Ajouter un nouveau Firb',
 	'txt.update_firb' => 'Mise à jour Firb : :firb',
+	'txt.detail_firb' => 'Détail Firb : :firb',
+	'txt.adjustment_param_used_site' => 'Réglage des paramètres utilisés dans le site',
 	
 
 	

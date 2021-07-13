@@ -8,13 +8,17 @@
             <h2>@lang('app.info_site')</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="{{url('V2/admin')}}">Accueil</a>
+                    <a href="{{Auth::user()->isAdmin()?url('/admin'):url('/collaborators')}}">
+                        @lang('app.home')
+                    </a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a>Configuration</a>
+                    <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.config.parameter'):route('admin.config.parameter')}}">
+                        @lang('app.config')
+                    </a>
                 </li>
                 <li class="breadcrumb-item active">
-                    <strong>Paramètre</strong>
+                    <strong>@lang('app.txt.parameter')</strong>
                 </li>
             </ol>
         </div>
@@ -29,12 +33,12 @@
         <div class="col-lg-12">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h5>@lang('app.txt.parameter') <small>Réglage des paramètres utilisés dans le site</small></h5>
+                    <h5>@lang('app.txt.parameter') <small>@lang('app.txt.adjustment_param_used_site')</small></h5>
                 </div>
                 <div class="ibox-content">
                     <div class="row">
                         <div class="col-sm-12 col-lg-12">
-                            <form role="form" method="post" action="{{route('admin.config.update.parameter')}}">
+                            <form role="form" method="post" action="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.config.update.parameter'):route('admin.config.update.parameter')}}">
                                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                                 <div class="row">
                                     <div class="col-sm-6 col-lg-6">

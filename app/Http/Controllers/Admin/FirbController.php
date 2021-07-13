@@ -42,7 +42,7 @@ class FirbController extends Controller
 
         # notification
         Notify::success('Firb a été créer avec succès');
-        return redirect(route('admin.firb.index'));
+        return back();
     }
 
     /**
@@ -89,7 +89,7 @@ class FirbController extends Controller
 
         # notification
         Notify::success('Firb a été mise à jour avec succès');
-        return redirect(route('admin.firb.index'));
+        return redirect(Auth::user()->isAdmin()?route('admin.firb.index'):route('admin.collaborators.admin.firb.index'));
     }
 
     /**
@@ -103,7 +103,7 @@ class FirbController extends Controller
 
         # notification
         Notify::success('Firb a été supprimer avec succès');
-        return redirect(route('admin.firb.index'));
+        return back();
     }
 
     protected function view($view, $data = [])

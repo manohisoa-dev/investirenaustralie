@@ -1059,6 +1059,8 @@ return
 	'txt.folders_media' => 'Folders medias',
 	'txt.add_new_firb' => 'Add new Firb',
 	'txt.update_firb' => 'Update Firb : :firb',
+	'txt.detail_firb' => 'Firb Detail : :firb',
+	'txt.adjustment_param_used_site' => 'Adjustment of the parameters used in the site',
 
 
 ];

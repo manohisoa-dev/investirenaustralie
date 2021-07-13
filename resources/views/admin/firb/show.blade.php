@@ -30,7 +30,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Détail Firb : {{$firb->label}}</h5>
+                <h5>@lang('app.txt.detail_firb', ['firb'=>$firb->label])</h5>
             </div>
             <div class="ibox-content">
                 <ul class="list-group">
