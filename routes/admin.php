@@ -137,7 +137,8 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::resource('mails-template','MailsTemplateController');
     Route::resource('parameters-email','ParametersEmailController');
     Route::resource('temoignage','TemoignageController');
-    Route::get('pdfTest/{id}', 'TemoignageController@pdfTest')->name('pdfTest');
+    Route::get('pdfTest', 'TemoignageController@pdfTest')->name('pdfTest');
+    Route::post('infoPost', 'TemoignageController@infoPost')->name('infoPost');
 });
 
 // ROUTE ADMIN DELEGATE
@@ -438,7 +439,7 @@ Route::prefix('collaborators')->namespace('Admin')->as('admin.')->middleware(["a
     Route::put('/admin/temoignage/{temoignage}', 'TemoignageController@update')->name('collaborators.admin.temoignage.update');
     Route::delete('/admin/temoignage/{temoignage}', 'TemoignageController@destroy')->name('collaborators.admin.temoignage.destroy');
     Route::get('/admin/temoignage/{temoignage}/edit', 'TemoignageController@edit')->name('collaborators.admin.temoignage.edit');
-
+    Route::get('pdfTest', 'TemoignageController@pdfTest')->name('pdfTest');
     Route::get('/admin/pdfTest/{id}', 'TemoignageController@pdfTest')->name('collaborators.admin.pdfTest');
 });
 

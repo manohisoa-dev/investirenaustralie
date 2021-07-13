@@ -31,7 +31,6 @@
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <h5>@lang('app.txt.detail_testimonial')</h5>
-				<a href="{{Auth::user()->isAdmin()?route('admin.pdfTest', ['id' => $temoignage->id]):route('admin.collaborators.admin.pdfTest', ['id' => $temoignage->id])}}" class="btn btn-default pull-right">Export</a>
             </div>
             <div class="ibox-content">
                 <ul class="list-group">
