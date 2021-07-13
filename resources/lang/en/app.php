@@ -1033,6 +1033,11 @@ return
 	'txt.add_new_testimonials' => 'Add a new Testimonials',
 	'txt.update_testimonials' => 'Update Testimonials',
 	'txt.detail_testimonial' => 'Testimonial Detail',
+	'txt.badwords' => 'Badwords',
+	'txt.forbidden_words' => 'Forbidden words',
+	'txt.add_new_forbidden_words' => 'Add a new Forbidden words',
+	'txt.update_forbidden_words' => 'Update Forbidden words : :word',
+	'txt.detail_forbidden_words' => 'Forbidden words Detail : :word',
 
 
 ];

@@ -5,16 +5,16 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Mot interdits</h2>
+        <h2>@lang('app.txt.forbidden_words')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Mot interdits</a>
+                <a href="#">@lang('app.txt.forbidden_words')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.badword.index') }}">Listes</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.badword.index'):route('admin.collaborators.admin.badword.index') }}">@lang('app.txt.lists')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Edition</strong>
+                <strong>@lang('app.txt.editing')</strong>
             </li>
         </ol>
     </div>
@@ -29,10 +29,10 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Mise à jour Mot interdit : {{$badword->content}}</h5>
+                <h5>@lang('app.txt.update_forbidden_words', ['word'=>$badword->content])</h5>
             </div>
             <div class="ibox-content">
-                <form action="{{ route('admin.badword.index')}}/{{$badword->id}}" method="post">
+                <form action="{{ Auth::user()->isAdmin()?route('admin.badword.index'):route('admin.collaborators.admin.badword.index')}}/{{$badword->id}}" method="post">
 
                     {{ csrf_field() }}
 

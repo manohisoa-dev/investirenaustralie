@@ -1276,6 +1276,10 @@ return
 	'txt.add_new_testimonials' => 'Ajouter un nouveau Témoignages',
 	'txt.update_testimonials' => 'Mise à jour Témoignages',
 	'txt.detail_testimonial' => 'Détail Témoignage',
+	'txt.forbidden_words' => 'Mot interdits',
+	'txt.add_new_forbidden_words' => 'Ajouter un nouveau mot interdit',
+	'txt.update_forbidden_words' => 'Mise à jour Mot interdit : :word',
+	'txt.detail_forbidden_words' => 'Détail Mot interdit : :word',
 	
 
 	
