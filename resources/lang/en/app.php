@@ -1001,5 +1001,14 @@ return
 	'txt.choose_product' => 'Choose product',
 	'txt.video' => 'Video',
 	'txt.videos' => 'Videos',
+	'txt.mail' => 'Mail',
+	'txt.mails' => 'Mails',
+	'txt.compose_new_mail' => 'Compose a new Mail',
+	'txt.new_mail' => 'New Mail',
+	'txt.add_new_mail' => 'Add a new Mail',
+	'txt.to' => 'To',
+	'txt.update_mail' => 'Update Mail : :mail',
+	'txt.from' => 'From',
+	'txt.new_message' => 'New message',
 	
 ];

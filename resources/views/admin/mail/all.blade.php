@@ -5,10 +5,10 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Mails</h2>
+        <h2>@lang('app.txt.mails')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.mail.index') }}">Mails</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.mail.index'):route('admin.collaborators.admin.mail.index') }}">@lang('app.txt.mails')</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>{{$title}}</strong>
@@ -17,8 +17,8 @@
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ route('admin.mail.create') }}" type="button" class="btn btn-primary btn-block">
-                <i class="fa fa-plus"></i> Composer un nouveau Mail            
+            <a href="{{ Auth::user()->isAdmin()?route('admin.mail.create'):route('admin.collaborators.admin.mail.create') }}" type="button" class="btn btn-primary btn-block">
+                <i class="fa fa-plus"></i> @lang('app.txt.compose_new_mail')            
 			</a>
         </div>
     </div>
@@ -30,7 +30,7 @@
 	<div class="col-lg-12">
 		<div class="ibox float-e-margins">
 			<div class="ibox-title">
-				<h5>Mails</h5>
+				<h5>@lang('app.txt.mails')</h5>
 			</div>
 			<div class="ibox-content">
 				<div class="table-responsive">
@@ -43,7 +43,7 @@
                         {!!\Nvd\Crud\Html::sortableTh('sender_id','admin.mail.index','Sender')!!}
                         {!!\Nvd\Crud\Html::sortableTh('status','admin.mail.index','Status')!!}
                         {!!\Nvd\Crud\Html::sortableTh('created_at','admin.mail.index','Date')!!}
-                        <th><a href="javascript:void(0)">Actions</a></th>
+                        <th><a href="javascript:void(0)">@lang('app.table.actions')</a></th>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">
@@ -70,7 +70,7 @@
                                           data-name="subject"
                                           data-value="{{ $record->subject }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.mail.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.mail.index'):route('admin.collaborators.admin.mail.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->subject }}</span>
                                 </td>
                                 <td>
@@ -79,7 +79,7 @@
                                           data-name="content"
                                           data-value="{{ $record->content }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.mail.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.mail.index'):route('admin.collaborators.admin.mail.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ str_limit(strip_tags($record->content), "100", "...") }}</span>
                                 </td>
                                 <td>
@@ -88,7 +88,7 @@
                                           data-name="sender_id"
                                           data-value="{{ $record->sender_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.mail.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.mail.index'):route('admin.collaborators.admin.mail.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->sender->name }}</span>
                                 </td>
                                 <td>
@@ -97,18 +97,18 @@
                                           data-name="status"
                                           data-value="{{ $record->status }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.mail.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.mail.index'):route('admin.collaborators.admin.mail.index')}}/{{ $record->{$record->getKeyName()} }}"
                                     >{{ $record->status }}</span>
                                 </td>
                                 <td>
                                 {{ $record->created_at ? $record->created_at->diffForHumans() : '' }}
                                 </td>
                                 <td width="10%">
-								<form class="form-inline" action="{{route('admin.mail.index')}}/{{$record->id}}?filter={{$filter}}" method="POST">
-									<a href="{{route('admin.mail.index')}}/{{$record->id}}?filter={{$filter}}" class="btn btn-default btn-circle" title="@lang('app.btn.view')">
+								<form class="form-inline" action="{{Auth::user()->isAdmin()?route('admin.mail.index'):route('admin.collaborators.admin.mail.index')}}/{{$record->id}}?filter={{$filter}}" method="POST">
+									<a href="{{Auth::user()->isAdmin()?route('admin.mail.index'):route('admin.collaborators.admin.mail.index')}}/{{$record->id}}?filter={{$filter}}" class="btn btn-default btn-circle" title="@lang('app.btn.view')">
 										<i class="fa fa-eye"></i>
 									</a>&nbsp;&nbsp;								
-									<a href="{{route('admin.mail.compose', $record)}}" class="btn btn-default btn-circle" title="@lang('app.btn.send')">
+									<a href="{{Auth::user()->isAdmin()?route('admin.mail.compose', $record):route('admin.collaborators.admin.mail.compose', $record)}}" class="btn btn-default btn-circle" title="@lang('app.btn.send')">
 										<i class="fa fa-reply"></i>
 									</a>&nbsp;&nbsp;
 								

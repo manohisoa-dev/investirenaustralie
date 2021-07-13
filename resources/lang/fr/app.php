@@ -1244,6 +1244,14 @@ return
 	'txt.choose_product' => 'Choisir produit',
 	'txt.video' => 'Vidéo',
 	'txt.videos' => 'Vidéos',
-	
+	'txt.mail' => 'Mail',
+	'txt.mails' => 'Mails',
+	'txt.compose_new_mail' => 'Composer un nouveau Mail',
+	'txt.new_mail' => 'Nouveau Mail',
+	'txt.add_new_mail' => 'Ajouter un nouveau Mail',
+	'txt.to' => 'à',
+	'txt.update_mail' => 'Mise à jour Mail : :mail',
+	'txt.from' => 'De',
+	'txt.new_message' => 'Nouveau message',
 	
 ];

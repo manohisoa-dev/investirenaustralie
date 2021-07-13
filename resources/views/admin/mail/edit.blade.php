@@ -5,16 +5,16 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Mails</h2>
+        <h2>@lang('app.txt.mails')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Mails</a>
+                <a href="#">@lang('app.txt.mails')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.mail.index') }}">Listes</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.mail.index'):route('admin.collaborators.admin.mail.index') }}">@lang('app.txt.lists')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Edition</strong>
+                <strong>@lang('app.txt.editing')</strong>
             </li>
         </ol>
     </div>
@@ -29,10 +29,10 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Mise à jour Mail : {{$mail->subject}}</h5>
+                <h5>@lang('app.txt.update_mail', ['mail'=>$mail->subject])</h5>
             </div>
             <div class="ibox-content">
-                <form action="{{ route('admin.mail.index')}}/{{$mail->id}}" method="post">
+                <form action="{{ Auth::user()->isAdmin()?route('admin.mail.index'):route('admin.collaborators.admin.mail.index')}}/{{$mail->id}}" method="post">
 
                     {{ csrf_field() }}
 
@@ -48,7 +48,7 @@
                                                                         
                             {!! \Nvd\Crud\Form::input('sender_id','text')->model($mail)->show() !!}
                                                                                                                                                 
-                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Enregistrer</button>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> @lang('app.btn.save')</button>
 
                 </form>
             </div>
