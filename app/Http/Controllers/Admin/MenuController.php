@@ -50,7 +50,7 @@ class MenuController extends Controller {
 
         # notification
         Notify::success('Menu a été créer avec succès');
-        return redirect(route('admin.menu.index'));
+        return back();
     }
 
     /**
@@ -103,7 +103,7 @@ class MenuController extends Controller {
 
         # notification
         Notify::success('Menu a été mise à jour avec succès');
-        return redirect(route('admin.menu.index'));
+        return redirect(Auth::user()->isAdmin()?route('admin.menu.index'):route('admin.collaborators.admin.menu.index'));
     }
 
     /**
@@ -116,7 +116,7 @@ class MenuController extends Controller {
 
         # notification
         Notify::success('Menu a été supprimer avec succès');
-        return redirect(route('admin.menu.index'));
+        return back();
     }
 
     protected function view($view, $data = []) {

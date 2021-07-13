@@ -8,13 +8,17 @@
             <h2>@lang('app.info_site')</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="{{url('V2/admin')}}">Accueil</a>
+                    <a href="{{ Auth::user()->isAdmin()?url('/admin'):url('/collaborators') }}">
+                        @lang('app.home')
+                    </a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a>Configuration</a>
+                    <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.config.site'):route('admin.config.site')}}">
+                        @lang('app.config')
+                    </a>
                 </li>
                 <li class="breadcrumb-item active">
-                    <strong>Site</strong>
+                    <strong>@lang('app.txt.site')</strong>
                 </li>
             </ol>
         </div>
@@ -29,26 +33,26 @@
         <div class="col-lg-12">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h5>@lang('app.info_site') <small>Mise à jour des informations</small></h5>
+                    <h5>@lang('app.info_site') <small>@lang('app.txt.update_infos')</small></h5>
                 </div>
                 <div class="ibox-content">
                     <div class="row">
                         <div class="col-sm-12 col-lg-12">
-                            <form role="form" method="post" action="{{route('admin.config.site.update')}}">
+                            <form role="form" method="post" action="{{Auth::user()->isAdmin()?route('admin.config.site.update'):route('admin.collaborators.config.site.update')}}">
                                 <input type="hidden" name="_token" value="{{csrf_token()}}">
 
                                 <div class="row">
                                     <div class="col-sm-6 col-lg-6">
-                                        <div class="form-group"><label>Titre du site</label> <input type="text" placeholder="Enter email" class="form-control" value="{{old('meta_title')?old('meta_title'):($item->get_meta('meta_title')?$item->get_meta('meta_title')->value:'')}}" name="meta_title"></div>
-                                        <div class="form-group"><label>Meta description du site</label> <textarea placeholder="Meta description du site" class="form-control" name="meta_desc">{{old('meta_desc')?old('meta_desc'):($item->get_meta('meta_desc')?$item->get_meta('meta_desc')->value:'')}}</textarea></div>
-                                        <div class="form-group"><label>Mot clés</label> <textarea placeholder="Mots clés" class="form-control" name="meta_keywords">{{old('meta_keywords')?old('meta_keywords'):($item->get_meta('meta_keywords')?$item->get_meta('meta_keywords')->value:'')}}</textarea></div>
-                                        <div class="form-group"><label>Longitude</label> <input type="text" placeholder="Longitude" class="form-control" value="{{old('longitude')?old('longitude'):($item->get_meta('longitude')?$item->get_meta('longitude')->value:'')}}" name="longitude"></div>
-                                        <div class="form-group"><label>Latitude</label> <input type="text" placeholder="Latitude" class="form-control" value="{{old('latitude')?old('latitude'):($item->get_meta('latitude')?$item->get_meta('latitude')->value:'')}}" name="latitude"></div>
+                                        <div class="form-group"><label>@lang('app.txt.site_title')</label> <input type="text" placeholder="Enter email" class="form-control" value="{{old('meta_title')?old('meta_title'):($item->get_meta('meta_title')?$item->get_meta('meta_title')->value:'')}}" name="meta_title"></div>
+                                        <div class="form-group"><label>@lang('app.txt.meta_description_site')</label> <textarea placeholder="Meta description du site" class="form-control" name="meta_desc">{{old('meta_desc')?old('meta_desc'):($item->get_meta('meta_desc')?$item->get_meta('meta_desc')->value:'')}}</textarea></div>
+                                        <div class="form-group"><label>@lang('app.txt.keys_word')</label> <textarea placeholder="Mots clés" class="form-control" name="meta_keywords">{{old('meta_keywords')?old('meta_keywords'):($item->get_meta('meta_keywords')?$item->get_meta('meta_keywords')->value:'')}}</textarea></div>
+                                        <div class="form-group"><label>@lang('app.longitude')</label> <input type="text" placeholder="Longitude" class="form-control" value="{{old('longitude')?old('longitude'):($item->get_meta('longitude')?$item->get_meta('longitude')->value:'')}}" name="longitude"></div>
+                                        <div class="form-group"><label>@lang('app.latitude')</label> <input type="text" placeholder="Latitude" class="form-control" value="{{old('latitude')?old('latitude'):($item->get_meta('latitude')?$item->get_meta('latitude')->value:'')}}" name="latitude"></div>
                                         <div style="padding-bottom: 40px;"></div>
                                         <hr>
                                     </div>
                                     <div class="col-sm-6 col-lg-6">
-                                        <div class="form-group"><label>Liste des Admins</label>
+                                        <div class="form-group"><label>@lang('app.txt.admin_list')</label>
                                             <select name="admin" class="form-control">
                                                 <option value="0">@lang('app.select_admin')</option>
                                                 @foreach($admins as $admin)
@@ -56,11 +60,11 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="form-group"><label>Admin name</label> <input type="text" placeholder="Admin name" class="form-control" value="{{old('admin_name')?old('admin_name'):($item->get_meta('admin_name')?$item->get_meta('admin_name')->value:'')}}" name="admin_name"></div>
-                                        <div class="form-group"><label>Admin email</label> <input type="text" placeholder="Enter email" class="form-control" value="{{ ($item->get_meta('admin_email')?$item->get_meta('admin_email')->value:'') }}" name="admin_email"></div>
-                                        <div class="form-group"><label>Admin Phone</label> <input type="text" placeholder="Enter Phone" class="form-control" value="{{old('admin_phone')?old('admin_phone'):($item->get_meta('admin_phone')?$item->get_meta('admin_phone')->value:'')}}" name="admin_phone"></div>
-                                        <div class="form-group"><label>Admin Fax</label> <input type="text" placeholder="Enter Phone" class="form-control" value="{{old('admin_fax')?old('admin_fax'):($item->get_meta('admin_fax')?$item->get_meta('admin_fax')->value:'')}}" name="admin_fax"></div>
-                                        <div class="form-group"><label>Adresse</label> <textarea placeholder="Mots clés" class="form-control" name="admin_address">{!! old('admin_address')?old('admin_address'):($item->get_meta('admin_address')?$item->get_meta('admin_address')->value:'') !!}</textarea></div>
+                                        <div class="form-group"><label>@lang('app.txt.admin_name')</label> <input type="text" placeholder="Admin name" class="form-control" value="{{old('admin_name')?old('admin_name'):($item->get_meta('admin_name')?$item->get_meta('admin_name')->value:'')}}" name="admin_name"></div>
+                                        <div class="form-group"><label>@lang('app.txt.admin_email')</label> <input type="text" placeholder="Enter email" class="form-control" value="{{ ($item->get_meta('admin_email')?$item->get_meta('admin_email')->value:'') }}" name="admin_email"></div>
+                                        <div class="form-group"><label>@lang('app.txt.admin_phone')</label> <input type="text" placeholder="Enter Phone" class="form-control" value="{{old('admin_phone')?old('admin_phone'):($item->get_meta('admin_phone')?$item->get_meta('admin_phone')->value:'')}}" name="admin_phone"></div>
+                                        <div class="form-group"><label>@lang('app.txt.admin_fax')</label> <input type="text" placeholder="Enter Phone" class="form-control" value="{{old('admin_fax')?old('admin_fax'):($item->get_meta('admin_fax')?$item->get_meta('admin_fax')->value:'')}}" name="admin_fax"></div>
+                                        <div class="form-group"><label>@lang('app.txt.admin_address')</label> <textarea placeholder="Mots clés" class="form-control" name="admin_address">{!! old('admin_address')?old('admin_address'):($item->get_meta('admin_address')?$item->get_meta('admin_address')->value:'') !!}</textarea></div>
 
                                         <hr>
                                         

@@ -9,7 +9,7 @@
         <h2>@lang('app.media.titre')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{route('admin.media')}}">@lang('app.media.titre')</a>
+                <a href="{{Auth::user()->isAdmin()?route('admin.media'):route('admin.collaborators.admin.media')}}">@lang('app.media.titre')</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>@lang('app.txt.lists')</strong>
@@ -33,7 +33,7 @@
 			<div class="ibox ">
 				<div class="ibox-content">
 					<div class="file-manager">
-						<h5>Folders media {{ Session::get('dirFile') }}</h5>
+						<h5>@lang('app.txt.folders_media') {{ Session::get('dirFile') }}</h5>
 						<ul class="folder-list" style="padding: 0">
 							@php
 								foreach($folder as $key=>$val){
@@ -48,7 +48,7 @@
 		<div class="col-lg-9 animated fadeInRight">
 			<div class="row">
 				<div class="col-lg-12" id="zone_drop" style="display:none">
-					<form action="{{ route('admin.ajaxFile') }}" class="dropzone" id="fileupload">
+					<form action="{{ Auth::user()->isAdmin()?route('admin.ajaxFile'):route('admin.collaborators.admin.ajaxFile') }}" class="dropzone" id="fileupload">
 						{{ csrf_field() }}
 						<input type="hidden" name="dir_name" id="dir_nam" value="" />
 						<div class="fallback">						
@@ -104,7 +104,7 @@ function read_folder(folder)
 	var directory = folder.getAttribute("data-href");
 	$.ajax({
 	   type:'GET',
-	   url:"{{ route('admin.ajaxReadFile') }}",
+	   url:"{{ Auth::user()->isAdmin()?route('admin.ajaxReadFile'):route('admin.collaborators.admin.ajaxReadFile') }}",
 	   data: {"_token": "{{ csrf_token() }}","directory_name": directory},
 	   cache: false,
 	   success:function(data) {
@@ -119,7 +119,7 @@ function set_content_file(folder_name)
 {
 	$.ajax({
 	   type:'GET',
-	   url:"{{ route('admin.midia.get') }}",
+	   url:"{{ Auth::user()->isAdmin()?route('admin.midia.get'):route('admin.collaborators.admin.midia.get') }}",
 	   data: {"_token": "{{ csrf_token() }}","directory_name": folder_name},
 	   cache: false,
 	   success:function(data) {
@@ -149,7 +149,7 @@ function delete_file(file)
         function() {
             $.ajax({
                 type: "POST",
-                url:"{{ route('admin.ajaxDeleteFile') }}",
+                url:"{{ Auth::user()->isAdmin()?route('admin.ajaxDeleteFile'):route('admin.collaborators.admin.ajaxDeleteFile') }}",
                 data: {"_token": "{{ csrf_token() }}","file_name": file_name,"folder":folder,"id_file_base":id_file_base},
                 success: function (data) {
                 	set_content_file(data.success); 
@@ -168,7 +168,7 @@ function edit_file(file)
 	
 	$.ajax({
 		type: "POST",
-		url:"{{ route('admin.ajaxGetFile') }}",
+		url:"{{ Auth::user()->isAdmin()?route('admin.ajaxGetFile'):route('admin.collaborators.admin.ajaxGetFile') }}",
 		data: {"_token": "{{ csrf_token() }}","file_name": file_name,"folder":folder,"id_file_base":id_file_base},
 		timeout : 6000,
 		success: function (data) {
@@ -182,7 +182,7 @@ function edit_file(file)
 function save_file()
 {
 	var formData = new FormData($('#form_file')[0]);
-	var url = "{{ route('admin.ajaxSaveFileEdit') }}";
+	var url = "{{ Auth::user()->isAdmin()?route('admin.ajaxSaveFileEdit'):route('admin.collaborators.admin.ajaxSaveFileEdit') }}";
     $.ajax({
         url: url,
         type: 'POST',

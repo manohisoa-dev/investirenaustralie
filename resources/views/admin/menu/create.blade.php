@@ -5,16 +5,18 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Menus</h2>
+        <h2>@lang('app.txt.menus')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Menus</a>
+                <a href="#">@lang('app.txt.menus')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.menu.index') }}">Listes</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.menu.index'):route('admin.collaborators.admin.menu.index') }}">
+					@lang('app.txt.lists')
+				</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Ajout</strong>
+                <strong>@lang('app.txt.add')</strong>
             </li>
         </ol>
     </div>
@@ -29,10 +31,10 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Ajouter un nouveau Menu</h5>
+                <h5>@lang('app.txt.add_new_menu')</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-validation form-padding" id="menuForm" action="{{ route('admin.menu.store') }}" method="post" enctype="multipart/form-data">
+                <form class="form-validation form-padding" id="menuForm" action="{{ Auth::user()->isAdmin()?route('admin.menu.store'):route('admin.collaborators.admin.menu.store') }}" method="post" enctype="multipart/form-data">
 
                     {{ csrf_field() }}
                                                         
@@ -51,7 +53,7 @@
 							<div class="col-md-6">
 								<label for="parent_id">@lang('app.admin.menu.libMenuParent')</label>
 								<select class="form-control" name="parent_id">
-									<option value="0">Aucun</option>
+									<option value="0">@lang('app.txt.aucun')</option>
 									@foreach($menus as $menu)
 										<option value="{{$menu->id}}"> {{$menu->libelle}}</option>
 									@endforeach

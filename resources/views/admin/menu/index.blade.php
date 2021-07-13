@@ -5,21 +5,21 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Menus</h2>
+        <h2>@lang('app.txt.menus')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.menu.index') }}">Menus</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.menu.index'):route('admin.collaborators.admin.menu.index') }}">@lang('app.txt.menus')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Listes</strong>
+                <strong>@lang('app.txt.lists')</strong>
             </li>
         </ol>
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <?php /*?><a href="{{ route('admin.menu.create') }}" type="button" class="btn btn-primary btn-block">
+            {{-- <a href="{{ route('admin.menu.create') }}" type="button" class="btn btn-primary btn-block">
                 <i class="fa fa-plus"></i> @lang('app.admin.menu.createBtn')            
-			</a><?php */?>
+			</a> --}}
         </div>
     </div>
 </div>
@@ -31,7 +31,7 @@
 	<div class="col-lg-12">
 		<div class="ibox float-e-margins">
 			<div class="ibox-title">
-				<h5>Menus</h5>
+				<h5>@lang('app.txt.menus')</h5>
 			</div>
 			<div class="ibox-content">
 				<div class="table-responsive">
@@ -43,7 +43,7 @@
 						{!!\Nvd\Crud\Html::sortableTh('libelle','admin.menu.index','Libelle')!!}													
 						{!!\Nvd\Crud\Html::sortableTh('parent_id','admin.menu.index','Menu parent')!!}
 						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.menu.index','Crée le')!!}
-						<th><a href="javascript:void(0)">Actions</a></th>
+						<th><a href="javascript:void(0)">@lang('app.table.actions')</a></th>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">
@@ -52,7 +52,7 @@
 							<td><input type="text" class="form-control" name="libelle" value="{{Request::input("libelle")}}"></td>
 							<td>
 								<select class="form-control" name="parent_id">
-									<option value="0">Aucun</option>
+									<option value="0">@lang('app.txt.none')</option>
 									@foreach($menus as $menu)
 										<option value="{{$menu->id}}"> {{$menu->libelle}}</option>
 									@endforeach
@@ -75,7 +75,7 @@
                                           data-name="menu"
                                           data-value="{{ $record->menu }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.menu.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.menu.index'):route('admin.collaborators.admin.menu.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->libelle }}</span>
                                  </td>
                                  <td>
@@ -84,23 +84,23 @@
                                           data-name="parent_id"
                                           data-value="{{ $record->parent_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.menu.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.menu.index'):route('admin.collaborators.admin.menu.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >
 										  @if($record->parent_id !=0)
 										  	{{\App\Models\Menu::find($record->parent_id)->libelle}}
 										  @else
-										  	Aucun
+										  	@lang('app.txt.aucun')
 										  @endif
 										  </span>
                                   </td>
                                   <td>{{ $record->created_at ? $record->created_at->diffForHumans() : '' }}</td>
 								  <td class="actions-cell text-center" width="7%">
-									<form class="form-inline" action="{{route('admin.menu.index')}}/{{$record->id}}" method="POST">
+									<form class="form-inline" action="{{Auth::user()->isAdmin()?route('admin.menu.index'):route('admin.collaborators.admin.menu.index')}}/{{$record->id}}" method="POST">
 									<?php /*?><a href="{{route('admin.menu.index')}}/{{$record->id}}" title="Détail" class="btn btn-default btn-circle">
 										<i class="fa fa-eye"></i>
 									</a>&nbsp;&nbsp;<?php */?>
 									
-									<a href="{{route('admin.menu.index')}}/{{$record->id}}/edit" title="Modification" class="btn btn-default btn-circle">
+									<a href="{{Auth::user()->isAdmin()?route('admin.menu.index'):route('admin.collaborators.admin.menu.index')}}/{{$record->id}}/edit" title="Modification" class="btn btn-default btn-circle">
 										<i class="fa fa-pencil-square-o"></i>
 									</a>&nbsp;&nbsp;
 									

@@ -24,7 +24,10 @@ class ConfigController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:1');
+        $this->middleware('role', ['only' => [
+            '1',
+            '6',
+        ]]);
     }
 
     /**

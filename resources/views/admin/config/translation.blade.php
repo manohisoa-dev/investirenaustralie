@@ -8,7 +8,7 @@
             <h2>@lang('app.translation')</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="{{url('V2/admin')}}">@lang('app.home')</a>
+                    <a href="{{ Auth::user()->isAdmin()?url('/admin'):url('/collaborators') }}">@lang('app.home')</a>
                 </li>
                 <li class="breadcrumb-item">
                     <a>@lang('app.config')</a>
@@ -249,6 +249,7 @@
                     // newContent= $('#new_content').val();
 
                     $.ajax({
+                        // url: '{{ Auth::user()->isAdminDelegate()?route("admin.collaborators.config.translation"):route("admin.config.save.translation") }}',
                         url: '{{ route("admin.config.save.translation") }}',
                         method: 'POST',
                         data: datas,

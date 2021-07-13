@@ -405,13 +405,13 @@ Route::prefix('collaborators')->namespace('Admin')->as('admin.')->middleware(["a
     Route::put('/admin/firb/{firb}', 'FirbController@update')->name('collaborators.admin.firb.update');
     Route::delete('/admin/firb/{firb}', 'FirbController@destroy')->name('collaborators.admin.firb.destroy');
     Route::get('/admin/firb/{firb}/edit', 'FirbController@edit')->name('collaborators.admin.firb.edit');
-    Route::get('media', 'MediaController@show')->name('collaborators.admin.media');
-    Route::get('get/{limit?}', 'MediaController@index')->name('collaborators.admin.midia.get');
-    Route::post('ajaxFile', 'MediaController@ajaxFile')->name('ajaxFile');
-    Route::post('ajaxDeleteFile', 'MediaController@ajaxDeleteFile')->name('ajaxDeleteFile');
-    Route::post('ajaxGetFile', 'MediaController@ajaxGetFile')->name('ajaxGetFile');
-    Route::post('ajaxSaveFileEdit', 'MediaController@ajaxSaveFileEdit')->name('ajaxSaveFileEdit');
-    Route::get('ajaxReadFile/{limit?}', 'MediaController@ajaxReadFile')->name('ajaxReadFile');
+    Route::get('/admin/media', 'MediaController@show')->name('collaborators.admin.media');
+    Route::get('/admin/get/{limit?}', 'MediaController@index')->name('collaborators.admin.midia.get');
+    Route::post('ajaxFile', 'MediaController@ajaxFile')->name('collaborators.admin.ajaxFile');
+    Route::post('ajaxDeleteFile', 'MediaController@ajaxDeleteFile')->name('collaborators.admin.ajaxDeleteFile');
+    Route::post('ajaxGetFile', 'MediaController@ajaxGetFile')->name('collaborators.admin.ajaxGetFile');
+    Route::post('ajaxSaveFileEdit', 'MediaController@ajaxSaveFileEdit')->name('collaborators.admin.ajaxSaveFileEdit');
+    Route::get('ajaxReadFile/{limit?}', 'MediaController@ajaxReadFile')->name('collaborators.admin.ajaxReadFile');
 
     // Route::resource('mails-template','MailsTemplateController');
     Route::get('/admin/mails-template', 'MailsTemplateController@index')->name('collaborators.admin.mails-template.index');

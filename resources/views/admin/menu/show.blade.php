@@ -5,16 +5,16 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Menus</h2>
+        <h2>@lang('app.txt.menus')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Menus</a>
+                <a href="#">@lang('app.txt.menus')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.menu.index') }}">Listes</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.menu.index'):route('admin.collaborators.admin.menu.index') }}">@lang('app.txt.lists')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Détail</strong>
+                <strong>@lang('app.txt.details')</strong>
             </li>
         </ol>
     </div>
@@ -30,28 +30,28 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Détail Menu : {{$menu->menu}}</h5>
+                <h5>@lang('app.txt.detail_menu', ['menu'=>$menu->menu])</h5>
             </div>
             <div class="ibox-content">
                 <ul class="list-group">
                                         <li class="list-group-item">
-                        <h4>Id</h4>
+                        <h4>@lang('app.table.id')</h4>
                         <h5>{{$menu->id}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Menu</h4>
+                        <h4>@lang('app.table.menu')</h4>
                         <h5>{{$menu->menu}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Parent Id</h4>
+                        <h4>@lang('app.txt.parent_id')</h4>
                         <h5>{{$menu->parent_id}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Créée le </h4>
+                        <h4>@lang('app.txt.created_on')</h4>
                         <h5>{{$menu->created_at}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Mis à jour le</h4>
+                        <h4>@lang('app.txt.updated_on')</h4>
                         <h5>{{$menu->updated_at}}</h5>
                     </li>
                                     </ul>

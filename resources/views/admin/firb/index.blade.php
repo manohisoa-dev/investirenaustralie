@@ -5,20 +5,20 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Firb</h2>
+        <h2>@lang('app.txt.firb')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.firb.index') }}">Firb</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.firb.index'):route('admin.collaborators.admin.firb.index') }}">@lang('app.txt.firb')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Listes</strong>
+                <strong>@lang('app.txt.lists')</strong>
             </li>
         </ol>
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ route('admin.firb.create') }}" type="button" class="btn btn-primary btn-block">
-                <i class="fa fa-plus"></i> Ajouter un nouveau Firb            </a>
+            <a href="{{ Auth::user()->isAdmin()?route('admin.firb.create'):route('admin.collaborators.admin.firb.create') }}" type="button" class="btn btn-primary btn-block">
+                <i class="fa fa-plus"></i> @lang('app.txt.add_new_firb')            </a>
         </div>
     </div>
 </div>
@@ -30,7 +30,7 @@
 	<div class="col-lg-12">
 		<div class="ibox float-e-margins">
 			<div class="ibox-title">
-				<h5>Firb</h5>
+				<h5>@lang('app.txt.firb')</h5>
 			</div>
 			<div class="ibox-content">
 				<div class="table-responsive">
@@ -42,7 +42,7 @@
 						{!!\Nvd\Crud\Html::sortableTh('codePostal','admin.firb.index','Code postal')!!}
 						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.firb.index','Crée le')!!}
 						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.firb.index','Modifié le')!!}
-						<th><a href="javascript:void(0)">Actions</a></th>
+						<th><a href="javascript:void(0)">@lang('app.table.actions')</a></th>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">
@@ -66,7 +66,7 @@
                                           data-name="label"
                                           data-value="{{ $record->label }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.firb.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.firb.index'):route('admin.collaborators.admin.firb.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->label }}</span>
                                  </td>
 								 <td>
@@ -75,18 +75,18 @@
                                           data-name="label"
                                           data-value="{{ $record->codePostal }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.firb.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.firb.index'):route('admin.collaborators.admin.firb.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->codePostal }}</span>
                                  </td>
                                  <td>{{$record->created_at ? $record->created_at->diffForHumans() : ""}}</td>
                                  <td>{{$record->updated_at ? $record->updated_at->diffForHumans() : ""}}</td>
 								 <td class="actions-cell">
-								<form class="form-inline" action="{{route('admin.firb.index')}}/{{$record->id}}" method="POST">
-									<a href="{{route('admin.firb.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="Voir">
+								<form class="form-inline" action="{{Auth::user()->isAdmin()?route('admin.firb.index'):route('admin.collaborators.admin.firb.index')}}/{{$record->id}}" method="POST">
+									<a href="{{Auth::user()->isAdmin()?route('admin.firb.index'):route('admin.collaborators.admin.firb.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="Voir">
 										<i class="fa fa-eye"></i>
 									</a>&nbsp;&nbsp;
 								
-									<a href="{{route('admin.firb.index')}}/{{$record->id}}/edit" class="btn btn-default btn-circle" title="Modification">
+									<a href="{{Auth::user()->isAdmin()?route('admin.firb.index'):route('admin.collaborators.admin.firb.index')}}/{{$record->id}}/edit" class="btn btn-default btn-circle" title="Modification">
 										<i class="fa fa-pencil-square-o"></i>
 									</a>&nbsp;&nbsp;
 								

@@ -5,16 +5,16 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Firb</h2>
+        <h2>@lang('app.txt.firb')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Firb</a>
+                <a href="#">@lang('app.txt.firb')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.firb.index') }}">Listes</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.firb.index'):route('admin.collaborators.admin.firb.index') }}">@lang('app.txt.list')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Détail</strong>
+                <strong>@lang('app.txt.detail')</strong>
             </li>
         </ol>
     </div>
@@ -35,19 +35,19 @@
             <div class="ibox-content">
                 <ul class="list-group">
                                         <li class="list-group-item">
-                        <h4>Id</h4>
+                        <h4>@lang('app.table.id')</h4>
                         <h5>{{$firb->id}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Label</h4>
+                        <h4>@lang('app.txt.label')</h4>
                         <h5>{{$firb->label}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Created At</h4>
+                        <h4>@lang('app.txt.created_on')</h4>
                         <h5>{{$firb->created_at}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Updated At</h4>
+                        <h4>@lang('app.txt.updated_on')</h4>
                         <h5>{{$firb->updated_at}}</h5>
                     </li>
                                     </ul>
