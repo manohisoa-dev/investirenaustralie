@@ -416,10 +416,10 @@ Route::prefix('collaborators')->namespace('Admin')->as('admin.')->middleware(["a
     Route::get('/admin/mails-template', 'MailsTemplateController@index')->name('collaborators.admin.mails-template.index');
     Route::post('/admin/mails-template', 'MailsTemplateController@store')->name('collaborators.admin.mails-template.store');
     Route::get('/admin/mails-template/create', 'MailsTemplateController@create')->name('collaborators.admin.mails-template.create');
-    Route::get('/admin/mails-template/{mails-template}', 'MailsTemplateController@show')->name('collaborators.admin.mails-template.show');
-    Route::put('/admin/mails-template/{mails-template}', 'MailsTemplateController@update')->name('collaborators.admin.mails-template.update');
-    Route::delete('/admin/mails-template/{mails-template}', 'MailsTemplateController@destroy')->name('collaborators.admin.mails-template.destroy');
-    Route::get('/admin/mails-template/{mails-template}/edit', 'MailsTemplateController@edit')->name('collaborators.admin.mails-template.edit');
+    Route::get('/admin/mails-template/{mails_template}', 'MailsTemplateController@show')->name('collaborators.admin.mails-template.show');
+    Route::put('/admin/mails-template/{mails_template}', 'MailsTemplateController@update')->name('collaborators.admin.mails-template.update');
+    Route::delete('/admin/mails-template/{mails_template}', 'MailsTemplateController@destroy')->name('collaborators.admin.mails-template.destroy');
+    Route::get('/admin/mails-template/{mails_template}/edit', 'MailsTemplateController@edit')->name('collaborators.admin.mails-template.edit');
     
     // Route::resource('parameters-email','ParametersEmailController');
     Route::get('/admin/parameters-email', 'ParametersEmailController@index')->name('collaborators.admin.parameters-email.index');

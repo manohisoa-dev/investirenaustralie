@@ -5,20 +5,20 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Mails Template</h2>
+        <h2>@lang('app.txt.mails_template')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.mails-template.index') }}">Mails Template</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.mails-template.index') :route('admin.collaborators.admin.mails-template.index') }}">@lang('app.txt.mails_template')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Listes</strong>
+                <strong>@lang('app.txt.lists')</strong>
             </li>
         </ol>
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ route('admin.mails-template.create') }}" type="button" class="btn btn-primary btn-block">
-                <i class="fa fa-plus"></i> Ajouter un nouveau Mails Template            
+            <a href="{{ Auth::user()->isAdmin()?route('admin.mails-template.create'):route('admin.collaborators.admin.mails-template.create') }}" type="button" class="btn btn-primary btn-block">
+                <i class="fa fa-plus"></i> @lang('app.txt.add_new_template')            
 			</a>
         </div>
     </div>
@@ -31,7 +31,7 @@
 	<div class="col-lg-12">
 		<div class="ibox float-e-margins">
 			<div class="ibox-title">
-				<h5>Mails Template</h5>
+				<h5>@lang('app.txt.mails_template')</h5>
 			</div>
 			<div class="ibox-content">
                 <table class="table table-striped grid-view-tbl">
@@ -45,7 +45,7 @@
 						{!!\Nvd\Crud\Html::sortableTh('template_en','admin.mails-template.index','Template en')!!}
 						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.mails-template.index','Created At')!!}
 						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.mails-template.index','Updated At')!!}
-						<th><a href="javascript:void(0)">Actions</a></th>
+						<th><a href="javascript:void(0)">@lang('app.table.actions')</a></th>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">
@@ -72,7 +72,7 @@
                                           data-name="titre"
                                           data-value="{{ $record->titre }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.mails-template.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.mails-template.index'):route('admin.collaborators.admin.mails-template.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->titre }}</span>
                                  </td>
                                  <td>
@@ -81,7 +81,7 @@
                                           data-name="sujet_fr"
                                           data-value="{{ $record->sujet_fr }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.mails-template.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.mails-template.index'):route('admin.collaborators.admin.mails-template.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->sujet_fr }}</span>
                                   </td>
                                   <td>
@@ -90,7 +90,7 @@
                                           data-name="template_fr"
                                           data-value="{{ $record->template_fr }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.mails-template.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.mails-template.index'):route('admin.collaborators.admin.mails-template.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{str_limit(strip_tags($record->template_fr),"100","...")}}</span>
                                    </td>
 								   <td>
@@ -99,7 +99,7 @@
                                           data-name="sujet_en"
                                           data-value="{{ $record->sujet_en }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.mails-template.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.mails-template.index'):route('admin.collaborators.admin.mails-template.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->sujet_en }}</span>
                                   </td>
                                   <td>
@@ -108,18 +108,18 @@
                                           data-name="template_en"
                                           data-value="{{ $record->template_en }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.mails-template.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.mails-template.index'):route('admin.collaborators.admin.mails-template.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{str_limit(strip_tags($record->template_en),"100","...")}}</span>
                                    </td>
                                    <td>{{$record->created_at ? $record->created_at->diffForHumans() : ""}}</td>
                                    <td>{{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}</td>
 								   <td class="actions-cell">
-								   <form class="form-inline" action="{{route('admin.mails-template.index')}}/{{$record->id}}" method="POST">
-										<a href="{{route('admin.mails-template.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="Voir">
+								   <form class="form-inline" action="{{Auth::user()->isAdmin()?route('admin.mails-template.index'):route('admin.collaborators.admin.mails-template.index')}}/{{$record->id}}" method="POST">
+										<a href="{{Auth::user()->isAdmin()?route('admin.mails-template.index'):route('admin.collaborators.admin.mails-template.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="Voir">
 											<i class="fa fa-eye"></i>
 										</a>&nbsp;&nbsp;
 									
-										<a href="{{route('admin.mails-template.index')}}/{{$record->id}}/edit" class="btn btn-default btn-circle" title="Modification">
+										<a href="{{Auth::user()->isAdmin()?route('admin.mails-template.index'):route('admin.collaborators.admin.mails-template.index')}}/{{$record->id}}/edit" class="btn btn-default btn-circle" title="Modification">
 											<i class="fa fa-pencil-square-o"></i>
 										</a>&nbsp;&nbsp;
 										
@@ -356,17 +356,17 @@ function envoyer_email()
 				<h4 class="modal-title"></h4>
 			</div>
 			<div class="modal-body">
-				<div class="loading" id="loading" style="display:none">Loading&#8230;</div>
+				<div class="loading" id="loading" style="display:none">@lang('app.form.steps_load')&#8230;</div>
 				<form action="#" id="form_send" class="form-horizontal">
 					{{ csrf_field() }}
 					<input type="hidden" name="id_template" id="id_template" />
 					<div class="row">     
 						<div class="col-lg-12">                              
 							<div class="form-group">
-								<label for="title">Langue *</label>
+								<label for="title">@lang('app.language') *</label>
 								<select class="form-control" name="langue">
-									<option value="fr">French</option>
-									<option value="en">English</option>
+									<option value="fr">@lang('app.txt.fr')</option>
+									<option value="en">@lang('app.txt.en')</option>
 								</select>
 							</div>
 						</div>
@@ -374,7 +374,7 @@ function envoyer_email()
 					<div class="row">     
 						<div class="col-lg-12">                              
 							<div class="form-group">
-								<label for="title">Envoyer à (adresse email)*</label>
+								<label for="title">@lang('app.txt.send_to')*</label>
 								<input type="text" name="send_to" class="form-control" />
 							</div>
 						</div>
@@ -383,7 +383,7 @@ function envoyer_email()
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-white" data-dismiss="modal">@lang('app.txt.close')</button>
-				<button type="button" class="btn btn-primary" id="btnSave" onClick="envoyer_email()">Envoyer</button>
+				<button type="button" class="btn btn-primary" id="btnSave" onClick="envoyer_email()">@lang('app.btn.send')</button>
 			</div>
 		</div>
 	</div>

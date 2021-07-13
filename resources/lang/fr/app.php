@@ -1255,10 +1255,20 @@ return
 	'txt.new_message' => 'Nouveau message',
 	'txt.mail_settings' => 'Paramètres E-mail',
 	'txt.add_new_mail_settings' => 'Ajouter un nouveau Paramètres Email',
-	'txt.detail_mail.settings' => 'Détail Paramètres Email : :param',
+	'txt.detail_mail_settings' => 'Détail Paramètres Email : :param',
 	'txt.update_mail_settings' => 'Mise à jour Paramètres Email : :param',
 	'txt.label' => 'Libelle',
 	'txt.variable_name' => 'Nom Variable',
 	'txt.model_name' => 'Nom Modèle',
+	'txt.mails_template' => 'Modèles de Courrier',
+	'txt.add_new_template' => 'Ajouter un nouveau Template',
+	'txt.send_to' => 'Envoyer à (adresse email)',
+	'txt.detail_mail_template' => 'Détail Template Mail : :title',
+	'txt.update_mail_template' => 'Mise à jour Mails Template : :title',
+	'table.template' => 'Template',
+	'table.subject_in' => 'Sujet en',
+	'table.template_in' => 'Template en',
+	'table.subject_fr' => 'Sujet fr',
+
 	
 ];

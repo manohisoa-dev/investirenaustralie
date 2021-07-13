@@ -30,7 +30,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>@lang('app.txt.detail_mail.settings', ['param'=>$parametersEmail->libelle])</h5>
+                <h5>@lang('app.txt.detail_mail_settings', ['param'=>$parametersEmail->libelle])</h5>
             </div>
             <div class="ibox-content">
                 <ul class="list-group">
