@@ -5,20 +5,20 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Temoignages</h2>
+        <h2>@lang('app.txt.testimonials')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.temoignage.index') }}">Témoignages de satisfaction</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.temoignage.index') :route('admin.collaborators.admin.temoignage.index') }}">@lang('app.txt.satisfaction_testimonials')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Listes</strong>
+                <strong>@lang('app.txt.lists')</strong>
             </li>
         </ol>
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ route('admin.temoignage.create') }}" type="button" class="btn btn-primary btn-block">
-                <i class="fa fa-plus"></i> Ajouter un nouveau Témoignages            
+            <a href="{{ Auth::user()->isAdmin()?route('admin.temoignage.create'):route('admin.collaborators.admin.temoignage.create') }}" type="button" class="btn btn-primary btn-block">
+                <i class="fa fa-plus"></i> @lang('app.txt.add_new_testimonials')            
 			</a>
         </div>
     </div>
@@ -31,7 +31,7 @@
 	<div class="col-lg-12">
 		<div class="ibox float-e-margins">
 			<div class="ibox-title">
-				<h5>Témoignages de satisfaction</h5>
+				<h5>@lang('app.txt.satisfaction_testimonials')</h5>
 			</div>
 			<div class="ibox-content">
                 <table class="table table-striped grid-view-tbl">
@@ -44,7 +44,7 @@
 						{!!\Nvd\Crud\Html::sortableTh('statut','admin.temoignage.index','Statut')!!}
 						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.temoignage.index','Crée le')!!}
 						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.temoignage.index','Modifié le')!!}
-						<th><a href="javascript:void(0)">Actions</a></th>
+						<th><a href="javascript:void(0)">@lang('app.table.actions')</a></th>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">
@@ -70,7 +70,7 @@
                                           data-name="contenu"
                                           data-value="{{ $record->contenu }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.temoignage.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.temoignage.index'):route('admin.collaborators.admin.temoignage.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{str_limit(strip_tags($record->contenu),"100","...")}}</span>
                                </td>
                                <td>
@@ -79,7 +79,7 @@
                                           data-name="user_create"
                                           data-value="{{ $record->user_create }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.temoignage.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.temoignage.index'):route('admin.collaborators.admin.temoignage.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->author->name }}</span>
                                </td>
 							   <td>
@@ -88,7 +88,7 @@
                                           data-name="pays"
                                           data-value="{{ $record->pays }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.temoignage.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.temoignage.index'):route('admin.collaborators.admin.temoignage.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->pays }}</span>
                                </td>
                                <td>
@@ -97,18 +97,18 @@
                                           data-name="statut"
                                           data-value="{{ $record->statut }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.temoignage.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.temoignage.index'):route('admin.collaborators.admin.temoignage.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->statut }}</span>
                                 </td>
                                 <td>{{$record->created_at ? $record->created_at->diffForHumans() : ""}}</td>
                                 <td>{{$record->updated_at ? $record->updated_at->diffForHumans() : ""}}</td>
 								<td class="actions-cell">
-								<form class="form-inline" action="{{route('admin.temoignage.index')}}/{{$record->id}}" method="POST">
-									<a href="{{route('admin.temoignage.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="Voir">
+								<form class="form-inline" action="{{Auth::user()->isAdmin()?route('admin.temoignage.index'):route('admin.collaborators.admin.temoignage.index')}}/{{$record->id}}" method="POST">
+									<a href="{{Auth::user()->isAdmin()?route('admin.temoignage.index'):route('admin.collaborators.admin.temoignage.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="Voir">
 										<i class="fa fa-eye"></i>
 									</a>&nbsp;&nbsp;
 								
-									<a href="{{route('admin.temoignage.index')}}/{{$record->id}}/edit" class="btn btn-default btn-circle" title="Modification">
+									<a href="{{Auth::user()->isAdmin()?route('admin.temoignage.index'):route('admin.collaborators.admin.temoignage.index')}}/{{$record->id}}/edit" class="btn btn-default btn-circle" title="Modification">
 										<i class="fa fa-pencil-square-o"></i>
 									</a>&nbsp;&nbsp;
 								

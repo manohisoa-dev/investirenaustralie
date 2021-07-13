@@ -783,8 +783,10 @@ return
 	'txt.menus' => 'Menus',
 	'txt.firb' => 'Firb',
 	'txt.afa' => 'AFA',
-	'txt.member' => 'Members',
-	'txt.seller' => 'Sellers',
+	'txt.member' => 'Member',
+	'txt.members' => 'Members',
+	'txt.seller' => 'Seller',
+	'txt.sellers' => 'Sellers',
 	'txt.list_of' => 'List of :role',
 	'txt.list_particulier' => 'List of individuals',
 	'txt.list_organisation' => 'List of organizations',
@@ -1026,5 +1028,11 @@ return
 	'table.subject_in' => 'Subject in',
 	'table.template_in' => 'Template in',
 	'table.subject_fr' => 'Subject fr',
-	
+	'txt.testimonials' => 'Testimonials',
+	'txt.satisfaction_testimonials' => 'Satisfaction Testimonials',
+	'txt.add_new_testimonials' => 'Add a new Testimonials',
+	'txt.update_testimonials' => 'Update Testimonials',
+	'txt.detail_testimonial' => 'Testimonial Detail',
+
+
 ];

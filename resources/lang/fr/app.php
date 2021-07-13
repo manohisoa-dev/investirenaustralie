@@ -1033,8 +1033,10 @@ return
 	'txt.firb' => 'Firb',
 	'txt.logout' => 'Déconnexion',
 	'txt.afa' => 'AFA',
-	'txt.member' => 'Membres',
-	'txt.seller' => 'Vendeurs',
+	'txt.member' => 'Membre',
+	'txt.members' => 'Membres',
+	'txt.seller' => 'Vendeur',
+	'txt.sellers' => 'Vendeurs',
 	'txt.list_of' => 'Liste des :role',
 	'txt.list_particulier' => 'Liste des particuliers',
 	'txt.list_organisation' => 'Liste des organisations',
@@ -1269,6 +1271,12 @@ return
 	'table.subject_in' => 'Sujet en',
 	'table.template_in' => 'Template en',
 	'table.subject_fr' => 'Sujet fr',
+	'txt.testimonials' => 'Témoignages',
+	'txt.satisfaction_testimonials' => 'Témoignages de satisfaction',
+	'txt.add_new_testimonials' => 'Ajouter un nouveau Témoignages',
+	'txt.update_testimonials' => 'Mise à jour Témoignages',
+	'txt.detail_testimonial' => 'Détail Témoignage',
+	
 
 	
 ];
