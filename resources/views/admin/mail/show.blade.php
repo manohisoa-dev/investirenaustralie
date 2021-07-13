@@ -5,20 +5,20 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Mails</h2>
+        <h2>@lang('app.txt.mails')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Mails</a>
+                <a href="#">@lang('app.txt.mails')</a>
             </li>
             <li class="breadcrumb-item">
 				@if($_GET['filter'] == '')
-                <a href="{{ route('admin.mail.index') }}">Listes</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.mail.index'):route('admin.collaborators.admin.mail.index') }}">@lang('app.txt.lists')</a>
 				@else
-				<a href="{{route('admin.mail.list',['filter'=>$_GET['filter']])}}">Listes</a>
+				<a href="{{Auth::user()->isAdmin()?route('admin.mail.list',['filter'=>$_GET['filter']]):route('admin.collaborators.admin.mail.list',['filter'=>$_GET['filter']])}}">@lang('app.txt.lists')</a>
 				@endif
             </li>
             <li class="breadcrumb-item active">
-                <strong>Détail</strong>
+                <strong>@lang('app.txt.detail')</strong>
             </li>
         </ol>
     </div>
@@ -36,7 +36,7 @@
 		<div class="mail-box-header">
 			<div class="float-right">
 			@if($mail->status == 'send')
-				<a href="{{route('admin.mail.compose', $mail)}}" class="btn btn-white btn-sm" title="@lang('app.reply')">
+				<a href="{{Auth::user()->isAdmin()?route('admin.mail.compose', $mail):route('admin.collaborators.admin.mail.compose', $mail)}}" class="btn btn-white btn-sm" title="@lang('app.reply')">
 					<i class="fa fa-reply"></i> @lang('app.reply')
 				</a>
 				<a href="#" class="btn btn-white btn-sm" title="@lang('app.btn.delete')">
@@ -50,7 +50,7 @@
 				</h3>
 				<h5>
 					<span class="float-right font-normal">{{$mail->created_at ? $mail->created_at->diffForHumans() : ''}}</span>
-					<span class="font-normal">From: </span>{{$mail->sender->email}}
+					<span class="font-normal">@lang('app.txt.from'): </span>{{$mail->sender->email}}
 				</h5>
 			</div>
 		</div>

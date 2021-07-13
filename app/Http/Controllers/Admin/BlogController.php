@@ -101,7 +101,7 @@ class BlogController extends Controller {
 
         # notification
         Notify::success("L'article a été bien enregistré.");
-        return redirect(Auth::user()->isAdmin() ? route('admin.blog.index') : route('admin.collaborator.admin.blog.index'));
+        return redirect(Auth::user()->isAdmin() ? route('admin.blog.index') : (Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.index'):route('admin.collaborator.admin.blog.index')));
     }
 
     /**
@@ -207,7 +207,7 @@ class BlogController extends Controller {
 
         # notification
         Notify::success('Blog a été mise à jour avec succès');
-        return redirect(Auth::user()->isAdmin() ? route('admin.blog.index') : route('admin.collaborator.admin.blog.index'));
+        return redirect(Auth::user()->isAdmin() ? route('admin.blog.index') : (Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.index'):route('admin.collaborator.admin.blog.index')));
     }
 
     /**
@@ -226,7 +226,7 @@ class BlogController extends Controller {
 
         # notification
         Notify::success('Blog a été supprimer avec succès');
-        return redirect(Auth::user()->isAdmin() ? route('admin.blog.index') : route('admin.collaborator.admin.blog.index'));
+        return back();
     }
 
     protected function view($view, $data = []) {
@@ -250,7 +250,7 @@ class BlogController extends Controller {
         $blog->status = "archived";
         $blog->save();
         Notify::success('L\'article a été achivé avec succés');
-        return redirect(Auth::user()->isAdmin() ? route('admin.blog.index') : route('admin.collaborator.admin.blog.index'));
+        return back();
     }
     
     /**
@@ -272,7 +272,7 @@ class BlogController extends Controller {
         $blog->save();
         
         Notify::success("L'article a été publié avec succés");
-        return redirect(Auth::user()->isAdmin() ? route('admin.blog.index') : route('admin.collaborator.admin.blog.index'));
+        return back();
     }
     
     /**
@@ -294,7 +294,7 @@ class BlogController extends Controller {
         $blog->save();
         
         Notify::success("L'article a été ajouté aux corbeilles avec succés");
-        return redirect(Auth::user()->isAdmin() ? route('admin.blog.index') : route('admin.collaborator.admin.blog.index'));
+        return back();
     }
     
     /**
@@ -316,7 +316,7 @@ class BlogController extends Controller {
         $blog->save();
         
         Notify::success("L'article a été restoré avec succés");
-        return redirect(Auth::user()->isAdmin() ? route('admin.blog.index') : route('admin.collaborator.admin.blog.index'));
+        return back();
     }
 
     public function updateBlogOrder(Request $request){

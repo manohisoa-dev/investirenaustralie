@@ -5,16 +5,16 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Mails</h2>
+        <h2>@lang('app.txt.mails')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Mails</a>
+                <a href="#">@lang('app.txt.mails')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.mail.index') }}">Listes</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.mail.index'):route('admin.collaborators.admin.mail.index') }}">@lang('app.txt.lists')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Nouveau Mail </strong>
+                <strong>@lang('app.txt.new_mail')</strong>
             </li>
         </ol>
     </div>
@@ -29,15 +29,15 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Ajouter un nouveau Mail</h5><br />
+                <h5>@lang('app.txt.add_new_mail')</h5><br />
 				<a href="{{route('sendmail')}}">Test email</a>
             </div>
             <div class="ibox-content">
-                <form action="{{route('admin.mail.compose')}}" method="post" id="commentform" class="contact-form" >
+                <form action="{{Auth::user()->isAdmin()?route('admin.mail.compose'):route('admin.collaborators.admin.mail.compose')}}" method="post" id="commentform" class="contact-form" >
 					{{ csrf_field() }}
 					<input type="hidden" name="sender_id" value="{{Auth::id()}}">
 					<div class="form-group row">
-						<label class="col-sm-2 col-form-label">To:</label>
+						<label class="col-sm-2 col-form-label">{{ Illuminate\Support\Str::upper(trans('app.txt.to')) }}:</label>
 						<div class="col-sm-10">
 							<select class="form-control" name="users[]" id="users" multiple="multiple">
 								<option value="0">@lang('app.select_user')</option>
@@ -52,7 +52,7 @@
 						<div class="col-sm-10"><input type="text" name="subject" class="form-control" value=""></div>
 					</div>
 					<div class="form-group row">
-						<label class="col-sm-2 col-form-label">Message:</label>
+						<label class="col-sm-2 col-form-label">@lang('app.message'):</label>
 						<div class="col-sm-10">
 							<textarea id="ckeditor" class="form-control" name="content" placeholder="@lang('app.message')"></textarea>
 						</div>

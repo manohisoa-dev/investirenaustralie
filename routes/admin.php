@@ -417,19 +417,19 @@ Route::prefix('collaborators')->namespace('Admin')->as('admin.')->middleware(["a
     Route::get('/admin/mails-template', 'MailsTemplateController@index')->name('collaborators.admin.mails-template.index');
     Route::post('/admin/mails-template', 'MailsTemplateController@store')->name('collaborators.admin.mails-template.store');
     Route::get('/admin/mails-template/create', 'MailsTemplateController@create')->name('collaborators.admin.mails-template.create');
-    Route::get('/admin/mails-template/{mails-template}', 'MailsTemplateController@show')->name('collaborators.admin.mails-template.show');
-    Route::put('/admin/mails-template/{mails-template}', 'MailsTemplateController@update')->name('collaborators.admin.mails-template.update');
-    Route::delete('/admin/mails-template/{mails-template}', 'MailsTemplateController@destroy')->name('collaborators.admin.mails-template.destroy');
-    Route::get('/admin/mails-template/{mails-template}/edit', 'MailsTemplateController@edit')->name('collaborators.admin.mails-template.edit');
+    Route::get('/admin/mails-template/{mails_template}', 'MailsTemplateController@show')->name('collaborators.admin.mails-template.show');
+    Route::put('/admin/mails-template/{mails_template}', 'MailsTemplateController@update')->name('collaborators.admin.mails-template.update');
+    Route::delete('/admin/mails-template/{mails_template}', 'MailsTemplateController@destroy')->name('collaborators.admin.mails-template.destroy');
+    Route::get('/admin/mails-template/{mails_template}/edit', 'MailsTemplateController@edit')->name('collaborators.admin.mails-template.edit');
     
     // Route::resource('parameters-email','ParametersEmailController');
     Route::get('/admin/parameters-email', 'ParametersEmailController@index')->name('collaborators.admin.parameters-email.index');
     Route::post('/admin/parameters-email', 'ParametersEmailController@store')->name('collaborators.admin.parameters-email.store');
     Route::get('/admin/parameters-email/create', 'ParametersEmailController@create')->name('collaborators.admin.parameters-email.create');
-    Route::get('/admin/parameters-email/{parameters-email}', 'ParametersEmailController@show')->name('collaborators.admin.parameters-email.show');
-    Route::put('/admin/parameters-email/{parameters-email}', 'ParametersEmailController@update')->name('collaborators.admin.parameters-email.update');
-    Route::delete('/admin/parameters-email/{parameters-email}', 'ParametersEmailController@destroy')->name('collaborators.admin.parameters-email.destroy');
-    Route::get('/admin/parameters-email/{parameters-email}/edit', 'ParametersEmailController@edit')->name('collaborators.admin.parameters-email.edit');
+    Route::get('/admin/parameters-email/{parameters_email}', 'ParametersEmailController@show')->name('collaborators.admin.parameters-email.show');
+    Route::put('/admin/parameters-email/{parameters_email}', 'ParametersEmailController@update')->name('collaborators.admin.parameters-email.update');
+    Route::delete('/admin/parameters-email/{parameters_email}', 'ParametersEmailController@destroy')->name('collaborators.admin.parameters-email.destroy');
+    Route::get('/admin/parameters-email/{parameters_email}/edit', 'ParametersEmailController@edit')->name('collaborators.admin.parameters-email.edit');
 
     // Route::resource('temoignage','TemoignageController');
     Route::get('/admin/temoignage', 'TemoignageController@index')->name('collaborators.admin.temoignage.index');
@@ -440,7 +440,11 @@ Route::prefix('collaborators')->namespace('Admin')->as('admin.')->middleware(["a
     Route::delete('/admin/temoignage/{temoignage}', 'TemoignageController@destroy')->name('collaborators.admin.temoignage.destroy');
     Route::get('/admin/temoignage/{temoignage}/edit', 'TemoignageController@edit')->name('collaborators.admin.temoignage.edit');
 
+<<<<<<< HEAD
     Route::get('pdfTest', 'TemoignageController@pdfTest')->name('pdfTest');
+=======
+    Route::get('/admin/pdfTest/{id}', 'TemoignageController@pdfTest')->name('collaborators.admin.pdfTest');
+>>>>>>> eab58c79dd917cddb1b05758e70453c7dcfb8ee3
 });
 
 

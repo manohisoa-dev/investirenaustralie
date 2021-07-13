@@ -62,7 +62,7 @@ class TemoignageController extends Controller {
 
         # notification
         Notify::success('Temoignage a été créer avec succès');
-        return redirect(route('admin.temoignage.index'));
+        return back();
     }
 
     /**
@@ -105,7 +105,7 @@ class TemoignageController extends Controller {
 
         # notification
         Notify::success('Temoignage a été mise à jour avec succès');
-        return redirect(route('admin.temoignage.index'));
+        return redirect(Auth::user()->isAdmin()?route('admin.temoignage.index'):route('admin.collaborators.admin.temoignage.index'));
     }
 
     /**
@@ -118,7 +118,7 @@ class TemoignageController extends Controller {
 
         # notification
         Notify::success('Temoignage a été supprimer avec succès');
-        return redirect(route('admin.temoignage.index'));
+        return back();
     }
 
     protected function view($view, $data = []) {

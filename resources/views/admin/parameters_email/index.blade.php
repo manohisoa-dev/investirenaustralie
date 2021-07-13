@@ -5,20 +5,21 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Paramètres Emails</h2>
+        <h2>@lang('app.txt.mail_settings')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.parameters-email.index') }}">Paramètres des emails</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.parameters-email.index'):route('admin.collaborators.admin.parameters-email.index') }}">@lang('app.txt.mail_settings')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Listes</strong>
+                <strong>@lang('app.txt.lists')</strong>
             </li>
         </ol>
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ route('admin.parameters-email.create') }}" type="button" class="btn btn-primary btn-block">
-                <i class="fa fa-plus"></i> Ajouter un nouveau paramètre d'email            </a>
+            <a href="{{ Auth::user()->isAdmin()?route('admin.parameters-email.create'):route('admin.collaborators.admin.parameters-email.create') }}" type="button" class="btn btn-primary btn-block">
+               <i class="fa fa-plus"></i> @lang('app.txt.add_new_mail_settings')
+            </a>
         </div>
     </div>
 </div>
@@ -30,7 +31,7 @@
 	<div class="col-lg-12">
 		<div class="ibox float-e-margins">
 			<div class="ibox-title">
-				<h5>Parameters Emails</h5>
+				<h5>@lang('app.txt.mail_settings')</h5>
 			</div>
 			<div class="ibox-content">
                 <table class="table table-striped grid-view-tbl">
@@ -42,7 +43,7 @@
 						{!!\Nvd\Crud\Html::sortableTh('model_name','admin.parameters-email.index','Model')!!}
 						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.parameters-email.index','Created At')!!}
 						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.parameters-email.index','Updated At')!!}
-						<th><a href="javascript:void(0)">Actions</a></th>
+						<th><a href="javascript:void(0)">@lang('app.table.actions')</a></th>
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">
@@ -69,7 +70,7 @@
                                           data-name="libelle"
                                           data-value="{{ $record->libelle }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.parameters-email.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.parameters-email.index'):route('admin.collaborators.admin.parameters-email.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->libelle }}</span>
                                                                     </td>
                                                                 <td>
@@ -78,7 +79,7 @@
                                           data-name="nom_variable"
                                           data-value="{{ $record->nom_variable }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.parameters-email.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.parameters-email.index'):route('admin.collaborators.admin.parameters-email.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->nom_variable }}</span>
                                                                     </td>
                                                                 <td>
@@ -87,7 +88,7 @@
                                           data-name="model_name"
                                           data-value="{{ $record->model_name }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.parameters-email.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.parameters-email.index'):route('admin.collaborators.admin.parameters-email.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->model_name }}</span>
                                                                     </td>
                                                                 <td>
@@ -96,7 +97,7 @@
                                                                 <td>
                                                                             {{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}
                                                                     </td>
-                                                                @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('admin.parameters-email.index'), 'record' => $record ] )
+                                                                @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => (Auth::user()->isAdmin()?route('admin.parameters-email.index'):route('admin.collaborators.admin.parameters-email.index')), 'record' => $record ] )
                             </tr>
                         @empty
                             @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 7])

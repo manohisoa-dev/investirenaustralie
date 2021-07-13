@@ -61,7 +61,7 @@ class PageController extends Controller {
 
         # notification
         Notify::success('Page a été créer avec succès');
-        return redirect(route('admin.page.index'));
+        return back();
     }
 
     /**
@@ -116,7 +116,7 @@ class PageController extends Controller {
 
         # notification
         Notify::success('Page a été mise à jour avec succès');
-        return redirect(route('admin.page.index'));
+        return redirect(Auth::user()->isAdmin()?route('admin.page.index'):route('admin.collaborators.admin.page.index'));
     }
 
     /**
@@ -129,7 +129,7 @@ class PageController extends Controller {
 
         # notification
         Notify::success('Page a été supprimer avec succès');
-        return redirect(route('admin.page.index'));
+        return back();
     }
 
     protected function view($view, $data = []) {

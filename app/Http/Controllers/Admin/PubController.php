@@ -67,7 +67,7 @@ class PubController extends Controller {
 
         # notification
         Notify::success('Pub a été créer avec succès');
-        return redirect(route('admin.pub.index'));
+        return back();
     }
 
     /**
@@ -135,7 +135,7 @@ class PubController extends Controller {
 
         # notification
         Notify::success('Pub a été mise à jour avec succès');
-        return redirect(route('admin.pub.index'));
+        return redirect(Auth::user()->isAdmin()?route('admin.pub.index'):route('admin.collaborators.admin.pub.index'));
     }
 
     /**
@@ -148,7 +148,7 @@ class PubController extends Controller {
 
         # notification
         Notify::success('Pub a été supprimer avec succès');
-        return redirect(route('admin.pub.index'));
+        return back();
     }
 
     protected function view($view, $data = []) {

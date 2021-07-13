@@ -29,6 +29,6 @@ class ParameterController extends Controller
 
         # notification
         Notify::success('Paramètre a été mise à jour avec succès');
-        return Redirect::back();
+        return back();
     }
 }

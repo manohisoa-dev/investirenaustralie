@@ -42,7 +42,7 @@ class MailsTemplateController extends Controller
 
         # notification
         Notify::success('Mails Template a été créer avec succès');
-        return redirect(route('admin.mails-template.index'));
+        return back();
     }
 
     /**
@@ -89,7 +89,7 @@ class MailsTemplateController extends Controller
 
         # notification
         Notify::success('Mails Template a été mise à jour avec succès');
-        return redirect(route('admin.mails-template.index'));
+        return redirect(Auth::user()->isAdmin()?route('admin.mails-template.index'):route('admin.collaborators.admin.mails-template.index'));
     }
 
     /**
@@ -103,7 +103,7 @@ class MailsTemplateController extends Controller
 
         # notification
         Notify::success('Mails Template a été supprimer avec succès');
-        return redirect(route('admin.mails-template.index'));
+        return back();
     }
 
     protected function view($view, $data = [])

@@ -25,7 +25,7 @@
 </li>
 @if(!Auth::user()->isAdminBlog())
     <li class="{{Request::is('*/chart/*') || Request::is('*/chart') ? 'active' : ''}}">
-        <a href="#"><i class="fa fa-bar-chart-o" title="Statistiques"></i> <span class="nav-label">Statistiques</span><span class="fa arrow"></span></a>
+        <a href="javascript:void('0')"><i class="fa fa-bar-chart-o" title="Statistiques"></i> <span class="nav-label">Statistiques</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
             <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.chart', ['type'=>'produit']):route('admin.chart', ['type'=>'produit'])}}">Produits</a></li>
             <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.chart', ['type'=>'user']):route('admin.chart', ['type'=>'user'])}}">Utilisateurs</a></li>
