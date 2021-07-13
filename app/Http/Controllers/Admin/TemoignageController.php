@@ -10,11 +10,31 @@ use App\Http\Controllers\Controller;
 use Jleon\LaravelPnotify\Notify;
 use Auth;
 use PDF;
+use setasign\Fpdi\Fpdi;
 
 class TemoignageController extends Controller {
     public $viewDir = "admin.temoignage";
 
     public function index() {
+        /*$pdf = new Fpdi('l');
+        $pdf_file = public_path('uploads/certificate.pdf');
+        $pagecount = $pdf->setSourceFile($pdf_file);
+        // Import the first page from the PDF and add to dynamic PDF
+        $tpl = $pdf->importPage(1);
+        $pdf->AddPage();
+
+        // Use the imported page as the template
+        $pdf->useTemplate($tpl);
+        // Set the default font to use
+        $pdf->SetFont('Helvetica');
+        
+        // First box - the user's Name
+        $pdf->SetFontSize('30'); // set font size
+        $pdf->SetXY(10, 89); // set the position of the box
+        $pdf->Cell(0, 10, 'Vicky RAZAFINDRAIBE', 1, 0, 'C'); // add the text, align to Center of cell
+
+        $pdf->Output();*/
+        
         $records = Temoignage::findRequested();
         return $this->view("index", ['records' => $records]);
     }
@@ -105,7 +125,7 @@ class TemoignageController extends Controller {
     }
 
     public function pdfTest(Request $request) {
-        echo $request->id;
+        //echo $request->id;
         $temoignage = Temoignage::find($request->id);
 
         $pdf = PDF::loadView('admin.temoignage.pdf', compact('temoignage'));
