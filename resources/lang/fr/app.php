@@ -1253,5 +1253,12 @@ return
 	'txt.update_mail' => 'Mise à jour Mail : :mail',
 	'txt.from' => 'De',
 	'txt.new_message' => 'Nouveau message',
+	'txt.mail_settings' => 'Paramètres E-mail',
+	'txt.add_new_mail_settings' => 'Ajouter un nouveau Paramètres Email',
+	'txt.detail_mail.settings' => 'Détail Paramètres Email : :param',
+	'txt.update_mail_settings' => 'Mise à jour Paramètres Email : :param',
+	'txt.label' => 'Libelle',
+	'txt.variable_name' => 'Nom Variable',
+	'txt.model_name' => 'Nom Modèle',
 	
 ];

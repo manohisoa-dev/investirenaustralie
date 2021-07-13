@@ -5,16 +5,16 @@
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>Parameters Emails</h2>
+        <h2>@lang('app.txt.mail_settings')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Parameters Emails</a>
+                <a href="#">@lang('app.txt.mail_settings')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.parameters-email.index') }}">Listes</a>
+                <a href="{{ Auth::user()->isAdmin()?route('admin.parameters-email.index'):route('admin.collaborators.admin.parameters-email.index') }}">@lang('app.txt.lists')</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Ajout</strong>
+                <strong>@lang('app.txt.add')</strong>
             </li>
         </ol>
     </div>
@@ -29,10 +29,10 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Ajouter un nouveau Parameters Email</h5>
+                <h5>@lang('app.txt.add_new_mail_settings')</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-validation form-padding" action="{{ route('admin.parameters-email.store') }}" method="post">
+                <form class="form-validation form-padding" action="{{ Auth::user()->isAdmin()?route('admin.parameters-email.store'):route('admin.collaborators.admin.parameters-email.store') }}" method="post">
 
                     {{ csrf_field() }}
                                                         
@@ -42,7 +42,7 @@
                                             
                     {!! \Nvd\Crud\Form::input('model_name','text')->show() !!}
                                                                                     
-                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Créer</button>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> @lang('app.btn.create')</button>
 
                 </form>
             </div>

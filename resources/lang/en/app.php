@@ -1010,5 +1010,12 @@ return
 	'txt.update_mail' => 'Update Mail : :mail',
 	'txt.from' => 'From',
 	'txt.new_message' => 'New message',
+	'txt.mail_settings' => 'Emails Settings',
+	'txt.add_new_mail_settings' => 'Add a new Email Settings',
+	'txt.detail_mail.settings' => 'Email Settings detail : :param',
+	'txt.update_mail_settings' => 'Update Email Settings : :param',
+	'txt.label' => 'Label',
+	'txt.variable_name' => 'Variable Name',
+	'txt.model_name' => 'Model Name',
 	
 ];
