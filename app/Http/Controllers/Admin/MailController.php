@@ -63,7 +63,7 @@ class MailController extends Controller {
 
         # notification
         Notify::success('Mail a été créer avec succès');
-        return redirect(route('admin.mail.index'));
+        return redirect(Auth::user()->isAdmin()?route('admin.mail.index'):route('admin.collaborators.admin.mail.index'));
     }
 
     /**
@@ -111,7 +111,7 @@ class MailController extends Controller {
 
         # notification
         Notify::success('Mail a été mise à jour avec succès');
-        return redirect(route('admin.mail.index'));
+        return redirect(Auth::user()->isAdmin()?route('admin.mail.index'):route('admin.collaborators.admin.mail.index'));
     }
 
     /**
