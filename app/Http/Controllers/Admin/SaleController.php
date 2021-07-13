@@ -41,7 +41,7 @@ class SaleController extends Controller {
 
         # notification
         Notify::success('Sale a été créer avec succès');
-        return redirect(route('admin.sale.index'));
+        return back();
     }
 
     /**
@@ -119,7 +119,7 @@ class SaleController extends Controller {
 
         # notification
         Notify::success('Sale a été mise à jour avec succès');
-        return redirect(route('admin.sale.index'));
+        return redirect(Auth::user()->isAdmin()?route('admin.sale.index'):route('admin.collaborators.admin.sale.index'));
     }
 
     /**
@@ -134,7 +134,7 @@ class SaleController extends Controller {
 
         # notification
         Notify::success('Vente a été supprimer avec succès');
-        return redirect(route('admin.sale.index'));
+        return back();
     }
 
     protected function view($view, $data = []) {

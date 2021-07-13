@@ -119,7 +119,8 @@ class ProductController extends Controller {
             }
             # notification
             Notify::success('Programme a été créer avec succès');
-            return redirect(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme'));
+            return back();
+        
         } else {
             //creation produit
             if (isset($request->chk_parking)) {
@@ -484,7 +485,7 @@ class ProductController extends Controller {
 
             # notification
             Notify::success('Produit a été mise à jour avec succès');
-            return redirect( (Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')).'?nature='.$product->natureBien);        }
+            return redirect( (Auth::user()->isAdmin()?route('admin.product.index'):(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.collaborator.admin.product.index'))).'?nature='.$product->natureBien);        }
     }
 
     /**
