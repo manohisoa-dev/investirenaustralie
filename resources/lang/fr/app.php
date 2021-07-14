@@ -316,8 +316,11 @@ return
 	'product' => 'Produit',
 	'admin.products' => 'Produits',
 	'admin.product.list' => 'Liste des produits',
-	'admin.product.add' => 'Modifier un produit',
-	'admin.product.update' => 'Ajouter un produit',
+	'admin.product.update' => 'Modifier un produit',
+	'admin.product.add' => 'Ajouter un produit',
+	'admin.program.list' => 'Liste des programmes',
+	'admin.program.add' => 'Ajouter un programme',
+	'admin.program.update' => 'Update a program',
 	'admin.product.ping' => 'Produits en attente',
 	'admin.product.archive' => 'Produits archivés',
 	'admin.product.publish' => 'Produits publiés',
@@ -1303,7 +1306,11 @@ return
 	'txt.update_firb' => 'Mise à jour Firb : :firb',
 	'txt.detail_firb' => 'Détail Firb : :firb',
 	'txt.adjustment_param_used_site' => 'Réglage des paramètres utilisés dans le site',
-	
+	'txt.dashboard' => 'Tableau de bord',
+	'txt.statistics' => 'Statistiques',
+	'txt.all_sales' => 'Tous les ventes',
+	'txt.add_item' => 'Ajouter un article',
+	'txt.email_settings' => 'Paramètres email',
 
 	
 ];

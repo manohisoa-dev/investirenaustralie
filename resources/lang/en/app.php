@@ -69,8 +69,12 @@ return
 	'products' => 'Products',
 	'product' => 'Product',
 	'admin.products' => 'Products',
-	'admin.product.list' => 'Products List',
+	'admin.product.list' => 'List of Products',
 	'admin.product.add' => 'Add a product',
+	'admin.product.update' => 'Update a product',
+	'admin.program.list' => 'List of programs',
+	'admin.program.add' => 'Add a program',
+	'admin.program.update' => 'Update a program',
 	'admin.product.ping' => 'Pending products',
 	'admin.product.archive' => 'Archived products',
 	'admin.product.publish' => 'Published products',
@@ -1061,6 +1065,10 @@ return
 	'txt.update_firb' => 'Update Firb : :firb',
 	'txt.detail_firb' => 'Firb Detail : :firb',
 	'txt.adjustment_param_used_site' => 'Adjustment of the parameters used in the site',
-
+	'txt.dashboard' => 'Dashboard',
+	'txt.statistics' => 'Statistics',
+	'txt.all_sales' => 'All sales',
+	'txt.add_item' => 'Add item',
+	'txt.email_settings' => 'Email Settings',
 
 ];

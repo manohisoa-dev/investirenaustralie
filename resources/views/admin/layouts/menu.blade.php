@@ -7,8 +7,8 @@
             <span class="text-muted text-xs block">{{\App\Models\User::find(Auth::id())->roleUser->role_name}}<b class="caret"></b></span>
         </a>
         <ul class="dropdown-menu animated fadeInRight m-t-xs">
-            <li><a class="dropdown-item" href="{{Auth::user()->isAdmin()?route('admin.profile'):(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.profile'):route('admin.collaborator.admin.profile'))}}">Profile</a></li>
-            <li><a class="dropdown-item" href="http://iea.easydata.mg/">Retour à la page d'accueil</a></li>
+            <li><a class="dropdown-item" href="{{Auth::user()->isAdmin()?route('admin.profile'):(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.profile'):route('admin.collaborator.admin.profile'))}}">@lang('app.profile')</a></li>
+            <li><a class="dropdown-item" href="http://iea.easydata.mg/">@lang('app.txt.back_homepage')</a></li>
             <li class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="{{ route('logout') }}">{{__('app.logout')}}</a></li>
         </ul>
@@ -21,29 +21,29 @@
 {{--    MENU LIST   --}}
 
 <li class="{{Request::is('*/admin/*') || Request::is('*/admin') || Request::is('collaborator') || Request::is('collaborators') ? 'active' : ''}}">
-    <a href="{{ Auth::user()->isAdmin()?url('/admin'):(Auth::user()->isAdminDelegate()?url('/collaborators'):url('/collaborator')) }}"><i class="fa fa-tachometer" title="Tableau de bord"></i> <span class="nav-label">Tableau de bord</span></a>
+    <a href="{{ Auth::user()->isAdmin()?url('/admin'):(Auth::user()->isAdminDelegate()?url('/collaborators'):url('/collaborator')) }}"><i class="fa fa-tachometer" title="Tableau de bord"></i> <span class="nav-label">@lang('app.txt.dashboard')</span></a>
 </li>
 @if(!Auth::user()->isAdminBlog())
     <li class="{{Request::is('*/chart/*') || Request::is('*/chart') ? 'active' : ''}}">
-        <a href="javascript:void('0')"><i class="fa fa-bar-chart-o" title="Statistiques"></i> <span class="nav-label">Statistiques</span><span class="fa arrow"></span></a>
+        <a href="javascript:void('0')"><i class="fa fa-bar-chart-o" title="Statistiques"></i> <span class="nav-label">@lang('app.txt.statistics')</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
-            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.chart', ['type'=>'produit']):route('admin.chart', ['type'=>'produit'])}}">Produits</a></li>
-            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.chart', ['type'=>'user']):route('admin.chart', ['type'=>'user'])}}">Utilisateurs</a></li>
-            <li><a href="#">Membres</a></li>
-            <li><a href="#">Agence Francophone Australienne</a></li>
-            <li><a href="#">Agence Partenaire Locale</a></li>
-            <li><a href="#">Vendeur</a></li>
-            <li><a href="#">Carts</a></li>
+            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.chart', ['type'=>'produit']):route('admin.chart', ['type'=>'produit'])}}">@lang('app.products')</a></li>
+            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.chart', ['type'=>'user']):route('admin.chart', ['type'=>'user'])}}">@lang('app.users')</a></li>
+            <li><a href="#">@lang('app.txt.members')</a></li>
+            <li><a href="#">@lang('app.afa')</a></li>
+            <li><a href="#">@lang('app.apl')</a></li>
+            <li><a href="#">@lang('app.txt.sellers')</a></li>
+            <li><a href="#">@lang('app.admin.carts')</a></li>
         </ul>
     </li>
     <li class="{{Request::is('*/user/*') || Request::is('*/user') || Request::is('*/role/*') || Request::is('*/role') || Request::is('*/type-user/*') || Request::is('*/type-user') ? 'active' : ''}}">
         <a href="#">
             <i class="fa fa-users" title="Parties prenantes"></i> 
-            <span class="nav-label">Parties prenantes </span><span class="fa arrow"></span>
+            <span class="nav-label">@lang('app.txt.stakeholders') </span><span class="fa arrow"></span>
         </a>
         <ul class="nav nav-second-level collapse">
             <li class="">
-                <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}">Tous</a>
+                <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}">@lang('app.txt.any')</a>
             </li>
             @forelse (App\Models\Role::where('role_initial','!=','admin')->get() as $item)
                 @if($item->role_initial !== 'member' && $item->role_initial !== 'collaborator')
@@ -89,24 +89,24 @@
     <li class="{{Request::is('*/product/*') || Request::is('*/product') || Request::is('*/programme/*') || Request::is('*/programme') ? 'active' : ''}}">
         <a href="#">
             <i class="fa fa-product-hunt" title="Produits"></i> 
-            <span class="nav-label">Produits </span>
-            <span class="label label-warning float-right">16/24</span>
+            <span class="nav-label">@lang('app.admin.products') </span>
+            <span class="label label-warning float-right">{{ App\Models\Product::count() }}</span>
         </a>
         <ul class="nav nav-second-level collapse">
-            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme')}}">Liste des programmes</a></li>
-            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.create'):route('admin.product.create') }}?type=programme">Ajouter programme</a></li>
-            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}?nature=Programme immobilier">Liste des produits</a></li>
-            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.create'):route('admin.product.create') }}?type=produit">Ajouter produit</a></li>
+            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme')}}">@lang('app.admin.program.list')</a></li>
+            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.create'):route('admin.product.create') }}?type=programme">@lang('app.admin.program.add')</a></li>
+            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}?nature=Programme immobilier">@lang('app.admin.product.list')</a></li>
+            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.create'):route('admin.product.create') }}?type=produit">@lang('app.admin.product.add')</a></li>
         </ul>
     </li>
     <li class="{{Request::is('*/sale/*') || Request::is('*/sale') ? 'active' : ''}}">
         <a href="#">
             <i class="fa fa-shopping-cart" title="Ventes"></i> 
-            <span class="nav-label">Ventes </span>
-            <span class="label label-warning float-right">16/24</span>
+            <span class="nav-label">@lang('app.sales') </span>
+            <span class="label label-warning float-right">{{ App\Models\Sale::count() }}</span>
         </a>
         <ul class="nav nav-second-level collapse">
-            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.sale.index'):route('admin.sale.index')}}">Toutes les ventes</a></li>
+            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.sale.index'):route('admin.sale.index')}}">@lang('app.txt.all_sales')</a></li>
             <?php /*?><li><a href="mail_detail.html">Ventes en attente</a></li>
             <li><a href="mail_compose.html">Ventes en cours</a></li>
             <li><a href="email_template.html">Ventes: APL non payé</a></li>
@@ -118,11 +118,11 @@
     </li>
 @endif
 <li class="{{Request::is('*/blog/*') || Request::is('*/blog') || Request::is('*/comment') || Request::is('*/comment/') || Request::is('*/comment/*') ? 'active' : ''}}">
-    <a href="#"><i class="fa fa-newspaper-o" title="Blogs"></i> <span class="nav-label">Blogs</span><span class="fa arrow"></span></a>
+    <a href="#"><i class="fa fa-newspaper-o" title="Blogs"></i> <span class="nav-label">@lang('app.blogs')</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
-        <li><a href="{{ Auth::user()->isAdmin()?route('admin.blog.create'):(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.create'):route('admin.collaborator.admin.blog.create')) }}">Ajouter un article</a></li>
-        <li><a href="{{Auth::user()->isAdmin()?route('admin.blog.index'):(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.index'):route('admin.collaborator.admin.blog.index')) }}">Liste des blogs</a></li>
-        <li><a href="{{Auth::user()->isAdmin()?route('admin.comment.index'):(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.comment.index'):route('admin.collaborator.admin.comment.index')) }}">Commentaires</a></li>
+        <li><a href="{{ Auth::user()->isAdmin()?route('admin.blog.create'):(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.create'):route('admin.collaborator.admin.blog.create')) }}">@lang('app.txt.add_item')</a></li>
+        <li><a href="{{Auth::user()->isAdmin()?route('admin.blog.index'):(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.index'):route('admin.collaborator.admin.blog.index')) }}">@lang('app.admin.blog.list')</a></li>
+        <li><a href="{{Auth::user()->isAdmin()?route('admin.comment.index'):(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.comment.index'):route('admin.collaborator.admin.comment.index')) }}">@lang('app.txt.commentaires')</a></li>
         <!--<li><a href="form_wizard.html">Articles publiés</a></li>
         <li><a href="form_file_upload.html">Articles en attente</a></li>
         <li><a href="form_editors.html">Articles archivés</a></li>
@@ -131,31 +131,31 @@
 </li>
 @if(!Auth::user()->isAdminBlog())
     <li class="{{Request::is('*/category/*') || Request::is('*/category') ? 'active' : ''}}">
-        <a href="#"><i class="fa fa-list-ul" title="Catégories"></i> <span class="nav-label">Catégories</span><span class="fa arrow"></span></a>
+        <a href="#"><i class="fa fa-list-ul" title="Catégories"></i> <span class="nav-label">@lang('app.txt.categories')</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
-            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.category.create'):route('admin.category.create')}}">Ajouter une catégorie</a></li>
-            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.category.index'):route('admin.category.index')}}">Liste des catégories</a></li>
+            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.category.create'):route('admin.category.create')}}">@lang('app.txt.add_categorie')</a></li>
+            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.category.index'):route('admin.category.index')}}">@lang('app.txt.list_categories')</a></li>
         </ul>
     </li>
     <li class="{{Request::is('*/pub/*') || Request::is('*/pub') ? 'active' : ''}}">
-        <a href="#"><i class="fa fa-money" title="Publicités"></i> <span class="nav-label">Publicités</span><span class="fa arrow"></span></a>
+        <a href="#"><i class="fa fa-money" title="Publicités"></i> <span class="nav-label">@lang('app.admin.pubs')</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
-            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.pub.create'):route('admin.pub.create')}}">Ajouter une publicité</a></li>
-            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.pub.index'):route('admin.pub.index')}}">Liste des publicités</a></li>
+            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.pub.create'):route('admin.pub.create')}}">@lang('app.admin.pub.add')</a></li>
+            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.pub.index'):route('admin.pub.index')}}">@lang('app.admin.pub.list')</a></li>
         </ul>
     </li>
     <li class="{{Request::is('*/page/*') || Request::is('*/page') ? 'active' : ''}}">
-        <a href="#"><i class="fa fa-file" title="Pages"></i> <span class="nav-label">Pages</span><span class="fa arrow"></span></a>
+        <a href="#"><i class="fa fa-file" title="Pages"></i> <span class="nav-label">@lang('app.admin.pages')</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
-            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.page.index'):route('admin.page.index')}}">Liste des pages</a></li>
-            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.page.create'):route('admin.page.create')}}">Ajouter une page</a></li>
+            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.page.index'):route('admin.page.index')}}">@lang('app.admin.page.list')</a></li>
+            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.page.create'):route('admin.page.create')}}">@lang('app.admin.page.add')</a></li>
         </ul>
     </li>
     <li class="{{Request::is('*/slider/*') || Request::is('*/slider') ? 'active' : ''}}">
-        <a href="#"><i class="fa fa-picture-o" title="Pages"></i> <span class="nav-label">Slider</span><span class="fa arrow"></span></a>
+        <a href="#"><i class="fa fa-picture-o" title="Pages"></i> <span class="nav-label">@lang('app.txt.slider')</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
-            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.slider.index'):route('admin.slider.index')}}">Liste des slider</a></li>
-            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.slider.create'):route('admin.slider.create')}}">Ajouter un slider</a></li>
+            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.slider.index'):route('admin.slider.index')}}">@lang('app.txt.slider.list')</a></li>
+            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.slider.create'):route('admin.slider.create')}}">@lang('app.txt.slider.add')</a></li>
         </ul>
     </li>
     <li class="{{Request::is('*/mail/*') || Request::is('*/mail') || Request::is('*/mails-template/*') || Request::is('*/mails-template') || Request::is('*/parameters-email/*') || Request::is('*/parameters-email') || Request::is('*/mailtype/*') ? 'active' : ''}}">
@@ -166,21 +166,21 @@
             <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.mail.list',['filter'=>'outbox']):route('admin.mail.list',['filter'=>'outbox'])}}">@lang('app.admin.mail.outbox')</a></li>{{-- Boite d'envoie --}}
             <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.mail.list',['filter'=>'draft']):route('admin.mail.list',['filter'=>'draft'])}}">@lang('app.admin.mail.draft')</a></li>{{-- Brouillon --}}
             <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.mail.list',['filter'=>'spam']):route('admin.mail.list',['filter'=>'spam'])}}">@lang('app.admin.mail.spam')</a></li>{{-- Spam --}}
-			<li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.parameters-email.index'):route('admin.parameters-email.index')}}">Paramètres email</a></li>
+			<li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.parameters-email.index'):route('admin.parameters-email.index')}}">@lang('app.txt.email_settings')</a></li>
             <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.mails-template.index'):route('admin.mails-template.index')}}">@lang('app.admin.mail.model')</a></li>{{-- Messages enregistrees --}}
         </ul>
     </li>
 	<li class="{{Request::is('*/temoignage/*') || Request::is('*/temoignage') ? 'active' : ''}}">
 		<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.temoignage.index'):route('admin.temoignage.index')}}">
 			<i class="fa fa-quote-left" title="Tableau de bord"></i> 
-			<span class="nav-label">Témoignages</span>
+			<span class="nav-label">@lang('app.txt.testimonials')</span>
 		</a>
 	</li>
     <li class="{{Request::is('*/badword/*') || Request::is('*/badword') ? 'active' : ''}}">
-        <a href="#"><i class="fa fa-th-list" title="Liste des mots interdits"></i> <span class="nav-label">Liste des mots interdits</span><span class="fa arrow"></span></a>
+        <a href="#"><i class="fa fa-th-list" title="Liste des mots interdits"></i> <span class="nav-label">@lang('app.admin.badword.list')</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
-            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.badword.index'):route('admin.badword.index')}}">Liste des mots interdits</a></li>
-            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.badword.create'):route('admin.badword.create')}}">Ajouter un mot interdit</a></li>
+            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.badword.index'):route('admin.badword.index')}}">@lang('app.admin.badword.list')</a></li>
+            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.badword.create'):route('admin.badword.create')}}">@lang('app.admin.badword.create')</a></li>
         </ul>
     </li>
     {{--<li class="{{Request::is('*/postalcode/*') || Request::is('*/postalcode') ? 'active' : ''}}">--}}
@@ -205,40 +205,40 @@
         {{--</ul>--}}
     {{--</li>--}}
     <li class="{{Request::is('*/config/*') || Request::is('*/menu/*') || Request::is('*/menu') || Request::is('*/firb/*') || Request::is('*/firb') || Request::is('*/translation/*') || Request::is('*/translation') || Request::is('*/media/*') || Request::is('*/media') ? 'active' : ''}}">
-        <a href="#"><i class="fa fa-wrench" title="Configurations"></i> <span class="nav-label">Configurations</span><span class="fa arrow"></span></a>
+        <a href="#"><i class="fa fa-wrench" title="Configurations"></i> <span class="nav-label">@lang('app.configs')</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
-            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.config.site'):route('admin.config.site')}}">Information du site</a></li>
+            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.config.site'):route('admin.config.site')}}">@lang('app.config.site')</a></li>
             {{--<li><a href="{{route('admin.config.login')}}">Ecran de connexion</a></li>--}}
-            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.config.social'):route('admin.config.social')}}">Réseaux sociaux</a></li>
+            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.config.social'):route('admin.config.social')}}">@lang('app.config.social')</a></li>
             {{--<li><a href="{{route('admin.config.payment')}}">Paiement</a></li>--}}
             <li>
                 <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.menu.index'):route('admin.menu.index')}}">
-                    <span class="nav-label">Menus</span>
+                    <span class="nav-label">@lang('app.txt.menus')</span>
                 </a>
             </li>
             <li>
                 <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.media'):route('admin.media')}}">
-                    <span class="nav-label">Media</span>
+                    <span class="nav-label">@lang('media.titre')</span>
                 </a>
             </li>
             <li>
                 <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.firb.index'):route('admin.firb.index')}}">
-                    <span class="nav-label">Firb</span>
+                    <span class="nav-label">@lang('app.txt.firb')</span>
                 </a>
             </li>
             <li>
                 <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.config.translation'):route('admin.config.translation')}}">
-                    <span class="nav-label">Translation</span>
+                    <span class="nav-label">@lang('app.translation')</span>
                 </a>
             </li>
             <li>
                 <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.config.parameter'):route('admin.config.parameter')}}">
-                    <span class="nav-label">Paramètre</span>
+                    <span class="nav-label">@lang('app.txt.parameter')</span>
                 </a>
             </li>
         </ul>
     </li>
 @endif
 <li class="special_link">
-    <a href="{{ route('logout') }}"><i class="fa fa-sign-out" title="Déconnexion"></i> <span class="nav-label">Déconnexion</span></a>
+    <a href="{{ route('logout') }}"><i class="fa fa-sign-out" title="Déconnexion"></i> <span class="nav-label">@lang('app.txt.logout')</span></a>
 </li>
