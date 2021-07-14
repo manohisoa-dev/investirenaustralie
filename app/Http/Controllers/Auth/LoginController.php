@@ -58,8 +58,8 @@ class LoginController extends Controller
             return '/profile/password';
         }
 
-        // if(Session('comment')!==null || Session('login_service')!==null){
-        if(Session('comment')!==null){
+        if(Session('comment')!==null || Session('login_service')!==null){
+        // if(Session('comment')!==null){
             return url(url()->previous());
         }
 
