@@ -90,6 +90,8 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::get('contact/{user}' , 'UserController@contact')->name('user.contact');
     Route::get('show/{user}', 'UserController@show')->name('user.show');
     Route::get('user/show/{role}/{user}', 'UserController@showPart')->name('user.part.show');
+    Route::get('user/relation-apl/{user}', 'UserController@aplRelation')->name('user.relation');
+    
     Route::get('user/show/seller', 'UserController@showSeller')->name('user.show.seller');
     Route::get('user/show/afa', 'UserController@showAfa')->name('user.show.afa');
     Route::get('user/show/apl', 'UserController@showApl')->name('user.show.apl');
