@@ -142,6 +142,12 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::resource('temoignage','TemoignageController');
     Route::get('pdfTest', 'TemoignageController@pdfTest')->name('pdfTest');
     Route::post('infoPost', 'TemoignageController@infoPost')->name('infoPost');
+
+    // Route Chat
+    Route::get('message/list/contact', 'MessageController@getListContactMessage')->name('ajax.get.list.contact.message');
+    Route::get('message/show/{to_id}', 'MessageController@showContactMessage')->name('ajax.show.contact.message');
+    Route::post('message', 'MessageController@sendMessage')->name('ajax.send.message');
+    Route::get('message/unread', 'MessageController@getUnreadMessage')->name('ajax.get.unread.message');
 });
 
 // ROUTE ADMIN DELEGATE

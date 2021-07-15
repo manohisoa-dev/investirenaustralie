@@ -1310,7 +1310,7 @@ return
 	'txt.statistics' => 'Statistiques',
 	'txt.all_sales' => 'Tous les ventes',
 	'txt.add_item' => 'Ajouter un article',
-	'txt.email_settings' => 'Paramètres email',
-
-	
+	'txt.email_settings' => 'Paramètres email',	
+	'txt.you_have_received_message_from' => 'Vous avez reçu une message de la part de <strong>:user</strong>',	
+	'txt.all_messages' => 'Tous les messages',
 ];

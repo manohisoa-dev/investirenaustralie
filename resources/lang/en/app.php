@@ -1070,5 +1070,6 @@ return
 	'txt.all_sales' => 'All sales',
 	'txt.add_item' => 'Add item',
 	'txt.email_settings' => 'Email Settings',
-
+	'txt.you_have_received_message_from' => 'You have received a message from <strong>:user</strong>',	
+	'txt.all_messages' => 'All messages',
 ];

@@ -71,7 +71,7 @@
                                     <img alt="image" class="rounded-circle" src="{{$mail->sender->imageUrl()}}">
                                 </a>
                                 <div class="media-body">
-                                    Vous avez reçu une message de la part de <strong>{{ $mail->sender->name}}</strong>. <br>
+                                    {!! trans('app.txt.you_have_received_message_from', ['user'=>$mail->sender->name]) !!} <br>
                                     <small class="text-muted">{{ $mail->created_at ? $mail->created_at->diffForHumans() : '' }}</small>
                                 </div>
                             </div>
