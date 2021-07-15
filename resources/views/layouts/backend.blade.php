@@ -143,6 +143,15 @@
                                         <i class="fas fa-chevron-right"></i>
                                     </div>
                                 </a>
+								<a href="{{route('member.relationApl')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb align-items-center {{ (request()->is('member/relationApl')) ? 'menu-active' : '' }}">
+                                    <div>
+                                        <i class="fa fa-link m-10px-r"></i>
+                                        <span>@lang('member.menu_relation_apl')</span>
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-chevron-right"></i>
+                                    </div>
+                                </a>
                                 <a href="{{route('member.contact', ['role'=>'admin'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb align-items-center {{ (request()->is('member/contact/role/admin')) ? 'menu-active' : '' }}">
                                     <div>
                                         <i class="far fa-envelope m-10px-r"></i>

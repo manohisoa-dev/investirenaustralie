@@ -36,5 +36,7 @@ return [
     "private_entreprise" => 'Entreprise privée',
     "mixed_organization" => 'Organisation mixte',
     "menu_temoignage" => 'Témoignages',
-    
+    "menu_relation_apl" => 'Relation APL',
+    "relation_active" => "Relation APL active",
+    "historique_relation" => "Historiques de relation",
 ];
