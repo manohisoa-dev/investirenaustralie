@@ -137,7 +137,7 @@
             showUnreadCount();
             
             // Show message
-            showMessageContact();
+            // showMessageContact();
 
             // Show recent message
             showRecentMessage();

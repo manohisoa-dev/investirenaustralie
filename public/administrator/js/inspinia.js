@@ -84,6 +84,13 @@ $(document).ready(function () {
         wheelStep: 10
     });
 
+    // Open close small chat main
+    $('.open-small-chat-main').on('click', function (e) {
+        e.preventDefault();
+        $(this).children().toggleClass('fa-comments').toggleClass('fa-times');
+        $('.small-chat-box-main').toggleClass('active');
+    });
+    
     // Open close small chat
     $('.open-small-chat').on('click', function (e) {
         e.preventDefault();

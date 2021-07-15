@@ -25,5 +25,11 @@ class Message extends Model
         ->whereRaw('seen = 0')
         ->first();
     }
+    
+    public static function unreadMessageMember($user_id){
+        return Message::where('to_id', $user_id)
+        ->whereRaw('seen = 0')
+        ->get();
+    }
 
 }

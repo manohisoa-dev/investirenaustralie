@@ -63,92 +63,70 @@
         </div>
         @include('admin.layouts.footer')
     </div>
-    <div class="small-chat-box fadeInRight animated">
 
-        <div class="heading" draggable="true">
+    {{-- Content each Chat --}}
+    <div id="small-chat-box" class="small-chat-box fadeInRight animated" osc_id="">
+        {{-- head chat --}}
+        <div class="heading" id="small-chat-box-heading" draggable="true">
             <small class="chat-date float-right">
-                02.19.2015
+                <i class="fa fa-times white-color chat-close"></i>
             </small>
-            Small chat
+            <span></span>
         </div>
-
-        <div class="content">
-
-            <div class="left">
-                <div class="author-name">
-                    Monica Jackson <small class="chat-date">
-                        10:02 am
-                    </small>
-                </div>
-                <div class="chat-message active">
-                    Lorem Ipsum is simply dummy text input.
-                </div>
-
-            </div>
-            <div class="right">
-                <div class="author-name">
-                    Mick Smith
-                    <small class="chat-date">
-                        11:24 am
-                    </small>
-                </div>
-                <div class="chat-message">
-                    Lorem Ipsum is simpl.
-                </div>
-            </div>
-            <div class="left">
-                <div class="author-name">
-                    Alice Novak
-                    <small class="chat-date">
-                        08:45 pm
-                    </small>
-                </div>
-                <div class="chat-message active">
-                    Check this stock char.
-                </div>
-            </div>
-            <div class="right">
-                <div class="author-name">
-                    Anna Lamson
-                    <small class="chat-date">
-                        11:24 am
-                    </small>
-                </div>
-                <div class="chat-message">
-                    The standard chunk of Lorem Ipsum
-                </div>
-            </div>
-            <div class="left">
-                <div class="author-name">
-                    Mick Lane
-                    <small class="chat-date">
-                        08:45 pm
-                    </small>
-                </div>
-                <div class="chat-message active">
-                    I belive that. Lorem Ipsum is simply dummy text.
-                </div>
-            </div>
-
-
+        {{-- content chat --}}
+        <div class="content" id="small-chat-box-content">
+            @lang('app.txt.no_message_found')
         </div>
+        {{-- footer chat --}}
         <div class="form-chat">
             <div class="input-group input-group-sm">
-                <input type="text" class="form-control">
-                <span class="input-group-append"> <button
-                            class="btn btn-primary" type="button">Send
-                </button> </span></div>
+                <input type="hidden" id="_token" value="{{ csrf_token() }}" class="form-control">
+                <input type="hidden" id="to_id" class="form-control">
+                <textarea id="content" name="content" class="no-resize-bar form-control" rows="3" placeholder="@lang('app.txt.write_message') ..."></textarea>
+                <span class="input-group-append">
+                    <button
+                        class="btn btn-primary" type="button" id="btn_send">@lang('app.btn.send')
+                    </button>
+                </span>
+            </div>
+            <span id="error_message" class="text-danger"></span>
         </div>
-
     </div>
+
+    {{-- Content all Chat --}}
+    <div id="small-chat-box-main" class="small-chat-box-main fadeInRight animated">
+        {{-- head chat --}}
+        <div class="heading" draggable="true" id="small-chat-box-main-heading">
+            <small class="chat-date float-right"></small>
+            @lang('app.txt.all_messages')
+        </div>
+        {{-- content chat --}}
+        <div class="content" id="small-chat-box-main-content">
+            <div class="left">
+                <ul style="list-style: none;padding:0px;"></ul>
+            </div>
+        </div>
+        {{-- footer chat --}}
+        {{-- <div class="form-chat">
+            <div class="input-group input-group-sm">
+                <div class="text-center link-block">
+                    <a href="{{route('admin.mail.index')}}" class="dropdown-item">
+                        <i class="fa fa-envelope"></i> <strong>@lang('app.txt.read_all_messages')</strong>
+                    </a>
+                </div>
+            </div>
+        </div> --}}
+    </div>
+
+    {{-- show chat bull --}}
     <div id="small-chat">
-
-        <span class="badge badge-warning float-right">5</span>
-        <a class="open-small-chat" href="">
+        <span class="badge badge-warning float-right"></span>
+        <a class="open-small-chat-main" href="javascript:void(0)">
             <i class="fa fa-comments"></i>
-
         </a>
     </div>
+    {{-- End Chat --}}
+
     <div id="right-sidebar" class="animated">
         <div class="sidebar-container">
 
@@ -590,6 +568,26 @@
 
         }, 2200);
 
+        // show list contact chat
+        showContact()
+
+        // get unread message
+        getUnreadMessage();
+
+        // Update message in 4500 ms
+        setInterval(() => {
+            to_id = $('#to_id').val();
+            
+            // get unread message
+            getUnreadMessage();
+
+            // show message of selected user
+            if(to_id !== ''){
+                // showContact();
+                showMessageContact(to_id);
+            }
+        }, 25000);
+
     });
 
     $(window).bind("scroll", function () {
@@ -639,6 +637,225 @@
         }
     </script>
 @endif
+
+<script>
+    var chatBullUserArray = [];
+
+    $('.open-small-chat-main').click(function(){
+        // Hide chat main content
+        $('#small-chat-box').removeClass('active');
+
+        // Reset unread count in chat bull main
+        $('#small-chat span').html('');
+    });
+
+    $('.small-chat-box .chat-close').click(function(){
+        osc_id = $('.small-chat-box').attr('osc_id');
+        
+        // Hide chat main content
+        $('#small-chat-box').removeClass('active');
+
+        // Remove bull
+        $('#'+osc_id).remove();
+    });
+
+    
+    function userChatBull(user_id,user_immat){
+        var bull = '<a id="osc_'+user_id+'" class="open-small-chat" onclick=chatBull("'+user_id+'") href="javascript:void(0)" style="margin-bottom:1px;" title="'+user_immat+'"><i class="fa fa-user"></i></a>';
+
+        // Hide chat main content
+        $('#small-chat-box-main').removeClass('active');
+        
+        // add chat at bull
+        $('#small-chat').append(bull);
+        $('.open-small-chat-main i').removeClass('fa-times');
+        $('.open-small-chat-main i').addClass('fa-comments');
+        
+        // show chat content
+        $('#small-chat-box').toggleClass('active');
+        $('#small-chat-box').attr('osc_id','osc_'+user_id);
+        
+        // Set chat content user
+        $('#small-chat-box-heading span').html(user_immat);
+        showMessageContact(user_id);
+        $('#to_id').val(user_id);
+
+        
+        // chatBullUserArray.push(user_id);
+        if(checkChatBullUser(chatBullUserArray,user_id)){
+            console.log('true');
+        }else{
+
+        }
+    };
+
+    function checkChatBullUser(array,user_id){
+        if(!$.inArray(user_id, array)){
+            return true;
+        }
+
+        return false;
+    }
+    
+    function chatBull(id){
+        // Hide chat main content
+        $('#small-chat-box-main').removeClass('active');
+
+        // show chat content
+        $('#small-chat-box').toggleClass('active');
+    }
+
+    function showContact(){
+        var showContact = $('#small-chat-box-main-content ul');
+        
+        $.ajax({
+            url: '{{ route("admin.ajax.get.list.contact.message") }}',
+            type: "GET",
+            dataType: "json",
+            success:function(data){
+                listShowContact = "";
+                listContactArray = new Array();
+                // set total message
+                $('#small-chat-box-main-heading small').html(data.length);
+                
+                if(data.length !== 0){
+                    for(var i=0; i<data.length; i++){
+                        listContactArray.push(data[i].user_id);
+                        user_immat = "'"+data[i].immat+"'";
+
+                        listShowContact +=  '<li>'+
+                            '<div class="dropdown-messages-box">'+
+                                '<a class="dropdown-item float-left" onclick="userChatBull('+data[i].user_id+','+user_immat+')" href="javascript:void(0)" value="'+data[i].user_id+'">'+
+                                    '<img alt="image" class="rounded-circle" src="{{asset("images/iea.png")}}">'+
+                                '</a>'+
+                                '<div class="media-body">'+
+                                    data[i].immat+'<br>'+
+                                    '<small class="text-muted">'+data[i].dateSend+'</small>'+
+                                '</div>'+
+                            '</div>'+
+                        '</li>'+
+                        '<li class="dropdown-divider"></li>';
+                    }
+                }
+
+                return showContact.html(listShowContact);
+            },
+            error:function(e){
+                console.log(e);
+            }
+        });
+    }
+
+    function showMessageContact(contact_id){
+        // var contact_id = $('#to_id').val();
+        var datas = {
+            'contact_id' : contact_id,
+        };
+        var showMessage = $('#small-chat-box-content');
+        var content= "";
+
+        if(contact_id !== '0'){
+            $.ajax({
+                url: '{{ route("admin.ajax.show.contact.message", ["to_id"=>Auth::user()->id]) }}',
+                type: "GET",
+                data : datas,
+                dataType: "json",
+                success : function(dt){
+                    
+                    if(dt.length !== 0)
+                    {
+                        for(var i=0; i<dt.length; i++){
+                            var fromId = dt[i].from_id;
+                            var fromName = dt[i].from_name;
+                            var chatingName = dt[i].chating_name;
+                            var createdAt = dt[i].created_at;
+                            var createdAtSend = dt[i].created_at_send;
+                            var message = dt[i].body;
+                            var seen = dt[i].seen;
+                            var fromRole = dt[i].from_role;
+                            var position = i%2?'right':'left';
+                            var active = i%2?'':'active';
+                            
+                            content += '<div class="'+position+'">'+
+                                            '<div class="author-name">'+
+                                                fromName+' <small class="chat-date">'+createdAtSend+','+seen+
+                                                '</small>'+
+                                            '</div>'+
+                                            '<div class="chat-message '+active+'">'+
+                                                message+
+                                            '</div>'+
+                                        '</div>';
+                            
+                        }
+                    }
+                    
+                    return showMessage.html(content);
+                }
+            }); 
+        }
+        
+    }
+
+    function getUnreadMessage(){
+        $.ajax({
+            url: '{{ route("admin.ajax.get.unread.message") }}',
+            type: "GET",
+            dataType: "json",
+            success:function(data){
+                var unreadCountContactArray = new Array();
+                var unreadCountMessage = (data.res).length!==0?(data.res).length:'';
+
+                if(!$('#small-chat-box-main').hasClass('active')){
+                    $('#small-chat span').html(unreadCountMessage);
+                }else{
+                    $('#small-chat span').html('');
+                }
+            },
+            error:function(e){
+                console.log(e);
+            }
+        });
+
+        return false;
+    }
+
+    $('#btn_send').click(function(event){
+        event.preventDefault();
+        var datas = {
+            _token: $('#_token').val(),
+            to_id: $('#to_id').val(),
+            content: $('#content').val(),
+        };
+
+        // Initialize error message
+        $('#error_message').html("");
+
+        // disable button
+        $(this).prop("disabled", true);
+                
+        $.ajax({
+            url: '{{ route("admin.ajax.send.message") }}',
+            type: "POST",
+            data: datas,
+            dataType: "json",
+            success:function(data){
+                // reset button
+                $('#btn_send').prop("disabled", false);
+                // $('#btn_send').html(thisHtml);
+
+                if(!$.isEmptyObject(data.error)){
+                    // $('#content').val(' ');
+                    $('#content').addClass('is-invalid');
+                    $('#error_message').html(data.error);
+                }
+            },
+            error:function(e){
+                console.log(e);
+            }
+        });
+    });
+
+</script>
 
 @yield('custom-script')
 </body>
