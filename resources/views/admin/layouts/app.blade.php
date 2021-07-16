@@ -712,6 +712,10 @@
         $('#small-chat-box').attr('osc_id','osc_'+id);
         if(osc_id === 'osc_'+id){
             $('#small-chat-box').toggleClass('active');
+        }else{
+            if(!$('#small-chat-box').hasClass('active')){
+                $('#small-chat-box').toggleClass('active');
+            }
         }
 
         // Set chat content user
