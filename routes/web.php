@@ -285,8 +285,6 @@ Route::middleware(["auth", "role:5"] || ["auth", "role:3"])->group(function(){
 
 
 Route::get('translation/{lang}/{text}', function ($lang,$text) {
-
-
     return getGTranslateTest($lang,$text);
 });
 

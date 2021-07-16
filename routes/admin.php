@@ -450,6 +450,12 @@ Route::prefix('collaborators')->namespace('Admin')->as('admin.')->middleware(["a
     Route::get('/admin/temoignage/{temoignage}/edit', 'TemoignageController@edit')->name('collaborators.admin.temoignage.edit');
     Route::get('pdfTest', 'TemoignageController@pdfTest')->name('pdfTest');
     Route::get('/admin/pdfTest/{id}', 'TemoignageController@pdfTest')->name('collaborators.admin.pdfTest');
+
+    // Route Chat
+    Route::get('/admin/message/list/contact', 'MessageController@getListContactMessage')->name('collaborators.admin.ajax.get.list.contact.message');
+    Route::get('/admin/message/show/{to_id}', 'MessageController@showContactMessage')->name('collaborators.admin.ajax.show.contact.message');
+    Route::post('/admin/message', 'MessageController@sendMessage')->name('collaborators.admin.ajax.send.message');
+    Route::get('/admin/message/unread', 'MessageController@getUnreadMessage')->name('collaborators.admin.ajax.get.unread.message');
 });
 
 
