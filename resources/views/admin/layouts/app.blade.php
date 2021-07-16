@@ -665,13 +665,12 @@
 
     
     function userChatBull(user_id,user_immat){
-        var bull = '<a id="osc_'+user_id+'" class="open-small-chat" onclick=chatBull("'+user_id+'") href="javascript:void(0)" style="margin-bottom:1px;" title="'+user_immat+'"><i class="fa fa-user"></i></a>';
+        var bull = '<a id="osc_'+user_id+'" class="open-small-chat" onclick=chatBull("'+user_id+'","'+user_immat+'") href="javascript:void(0)" style="margin-bottom:1px;" title="'+user_immat+'"><i class="fa fa-user"></i></a>';
 
         // Hide chat main content
         $('#small-chat-box-main').removeClass('active');
         
         // add chat at bull
-        
         if(!checkChatBullUser(user_id)){
             chatBullUserArray.push(user_id);
             $('#small-chat').append(bull);
@@ -703,12 +702,21 @@
         });
     }
     
-    function chatBull(id){
+    function chatBull(id,immat){
         // Hide chat main content
         $('#small-chat-box-main').removeClass('active');
 
         // show chat content
         $('#small-chat-box').toggleClass('active');
+
+        // show chat content
+        $('#small-chat-box').toggleClass('active');
+        $('#small-chat-box').attr('osc_id','osc_'+id);
+        
+        // Set chat content user
+        $('#small-chat-box-heading span').html(immat);
+        showMessageContact(id);
+        $('#to_id').val(id);
     }
 
     function showContact(){
