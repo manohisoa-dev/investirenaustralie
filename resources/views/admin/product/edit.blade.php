@@ -416,7 +416,7 @@
 	{
 		$.ajax({
 		   type:'POST',
-		   url:"{{ route('admin.ajaxGetTypeProduitCategorie') }}",
+		   url:"{{ Auth::user()->isAdmin()?route('admin.ajaxGetTypeProduitCategorie'):route('admin.collaborators.admin.ajaxGetTypeProduitCategorie') }}",
 		   data: {"_token": "{{ csrf_token() }}","categoryId": categorie_id, "type_id_active": type_id_active},
 		   success:function(data) {
 			  $('#product_type_id').html(data);

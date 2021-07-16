@@ -233,7 +233,7 @@
 			var category = this.value;
 			$.ajax({
 			   type:'POST',
-			   url:"{{ route('admin.ajaxGetTypeProduitCategorie') }}",
+			   url:"{{ Auth::user()->isAdmin()?route('admin.ajaxGetTypeProduitCategorie'):route('admin.collaborators.admin.ajaxGetTypeProduitCategorie') }}",
 			   data: {"_token": "{{ csrf_token() }}","categoryId": category, "type_id_active": 0},
 			   success:function(data) {
 				  console.log(data);
@@ -248,7 +248,7 @@
 			maxFiles: 25, 
             maxFilesize: 25,
 			dictDefaultMessage: "@lang('app.txt.fond_dossier')",
-			url: "{{ route('admin.ajaxDropZone') }}",
+			url: "{{ Auth::user()->isAdmin()?route('admin.ajaxDropZone'):route('admin.collaborators.admin.ajaxDropZone') }}",
 			params: {"_token": "{{ csrf_token() }}"},
             acceptedFiles: ".jpeg,.jpg,.png,.gif,.doc,.docx,.xls,.xlsx,.pdf",
             addRemoveLinks: true,
@@ -307,7 +307,7 @@
 			maxFiles: 25, 
             maxFilesize: 25,
 			dictDefaultMessage: "@lang('app.dropzone.libelle')",
-            url: "{{ route('admin.ajaxDropZone') }}",
+            url: "{{ Auth::user()->isAdmin()?route('admin.ajaxDropZone'):route('admin.collaborators.admin.ajaxDropZone') }}",
 			params: {"_token": "{{ csrf_token() }}"},
             acceptedFiles: ".jpeg,.jpg,.png,.gif",
             addRemoveLinks: true,
@@ -394,7 +394,7 @@
 				title_programme: {
 					required: true,
 					remote: {
-						url: "{{ route('admin.ajaxCheckTitreProgramme') }}",
+						url: "{{ Auth::user()->isAdmin()?route('admin.ajaxCheckTitreProgramme'):route('admin.collaborators.admin.ajaxCheckTitreProgramme') }}",
 						type: "get",
 						data: {
 							title_programme: function () {

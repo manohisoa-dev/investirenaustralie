@@ -285,10 +285,12 @@ Route::middleware(["auth", "role:5"] || ["auth", "role:3"])->group(function(){
 
 
 Route::get('translation/{lang}/{text}', function ($lang,$text) {
-
-
     return getGTranslateTest($lang,$text);
 });
+
+Route::get('checkout', array('as' => 'paypal.paypalwithpayments','uses' => 'Paypal@payWithPaypal',)); 
+Route::post('paypal', array('as' => 'paypal.paypal','uses' => 'Paypal@postPaymentWithpaypal',));
+Route::get('paypal', array('as' => 'payment.status','uses' => 'Paypal@getPaymentStatus',));
 
 
 
