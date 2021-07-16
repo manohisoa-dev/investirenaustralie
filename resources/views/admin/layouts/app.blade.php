@@ -651,12 +651,16 @@
 
     $('.small-chat-box .chat-close').click(function(){
         osc_id = $('.small-chat-box').attr('osc_id');
+        id = osc_id.split('_')[1];
         
         // Hide chat main content
         $('#small-chat-box').removeClass('active');
 
         // Remove bull
         $('#'+osc_id).remove();
+
+        // Remove id in array
+        removeUserIdChatBullUserArray(id);
     });
 
     
@@ -667,7 +671,11 @@
         $('#small-chat-box-main').removeClass('active');
         
         // add chat at bull
-        $('#small-chat').append(bull);
+        
+        if(!checkChatBullUser(user_id)){
+            chatBullUserArray.push(user_id);
+            $('#small-chat').append(bull);
+        }
         $('.open-small-chat-main i').removeClass('fa-times');
         $('.open-small-chat-main i').addClass('fa-comments');
         
@@ -679,22 +687,20 @@
         $('#small-chat-box-heading span').html(user_immat);
         showMessageContact(user_id);
         $('#to_id').val(user_id);
-
-        
-        // chatBullUserArray.push(user_id);
-        if(checkChatBullUser(chatBullUserArray,user_id)){
-            console.log('true');
-        }else{
-
-        }
     };
 
-    function checkChatBullUser(array,user_id){
-        if(!$.inArray(user_id, array)){
+    function checkChatBullUser(user_id){
+        if(!$.inArray(user_id, chatBullUserArray)){
             return true;
         }
 
         return false;
+    }
+
+    function removeUserIdChatBullUserArray(user_id){
+        chatBullUserArray = $.grep(chatBullUserArray, function(value) {
+            return value != user_id;
+        });
     }
     
     function chatBull(id){
