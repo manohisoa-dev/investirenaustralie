@@ -405,7 +405,7 @@
 				var category = this.value;
 				$.ajax({
 				   type:'POST',
-				   url:"{{ route('admin.ajaxGetTypeProduitCategorie') }}",
+				   url:"{{ Auth::user()->isAdmin()?route('admin.ajaxGetTypeProduitCategorie'):route('admin.collaborators.admin.ajaxGetTypeProduitCategorie') }}",
 				   data: {"_token": "{{ csrf_token() }}","categoryId": category, "type_id_active": 0},
 				   success:function(data) {
 					  console.log(data);
@@ -420,7 +420,7 @@
 				maxFiles: 25, 
 				maxFilesize: 25,
 				dictDefaultMessage: "@lang('app.txt.fond_dossier')",
-				url: "{{ route('admin.AjaxFonDossierEdit') }}",
+				url: "{{ Auth::user()->isAdmin()?route('admin.AjaxFonDossierEdit'):route('admin.collaborators.admin.AjaxFonDossierEdit') }}",
 				params: {"_token": "{{ csrf_token() }}","id_programme": "{{ $product->id }}"},
 				acceptedFiles: ".jpeg,.jpg,.png,.gif,.doc,.docx,.xls,.xlsx,.pdf",
 				addRemoveLinks: true,
@@ -471,7 +471,7 @@
 				maxFiles: 20, 
 				maxFilesize: 20,
 				dictDefaultMessage: "@lang('app.dropzone.libelle')",
-				url: "{{ route('admin.ajaxDropZoneEdit') }}",
+				url: "{{ Auth::user()->isAdmin()?route('admin.ajaxDropZoneEdit'):route('admin.collaborators.admin.ajaxDropZoneEdit') }}",
 				params: {"_token": "{{ csrf_token() }}","id_programme": "{{ $product->id }}"},
 				acceptedFiles: ".jpeg,.jpg,.png,.gif",
 				addRemoveLinks: true,
@@ -521,7 +521,7 @@
 			$('input[type=radio][name=radioDrop]').change(function() {
 				$.ajax({
 				   type:'POST',
-				   url:"{{ route('admin.ajaxChangeIconPhotoActive') }}",
+				   url:"{{ Auth::user()->isAdmin()?route('admin.ajaxChangeIconPhotoActive'):route('admin.collaborators.admin.ajaxChangeIconPhotoActive') }}",
 				   data: {"_token": "{{ csrf_token() }}","id_photo_prd": this.value, "id_prd": {{$product->id}}},
 				   success:function(data) {
 					  
@@ -588,7 +588,7 @@
 					title_programme: {
 						required: true,
 						remote: {
-							url: "{{ route('admin.ajaxCheckTitreProgramme') }}",
+							url: "{{ Auth::user()->isAdmin()?route('admin.ajaxCheckTitreProgramme'):route('admin.collaborators.admin.ajaxCheckTitreProgramme') }}",
 							type: "get",
 							data: {
 								// title_programme: function () {
@@ -653,7 +653,7 @@
 		{
 			$.ajax({
 			   type:'POST',
-			   url:"{{ route('admin.ajaxGetTypeProduitCategorie') }}",
+			   url:"{{ Auth::user()->isAdmin()?route('admin.ajaxGetTypeProduitCategorie'):route('admin.collaborators.admin.ajaxGetTypeProduitCategorie') }}",
 			   data: {"_token": "{{ csrf_token() }}","categoryId": categorie_id, "type_id_active": type_id_active},
 			   success:function(data) {
 				  $('#type_id').html(data);
@@ -666,7 +666,7 @@
 		{
 			$.ajax({
 			   type:'POST',
-			   url:"{{ route('admin.ajaxGetTypeProduitCategorie') }}",
+			   url:"{{ Auth::user()->isAdmin()?route('admin.ajaxGetTypeProduitCategorie'):route('admin.collaborators.admin.ajaxGetTypeProduitCategorie') }}",
 			   data: {"_token": "{{ csrf_token() }}","categoryId": categorie_id},
 			   success:function(data) {
 				  $('#product_type_id').html(data);
@@ -691,7 +691,7 @@
 			 function(isConfirm){	
 			   if (isConfirm){
 					 $.ajax({
-						url : "{{ route('admin.ajaxDropPhotoIcon') }}",
+						url : "{{ Auth::user()->isAdmin()?route('admin.ajaxDropPhotoIcon'):route('admin.collaborators.admin.ajaxDropPhotoIcon') }}",
 						type: "POST",
 						dataType: "JSON",
 						data:{"_token": "{{ csrf_token() }}",'id_photo_prd_image':id_photo_prd_image},
@@ -728,7 +728,7 @@
 			 function(isConfirm){	
 			   if (isConfirm){
 					 $.ajax({
-						url : "{{ route('admin.ajaxDropFondDossier') }}",
+						url : "{{ Auth::user()->isAdmin()?route('admin.ajaxDropFondDossier'):route('admin.collaborators.admin.ajaxDropFondDossier') }}",
 						type: "POST",
 						dataType: "JSON",
 						data:{"_token": "{{ csrf_token() }}",'id_fond_dossier':id_fond_dossier},
@@ -765,7 +765,7 @@
 			 function(isConfirm){	
 			   if (isConfirm){
 					 $.ajax({
-						url : "{{ route('admin.ajaxDropProduit') }}",
+						url : "{{ Auth::user()->isAdmin()?route('admin.ajaxDropProduit'):route('admin.collaborators.admin.ajaxDropProduit') }}",
 						type: "POST",
 						dataType: "JSON",
 						data:{"_token": "{{ csrf_token() }}",'id_produit':id_prd},
@@ -810,7 +810,7 @@
 		
 			//Ajax Load data from ajax
 			$.ajax({
-				url : "{{ route('admin.ajaxGetProductById') }}",
+				url : "{{ Auth::user()->isAdmin()?route('admin.ajaxGetProductById'):route('admin.collaborators.admin.ajaxGetProductById') }}",
 				type: "POST",
 				dataType: "JSON",
 				data:{"_token": "{{ csrf_token() }}",'id_produit':id_produit},
@@ -899,9 +899,9 @@
 			var form = $("#form_product");
 		
 			if(save_method == 'add') {
-				url = "{{ route('admin.ajaxSaveProduct') }}";
+				url = "{{ Auth::user()->isAdmin()?route('admin.ajaxSaveProduct'):route('admin.collaborators.admin.ajaxSaveProduct') }}";
 			} else {
-				url = "{{ route('admin.ajaxModifProduct') }}";
+				url = "{{ Auth::user()->isAdmin()?route('admin.ajaxModifProduct'):route('admin.collaborators.admin.ajaxModifProduct') }}";
 			}
 			
 			form.validate({
@@ -909,7 +909,7 @@
 					title_product: {
 						required: true,
 						remote: {
-							url: "{{ route('admin.ajaxCheckTitreProgramme') }}",
+							url: "{{ Auth::user()->isAdmin()?route('admin.ajaxCheckTitreProgramme'):route('admin.collaborators.admin.ajaxCheckTitreProgramme') }}",
 							type: "get",
 							data: {
 								title_programme: function () {

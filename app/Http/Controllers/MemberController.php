@@ -372,7 +372,7 @@ class MemberController extends Controller
     
     
     /**
-     * Add product in cart
+     * Show select apl
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Product

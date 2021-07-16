@@ -1046,7 +1046,7 @@
 				//changer list type produit par rapport au programme
 				$.ajax({
 				   type:'POST',
-				   url:"{{ route('admin.ajaxGetTypeProduitCategorie') }}",
+				   url:"{{ Auth::user()->isAdmin()?route('admin.ajaxGetTypeProduitCategorie'):route('admin.collaborators.admin.ajaxGetTypeProduitCategorie') }}",
 				   data: {"_token": "{{ csrf_token() }}","categoryId": category},
 				   success:function(data) {
 				      console.log(data);
@@ -1105,7 +1105,7 @@
 				var codeP = this.value;
 				$.ajax({
 				   type:'GET',
-				   url:"{{ route('admin.ajaxCheckFirb') }}",
+				   url:"{{ Auth::user()->isAdmin()?route('admin.ajaxCheckFirb'):route('admin.collaborators.admin.ajaxCheckFirb') }}",
 				   data: {"_token": "{{ csrf_token() }}","postal_code": codeP},
 				   success:function(data) {
 				      if(data == "true" ) {
