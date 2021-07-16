@@ -82,7 +82,7 @@
             <div class="input-group input-group-sm">
                 <input type="hidden" id="_token" value="{{ csrf_token() }}" class="form-control">
                 <input type="hidden" id="to_id" class="form-control">
-                <textarea id="content" name="content" class="no-resize-bar form-control" rows="3" placeholder="@lang('app.txt.write_message') ..."></textarea>
+                <textarea id="chat_content" name="chat_content" class="no-resize-bar form-control" rows="3" placeholder="@lang('app.txt.write_message') ..."></textarea>
                 <span class="input-group-append">
                     <button
                         class="btn btn-primary" type="button" id="btn_send">@lang('app.btn.send')
@@ -553,7 +553,6 @@
 <!-- jquery validate-->
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
-
 <script>
     $(document).ready(function() {
 
@@ -651,23 +650,30 @@
 
     $('.small-chat-box .chat-close').click(function(){
         osc_id = $('.small-chat-box').attr('osc_id');
+        id = osc_id.split('_')[1];
         
         // Hide chat main content
-        $('#small-chat-box').removeClass('active');
+        $('#small-chat-box').toggleClass('active');
 
         // Remove bull
         $('#'+osc_id).remove();
+
+        // Remove id in array
+        removeUserIdChatBullUserArray(id);
     });
 
     
     function userChatBull(user_id,user_immat){
-        var bull = '<a id="osc_'+user_id+'" class="open-small-chat" onclick=chatBull("'+user_id+'") href="javascript:void(0)" style="margin-bottom:1px;" title="'+user_immat+'"><i class="fa fa-user"></i></a>';
+        var bull = '<a id="osc_'+user_id+'" class="open-small-chat" onclick=chatBull("'+user_id+'","'+user_immat+'") href="javascript:void(0)" style="margin-bottom:1px;" title="'+user_immat+'"><i class="fa fa-user"></i></a>';
 
         // Hide chat main content
         $('#small-chat-box-main').removeClass('active');
         
         // add chat at bull
-        $('#small-chat').append(bull);
+        if(!checkChatBullUser(user_id)){
+            chatBullUserArray.push(user_id);
+            $('#small-chat').append(bull);
+        }
         $('.open-small-chat-main i').removeClass('fa-times');
         $('.open-small-chat-main i').addClass('fa-comments');
         
@@ -679,37 +685,49 @@
         $('#small-chat-box-heading span').html(user_immat);
         showMessageContact(user_id);
         $('#to_id').val(user_id);
-
-        
-        // chatBullUserArray.push(user_id);
-        if(checkChatBullUser(chatBullUserArray,user_id)){
-            console.log('true');
-        }else{
-
-        }
     };
 
-    function checkChatBullUser(array,user_id){
-        if(!$.inArray(user_id, array)){
+    function checkChatBullUser(user_id){
+        if($.inArray(user_id, chatBullUserArray) !== -1){
             return true;
         }
 
         return false;
     }
+
+    function removeUserIdChatBullUserArray(user_id){
+        chatBullUserArray = $.grep(chatBullUserArray, function(value) {
+            return value != user_id;
+        });
+    }
     
-    function chatBull(id){
+    function chatBull(id,immat){
+        var osc_id = $('#small-chat-box').attr('osc_id');
+
         // Hide chat main content
         $('#small-chat-box-main').removeClass('active');
 
         // show chat content
-        $('#small-chat-box').toggleClass('active');
+        $('#small-chat-box').attr('osc_id','osc_'+id);
+        if(osc_id === 'osc_'+id){
+            $('#small-chat-box').toggleClass('active');
+        }else{
+            if(!$('#small-chat-box').hasClass('active')){
+                $('#small-chat-box').toggleClass('active');
+            }
+        }
+
+        // Set chat content user
+        $('#small-chat-box-heading span').html(immat);
+        showMessageContact(id);
+        $('#to_id').val(id);
     }
 
     function showContact(){
         var showContact = $('#small-chat-box-main-content ul');
         
         $.ajax({
-            url: '{{ route("admin.ajax.get.list.contact.message") }}',
+            url: '{{ Auth::user()->isAdmin()?route("admin.ajax.get.list.contact.message"):route("admin.collaborators.admin.ajax.get.list.contact.message") }}',
             type: "GET",
             dataType: "json",
             success:function(data){
@@ -717,7 +735,6 @@
                 listContactArray = new Array();
                 // set total message
                 $('#small-chat-box-main-heading small').html(data.length);
-                
                 if(data.length !== 0){
                     for(var i=0; i<data.length; i++){
                         listContactArray.push(data[i].user_id);
@@ -756,7 +773,7 @@
 
         if(contact_id !== '0'){
             $.ajax({
-                url: '{{ route("admin.ajax.show.contact.message", ["to_id"=>Auth::user()->id]) }}',
+                url: '{{ Auth::user()->isAdmin()?route("admin.ajax.show.contact.message", ["to_id"=>Auth::user()->id]):route("admin.collaborators.admin.ajax.show.contact.message", ["to_id"=>Auth::user()->id]) }}',
                 type: "GET",
                 data : datas,
                 dataType: "json",
@@ -773,8 +790,8 @@
                             var message = dt[i].body;
                             var seen = dt[i].seen;
                             var fromRole = dt[i].from_role;
-                            var position = i%2?'right':'left';
-                            var active = i%2?'':'active';
+                            var position = fromId!==1?'left':'right';
+                            var active = fromId!==1?'active':'';
                             
                             content += '<div class="'+position+'">'+
                                             '<div class="author-name">'+
@@ -798,7 +815,7 @@
 
     function getUnreadMessage(){
         $.ajax({
-            url: '{{ route("admin.ajax.get.unread.message") }}',
+            url: '{{ Auth::user()->isAdmin()?route("admin.ajax.get.unread.message"):route("admin.collaborators.admin.ajax.get.unread.message") }}',
             type: "GET",
             dataType: "json",
             success:function(data){
@@ -824,28 +841,28 @@
         var datas = {
             _token: $('#_token').val(),
             to_id: $('#to_id').val(),
-            content: $('#content').val(),
+            content: $('#chat_content').val(),
         };
 
         // Initialize error message
         $('#error_message').html("");
 
         // disable button
-        $(this).prop("disabled", true);
+        $('#btn_send').prop("disabled", true);
                 
         $.ajax({
-            url: '{{ route("admin.ajax.send.message") }}',
+            url: '{{ Auth::user()->isAdmin()?route("admin.ajax.send.message"):route("admin.collaborators.admin.ajax.send.message") }}',
             type: "POST",
             data: datas,
             dataType: "json",
             success:function(data){
-                // reset button
+                // reset button and content input
                 $('#btn_send').prop("disabled", false);
-                // $('#btn_send').html(thisHtml);
+                $('#chat_content').val('');
 
                 if(!$.isEmptyObject(data.error)){
-                    // $('#content').val(' ');
-                    $('#content').addClass('is-invalid');
+                    // $('#chat_content').val(' ');
+                    $('#chat_content').addClass('is-invalid');
                     $('#error_message').html(data.error);
                 }
             },

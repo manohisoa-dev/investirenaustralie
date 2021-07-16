@@ -93,9 +93,9 @@ class BlogController extends Controller {
             }
         }
 
-        // // save translation
-        // $detectLang = getGTranslateLangDetect($requst->content);
-        // $detectLang==='fr'?setTranslate('fr','en',$requst->content,'blog',$blog):setTranslate('en','fr',$requst->content,'blog',$blog);
+        // save translation
+        $detectLang = getGTranslateLangDetect($request->content);
+        $detectLang==='fr'?setTranslate('fr','en',$request->content,'blog',$blog):setTranslate('en','fr',$request->content,'blog',$blog);
         
         //Blog::create($request->all());
 
@@ -202,8 +202,8 @@ class BlogController extends Controller {
             }
         }
 
-        // // update translation
-        // updateTranslate('blog',$blog,$request->content);
+        // update translation
+        updateTranslate('blog',$blog,$request->content);
 
         # notification
         Notify::success('Blog a été mise à jour avec succès');
