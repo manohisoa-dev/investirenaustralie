@@ -690,7 +690,7 @@
     };
 
     function checkChatBullUser(user_id){
-        if(!$.inArray(user_id, chatBullUserArray)){
+        if($.inArray(user_id, chatBullUserArray) !== -1){
             return true;
         }
 
@@ -723,7 +723,6 @@
                 listContactArray = new Array();
                 // set total message
                 $('#small-chat-box-main-heading small').html(data.length);
-                
                 if(data.length !== 0){
                     for(var i=0; i<data.length; i++){
                         listContactArray.push(data[i].user_id);
