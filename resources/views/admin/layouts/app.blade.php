@@ -791,8 +791,8 @@
                             var message = dt[i].body;
                             var seen = dt[i].seen;
                             var fromRole = dt[i].from_role;
-                            var position = i%2?'right':'left';
-                            var active = i%2?'':'active';
+                            var position = fromId!==1?'left':'right';
+                            var active = fromId!==1?'active':'';
                             
                             content += '<div class="'+position+'">'+
                                             '<div class="author-name">'+
