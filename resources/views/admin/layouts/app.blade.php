@@ -654,7 +654,7 @@
         id = osc_id.split('_')[1];
         
         // Hide chat main content
-        $('#small-chat-box').removeClass('active');
+        $('#small-chat-box').toggleClass('active');
 
         // Remove bull
         $('#'+osc_id).remove();
@@ -703,16 +703,17 @@
     }
     
     function chatBull(id,immat){
+        var osc_id = $('#small-chat-box').attr('osc_id');
+
         // Hide chat main content
         $('#small-chat-box-main').removeClass('active');
 
         // show chat content
-        $('#small-chat-box').toggleClass('active');
-
-        // show chat content
-        $('#small-chat-box').toggleClass('active');
         $('#small-chat-box').attr('osc_id','osc_'+id);
-        
+        if(osc_id === 'osc_'+id){
+            $('#small-chat-box').toggleClass('active');
+        }
+
         // Set chat content user
         $('#small-chat-box-heading span').html(immat);
         showMessageContact(id);
