@@ -29,10 +29,10 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>APL liée : {{$member->name}}</h5>
+                <h5>APL liée actif : {{$member->name}}</h5>
             </div>
 			<div class="ibox-content">
-				 <table class="table table-striped grid-view-tbl">
+				<table class="table table-striped grid-view-tbl">
                 <thead>
                     <tr class="header-row">
 						{!!\Nvd\Crud\Html::sortableTh('id','admin.user.index','Id')!!}
@@ -132,7 +132,9 @@
 								</span>
 							</td>
 							<td align="center">
-							
+								<a href="javascript:void(0)" onclick="annuler_relation({{$member->id}})" class="btn btn-default btn-circle" title="Annuler relation">
+									<i class="fa fa-times text-danger"></i>
+								</a>
 							</td>
 						</tr>
 					@empty
@@ -147,4 +149,80 @@
 		</div>
 	</div>
 </div>
+
+@if(count($history) > 0)
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Historiques de relation</h5>
+            </div>
+			<div class="ibox-content">
+				<table class="table table-striped grid-view-tbl">
+					<thead>
+						<tr>
+							<th>APL</th>							
+							<th>Email</th>
+							<th>Date début</th>
+							<th>Date fin</th>
+						</tr>
+					</thead>
+					<tbody>
+					@foreach($history as $index =>$record)
+						<tr>
+							<td>{{ $record->Users->name }}</td>
+							<td>{{ $record->Users->email }}</td>
+							<td>{{\Carbon\Carbon::parse($record->dt_debut_relation)->formatLocalized('%d %b %Y')}}</td>
+							<td>{{\Carbon\Carbon::parse($record->dt_end_relation)->formatLocalized('%d %b %Y')}}</td>
+						</tr>
+					@endforeach
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+@endif
+@endsection
+
+@section('custom-script')
+	<script src="{{ asset('administrator/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
+	<script>
+	function annuler_relation(id_membre)
+	{
+		swal({
+			title: "Relation Membre & APL",
+			text: "@lang('app.dropzone.delete_photo_confirme')",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: '#ff3547',
+			confirmButtonText: "@lang('app.yes')",
+			cancelButtonText: "@lang('app.no')",
+			closeOnConfirm: false,
+			closeOnCancel: false
+		 },
+		 function(isConfirm){	
+		   if (isConfirm){
+				 $.ajax({
+					url : "{{ route('admin.ajaxDropRelation') }}",
+					type: "POST",
+					dataType: "JSON",
+					data:{"_token": "{{ csrf_token() }}",'id_membre':id_membre},
+					success: function(data)
+					{
+						swal("Relation Membre & APL", "@lang('app.jquery.delete_product_yes')", "success");
+						location.reload();	
+					},
+					error: function (jqXHR, textStatus, errorThrown)
+					{
+						swal("Relation Membre & APL", "@lang('app.jquery.error_delete')", "error");
+						location.reload();	
+					}
+				}); 
+			} else {
+				swal("Relation Membre & APL", "@lang('app.jquery.delete_cancel')", "error");
+			}
+		 });
+	}
+	</script>
 @endsection

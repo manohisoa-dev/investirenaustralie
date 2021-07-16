@@ -18,6 +18,7 @@ use App\Models\MailUser;
 use App\Models\Localisation;
 use App\Models\Message;
 use App\Models\Temoignage;
+use App\Models\RelationMembreApl;
 use Session;
 
 class MemberController extends Controller
@@ -389,7 +390,12 @@ class MemberController extends Controller
             }else{
                 // // Add APL on member
                 User::whereId(Auth::id())->update(['apl_id'=>$request->get('apl'), 'apl_ends_at'=>\Carbon\Carbon::now()->addDays(180)]);
-
+                $relation = new RelationMembreApl();
+                $relation->membre_id = Auth::id();
+                $relation->apl_id = $request->get('apl');
+                $relation->dt_debut_relation = \Carbon\Carbon::now();
+                $relation->dt_end_relation = \Carbon\Carbon::now()->addDays(180);
+                $relation->save();
                 $message = trans('app.txt.member_has_new_apl', ['apl'=>User::find($request->get('apl'))->name]);
             }
         }
@@ -710,6 +716,26 @@ class MemberController extends Controller
     public function ajaxDropTestimonial(Request $request)
     {
         Temoignage::where('id', $request->id)->delete();
+        return response()->json(['success' => 'true']);
+    }
+    
+    public function relationApl()
+    {
+        $aplActive = User::find(Auth::user()->id);
+        $allApl = RelationMembreApl::where('membre_id', Auth::user()->id)->get();
+        return view('backend.user.apl_membre')
+            ->with('title', __('member.menu_relation_apl'))
+            ->with('aplActive', $aplActive)
+            ->with('allApl', $allApl);
+        /*foreach($allApl as $record){
+            echo $record->Users->name;
+        }*/
+    }
+    
+    public function ajaxDropRelation(Request $request)
+    {
+        User::where('id', $request->id_membre)->update(['apl_id' => 0,
+                'apl_ends_at' => '']);
         return response()->json(['success' => 'true']);
     }
 

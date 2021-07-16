@@ -21,6 +21,7 @@ use App\Notifications\AccountAdminActivated;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Image;
+use App\Models\RelationMembreApl;
 
 class UserController extends Controller {
     public $viewDir = "admin.user";
@@ -487,11 +488,20 @@ class UserController extends Controller {
     }
 
     public function aplRelation(Request $request, User $user) {
+        //$aplActive = User::find(Auth::user()->id);
+        $allApl = RelationMembreApl::where('membre_id', $user->id)->get();
+        
         $apl = User::findRequested()->where('id', $user->apl_id);
         $records = new LengthAwarePaginator($apl, count($apl), 10, 1, ['path' =>
                 url('admin/user/relation-apl/'.$user->id)]);
         return $this->view("apl_member", ['records' => $records, 'member' => $user, 'userRole' =>
-            'member']);
+            'member','history'=>$allApl]);
+    }
+    
+    public function ajaxDropRelation(Request $request) {
+        User::where('id', $request->id_membre)->update(['apl_id' => 0,
+                'apl_ends_at' => '']);
+        return response()->json(['success' => 'true']);
     }
 
 }

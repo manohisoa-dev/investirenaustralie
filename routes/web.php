@@ -181,7 +181,10 @@ Route::middleware(["auth", "role:5"])->group(function(){
         Route::post('ajaxSaveTestimonial', 'MemberController@ajaxSaveTestimonial')->name('member.ajaxSaveTestimonial');
         Route::post('ajaxGetTestimonialById', 'MemberController@ajaxGetTestimonialById')->name('ajaxGetTestimonialById');
         Route::post('ajaxModifTestimonial', 'MemberController@ajaxModifTestimonial')->name('ajaxModifTestimonial');
-        Route::post('ajaxDropTestimonial', 'MemberController@ajaxDropTestimonial')->name('ajaxDropTestimonial');  
+        Route::post('ajaxDropTestimonial', 'MemberController@ajaxDropTestimonial')->name('ajaxDropTestimonial'); 
+        
+        Route::get('relationApl', 'MemberController@relationApl')->name('member.relationApl');
+        Route::post('ajaxDropRelation', 'MemberController@ajaxDropRelation')->name('member.ajaxDropRelation');   
 
         // Mail Controller Groups
         Route::get('mails/{filter?}', 'MailController@all')->name('member.mail.list');
