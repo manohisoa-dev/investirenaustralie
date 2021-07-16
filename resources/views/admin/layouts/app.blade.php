@@ -82,7 +82,7 @@
             <div class="input-group input-group-sm">
                 <input type="hidden" id="_token" value="{{ csrf_token() }}" class="form-control">
                 <input type="hidden" id="to_id" class="form-control">
-                <textarea id="content" name="content" class="no-resize-bar form-control" rows="3" placeholder="@lang('app.txt.write_message') ..."></textarea>
+                <textarea id="chat_content" name="chat_content" class="no-resize-bar form-control" rows="3" placeholder="@lang('app.txt.write_message') ..."></textarea>
                 <span class="input-group-append">
                     <button
                         class="btn btn-primary" type="button" id="btn_send">@lang('app.btn.send')
@@ -553,7 +553,6 @@
 <!-- jquery validate-->
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
-
 <script>
     $(document).ready(function() {
 
@@ -728,7 +727,7 @@
         var showContact = $('#small-chat-box-main-content ul');
         
         $.ajax({
-            url: '{{ route("admin.ajax.get.list.contact.message") }}',
+            url: '{{ Auth::user()->isAdmin()?route("admin.ajax.get.list.contact.message"):route("admin.collaborators.admin.ajax.get.list.contact.message") }}',
             type: "GET",
             dataType: "json",
             success:function(data){
@@ -774,7 +773,7 @@
 
         if(contact_id !== '0'){
             $.ajax({
-                url: '{{ route("admin.ajax.show.contact.message", ["to_id"=>Auth::user()->id]) }}',
+                url: '{{ Auth::user()->isAdmin()?route("admin.ajax.show.contact.message", ["to_id"=>Auth::user()->id]):route("admin.collaborators.admin.ajax.show.contact.message", ["to_id"=>Auth::user()->id]) }}',
                 type: "GET",
                 data : datas,
                 dataType: "json",
@@ -816,7 +815,7 @@
 
     function getUnreadMessage(){
         $.ajax({
-            url: '{{ route("admin.ajax.get.unread.message") }}',
+            url: '{{ Auth::user()->isAdmin()?route("admin.ajax.get.unread.message"):route("admin.collaborators.admin.ajax.get.unread.message") }}',
             type: "GET",
             dataType: "json",
             success:function(data){
@@ -842,28 +841,28 @@
         var datas = {
             _token: $('#_token').val(),
             to_id: $('#to_id').val(),
-            content: $('#content').val(),
+            content: $('#chat_content').val(),
         };
 
         // Initialize error message
         $('#error_message').html("");
 
         // disable button
-        $(this).prop("disabled", true);
+        $('#btn_send').prop("disabled", true);
                 
         $.ajax({
-            url: '{{ route("admin.ajax.send.message") }}',
+            url: '{{ Auth::user()->isAdmin()?route("admin.ajax.send.message"):route("admin.collaborators.admin.ajax.send.message") }}',
             type: "POST",
             data: datas,
             dataType: "json",
             success:function(data){
-                // reset button
+                // reset button and content input
                 $('#btn_send').prop("disabled", false);
-                // $('#btn_send').html(thisHtml);
+                $('#chat_content').val('');
 
                 if(!$.isEmptyObject(data.error)){
-                    // $('#content').val(' ');
-                    $('#content').addClass('is-invalid');
+                    // $('#chat_content').val(' ');
+                    $('#chat_content').addClass('is-invalid');
                     $('#error_message').html(data.error);
                 }
             },

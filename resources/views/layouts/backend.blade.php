@@ -471,7 +471,7 @@
       <div class="modal-footer">
           <button class="m-btn m-btn-theme" data-dismiss="modal" aria-hidden="true">@lang('app.btn.cancel')</button>
           @if(Auth::user()->hasAPl())
-            <a href="{{route('member.select.apl')}}" class="m-btn m-btn-theme" type="submit">@lang('app.btn.next')</a>
+            <a href="{{route('member.relationApl')}}" class="m-btn m-btn-theme" type="submit">@lang('app.btn.next')</a>
           @else
               <a href="{{route('member.select.apl')}}" class="m-btn m-btn-theme4rd" type="submit">@lang('member.select.apl')</a>
           @endif

@@ -372,7 +372,7 @@ class MemberController extends Controller
     
     
     /**
-     * Add product in cart
+     * Show select apl
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Product
@@ -381,7 +381,7 @@ class MemberController extends Controller
     public function selectApl(Request $request){
         $this->middleware('auth');
         $this->middleware('role:member');
-
+        
         // check if user has apl or add if user has no apl
         $message="";
         if($request->get('apl')){
@@ -397,9 +397,10 @@ class MemberController extends Controller
                 $relation->dt_end_relation = \Carbon\Carbon::now()->addDays(180);
                 $relation->save();
                 $message = trans('app.txt.member_has_new_apl', ['apl'=>User::find($request->get('apl'))->name]);
+                //envoie notification
+                
             }
         }
-        
         
         $distance = $request->get('distance');
         if(empty($distance)) $distance = 100;
