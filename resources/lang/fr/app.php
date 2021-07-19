@@ -582,6 +582,7 @@ return
 	'txt.motcle' => 'Mot clé',
 	'txt.password' => 'Mot de passe',
 	'txt.logintocomment' => 'Veuillez vous connecter pour commenter.',
+	'txt.logintocontinue' => 'Veuillez vous connecter pour continuer.',
 	'txt.yourcomment' => 'Votre Commentaire ?',
 	'txt.pub.comment.success' => 'Votre commentaire a été publié avec succès.',
 	'txt.pub.comment.error' => 'Erreur : Mot intérdit. Votre commentaire n&lsquo;a pas pu être publié!',

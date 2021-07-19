@@ -26,8 +26,8 @@ use App\Models\ProductsImage;
 class ProductController extends Controller {
 
     public function __construct() {
-        $this->middleware('auth');
-        $this->middleware('role', ['only' => ['3', ]]);
+        // $this->middleware('auth');
+        // $this->middleware('role', ['only' => ['3']]);
     }
 
     /**
@@ -80,10 +80,12 @@ class ProductController extends Controller {
                 $afas = User::where('role', 3)->where('status', 'active')->where('location_id',
                     $product->location_id)->orderBy('id', 'desc')->get();
 
-                return view('product.index')->with('item', $product)->with('location', $product->location)->with('pubs',
-                    $pubs)->with('products', $products)->with('apls', $apls)->with('afas', $afas)->with('data',
-                    json_encode($data))->with('states', $states)->with('locationTypes', $locationTypes)->with('types',
-                    $types)->with('lapls', $lapls)->with('categories', $categories);
+                // return view('product.index')->with('item', $product)->with('location', $product->location)->with('pubs',
+                //     $pubs)->with('products', $products)->with('apls', $apls)->with('afas', $afas)->with('data',
+                //     json_encode($data))->with('states', $states)->with('locationTypes', $locationTypes)->with('types',
+                //     $types)->with('lapls', $lapls)->with('categories', $categories);
+
+                return view('product.index')->with('item', $product)->with('pubs',$pubs)->with('products', $products)->with('categories', $categories)->with('apls', $apls);
             }
         } else {
             abort(404);

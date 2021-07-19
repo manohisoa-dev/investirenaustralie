@@ -585,7 +585,7 @@
                 // showContact();
                 showMessageContact(to_id);
             }
-        }, 25000);
+        }, 10000);
 
     });
 

@@ -477,11 +477,38 @@ if(!function_exists('getGTranslate')){
 	}
 }
 
+if(!function_exists('getGTranslateAutoDetectBd')){
+	function getGTranslateAutoDetectBd($tabName,$tab){
+		$tabId = $tabName.'_id';
+		$ucfirstTabname = Str::ucfirst($tabName);
+		$tabNameModel = "App\Models\\".$ucfirstTabname."Translation";
+		
+		// get list translation for tab id
+		$listTrans = $tabNameModel::where($tabId,'=',$tab->id)->get();
+		
+		foreach ($listTrans as $key => $value) {
+			$result = App\Models\Translation::whereId($value->translation_id)->where('lang','=',App::getLocale())->first();
+			if($result !== null){
+				return $result->content;
+				break;
+			}
+		}
+
+		return false;
+	}
+}
+
 if(!function_exists('getGTranslateAutoDetect')){
 	function getGTranslateAutoDetect($targetLang,$text){
 		$translator = new Translator;
-		$result = $translator->setTargetLang($targetLang)
-							 ->translate($text);
+		$lang = getGTranslateLangDetect($text);
+		$result = $text;
+
+		if($targetLang !== $lang){
+			$result = $translator->setTargetLang($targetLang)
+								 ->translate($text);
+		}
+
 		return $result;
 	}
 }

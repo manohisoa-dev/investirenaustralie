@@ -374,6 +374,7 @@ return
 	'txt.motcle' => 'Key word',
 	'txt.password' => 'Password',
 	'txt.logintocomment' => 'Please login to comment.',
+	'txt.logintocontinue' => 'Please login to continu.',
 	'txt.yourcomment' => 'Your Comment ?',
 	'txt.pub.comment.success' => 'Your comment has been successfully published.',
 	'txt.pub.comment.error' => 'Error: Prohibited word. Your comment could not be published! ',

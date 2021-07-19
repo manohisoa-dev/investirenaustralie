@@ -270,6 +270,8 @@
     <!-- Header End -->
 
     @yield('content')
+    
+    @yield('content2')
 
     <div id="mybutton">
         <button id="btn_devise" class="feedback"><img src="{{ asset('images/ico/devise.png') }}" alt=""> </button>

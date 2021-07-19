@@ -18,7 +18,7 @@
                 <a href="{{ route('programme.show', ['slug'=>$item->slug]) }}" >
                     <div class="transition blog-grid-overlay border-radius-0" style="background-image: url({{ $img }}); ">
                         <div class="blog-gird-info">
-                            <h5>{{ $item->title?$item->title:'' }}</h5>
+                            <h5>{{ $item->title?getGTranslateAutoDetect( App::getLocale() ,$item->title):'' }}</h5>
                             <p><span class="white-color">{{ $item->location ? Illuminate\Support\Str::upper($item->location->locality.' '.$item->location->area_level_2.', '.$item->location->area_level_1.' '.$item->location->postalCode) : '' }}</span></p>            
                         </div>
                     </div>
@@ -31,7 +31,7 @@
                 </a>
         
                 <div class="p-5px-t p-20px-b text-center">
-                    <h6>{!! $item->content? Illuminate\Support\Str::limit($item->content, 75) :'' !!}</h6>
+                    <h6>{!! $item->content? Illuminate\Support\Str::limit( (getGTranslateAutoDetectBd('programme',$item)?getGTranslateAutoDetectBd('programme',$item):$item->content), 75) :'' !!}</h6>
                 </div>
 
                 <div class="font-small p-5px-t p-20px-b text-center border-top-1 border-color-dark-gray">
@@ -54,7 +54,7 @@
                                                         @endphp
                                                         <a href="{{route('product.index',['product'=>$prod->slug])}}" target="_blank"><img src="{{$img_prod}}" alt="{{$prod->title}}" class="img-fluid"></a>
                                                         {{-- Badge type --}}
-                                                        <span class="type-badge btn-info">{{ App\Models\Type::find($prod->type_id)->title }}</span>
+                                                        <span class="type-badge btn-info">{{  getGTranslateAutoDetect( App::getLocale() ,App\Models\Type::find($prod->type_id)->title) }}</span>
                                                         {{-- Badge new product --}}
                                                         @if ($prod->validated_at > Carbon\Carbon::now()->subDays(App\Models\Parameter::where('name','nb_day_new_prod')->first()->value))
                                                             <span class="notify-badge-prod btn-success">@lang('app.txt.new')</span>
@@ -130,7 +130,7 @@
                                                         <a href="{{ $pub->links }}" target="_blank"><img src="{{$img_pub}}" alt="{{$pub->title}}" class="img-fluid"></a>
                                                     </div>
                                                     <div class="thumb-content">
-                                                        <p><span>{{ $pub->title }}</span></p>
+                                                        <p><span>{{ getGTranslateAutoDetect( App::getLocale() , $pub->title) }}</span></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -143,7 +143,7 @@
                                                         <a href="{{ $pub->links }}" target="_blank"><img src="{{asset('images/iea.png')}}" alt="Investir en Australie" class="img-fluid"></a>
                                                     </div>
                                                     <div class="thumb-content">
-                                                        <p><span>{{ $pub->title }}</span></p>
+                                                        <p><span>{{ getGTranslateAutoDetect( App::getLocale() , $pub->title) }}</span></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -196,7 +196,7 @@
                                             </div>
                                             <div class="p-20px">
                                                 <label class="font-small">@lang('app.txt.postepar') : <a href="javascript:void(0)">{{$blogs->author ? $blogs->author->name : ''}}</a> – {{$blogs->created_at ? $blogs->created_at->diffForHumans() : ''}}</label>
-                                                <h5 class="m-10px-b font-w-600"><a title="{{$blogs->title}}" class="dark-color" href="{{route('blog.index',$blogs->slug)}}" target="_blank">{{str_limit($blogs->title, 50, '...')}}</a></h5>
+                                                <h5 class="m-10px-b font-w-600"><a title="{{$blogs->title}}" class="dark-color" href="{{route('blog.index',$blogs->slug)}}" target="_blank">{{getGTranslateAutoDetect( App::getLocale() , str_limit($blogs->title, 50, '...'))}}</a></h5>
                                                 <div class="nav font-small border-top-1 border-color-dark-gray p-15px-t">
                                                     <a class="m-15px-r body-color font-w-500" href="javascript:void(0)"><i class="fas fa-calendar-alt "></i> {{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $blogs->created_at)->format('d F')}},{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $blogs->created_at)->year }}</a>
                                                     <a class="body-color font-w-500" href="javascript:void(0)"><i class="fas fa-comments"></i> {{$blogs->comments_count}}</a>
@@ -244,7 +244,7 @@
                                                 </div>
                                                 <div class="p-20px">
                                                     <label class="font-small">@lang('app.txt.postepar') : <a href="javascript:void(0)">{{$blog->author ? $blog->author->name : ''}}</a> – {{$blog->created_at ? $blog->created_at->diffForHumans() : ''}}</label>
-                                                    <h5 class="m-10px-b font-w-600"><a title="{{$blog->title}}" class="dark-color" href="{{route('blog.index',$blog->slug)}}" target="_blank">{{str_limit($blog->title, 50, '...')}}</a></h5>
+                                                    <h5 class="m-10px-b font-w-600"><a title="{{$blog->title}}" class="dark-color" href="{{route('blog.index',$blog->slug)}}" target="_blank">{{getGTranslateAutoDetect( App::getLocale() , str_limit($blogs->title, 50, '...'))}}</a></h5>
                                                     <div class="nav font-small border-top-1 border-color-dark-gray p-15px-t">
                                                         <a class="m-15px-r body-color font-w-500" href="javascript:void(0)"><i class="fas fa-calendar-alt "></i> {{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $blog->created_at)->format('d F')}},{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $blog->created_at)->year }}</a>
                                                         <a class="body-color font-w-500" href="javascript:void(0)"><i class="fas fa-comments"></i> {{$blog->comments_count}}</a>

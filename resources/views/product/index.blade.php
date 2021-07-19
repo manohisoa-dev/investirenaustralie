@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
 <!-- Main -->
 <main>
     <!-- Page Title -->
@@ -16,7 +17,7 @@
         <div class="container">
             <div class="row screen-65 justify-content-center align-items-center p-100px-tb">
                 <div class="col-lg-10 text-center m-50px-t">
-                    <h1 class="display-4 white-color m-25px-b">{{$item->title}}</h1>
+                    <h1 class="display-4 white-color m-25px-b">{{getGTranslateAutoDetect( App::getLocale() ,$item->title)}}</h1>
                     <div class="d-flex align-items-center m-25px-t justify-content-center text-left">
                         <div class="p-15px-l">
                             <p class="white-color m-0px"><span class="white-color">{{ $item->location ? Illuminate\Support\Str::upper($item->location->locality.' '.$item->location->area_level_2.', '.$item->location->area_level_1.' '.$item->location->postalCode) : '' }}</span></p>
@@ -25,14 +26,14 @@
 
                     <div class="p-25px-t row col-lg-12">
                         <div class="col-lg-4 col-sm-6">
-                            <a href="{{ route('member.contact.afa') }}" id="contact_afa" value="{{ Session::has('has_afa')?1:0 }}" class="m-btn m-btn-theme2nd dark-color flex-shrink-0 col-md-12"><i class="fa fa-envelope" aria-hidden="true"></i>  @lang('app.btn.contact_afa')</a>
+                          <a href="{{ route('member.contact.afa') }}" id="contact_afa" value="{{ Session::has('has_afa')?1:0 }}" class="m-btn m-btn-theme2nd dark-color flex-shrink-0 col-md-12"><i class="fa fa-envelope" aria-hidden="true"></i>  @lang('app.btn.contact_afa')</a>
                         </div>
                         <div class="col-lg-4 col-sm-6">
                           <a href="{{ route('member.contact', ['role'=>'apl']) }}" class="m-btn m-btn-theme4rd dark-color flex-shrink-0 col-md-12"><i class="fa fa-envelope" aria-hidden="true"></i>  @lang('app.btn.contacter_apl')</a>
                         </div>
                         <div class="col-lg-4 col-sm-6">
 
-                            @if (Auth::user())
+                            @if (Auth::check())
                                 @if (isset(App\Models\Label::where('author_id',Auth::id())->where('product_id',$item->id)->where('label','starred')->first()->id))
                                     <a href="{{route('label.remove', ['id'=>App\Models\Label::where('author_id',Auth::id())->where('product_id',$item->id)->where('label','starred')->first()->id])}}" title="@lang('app.txt.programme_in_favorites')" class="m-btn btn-warning dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>
                                 @else
@@ -77,7 +78,7 @@
                                                 </div>
                                                 <div class="portfolio-info">
                                                     <div class="portfolio-desc">
-                                                        <h5><a href="#">{{ $item->title }}</a></h5>
+                                                        <h5><a href="#">{{ getGTranslateAutoDetect( App::getLocale() ,$item->title) }}</a></h5>
                                                     </div>
                                                     <a href="javascript:void(0)" value="{{ $key }}" class="gallery-link pop">
                                                         <i class="ti-plus"></i>
@@ -118,7 +119,7 @@
                                   </div>
                                   <div class="portfolio-info">
                                       <div class="portfolio-desc">
-                                          <h5><a href="#">{{ $item->title }}</a></h5>
+                                          <h5><a href="#">{{ getGTranslateAutoDetect( App::getLocale() ,$item->title) }}</a></h5>
                                       </div>
                                       <a href="javascript:void(0)" value="0" class="gallery-link pop">
                                           <i class="ti-plus"></i>
@@ -134,12 +135,14 @@
                   <section class="property-meta-wrapper common">
                     <div class="row m-15px-t">
                         <div class="col-sm-6">
-                          @if(Auth::user()->hasRole(5))
+                          @if(Auth::check() && Auth::user()->hasRole(5))
                             <button type="button" id="btn_buy" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12"><i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')</button>
+                          @else
+                            <button type="button" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12" disabled title="@lang('app.txt.logintocontinue')"><i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')</button>
                           @endif
                         </div>
                         <div class="col-sm-6">
-                          <a href="{{route('member.go.there')}}" id="btn_go_there" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme flex-shrink-0 col-md-12" title="@lang('app.txt.go_to_location')" @if(Auth::user()) {{ Auth::user()->isMove()?'disabled':'' }} @endif><i class="fa fa-map-marker"></i> @lang('app.btn.go_to_location')</a>
+                          <a href="{{route('member.go.there')}}" id="btn_go_there" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme flex-shrink-0 col-md-12" title="@lang('app.txt.go_to_location')" @if(Auth::check()) {{ Auth::user()->isMove()?'disabled':'' }} @endif><i class="fa fa-map-marker"></i> @lang('app.btn.go_to_location')</a>
                         </div>
                     </div>
                   </section>
@@ -183,7 +186,7 @@
                       </div>
                       <ul class="comment-list">
                           <li class="comment">
-                            <p>{!! $item->content !!}</p>
+                            <p>{!! getGTranslateAutoDetectBd('programme',$item)?getGTranslateAutoDetectBd('programme',$item):$item->content !!}</p>
                           </li>
                       </ul>
                   </div>
@@ -319,19 +322,21 @@
 </div>
 
 <!-- Modal for particular member registration -->
-<div id="registratorMemberFormModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="registratorMemberFormLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
-          <h4 class="modal-title white-color">@lang('app.txt.complete_registration')</h4>
+@if (Auth::check())
+  <div id="registratorMemberFormModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="registratorMemberFormLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
+            <h4 class="modal-title white-color">@lang('app.txt.complete_registration')</h4>
+        </div>
+        <div class="modal-body">
+            @include('login.memberpart',['user'=>Auth::user()])
+        </div>
+        {{-- <div class="modal-footer"></div> --}}
       </div>
-      <div class="modal-body">
-          @include('login.memberpart',['user'=>Auth::user()])
-      </div>
-      {{-- <div class="modal-footer"></div> --}}
     </div>
   </div>
-</div>
+@endif
 @endsection
     
 @push('script')
@@ -411,7 +416,7 @@
         }
       };
       
-      var data = {!!(isset($data) ? $data : '')!!};
+      var data = "{!!(isset($data) ? $data : '')!!}";
       
       function initMap() {
           _map = new google.maps.Map(document.getElementById('map'), {
@@ -442,13 +447,13 @@
             radius: data.area
           });
       
-      }
+      };
 
   </script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA&callback=initMap"></script>
   <script>
     $('#btn_buy').click(function(){
-       var usrIsCplt = '{{  Auth::user()->isComplete()  }}';
+       var usrIsCplt = '{{  Auth::check()?Auth::user()->isComplete():''  }}';
        if(usrIsCplt === ''){
           // Show particular member registration Modal
           $('#registratorMemberFormModal').modal('show');

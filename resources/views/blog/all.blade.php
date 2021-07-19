@@ -82,7 +82,7 @@
                                         <img src="{{ asset('images/ads-logo.png') }}" alt="logo_iea">
                                     </div>
                                     <div class="col-lg-6">
-                                        <p class="text-right">{{$item->title}}</p>
+                                        <p class="text-right">{{getGTranslateAutoDetect( App::getLocale() ,$item->title)}}</p>
                                     </div>
                                 </div>
                             </div>
