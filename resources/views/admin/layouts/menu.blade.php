@@ -204,7 +204,7 @@
             {{--<li><a href="{{route('admin.plan.create')}}">Ajouter un plan</a></li>--}}
         {{--</ul>--}}
     {{--</li>--}}
-    <li class="{{Request::is('*/config/*') || Request::is('*/menu/*') || Request::is('*/menu') || Request::is('*/firb/*') || Request::is('*/firb') || Request::is('*/translation/*') || Request::is('*/translation') || Request::is('*/media/*') || Request::is('*/media') ? 'active' : ''}}">
+    <li class="{{Request::is('*/config/*') || Request::is('*/menu/*') || Request::is('*/menu') || Request::is('*/firb/*') || Request::is('*/firb') || Request::is('*/translation/*') || Request::is('*/translation') || Request::is('*/media/*') || Request::is('*/media') || Request::is('*/model-message/*') || Request::is('*/model-message') ? 'active' : ''}}">
         <a href="#"><i class="fa fa-wrench" title="Configurations"></i> <span class="nav-label">@lang('app.configs')</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
             <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.config.site'):route('admin.config.site')}}">@lang('app.config.site')</a></li>
@@ -218,7 +218,12 @@
             </li>
             <li>
                 <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.media'):route('admin.media')}}">
-                    <span class="nav-label">@lang('media.titre')</span>
+                    <span class="nav-label">@lang('app.media.titre')</span>
+                </a>
+            </li>
+			<li>
+                <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.model-message.index'):route('admin.model-message.index')}}">
+                    <span class="nav-label">@lang('app.titre.modele_message')</span>
                 </a>
             </li>
             <li>

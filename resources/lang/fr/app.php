@@ -1315,4 +1315,7 @@ return
 	'txt.email_settings' => 'Paramètres email',	
 	'txt.you_have_received_message_from' => 'Vous avez reçu une message de la part de <strong>:user</strong>',	
 	'txt.all_messages' => 'Tous les messages',
+    'titre.modele_message' => 'Modèles message',
+    'new.modele_message' => 'Ajouter un nouveau modèle message',
+    'txt.edit_model_message' => 'Mise à jour modèle message',
 ];

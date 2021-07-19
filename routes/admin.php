@@ -148,6 +148,9 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::get('message/show/{to_id}', 'MessageController@showContactMessage')->name('ajax.show.contact.message');
     Route::post('message', 'MessageController@sendMessage')->name('ajax.send.message');
     Route::get('message/unread', 'MessageController@getUnreadMessage')->name('ajax.get.unread.message');
+    
+    //Route modèle message
+    Route::resource('model-message','ModelMessageController');
 });
 
 // ROUTE ADMIN DELEGATE
@@ -422,7 +425,16 @@ Route::prefix('collaborators')->namespace('Admin')->as('admin.')->middleware(["a
     Route::post('ajaxGetFile', 'MediaController@ajaxGetFile')->name('collaborators.admin.ajaxGetFile');
     Route::post('ajaxSaveFileEdit', 'MediaController@ajaxSaveFileEdit')->name('collaborators.admin.ajaxSaveFileEdit');
     Route::get('ajaxReadFile/{limit?}', 'MediaController@ajaxReadFile')->name('collaborators.admin.ajaxReadFile');
-
+    
+    //Route::resource('model-message','admin\ModelMessageController');
+    Route::get('/admin/model-message', 'ModelMessageController@index')->name('collaborators.admin.model-message.index');
+    Route::get('/admin/model-message/create', 'ModelMessageController@create')->name('collaborators.admin.model-message.create');
+    Route::post('/admin/model-message', 'ModelMessageController@store')->name('collaborators.admin.model-message.store');
+    Route::get('/admin/model-message/{firb}', 'ModelMessageController@show')->name('collaborators.admin.model-message.show');
+    Route::put('/admin/model-message/{firb}', 'ModelMessageController@update')->name('collaborators.admin.model-message.update');
+    Route::delete('/admin/model-message/{firb}', 'ModelMessageController@destroy')->name('collaborators.admin.model-message.destroy');
+    Route::get('/admin/model-message/{firb}/edit', 'ModelMessageController@edit')->name('collaborators.admin.model-message.edit');
+    
     // Route::resource('mails-template','MailsTemplateController');
     Route::get('/admin/mails-template', 'MailsTemplateController@index')->name('collaborators.admin.mails-template.index');
     Route::post('/admin/mails-template', 'MailsTemplateController@store')->name('collaborators.admin.mails-template.store');

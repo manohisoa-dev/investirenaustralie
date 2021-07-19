@@ -1074,4 +1074,7 @@ return
 	'txt.email_settings' => 'Email Settings',
 	'txt.you_have_received_message_from' => 'You have received a message from <strong>:user</strong>',	
 	'txt.all_messages' => 'All messages',
+    'titre.modele_message' => 'Message template',
+    'new.modele_message' => 'Add a new message template',
+    'txt.edit_model_message' => 'Update message template',
 ];
