@@ -257,11 +257,6 @@ class ProgrammeController extends Controller {
         $max_area_commercial = Product::groupBy('category_id')->where('category_id', '=',
             4)->max('land_area');
 
-        // $lapls = User::ofRole(4)
-        //     ->isActive()
-        //     ->has('location')
-        //     ->with('location')
-        //     ->get();
 
         $data = [];
         foreach ($programmes as $item) {

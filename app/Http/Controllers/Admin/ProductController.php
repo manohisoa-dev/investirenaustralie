@@ -90,7 +90,6 @@ class ProductController extends Controller {
         $nature = $request->natureBien;
         if ($request->type == 'programme') {
             //creation simple programme
-            dd($request->All());
             $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
                 '', '', $request->ville);
             $id_programme = $this->save_programme($request->cat_programmme_id, $request->ancienneteBien,
@@ -306,9 +305,9 @@ class ProductController extends Controller {
         $programme->validated_at = Carbon::now();
         $programme->save();
 
-        // // save translation
-        // $detectLang = getGTranslateLangDetect($content);
-        // $detectLang==='fr'?setTranslate('fr','en',$content,'programme',$programme):setTranslate('en','fr',$content,'programme',$programme);
+        // save translation
+        $detectLang = getGTranslateLangDetect($content);
+        $detectLang==='fr'?setTranslate('fr','en',$content,'programme',$programme):setTranslate('en','fr',$content,'programme',$programme);
 
         return $programme->id;
     }
@@ -369,9 +368,9 @@ class ProductController extends Controller {
         $product->validated_at = Carbon::now();
         $product->save();
 
-        // // save translation
-        // $detectLang = getGTranslateLangDetect($content);
-        // $detectLang==='fr'?setTranslate('fr','en',$content,'programme',$product):setTranslate('en','fr',$content,'programme',$product);
+        // save translation
+        $detectLang = getGTranslateLangDetect($content);
+        $detectLang==='fr'?setTranslate('fr','en',$content,'programme',$product):setTranslate('en','fr',$content,'programme',$product);
     }
 
     /**
@@ -437,6 +436,10 @@ class ProductController extends Controller {
             $product->display_address = $request->display_address;
             $product->type_id = $request->type_id;
             $product->save();
+
+            // update translation
+            updateTranslate('programme',$product,$request->description);
+
             # notification
             Notify::success('Programme a été mise à jour avec succès');
             return redirect(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme'));
@@ -480,8 +483,8 @@ class ProductController extends Controller {
 
             $product->save();
 
-            // // update translation
-            // updateTranslate('programme',$product,$content);
+            // update translation
+            updateTranslate('programme',$product,$request->content);
 
             # notification
             Notify::success('Produit a été mise à jour avec succès');

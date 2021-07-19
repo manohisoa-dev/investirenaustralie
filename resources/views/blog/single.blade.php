@@ -7,7 +7,7 @@
      <div class="property-contents clearfix">
          <header class="property-header clearfix">
              <div class="pull-left">
-                 <h5 class="entry-title"><a href="{{route('blog.index',$item->slug)}}">{{$item->title}}</a></h5>
+                 <h5 class="entry-title"><a href="{{route('blog.index',$item->slug)}}">{{getGTranslateAutoDetect( App::getLocale() ,$item->title)}}</a></h5>
                  <div class="contents clearfix">
                       {{$item->excerpt()}}
                 </div>

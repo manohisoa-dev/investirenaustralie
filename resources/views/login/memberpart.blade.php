@@ -40,7 +40,7 @@
                                 <form class="form-horizontal" role="form" id="partForm" action="{{route('profile.edit')}}" method="post" enctype="multipart/form-data">
                                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                                     <input type="hidden" name="type" value="person_complete">
-                                    <input type="hidden" name="userinfos_id" value="{{ $user->userinfos()->first()->id }}">
+                                    <input type="hidden" name="userinfos_id" value="{{ $user?$user->userinfos()->first()->id:'' }}">
 
                                     {{-- Login Information --}}
                                     <fieldset>
@@ -48,14 +48,14 @@
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label" for="name">@lang('app.txt.login') *</label>
                                             <div class="col-sm-12">
-                                                <input type="text" class="form-control" id="name" name="name" placeholder="Votre nom d'utilisateur" value="{{ old('name')?old('name'):$user->name }}" required>
+                                                <input type="text" class="form-control" id="name" name="name" placeholder="Votre nom d'utilisateur" value="{{ old('name')?old('name'):($user?$user->name:'') }}" required>
                                                 <span class="text-danger">{{ $errors->first('name') }}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label" for="email">@lang('app.txt.email') *</label>
                                             <div class="col-sm-12">
-                                                <input type="text" class="form-control" id="email" name="email" placeholder="you@exemple.com" value="{{ old('email')?old('email'):$user->email }}" required>
+                                                <input type="text" class="form-control" id="email" name="email" placeholder="you@exemple.com" value="{{ old('email')?old('email'):($user?$user->email:'') }}" required>
                                                 <span class="text-danger">{{ $errors->first('email') }}</span>
                                             </div>
                                         </div>
@@ -63,8 +63,8 @@
                                             <label for="language" class="col-sm-12 control-label" for="language">@lang('app.language') *</label>
                                             <div class="col-md-12">
                                                 <select class="form-control" name="language">
-                                                    <option value="fr" {{ old('language')? (old('language')=='fr'?'selected':'') : ($user->language=='fr'? 'selected' : '') }}>@lang('app.txt.francais')</option>
-                                                    <option value="en" {{ old('language')? (old('language')=='en'?'selected':'') : ($user->language=='en'? 'selected' : '') }}>@lang('app.txt.anglais')</option>
+                                                    <option value="fr" {{ old('language')? (old('language')=='fr'?'selected':'') : ( $user?($user->language=='fr'? 'selected' : ''):'') }}>@lang('app.txt.francais')</option>
+                                                    <option value="en" {{ old('language')? (old('language')=='en'?'selected':'') : ( $user?($user->language=='en'? 'selected' : ''):'') }}>@lang('app.txt.anglais')</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -74,7 +74,7 @@
                                                 <select class="form-control" name="country" required>
                                                     <option value="" selected disabled>@lang('app.select_country')</option>
                                                     @foreach(App\Models\Country::all() as $country)
-                                                    <option value="{{$country->code}}" {{ old('country')==$country->code?'selected':($user->location()->first()->country==$country->code? 'selected' : '') }}> {{$country->content}} ({{$country->code}})</option>
+                                                    <option value="{{$country->code}}" {{ old('country')==$country->code?'selected':( $user?($user->location()->first()->country==$country->code? 'selected' : ''):'') }}> {{$country->content}} ({{$country->code}})</option>
                                                     @endforeach
                                                 </select>
                                                 <span class="text-danger">{{ $errors->first('country') }}</span>
@@ -83,22 +83,24 @@
                                         <div class="form-group">
                                             <label class="col-md-3 control-label" for="image"> @lang('app.txt.avatar') </label>
                                             <div class="input-group mb-3 col-md-12">
-                                                @if (Auth::user()->hasAvatar())
-                                                    <div class="col-sm-12 text-center">
-                                                        <div class="fileupload fileupload-new" data-provides="fileupload">
-                                                            <div class="fileupload-preview thumbnail" style="width: 200px; height: 120px;">
-                                                                <img src="{{Auth::user()->imageUrl()}}">
-                                                            </div>
-                                                            <div> 
-                                                                <span class="btn btn-file"> 
-                                                                    <span class="m-btn m-btn-theme fileupload-new"><i class="fa fa-upload"></i> @lang('app.admin.file.select')</span> 
-                                                                    <span class="fileupload-exists" title="@lang('app.admin.file.change')"><i class="fa fa-edit"></i></span>
-                                                                    <input type="file" name="image" id="file">
-                                                                </span> 
-                                                                <a href="javascript:void(0)" class="btn fileupload-exists" data-dismiss="fileupload" title="@lang('app.admin.file.remove')"><i class="fa fa-trash-alt"></i></a> 
+                                                @if (Auth::user())
+                                                    @if (Auth::user()->hasAvatar())
+                                                        <div class="col-sm-12 text-center">
+                                                            <div class="fileupload fileupload-new" data-provides="fileupload">
+                                                                <div class="fileupload-preview thumbnail" style="width: 200px; height: 120px;">
+                                                                    <img src="{{Auth::user()->imageUrl()}}">
+                                                                </div>
+                                                                <div> 
+                                                                    <span class="btn btn-file"> 
+                                                                        <span class="m-btn m-btn-theme fileupload-new"><i class="fa fa-upload"></i> @lang('app.admin.file.select')</span> 
+                                                                        <span class="fileupload-exists" title="@lang('app.admin.file.change')"><i class="fa fa-edit"></i></span>
+                                                                        <input type="file" name="image" id="file">
+                                                                    </span> 
+                                                                    <a href="javascript:void(0)" class="btn fileupload-exists" data-dismiss="fileupload" title="@lang('app.admin.file.remove')"><i class="fa fa-trash-alt"></i></a> 
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    @endif
                                                 @else
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text">@lang('app.txt.upload')</span>
@@ -121,8 +123,8 @@
                                             <div class="col-sm-12">
                                                 <select class="form-control" name="civility" required>
                                                     <option value="" selected disabled>@lang('app.txt.choose_civility')</option>
-                                                    <option value="mr" {{ old('civility')=='mr'? 'selected' : ($user->userinfos()->first()->civility=='mr'? 'selected' : '') }}>@lang('app.txt.mr')</option>
-                                                    <option value="mrs" {{ old('civility')=='mrs'? 'selected' :($user->userinfos()->first()->civility=='mrs'? 'selected' : '') }}>@lang('app.txt.mrs')</option>
+                                                    <option value="mr" {{ old('civility')=='mr'? 'selected' : ( $user?($user->userinfos()->first()->civility=='mr'? 'selected' : ''):'') }}>@lang('app.txt.mr')</option>
+                                                    <option value="mrs" {{ old('civility')=='mrs'? 'selected' :( $user?($user->userinfos()->first()->civility=='mrs'? 'selected' : ''):'') }}>@lang('app.txt.mrs')</option>
                                                 </select>
                                                 <span class="text-danger">{{ $errors->first('civility') }}</span>
                                             </div>
@@ -130,21 +132,21 @@
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label" for="last_name">@lang('app.txt.nom') *</label>
                                             <div class="col-sm-12">
-                                                <input type="text" class="form-control"  name="last_name" value="{{ old('last_name')?old('last_name'):$user->userinfos()->first()->last_name }}" required>
+                                                <input type="text" class="form-control"  name="last_name" value="{{ old('last_name')?old('last_name'):($user?$user->userinfos()->first()->last_name:'') }}" required>
                                                 <span class="text-danger">{{ $errors->first('last_name') }}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="first_name" class="col-sm-3 control-label">@lang('app.txt.prenom') *</label>
                                             <div class="col-sm-12">
-                                                <input type="text" class="form-control" name="first_name" value="{{ old('first_name')?old('first_name'):$user->userinfos()->first()->first_name }}" required>
+                                                <input type="text" class="form-control" name="first_name" value="{{ old('first_name')?old('first_name'):($user?$user->userinfos()->first()->first_name:'') }}" required>
                                                 <span class="text-danger">{{ $errors->first('first_name') }}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label" for="name">@lang('app.txt.nationality') *</label>
                                             <div class="col-sm-12">
-                                                <input type="text" class="form-control" id="nationality" name="nationality" value="{{ old('nationality')?old('nationality'):$user->userinfos()->first()->nationality }}" placeholder="@lang('app.txt.nationality')" required>
+                                                <input type="text" class="form-control" id="nationality" name="nationality" value="{{ old('nationality')?old('nationality'):($user?$user->userinfos()->first()->nationality:'') }}" placeholder="@lang('app.txt.nationality')" required>
                                                 <span class="text-danger">{{ $errors->first('nationality') }}</span>
                                             </div>
                                         </div>
