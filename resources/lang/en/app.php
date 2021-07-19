@@ -1035,6 +1035,7 @@ return
 	'table.subject_fr' => 'Subject fr',
 	'txt.testimonials' => 'Testimonials',
 	'txt.satisfaction_testimonials' => 'Satisfaction Testimonials',
+    'txt.testimonial_description' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum standard dummy text.',
 	'txt.add_new_testimonials' => 'Add a new Testimonials',
 	'txt.update_testimonials' => 'Update Testimonials',
 	'txt.detail_testimonial' => 'Testimonial Detail',

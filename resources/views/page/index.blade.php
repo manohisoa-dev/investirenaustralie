@@ -348,11 +348,10 @@
 			<div class="row justify-content-between">
 				<div class="col-lg-5 m-15px-tb">
                     <label class="border-bottom-2 font-w-600 theme-color border-color-theme2nd">@lang('app.txt.our_testimonials')</label>
-					<h2 class="m-20px-b">Lorem Ipsum.</h2>
-					<p class="font-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum standard dummy text.</p>
+					<p class="font-2">@lang('app.txt.testimonial_description')</p>
 					@if(Auth::check() && Auth::user()->hasRole(5))
 					<div class="p-15px-t">
-						<a class="m-btn m-btn-theme m-btn-radius" href="{{route('member.testimonial')}}">Create Testimonials</a>
+						<a class="m-btn m-btn-theme m-btn-radius" href="{{route('member.testimonial')}}">@lang('app.txt.add_new_testimonials')</a>
 					</div>
 					@endif
 				</div>
