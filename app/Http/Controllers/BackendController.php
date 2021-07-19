@@ -14,6 +14,7 @@ use App\Models\MailUser;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Localisation;
+use App\Models\Message;
 
 class BackendController extends Controller
 {
@@ -217,16 +218,37 @@ class BackendController extends Controller
         if(!Auth::user()->canContact($user)){
             abort(404);
         }
-        
+        $this->getAllMessage($user);
         $mail = new Mail();
         if($value = $request->old('subject'))    $mail->subject = $value;
         if($value = $request->old('content'))    $mail->content = $value;
         
-        return view('backend.user.contact')
-            ->with('title', __('app.contact_user', ['name'=>$user->name, "email"=>$user->email]))
-            ->with('action', route(Auth::user()->role.'.user.contact', $user))
+        $action = route('send.message', ['role' => Role::find(Auth::user()->role)->role_initial]);
+        return view('backend.contact.apl')
+            ->with('title', __('Contacter client'))
+            ->with('action', $action)
             ->with('item', $user)
             ->with('mail', $mail);
+    }
+    
+    public function getAllMessage($user) {
+        
+        $messages = Message::whereRaw("(from_id = " . Auth::user()->id . " AND to_id = $user->id ) OR (to_id = " .
+            Auth::user()->id . " AND from_id = $user->id )")->orderBy('created_at', 'ASC')->get();
+        $data = [];
+        foreach ($messages as $message) {
+            $data[] = ['id' => $message->id, 'from_id' => $message->from_id, 'from_name' =>
+                User::where('id', $message->from_id)->first()->name, 'to_id' => $message->to_id,
+                'body' => nl2br(e($message->body)), 'created_at' => $message->created_at,
+                'created_at_send' => $message->created_at->diffForHumans(), 'seen' => $message->seen ?
+                trans('app.txt.read') : trans('app.txt.unread'), ];
+        }
+        
+        // update message showing
+        Message::where('from_id', $user->id)->where('to_id', Auth::user()->id)->update(['seen' =>
+            1]);
+
+        return json_encode($data);
     }
     
     /*
