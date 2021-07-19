@@ -86,6 +86,7 @@ class Paypal extends Controller {
         \Session::put('error', 'Unknown error occurred');
         return Redirect::route('paypal.paypalwithpayments');
     }
+
     public function getPaymentStatus() {
         $payment_id = Session::get('paypal_payment_id');
         Session::forget('paypal_payment_id');
