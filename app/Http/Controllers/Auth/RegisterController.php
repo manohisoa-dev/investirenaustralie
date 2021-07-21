@@ -274,8 +274,8 @@ class RegisterController extends Controller
             ->groupBy('localizations.locality')
             ->get();
 
-            if(session('seller_class'))
-
+            // if(session('seller_class'))
+            
             return $view
                     ->with('action', $action)
                     ->with('role', trans('app.'.$role))
@@ -284,8 +284,7 @@ class RegisterController extends Controller
                     ->with('countries', Country::all());
             
         }
-        
-        
+
         // Open First Page of registration
         return redirect()->route('register',['role'=>$role]);
         

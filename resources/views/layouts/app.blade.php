@@ -198,7 +198,7 @@
                     </div>
                 </div>
             </div>
-            <div class="container container-large">
+            <div id="container-navbar" class="container container-large">
                 <div class="navbar navbar-default navbar-expand-lg main-navbar">
                     <div class="navbar-brand">
                         <a href="{{ route('home') }}" title="{{ app_name() }}" class="logo">
@@ -569,6 +569,62 @@
             $(this).attr('hidden','true');
         });
     </script>
+
+    <script type="text/javascript">
+        $(window).bind('mousewheel', function(event) {
+        if (event.originalEvent.wheelDelta >= 0) {
+            if ($(document).scrollTop() <= 100) {
+                // $('#container-navbar').removeClass('show-navbar-after');
+                $('#container-navbar').removeClass('show-navbar-after');
+                $('#container-navbar').addClass('show-navbar-after-top');    
+            }else{
+                $('#container-navbar').removeClass('show-navbar-after-top');    
+                $('#container-navbar').addClass('show-navbar-after');
+            }
+            $('#container-navbar').removeClass('show-navbar-hover-after');
+            // $('#container-navbar').addClass('show-navbar-after');
+        }
+        else {
+            $('#container-navbar').addClass('show-navbar-hover-after');   
+        }
+        });
+  </script>
+
+  <style>
+    .header-white.fixed-header .fixed-header-bar{
+        background: none;
+        box-shadow: 0px 0px 0px 0px rgb(38 59 94 / 10%);
+        transform: perspective(400px) rotateY(0deg) scale(1) ;
+        /* transition:all .1s ease-out; */
+    }
+
+    .show-navbar-after-top{
+      background: none;
+      position: absolute;
+      opacity: 1;
+      transform: perspective(400px) rotateY(0deg) scale(1) ;
+      transition:all .4s ease-out;
+    }
+
+    .show-navbar-after{
+      background: white;
+      position: absolute;
+      opacity: 1;
+      box-shadow: 0px 10px 10px 0px rgb(38 59 94 / 15%);
+      transform: perspective(400px) rotateY(0deg) scale(1) ;
+      transition:all .6s ease-out;
+    }
+
+    .show-navbar-hover-after {
+      /* top:0; */
+      background: white;
+      opacity:.5;
+      box-shadow: 0px 3px 10px 0px rgb(38 59 94 / 15%);
+      transform: perspective(400px) rotateX(-90deg);
+      transform-origin: 50% 0%;
+      transition:all .6s ease-out;
+    }
+  </style>
 
 
 
