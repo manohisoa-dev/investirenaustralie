@@ -230,6 +230,7 @@ class RegisterController extends Controller
         // Switch to get Condition and Term count
         $conditionCount = 0;
         $view = view('login.'.$role);
+        $action = route('register',['role'=>$role]);
 
         switch($role){
             case "afa":
@@ -253,7 +254,7 @@ class RegisterController extends Controller
         }
 
         // Shown register form
-        if($request->session()->get("step") == "condition"){
+        if($request->session()->get("step") === "condition"){
             // Validate term check
             $count = 0;
             if(($conditions = $request->condition) && is_array($conditions)){
@@ -267,22 +268,21 @@ class RegisterController extends Controller
             }
 
             $request->session()->put("step", "register");
-            $action = route('register',['role'=>$role]);
-            $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','4')
-            ->groupBy('localizations.locality')
-            ->get();
 
             // if(session('seller_class'))
-            
+
             return $view
                     ->with('action', $action)
                     ->with('role', trans('app.'.$role))
                     ->with('states', State::all())
-                    ->with('lapls', $lapls)
                     ->with('countries', Country::all());
             
+        }else{
+            return $view
+                    ->with('action', $action)
+                    ->with('role', trans('app.'.$role))
+                    ->with('states', State::all())
+                    ->with('countries', Country::all());
         }
 
         // Open First Page of registration
@@ -499,12 +499,10 @@ class RegisterController extends Controller
             case 'seller':
                 if(session('seller_class')!=='non_professional_natural_persons' && session('seller_class')!=='seller_by_afa'){
                     $rules = [
-                        'type'     => 'required|max:100',
                         'orga_name'         => 'required|max:100',
                         'orga_trading_name'         => 'required|max:100',
                         'orga_abn'         => 'required|digits_between:11,11|numeric',
                         'orga_acn'         => 'nullable|digits_between:9,9|numeric',
-                        'orga_parent_name'         => 'required|max:100',
                         'orga_email'        => 'required|email|max:100',
                         'orga_phone'        => 'required|digits_between:8,8|numeric',
                         'orga_fax'        => 'nullable|max:100',
@@ -525,6 +523,13 @@ class RegisterController extends Controller
                         'contact_phone' => 'required|max:100',
     
                     ];
+
+                    if(session('seller_class')==='real_estate_professionals'){
+                        $rules += [
+                            'type'     => 'required|max:100',
+                            'orga_parent_name'         => 'required|max:100',
+                        ];
+                    }
     
                     if($request->postal_address_below){
                         $rules += [

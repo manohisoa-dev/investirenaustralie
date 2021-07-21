@@ -349,34 +349,38 @@
                     </div>
                 </div>
             </div>
-    
-            <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
-                <h5>@lang('app.txt.crmprovider')</h5>
-                <div class="row">
-                    <div class="col-md-4 m-10px-tb">
-                        <div class="media">
-                            <div class="only-icon-20">
-                                <i class="fas fa-building"></i>
-                            </div>
-                            <div class="media-body p-15px-l lh-normal">
-                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.crmprovidername') </div>
-                                <input type="text" class="form-control" name="crm_name" id="crm_name" placeholder="@lang('app.txt.crmprovidername')" value="{{$item->userinfos ?$item->userinfos->crm_name:''}}">
+            
+            @if($item->hasRole(4))
+                <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
+                    <h5>@lang('app.txt.banking_information')</h5>
+                    <div class="row">
+                        <div class="col-md-4 m-10px-tb">
+                            <div class="media">
+                                <div class="only-icon-20">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                                <div class="media-body p-15px-l lh-normal">
+                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.iban_bank_account') </div>
+                                    <input type="text" class="form-control" name="crm_name" id="crm_name" placeholder="@lang('app.txt.iban_bank_account')" value="{{$item->userinfos ?$item->userinfos->bank_iban:''}}">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-4 m-10px-tb">
-                        <div class="media">
-                            <div class="only-icon-20">
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div class="media-body p-15px-l lh-normal">
-                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.crmprovideremail') </div>
-                                <input type="text" name="crm_email" id="crm_email" placeholder="@lang('app.txt.crmprovideremail')" value="{{$item->userinfos ?$item->userinfos->crm_email:''}}" class="form-control">
+                        <div class="col-md-4 m-10px-tb">
+                            <div class="media">
+                                <div class="only-icon-20">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="media-body p-15px-l lh-normal">
+                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.bic_code') </div>
+                                    <input type="text" name="crm_email" id="crm_email" placeholder="@lang('app.txt.bic_code')" value="{{$item->userinfos ?$item->userinfos->bank_bic:''}}" class="form-control">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endif
+
+
             <div>
                 <button type="button" class="m-btn m-btn-theme4rd pull-right" id="btn_save">@lang('app.btn.save')</button>
             </div>
