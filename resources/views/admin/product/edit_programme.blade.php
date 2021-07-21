@@ -816,18 +816,26 @@
 				data:{"_token": "{{ csrf_token() }}",'id_produit':id_produit},
 				success: function(data)
 				{
+					//console.log((data.localisation).length);
+					if (data.localisation === null) {
+						$('[name="suburb_product"]').val('');
+						$('[name="ville_product"]').val('');
+						$('[name="countryId_product"]').val('');
+					}else{
+						$('[name="suburb_product"]').val(data.localisation.area_level_1);
+						$('[name="ville_product"]').val(data.localisation.locality);
+						$('[name="countryId_product"]').val(data.localisation.country);
+					}
+					
 					$('#title_new_programme').val($('#title_programme').val());
 					$("#progTitle").text($('#title_programme').val());
 					$('[name="title_product"]').val(data.product.title);
 					$('#desc_product').val(data.product.content);
 					CKEDITOR.replace( 'desc_product' );
-					$('[name="product_type_id"]').val(data.product.type_id);
-					$('[name="suburb_product"]').val(data.localisation.area_level_1);
-					$('[name="ville_product"]').val(data.localisation.locality);
+					$('[name="product_type_id"]').val(data.product.type_id);					
 					$('[name="postalCode_product"]').val(data.product.postalCode);
 					$('[name="display_address_product"]').val(data.product.display_address);
-					$('[name="state_id_product"]').val(data.product.state_id);
-					$('[name="countryId_product"]').val(data.localisation.country);
+					$('[name="state_id_product"]').val(data.product.state_id);					
 					$('[name="price"]').val(data.product.min_price);
 					$('[name="price_max_prd"]').val(data.product.max_price);
 					$('[name="status"]').val(data.product.status);
