@@ -81,6 +81,7 @@
                                     <img id="avatar" src="{{ \App\Models\User::find(Auth::id())->imageUrl() }}" title="" alt="">
                                     <span id="btn_edit_avatar" class="avatar-80 border-radius-50" title="@lang('app.txt.editavatar')"><i style="margin-top:30px;color:white;" class="fa fa-edit"></i></span>
                                 </div>
+                                <h6 class="font-w-500 m-15px-t m-0px"><span class="font-w-700">{{ Auth::user()->immat?Auth::user()->immat:'' }}</span></h6>
                                 <h6 class="font-w-500 m-15px-t m-0px"><span class="font-w-700">{{ Auth::user()->name }}</span></h6>
                                 <span class="font-small">{{ \App\Models\User::find(Auth::id())->roleUser->role_initial }}</span>
                                 <div class="p-10px-t">

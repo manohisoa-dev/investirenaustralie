@@ -1318,4 +1318,5 @@ return
     'titre.modele_message' => 'Modèles message',
     'new.modele_message' => 'Ajouter un nouveau modèle message',
     'txt.edit_model_message' => 'Mise à jour modèle message',
+	'txt.banking_information' => 'Informations Bancaires',
 ];

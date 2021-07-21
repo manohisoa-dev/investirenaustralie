@@ -69,16 +69,19 @@
                                             {{-- Business Details --}}
                                             <fieldset>
                                                 <legend>@lang('app.txt.business_details')</legend>
-                                                <div class="form-group">
-                                                    <label for="type" class="col-sm-12 control-label">@lang('app.txt.type_of_business') *</label>
-                                                    <div class="col-sm-12">
-                                                        <select class="form-control" name="type" id="type" required>
-                                                            <option value="" selected disabled>@lang('app.form.choix_txt')</option>
-                                                            <option value="Builder"> @lang('app.txt.builder')</option>
-                                                            <option value="Developer"> @lang('app.txt.developer')</option>
-                                                        </select>
+                                                @if (session('seller_class')!=='non_professional_legal_persons')
+                                                    <div class="form-group">
+                                                        <label for="type" class="col-sm-12 control-label">@lang('app.txt.type_of_business') *</label>
+                                                        <div class="col-sm-12">
+                                                            <select class="form-control" name="type" id="type" required>
+                                                                <option value="" selected disabled>@lang('app.form.choix_txt')</option>
+                                                                <option value="Builder"> @lang('app.txt.builder')</option>
+                                                                <option value="Developer"> @lang('app.txt.developer')</option>
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                @endif
+                                                
                                                 <div class="form-group">
                                                     <label for="orga_name" class="col-sm-12 control-label">@lang('app.txt.businessname') *</label>
                                                     <div class="col-sm-12">
@@ -107,13 +110,15 @@
                                                         <span class="text-danger">{{ $errors->first('orga_acn') }}</span>
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="orga_parent_name" class="col-sm-12 control-label">@lang('app.txt.businessparentname') *</label>
-                                                    <div class="col-sm-12">
-                                                        <input type="text" class="form-control" id="orga_parent_name" name="orga_parent_name" placeholder="@lang('app.txt.businessparentname.placeholder')" value="{{ old('orga_parent_name')?old('orga_parent_name'):'' }}" required>
-                                                        <span class="text-danger">{{ $errors->first('orga_parent_name') }}</span>
+                                                @if (session('seller_class')!=='non_professional_legal_persons')
+                                                    <div class="form-group">
+                                                        <label for="orga_parent_name" class="col-sm-12 control-label">@lang('app.txt.businessparentname') *</label>
+                                                        <div class="col-sm-12">
+                                                            <input type="text" class="form-control" id="orga_parent_name" name="orga_parent_name" placeholder="@lang('app.txt.businessparentname.placeholder')" value="{{ old('orga_parent_name')?old('orga_parent_name'):'' }}" required>
+                                                            <span class="text-danger">{{ $errors->first('orga_parent_name') }}</span>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                @endif
                                                 <div class="form-group">
                                                     <label for="orga_email" class="col-sm-12 control-label">@lang('app.txt.businessemail') *</label>
                                                     <div class="col-sm-12">

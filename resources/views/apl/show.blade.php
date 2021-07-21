@@ -104,20 +104,6 @@
                                             </ul>
                                         </div>
                                     </div>
-
-                                    {{-- Fournisseur CRM --}}
-                                    <div class="card m-30px-b">
-                                        <div class="card-body">
-                                            <div class="m-30px-b">
-                                                <h3 class="h4">@lang('app.txt.crmprovider')</h3>
-                                            </div>
-                                            <ul class="list-type-02">
-                                                <li><i class="fas fa-building"></i> @lang('app.txt.crmprovidername') : {{$aplDatas[0]->userinfos ?$aplDatas[0]->userinfos->crm_name:trans('app.txt.noinfo') }}</li>
-                                                <li><i class="fas fa-envelope"></i> @lang('app.txt.crmprovideremail') : {{$aplDatas[0]->userinfos ?$aplDatas[0]->userinfos->crm_email:trans('app.txt.noinfo') }}</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
                             <div class="float-right">

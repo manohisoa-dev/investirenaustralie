@@ -1077,4 +1077,5 @@ return
     'titre.modele_message' => 'Message template',
     'new.modele_message' => 'Add a new message template',
     'txt.edit_model_message' => 'Update message template',
+	'txt.banking_information' => 'Banking Information',
 ];
