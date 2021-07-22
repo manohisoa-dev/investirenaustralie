@@ -680,7 +680,7 @@ return
 	'btn.star' => 'Favoris',
 	'btn.back' => 'Allez au precedent',
 	'btn.pin' => 'Epingler',
-	'btn.select_apl' => 'Selectionner cet APL',
+	'btn.select_apl' => 'Selectionner cette APL',
 	'btn.contact_admin' => 'Contacter l&lsquo;administrateur',
 	'btn.contact_apl' => 'Contacter l&lsquo;APL',
 	'btn.login' => 'Connexion',
