@@ -126,11 +126,11 @@ class TemoignageController extends Controller {
     }
 
     public function pdfTest() {
-        $temoignage = Temoignage::find($request->id);
+        //$temoignage = Temoignage::find($request->id);
 
-        $pdf = PDF::loadView('admin.temoignage.pdf', compact('temoignage'));
-        return $pdf->download('invoice.pdf');
-        //return $this->view("testpdf");
+        //$pdf = PDF::loadView('admin.temoignage.pdf', compact('temoignage'));
+        //return $pdf->download('invoice.pdf');
+        return $this->view("testpdf");
     }
 
     public function infoPost(Request $request) {
@@ -142,7 +142,7 @@ class TemoignageController extends Controller {
         $year = date('Y', $dt);
 
         $pdf = new Fpdi('l');
-        $pdf_file = public_path('uploads/certificate.pdf');
+        $pdf_file = public_path('uploads/FORM_6_MODEL_1.pdf');
         $pagecount = $pdf->setSourceFile($pdf_file);
         // Import the first page from the PDF and add to dynamic PDF
         $tpl = $pdf->importPage(1);
@@ -155,26 +155,26 @@ class TemoignageController extends Controller {
 
         // modifier nom
         $pdf->SetFontSize('30'); // set font size
-        $pdf->SetXY(10, 89); // set the position of the box
+        $pdf->SetXY(7.41, 5.02); // set the position of the box
         $pdf->Cell(0, 10, $nom, 1, 0, 'C'); // add the text, align to Center of cell
 
         // modifier titre
         $pdf->SetFontSize('20');
-        $pdf->SetXY(80, 105);
-        $pdf->Cell(150, 10, $titre, 1, 0, 'C');
+        $pdf->SetXY(193.57, 207.87);
+        $pdf->Cell(0, 10, '1', 1, 0, 'C');
 
         // modifier jour
         $pdf->SetFontSize('20');
-        $pdf->SetXY(118, 122);
-        $pdf->Cell(20, 10, $day, 1, 0, 'C');
+        $pdf->SetXY(208, 208);
+        $pdf->Cell(0, 10, '22', 1, 0, 'C');
 
         // modifier mois
-        $pdf->SetXY(160, 122);
-        $pdf->Cell(30, 10, $month, 1, 0, 'C');
+        $pdf->SetXY(223.19, 207.87);
+        $pdf->Cell(30, 10, '3', 1, 0, 'C');
 
         // modifier année
-        $pdf->SetXY(200, 122);
-        $pdf->Cell(20, 10, $year, 1, 0, 'L');
+        //$pdf->SetXY(200, 122);
+        //$pdf->Cell(20, 10, $year, 1, 0, 'L');
         
         //generer pdf
         $pdf->Output();
