@@ -58,11 +58,6 @@ class BackendController extends Controller
             ->orderBy('created_at', 'desc')
             ->take($this->recentSize)
             ->get();
-        $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','4')
-            ->groupBy('localizations.locality')
-            ->get();
         
         switch($role_init){
             case 'member':
@@ -145,7 +140,7 @@ class BackendController extends Controller
         
         $view->with('count', $count);
         $view->with('recent', $recent);
-        $view->with('lapls', $lapls);
+        
         return $view;
     }
 
@@ -159,15 +154,9 @@ class BackendController extends Controller
     {
         $items = Auth::user()->favorites()
             ->paginate($this->pageSize);
-        $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','4')
-            ->groupBy('localizations.locality')
-            ->get();
-        
+
         return view('backend.product.all')
             ->with('title', __('app.favorites'))
-            ->with('lapls', $lapls)
             ->with('items', $items);
     }
     
@@ -181,15 +170,9 @@ class BackendController extends Controller
         $items = Auth::user()->searches()
             ->whereNotNull('keyword')
             ->paginate($this->pageSize);
-        $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','4')
-            ->groupBy('localizations.locality')
-            ->get();
         
         return view('backend.search.all')
             ->with('title', __('app.searches'))
-            ->with('lapls', $lapls)
             ->with('items', $items);
     }
 

@@ -65,10 +65,21 @@ class LoginController extends Controller
 
         $role_initial = Role::find(Auth::user()->role)->role_initial;
 
-        // If user is collaborator
-        Auth::user()->isAdminDelegate()?$role_initial='collaborators':$role_initial='collaborator';
+        // Get role initial user
+        switch ($role_initial) {
+            case 'collaborator':
+                $role_initial= Auth::user()->isAdminDelegate()?'collaborators':'collaborator';
+                break;
+            
+            default:
+                $role_initial=$role_initial;
+                break;
+        }
 
-        return '/'. $role_initial;
+        // set URL
+        $url = '/'. $role_initial;
+
+        return $url;
     }
     
     /**
@@ -195,10 +206,42 @@ class LoginController extends Controller
 
         // return $this->authenticated($request, $this->guard()->user())
         //     ?: redirect()->intended($this->redirectPath());
+
+        // $_targetUrl = redirect()->intended()->getTargetUrl();
+        // $http_origin = \Request::server()['HTTP_ORIGIN'];
+
+        // dd($_targetUrl);
+
         
+        // switch ($targetUrl) {
+        //     case $http_origin:
+        //         return redirect('/'.Role::find($this->guard()->user()->role)->role_initial);
+        //         break;
+                
+        //     default:
+        //     return $this->authenticated($request, $this->guard()->user())
+        //         ?: redirect()->intended($this->redirectPath());
+        //         break;
+        //     }
+
+            
         return $this->authenticated($request, $this->guard()->user())
             ?: redirect()->intended($this->redirectPath());
+
+        // return $this->authenticated($request, $this->guard()->user());
     }
+
+    // /**
+    //  * The user has been authenticated.
+    //  *
+    //  * @param  \Illuminate\Http\Request  $request
+    //  * @param  mixed  $user
+    //  * @return mixed
+    //  */
+    // protected function authenticated(Request $request, $user)
+    // {
+        
+    // }
 
     /**
     * Handle a login request to the application.

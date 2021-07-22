@@ -26,7 +26,7 @@
 
                     <div class="p-25px-t row col-lg-12">
                         <div class="col-lg-4 col-sm-6">
-                          <a href="{{ route('member.contact.afa') }}" id="contact_afa" value="{{ Session::has('has_afa')?1:0 }}" class="m-btn m-btn-theme2nd dark-color flex-shrink-0 col-md-12"><i class="fa fa-envelope" aria-hidden="true"></i>  @lang('app.btn.contact_afa')</a>
+                          <a href="{{ route('member.contact',['role'=>'afa']) }}" id="contact_afa" value="{{ Session::has('has_afa')?1:0 }}" class="m-btn m-btn-theme2nd dark-color flex-shrink-0 col-md-12"><i class="fa fa-envelope" aria-hidden="true"></i>  @lang('app.btn.contact_afa')</a>
                         </div>
                         <div class="col-lg-4 col-sm-6">
                           <a href="{{ route('member.contact', ['role'=>'apl']) }}" class="m-btn m-btn-theme4rd dark-color flex-shrink-0 col-md-12"><i class="fa fa-envelope" aria-hidden="true"></i>  @lang('app.btn.contacter_apl')</a>

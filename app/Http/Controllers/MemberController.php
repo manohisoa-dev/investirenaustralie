@@ -74,10 +74,11 @@ class MemberController extends Controller {
 
     public function contact(Request $request, $role) {
         $action = route('send.message', ['role' => $role]);
-        $lapls = Localisation::select('localizations.*')->join('users',
-            'users.location_id', '=', 'localizations.id')->where('users.role', '=', '4')->groupBy('localizations.locality')->get();
         $apls = User::ofRole(4)->isActive()->get();
         $user_name = "";
+        $lafas = User::where('role', 3)->where('status', 'active')->where('location_id',
+            Auth::user()->location_id)->orderBy('id', 'desc')->get();
+        $getAllMessage = $this->getAllMessage($role);
 
 
         if ($request->get('afa'))
@@ -88,17 +89,17 @@ class MemberController extends Controller {
 
         if (($role == 'apl') && !Auth::user()->apl) {
             return redirect()->route('member.select.apl')->with('error', trans('app.txt.choose_an_apl_before_messaging'));
-        } elseif ($role == 'afa') {
-            if (!Auth::user()->hasAfa())
+        }elseif ($role == 'afa') {
+            if (!Auth::user()->hasAfa()){
                 return redirect()->route('member.select.afa')->with('error', trans('app.txt.choose_an_afa_before_messaging'));
+            }
+        }else{
+            return view('backend.contact.member')->with('action', $action)->with('lafas',
+            $lafas)->with('apls', $apls)->with('role', $role)->with('user_name', $user_name)->with('title',
+            __('app.contact_' . $role))->with(['data' => $getAllMessage]);
         }
 
-        $lafas = User::where('role', 3)->where('status', 'active')->where('location_id',
-            Auth::user()->location_id)->orderBy('id', 'desc')->get();
-
-        $getAllMessage = $this->getAllMessage($role);
-
-        return view('backend.contact.member')->with('action', $action)->with('lapls', $lapls)->with('lafas',
+        return view('backend.contact.member')->with('action', $action)->with('lafas',
             $lafas)->with('apls', $apls)->with('role', $role)->with('user_name', $user_name)->with('title',
             __('app.contact_' . $role))->with(['data' => $getAllMessage]);
     }

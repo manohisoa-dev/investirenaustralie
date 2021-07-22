@@ -121,5 +121,28 @@ class AplController extends Controller
             ->with('lapls', $lapls)
             ->with('items', $items);
     }
+
+    public function showMessage(Request $request, $role){
+        $action = route('send.message', ['role'=>$role]);
+        $apls = User::ofRole(4)->isActive()->get();
+        
+        $lafas = User::where('role',3)
+            ->where('status','active')
+            ->where('location_id',Auth::user()->location_id)
+            ->orderBy('id','desc')
+            ->get();
+
+        $lcontact = Message::where("to_id", Auth::user()->id)
+        ->orderBy('created_at', 'ASC')
+        ->groupBy('from_id')
+        ->get();
+        
+        return view('backend.contact.afa')
+            ->with('action', $action)
+            ->with('lafas', $lafas)
+            ->with('apls', $apls)
+            ->with('role', $role)
+            ->with('title', trans('app.chat'));
+    }
     
 }

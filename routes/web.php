@@ -219,6 +219,8 @@ Route::prefix('apl')->middleware(["auth","role:4"])->group(function(){
         Route::get('delete/{mail}', 'MailController@delete')->name('apl.mail.delete');
     });
 
+    Route::get('message/{role}/show', 'AplController@showMessage')->name('show.message');
+
 });
 
 Route::prefix('afa')->middleware(["auth","role:3"])->group(function(){

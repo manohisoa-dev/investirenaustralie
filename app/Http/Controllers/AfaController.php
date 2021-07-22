@@ -106,11 +106,6 @@ class AfaController extends Controller
     
     public function showMessage(Request $request, $role){
         $action = route('send.message', ['role'=>$role]);
-        $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','4')
-            ->groupBy('localizations.locality')
-            ->get();
         $apls = User::ofRole(4)->isActive()->get();
         
         $lafas = User::where('role',3)
@@ -126,7 +121,6 @@ class AfaController extends Controller
         
         return view('backend.contact.afa')
             ->with('action', $action)
-            ->with('lapls', $lapls)
             ->with('lafas', $lafas)
             ->with('apls', $apls)
             ->with('role', $role)
