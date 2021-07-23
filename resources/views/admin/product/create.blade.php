@@ -1123,6 +1123,7 @@
 			$('#garage_spaces, #carport_spaces').bind('keyup mouseup', function (){
 				if($('#garage_spaces').val() != 0 || $('#carport_spaces').val() != 0){
 				     console.log('tokony disabled');
+					$("#chk_parking").prop('checked',false);
 					$("#chk_parking").attr('disabled','disabled');
 				}else{
 					console.log('normal');
