@@ -94,10 +94,10 @@
         </div>
         <div class="row">
             <div class="col-lg-8" style="margin-top: -9%;">
-                <section class="section">
+                <section class="section" style="margin-bottom:-150px;">
                     <div class="m-15px-l">
-                        <div class="property-sorting col-lg-12">        
-                            <form id="filter-form" method="get" action="">
+                        <div class="property-sorting">        
+                            <form id="filter-form" class="form-group row col-lg-12" method="get" action="">
                                 <div  class="pull-left form-group col-lg-3 col-md-12">
                                     <label for="showBy"> @lang('app.form.represent'):   </label>  
                                     <select class="form-control" name="showBy" id="showBy" onchange="document.getElementById('filter-form').submit();"> 
@@ -130,7 +130,7 @@
                                         <option value="desc" {{$order=='desc'?'selected':''}}>@lang('app.form.desc')</option> 
                                     </select>
                                 </div>
-                                <div  class="pull-left col-lg-2 col-md-12 m-50px-t" id="showType" @if($showBy!=='mat' || sizeOf($items)===0) hidden @endif>
+                                <div  class="pull-left col-lg-3 col-md-12 m-50px-t" id="showType" @if($showBy!=='mat' || sizeOf($items)===0) hidden @endif>
                                     <p class="layout-view"> @lang('app.form.vue'): <a href="javascript:void(0)" id="grid"><i class="fa fa-th-large selected" data-layout="6"></i></a> <a href="javascript:void(0)" id="list"><i class="fa fa-list-ul" data-layout="12"></i></a> </p>
                                     <input type="hidden" name="view_prod" id="view_prod" value="list">
                                 </div>
