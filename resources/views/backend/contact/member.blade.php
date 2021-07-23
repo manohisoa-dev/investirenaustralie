@@ -117,6 +117,7 @@
                         {
                             for(var i=0; i<dt.length; i++){
                                 var fromId = dt[i].from_id;
+                                var fromImmat = dt[i].from_immat;
                                 var fromName = dt[i].from_name;
                                 var chatingName = dt[i].chating_name;
                                 var createdAt = dt[i].created_at;
@@ -133,7 +134,7 @@
                                             '</span>'+
                                             '<div class="chat-body clearfix">'+
                                                 '<div class="header">'+
-                                                    '<strong class="primary-font">'+fromName+'</strong> <small class="pull-right text-muted">'+
+                                                    '<strong class="primary-font">'+fromImmat+'</strong> <small class="pull-right text-muted">'+
                                                     '<span class="glyphicon glyphicon-time"></span><i>'+createdAtSend+', '+seen+'</i></small>'+
                                                 '</div>'+
                                                 '<p class="pull-left p-10px-t">'+
@@ -149,7 +150,7 @@
                                             '<div class="chat-body clearfix">'+
                                                 '<div class="header">'+
                                                     '<small class=" text-muted"><span class="glyphicon glyphicon-time"></span><i>'+createdAtSend+', '+seen+'</i></small>'+
-                                                    '<strong class="pull-right primary-font"> {{ Auth::user()->name }} </strong>'+
+                                                    '<strong class="pull-right primary-font"> {{ Auth::user()->immat }} </strong>'+
                                                 '</div>'+
                                                 '<p class="pull-right p-10px-t">'+
                                                     message +

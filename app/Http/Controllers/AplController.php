@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\Models\Localisation;
+use App\Models\User;
+use App\Models\Message;
 
 class AplController extends Controller
 {
@@ -113,7 +115,7 @@ class AplController extends Controller
         ->groupBy('from_id')
         ->get();
         
-        return view('backend.contact.afa')
+        return view('backend.contact.apl')
             ->with('action', $action)
             ->with('lafas', $lafas)
             ->with('apls', $apls)

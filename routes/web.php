@@ -219,7 +219,7 @@ Route::prefix('apl')->middleware(["auth","role:4"])->group(function(){
         Route::get('delete/{mail}', 'MailController@delete')->name('apl.mail.delete');
     });
 
-    Route::get('message/{role}/show', 'AplController@showMessage')->name('show.message');
+    Route::get('message/{role}/show', 'AplController@showMessage')->name('apl.show.message');
 
 });
 
@@ -245,7 +245,7 @@ Route::prefix('afa')->middleware(["auth","role:3"])->group(function(){
         Route::get('delete/{mail}', 'AfaController@delete')->name('afa.mail.delete');
     });
 
-    Route::get('message/{role}/show', 'AfaController@showMessage')->name('show.message');
+    Route::get('message/{role}/show', 'AfaController@showMessage')->name('afa.show.message');
 });
 
 Route::prefix('seller')->middleware(["auth","role:2"])->group(function(){

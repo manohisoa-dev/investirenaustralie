@@ -32,6 +32,10 @@ class MessageController extends Controller
             $to_id= Auth::user()->afa_id;
         }
 
+        if($role==='apl'){
+            $to_id= Auth::user()->apl_id;
+        }
+
         $messages = Message::whereRaw("(from_id = ".$user_id." AND to_id = $to_id ) OR (to_id = ".$user_id." AND from_id = $to_id )" )
                             ->orderBy('created_at', 'ASC')
                             ->get();
@@ -41,6 +45,7 @@ class MessageController extends Controller
             $data[] = [
                 'id' => $message->id,
                 'from_id' => $message->from_id,
+                'from_immat' => User::where('id',$message->from_id)->first()->immat,
                 'from_name' => User::where('id',$message->from_id)->first()->name,
                 'to_id' => $message->to_id,
                 'body' => nl2br(e($message->body)),
@@ -115,6 +120,7 @@ class MessageController extends Controller
             $data[] = [
                 'id' => $message->id,
                 'from_id' => $message->from_id,
+                'from_immat' => User::where('id',$message->from_id)->first()->immat,
                 'from_name' => User::where('id',$message->from_id)->first()->name,
                 'to_id' => $message->to_id,
                 'body' => nl2br(e($message->body)),
@@ -184,7 +190,7 @@ class MessageController extends Controller
 
         $lists = Message::where("to_id", $user_id)
         ->join('users', 'users.id','=','messages.from_id')
-        ->select('messages.*', 'messages.created_at as dt' , 'users.name', 'users.id as user_id', 'users.role')
+        ->select('messages.*', 'messages.created_at as dt' , 'users.name', 'users.immat', 'users.id as user_id', 'users.role')
         ->orderBy('created_at' , 'ASC')
         ->groupBy('from_id')
         ->get();
@@ -195,6 +201,7 @@ class MessageController extends Controller
                 'name' => $list->name,
                 'dateSend' => $list->created_at->diffForHumans(),
                 'user_id' => $list->user_id,
+                'user_immat' => $list->immat,
                 'user_role'=> trans('app.'.Role::where('id', $list->role)->first()->role_initial),
             ];
         }

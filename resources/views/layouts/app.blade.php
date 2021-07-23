@@ -227,7 +227,7 @@
                             </li>
                             <li><a class="nav-link" href="{{route('services')}}">@lang('app.services')</a></li>
                             <li class="mm-in px-mega">
-                                <a href="javascript:void(0)">@lang('app.apls')</a>
+                                <a href="javascript:void(0)" title="@lang('app.apls')">@lang('app.txt.apl')</a>
                                 <i class="fa fa-angle-down px-nav-toggle"></i>
                                 <div class="px-mega-menu mm-dorp-in">
                                     <div class="row no-gutters">
