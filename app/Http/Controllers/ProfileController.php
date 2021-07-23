@@ -39,16 +39,9 @@ class ProfileController extends Controller
         }else{
             $view = view('backend.user.profile');
         }
-
-        $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','4')
-            ->groupBy('localizations.locality')
-            ->get();
         
         return $view->with('title', __('app.profile'))
             ->with('item', Auth::user())
-            ->with('lapls', $lapls)
             ->with('breadcrumbs', __('app.profile'));
     }
 

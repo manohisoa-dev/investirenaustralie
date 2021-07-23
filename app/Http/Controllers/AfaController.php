@@ -32,15 +32,9 @@ class AfaController extends Controller
         $items = Auth::user()->orders()
             ->where('status', 'ordered')
             ->paginate($this->pageSize);
-        $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','4')
-            ->groupBy('localizations.locality')
-            ->get();
         
         return view('backend.sale.all')
             ->with('title', __('afa.orders'))
-            ->with('lapls', $lapls)
             ->with('items', $items);
     }
     
@@ -54,15 +48,9 @@ class AfaController extends Controller
         $items = Auth::user()->orders()
             ->where('status', 'paid')
             ->paginate($this->pageSize);
-        $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','4')
-            ->groupBy('localizations.locality')
-            ->get();
         
         return view('backend.sale.all')
             ->with('title', __('afa.sales'))
-            ->with('lapls', $lapls)
             ->with('items', $items);
     }
     
@@ -75,11 +63,6 @@ class AfaController extends Controller
     {
         $items = Auth::user()->orders()
             ->where('status', 'ordered');
-        $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','4')
-            ->groupBy('localizations.locality')
-            ->get();
         
         switch($filter){
             case 'paid':
@@ -99,7 +82,6 @@ class AfaController extends Controller
         
         return view('backend.sale.all')
             ->with('title', $title)
-            ->with('lapls', $lapls)
             ->with('items', $items);
     }
 

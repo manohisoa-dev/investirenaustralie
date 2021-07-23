@@ -123,12 +123,6 @@ class ShopController extends Controller
         
         $states = State::orderBy('content', 'asc')
             ->get();
-
-        $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','4')
-            ->groupBy('localizations.locality')
-            ->get();
                 
         $min_price_residentiel = Product::groupBy('category_id')
             ->where('category_id','=',1)
@@ -257,7 +251,6 @@ class ShopController extends Controller
             ->with('commercials',$commercials)
             ->with('states', $states)
             ->with('category', $category)
-            ->with('lapls', $lapls)
             ->with('min_price_residentiel',$min_price_residentiel)
             ->with('max_price_residentiel',$max_price_residentiel)
             ->with('min_land_area_residentiel',$min_land_area_residentiel)

@@ -98,11 +98,6 @@ class LoginController extends Controller
         $content = \App\Models\Config::login()->get_meta_array('content', $locale);
         $address = \App\Models\Config::login()->get_meta_array('address', $locale);
         $contact = \App\Models\Config::login()->get_meta_array('contact', $locale);
-        $lapls = Localisation::select('localizations.*')
-                ->join('users','users.location_id','=','localizations.id')
-                ->where('users.role','=','4')
-                ->groupBy('localizations.locality')
-                ->get();
         
         return view('auth.login')
             ->with('latitude', $latitude)
@@ -110,8 +105,7 @@ class LoginController extends Controller
             ->with('title', $title)
             ->with('content', $content)
             ->with('address', $address)
-            ->with('contact', $contact)
-            ->with('lapls', $lapls);
+            ->with('contact', $contact);
     }
     
     
@@ -282,16 +276,10 @@ class LoginController extends Controller
             $page = Page::where('path', '/register/seller')
                 ->locale()
                 ->first();
-            $lapls = Localisation::select('localizations.*')
-                    ->join('users','users.location_id','=','localizations.id')
-                    ->where('users.role','=','4')
-                    ->groupBy('localizations.locality')
-                    ->get();
 
             return view('login.condition.sellerbyafa')
                 ->with('role', $roles)
-                ->with('page', $page)
-                ->with('lapls', $lapls);
+                ->with('page', $page);
         }
     }
 

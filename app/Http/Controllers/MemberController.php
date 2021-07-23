@@ -362,9 +362,6 @@ class MemberController extends Controller {
 
         $apls = User::ofRole(4)->isActive()->has('location')->with('location')->get();
 
-        $lapls = Localisation::select('localizations.*')->join('users',
-            'users.location_id', '=', 'localizations.id')->where('users.role', '=', '4')->groupBy('localizations.locality')->get();
-
         $userApl = Auth::user()->apl;
 
         $selected = null;
@@ -386,7 +383,7 @@ class MemberController extends Controller {
         $action = route('member.select.apl');
 
         return view('backend.apl.select')->with('location', Auth::user()->location)->with('action',
-            $action)->with('items', $apls)->with('distance', $distance)->with('lapls', $lapls)->with('distances',
+            $action)->with('items', $apls)->with('distance', $distance)->with('distances',
             $this->distances)->with('selected', json_encode($selected))->with('message', $message)->with('data',
             json_encode($data));
     }
@@ -460,8 +457,6 @@ class MemberController extends Controller {
         $data = [];
 
         $afas = User::ofRole(3)->isActive()->has('location')->with('location')->get();
-        $lapls = Localisation::select('localizations.*')->join('users',
-            'users.location_id', '=', 'localizations.id')->where('users.role', '=', '4')->groupBy('localizations.locality')->get();
 
         $userApl = Auth::user()->apl;
 
@@ -484,7 +479,7 @@ class MemberController extends Controller {
         $action = route('member.select.afa');
 
         return view('backend.afa.select')->with('location', Auth::user()->location)->with('action',
-            $action)->with('items', $afas)->with('distance', $distance)->with('lapls', $lapls)->with('distances',
+            $action)->with('items', $afas)->with('distance', $distance)->with('distances',
             $this->distances)->with('selected', json_encode($selected))->with('data',
             json_encode($data));
     }

@@ -227,49 +227,33 @@
                             </li>
                             <li><a class="nav-link" href="{{route('services')}}">@lang('app.services')</a></li>
                             <li class="mm-in px-mega">
-                                <a href="javascript:void(0)">Agences Partenaires Locales</a>
+                                <a href="javascript:void(0)">@lang('app.apls')</a>
                                 <i class="fa fa-angle-down px-nav-toggle"></i>
                                 <div class="px-mega-menu mm-dorp-in">
                                     <div class="row no-gutters">
                                         <div class="col-lg-12">
                                             <div class="px-mm-right">
                                                 <div class="row">
-                                                    <div class="col-lg-4">
-                                                        <h6 class="mm-title">Australie</h6>
-                                                        <ul class="mm-link">
-                                                            <li><a href="about-us.html">About Us 1</a></li>
-                                                            <li><a href="services.html">Services 1</a></li>
-                                                            <li><a href="price.html">Pricing</a></li>
-                                                            <li><a href="portfolio.html">Portfolio</a></li>
-                                                            <li><a href="team.html">Our Team</a></li>
-                                                            <li><a href="contact-us.html">Contact Us</a></li>
-                                                            <li><a href="careers.html">Careers</a></li>
-                                                            <li><a href="single-careers.html">Careers Single</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-4">
-                                                        <h6 class="mm-title">France</h6>
-                                                        <ul class="mm-link">
-                                                            <li><a href="blog.html">Blog</a></li>
-                                                            <li><a href="blog-sidebar.html">Blog Sidebar</a></li>
-                                                            <li><a href="blog-detail-2.html">Single Blog</a></li>
-                                                            <li><a href="blog-detail.html">Single Blog Sidebar</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-4">
-                                                        <h6 class="mm-title">Nouvelle-Calédonie</h6>
-                                                        <ul class="mm-link">
-                                                            <li><a href="login.html">Login</a></li>
-                                                            <li><a href="sign-up.html">Sign Up</a></li>
-                                                            <li><a href="recover-account.html">Recover Account</a></li>
-                                                            <li><a href="login-basic.html">Login Basic</a></li>
-                                                            <li><a href="sign-up-basic.html">Sign Up Basic</a></li>
-                                                            <li><a href="recover-account-basic.html">Recover Account Basic</a></li>
-                                                            <li><a href="login-overlay.html">Login Overlay</a></li>
-                                                            <li><a href="sign-up-overlay.html">Sign Up Overlay</a></li>
-                                                            <li><a href="recover-account-overlay.html">Recover Account Overlay</a></li>
-                                                        </ul>
-                                                    </div>
+                                                    @if(getListAplGrpByCountry() !== null)
+                                                        @forelse(getListAplGrpByCountry() as $apl)
+                                                            @php
+                                                                $countryContent = App\Models\Country::where('code',$apl->country)->first()->content;
+                                                            @endphp
+                                                            <div class="col-lg-4">
+                                                                <h6 class="mm-title">{{ $countryContent }}</h6>
+                                                                <ul class="mm-link">
+                                                                    @foreach (getListAplGrpByCity($countryContent) as $item)
+                                                                        <li class="theme2nd-color">{{ $item->locality }}</li>
+                                                                        @foreach (getListApl($countryContent,$item->locality) as $apl)
+                                                                            <li><a href="{{ route('show.apl', ['id'=>$apl->id]) }}" target="_blank">{{ $apl->name }}</a></li>
+                                                                        @endforeach
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>
+                                                        @empty
+                                                            <span>@lang('app.txt.noinfo')</span>
+                                                        @endforelse
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>

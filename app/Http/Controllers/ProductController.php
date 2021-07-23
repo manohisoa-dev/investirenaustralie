@@ -74,18 +74,15 @@ class ProductController extends Controller {
 
                 $states = State::orderBy('content', 'asc')->get();
 
-                $lapls = Localisation::select('localizations.*')->join('users',
-                    'users.location_id', '=', 'localizations.id')->where('users.role', '=', '4')->groupBy('localizations.locality')->get();
-
                 $afas = User::where('role', 3)->where('status', 'active')->where('location_id',
                     $product->location_id)->orderBy('id', 'desc')->get();
 
-                // return view('product.index')->with('item', $product)->with('location', $product->location)->with('pubs',
-                //     $pubs)->with('products', $products)->with('apls', $apls)->with('afas', $afas)->with('data',
-                //     json_encode($data))->with('states', $states)->with('locationTypes', $locationTypes)->with('types',
-                //     $types)->with('lapls', $lapls)->with('categories', $categories);
+                return view('product.index')->with('item', $product)->with('location', $product->location)->with('pubs',
+                    $pubs)->with('products', $products)->with('apls', $apls)->with('afas', $afas)->with('data',
+                    json_encode($data))->with('states', $states)->with('locationTypes', $locationTypes)->with('types',
+                    $types)->with('categories', $categories);
 
-                return view('product.index')->with('item', $product)->with('pubs',$pubs)->with('products', $products)->with('categories', $categories)->with('apls', $apls);
+                // return view('product.index')->with('item', $product)->with('pubs',$pubs)->with('products', $products)->with('categories', $categories)->with('apls', $apls);
             }
         } else {
             abort(404);
@@ -309,11 +306,9 @@ class ProductController extends Controller {
 
     public function mesProgramme(Request $request) {
         $records = Product::allProgrammeUser();
-        $lapls = Localisation::select('localizations.*')->join('users',
-            'users.location_id', '=', 'localizations.id')->where('users.role', '=', '4')->groupBy('localizations.locality')->get();
 
         return view('backend.product.all_programme')->with('title', __('afa.programme.title'))->with('records',
-            $records)->with('lapls', $lapls);
+            $records);
     }
 
     public function nouveauProgrammes() {

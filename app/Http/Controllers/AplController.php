@@ -29,15 +29,9 @@ class AplController extends Controller
         $items = Auth::user()->orders()
             ->where('status', 'ordered')
             ->paginate($this->pageSize);
-        $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','4')
-            ->groupBy('localizations.locality')
-            ->get();
         
         return view('backend.sale.all')
             ->with('title', __('apl.orders'))
-            ->with('lapls', $lapls)
             ->with('items', $items);
     }
     
@@ -51,15 +45,9 @@ class AplController extends Controller
         $items = Auth::user()->orders()
             ->where('status', 'paid')
             ->paginate($this->pageSize);
-        $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','4')
-            ->groupBy('localizations.locality')
-            ->get();
         
         return view('backend.sale.all')
             ->with('title', __('apl.sales'))
-            ->with('lapls', $lapls)
             ->with('items', $items);
     }
     
@@ -72,15 +60,9 @@ class AplController extends Controller
     {
         $items = Auth::user()->customers()
             ->paginate($this->pageSize);
-        $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','4')
-            ->groupBy('localizations.locality')
-            ->get();
         
         return view('backend.user.all')
             ->with('title', __('app.customers'))
-            ->with('lapls', $lapls)
             ->with('items', $items);
     }
     
@@ -94,11 +76,6 @@ class AplController extends Controller
         $items = Auth::user()->orders()
             ->where('status', 'ordered');
 
-        $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','4')
-            ->groupBy('localizations.locality')
-            ->get();
         
         switch($filter){
             case 'paid':
@@ -118,7 +95,6 @@ class AplController extends Controller
         
         return view('backend.sale.all')
             ->with('title', $title)
-            ->with('lapls', $lapls)
             ->with('items', $items);
     }
 

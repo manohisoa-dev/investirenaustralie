@@ -74,12 +74,6 @@ class BlogController extends Controller
                 
                 $page = Page::where('path', '=', '/blogs*')
                     ->first();
-
-                $lapls = Localisation::select('localizations.*')
-                ->join('users','users.location_id','=','localizations.id')
-                ->where('users.role','=','4')
-                ->groupBy('localizations.locality')
-                ->get();
                 
                 if($page){$pubs = $page->pubs;}else{$pubs = [];}
 
@@ -87,7 +81,6 @@ class BlogController extends Controller
                     ->with('item', $blog)
                     ->with('pubs', $pubs)
                     ->with('products', $products)
-                    ->with('lapls', $lapls)
                     ->with('categories', $categories);
             }
         }else{
@@ -147,12 +140,6 @@ class BlogController extends Controller
         
         $page2 = Page::where('path', '=', '/blogs*')
             ->first();
-
-        $lapls = Localisation::select('localizations.*')
-                ->join('users','users.location_id','=','localizations.id')
-                ->where('users.role','=','4')
-                ->groupBy('localizations.locality')
-                ->get();
         
         if($page2){$pubs = $page->pubs;}else{$pubs = [];}
 
@@ -165,7 +152,6 @@ class BlogController extends Controller
                 ->with('page', $page)
                 ->with('pubs', $pubs)
                 ->with('products', $products)
-                ->with('lapls', $lapls)
                 ->with('categories', $categories); 
     }
 
@@ -218,12 +204,6 @@ class BlogController extends Controller
         
         $page2 = Page::where('path', '=', '/blogs*')
             ->first();
-
-        $lapls = Localisation::select('localizations.*')
-                ->join('users','users.location_id','=','localizations.id')
-                ->where('users.role','=','4')
-                ->groupBy('localizations.locality')
-                ->get();
         
         if($page2){$pubs = $page->pubs;}else{$pubs = [];}
 
@@ -236,7 +216,6 @@ class BlogController extends Controller
                 ->with('page', $page)
                 ->with('pubs', $pubs)
                 ->with('products', $products)
-                ->with('lapls', $lapls)
                 ->with('categories', $categories); 
     }
 
