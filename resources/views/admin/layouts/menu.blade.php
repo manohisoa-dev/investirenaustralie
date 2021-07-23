@@ -170,6 +170,19 @@
             <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.mails-template.index'):route('admin.mails-template.index')}}">@lang('app.admin.mail.model')</a></li>{{-- Messages enregistrees --}}
         </ul>
     </li>
+	
+	<li class="{{Request::is('*/newsletter-template/*') || Request::is('*/newsletter-template') || Request::is('*/newsletter/*') || Request::is('*/newsletter') ? 'active' : ''}}">
+        <a href="#"><i class="fa fa-external-link" title="Liste des mails"></i> <span class="nav-label">@lang('app.newsletter.menu')</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse">
+            <li>
+				<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.newsletter-template.index'):route('admin.newsletter-template.index')}}">@lang('app.newsletter.liste.template')</a>
+			</li>{{-- Liste des newsletter --}}
+            <li>
+				<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.newsletter.index'):route('admin.newsletter.index')}}">@lang('app.newsletter.liste.inscrit')</a>
+			</li>{{-- liste des inscrits --}}
+        </ul>
+    </li>
+	
 	<li class="{{Request::is('*/temoignage/*') || Request::is('*/temoignage') ? 'active' : ''}}">
 		<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.temoignage.index'):route('admin.temoignage.index')}}">
 			<i class="fa fa-quote-left" title="Tableau de bord"></i> 

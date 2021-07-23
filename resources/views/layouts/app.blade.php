@@ -337,6 +337,14 @@
                                 @endif
                             @endforeach
                         </div>
+						<div style="margin-top:10px">
+							<p style="color:#fff !important">S'inscrire à notre newsletters</p>
+							<form class="d-flex flex-row m-5px-b p-1 white-bg input-group" action="{{route('newsletter.store')}}" method="post">
+								{{ csrf_field() }}
+								<input type="email" name="email_adresse" class="form-control border-radius-0 border-0" placeholder="votre adresse email" required>
+								<button class="m-btn m-btn-theme2nd flex-shrink-0" type="submit">OK</button>
+							</form>
+						</div>
                     </div>
                 </div>
             </div>

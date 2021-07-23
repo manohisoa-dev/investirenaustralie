@@ -126,11 +126,11 @@ class TemoignageController extends Controller {
     }
 
     public function pdfTest() {
-        //$temoignage = Temoignage::find($request->id);
+        //$temoignage = Temoignage::find(1);
 
         //$pdf = PDF::loadView('admin.temoignage.pdf', compact('temoignage'));
         //return $pdf->download('invoice.pdf');
-        return $this->view("testpdf");
+        return $this->view("pdf");
     }
 
     public function infoPost(Request $request) {

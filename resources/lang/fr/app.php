@@ -1319,4 +1319,11 @@ return
     'new.modele_message' => 'Ajouter un nouveau modèle message',
     'txt.edit_model_message' => 'Mise à jour modèle message',
 	'txt.banking_information' => 'Informations Bancaires',
+    'newsletter.menu' => 'Newsletters',
+    'newsletter.liste.template' => 'Paramètres des newsletter',
+    'newsletter.liste.inscrit' => 'Liste des inscrits',
+    'newsletter.btn.add' => 'Ajouter un nouveau',
+    'newsletter.title.add' => 'Ajouter un nouveau paramètres des newsletter',
+    'newsletter.title.content' => 'Contenu',
+    'newsletter.title.edit' => 'Mise à jour paramètres de newsletter',
 ];

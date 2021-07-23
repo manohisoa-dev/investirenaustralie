@@ -1078,4 +1078,11 @@ return
     'new.modele_message' => 'Add a new message template',
     'txt.edit_model_message' => 'Update message template',
 	'txt.banking_information' => 'Banking Information',
+    'newsletter.menu' => 'Newsletters',
+    'newsletter.liste.template' => 'Newsletter settings',
+    'newsletter.liste.inscrit' => 'List of registrants',
+    'newsletter.btn.add' => 'Add new',
+    'newsletter.title.add' => 'Add new newsletter settings',
+    'newsletter.title.content' => 'Content',
+    'newsletter.title.edit' => 'Mise à jour paramètres de newsletter',
 ];

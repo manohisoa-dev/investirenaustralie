@@ -11,6 +11,7 @@ use App\Models\Mail;
 use App\Notifications\NewMail;
 use App\Models\Localisation;
 use App\Models\Role;
+use App\Models\Newsletter;
 
 class MailController extends Controller
 {
@@ -285,6 +286,14 @@ class MailController extends Controller
             $message->from('joelinjatovo@gmail.com','Virat Gandhi');
         });
         echo "Email Sent with attachment. Check your inbox.";
+    }
+    
+    public function saveNewsletter(Request $request)
+    {
+        $this->validate($request, Newsletter::validationRules());
+        Newsletter::create($request->all());
+        # notification
+        return back()->with('success', trans('app.txt.message_sent'));
     }
         
 }
