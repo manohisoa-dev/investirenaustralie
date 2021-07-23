@@ -1842,7 +1842,7 @@ mark {
     -webkit-transition: ease all 0.55s;
     transition: ease all 0.55s;
     opacity: 0;
-    border-top: 5px solid #323232;
+    border-top: 5px solid #AE4435;
   }
   .px-mega .px-mm-right {
     padding: 20px;
@@ -1880,7 +1880,7 @@ mark {
   }
   .px-mega:hover .px-mega-menu {
     opacity: 1;
-    top: 100%;
+    top: 85%;
     pointer-events: auto;
   }
 }
