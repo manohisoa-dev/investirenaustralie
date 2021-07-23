@@ -163,11 +163,7 @@ class RegisterController extends Controller
         $page = Page::where('path', '/register/'.$role)
             ->locale()
             ->first();
-        $lapls = Localisation::select('localizations.*')
-                ->join('users','users.location_id','=','localizations.id')
-                ->where('users.role','=','4')
-                ->groupBy('localizations.locality')
-                ->get();
+        
         switch($role){
             case "member":
                 $pays = $this->getPaysFromCsv();
@@ -176,23 +172,20 @@ class RegisterController extends Controller
                     ->with('role', $roles)
                     ->with('action', $action)
                     ->with('countries', Country::all())
-                    ->with('page', $page)
-                    ->with('lapls', $lapls);
+                    ->with('page', $page);
                 break;
             case "afa":
                 App::setLocale('en');
                 $request->session()->put("step", "condition");
                 return view('login.condition.afa')
                     ->with('role', $roles)
-                    ->with('page', $page)
-                    ->with('lapls', $lapls);
+                    ->with('page', $page);
                 break;
             case "apl":
                 $request->session()->put("step", "condition");
                 return view('login.condition.apl')
                     ->with('role', $roles)
-                    ->with('page', $page)
-                    ->with('lapls', $lapls);
+                    ->with('page', $page);
                 break;
             case "seller":
                 App::setLocale('en');
@@ -204,13 +197,11 @@ class RegisterController extends Controller
                     
                     return view('login.condition.sellerbyafa')
                         ->with('role', $roles)
-                        ->with('page', $page)
-                        ->with('lapls', $lapls);
+                        ->with('page', $page);
                 }else{
                     return view('login.condition.seller')
                         ->with('role', $roles)
-                        ->with('page', $page)
-                        ->with('lapls', $lapls);
+                        ->with('page', $page);
                 }
                 break;
             default:

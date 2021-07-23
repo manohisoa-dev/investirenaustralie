@@ -65,9 +65,6 @@ class ProgrammeController extends Controller {
 
                 $states = State::orderBy('content', 'asc')->get();
 
-                $lapls = Localisation::select('localizations.*')->join('users',
-                    'users.location_id', '=', 'localizations.id')->where('users.role', '=', '4')->groupBy('localizations.locality')->get();
-
                 $afas = User::where('role', 3)->where('status', 'active')->where('location_id',
                     $product->location_id)->orderBy('id', 'desc')->get();
 
@@ -87,7 +84,7 @@ class ProgrammeController extends Controller {
                 return view('programme.single')->with('item', $product)->with('location', $product->location)->with('pubs',
                     $pubs)->with('products', $products)->with('apls', $apls)->with('data',
                     json_encode($data))->with('states', $states)->with('locationTypes', $locationTypes)->with('types',
-                    $types)->with('lapls', $lapls)->with('afas', $afas)->with('categories', $categories)->with('dossier',
+                    $types)->with('afas', $afas)->with('categories', $categories)->with('dossier',
                     $fonDossier);
             }
         } else {
@@ -188,9 +185,6 @@ class ProgrammeController extends Controller {
 
         $states = State::orderBy('content', 'asc')->get();
 
-        $lapls = Localisation::select('localizations.*')->join('users',
-            'users.location_id', '=', 'localizations.id')->where('users.role', '=', '4')->groupBy('localizations.locality')->get();
-
         $min_price_residentiel = Product::groupBy('category_id')->where('category_id',
             '=', 1)->min('price');
 
@@ -275,7 +269,7 @@ class ProgrammeController extends Controller {
             $typesRes)->with('typesFonc', $typesFonc)->with('typesInd', $typesInd)->with('typesComm',
             $typesComm)->with('locationTypes', $locationTypes)->with('anciennetes', $anciennetes)->with('agricoles',
             $agricoles)->with('industriels', $industriels)->with('commercials', $commercials)->with('states',
-            $states)->with('category', $cat)->with('lapls', $lapls)->with('min_price_residentiel',
+            $states)->with('category', $cat)->with('min_price_residentiel',
             $min_price_residentiel)->with('max_price_residentiel', $max_price_residentiel)->with('min_land_area_residentiel',
             $min_land_area_residentiel)->with('max_land_area_residentiel', $max_land_area_residentiel)->with('min_garage_space_residentiel',
             $min_garage_space_residentiel)->with('max_garage_space_residentiel', $max_garage_space_residentiel)->with('min_bathrooms_residentiel',

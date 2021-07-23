@@ -384,6 +384,41 @@ if (!function_exists('getListAplGrpByCountry')) {
 	}
 }
 
+if (!function_exists('getListAplGrpByCity')) {
+	function getListAplGrpByCity($country)
+	{
+		$iso_country = App\Models\Country::where('content','=',$country)->first()->code;
+
+		$lcity = App\Models\Localisation::select('localizations.*')
+            ->join('users','users.location_id','=','localizations.id')
+            ->where('users.role','=','4')
+            ->where('localizations.country','=',$iso_country)
+            ->groupBy('localizations.locality')
+            ->get();
+    
+        return $lcity;
+	}
+}
+
+if (!function_exists('getListApl')) {
+	function getListApl($country,$locality)
+	{
+		$aplInfo=[];
+        $country= str_replace('_',' ', $country);
+        $locality= str_replace('_',' ', $locality);
+		$iso_country = App\Models\Country::where('content','=',$country)->first()->code;
+        $lapls = App\Models\Localisation::select('users.*')
+                ->join('users','users.location_id','=','localizations.id')
+                ->where('localizations.country','=',$iso_country)
+                ->where('localizations.locality', '=', $locality)
+                ->where('users.role','=','4')
+                ->get();
+    
+        return $lapls;
+	}
+}
+
+
 if(!function_exists('getTranslate')){
 	function getTranslate($tabName,$tab,$lang){
 		$tabId = $tabName.'_id';

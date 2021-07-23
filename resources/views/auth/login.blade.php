@@ -3,7 +3,7 @@
 
 @section('content')
     <!-- Main -->
-    <main>
+    <main class="m-55px-t">
         <section style="background-image: url({{ asset('images/slider/1.jpg') }});">
             <div class="container">
                 <div class="row align-items-center justify-content-center min-vh-100">

@@ -565,12 +565,6 @@ class IndexController extends Controller
             ->with('location')
             ->get();
 
-        $lapls_footer = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','4')
-            ->groupBy('localizations.locality')
-            ->get();
-
         $lapls_sidebar = Localisation::select('localizations.*')
             ->join('users','users.location_id','=','localizations.id')
             ->where('users.role','=','4')
@@ -594,7 +588,6 @@ class IndexController extends Controller
     	return view('apl.show')
             ->with('items', $lapls)
             ->with('aplDatas', $apl)
-            ->with('lapls', $lapls_footer)
             ->with('lapls_sidebar', $lapls_sidebar)
             ->with(['data' => json_encode($data)]);
     }

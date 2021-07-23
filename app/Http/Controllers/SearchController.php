@@ -34,12 +34,6 @@ class SearchController extends Controller
         
         $search = new Search();
 
-        $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','4')
-            ->groupBy('localizations.locality')
-            ->get();
-
         if($request->state){
             $items = $items->where('state_id', $request->state);
         }
@@ -130,7 +124,6 @@ class SearchController extends Controller
         $search->save();
         
     	return view('search.index')
-            ->with('lapls', $lapls)
             ->with('items', $items);
     }
     
@@ -215,12 +208,6 @@ class SearchController extends Controller
     public function search_old(Request $request)
     {
         $search = new Search();
-
-        $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','4')
-            ->groupBy('localizations.locality')
-            ->get();
 
         $city = $request->city;
 //        $state_id = $request->state?((State::where('content','=',$request->state))->get())[0]->id:'';
@@ -336,7 +323,6 @@ class SearchController extends Controller
         $search->save();
         
     	return view('search.index')
-            ->with('lapls', $lapls)
             ->with('items', $items);
     }
 
@@ -348,12 +334,6 @@ class SearchController extends Controller
     public function search(Request $request)
     {
         $search = new Search();
-
-        $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','4')
-            ->groupBy('localizations.locality')
-            ->get();
         
         $page2 = Page::where('path', '=', '/products*')->first();
         if($page2){$pubs = $page2->pubs;}else{$pubs=[];}
@@ -706,7 +686,6 @@ class SearchController extends Controller
         ->with('typesFonc',$typesFonc)
         ->with('typesInd',$typesInd)
         ->with('typesComm',$typesComm)
-        ->with('lapls', $lapls)
         ->with('pubs', $pubs)
         ->with('products', $products)
         ->with('categories', $categories)

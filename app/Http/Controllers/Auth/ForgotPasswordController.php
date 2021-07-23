@@ -48,12 +48,6 @@ class ForgotPasswordController extends Controller
             ->locale()
             ->first();
 
-        $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','4')
-            ->groupBy('localizations.locality')
-            ->get();
-
         $locale = \App::getLocale();
         $address = \App\Models\Config::login()->get_meta_array('address', $locale);
         $contact = \App\Models\Config::login()->get_meta_array('contact', $locale);
@@ -61,8 +55,7 @@ class ForgotPasswordController extends Controller
         return view('auth.passwords.email')
             ->with('item', $page)
             ->with('address', $address)
-            ->with('contact', $contact)
-            ->with('lapls', $lapls);
+            ->with('contact', $contact);
     }
 
     /**

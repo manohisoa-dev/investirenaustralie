@@ -74,10 +74,11 @@ class MemberController extends Controller {
 
     public function contact(Request $request, $role) {
         $action = route('send.message', ['role' => $role]);
-        $lapls = Localisation::select('localizations.*')->join('users',
-            'users.location_id', '=', 'localizations.id')->where('users.role', '=', '4')->groupBy('localizations.locality')->get();
         $apls = User::ofRole(4)->isActive()->get();
         $user_name = "";
+        $lafas = User::where('role', 3)->where('status', 'active')->where('location_id',
+            Auth::user()->location_id)->orderBy('id', 'desc')->get();
+        $getAllMessage = $this->getAllMessage($role);
 
 
         if ($request->get('afa'))
@@ -88,17 +89,17 @@ class MemberController extends Controller {
 
         if (($role == 'apl') && !Auth::user()->apl) {
             return redirect()->route('member.select.apl')->with('error', trans('app.txt.choose_an_apl_before_messaging'));
-        } elseif ($role == 'afa') {
-            if (!Auth::user()->hasAfa())
+        }elseif ($role == 'afa') {
+            if (!Auth::user()->hasAfa()){
                 return redirect()->route('member.select.afa')->with('error', trans('app.txt.choose_an_afa_before_messaging'));
+            }
+        }else{
+            return view('backend.contact.member')->with('action', $action)->with('lafas',
+            $lafas)->with('apls', $apls)->with('role', $role)->with('user_name', $user_name)->with('title',
+            __('app.contact_' . $role))->with(['data' => $getAllMessage]);
         }
 
-        $lafas = User::where('role', 3)->where('status', 'active')->where('location_id',
-            Auth::user()->location_id)->orderBy('id', 'desc')->get();
-
-        $getAllMessage = $this->getAllMessage($role);
-
-        return view('backend.contact.member')->with('action', $action)->with('lapls', $lapls)->with('lafas',
+        return view('backend.contact.member')->with('action', $action)->with('lafas',
             $lafas)->with('apls', $apls)->with('role', $role)->with('user_name', $user_name)->with('title',
             __('app.contact_' . $role))->with(['data' => $getAllMessage]);
     }
@@ -361,9 +362,6 @@ class MemberController extends Controller {
 
         $apls = User::ofRole(4)->isActive()->has('location')->with('location')->get();
 
-        $lapls = Localisation::select('localizations.*')->join('users',
-            'users.location_id', '=', 'localizations.id')->where('users.role', '=', '4')->groupBy('localizations.locality')->get();
-
         $userApl = Auth::user()->apl;
 
         $selected = null;
@@ -385,7 +383,7 @@ class MemberController extends Controller {
         $action = route('member.select.apl');
 
         return view('backend.apl.select')->with('location', Auth::user()->location)->with('action',
-            $action)->with('items', $apls)->with('distance', $distance)->with('lapls', $lapls)->with('distances',
+            $action)->with('items', $apls)->with('distance', $distance)->with('distances',
             $this->distances)->with('selected', json_encode($selected))->with('message', $message)->with('data',
             json_encode($data));
     }
@@ -459,8 +457,6 @@ class MemberController extends Controller {
         $data = [];
 
         $afas = User::ofRole(3)->isActive()->has('location')->with('location')->get();
-        $lapls = Localisation::select('localizations.*')->join('users',
-            'users.location_id', '=', 'localizations.id')->where('users.role', '=', '4')->groupBy('localizations.locality')->get();
 
         $userApl = Auth::user()->apl;
 
@@ -483,7 +479,7 @@ class MemberController extends Controller {
         $action = route('member.select.afa');
 
         return view('backend.afa.select')->with('location', Auth::user()->location)->with('action',
-            $action)->with('items', $afas)->with('distance', $distance)->with('lapls', $lapls)->with('distances',
+            $action)->with('items', $afas)->with('distance', $distance)->with('distances',
             $this->distances)->with('selected', json_encode($selected))->with('data',
             json_encode($data));
     }

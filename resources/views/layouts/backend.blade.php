@@ -164,6 +164,7 @@
                                         <i class="fas fa-chevron-right"></i>
                                     </div>
                                 </a>
+                                @if(Auth::user()->hasAfa())
                                 <a href="{{route('member.contact', ['role'=>'afa'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('member/contact/role/afa')) ? 'menu-active' : '' }}">
                                     <div>
                                         <i class="far fa-envelope m-10px-r"></i>
@@ -175,6 +176,7 @@
                                         <i class="fas fa-chevron-right"></i>
                                     </div>
                                 </a>
+                                @endif
                                 @if(Auth::user()->hasApl())
                                   <a href="{{route('member.contact', ['role'=>'apl'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('member/contact/role/apl')) ? 'menu-active' : '' }}">
                                       <div>
@@ -366,7 +368,7 @@
                                         $rl = 'apl';
                                     @endphp
                                 @endif
-                                <a href="{{route('show.message', ['role'=>$rl])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is(\App\Models\User::find(Auth::id())->roleUser->role_initial.'/mails/inbox')) ? 'menu-active' : '' }}">
+                                <a href="{{route($rl.'.show.message', ['role'=>$rl])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is(\App\Models\User::find(Auth::id())->roleUser->role_initial.'/mails/inbox')) ? 'menu-active' : '' }}">
                                     <div>
                                         <i class="far fa-comments m-10px-r"></i>
                                         <span>@lang('app.chats')</span>

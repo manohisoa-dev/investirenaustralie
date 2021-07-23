@@ -135,7 +135,7 @@
             showUnreadCount();
             
             // Show message
-            // showMessageContact();
+            showMessageContact();
 
             // Show recent message
             showRecentMessage();
@@ -194,6 +194,7 @@
                             {
                                 for(var i=0; i<dt.length; i++){
                                     var fromId = dt[i].from_id;
+                                    var fromImmat = dt[i].from_immat;
                                     var fromName = dt[i].from_name;
                                     var chatingName = dt[i].chating_name;
                                     var createdAt = dt[i].created_at;
@@ -210,7 +211,7 @@
                                                 '</span>'+
                                                 '<div class="chat-body clearfix">'+
                                                     '<div class="header">'+
-                                                        '<strong class="primary-font">'+fromName+'</strong> <small class="pull-right text-muted">'+
+                                                        '<strong class="primary-font">'+fromImmat+'</strong> <small class="pull-right text-muted">'+
                                                         '<span class="glyphicon glyphicon-time"></span><i>'+createdAtSend+', '+seen+'</i></small>'+
                                                     '</div>'+
                                                     '<p class="pull-left p-10px-t">'+
@@ -226,7 +227,7 @@
                                                 '<div class="chat-body clearfix">'+
                                                     '<div class="header">'+
                                                         '<small class=" text-muted"><span class="glyphicon glyphicon-time"></span><i>'+createdAtSend+', '+seen+'</i></small>'+
-                                                        '<strong class="pull-right primary-font"> {{ Auth::user()->name }} </strong>'+
+                                                        '<strong class="pull-right primary-font"> {{ Auth::user()->immat }} </strong>'+
                                                     '</div>'+
                                                     '<p class="pull-right p-10px-t">'+
                                                         message +
@@ -307,7 +308,7 @@
                                 listShowContact +=  '<div class="list-group">'+
                                                     '<a href="javascript:void(0)" value="'+data[i].user_id+'" id="contact-'+data[i].user_id+'" class="btn-select-contact list-group-item list-group-item-action flex-column align-items-start">'+
                                                         '<div class="d-flex w-100 justify-content-between">'+
-                                                        '<h5 class="mb-1">'+data[i].name+'</h5>'+
+                                                        '<h6 class="mb-1">'+data[i].user_immat+'</h6>'+
                                                         '<small><span id="'+data[i].user_id+'" class="badge badge-pill badge-primary"></span></small>'+
                                                         '</div>'+
                                                         // '<p class="mb-1"></p>'+

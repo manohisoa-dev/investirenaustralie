@@ -226,6 +226,40 @@
                                 </ul>
                             </li>
                             <li><a class="nav-link" href="{{route('services')}}">@lang('app.services')</a></li>
+                            <li class="mm-in px-mega">
+                                <a href="javascript:void(0)" title="@lang('app.apls')">@lang('app.txt.apl')</a>
+                                <i class="fa fa-angle-down px-nav-toggle"></i>
+                                <div class="px-mega-menu mm-dorp-in">
+                                    <div class="row no-gutters">
+                                        <div class="col-lg-12">
+                                            <div class="px-mm-right">
+                                                <div class="row">
+                                                    @if(getListAplGrpByCountry() !== null)
+                                                        @forelse(getListAplGrpByCountry() as $apl)
+                                                            @php
+                                                                $countryContent = App\Models\Country::where('code',$apl->country)->first()->content;
+                                                            @endphp
+                                                            <div class="col-lg-4">
+                                                                <h6 class="mm-title">{{ $countryContent }}</h6>
+                                                                <ul class="mm-link">
+                                                                    @foreach (getListAplGrpByCity($countryContent) as $item)
+                                                                        <li class="theme2nd-color">{{ $item->locality }}</li>
+                                                                        @foreach (getListApl($countryContent,$item->locality) as $apl)
+                                                                            <li><a href="{{ route('show.apl', ['id'=>$apl->id]) }}" target="_blank">{{ $apl->name }}</a></li>
+                                                                        @endforeach
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>
+                                                        @empty
+                                                            <span>@lang('app.txt.noinfo')</span>
+                                                        @endforelse
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> <!-- row -->
+                                </div>
+                            </li>
                             <li><a class="nav-link" href="{{route('blog.all')}}">@lang('app.blog')</a></li>
                             @if(Auth::check())
                             <li class="mm-in px-dropdown">

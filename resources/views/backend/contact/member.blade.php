@@ -94,7 +94,6 @@
 
     </style>
     <script>
-
         $(document).ready(function  (){
             var scroll=$('.panel-body');
 
@@ -118,6 +117,7 @@
                         {
                             for(var i=0; i<dt.length; i++){
                                 var fromId = dt[i].from_id;
+                                var fromImmat = dt[i].from_immat;
                                 var fromName = dt[i].from_name;
                                 var chatingName = dt[i].chating_name;
                                 var createdAt = dt[i].created_at;
@@ -134,7 +134,7 @@
                                             '</span>'+
                                             '<div class="chat-body clearfix">'+
                                                 '<div class="header">'+
-                                                    '<strong class="primary-font">'+fromName+'</strong> <small class="pull-right text-muted">'+
+                                                    '<strong class="primary-font">'+fromImmat+'</strong> <small class="pull-right text-muted">'+
                                                     '<span class="glyphicon glyphicon-time"></span><i>'+createdAtSend+', '+seen+'</i></small>'+
                                                 '</div>'+
                                                 '<p class="pull-left p-10px-t">'+
@@ -150,7 +150,7 @@
                                             '<div class="chat-body clearfix">'+
                                                 '<div class="header">'+
                                                     '<small class=" text-muted"><span class="glyphicon glyphicon-time"></span><i>'+createdAtSend+', '+seen+'</i></small>'+
-                                                    '<strong class="pull-right primary-font"> {{ Auth::user()->name }} </strong>'+
+                                                    '<strong class="pull-right primary-font"> {{ Auth::user()->immat }} </strong>'+
                                                 '</div>'+
                                                 '<p class="pull-right p-10px-t">'+
                                                     message +
@@ -166,7 +166,7 @@
                                                 '<p class="text-center p-50px-t">'+
                                                     '<div class="p-25px text-center">'+
                                                         '<div class="avatar-80 border-radius-50 d-inline-block">'+
-                                                            '<img src="@if($role=="admin") {{ \App\Models\User::where("role",1)->first()->imageUrl() }} @else {{ \App\Models\User::find(Auth::user()->afa_id)->imageUrl() }} @endif" title="" alt="">'+
+                                                            '<img src="@if($role!=="admin") @if($role==="apl") {{  Auth::user()->hasApl()?\App\Models\User::find(Auth::user()->apl_id)->imageUrl():'' }} @else {{  Auth::user()->hasAfa()?\App\Models\User::find(Auth::user()->afa_id)->imageUrl():'' }} @endif @else {{ \App\Models\User::where("role",1)->first()->imageUrl() }} @endif" title="" alt="">'+
                                                         '</div>'+
                                                         '<h6 class="font-w-500 m-15px-t m-0px"><span class="font-w-700"> @if($role=="admin") {{ App\Models\User::where("id",1)->first()->name }} @elseif($role=="afa") {{ App\Models\User::where("id",Auth::user()->afa_id)->first()->name }} @else {{ App\Models\User::where("id",Auth::user()->apl_id)->first()->name }} @endif </span></h6>'+
                                                         '<span class="font-small"></span>'+
@@ -263,7 +263,7 @@
                 $(".print-msg").css('display','block');
                 $(".print-msg").find("ul").append('<li>'+msg+'</li>');
             }
-        })
+        });
         
     </script>    
 @endpush
