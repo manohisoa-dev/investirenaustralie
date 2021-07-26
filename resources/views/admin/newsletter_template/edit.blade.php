@@ -44,7 +44,14 @@
                     <div class="form-group">
 						<label for="contenu">@lang('app.newsletter.title.content')</label>
 						<textarea name="newsletter_template" id="contenu" class="form-control">{!! $newsletterTemplate->newsletter_template !!}</textarea>
-					</div>                                                                                                                               
+					</div>  
+					<div class="form-group">
+						<label for="titre">Statut</label>
+						<select class="form-control" name="statuts">
+							<option value="Inactif" {{$newsletterTemplate->statuts == 'Inactif' ? 'selected' : ''}}>Inactif</option>
+							<option value="Actif" {{$newsletterTemplate->statuts == 'Actif' ? 'selected' : ''}}>Actif</option>
+						</select>
+					</div>                                                                                                                              
                     <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Enregistrer</button>
 
                 </form>

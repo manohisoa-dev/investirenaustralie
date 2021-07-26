@@ -26,6 +26,7 @@ use App\Models\SellerBusiness;
 use App\Models\SellerIndividual;
 use Carbon\Carbon;
 use Session;
+use App\Models\Newsletter;
 
 class RegisterController extends Controller
 {
@@ -380,6 +381,12 @@ class RegisterController extends Controller
                        ];
                     }
                 }
+                if($request->newsletter == 'yes'){
+                    $newletter = new Newsletter;
+                    $newletter->email_adresse = $request->email;
+                    $newletter->save();
+                }
+                
                 break;
             case 'afa':
                 $rules = [

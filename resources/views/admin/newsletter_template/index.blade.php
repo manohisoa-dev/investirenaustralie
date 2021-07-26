@@ -40,6 +40,7 @@
 						{!!\Nvd\Crud\Html::sortableTh('id','admin.newsletter-template.index','Id')!!}
 						{!!\Nvd\Crud\Html::sortableTh('newsletter_title','admin.newsletter-template.index','Titre')!!}
 						{!!\Nvd\Crud\Html::sortableTh('newsletter_template','admin.newsletter-template.index','Contenu')!!}
+						{!!\Nvd\Crud\Html::sortableTh('statuts','admin.newsletter-template.index','Statut')!!}
 						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.newsletter-template.index','Crée le')!!}
 						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.newsletter-template.index','Modifié le')!!}
 						<th><a href="javascript:void(0)">Actions</a></th>
@@ -49,6 +50,7 @@
 							<td><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
 							<td><input type="text" class="form-control" name="newsletter_title" value="{{Request::input("newsletter_title")}}"></td>
 							<td><input type="text" class="form-control" name="newsletter_template" value="{{Request::input("newsletter_template")}}"></td>
+							<td><input type="text" class="form-control" name="statuts" value="{{Request::input("statuts")}}"></td>
 							<td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>
 							<td><input type="text" class="form-control" name="updated_at" value="{{Request::input("updated_at")}}"></td>
 							<td style="min-width: 6em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>
@@ -78,6 +80,15 @@
                                           data-url="{{ route('admin.newsletter-template.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{str_limit(strip_tags($record->newsletter_template),"100","...")}}</span>
                                 </td>
+								<td>
+                                   <span class="editable"
+                                          data-type="text"
+                                          data-name="statuts"
+                                          data-value="{{ $record->statuts }}"
+                                          data-pk="{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('admin.newsletter-template.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          >{{ $record->statuts }}</span>
+                               </td>
                                 <td>{{$record->created_at ? $record->created_at->diffForHumans() : ""}}</td>
                                 <td>{{$record->updated_at ? $record->updated_at->diffForHumans() : ""}}</td>
 								<td class="actions-cell">
