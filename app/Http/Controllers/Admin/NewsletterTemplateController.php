@@ -38,7 +38,9 @@ class NewsletterTemplateController extends Controller
     public function store( Request $request )
     {
         $this->validate($request, NewsletterTemplate::validationRules());
-
+        if($request->statuts == 'Actif'){
+            NewsletterTemplate::query()->update(['statuts' => 'Inactif']);
+        }
         NewsletterTemplate::create($request->all());
 
         # notification
@@ -85,7 +87,9 @@ class NewsletterTemplateController extends Controller
         }
 
         $this->validate($request, NewsletterTemplate::validationRules());
-
+        if($request->statuts == 'Actif'){
+            NewsletterTemplate::query()->update(['statuts' => 'Inactif']);
+        }
         $newsletterTemplate->update($request->all());
 
         # notification

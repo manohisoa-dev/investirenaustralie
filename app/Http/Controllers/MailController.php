@@ -277,5 +277,7 @@ class MailController extends Controller
         # notification
         return back()->with('success', trans('app.txt.message_sent'));
     }
+    
+    
         
 }

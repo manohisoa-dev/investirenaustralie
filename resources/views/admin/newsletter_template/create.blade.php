@@ -43,6 +43,13 @@
 						<label for="contenu">@lang('app.newsletter.title.content')</label>
 						<textarea name="newsletter_template" id="contenu" class="form-control"></textarea>
 					</div> 
+					<div class="form-group">
+						<label for="titre">Statut</label>
+						<select class="form-control" name="statuts">
+							<option value="Inactif">Inactif</option>
+							<option value="Actif">Actif</option>
+						</select>
+					</div> 
                     <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-save"></i> @lang('app.btn.create')</button>
                 </form>
             </div>
