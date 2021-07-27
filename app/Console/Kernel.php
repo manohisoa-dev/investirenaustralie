@@ -29,8 +29,8 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
 
-        // $schedule->command('notification:endapl --force')->daily();
-        $schedule->command('notification:endapl --force')->everyFiveMinutes();
+        $schedule->command('notification:endapl --force')->daily();
+        // $schedule->command('notification:endapl --force')->everyFiveMinutes();
     }
 
     /**
