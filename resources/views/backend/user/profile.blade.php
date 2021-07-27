@@ -380,6 +380,17 @@
                 </div>
             @endif
 
+            <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
+                <h5>@lang('app.txt.cancel_registration')</h5>
+                <div class="row">
+                    <div class="col-md-4 m-10px-tb">
+                        <div class="media">
+                            <button type="button" class="m-btn m-btn-default pull-right" id="btn_cancel_registration">@lang('app.btn.cancel_my_registration')</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
             <div>
                 <button type="button" class="m-btn m-btn-theme4rd pull-right" id="btn_save">@lang('app.btn.save')</button>

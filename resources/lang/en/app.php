@@ -1091,4 +1091,9 @@ return
 	'txt.renew_relationship' => 'Renew the relationship',
 	'txt.confirm.renew_relationship' => 'Do you want to renew this relationship ?',
 	'txt.confirm.end_relationship' => 'Do you want to cancel this relationship ?',
+	'txt.cancel_registration' => 'Cancel registration',
+	'txt.notification_before_unsubscribe' => 'You really want to unsubscribe ?',
+	'txt.notification_after_unsubscribe' => 'You have unsubscribed from the IEA !',
+	'btn.cancel_my_registration' => 'Cancel my registration',
+	'btn.confirm_unsubscription' => 'Confirm unsubscription',
 ];

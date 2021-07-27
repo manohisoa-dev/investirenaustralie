@@ -322,7 +322,7 @@
 </div>
 
 <!-- Modal for particular member registration -->
-@if (Auth::check())
+@if (Auth::check() && Auth::user()->hasRole(5))
   <div id="registratorMemberFormModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="registratorMemberFormLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
