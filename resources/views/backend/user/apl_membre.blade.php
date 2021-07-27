@@ -16,11 +16,11 @@
 				<table class="table table-bordered" style="font-size:12px">
 					<thead>
 						<tr>
-							<th>Photo</th>
-							<th>APL</th>							
-							<th>Email</th>
-							<th>Date fin</th>
-							<th width="10%">&nbsp;</th>
+							<th>@lang('app.table.photo')</th>
+							<th>@lang('app.table.apl')</th>							
+							<th>@lang('app.table.email')</th>
+							<th>@lang('app.table.end_date')</th>
+							<th width="15%">@lang('app.table.action')</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -35,8 +35,11 @@
 							<td>{{ $aplActive->apl->name }}</td>
 							<td>{{ $aplActive->apl->email }}</td>
 							<td>{{\Carbon\Carbon::parse($aplActive->apl_ends_at)->formatLocalized('%d %b %Y')}}</td>
-							<td align="center">
-								<a href="javascript:void(0)" onclick="annuler_relation({{$aplActive->id}})" class="btn btn-default btn-circle" title="Annuler relation">
+							<td>
+								<a href="javascript:void(0)" onclick="renew_relation({{$aplActive->id}})" class="btn btn-default btn-circle" title="@lang('app.txt.renew_relationship')">
+									<i class="icon-refresh text-success"></i>
+								</a>
+								<a href="javascript:void(0)" onclick="annuler_relation({{$aplActive->id}})" class="btn btn-default btn-circle" title="@lang('app.txt.end_relationship')">
 									<i class="fa fa-times text-danger"></i>
 								</a>
 							</td>
@@ -62,10 +65,10 @@
 				<table class="table table-bordered" style="font-size:12px">
 					<thead>
 						<tr>
-							<th>APL</th>							
-							<th>Email</th>
-							<th>Date début</th>
-							<th>Date fin</th>
+							<th>@lang('app.table.apl')</th>							
+							<th>@lang('app.table.email')</th>
+							<th>@lang('app.table.start_date')</th>
+							<th>@lang('app.table.end_date')</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -93,7 +96,7 @@
 	{
 		swal({
 			title: "Relation Membre & APL",
-			text: "@lang('app.dropzone.delete_photo_confirme')",
+			text: "@lang('app.txt.confirm.end_relationship')",
 			type: "warning",
 			showCancelButton: true,
 			confirmButtonColor: '#ff3547',
@@ -106,6 +109,43 @@
 		   if (isConfirm){
 				 $.ajax({
 					url : "{{ route('member.ajaxDropRelation') }}",
+					type: "POST",
+					dataType: "JSON",
+					data:{"_token": "{{ csrf_token() }}",'id_membre':id_membre},
+					success: function(data)
+					{
+						swal("Relation Membre & APL", "@lang('app.jquery.delete_product_yes')", "success");
+						location.reload();	
+					},
+					error: function (jqXHR, textStatus, errorThrown)
+					{
+						swal("Relation Membre & APL", "@lang('app.jquery.error_delete')", "error");
+						location.reload();	
+					}
+				}); 
+			} else {
+				swal("Relation Membre & APL", "@lang('app.jquery.delete_cancel')", "error");
+			}
+		 });
+	}
+
+	function renew_relation(id_membre)
+	{
+		swal({
+			title: "Relation Membre & APL",
+			text: "@lang('app.txt.confirm.renew_relationship')",
+			type: "info",
+			showCancelButton: true,
+			confirmButtonColor: '#009FE6',
+			confirmButtonText: "@lang('app.yes')",
+			cancelButtonText: "@lang('app.no')",
+			closeOnConfirm: false,
+			closeOnCancel: false
+		 },
+		 function(isConfirm){	
+		   if (isConfirm){
+				 $.ajax({
+					url : "{{ route('member.ajaxRenewRelation') }}",
 					type: "POST",
 					dataType: "JSON",
 					data:{"_token": "{{ csrf_token() }}",'id_membre':id_membre},

@@ -58,7 +58,7 @@
                     <input type="hidden" id="apl-modal"  name="apl">
                     <div class="pull-left hidden row-confirm-modal" style="margin-bottom: 20px;">
                         <input id="check-confirm-modal" type="checkbox"><span style="color:red;"> {!!__('member.accept_term_and_condition_apl')!!}</span>
-                        <label>@lang('app.txt.condition_days_apl', ['nbDay'=>'180'])</label>
+                        <label>@lang('app.txt.condition_days_apl', ['nbDay'=>App\Models\Parameter::nbDayEndApl()])</label>
                     </div>
                     <div class="row col-md-12">
                       <div class="col-md-5">

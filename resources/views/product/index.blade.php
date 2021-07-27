@@ -254,7 +254,7 @@
                   @if (sizeOf($apls) !== 0)
                     <div class="pull-left hidden row-confirm-modal" style="margin-bottom: 20px;">
                         <input id="check-confirm-modal" type="checkbox" name="confirm" value="1"><span style="color:red;"> {!!__('member.accept_term_and_condition_apl')!!}</span>
-                        <label>@lang('app.txt.condition_days_apl', ['nbDay'=>'180'])</label>  
+                        <label>@lang('app.txt.condition_days_apl', ['nbDay'=>App\Models\Parameter::nbDayEndApl()])</label>  
                     </div>
                     <div class="col-md-5">
                       <button class="m-btn m-btn-theme" data-dismiss="modal" aria-hidden="true">@lang('app.btn.cancel')</button>
@@ -322,7 +322,7 @@
 </div>
 
 <!-- Modal for particular member registration -->
-@if (Auth::check())
+@if (Auth::check() && Auth::user()->hasRole(5))
   <div id="registratorMemberFormModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="registratorMemberFormLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">

@@ -1326,4 +1326,16 @@ return
     'newsletter.title.add' => 'Ajouter un nouveau paramètres des newsletter',
     'newsletter.title.content' => 'Contenu',
     'newsletter.title.edit' => 'Mise à jour paramètres de newsletter',
+	'table.end_date' => 'Date de fin',
+	'table.start_date' => 'Date de début',
+	'txt.end_relationship' => 'Annuler relation',
+	'txt.renew_relationship' => 'Renouveler la relation',
+	'txt.confirm.renew_relationship' => 'Voulez vous renouveler cette relation ?',
+	'txt.confirm.end_relationship' => 'Voulez vous annuler cette relation ?',
+	'txt.cancel_registration' => 'Annuler inscription',
+	'txt.notification_before_unsubscribe' => 'Vous voulez vraiment vous désinscrire ?',
+	'txt.notification_after_unsubscribe' => 'Vous vous êtes désabonné de l&rsquo;IEA !',
+	'btn.cancel_my_registration' => 'Annuler mon inscription',
+	'btn.confirm_unsubscription' => 'Confimer la désinscription',
+
 ];
