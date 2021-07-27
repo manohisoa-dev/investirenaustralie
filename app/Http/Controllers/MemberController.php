@@ -639,4 +639,10 @@ class MemberController extends Controller {
         return response()->json(['success' => 'true']);
     }
 
+    public function ajaxRenewRelation(Request $request) {
+        User::where('id', $request->id_membre)->update(['apl_ends_at' => 0, 'apl_ends_at' => \Carbon\Carbon::now()->addDays(Parameter::nbDayEndApl())]);
+
+        return response()->json(['success' => 'true']);
+    }
+
 }

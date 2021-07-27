@@ -1328,4 +1328,8 @@ return
     'newsletter.title.edit' => 'Mise à jour paramètres de newsletter',
 	'table.end_date' => 'Date de fin',
 	'table.start_date' => 'Date de début',
+	'txt.end_relationship' => 'Annuler relation',
+	'txt.renew_relationship' => 'Renouveler la relation',
+	'txt.confirm.renew_relationship' => 'Voulez vous renouveler cette relation ?',
+	'txt.confirm.end_relationship' => 'Voulez vous annuler cette relation ?',
 ];

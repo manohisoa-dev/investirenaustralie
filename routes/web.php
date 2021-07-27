@@ -185,7 +185,8 @@ Route::middleware(["auth", "role:5"])->group(function(){
         Route::post('ajaxDropTestimonial', 'MemberController@ajaxDropTestimonial')->name('ajaxDropTestimonial'); 
         
         Route::get('relationApl', 'MemberController@relationApl')->name('member.relationApl');
-        Route::post('ajaxDropRelation', 'MemberController@ajaxDropRelation')->name('member.ajaxDropRelation');   
+        Route::post('ajaxDropRelation', 'MemberController@ajaxDropRelation')->name('member.ajaxDropRelation');
+        Route::post('ajaxRenewRelation', 'MemberController@ajaxRenewRelation')->name('member.ajaxRenewRelation');
 
         // Mail Controller Groups
         Route::get('mails/{filter?}', 'MailController@all')->name('member.mail.list');
