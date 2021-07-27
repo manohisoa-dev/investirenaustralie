@@ -873,4 +873,11 @@ class User extends Authenticatable {
         return $this->hasMany(RelationMembreApl::class,'apl_id','id');
     }
 
+    public function  scopeHasAplActiveRelation(){
+        return $this->where('role','=','5')
+                    ->where('apl_id','!=','0')
+                    ->where('apl_ends_at','>=',Carbon::now())
+                    ->get();
+    }
+
 }
