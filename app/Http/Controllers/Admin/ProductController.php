@@ -46,16 +46,6 @@ class ProductController extends Controller {
     }
 
     public function programme() {
-        //echo $this->get_lonlat('Samberstraat+69+Antwerpen+Belgium');
-        /*$data = $this->geocodeAddress('509 Pitt Street');
-        var_dump($data);
-        $latitude = $data['lat'];
-        $longitude = $data['lng'];
-        $city = $data['city'];
-        $department = $data['department'];
-        $region = $data['region'];
-        $country = $data['country'];
-        $postal_code = $data['postal_code'];*/
         $records = Product::allProgramme();
         $status = Product::groupBy('status')->pluck('status', 'status');
         return $this->view("programme", ['records' => $records, 'status' => $status]);
@@ -91,7 +81,7 @@ class ProductController extends Controller {
         if ($request->type == 'programme') {
             //creation simple programme
             $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
-                '', '', $request->ville, $request->display_address);
+                $request->ville, $request->display_address);
             $id_programme = $this->save_programme($request->cat_programmme_id, $request->ancienneteBien,
                 $request->natureBien, $request->prix_min, $request->prix_max, $request->type_id,
                 $request->display_address, $request->postalCode, $request->state_id, $request->title_programme,
@@ -138,7 +128,7 @@ class ProductController extends Controller {
                     if ($request->parent_id == 0) {
                         //creation programme
                         $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
-                            '', '', $request->ville, $request->display_address);
+                            $request->ville, $request->display_address);
                         $id_programme = $this->save_programme($request->cat_programmme_id, $request->ancienneteBien,
                             $request->natureBien, $request->prix_min, $request->prix_max, $request->type_id,
                             $request->display_address, $request->postalCode, $request->state_id, $request->title_programme,
@@ -188,7 +178,7 @@ class ProductController extends Controller {
                     //creation produit isolé
                     //creation location produit isolé
                     $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
-                        $request->postalCode_product, '', '', $request->ville_product, $request->display_address_product);
+                        $request->postalCode_product, $request->ville_product, $request->display_address_product);
 
                     $this->save_new_produit($anciennete, $nature, $request->title_product, $request->file
                         ('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
@@ -201,7 +191,7 @@ class ProductController extends Controller {
             } else {
                 //si ancienneté == ancien
                 $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
-                    $request->postalCode_product, '', '', $request->ville_product, $request->display_address_product);
+                    $request->postalCode_product, $request->ville_product, $request->display_address_product);
 
                 $this->save_new_produit($anciennete, '', $request->title_product, $request->file
                     ('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
@@ -219,59 +209,16 @@ class ProductController extends Controller {
         }
     }
 
-    public function geocodeAddress($address) {
-        //valeurs vide par défaut
-        $apikey = 'AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA';
-        $data = array(
-            'address' => '',
-            'lat' => '',
-            'lng' => '',
-            'city' => '',
-            'department' => '',
-            'region' => '',
-            'country' => '',
-            'postal_code' => '');
-        //on formate l'adresse
-        $address = str_replace(" ", "+", $address);
-        //on fait l'appel à l'API google map pour géocoder cette adresse
-        $json = file_get_contents("https://maps.google.com/maps/api/geocode/json?key=" .
-            $apikey . "&address=$address&sensor=false&region=fr");
-        $json = json_decode($json);
-        //on enregistre les résultats recherchés
-        if ($json->status == 'OK' && count($json->results) > 0) {
-            $res = $json->results[0];
-            //adresse complète et latitude/longitude
-            $data['address'] = $res->formatted_address;
-            $data['lat'] = $res->geometry->location->lat;
-            $data['lng'] = $res->geometry->location->lng;
-            foreach ($res->address_components as $component) {
-                //ville
-                if ($component->types[0] == 'locality') {
-                    $data['city'] = $component->long_name;
-                }
-                //départment
-                if ($component->types[0] == 'administrative_area_level_2') {
-                    $data['department'] = $component->long_name;
-                }
-                //région
-                if ($component->types[0] == 'administrative_area_level_1') {
-                    $data['region'] = $component->long_name;
-                }
-                //pays
-                if ($component->types[0] == 'country') {
-                    $data['country'] = $component->long_name;
-                }
-                //code postal
-                if ($component->types[0] == 'postal_code') {
-                    $data['postal_code'] = $component->long_name;
-                }
-            }
+    function save_location($country, $suburb, $postalCode, $locality, $route) {
+        $adresse = $route . ' ' . $suburb . ' ' . $locality . ' Australie';
+        $coordonne_tab = set_coordooner($adresse);
+        if ($coordonne_tab) {
+            $latitude = $coordonne_tab['user_lat'];
+            $longitude = $coordonne_tab['user_long'];
+        } else {
+            $latitude = '';
+            $longitude = '';
         }
-        return $data;
-    }
-
-    function save_location($country, $suburb, $postalCode, $longitude, $latitude, $locality,
-        $route) {
         $location = new Localisation();
         $location->country = $country;
         $location->area_level_1 = $suburb;
@@ -420,11 +367,29 @@ class ProductController extends Controller {
      * @return  \Illuminate\Http\Response
      */
     public function update(Request $request, Product $product) {
+        $adresse = $request->display_address . ' ' . $request->suburb . ' ' . $request->ville .
+            ' Australie';
+        $coordonne_tab = set_coordooner($adresse);
+        if ($coordonne_tab) {
+            $latitude = $coordonne_tab['user_lat'];
+            $longitude = $coordonne_tab['user_long'];
+        } else {
+            $latitude = '';
+            $longitude = '';
+        }
         if ($request->type == 'programme') {
             //modification localisation
-            Localisation::where('id', $request->location_Id)->update(['area_level_1' => $request->suburb,
-                'country' => $request->countryId, 'postalCode' => $request->postalCode,
-                'locality' => $request->ville,'route'=>$request->display_address]);
+            if ($request->location_Id != 0) {
+                Localisation::where('id', $request->location_Id)->update(['area_level_1' => $request->suburb,
+                    'country' => $request->countryId, 'postalCode' => $request->postalCode,
+                    'locality' => $request->ville, 'route' => $request->display_address, 'longitude' =>
+                    $longitude, 'latitude' => $latitude]);
+                $id_location = $request->location_Id;
+            } else {
+                $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
+                    $request->ville, $request->display_address);
+            }
+
 
             if ($request->file('fond_dossier')) {
                 $fond_dossier = $request->file('fond_dossier');
@@ -439,6 +404,7 @@ class ProductController extends Controller {
             $product->max_price = $request->prix_max;
             $product->display_address = $request->display_address;
             $product->type_id = $request->type_id;
+            $product->location_id = $id_location;
             $product->save();
 
             // update translation
@@ -449,9 +415,16 @@ class ProductController extends Controller {
             return redirect(Auth::user()->isAdminDelegate() ? route('admin.collaborators.admin.product.programme') :
                 route('admin.product.programme'));
         } else {
-            Localisation::where('id', $request->location_id)->update(['area_level_1' => $request->suburb_product,
-                'country' => $request->countryId_product, 'postalCode' => $request->postalCode_product,
-                'locality' => $request->ville_product,'route'=>$request->display_address]);
+            if ($request->location_Id != 0) {
+                Localisation::where('id', $request->location_Id)->update(['area_level_1' => $request->suburb_product,
+                    'country' => $request->countryId_product, 'postalCode' => $request->postalCode_product,
+                    'locality' => $request->ville_product, 'route' => $request->display_address, 'longitude' =>
+                    $longitude, 'latitude' => $latitude]);
+                $id_location = $request->location_Id;
+            } else {
+                $id_location = $this->save_location($request->countryId_product, $request->suburb_product, $request->postalCode_product,
+                    $request->ville_product, $request->display_address);
+            }
 
             $slug = $slugOriginal = generateSlug($request->title);
             $product->slug = $slug;
@@ -474,6 +447,7 @@ class ProductController extends Controller {
             $product->bathrooms = $request->bathrooms;
             $product->interior_area = $request->interior_area;
             $product->exterior_area = $request->exterior_area;
+            $product->location_id = $id_location;
             if ($product->ancienneteBien == 'Ancien') {
                 $product->year_built = $request->year_built;
             }
@@ -754,7 +728,7 @@ class ProductController extends Controller {
 
     public function ajaxSaveProduct(Request $request) {
         $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
-            $request->postalCode_product, '', '', $request->ville_product, $request->display_address_product);
+            $request->postalCode_product, $request->ville_product, $request->display_address_product);
         $titre_product = $request->title_new_programme . '-' . $request->title_product;
 
         if (isset($request->chk_parking)) {
@@ -788,7 +762,7 @@ class ProductController extends Controller {
         if ($request->id_location_product == 0) {
             //create localisation
             $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
-                $request->postalCode_product, '', '', $request->ville_product, $request->display_address_product);
+                $request->postalCode_product, $request->ville_product, $request->display_address_product);
         } else {
             $id_location = $request->id_location_product;
             //modification localisation

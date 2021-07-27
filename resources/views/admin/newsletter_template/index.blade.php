@@ -17,7 +17,8 @@
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ Auth::user()->isAdmin()?route('admin.newsletter-template.create'):route('admin.collaborators.admin.newsletter-template.create') }}" type="button" class="btn btn-primary btn-block">
+			<a href="javascript:void(0)" onclick="envoyer()" class="btn btn-default"><i class="fa fa-send"></i> Envoyer</a>
+            <a href="{{ Auth::user()->isAdmin()?route('admin.newsletter-template.create'):route('admin.collaborators.admin.newsletter-template.create') }}" type="button" class="btn btn-primary">
                 <i class="fa fa-plus"></i> @lang('app.newsletter.btn.add')       
 			</a>
         </div>
@@ -37,6 +38,7 @@
                 <table class="table table-striped grid-view-tbl">
                 <thead>
                     <tr class="header-row">
+						<th></th>
 						{!!\Nvd\Crud\Html::sortableTh('id','admin.newsletter-template.index','Id')!!}
 						{!!\Nvd\Crud\Html::sortableTh('newsletter_title','admin.newsletter-template.index','Titre')!!}
 						{!!\Nvd\Crud\Html::sortableTh('newsletter_template','admin.newsletter-template.index','Contenu')!!}
@@ -47,6 +49,7 @@
                     </tr>
                     <tr class="search-row">
                         <form class="search-form">
+							<td></td>
 							<td><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
 							<td><input type="text" class="form-control" name="newsletter_title" value="{{Request::input("newsletter_title")}}"></td>
 							<td><input type="text" class="form-control" name="newsletter_template" value="{{Request::input("newsletter_template")}}"></td>
@@ -61,6 +64,7 @@
                     <tbody>
                         @forelse ( $records as $index =>$record )
                             <tr>
+							   <td><input type="checkbox" value="{{ $record->id }}" id="id_template" /></td>
                                <td>{{ $index + $records->firstItem() }}</td>
                                <td>
                                    <span class="editable"
@@ -141,5 +145,31 @@
                     $form.submit();
                 });
       });
+	  
+	  function envoyer()
+	  {
+			var idTemplate = [];
+				$('#id_template:checked').each(function(i, e) {
+				idTemplate.push($(this).val());
+			});
+			var url;
+			url = "{{ Auth::user()->isAdmin()?route('admin.ajaxSendNewsLetter'):route('admin.collaborators.admin.ajaxSendNewsLetter') }}";
+			
+			if (idTemplate.length === 0) {
+				alert('Veuillez cocher un ou plusieurs cases');
+			}else{
+				$.ajax({
+					url : url,
+					type: "POST",
+					data:{"_token": "{{ csrf_token() }}",'idTemplate':idTemplate},
+					success: function(data)
+					{
+						if(data.success == 'true'){
+							alert("C'est partie");
+						}
+					}
+				});
+			}
+	  }
 	</script>
 @endsection
