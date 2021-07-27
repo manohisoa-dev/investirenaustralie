@@ -1326,4 +1326,6 @@ return
     'newsletter.title.add' => 'Ajouter un nouveau paramètres des newsletter',
     'newsletter.title.content' => 'Contenu',
     'newsletter.title.edit' => 'Mise à jour paramètres de newsletter',
+	'table.end_date' => 'Date de fin',
+	'table.start_date' => 'Date de début',
 ];

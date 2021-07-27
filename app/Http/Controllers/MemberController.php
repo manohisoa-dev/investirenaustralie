@@ -19,6 +19,7 @@ use App\Models\Localisation;
 use App\Models\Message;
 use App\Models\Temoignage;
 use App\Models\RelationMembreApl;
+use App\Models\Parameter;
 use Session;
 
 class MemberController extends Controller {
@@ -329,18 +330,19 @@ class MemberController extends Controller {
         $this->middleware('role:member');
         // check if user has apl or add if user has no apl
         $message = "";
+        $nbDayAplMember = Parameter::nbDayEndApl();
         if ($request->get('apl')) {
             if (Auth::user()->hasApl()) {
                 $message = trans('app.txt.member_has_apl', ['apl' => User::find(Auth::user()->apl_id)->name]);
             } else {
                 // // Add APL on member
                 User::whereId(Auth::id())->update(['apl_id' => $request->get('apl'),
-                    'apl_ends_at' => \Carbon\Carbon::now()->addDays(180)]);
+                    'apl_ends_at' => \Carbon\Carbon::now()->addDays($nbDayAplMember)]);
                 $relation = new RelationMembreApl();
                 $relation->membre_id = Auth::id();
                 $relation->apl_id = $request->get('apl');
                 $relation->dt_debut_relation = \Carbon\Carbon::now();
-                $relation->dt_end_relation = \Carbon\Carbon::now()->addDays(180);
+                $relation->dt_end_relation = \Carbon\Carbon::now()->addDays($nbDayAplMember);
                 $relation->save();
                 $message = trans('app.txt.member_has_new_apl', ['apl' => User::find($request->get
                     ('apl'))->name]);
@@ -420,7 +422,7 @@ class MemberController extends Controller {
         // Update APL
         Auth::user()->apl_id = $apl->id;
         Auth::user()->apl_ends_at = \Carbon\Carbon::now()->addDays(option('payment.apl_ends_at',
-            180));
+            Parameter::nbDayEndApl()));
         Auth::user()->save();
 
         try {

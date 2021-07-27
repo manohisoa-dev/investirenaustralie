@@ -16,10 +16,10 @@
 				<table class="table table-bordered" style="font-size:12px">
 					<thead>
 						<tr>
-							<th>Photo</th>
-							<th>APL</th>							
-							<th>Email</th>
-							<th>Date fin</th>
+							<th>@lang('app.table.photo')</th>
+							<th>@lang('app.table.apl')</th>							
+							<th>@lang('app.table.email')</th>
+							<th>@lang('app.table.end_date')</th>
 							<th width="10%">&nbsp;</th>
 						</tr>
 					</thead>
@@ -62,10 +62,10 @@
 				<table class="table table-bordered" style="font-size:12px">
 					<thead>
 						<tr>
-							<th>APL</th>							
-							<th>Email</th>
-							<th>Date début</th>
-							<th>Date fin</th>
+							<th>@lang('app.table.apl')</th>							
+							<th>@lang('app.table.email')</th>
+							<th>@lang('app.table.start_date')</th>
+							<th>@lang('app.table.end_date')</th>
 						</tr>
 					</thead>
 					<tbody>
