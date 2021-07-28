@@ -17,6 +17,7 @@ class SellerController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('role:2');
+        $this->middleware('user:active');
     }
     
     /**

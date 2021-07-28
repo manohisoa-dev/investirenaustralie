@@ -25,6 +25,7 @@ class ProfileController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('user:active');
     }
 
     /**
@@ -474,6 +475,12 @@ class ProfileController extends Controller
         
         // Success
         return back()->with('success',trans('app.txt.location_added'));
+    }
+
+    public function ajaxDeleteAccount(Request $request) {
+        User::where('id', $request->user_id)->update(['status' => 'deleted']);
+
+        return response()->json(['success' => 'true']);
     }
 
 }

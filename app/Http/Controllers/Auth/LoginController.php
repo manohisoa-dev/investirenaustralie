@@ -140,7 +140,7 @@ class LoginController extends Controller
             if ($user->active() && $this->attemptLogin($request)) {
                 // Send the normal successful login response
                 return $this->sendLoginResponse($request);
-            } else {
+            }else {
                 
                 // Increment the failed login attempts and redirect back to the
                 // login form with an error message.
@@ -163,6 +163,14 @@ class LoginController extends Controller
                         ->route('login')
                         ->withInput($request->only($this->username(), 'remember'))
                         ->with('error', trans('app.txt.accountdesactivated'));
+                }
+                
+                // if acount is deleted
+                if($user->statusDeleted()){
+                    
+                    return redirect()
+                        ->route('login')
+                        ->with('error', trans('app.txt.accountdeleted'));
                 }
                 
                 return redirect()

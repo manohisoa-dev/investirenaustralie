@@ -280,6 +280,15 @@ class User extends Authenticatable {
     }
 
     /**
+     * Is user deleted
+     *
+     * @return Boolean
+     */
+    public function statusDeleted() {
+        return ($this->status == 'deleted');
+    }
+
+    /**
      * Is user online
      *
      * @return Boolean

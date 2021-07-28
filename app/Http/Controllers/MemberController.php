@@ -31,6 +31,7 @@ class MemberController extends Controller {
     public function __construct() {
         $this->middleware('auth');
         $this->middleware('role:5');
+        $this->middleware('user:active');
     }
 
     /**
@@ -640,7 +641,7 @@ class MemberController extends Controller {
     }
 
     public function ajaxRenewRelation(Request $request) {
-        User::where('id', $request->id_membre)->update(['apl_ends_at' => 0, 'apl_ends_at' => \Carbon\Carbon::now()->addDays(Parameter::nbDayEndApl())]);
+        User::where('id', $request->id_membre)->update(['apl_ends_at' => \Carbon\Carbon::now()->addDays(Parameter::nbDayEndApl())]);
 
         return response()->json(['success' => 'true']);
     }

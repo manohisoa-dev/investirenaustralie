@@ -403,6 +403,7 @@ return
 	'txt.resendcode' => 'Resend code',
 	'txt.mustagreeterme' => 'You must agree the term and condition.',
 	'txt.accountdesactivated' => 'Your account is desactivated. An email is sent to your address email.',
+	'txt.accountdeleted' => 'Your account is deleted.',
 	'txt.mustconfirmaccount' => 'You must be confirm your account.',
 	'txt.codedoesnotexist' => 'The code does not exist for any user in our system.',
 	'txt.accountactivated' => 'Your account is activated. You can login now with your default password.',
@@ -1094,6 +1095,10 @@ return
 	'txt.cancel_registration' => 'Cancel registration',
 	'txt.notification_before_unsubscribe' => 'You really want to unsubscribe ?',
 	'txt.notification_after_unsubscribe' => 'You have unsubscribed from the IEA !',
+	'txt.unsubscribe_error' => 'Unsubscribe error !',
+	'txt.confirm_unsubscription' => 'I want to unsubscribe',
 	'btn.cancel_my_registration' => 'Cancel my registration',
 	'btn.confirm_unsubscription' => 'Confirm unsubscription',
+	'txt.operation_canceled' => 'Operation canceled !',
+	'txt.check_box_to_confirm_unsubscription' => 'Please check the box to confirm your unsubscription.',
 ];

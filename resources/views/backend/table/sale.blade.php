@@ -20,12 +20,12 @@
         <tr>
             <td class="product-thumbnail" width="100">
                 <div class="pt-icon">
-                    <a href="{{route('product.index', $sale->product->slug)}}">
-                        <img src="{{$sale->product->imageUrl()}}" title="" alt="">
+                    <a href="{{route('product.index', $sale->product?$sale->product->slug:'-')}}">
+                        <img src="{{ $sale->product?$sale->product->imageUrl():asset('images/iea.png') }}" title="" alt="">
                     </a>
                 </div>
             </td>
-            <td class="product-name"> <a href="{{route('product.index', $sale->product->slug)}}">{{$sale->product->title}}</a></td>
+            <td class="product-name"> <a href="{{route('product.index', $sale->product?$sale->product->slug:'-')}}">{{$sale->product?$sale->product->title:'-'}}</a></td>
             
             @if(\Auth::check()&&\Auth::user()->hasRole(4))
                 <td class="product-thumbnail" width="100">
