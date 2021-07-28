@@ -376,7 +376,16 @@ class ProductController extends Controller {
         /**/
     }
 
-    function save_location($country, $suburb, $postalCode, $longitude, $latitude, $locality,$route) {
+    function save_location($country, $suburb, $postalCode, $locality, $route) {
+        $adresse = $route . ' ' . $suburb . ' ' . $locality . ' Australie';
+        $coordonne_tab = set_coordooner($adresse);
+        if ($coordonne_tab) {
+            $latitude = $coordonne_tab['user_lat'];
+            $longitude = $coordonne_tab['user_long'];
+        } else {
+            $latitude = '';
+            $longitude = '';
+        }
         $location = new Localisation();
         $location->country = $country;
         $location->area_level_1 = $suburb;
@@ -467,7 +476,7 @@ class ProductController extends Controller {
         $nature = $request->natureBien;
 
         $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
-            '', '', $request->ville,$request->display_address);
+            $request->ville,$request->display_address);
         $id_programme = $this->save_programme($request->cat_programmme_id, $request->ancienneteBien,
             $request->natureBien, $request->prix_min, $request->prix_max, $request->type_id,
             $request->display_address, $request->postalCode, $request->state_id, $request->title_programme,
@@ -658,7 +667,7 @@ class ProductController extends Controller {
 
     public function ajaxSaveProduct(Request $request) {
         $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
-            $request->postalCode_product, '', '', $request->ville_product,$request->display_address_product);
+            $request->postalCode_product, $request->ville_product,$request->display_address_product);
         $titre_product = $request->title_new_programme . '-' . $request->title_product;
 
         if (isset($request->chk_parking)) {
@@ -686,7 +695,7 @@ class ProductController extends Controller {
         if ($request->id_location_product == 0) {
             //create localisation
             $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
-                $request->postalCode_product, '', '', $request->ville_product, $request->display_address_product);
+                $request->postalCode_product, $request->ville_product, $request->display_address_product);
         } else {
             $id_location = $request->id_location_product;
             //modification localisation
@@ -779,7 +788,7 @@ class ProductController extends Controller {
             if ($nature == 'Programme immobilier') {
                 //creation programme
                 $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
-                    '', '', $request->ville,$request->display_address);
+                    $request->ville,$request->display_address);
 
                 $id_programme = $this->save_programme($request->cat_programmme_id, $request->ancienneteBien,
                     $request->natureBien, $request->prix_min, $request->prix_max, $request->type_id,
@@ -820,7 +829,7 @@ class ProductController extends Controller {
             } else {
                 //creation location produit isolé
                 $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
-                    $request->postalCode_product, '', '', $request->ville_product,$request->display_address_product);
+                    $request->postalCode_product, $request->ville_product,$request->display_address_product);
 
                 $this->save_new_produit($anciennete, $nature, $request->title_product, $request->file
                     ('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
@@ -833,7 +842,7 @@ class ProductController extends Controller {
         } else {
             //si ancienneté == ancien
             $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
-                $request->postalCode_product, '', '', $request->ville_product,$request->display_address_product);
+                $request->postalCode_product, $request->ville_product,$request->display_address_product);
 
             $this->save_new_produit($anciennete, '', $request->title_product, $request->file
                 ('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,

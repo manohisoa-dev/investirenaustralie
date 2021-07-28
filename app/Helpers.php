@@ -460,9 +460,10 @@ if (!function_exists('updateTranslate')) {
 
 if (!function_exists('getGTranslate')) {
     function getGTranslate($sourceLang, $targetLang, $text) {
-        $translator = new Translator;
+        /*$translator = new Translator;
         $result = $translator->setSourceLang($sourceLang)->setTargetLang($targetLang)->translate($text);
-        return $result;
+        return $result;*/
+        return $text;
     }
 }
 
@@ -490,7 +491,7 @@ if (!function_exists('getGTranslateAutoDetectBd')) {
 
 if (!function_exists('getGTranslateAutoDetect')) {
     function getGTranslateAutoDetect($targetLang, $text) {
-        $translator = new Translator;
+        /*$translator = new Translator;
         $lang = getGTranslateLangDetect($text);
         $result = $text;
 
@@ -498,23 +499,25 @@ if (!function_exists('getGTranslateAutoDetect')) {
             $result = $translator->setTargetLang($targetLang)->translate($text);
         }
 
-        return $result;
+        return $result;*/
+        return $text;
     }
 }
 
 if (!function_exists('getGTranslateLangDetect')) {
     function getGTranslateLangDetect($text) {
-        $translator = new Translator;
-        $result = $translator->detect($text);
-        return $result;
+        //$translator = new Translator;
+        //$result = $translator->detect($text);
+        return $text;
     }
 }
 
 if (!function_exists('getGTranslateTest')) {
     function getGTranslateTest($targetLang, $text) {
-        $translator = new Translator;
+        /*$translator = new Translator;
         $result = $translator->setTargetLang($targetLang)->translate($text);
-        return dd($result);
+        return $result;*/
+        return $text;
     }
 }
 

@@ -373,10 +373,10 @@
                         </div>
 						<div style="margin-top:10px">
 							<p style="color:#fff !important">S'inscrire à notre newsletters</p>
-							<form class="d-flex flex-row m-5px-b p-1 white-bg input-group" action="{{route('newsletter.store')}}" method="post">
+							<form class="d-flex flex-row m-5px-b p-1 white-bg input-group" id="form_newsletter" method="post">
 								{{ csrf_field() }}
-								<input type="email" name="email_adresse" class="form-control border-radius-0 border-0" placeholder="votre adresse email" required>
-								<input type="hidden" name="statuts" value="Actif">
+								<input type="email" name="email_adresse" id="email_adresse" class="form-control border-radius-0 border-0" placeholder="votre adresse email" required>
+								<input type="hidden" name="statuts" id="statuts" value="Actif">
 								<button class="m-btn m-btn-theme2nd flex-shrink-0" type="submit">OK</button>
 							</form>
 						</div>
@@ -474,7 +474,7 @@
     {{-- Bootstrap popper --}}
     <script src="{{ asset('js/popper.min.js') }}"></script>
     <!-- end -->
-
+	<script src="{{ asset('administrator/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
     {{-- Tooltip css style --}}
     <style>
         .tooltip-inner {
@@ -631,6 +631,36 @@
             $('#container-navbar').addClass('show-navbar-hover-after');   
         }
         });
+		
+		$('#form_newsletter').on('submit',function(e){
+        	e.preventDefault();
+			let email_adresse = $('#email_adresse').val();
+			let statuts = $('#statuts').val();
+			$.ajax({
+				url: "{{route('newsletter.store')}}",
+				type:"POST",
+				data:{
+					"_token": "{{ csrf_token() }}",
+					email_adresse:email_adresse,
+					statuts:statuts
+				},
+				success:function(data){
+					if(data.reponse == 'OK'){
+						swal({
+							   title: "Merci", 
+							   text: "Votre email a été bien enregistré", 
+							   type: "success"
+							 },
+						   function(){ 
+							   location.reload();
+						   }
+						);
+					}else{
+						swal("Attention", data.reponse, "error");
+					}
+				}
+			});
+		});
   </script>
 
   <style>
