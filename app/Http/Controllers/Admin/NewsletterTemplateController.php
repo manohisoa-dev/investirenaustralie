@@ -2,7 +2,10 @@
 namespace App\Http\Controllers\admin;
 
 use App\Models\NewsletterTemplate;
+use App\Models\Newsletter;
 use Illuminate\Http\Request;
+use App\Mail\MailTemplate;
+use Mail;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -38,9 +41,9 @@ class NewsletterTemplateController extends Controller
     public function store( Request $request )
     {
         $this->validate($request, NewsletterTemplate::validationRules());
-        if($request->statuts == 'Actif'){
+        /*if($request->statuts == 'Actif'){
             NewsletterTemplate::query()->update(['statuts' => 'Inactif']);
-        }
+        }*/
         NewsletterTemplate::create($request->all());
 
         # notification
@@ -87,9 +90,9 @@ class NewsletterTemplateController extends Controller
         }
 
         $this->validate($request, NewsletterTemplate::validationRules());
-        if($request->statuts == 'Actif'){
+        /*if($request->statuts == 'Actif'){
             NewsletterTemplate::query()->update(['statuts' => 'Inactif']);
-        }
+        }*/
         $newsletterTemplate->update($request->all());
 
         # notification
@@ -114,6 +117,30 @@ class NewsletterTemplateController extends Controller
     protected function view($view, $data = [])
     {
         return view($this->viewDir.".".$view, $data);
+    }
+    
+    public function ajaxSendNewsLetter(Request $request)
+    {
+        $tabTemplate = $request->idTemplate;
+        if (!empty($tabTemplate)) {
+            foreach ($tabTemplate as $val) {
+                $template = NewsletterTemplate::where('id' , '=' , $val)->get();
+                $users = Newsletter::where('statuts' , '=' , 'Actif')->get();
+                
+                $contenu = $template[0]->newsletter_template;
+                $content = ['title' => '', 'body' => $contenu];
+                foreach($users as $user){
+                    $email_to = $user->email_adresse;
+                    Mail::to($email_to)->send(new MailTemplate($content, 'Newsletter'));
+                }
+                
+            }
+        }
+        return response()->json(['success' => 'true']);
+        /*$content = ['title' => 'test', 'body' => 'ici la contenu'];
+        $receiverAddress = 'dev4.easydata@gmail.com';
+        Mail::to($receiverAddress)->send(new MailTemplate($content, 'test email'));
+        return response()->json(['success' => 'true']);*/
     }
 
 }

@@ -155,6 +155,8 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::resource('newsletter-template','NewsletterTemplateController');
     //Route inscris newsletters
     Route::resource('newsletter','NewsletterController');
+    Route::post('ajaxSendNewsLetter', 'NewsletterTemplateController@ajaxSendNewsLetter')->name('ajaxSendNewsLetter');
+    
 });
 
 // ROUTE ADMIN DELEGATE
@@ -447,6 +449,7 @@ Route::prefix('collaborators')->namespace('Admin')->as('admin.')->middleware(["a
     Route::put('/admin/newsletter-template/{firb}', 'NewsletterTemplateController@update')->name('collaborators.admin.newsletter-template.update');
     Route::delete('/admin/newsletter-template/{firb}', 'NewsletterTemplateController@destroy')->name('collaborators.admin.newsletter-template.destroy');
     Route::get('/admin/newsletter-template/{firb}/edit', 'NewsletterTemplateController@edit')->name('collaborators.admin.newsletter-template.edit');
+    Route::post('ajaxSendNewsLetter', 'NewsletterTemplateController@ajaxSendNewsLetter')->name('collaborators.admin.ajaxSendNewsLetter');
     
     // Route::resource('mails-template','MailsTemplateController');
     Route::get('/admin/mails-template', 'MailsTemplateController@index')->name('collaborators.admin.mails-template.index');
@@ -460,6 +463,7 @@ Route::prefix('collaborators')->namespace('Admin')->as('admin.')->middleware(["a
     //Route::resource('newsletter','NewsletterController');
     Route::get('/admin/newsletter', 'NewsletterController@index')->name('collaborators.admin.newsletter.index');
     Route::delete('/admin/newsletter/{newsletter}', 'NewsletterController@destroy')->name('collaborators.admin.newsletter.destroy');
+    
     
     // Route::resource('parameters-email','ParametersEmailController');
     Route::get('/admin/parameters-email', 'ParametersEmailController@index')->name('collaborators.admin.parameters-email.index');

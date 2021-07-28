@@ -376,6 +376,7 @@
 							<form class="d-flex flex-row m-5px-b p-1 white-bg input-group" action="{{route('newsletter.store')}}" method="post">
 								{{ csrf_field() }}
 								<input type="email" name="email_adresse" class="form-control border-radius-0 border-0" placeholder="votre adresse email" required>
+								<input type="hidden" name="statuts" value="Actif">
 								<button class="m-btn m-btn-theme2nd flex-shrink-0" type="submit">OK</button>
 							</form>
 						</div>
