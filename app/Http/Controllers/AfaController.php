@@ -20,6 +20,7 @@ class AfaController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('role:3');
+        $this->middleware('user:active');
     }
     
     /**

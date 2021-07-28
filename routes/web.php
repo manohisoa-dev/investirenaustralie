@@ -127,6 +127,7 @@ Route::middleware(["auth"])->group(function(){
         Route::post('avatar', 'ProfileController@updateAvatar');
         Route::get('location', 'ProfileController@location')->name('location.edit');
         Route::post('location', 'ProfileController@updateLocation');
+        Route::post('ajaxDeleteAccount', 'ProfileController@ajaxDeleteAccount')->name('profile.ajaxDeleteAccount');
     });
 
     Route::post('search', 'SearchController@edit')->name('search.edit');

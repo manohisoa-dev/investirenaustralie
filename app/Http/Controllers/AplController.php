@@ -19,6 +19,7 @@ class AplController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('role:4');
+        $this->middleware('user:active');
     }
     
     /**

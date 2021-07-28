@@ -256,6 +256,7 @@ return [
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Notify' => Jleon\LaravelPnotify\Notify::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'user' => App\Http\Middleware\CheckUser::class,
     ],
 
 ];

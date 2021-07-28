@@ -385,7 +385,7 @@
                 <div class="row">
                     <div class="col-md-4 m-10px-tb">
                         <div class="media">
-                            <button type="button" class="m-btn m-btn-default pull-right" id="btn_cancel_registration">@lang('app.btn.cancel_my_registration')</button>
+                            <button type="button" class="m-btn m-btn-default pull-right" onclick="cancel_registration({{ Auth::id() }})" id="btn_cancel_registration">@lang('app.btn.cancel_my_registration')</button>
                         </div>
                     </div>
                 </div>
@@ -400,10 +400,50 @@
 </div>
 
 @push('script')
+    <script src="{{ asset('/js/sweetalert2.js') }}"></script>
     <script>
         $('#btn_save').click(function(){
             $('#form_profil').submit();
         })
+
+        function cancel_registration(user_id)
+        {
+            Swal.fire({
+                title: "@lang('app.txt.notification_before_unsubscribe')",
+                input: 'checkbox',
+                inputPlaceholder: "@lang('app.txt.confirm_unsubscription')",
+                confirmButtonColor: '#FF2525',
+                confirmButtonText: "@lang('app.btn.confirm_unsubscription')",
+                showCancelButton: true,
+                cancelButtonText: "@lang('app.btn.cancel')",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    if (result.value) {
+                        $.ajax({
+                            url : "{{ route('profile.ajaxDeleteAccount') }}",
+                            type: "POST",
+                            dataType: "JSON",
+                            data:{"_token": "{{ csrf_token() }}",'user_id':user_id},
+                            success: function(data)
+                            {
+                                Swal.fire({confirmButtonColor: '#00A3E7', icon: 'success', text: "@lang('app.txt.notification_after_unsubscribe')"});
+                                location.href="{{ route('logout') }}";	
+                            },
+                            error: function (jqXHR, textStatus, errorThrown)
+                            {
+                                Swal.fire({confirmButtonColor: '#00A3E7', icon: 'error', text: "@lang('app.txt.unsubscribe_error')"});
+                                // location.reload();
+                            }
+                        }); 
+                    
+                    } else {
+                    Swal.fire({confirmButtonColor: '#00A3E7', icon: 'info', text: "@lang('app.txt.check_box_to_confirm_unsubscription')"});
+                    }
+                } else {
+                    console.log(`modal was dismissed by ${result.dismiss}`)
+                }
+            })
+        }
     </script>
 @endpush
 
