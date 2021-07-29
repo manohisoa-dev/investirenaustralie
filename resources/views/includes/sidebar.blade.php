@@ -42,7 +42,7 @@
             <a href="{{route('product.index',['product'=>$product->slug])}}" class="list-group-item list-group-item-action d-flex p15px-tb">
                 <div>
                     <div class="avatar-50 border-radius-5">
-                        <img src="{{$product->imageUrl(false)}}" title="" alt="" />
+                        <img src="{{$product->imageUrl(false)?$product->imageUrl(false):asset('images.iea.png')}}" title="" alt="" />
                     </div>
                 </div>
                 <div class="p-15px-l">

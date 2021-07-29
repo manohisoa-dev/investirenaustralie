@@ -614,7 +614,7 @@
     </script>
 
     <script type="text/javascript">
-        $(window).bind('mousewheel', function(event) {
+        $(window).bind('wheel', function(event) {
         if (event.originalEvent.wheelDelta >= 0) {
             if ($(document).scrollTop() <= 100) {
                 // $('#container-navbar').removeClass('show-navbar-after');
@@ -636,35 +636,92 @@
   <style>
     .header-white.fixed-header .fixed-header-bar{
         background: none;
+        -webkit-box-shadow: 0px 0px 0px 0px rgb(38 59 94 / 10%);
+        -moz-box-shadow: 0px 0px 0px 0px rgb(38 59 94 / 10%);
+        -o-box-shadow: 0px 0px 0px 0px rgb(38 59 94 / 10%);
         box-shadow: 0px 0px 0px 0px rgb(38 59 94 / 10%);
+        -webkit-transform: perspective(400px) rotateY(0deg) scale(1) ;
+        -moz-transform: perspective(400px) rotateY(0deg) scale(1) ;
+        -o-transform: perspective(400px) rotateY(0deg) scale(1) ;
         transform: perspective(400px) rotateY(0deg) scale(1) ;
         /* transition:all .1s ease-out; */
     }
 
     .show-navbar-after-top{
+      -webkit-background: none;
+      -moz-background: none;
+      -o-background: none;
       background: none;
+      -webkit-position: absolute;
+      -moz-position: absolute;
+      -o-position: absolute;
       position: absolute;
+      -webkit-opacity: 1;
+      -moz-opacity: 1;
+      -o-opacity: 1;
       opacity: 1;
+      -webkit-transform: perspective(400px) rotateY(0deg) scale(1) ;
+      -moz-transform: perspective(400px) rotateY(0deg) scale(1) ;
+      -o-transform: perspective(400px) rotateY(0deg) scale(1) ;
       transform: perspective(400px) rotateY(0deg) scale(1) ;
+      -webkit-transition:all .4s ease-out;
+      -moz-transition:all .4s ease-out;
+      -o-transition:all .4s ease-out;
       transition:all .4s ease-out;
     }
 
     .show-navbar-after{
+      -webkit-background: white;
+      -moz-background: white;
+      -o-background: white;
       background: white;
+      -webkit-position: absolute;
+      -moz-position: absolute;
+      -o-position: absolute;
       position: absolute;
+      -webkit-opacity: 1;
+      -moz-opacity: 1;
+      -o-opacity: 1;
       opacity: 1;
+      -webkit-box-shadow: 0px 10px 10px 0px rgb(38 59 94 / 15%);
+      -moz-box-shadow: 0px 10px 10px 0px rgb(38 59 94 / 15%);
+      -o-box-shadow: 0px 10px 10px 0px rgb(38 59 94 / 15%);
       box-shadow: 0px 10px 10px 0px rgb(38 59 94 / 15%);
+      -webkit-transform: perspective(400px) rotateY(0deg) scale(1) ;
+      -moz-transform: perspective(400px) rotateY(0deg) scale(1) ;
+      -o-transform: perspective(400px) rotateY(0deg) scale(1) ;
       transform: perspective(400px) rotateY(0deg) scale(1) ;
+      -webkit-transition:all .6s ease-out;
+      -moz-transition:all .6s ease-out;
+      -o-transition:all .6s ease-out;
       transition:all .6s ease-out;
     }
 
     .show-navbar-hover-after {
       /* top:0; */
+      -webkit-background: white;
+      -moz-background: white;
+      -o-background: white;
       background: white;
+      -webkit-opacity:.5;
+      -moz-opacity:.5;
+      -o-opacity:.5;
       opacity:.5;
+      -webkit-box-shadow: 0px 3px 10px 0px rgb(38 59 94 / 15%);
+      -moz-box-shadow: 0px 3px 10px 0px rgb(38 59 94 / 15%);
+      -o-box-shadow: 0px 3px 10px 0px rgb(38 59 94 / 15%);
       box-shadow: 0px 3px 10px 0px rgb(38 59 94 / 15%);
+      -webkit-transform: perspective(400px) rotateX(-90deg);
+      -moz-transform: perspective(400px) rotateX(-90deg);
+      -o-transform: perspective(400px) rotateX(-90deg);
       transform: perspective(400px) rotateX(-90deg);
+      -webkit-transform-origin: perspective(400px) rotateX(-90deg);
+      -moz-transform-origin: perspective(400px) rotateX(-90deg);
+      -o-transform-origin: perspective(400px) rotateX(-90deg);
       transform-origin: 50% 0%;
+      -webkit-transition:all .6s ease-out;
+      -moz-transition:all .6s ease-out;
+      -o-transition:all .6s ease-out;
       transition:all .6s ease-out;
     }
   </style>

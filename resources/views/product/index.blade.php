@@ -416,7 +416,7 @@
         }
       };
       
-      var data = "{!!(isset($data) ? $data : '')!!}";
+      var data = "{{ (isset($data) ? $data : '') }}";
       
       function initMap() {
           _map = new google.maps.Map(document.getElementById('map'), {

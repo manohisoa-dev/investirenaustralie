@@ -491,12 +491,12 @@ if (!function_exists('getGTranslateAutoDetectBd')) {
 if (!function_exists('getGTranslateAutoDetect')) {
     function getGTranslateAutoDetect($targetLang, $text) {
         $translator = new Translator;
-        $lang = getGTranslateLangDetect($text);
+        // $lang = getGTranslateLangDetect($text);
         $result = $text;
 
-        if ($targetLang !== $lang) {
-            $result = $translator->setTargetLang($targetLang)->translate($text);
-        }
+        // if ($targetLang !== $lang) {
+        //     $result = $translator->setTargetLang($targetLang)->translate($text);
+        // }
 
         return $result;
     }
