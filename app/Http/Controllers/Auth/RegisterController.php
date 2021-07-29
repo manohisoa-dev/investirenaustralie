@@ -384,6 +384,7 @@ class RegisterController extends Controller
                 if($request->newsletter == 'yes'){
                     $newletter = new Newsletter;
                     $newletter->email_adresse = $request->email;
+                    $newletter->statuts = 'Actif';
                     $newletter->save();
                 }
                 
