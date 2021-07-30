@@ -39,4 +39,6 @@ return [
     "menu_relation_apl" => 'APL relationship',
     "relation_active" => "Active APL relationship",
     "historique_relation" => "Relationship histories",
+    "gothere.select_afa" => "You will first have to go through the selection phase of an AFA",
+    "btn.select_afa" => "Select AFA",
 ];

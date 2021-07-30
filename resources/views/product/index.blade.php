@@ -142,7 +142,7 @@
                           @endif --}}
                         </div>
                         <div class="col-sm-6">
-                          <a href="{{route('member.go.there')}}" id="btn_go_there" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme flex-shrink-0 col-md-12" title="@lang('app.txt.go_to_location')" @if(Auth::check()) {{ Auth::user()->isMove()?'disabled':'' }} @endif><i class="fa fa-map-marker"></i> @lang('app.btn.go_to_location')</a>
+                          <a href="{{route('member.go.there', $item->slug)}}" id="btn_go_there" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme flex-shrink-0 col-md-12" title="@lang('app.txt.go_to_location')" @if(Auth::check()) {{ Auth::user()->isMove()?'disabled':'' }} @endif><i class="fa fa-map-marker"></i> @lang('app.btn.go_to_location')</a>
                         </div>
                     </div>
                   </section>
@@ -293,8 +293,12 @@
           </div>
           <div class="modal-footer">
             @if (!Session::has('mail_send'))
-              <a type="button" class="pull-left m-btn m-btn-theme" id="btn_cancel" href="javascript:void(0)" data-dismiss="modal">@lang('app.btn.abandonner')</a>  
-              <a type="button" class="m-btn m-btn-theme2nd" id="btn_continue">@lang('app.btn.continuer')</a>
+              <a type="button" class="pull-left m-btn m-btn-theme" id="btn_cancel" href="javascript:void(0)" data-dismiss="modal">@lang('app.btn.abandonner')</a>
+              @if(Session()->get('hasAfa')!==0)
+                <a type="button" class="m-btn m-btn-theme2nd" id="btn_continue" >@lang('app.btn.continuer')</a>  
+              @else
+                <a type="button" class="m-btn m-btn-theme2nd"  href="{{ route("member.select.afa", $item->slug) }}" >@lang('member.btn.select_afa')</a>
+              @endif
             @else
               <a type="button" class="m-btn m-btn-theme2nd" href="javascript:void(0)" data-dismiss="modal" id="btn_continue">@lang('app.btn.ok')</a>
             @endif

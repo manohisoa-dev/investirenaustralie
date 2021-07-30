@@ -582,18 +582,22 @@ class MemberController extends Controller {
      * @param  \App\Models\Product
      * @return \Illuminate\Http\Response
      */
-    public function goThere(Request $request) {
+    public function goThere(Request $request,$prod=null) {
         $this->middleware('auth');
         $this->middleware('role:5');
 
-        if (Auth::user()->hasAfa()) {
-            return redirect(url()->previous())->with('engagement', trans('afa.condition_deplacement_afa', ['afa' =>
-                Auth::user() ? Auth::user()->afa->name : '']));
-        } else {
-            session()->put('link_product', url()->previous());
+        if($prod){
+            $prodUrl = url('product/'.$prod);
 
-            return redirect()->route('member.select.afa')->with('error', trans('app.txt.choose_an_afa'));
+            if (Auth::user()->hasAfa()) {
+                return redirect($prodUrl)->with('engagement', trans('afa.condition_deplacement_afa', ['afa' =>
+                    Auth::user() ? Auth::user()->afa->name : '']));
+            } else {
+                return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa'))->with('hasAfa',0);
+            }
         }
+
+        abort(404);
     }
 
 
