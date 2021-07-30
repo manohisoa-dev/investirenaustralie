@@ -6888,11 +6888,19 @@ body.body-small .vote-icon {
   opacity: 0.6;
   font-size: 10px;
   font-weight: normal;
+  cursor: pointer;
 }
 .small-chat-box-main .chat-date {
-  opacity: 0.6;
+  opacity: 0.9;
   font-size: 10px;
   font-weight: normal;
+  background: #1ab394;
+  width: 9px;
+  padding-top: 3px;
+  border-radius: 50%;
+  height: 20px;
+  padding-right: 14px;
+  padding-left: 8px;
 }
 .small-chat-box .content {
   padding: 15px 15px;
