@@ -152,12 +152,13 @@
 
                 @endforelse
                 
-            </div>
+                </div>
             {{-- End Show pub search --}}
-        </div>
+            </div>
         {{-- <!-- Sidebar -->
         @include('includes.sidebar')
         <!-- fin sidebar --> --}}
+        </div>
     </div>
 </div>
 @endsection

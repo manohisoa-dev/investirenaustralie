@@ -460,14 +460,14 @@
           // Show particular member registration Modal
           $('#registratorMemberFormModal').modal('show');
         }else{
-          if('{{ Auth::user()->hasAfa() }}'){
+          if('{{ Auth::check() && Auth::user()->hasAfa() }}'){
             alert('continue procecus');
           }else{
             location.href="{{ route('member.select.afa', $item->slug) }}";
           }
         }
       }else{
-        location.href="{{route('member.buy.product')}}";
+        location.href="{{route('member.buy.product', $item->slug)}}";
       }
        
     });

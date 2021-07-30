@@ -158,7 +158,7 @@ Route::middleware(["auth", "role:5"])->group(function(){
         Route::post('select-afa', 'MemberController@updateAfa');
         Route::get('go-there', 'MemberController@goThere')->name('member.go.there');
         Route::get('send-courriel', 'MemberController@sendCourriel')->name('member.send.courriel');
-        Route::get('buy-this-product', 'MemberController@buyThisProduct')->name('member.buy.product');
+        Route::get('buy-this-product/{prod?}', 'MemberController@buyThisProduct')->name('member.buy.product');
 
         Route::get('/', 'BackendController@dashboard');
         Route::get('favorites', 'BackendController@favorites');
