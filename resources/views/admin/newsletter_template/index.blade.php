@@ -30,11 +30,14 @@
 @section('content')
 <div class="row">
 	<div class="col-lg-12">
-		<div class="ibox float-e-margins">
+		<div class="ibox float-e-margins" id="ibox1">
 			<div class="ibox-title">
 				<h5>@lang('app.newsletter.liste.template')</h5>
 			</div>
 			<div class="ibox-content">
+				<div class="sk-spinner sk-spinner-double-bounce">
+					<div class="sk-double-bounce1"></div>
+				</div>
                 <table class="table table-striped grid-view-tbl">
                 <thead>
                     <tr class="header-row">
@@ -156,8 +159,9 @@
 			url = "{{ Auth::user()->isAdmin()?route('admin.ajaxSendNewsLetter'):route('admin.collaborators.admin.ajaxSendNewsLetter') }}";
 			
 			if (idTemplate.length === 0) {
-				alert('Veuillez cocher un ou plusieurs cases');
+				swal("@lang('app.alert.sendnewsletter.titre')", "@lang('app.alert.sendnewsletter.error')", "error");
 			}else{
+				$('#ibox1').children('.ibox-content').toggleClass('sk-loading');
 				$.ajax({
 					url : url,
 					type: "POST",
@@ -165,7 +169,16 @@
 					success: function(data)
 					{
 						if(data.success == 'true'){
-							alert("C'est partie");
+							$('#ibox1').children('.ibox-content').toggleClass('sk-loading');
+							swal({
+							   title: "@lang('app.alert.sendnewsletter.titre')", 
+							   text: "@lang('app.alert.sendnewsletter.success')", 
+							   type: "success"
+							 },
+							   function(){ 
+								   location.reload();
+							   }
+							);
 						}
 					}
 				});

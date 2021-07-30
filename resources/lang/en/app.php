@@ -1101,4 +1101,7 @@ return
 	'btn.confirm_unsubscription' => 'Confirm unsubscription',
 	'txt.operation_canceled' => 'Operation canceled !',
 	'txt.check_box_to_confirm_unsubscription' => 'Please check the box to confirm your unsubscription.',
+    'alert.sendnewsletter.titre' => 'Information',
+    'alert.sendnewsletter.error' => 'Please tick one or more boxes',
+    'alert.sendnewsletter.success' => 'The newsletters have been sent successfully',
 ];
