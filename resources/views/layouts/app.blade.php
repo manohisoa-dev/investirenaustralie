@@ -647,8 +647,8 @@
 				success:function(data){
 					if(data.reponse == 'OK'){
 						swal({
-							   title: "Merci", 
-							   text: "Votre email a été bien enregistré", 
+							   title: "@lang('app.alert.inscriptionnewsletter.titre')", 
+							   text: "@lang('app.alert.inscriptionnewsletter.success')", 
 							   type: "success"
 							 },
 						   function(){ 
@@ -656,7 +656,7 @@
 						   }
 						);
 					}else{
-						swal("Attention", data.reponse, "error");
+						swal("@lang('app.alert.sendnewsletter.titre')", data.reponse, "error");
 					}
 				}
 			});
