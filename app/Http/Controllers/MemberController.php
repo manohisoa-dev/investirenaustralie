@@ -449,9 +449,11 @@ class MemberController extends Controller {
      * @param  \App\Models\Localisation
      * @return \Illuminate\Http\Response
      */
-    public function selectAfa(Request $request) {
+    public function selectAfa(Request $request,$prod=null) {
         $this->middleware('auth');
-        $this->middleware('role:member');
+        $this->middleware('role:5');
+
+        // dd($prod);
 
         $distance = $request->get('distance');
         if (empty($distance))
@@ -546,9 +548,29 @@ class MemberController extends Controller {
         return back()->with('success', trans('app.txt.info_saved'));
     }
 
+    /**
+     * By this property
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Product
+     * @return \Illuminate\Http\Response
+     */
+    public function buyThisProduct(Request $request) {
+        $this->middleware('auth');
+        $this->middleware('role:5');
+
+        if (Auth::user()->hasAfa()) {
+            return redirect(url()->previous())->with('engagement', trans('afa.condition_deplacement_afa', ['afa' =>
+                Auth::user() ? Auth::user()->afa->name : '']));
+        } else {
+            session()->put('link_product', url()->previous());
+
+            return redirect()->route('member.select.afa')->with('error', trans('app.txt.choose_an_afa'));
+        }
+    }
 
     /**
-     * Select afa
+     * Go there
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Product

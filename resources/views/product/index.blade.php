@@ -135,11 +135,11 @@
                   <section class="property-meta-wrapper common">
                     <div class="row m-15px-t">
                         <div class="col-sm-6">
-                          @if(Auth::check() && Auth::user()->hasRole(5))
+                          {{-- @if(Auth::check() && Auth::user()->hasRole(5)) --}}
                             <button type="button" id="btn_buy" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12"><i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')</button>
-                          @else
+                          {{-- @else
                             <button type="button" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12" disabled title="@lang('app.txt.logintocontinue')"><i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')</button>
-                          @endif
+                          @endif --}}
                         </div>
                         <div class="col-sm-6">
                           <a href="{{route('member.go.there')}}" id="btn_go_there" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme flex-shrink-0 col-md-12" title="@lang('app.txt.go_to_location')" @if(Auth::check()) {{ Auth::user()->isMove()?'disabled':'' }} @endif><i class="fa fa-map-marker"></i> @lang('app.btn.go_to_location')</a>
@@ -454,13 +454,23 @@
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA&callback=initMap"></script>
   <script>
     $('#btn_buy').click(function(){
-       var usrIsCplt = '{{  Auth::check()?Auth::user()->isComplete():''  }}';
-       if(usrIsCplt === ''){
+      if('{{ Auth::check() }}'){
+        var usrIsCplt = '{{  Auth::check()?Auth::user()->isComplete():''  }}';
+
+        if(usrIsCplt === ''){
           // Show particular member registration Modal
           $('#registratorMemberFormModal').modal('show');
-       }else{
-         
-       }
+        }else{
+          if('{{ Auth::user()->hasAfa() }}'){
+            alert('continue procecus');
+          }else{
+            location.href="{{ route('member.select.afa', $item->slug) }}";
+          }
+        }
+      }else{
+        location.href="{{route('member.buy.product')}}";
+      }
+       
     });
   </script>
 @endpush
