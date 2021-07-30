@@ -1104,4 +1104,6 @@ return
     'alert.sendnewsletter.titre' => 'Information',
     'alert.sendnewsletter.error' => 'Please tick one or more boxes',
     'alert.sendnewsletter.success' => 'The newsletters have been sent successfully',
+    'alert.inscriptionnewsletter.titre' => 'Thank you',
+    'alert.inscriptionnewsletter.success' => 'Your email has been successfully registered',
 ];

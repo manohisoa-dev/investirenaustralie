@@ -1345,4 +1345,6 @@ return
     'alert.sendnewsletter.titre' => 'Information',
     'alert.sendnewsletter.error' => 'Veuillez cocher un ou plusieurs cases',
     'alert.sendnewsletter.success' => 'Les newsletters ont été bien envoyés',
+    'alert.inscriptionnewsletter.titre' => 'Merci',
+    'alert.inscriptionnewsletter.success' => 'Votre email a été bien enregistré',
 ];

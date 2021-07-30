@@ -386,17 +386,18 @@
         });
   </script>
   <script>
+      
       var _map;
       var _geocoder;
       var _marker;
       var _circle;
-      var _lat = $('#prod_loc_lat').val()?$('#prod_loc_lat').val():-25.647467468105795;
-      var _long = $('#prod_loc_long').val()?$('#prod_loc_long').val():146.89921517372136;
+      var _lat = parseInt($('#prod_loc_lat').val())?parseInt($('#prod_loc_lat').val()):-25.647467468105795;
+      var _long = parseInt($('#prod_loc_long').val())?parseInt($('#prod_loc_long').val()):146.89921517372136;
       var _btnSubmit = document.getElementById("submit");
       var _inputApl = document.getElementById("apl");
       var _contentApl = document.getElementById("apl-content");
       var _titleApl = document.getElementById("apl-title");
-      
+      console.log(_lat+' '+_long);
       var iconBase = "{{url('')}}";
       var icons = {
         user: {
