@@ -415,6 +415,7 @@ class ProductController extends Controller {
             return redirect(Auth::user()->isAdminDelegate() ? route('admin.collaborators.admin.product.programme') :
                 route('admin.product.programme'));
         } else {
+            dd($request->location_Id);
             if ($request->location_Id != 0) {
                 Localisation::where('id', $request->location_Id)->update(['area_level_1' => $request->suburb_product,
                     'country' => $request->countryId_product, 'postalCode' => $request->postalCode_product,
