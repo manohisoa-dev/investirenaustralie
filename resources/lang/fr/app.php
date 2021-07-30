@@ -1342,5 +1342,7 @@ return
 	'btn.cancel_my_registration' => 'Annuler mon inscription',
 	'btn.confirm_unsubscription' => 'Confimer la désinscription',
 	'txt.check_box_to_confirm_unsubscription' => 'Veuillez cocher la case pour confirmer votre désinscription.',
-
+    'alert.sendnewsletter.titre' => 'Information',
+    'alert.sendnewsletter.error' => 'Veuillez cocher un ou plusieurs cases',
+    'alert.sendnewsletter.success' => 'Les newsletters ont été bien envoyés',
 ];
