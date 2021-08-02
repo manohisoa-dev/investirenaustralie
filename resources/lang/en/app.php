@@ -1106,4 +1106,12 @@ return
     'alert.sendnewsletter.success' => 'The newsletters have been sent successfully',
     'alert.inscriptionnewsletter.titre' => 'Thank you',
     'alert.inscriptionnewsletter.success' => 'Your email has been successfully registered',
+	'txt.file' => 'File',
+	'txt.files' => 'Files',
+	'txt.file.current' => 'Current folder',
+	'txt.file.pending' => 'Pending file',
+	'txt.file.completed' => 'Completed file',
+	'txt.current' => 'current',
+	'txt.pending' => 'pending',
+	'txt.completed' => 'completed',
 ];

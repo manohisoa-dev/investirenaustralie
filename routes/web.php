@@ -196,6 +196,9 @@ Route::middleware(["auth", "role:5"])->group(function(){
             Route::get('{mail}', 'MailController@view')->name('member.mail.index');
             Route::get('delete/{mail}', 'MailController@delete')->name('member.mail.delete');
         });
+
+        // Dossier Controller
+        Route::get('dossier', 'DossierController@showDossier')->name('member.dossier');
     });
 
 });

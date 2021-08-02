@@ -1347,4 +1347,12 @@ return
     'alert.sendnewsletter.success' => 'Les newsletters ont été bien envoyés',
     'alert.inscriptionnewsletter.titre' => 'Merci',
     'alert.inscriptionnewsletter.success' => 'Votre email a été bien enregistré',
+    'txt.file' => 'Dossier',
+	'txt.files' => 'Dossiers',
+	'txt.file.current' => 'En cours',
+	'txt.file.pending' => 'En attente',
+	'txt.file.completed' => 'Terminé',
+	'txt.current' => 'en_cours',
+	'txt.pending' => 'en_attente',
+	'txt.completed' => 'termine',
 ];
