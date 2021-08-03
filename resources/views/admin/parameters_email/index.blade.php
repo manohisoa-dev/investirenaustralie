@@ -41,8 +41,8 @@
 						{!!\Nvd\Crud\Html::sortableTh('libelle','admin.parameters-email.index','Libellé')!!}
 						{!!\Nvd\Crud\Html::sortableTh('nom_variable','admin.parameters-email.index','Nom Variable')!!}
 						{!!\Nvd\Crud\Html::sortableTh('model_name','admin.parameters-email.index','Model')!!}
-						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.parameters-email.index','Created At')!!}
-						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.parameters-email.index','Updated At')!!}
+						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.parameters-email.index','Créer le')!!}
+						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.parameters-email.index','Mis à jour le')!!}
 						<th><a href="javascript:void(0)">@lang('app.table.actions')</a></th>
                     </tr>
                     <tr class="search-row">

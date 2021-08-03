@@ -1347,4 +1347,11 @@ return
     'alert.sendnewsletter.success' => 'Les newsletters ont été bien envoyés',
     'alert.inscriptionnewsletter.titre' => 'Merci',
     'alert.inscriptionnewsletter.success' => 'Votre email a été bien enregistré',
+    'form.programme_commission_type' => 'Commission de vente',
+    'form.programme_commission_option1' => 'Taux de commission de vente',
+    'form.programme_commission_option2' => 'Commission fixe',
+    'form.programme_taux_commission' => 'Taux de vente',
+    'form.programme_mt_commission' => 'Montant de la commission fixe',
+    'form.produit_dt_db_travaux' => 'Date début des travaux',
+    'form.produit_dt_prevu_livraison' => 'Date prévisionnelle de livraisont',
 ];

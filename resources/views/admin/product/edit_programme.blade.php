@@ -91,6 +91,42 @@
 						</div>
 					</div>
 					<div class="row">
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label for="title">@lang('app.form.programme_commission_type')</label>
+								<select class="form-control" name="commision" id="commision">
+									<option value="">Choisir...</option>
+									<option value="Sales commission rate (%)" {{$product->commission_type == 'Sales commission rate (%)' ? 'selected' : ''}}>@lang('app.form.programme_commission_option1') (%)</option>
+									<option value="Fixed commission ($)" {{$product->commission_type == 'Fixed commission ($)' ? 'selected' : ''}}>@lang('app.form.programme_commission_option2') ($)</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-lg-4">
+							<div id="commission_rate" style="display:none">
+								<div class="form-group">
+									<label for="title">@lang('app.form.programme_taux_commission')</label>
+									<div class="input-group m-b">
+										<input type="number" class="form-control" name="sales_rate" id="sales_rate">
+										<div class="input-group-append">
+											<span class="input-group-addon">%</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div id="fixed_commission" style="display:none">
+								<div class="form-group">
+									<label for="title">@lang('app.form.programme_mt_commission')</label>
+									<div class="input-group m-b">
+										<input type="number" class="form-control" name="rate_commission" id="rate_commission">
+										<div class="input-group-append">
+											<span class="input-group-addon">AUD</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
 						<div class="col-md-4">
 							<div class="form-group">
 								<label for="title">@lang('app.form.programme_price_min') *</label>
@@ -378,13 +414,71 @@
 @endsection
 
 @section('custom-script')
+	<style>
+		.ui-datepicker-calendar {
+			display: none;
+		}
+		.clsDatePicker {
+			z-index: 100000;
+		}
+	</style>
 	<script src="{{asset('administrator/plugins/ckeditor/ckeditor.js')}}"></script>
 	<script src="{{ asset('administrator/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 	<script>
+		
 		Dropzone.autoDiscover = false;
 		var pdfOpenParams = "#page=1&pagemode=none";
         $(document).ready(function(){
+			var type_commission = "{{$product->commission_type}}";
+			if(type_commission == 'Sales commission rate (%)'){
+				$('#commission_rate').show();
+				$('#sales_rate').val({{$product->commision}});
+				$('#fixed_commission').hide();
+			}else if(type_commission == 'Fixed commission ($)'){
+				$('#fixed_commission').show();
+				$('#rate_commission').val({{$product->commision}});
+				$('#commission_rate').hide();
+			}else{
+				$('#fixed_commission').hide();
+				$('#commission_rate').hide();
+			}
+			
+			$('#commision').on('change', function() {
+				var type_commission = this.value;
+				if(type_commission == 'Sales commission rate (%)'){
+					$('#commission_rate').show();
+					$('#fixed_commission').hide();
+				}else if(type_commission == 'Fixed commission ($)'){
+					$('#fixed_commission').show();
+					$('#commission_rate').hide();
+				}else{
+					$('#fixed_commission').hide();
+					$('#commission_rate').hide();
+				}
+			});
+			
+			<!-- commission product -->
+			$('#commision_product').on('change', function() {
+				var type_commission_product = this.value;
+				if(type_commission_product == 'Sales commission rate (%)'){
+					$('#commission_rate_prd').show();
+					$('#fixed_commission_prd').hide();
+					$('#sales_rate_product').val('');
+					$('#rate_commission_product').val('');
+				}else if(type_commission_product == 'Fixed commission ($)'){
+					$('#fixed_commission_prd').show();
+					$('#commission_rate_prd').hide();
+					$('#sales_rate_product').val('');
+					$('#rate_commission_product').val('');
+				}else{
+					$('#fixed_commission_prd').hide();
+					$('#commission_rate_prd').hide();
+					$('#sales_rate_product').val('');
+					$('#rate_commission_product').val('');
+				}
+			});
+			
             CKEDITOR.replace( 'description' );
 			$("#category_id").select2();			
 			$("a.fancyboxLink").fancybox();			
@@ -562,6 +656,27 @@
 					cat_programmme_id: {
 						required: true
 					},
+					commision: {
+						required: true
+					},
+					sales_rate: {
+						required: {
+							depends: function(element) {
+								if($("#commision").val() == 'Sales commission rate (%)'){
+									return true;	
+								}
+							}
+						}
+					},
+					rate_commission: {
+						required: {
+							depends: function(element) {
+								if($("#commision").val() == 'Fixed commission ($)'){
+									return true;	
+								}
+							}
+						}
+					},
 					prix_min: {
 						required: true
 					},
@@ -607,6 +722,15 @@
 				},
 				messages: {
 					cat_programmme_id: {
+						required: "@lang('app.txt.champobligatoire')"
+					},
+					commision: {
+						required: "@lang('app.txt.champobligatoire')"
+					},
+					sales_rate: {
+						required: "@lang('app.txt.champobligatoire')"
+					},
+					rate_commission: {
 						required: "@lang('app.txt.champobligatoire')"
 					},
 					prix_min: {
@@ -827,6 +951,19 @@
 						$('[name="countryId_product"]').val(data.localisation.country);
 					}
 					
+					if(data.product.commission_type == 'Sales commission rate (%)'){
+						$('#commission_rate_prd').show();
+						$('#fixed_commission_prd').hide();
+						$('[name="sales_rate_product"]').val(data.product.commision);
+					}else if(data.product.commission_type == 'Fixed commission ($)'){
+						$('#commission_rate_prd').hide();
+						$('#fixed_commission_prd').show();
+						$('[name="rate_commission_product"]').val(data.product.commision);
+					}else{
+						$('#commission_rate_prd').hide();
+						$('#fixed_commission_prd').hide();
+					}
+					
 					$('#title_new_programme').val($('#title_programme').val());
 					$("#progTitle").text($('#title_programme').val());
 					$('[name="title_product"]').val(data.product.title);
@@ -835,7 +972,8 @@
 					$('[name="product_type_id"]').val(data.product.type_id);					
 					$('[name="postalCode_product"]').val(data.product.postalCode);
 					$('[name="display_address_product"]').val(data.product.display_address);
-					$('[name="state_id_product"]').val(data.product.state_id);					
+					$('[name="state_id_product"]').val(data.product.state_id); 
+					$('[name="commision_product"]').val(data.product.commission_type);					
 					$('[name="price"]').val(data.product.min_price);
 					$('[name="price_max_prd"]').val(data.product.max_price);
 					$('[name="status"]').val(data.product.status);
@@ -889,8 +1027,7 @@
 						$("#chk_parking").attr('disabled','disabled');
 					}else{
 						$("#chk_parking").removeAttr('disabled');
-					}	
-				
+					}
 					$('#modal_form_product').modal('show'); 
 					$('.modal-title').text("@lang('app.form.product_edit_title')"); 
 				},
@@ -946,6 +1083,27 @@
 					},
 					price: {
 						required: true
+					},
+					commision_product: {
+						required: true
+					},
+					sales_rate_product: {
+						required: {
+							depends: function(element) {
+								if($("#commision_product").val() == 'Sales commission rate (%)'){
+									return true;	
+								}
+							}
+						}
+					},
+					rate_commission_product: {
+						required: {
+							depends: function(element) {
+								if($("#commision_product").val() == 'Fixed commission ($)'){
+									return true;	
+								}
+							}
+						}
 					},
 					price_max_prd: {
 						required: true,
@@ -1063,6 +1221,8 @@
 						<input type="hidden" name="id_programme" id="id_programme"/>
 						<input type="hidden" name="id_product" id="id_product" />
 						<input type="hidden" name="id_location_product" id="id_location_product" />
+						<input type="hidden" name="dt_db_travaux" value="{{$product->dt_db_travaux}}" />
+						<input type="hidden" name="dt_prevu_livraison" value="{{$product->dt_prevu_livraison}}" />
 						{{ csrf_field() }}
 						<div class="row">
 							<div class="col-lg-12">
@@ -1142,6 +1302,44 @@
 								</div>
 							</div>
 						</div>
+						
+						<div class="row">
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label for="title">@lang('app.form.programme_commission_type')</label>
+									<select class="form-control" name="commision_product" id="commision_product">
+										<option value="">Choisir...</option>
+										<option value="Sales commission rate (%)">@lang('app.form.programme_commission_option1') (%)</option>
+										<option value="Fixed commission ($)">@lang('app.form.programme_commission_option2') ($)</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div id="commission_rate_prd" style="display:none">
+									<div class="form-group">
+										<label for="title">@lang('app.form.programme_taux_commission')</label>
+										<div class="input-group m-b">
+											<input type="number" class="form-control" name="sales_rate_product" id="sales_rate_product">
+											<div class="input-group-append">
+												<span class="input-group-addon">%</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div id="fixed_commission_prd" style="display:none">
+									<div class="form-group">
+										<label for="title">@lang('app.form.programme_mt_commission')</label>
+										<div class="input-group m-b">
+											<input type="number" class="form-control" name="rate_commission_product" id="rate_commission_product">
+											<div class="input-group-append">
+												<span class="input-group-addon">AUD</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
 						<div class="row">							
 							<div class="col-lg-3">
 								<div class="form-group">

@@ -63,7 +63,43 @@
 						<textarea class="form-control" rows="10" name="description" id="description"></textarea>
 					</div>
 								
-								
+					<div class="row">
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label for="title">@lang('app.form.programme_commission_type')</label>
+								<select class="form-control" name="commision" id="commision">
+									<option value="">Choisir...</option>
+									<option value="Sales commission rate (%)">@lang('app.form.programme_commission_option1') (%)</option>
+									<option value="Fixed commission ($)">@lang('app.form.programme_commission_option2') ($)</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-lg-4">
+							<div id="commission_rate" style="display:none">
+								<div class="form-group">
+									<label for="title">@lang('app.form.programme_taux_commission')</label>
+									<div class="input-group">
+										<input type="number" class="form-control" name="sales_rate" id="sales_rate">
+										<div class="input-group-append">
+											<span class="input-group-text">%</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div id="fixed_commission" style="display:none">
+								<div class="form-group">
+									<label for="title">@lang('app.form.programme_mt_commission')</label>
+									<div class="input-group">
+										<input type="number" class="form-control" name="rate_commission" id="rate_commission">
+										<div class="input-group-append">
+											<span class="input-group-text">AUD</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>	
+							
 					<div class="row">
 						<div class="col-lg-4">
 							<label for="title">@lang('app.form.programme_price_min') *</label>
@@ -205,10 +241,24 @@
 			//replace the "Choose a file" label
 			$(this).next('.custom-file-label').html(fileName);
 		});
+		
+		$('#commision').on('change', function() {
+			var type_commission = this.value;
+			if(type_commission == 'Sales commission rate (%)'){
+				$('#commission_rate').show();
+				$('#fixed_commission').hide();
+			}else if(type_commission == 'Fixed commission ($)'){
+				$('#fixed_commission').show();
+				$('#commission_rate').hide();
+			}else{
+				$('#fixed_commission').hide();
+				$('#commission_rate').hide();
+			}
+		});
 			
 		CKEDITOR.replace( 'description' );
 		$("#category_id").select2();
-		$("#type_id").select2();
+		//$("#type_id").select2();
 		
 		$('#cat_programmme_id').on('change', function() {
 			var category = this.value;
@@ -349,6 +399,27 @@
 				cat_programmme_id: {
 					required: true
 				},
+				commision: {
+					required: true
+				},
+				sales_rate: {
+					required: {
+						depends: function(element) {
+							if($("#commision").val() == 'Sales commission rate (%)'){
+								return true;	
+							}
+						}
+					}
+				},
+				rate_commission: {
+					required: {
+						depends: function(element) {
+							if($("#commision").val() == 'Fixed commission ($)'){
+								return true;	
+							}
+						}
+					}
+				},
 				prix_min: {
 					required: true
 				},
@@ -392,6 +463,15 @@
 				cat_programmme_id: {
 					required: "@lang('app.txt.champobligatoire')"
 				},
+				commision: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				sales_rate: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				rate_commission: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
 				prix_min: {
 					required: "@lang('app.txt.champobligatoire')"
 				},
@@ -424,7 +504,7 @@
 			},
 			errorPlacement: function ( error, element ) {
 				if(element.parent().hasClass('input-group')){
-					error.insertBefore( element.parent() );
+					error.insertAfter( element.parent() );
 				}else{
 					error.insertAfter( element );
 				}

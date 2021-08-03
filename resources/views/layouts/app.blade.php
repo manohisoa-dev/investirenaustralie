@@ -40,7 +40,8 @@
 <link href="{{ asset('administrator/css/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet">
 <!-- step -->
 <link href="{{ asset('administrator/css/plugins/steps/jquery.steps.css') }}" rel="stylesheet">
-
+<!-- jquery UI -->
+<link href="{{ asset('administrator/css/plugins/jQueryUI/jquery-ui.css') }}" rel="stylesheet">
 <style>
     .feedback {
         background-color : #AE4435;
@@ -447,6 +448,8 @@
     <!-- jquery -->
     <script src="{{ asset('js/jquery-3.0.0.min.js') }}"></script>
     <script src="{{ asset('js/jquery-migrate-3.0.0.min.js') }}"></script>
+	<!-- jQuery UI -->
+	<script src="{{ asset('administrator/js/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
     <!-- end jquery -->
     <!-- appear -->
     <script src="{{ asset('plugin/appear/jquery.appear.js') }}"></script>

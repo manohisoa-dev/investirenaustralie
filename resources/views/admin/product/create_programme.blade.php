@@ -52,8 +52,8 @@
 							<div class="form-group">
 								<label for="title">@lang('app.form.programme_choix_anciennete') *</label>
 								<select class="form-control" name="ancienneteBien" id="ancienneteBien" disabled="disabled">
-									<option value="@lang('app.txt.new')">@lang('app.txt.new')</option>
-									<option value="@lang('app.txt.old')">@lang('app.txt.old')</option>
+									<option value="Neuf">@lang('app.txt.new')</option>
+									<option value="Ancien">@lang('app.txt.old')</option>
 								</select>
 								<input type="hidden" name="ancienneteBien" value="Neuf" />
 							</div>
@@ -63,8 +63,8 @@
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_choix_nature') *</label>
 									<select class="form-control" name="natureBien" id="natureBien" disabled="disabled">
-										<option value="@lang('app.txt.real_estate_program')">@lang('app.txt.real_estate_program')</option>
-										<option value="@lang('app.txt.isolated_product')">@lang('app.txt.isolated_product')</option>
+										<option value="Programme immobilier">@lang('app.txt.real_estate_program')</option>
+										<option value="Produit isolé">@lang('app.txt.isolated_product')</option>
 									</select>
 									<input type="hidden" name="natureBien" value="@lang('app.txt.real_estate_program')" />
 								</div>
@@ -85,6 +85,42 @@
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_content')</label>
 									<textarea class="form-control" rows="10" name="description" id="description"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label for="title">@lang('app.form.programme_commission_type')</label>
+									<select class="form-control" name="commision" id="commision">
+										<option value="">Choisir...</option>
+										<option value="Sales commission rate (%)">@lang('app.form.programme_commission_option1') (%)</option>
+										<option value="Fixed commission ($)">@lang('app.form.programme_commission_option2') ($)</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div id="commission_rate" style="display:none">
+									<div class="form-group">
+										<label for="title">@lang('app.form.programme_taux_commission')</label>
+										<div class="input-group m-b">
+											<input type="number" class="form-control" name="sales_rate" id="sales_rate">
+											<div class="input-group-append">
+												<span class="input-group-addon">%</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div id="fixed_commission" style="display:none">
+									<div class="form-group">
+										<label for="title">@lang('app.form.programme_mt_commission')</label>
+										<div class="input-group m-b">
+											<input type="number" class="form-control" name="rate_commission" id="rate_commission">
+											<div class="input-group-append">
+												<span class="input-group-addon">AUD</span>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -229,6 +265,20 @@
 		$("#category_id").select2();
 		$("#type_id").select2();
 		
+		$('#commision').on('change', function() {
+			var type_commission = this.value;
+			if(type_commission == 'Sales commission rate (%)'){
+				$('#commission_rate').show();
+				$('#fixed_commission').hide();
+			}else if(type_commission == 'Fixed commission ($)'){
+				$('#fixed_commission').show();
+				$('#commission_rate').hide();
+			}else{
+				$('#fixed_commission').hide();
+				$('#commission_rate').hide();
+			}
+		});
+		
 		$('#cat_programmme_id').on('change', function() {
 			var category = this.value;
 			$.ajax({
@@ -368,6 +418,27 @@
 				cat_programmme_id: {
 					required: true
 				},
+				commision: {
+					required: true
+				},
+				sales_rate: {
+					required: {
+						depends: function(element) {
+							if($("#commision").val() == 'Sales commission rate (%)'){
+								return true;	
+							}
+						}
+					}
+				},
+				rate_commission: {
+					required: {
+						depends: function(element) {
+							if($("#commision").val() == 'Fixed commission ($)'){
+								return true;	
+							}
+						}
+					}
+				},
 				prix_min: {
 					required: true
 				},
@@ -411,6 +482,15 @@
 				cat_programmme_id: {
 					required: "@lang('app.txt.champobligatoire')"
 				},
+				commision: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				sales_rate: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				rate_commission: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
 				prix_min: {
 					required: "@lang('app.txt.champobligatoire')"
 				},
@@ -443,7 +523,7 @@
 			},
 			errorPlacement: function ( error, element ) {
 				if(element.parent().hasClass('input-group')){
-					error.insertBefore( element.parent() );
+					error.insertAfter( element.parent() );
 				}else{
 					error.insertAfter( element );
 				}

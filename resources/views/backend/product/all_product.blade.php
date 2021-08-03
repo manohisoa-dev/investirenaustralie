@@ -73,6 +73,11 @@
 @endsection
 
 @push('script')
+<style>
+	.ui-datepicker-calendar {
+		display: none;
+	}
+</style>
 <script src="{{ asset('administrator/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
 <script src="{{asset('administrator/plugins/ckeditor/ckeditor.js')}}"></script>
 <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
@@ -85,6 +90,48 @@
 				$("#chk_parking").removeAttr('disabled');
 			}
 		});	
+		
+		$("#dt_db_travaux").datepicker({
+			changeMonth: true,
+			changeYear: true,
+			showButtonPanel: true,
+			dateFormat: 'MM yy',
+			onClose: function(dateText, inst) { 
+				var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+				var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+				$(this).datepicker('setDate', new Date(year, month, 1));
+			},
+			beforeShow : function(input, inst) {
+				var datestr;
+				if ((datestr = $(this).val()).length > 0) {
+					year = datestr.substring(datestr.length-4, datestr.length);
+					month = jQuery.inArray(datestr.substring(0, datestr.length-5), $(this).datepicker('option', 'monthNamesShort'));
+					$(this).datepicker('option', 'defaultDate', new Date(year, month, 1));
+					$(this).datepicker('setDate', new Date(year, month, 1));
+				}
+			}
+		});
+		
+		<!-- commission product -->
+		$('#commision_product').on('change', function() {
+			var type_commission_product = this.value;
+			if(type_commission_product == 'Sales commission rate (%)'){
+				$('#commission_rate_prd').show();
+				$('#fixed_commission_prd').hide();
+				$('#sales_rate_product').val('');
+				$('#rate_commission_product').val('');
+			}else if(type_commission_product == 'Fixed commission ($)'){
+				$('#fixed_commission_prd').show();
+				$('#commission_rate_prd').hide();
+				$('#sales_rate_product').val('');
+				$('#rate_commission_product').val('');
+			}else{
+				$('#fixed_commission_prd').hide();
+				$('#commission_rate_prd').hide();
+				$('#sales_rate_product').val('');
+				$('#rate_commission_product').val('');
+			}
+		});
 	});
 			
 	function set_type_programme(categorie_id,type_id_active)
@@ -163,6 +210,10 @@
 				}
 				
 				if(data.product.natureBien == 'Produit isolé'){
+					$('#info-date-isole').show();
+					$('[name="dt_db_travaux"]').val(data.product.dt_db_travaux);
+					$('[name="dt_prevu_livraison"]').val(data.product.dt_prevu_livraison);
+					
 					$('#chk_picine').show();
 					if(data.product.avoir_piscine == 1){
 						$('input[name *= chk_picine]').prop('checked', true);
@@ -171,6 +222,9 @@
 					}
 				}else{
 					$('#chk_picine').hide();
+					$('#info-date-isole').hide();
+					$('[name="dt_db_travaux"]').val('');
+					$('[name="dt_prevu_livraison"]').val('');
 				}
 				
 				if(data.product.avoir_parking_voie_public == 1){
@@ -186,6 +240,21 @@
 					console.log('normal');
 					$("#chk_parking").removeAttr('disabled');
 				}	
+				
+				$('[name="commision_product"]').val(data.product.commission_type);
+				if(data.product.commission_type == 'Sales commission rate (%)'){
+					$('#commission_rate_prd').show();
+					$('#fixed_commission_prd').hide();
+					$('[name="sales_rate_product"]').val(data.product.commision);
+				}else if(data.product.commission_type == 'Fixed commission ($)'){
+					$('#commission_rate_prd').hide();
+					$('#fixed_commission_prd').show();
+					$('[name="rate_commission_product"]').val(data.product.commision);
+				}else{
+					$('#commission_rate_prd').hide();
+					$('#fixed_commission_prd').hide();
+				}
+				
 				set_type_programme(data.product.category_id,data.product.type_id);
 				$('#modal_form_product').modal('show'); 
 				$('.modal-title').text("@lang('app.form.product_edit_title')"); 
@@ -456,6 +525,60 @@
 								</div>
 							</div>
 						</div>
+						
+						<div class="row">
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">@lang('app.form.programme_commission_type')</label>
+									<select class="form-control" name="commision_product" id="commision_product">
+										<option value="">Choisir...</option>
+										<option value="Sales commission rate (%)">@lang('app.form.programme_commission_option1') (%)</option>
+										<option value="Fixed commission ($)">@lang('app.form.programme_commission_option2') ($)</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-3">
+								<div id="commission_rate_prd" style="display:none">
+									<div class="form-group">
+										<label for="title">@lang('app.form.programme_taux_commission')</label>
+										<div class="input-group m-b">
+											<input type="number" class="form-control" name="sales_rate_product" id="sales_rate_product">
+											<div class="input-group-append">
+												<span class="input-group-text">%</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div id="fixed_commission_prd" style="display:none">
+									<div class="form-group">
+										<label for="title">@lang('app.form.programme_mt_commission')</label>
+										<div class="input-group m-b">
+											<input type="number" class="form-control" name="rate_commission_product" id="rate_commission_product">
+											<div class="input-group-append">
+												<span class="input-group-text">AUD</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div id="info-date-isole" class="col-lg-6">
+								<div class="row">
+									<div class="col-lg-6">
+										<div class="form-group">
+											<label for="title">@lang('app.form.produit_dt_db_travaux')</label>
+											<input type="text" class="form-control" name="dt_db_travaux" id="dt_db_travaux" />
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="form-group">
+											<label for="title">@lang('app.form.produit_dt_prevu_livraison')</label>
+											<input type="date" class="form-control" name="dt_prevu_livraison" />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
 						<div class="row">							
 							<div class="col-lg-3">
 								<label for="title">@lang('app.form.product_prix_min') *</label>

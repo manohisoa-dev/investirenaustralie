@@ -37,6 +37,9 @@
     <link href="{{ asset('administrator/css/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet">
 	<!--fancybox-->
 	<link rel="stylesheet" href="{{ asset('plugin/fancybox/jquery.fancybox.css') }}" type="text/css" media="screen" />
+	
+	<!-- jquery UI -->
+    <link href="{{ asset('administrator/css/plugins/jQueryUI/jquery-ui.css') }}" rel="stylesheet">
     @yield('custom-css')
 
 </head>

@@ -1106,4 +1106,11 @@ return
     'alert.sendnewsletter.success' => 'The newsletters have been sent successfully',
     'alert.inscriptionnewsletter.titre' => 'Thank you',
     'alert.inscriptionnewsletter.success' => 'Your email has been successfully registered',
+    'form.programme_commission_type' => 'Sales commission',
+    'form.programme_commission_option1' => 'Sales commission rate',
+    'form.programme_commission_option2' => 'Fixed commission',
+    'form.programme_taux_commission' => 'Sales rate',
+    'form.programme_mt_commission' => 'Fixed commission amount',
+    'form.produit_dt_db_travaux' => 'Work start date',
+    'form.produit_dt_prevu_livraison' => 'Estimated delivery date',
 ];
