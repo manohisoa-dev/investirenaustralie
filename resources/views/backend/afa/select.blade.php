@@ -79,6 +79,7 @@
 
 
 @push('script')
+    <script src="{{ asset('administrator/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
     <style type="text/css">
         /* Always set the map height explicitly to define the size of the div
         * element that contains the map. */
@@ -94,7 +95,18 @@
             {
                 $('.row-confirm-modal').removeClass('hidden');
                 event.preventDefault();
-                alert("{{ trans('app.txt.accept_term', ['role'=>'AFA']) }}");
+                swal({
+					title: "@lang('app.select_afa')",
+                    text: "@lang('app.txt.accept_term', ['role'=>'AFA'])",
+					type: "warning",
+					showCancelButton: false,
+					confirmButtonColor: "#DD6B55",
+					confirmButtonText: "@lang('app.btn.ok')",
+					closeOnConfirm: true
+				},
+				function () {
+                    return false;
+                });
             }
         });
     </script>

@@ -1354,4 +1354,12 @@ return
     'form.programme_mt_commission' => 'Montant de la commission fixe',
     'form.produit_dt_db_travaux' => 'Date début des travaux',
     'form.produit_dt_prevu_livraison' => 'Date prévisionnelle de livraisont',
+    'txt.file' => 'Dossier',
+	'txt.files' => 'Dossiers',
+	'txt.file.current' => 'En cours',
+	'txt.file.pending' => 'En attente',
+	'txt.file.completed' => 'Terminé',
+	'txt.current' => 'en_cours',
+	'txt.pending' => 'en_attente',
+	'txt.completed' => 'termine',
 ];

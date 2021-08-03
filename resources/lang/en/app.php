@@ -1113,4 +1113,12 @@ return
     'form.programme_mt_commission' => 'Fixed commission amount',
     'form.produit_dt_db_travaux' => 'Work start date',
     'form.produit_dt_prevu_livraison' => 'Estimated delivery date',
+	'txt.file' => 'File',
+	'txt.files' => 'Files',
+	'txt.file.current' => 'Current folder',
+	'txt.file.pending' => 'Pending file',
+	'txt.file.completed' => 'Completed file',
+	'txt.current' => 'current',
+	'txt.pending' => 'pending',
+	'txt.completed' => 'completed',
 ];

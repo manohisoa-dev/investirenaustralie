@@ -670,7 +670,7 @@
   <style>
     .header-white.fixed-header .fixed-header-bar{
         max-width: 3500px !important;
-        background: #ffffff;
+        background: none;
         -webkit-box-shadow: 0px 0px 0px 0px rgb(38 59 94 / 10%);
         -moz-box-shadow: 0px 0px 0px 0px rgb(38 59 94 / 10%);
         -o-box-shadow: 0px 0px 0px 0px rgb(38 59 94 / 10%);
@@ -683,7 +683,7 @@
     }
 
     .show-navbar-after-top{
-        max-width: 3500px !important;
+      max-width: 3500px !important;;
       -webkit-background: none;
       -moz-background: none;
       -o-background: none;

@@ -156,9 +156,9 @@ Route::middleware(["auth", "role:5"])->group(function(){
         Route::get('select-afa/{prod?}', 'MemberController@selectAfa')->name('member.select.afa');
         Route::get('contact-afa', 'MemberController@contactAfa')->name('member.contact.afa');
         Route::post('select-afa', 'MemberController@updateAfa');
-        Route::get('go-there', 'MemberController@goThere')->name('member.go.there');
+        Route::get('go-there/{prod?}', 'MemberController@goThere')->name('member.go.there');
         Route::get('send-courriel', 'MemberController@sendCourriel')->name('member.send.courriel');
-        Route::get('buy-this-product', 'MemberController@buyThisProduct')->name('member.buy.product');
+        Route::get('buy-this-product/{prod?}', 'MemberController@buyThisProduct')->name('member.buy.product');
 
         Route::get('/', 'BackendController@dashboard');
         Route::get('favorites', 'BackendController@favorites');
@@ -196,6 +196,9 @@ Route::middleware(["auth", "role:5"])->group(function(){
             Route::get('{mail}', 'MailController@view')->name('member.mail.index');
             Route::get('delete/{mail}', 'MailController@delete')->name('member.mail.delete');
         });
+
+        // Dossier Controller
+        Route::get('dossier', 'DossierController@showDossier')->name('member.dossier');
     });
 
 });

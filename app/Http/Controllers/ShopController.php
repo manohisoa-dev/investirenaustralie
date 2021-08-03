@@ -548,13 +548,8 @@ class ShopController extends Controller
             ->where('status', 'pinged')
             ->count();
         $sale = Session::has('sale') ? Session::get('sale') : null;
-        $lapls = Localisation::select('localizations.*')
-            ->join('users','users.location_id','=','localizations.id')
-            ->where('users.role','=','4')
-            ->groupBy('localizations.locality')
-            ->get();
+        
         return view('shop.order')->with(['item' => $sale])
-            ->with('lapls', $lapls)
             ->with('count', $count);
     }
     

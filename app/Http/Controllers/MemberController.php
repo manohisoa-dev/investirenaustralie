@@ -407,17 +407,16 @@ class MemberController extends Controller {
         if ($request->has('apl')) {
             $apl = User::ofRole('apl')->isActive()->where('id', '=', $request->apl)->first();
         } else {
-            return back()->withInput()->with('error', 'Vous devez choisir un apl.');
+            return back()->withInput()->with('error', trans('app.txt.choose_an_apl'));
         }
 
         // No APL selected
         if (!$apl) {
-            return back()->withInput()->with('error', 'Vous devez choisir un apl.');
+            return back()->withInput()->with('error', trans('app.txt.choose_an_apl'));
         }
 
         if (!$request->input('confirm')) {
-            return back()->withInput()->with('error',
-                'Vous devez accepter les termes et les conditions.');
+            return back()->withInput()->with('error',trans('app.txt.mustagreeterme'));
         }
 
         // Update APL
@@ -453,7 +452,10 @@ class MemberController extends Controller {
         $this->middleware('auth');
         $this->middleware('role:5');
 
-        // dd($prod);
+        if($prod){
+            $prodUrl = url('product/'.$prod);
+            session()->put('link_product',$prodUrl);
+        }
 
         $distance = $request->get('distance');
         if (empty($distance))
@@ -555,18 +557,22 @@ class MemberController extends Controller {
      * @param  \App\Models\Product
      * @return \Illuminate\Http\Response
      */
-    public function buyThisProduct(Request $request) {
+    public function buyThisProduct(Request $request,$prod=null) {
         $this->middleware('auth');
         $this->middleware('role:5');
 
-        if (Auth::user()->hasAfa()) {
-            return redirect(url()->previous())->with('engagement', trans('afa.condition_deplacement_afa', ['afa' =>
-                Auth::user() ? Auth::user()->afa->name : '']));
-        } else {
-            session()->put('link_product', url()->previous());
-
-            return redirect()->route('member.select.afa')->with('error', trans('app.txt.choose_an_afa'));
+        if($prod){
+            $prodUrl = url('product/'.$prod);
+            
+            if (Auth::user()->hasAfa()) {
+                return redirect($prodUrl)->with('engagement', trans('afa.condition_deplacement_afa', ['afa' =>
+                    Auth::user() ? Auth::user()->afa->name : '']));
+            } 
+                
+            return redirect()->route('member.select.afa', $prod)->with('error', trans('app.txt.choose_an_afa'));
         }
+
+        abort(404);
     }
 
     /**
@@ -576,18 +582,22 @@ class MemberController extends Controller {
      * @param  \App\Models\Product
      * @return \Illuminate\Http\Response
      */
-    public function goThere(Request $request) {
+    public function goThere(Request $request,$prod=null) {
         $this->middleware('auth');
         $this->middleware('role:5');
 
-        if (Auth::user()->hasAfa()) {
-            return redirect(url()->previous())->with('engagement', trans('afa.condition_deplacement_afa', ['afa' =>
-                Auth::user() ? Auth::user()->afa->name : '']));
-        } else {
-            session()->put('link_product', url()->previous());
+        if($prod){
+            $prodUrl = url('product/'.$prod);
 
-            return redirect()->route('member.select.afa')->with('error', trans('app.txt.choose_an_afa'));
+            if (Auth::user()->hasAfa()) {
+                return redirect($prodUrl)->with('engagement', trans('afa.condition_deplacement_afa', ['afa' =>
+                    Auth::user() ? Auth::user()->afa->name : '']));
+            } else {
+                return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa'))->with('hasAfa',0);
+            }
         }
+
+        abort(404);
     }
 
 
