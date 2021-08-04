@@ -101,9 +101,9 @@ class Pub extends Model {
     {
       return $this->belongsToMany(Page::class, 'pubs_pages', 'pub_id', 'page_id');
     }
-    
+
     /**
-     * Get the image record associated with the pub.
+     * Get the image record associated with the blog.
      */
     public function image()
     {

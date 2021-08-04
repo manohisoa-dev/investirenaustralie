@@ -68,7 +68,9 @@
                             <tr>
                                 <td>{{ $index + $records->firstItem() }}</td>
 								<td>
-									<img src="{{$record->getImageUrl('thumb')}}" class="img-responsive"/>
+									<a href="#" target="_blank">
+										<img class="thumb" src="{{$record->getImageUrl('thumb')}}">
+									</a>
 								</td>
                                 <td>
                                      <span class="editable"
