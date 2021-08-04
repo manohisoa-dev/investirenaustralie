@@ -1362,4 +1362,7 @@ return
 	'txt.current' => 'en_cours',
 	'txt.pending' => 'en_attente',
 	'txt.completed' => 'termine',
+    'txt.dasboard_nb_user_inscrit_jour' => 'Total des utilisateurs inscrit ce jour',
+    'txt.dasboard_nb_user_inscrit_mois' => 'Total des utilisateurs inscrit ce mois',
+    'txt.dasboard_nb_user_inscrit_annee' => 'Total des utilisateurs inscrit cette année',
 ];

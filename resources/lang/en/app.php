@@ -1121,4 +1121,7 @@ return
 	'txt.current' => 'current',
 	'txt.pending' => 'pending',
 	'txt.completed' => 'completed',
+    'txt.dasboard_nb_user_inscrit_jour' => 'Total users registered today',
+    'txt.dasboard_nb_user_inscrit_mois' => 'Total users registered this month',
+    'txt.dasboard_nb_user_inscrit_annee' => 'Total users registered this year',
 ];
