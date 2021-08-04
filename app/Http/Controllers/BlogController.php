@@ -330,6 +330,7 @@ class BlogController extends Controller
         $blog = new Blog();
         if($file=$request->file('image')){
             $image = Image::storeAndSave($file);
+            $blog::regenerateMyAvatar($image) ;
             $blog->image_id = $image->id;
         }
         
@@ -425,6 +426,7 @@ class BlogController extends Controller
         
         if($file=$request->file('image')){
             $image = Image::storeAndSave($file);
+            $blog::regenerateMyAvatar($image) ;
             $blog->image_id = $image->id;
         }
         

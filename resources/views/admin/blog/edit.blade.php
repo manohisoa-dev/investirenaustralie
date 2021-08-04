@@ -71,7 +71,7 @@
 										<div class="row">
 											<div class="col-md-4">
 												<div class="fileupload-preview thumbnail">
-													<img src="{{$blog->imageUrl()}}" style="width:100% !important">
+													<img class="thumb" src="{{$blog->getImageUrl('thumb')}}">
 												</div>
 												<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">@lang('app.admin.file.remove')</a>
 											</div>
