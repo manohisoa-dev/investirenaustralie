@@ -312,7 +312,7 @@
 						@endphp
                             <ul class="stat-list">
                                 <li>
-                                    <h2 class="no-margins">{{$nb_user_day}}</h2>
+                                    <h2 class="no-margins">{{$nb_user_day}} / {{$nb_all_user}}</h2>
                                     <small>@lang('app.txt.dasboard_nb_user_inscrit_jour')</small>
                                     <div class="stat-percent">{{number_format($p_nb_user_day,2)}}%</div>
                                     <div class="progress progress-mini">
@@ -320,7 +320,7 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <h2 class="no-margins ">{{$nb_user_month}}</h2>
+                                    <h2 class="no-margins ">{{$nb_user_month}} / {{$nb_all_user}}</h2>
                                     <small>@lang('app.txt.dasboard_nb_user_inscrit_mois')</small>
                                     <div class="stat-percent">{{number_format($p_nb_user_month,2)}}%</div>
                                     <div class="progress progress-mini">
@@ -328,7 +328,7 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <h2 class="no-margins ">{{$nb_user_year}}</h2>
+                                    <h2 class="no-margins ">{{$nb_user_year}} / {{$nb_all_user}}</h2>
                                     <small>@lang('app.txt.dasboard_nb_user_inscrit_annee')</small>
                                     <div class="stat-percent">{{number_format($p_nb_user_year,2)}}%</div>
                                     <div class="progress progress-mini">
@@ -396,23 +396,23 @@
                             <ul class="stat-list">
                                 <li>
                                     <h2 class="no-margins">{{$nb_product_day}} / {{$nb_all_product}}</h2>
-                                    <small>Total des produits crées ce jour</small>
+                                    <small>@lang('app.txt.dasboard_nb_prd_inscrit_jour')</small>
                                     <div class="stat-percent">{{number_format($p_nb_product_day,2)}}%</div>
                                     <div class="progress progress-mini">
                                         <div style="width: {{$p_nb_product_day}}%;" class="progress-bar"></div>
                                     </div>
                                 </li>
                                 <li>
-                                    <h2 class="no-margins ">{{$nb_product_month}}</h2>
-                                    <small>Total des produits crées ce mois</small>
+                                    <h2 class="no-margins ">{{$nb_product_month}} / {{$nb_all_product}}</h2>
+                                    <small>@lang('app.txt.dasboard_nb_prd_inscrit_mois')</small>
                                     <div class="stat-percent">{{number_format($p_nb_product_month,2)}}%</div>
                                     <div class="progress progress-mini">
                                         <div style="width: {{$p_nb_product_month}}%;" class="progress-bar"></div>
                                     </div>
                                 </li>
                                 <li>
-                                    <h2 class="no-margins ">{{$nb_product_year}}</h2>
-                                    <small>Total des produits crées cette année</small>
+                                    <h2 class="no-margins ">{{$nb_product_year}} / {{$nb_all_product}}</h2>
+                                    <small>@lang('app.txt.dasboard_nb_prd_inscrit_annee')</small>
                                     <div class="stat-percent">{{number_format($p_nb_product_year,2)}}%</div>
                                     <div class="progress progress-mini">
                                         <div style="width: {{$p_nb_product_year}}%;" class="progress-bar"></div>

@@ -1365,4 +1365,7 @@ return
     'txt.dasboard_nb_user_inscrit_jour' => 'Total des utilisateurs inscrit ce jour',
     'txt.dasboard_nb_user_inscrit_mois' => 'Total des utilisateurs inscrit ce mois',
     'txt.dasboard_nb_user_inscrit_annee' => 'Total des utilisateurs inscrit cette année',
+    'txt.dasboard_nb_prd_inscrit_jour' => 'Total des produits crées ce jour',
+    'txt.dasboard_nb_prd_inscrit_mois' => 'Total des produits crées ce mois',
+    'txt.dasboard_nb_prd_inscrit_annee' => 'Total des produits crées cette année',
 ];
