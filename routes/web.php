@@ -82,6 +82,7 @@ Route::get('blog/{slug}', 'BlogController@index')->name('blog.index');
 Route::get('contact','MailController@contact');
 Route::post('contact','MailController@contact')->name('contact');
 Route::post('newsletter','MailController@saveNewsletter')->name('newsletter.store');
+Route::post('ajaxSendEmail', 'MailController@ajaxSendEmail')->name('ajaxSendEmail');
 
 Route::post('sendmail', 'SendMailController@sendMail')->name('sendmail');
 

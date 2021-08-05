@@ -29,11 +29,13 @@
         <ul class="nav nav-second-level collapse">
             <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.chart', ['type'=>'produit']):route('admin.chart', ['type'=>'produit'])}}">@lang('app.products')</a></li>
             <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.chart', ['type'=>'user']):route('admin.chart', ['type'=>'user'])}}">@lang('app.users')</a></li>
-            <li><a href="#">@lang('app.txt.members')</a></li>
+            {{--
+			<li><a href="#">@lang('app.txt.members')</a></li>
             <li><a href="#">@lang('app.afa')</a></li>
             <li><a href="#">@lang('app.apl')</a></li>
             <li><a href="#">@lang('app.txt.sellers')</a></li>
             <li><a href="#">@lang('app.admin.carts')</a></li>
+			--}}
         </ul>
     </li>
     <li class="{{Request::is('*/user/*') || Request::is('*/user') || Request::is('*/role/*') || Request::is('*/role') || Request::is('*/type-user/*') || Request::is('*/type-user') ? 'active' : ''}}">
