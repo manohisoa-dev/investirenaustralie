@@ -6,7 +6,7 @@
 
 @section('subcontent')
 
-<div class="col-lg-8 col-xl-9">
+{{-- <div class="col-lg-12 col-xl-12"> --}}
 	@if($aplActive->apl_id != 0)
     <div class="profile-content-area m-40px-tb">
 		<div class="card m-40px-b">
@@ -109,7 +109,7 @@
 		</div>
 	</div>
 	@endif
-</div>
+{{-- </div> --}}
 @endsection
 
 @push('script')

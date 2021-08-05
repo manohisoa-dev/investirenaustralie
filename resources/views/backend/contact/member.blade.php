@@ -2,7 +2,7 @@
 
 @section('subcontent')
 <!-- Section -->
-<div class="col-lg-8 col-xl-9">
+
     <div class="profile-content-area m-40px-tb card card-body">
         <div class="border-bottom-0 border-color-dark-gray m-15px-b p-15px-b">
             <h5>{{$title}}</h5>
@@ -44,7 +44,7 @@
             </div>
         </div>
     </div>
-</div>
+
 <!-- End Section -->
 @endsection
 

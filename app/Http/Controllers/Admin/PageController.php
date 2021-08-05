@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Jleon\LaravelPnotify\Notify;
+use Auth;
 
 class PageController extends Controller {
     public $viewDir = "admin.page";

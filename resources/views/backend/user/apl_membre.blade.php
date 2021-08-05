@@ -1,7 +1,7 @@
 @extends('layouts.backend')
 
 @section('subcontent')
-<div class="col-lg-8 col-xl-9">
+
 	@if($aplActive->apl_id != 0)
     <div class="profile-content-area m-40px-tb">
 		<div class="card m-40px-b">
@@ -86,7 +86,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+
 @endsection
 
 @push('script')

@@ -2,42 +2,42 @@
 
 @section('subcontent')
 
-<div class="col-lg-8 col-xl-9">
-    @include('includes.alerts')
-    <div class="m-40px-tb card card-body">
-        <div class="border-bottom-1 border-color-dark-gray m-15px-b p-0px-b">
-            <h5>@lang('app.select_apl')</h5>
-            <div class="row">
-                <div class="col-md-4 m-10px-tb">
-                    <div class="media">
-                        <div class="only-icon-20">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div class="media-body p-15px-l lh-normal">
-                            <form id="filter-form" method="get" action="">
-                                <div  class="pull-left">
-                                    <label for="distance"> @lang('app.form.filterBy'):   </label>  
-                                    <select name="distance" id="distance" onchange="document.getElementById('filter-form').submit();"> 
-                                        @foreach($distances as $dist)
-                                        <option value="{{$dist}}" {{$distance===$dist?'selected':''}}>{{$dist}}</option> 
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </form>
-                        </div>
+
+@include('includes.alerts')
+<div class="m-40px-tb card card-body">
+    <div class="border-bottom-1 border-color-dark-gray m-15px-b p-0px-b">
+        <h5>@lang('app.select_apl')</h5>
+        <div class="row">
+            <div class="col-md-4 m-10px-tb">
+                <div class="media">
+                    <div class="only-icon-20">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="media-body p-15px-l lh-normal">
+                        <form id="filter-form" method="get" action="">
+                            <div  class="pull-left">
+                                <label for="distance"> @lang('app.form.filterBy'):   </label>  
+                                <select name="distance" id="distance" onchange="document.getElementById('filter-form').submit();"> 
+                                    @foreach($distances as $dist)
+                                    <option value="{{$dist}}" {{$distance===$dist?'selected':''}}>{{$dist}}</option> 
+                                    @endforeach
+                                </select>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="border-bottom-1 border-color-dark-gray m-15px-b p-15px-b">
-            <div class="row">
-                <div class="col-sm-12 col-xl-12 m-10px-tb">
-                    <div id="map"></div>
-                </div>
+    </div>
+    <div class="border-bottom-1 border-color-dark-gray m-15px-b p-15px-b">
+        <div class="row">
+            <div class="col-sm-12 col-xl-12 m-10px-tb">
+                <div id="map"></div>
             </div>
         </div>
     </div>
 </div>
+
 
 <!-- modal -->
 <div class="container">

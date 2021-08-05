@@ -2,227 +2,6 @@
 
 @section('content')
 
-<style>
-/* New Timeline style */
-.vertical-container {
-    /* this class is used to give a max-width to the element it is applied to, and center it horizontally when it reaches that max-width */
-    width: 90%;
-    max-width: 1170px;
-    margin: 0 auto;
-  }
-  .vertical-container::after {
-    /* clearfix */
-    content: '';
-    display: table;
-    clear: both;
-  }
-  #vertical-timeline {
-    position: relative;
-    padding: 0;
-    margin-top: 2em;
-    margin-bottom: 2em;
-  }
-  #vertical-timeline::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 18px;
-    height: 100%;
-    width: 4px;
-    background: #f1f1f1;
-  }
-  .vertical-timeline-content .btn {
-    float: right;
-  }
-  #vertical-timeline.light-timeline:before {
-    background: #e7eaec;
-  }
-  .dark-timeline .vertical-timeline-content:before {
-    border-color: transparent #f5f5f5 transparent transparent;
-  }
-  .dark-timeline.center-orientation .vertical-timeline-content:before {
-    border-color: transparent transparent transparent #f5f5f5;
-  }
-  .dark-timeline .vertical-timeline-block:nth-child(2n) .vertical-timeline-content:before,
-  .dark-timeline.center-orientation .vertical-timeline-block:nth-child(2n) .vertical-timeline-content:before {
-    border-color: transparent #f5f5f5 transparent transparent;
-  }
-  .dark-timeline .vertical-timeline-content,
-  .dark-timeline.center-orientation .vertical-timeline-content {
-    background: #f5f5f5;
-  }
-  @media only screen and (min-width: 1170px) {
-    #vertical-timeline.center-orientation {
-      margin-top: 3em;
-      margin-bottom: 3em;
-    }
-    #vertical-timeline.center-orientation:before {
-      left: 50%;
-      margin-left: -2px;
-    }
-  }
-  @media only screen and (max-width: 1170px) {
-    .center-orientation.dark-timeline .vertical-timeline-content:before {
-      border-color: transparent #f5f5f5 transparent transparent;
-    }
-  }
-  .vertical-timeline-block {
-    position: relative;
-    margin: 2em 0;
-  }
-  .vertical-timeline-block:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-  .vertical-timeline-block:first-child {
-    margin-top: 0;
-  }
-  .vertical-timeline-block:last-child {
-    margin-bottom: 0;
-  }
-  @media only screen and (min-width: 1170px) {
-    .center-orientation .vertical-timeline-block {
-      margin: 4em 0;
-    }
-    .center-orientation .vertical-timeline-block:first-child {
-      margin-top: 0;
-    }
-    .center-orientation .vertical-timeline-block:last-child {
-      margin-bottom: 0;
-    }
-  }
-  .vertical-timeline-icon {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    font-size: 16px;
-    border: 3px solid #f1f1f1;
-    text-align: center;
-  }
-  .vertical-timeline-icon i {
-    display: block;
-    width: 24px;
-    height: 24px;
-    position: relative;
-    left: 50%;
-    top: 50%;
-    margin-left: -12px;
-    margin-top: -9px;
-  }
-  @media only screen and (min-width: 1170px) {
-    .center-orientation .vertical-timeline-icon {
-      width: 50px;
-      height: 50px;
-      left: 50%;
-      margin-left: -25px;
-      -webkit-transform: translateZ(0);
-      -webkit-backface-visibility: hidden;
-      font-size: 19px;
-    }
-    .center-orientation .vertical-timeline-icon i {
-      margin-left: -12px;
-      margin-top: -10px;
-    }
-    .center-orientation .cssanimations .vertical-timeline-icon.is-hidden {
-      visibility: hidden;
-    }
-  }
-  .vertical-timeline-content {
-    position: relative;
-    margin-left: 60px;
-    background: white;
-    border-radius: 0.25em;
-    padding: 1em;
-  }
-  .vertical-timeline-content:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-  .vertical-timeline-content h2 {
-    font-weight: 400;
-    margin-top: 4px;
-  }
-  .vertical-timeline-content p {
-    margin: 1em 0;
-    line-height: 1.6;
-  }
-  .vertical-timeline-content .vertical-date {
-    float: left;
-    font-weight: 500;
-  }
-  .vertical-date small {
-    color: #1ab394;
-    font-weight: 400;
-  }
-  .vertical-timeline-content::before {
-    content: '';
-    position: absolute;
-    top: 16px;
-    right: 100%;
-    height: 0;
-    width: 0;
-    border: 7px solid transparent;
-    border-right: 7px solid white;
-  }
-  @media only screen and (min-width: 768px) {
-    .vertical-timeline-content h2 {
-      font-size: 18px;
-    }
-    .vertical-timeline-content p {
-      font-size: 13px;
-    }
-  }
-  @media only screen and (min-width: 1170px) {
-    .center-orientation .vertical-timeline-content {
-      margin-left: 0;
-      padding: 1.6em;
-      width: 45%;
-    }
-    .center-orientation .vertical-timeline-content::before {
-      top: 24px;
-      left: 100%;
-      border-color: transparent;
-      border-left-color: white;
-    }
-    .center-orientation .vertical-timeline-content .btn {
-      float: left;
-    }
-    .center-orientation .vertical-timeline-content .vertical-date {
-      position: absolute;
-      width: 100%;
-      left: 122%;
-      top: 2px;
-      font-size: 14px;
-    }
-    .center-orientation .vertical-timeline-block:nth-child(even) .vertical-timeline-content {
-      float: right;
-    }
-    .center-orientation .vertical-timeline-block:nth-child(even) .vertical-timeline-content::before {
-      top: 24px;
-      left: auto;
-      right: 100%;
-      border-color: transparent;
-      border-right-color: white;
-    }
-    .center-orientation .vertical-timeline-block:nth-child(even) .vertical-timeline-content .btn {
-      float: right;
-    }
-    .center-orientation .vertical-timeline-block:nth-child(even) .vertical-timeline-content .vertical-date {
-      left: auto;
-      right: 122%;
-      text-align: right;
-    }
-    .center-orientation .cssanimations .vertical-timeline-content.is-hidden {
-      visibility: hidden;
-    }
-  }
-</style>  
-
 <!-- Main -->
 <main>
     <!-- Page Title -->
@@ -247,7 +26,7 @@
 
                     <div class="p-25px-t row col-lg-12">
                         <div class="col-lg-4 col-sm-6">
-                          <a href="{{ route('member.contact',['role'=>'afa']) }}" id="contact_afa" value="{{ Session::has('has_afa')?1:0 }}" class="m-btn m-btn-theme2nd dark-color flex-shrink-0 col-md-12"><i class="fa fa-envelope" aria-hidden="true"></i>  @lang('app.btn.contact_afa')</a>
+                          <a {{ Auth::check()? (Auth::user()->hasAfa()?'':'disabled') :'' }} href="{{ route('member.contact',['role'=>'afa']) }}" id="contact_afa" value="{{ Session::has('has_afa')?1:0 }}" class="m-btn m-btn-theme2nd dark-color flex-shrink-0 col-md-12"><i class="fa fa-envelope" aria-hidden="true"></i>  @lang('app.btn.contact_afa')</a>
                         </div>
                         <div class="col-lg-4 col-sm-6">
                           <a href="{{ route('member.contact', ['role'=>'apl']) }}" class="m-btn m-btn-theme4rd dark-color flex-shrink-0 col-md-12"><i class="fa fa-envelope" aria-hidden="true"></i>  @lang('app.btn.contacter_apl')</a>
@@ -363,7 +142,7 @@
                           @endif --}}
                         </div>
                         <div class="col-sm-6">
-                          <a href="{{route('member.go.there', $item->slug)}}" id="btn_go_there" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme flex-shrink-0 col-md-12" title="@lang('app.txt.go_to_location')" @if(Auth::check()) {{ Auth::user()->isMove()?'disabled':'' }} @endif><i class="fa fa-map-marker"></i> @lang('app.btn.go_to_location')</a>
+                          <a href="{{route('member.go.there', $item )}}" id="btn_go_there" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme flex-shrink-0 col-md-12" title="@lang('app.txt.go_to_location')" @if(Auth::check()) {{ Auth::user()->isMove()?'disabled':'' }} @endif><i class="fa fa-map-marker"></i> @lang('app.btn.go_to_location')</a>
                         </div>
                     </div>
                   </section>
@@ -596,9 +375,6 @@
           if($('#condition').is(":checked"))
           {
               event.preventDefault();
-
-              // creationDossierTransaction();
-              
               window.location.replace("{{  route('member.send.courriel')  }}");
           }else{
              $('.message-error p').html('{{ trans("afa.accept_term") }}')

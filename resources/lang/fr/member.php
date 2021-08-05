@@ -13,21 +13,17 @@ return [
     "pay_order" => "Payer la commande",
     "pay_now" => "Payer maintenant",
     "goto_payment" => "Passer au paiement",
-    
     "orders" => "Produits En Cours d’Achat",
     "purchases" => "Achats Précédents",
-    
     "contact_admin" => "Contacter ADMIN",
     "contact_apl"   => "Contacter APL",
     "contact_afa"   => "Contacter AFA",
     "select.apl"    => "Choisir un APL",
     "choose"        => "Choisir",
     "select"        => "Selectionner",
-    
     "info"         => "Information",
     "info_has_apl" => "Vous etes deja en relation exclusive avec un APL.",
     "info_no_apl"  => "Vous avez 180 jours pour etre en relation avec un APL.",
-    
     "accept_term_and_condition_apl"  => "Acceptez les termes et les conditions",
     "accept_term_and_condition_afa"  => "Acceptez les termes et les conditions",
     "select_afa"  => "Si vous cliquez sur le bouton &ldquo;Selectionner&rdquo; cela sélectionnera définitivement cette AFA particulière pour toute interaction ultérieure concernant un programme.",
@@ -41,4 +37,6 @@ return [
     "historique_relation" => "Historiques de relation",
     "gothere.select_afa" => "Vous devrez d&rsquo;abord passer par la phase de sélection d&rsquo;un AFA",
     "btn.select_afa" => "Selectionner AFA",
+    "message.transaction.title" => "Message de rappel de transaction au membre",
+    "message.transaction.content" => "<p>Bonjour <b>:name</b>,</p> <p>Nous nous rappelons que vous avez une transaction en cours, ouverte dans votre compte.</p> <p>Vous pouvez y accéder dans votre panneau de contrôle &ldquo;<a href=:url id=:id>Dashboard</a>&rdquo;.</p>",
 ];

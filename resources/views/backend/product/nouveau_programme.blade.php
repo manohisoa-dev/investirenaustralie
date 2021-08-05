@@ -1,7 +1,7 @@
 @extends('layouts.backend')
 
 @section('subcontent')
-<div class="col-lg-8 col-xl-9">						
+					
     <div class="profile-content-area m-40px-tb">
 		
 		<ol class="breadcrumb">
@@ -214,7 +214,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+
 @endsection
 
 @push('script')
@@ -309,7 +309,7 @@
             {
 				file.previewElement.id = response.success;
 				//console.log(file.previewElement.id); 
-				// set new images names in dropzone’s preview box.
+				// set new images names in dropzoneï¿½s preview box.
                 var olddatadzname = file.previewElement.querySelector("[data-dz-name]");   
 				file.previewElement.querySelector("img").alt = response.success;
 				file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'>"+response.success+"</label>");
@@ -368,7 +368,7 @@
             {
 				file.previewElement.id = response.success;
 				//console.log(file.previewElement.id); 
-				// set new images names in dropzone’s preview box.
+				// set new images names in dropzoneï¿½s preview box.
                 var olddatadzname = file.previewElement.querySelector("[data-dz-name]");   
 				file.previewElement.querySelector("img").alt = response.success;
 				file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'><input value='"+response.success+"' type='radio' name='radioDrop' style='display:inline-block'> @lang('app.dropzone.photoIcon_tex')</label>");
