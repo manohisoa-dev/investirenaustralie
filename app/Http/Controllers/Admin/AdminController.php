@@ -17,6 +17,7 @@ use App\Role;
 use App\Notifications\NewMail;
 use Jleon\LaravelPnotify\Notify;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 
 class AdminController extends Controller {
     /**
@@ -74,6 +75,7 @@ class AdminController extends Controller {
             $p_lb[] = $ip->date;
             $p_cnt[] = $ip->count;
         }
+
         $data['label'] = $lb;
         $data['count'] = $cnt;
         $data['p_label'] = $p_lb;

@@ -65,7 +65,43 @@
 						<label for="title">@lang('app.form.programme_content')</label>
 						<textarea class="form-control" rows="10" name="description" id="description">{{$product->content}}</textarea>
 					</div>
-								
+					
+					<div class="row">
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label for="title">@lang('app.form.programme_commission_type')</label>
+								<select class="form-control" name="commision" id="commision">
+									<option value="">Choisir...</option>
+									<option value="Sales commission rate (%)" {{$product->commission_type == 'Sales commission rate (%)' ? 'selected' : ''}}>@lang('app.form.programme_commission_option1') (%)</option>
+									<option value="Fixed commission ($)" {{$product->commission_type == 'Fixed commission ($)' ? 'selected' : ''}}>@lang('app.form.programme_commission_option2') ($)</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-lg-4">
+							<div id="commission_rate" style="display:none">
+								<div class="form-group">
+									<label for="title">@lang('app.form.programme_taux_commission')</label>
+									<div class="input-group m-b">
+										<input type="number" class="form-control" name="sales_rate" id="sales_rate">
+										<div class="input-group-append">
+											<span class="input-group-text">%</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div id="fixed_commission" style="display:none">
+								<div class="form-group">
+									<label for="title">@lang('app.form.programme_mt_commission')</label>
+									<div class="input-group m-b">
+										<input type="number" class="form-control" name="rate_commission" id="rate_commission">
+										<div class="input-group-append">
+											<span class="input-group-text">AUD</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>			
 								
 					<div class="row">
 						<div class="col-lg-4">
@@ -311,6 +347,37 @@
 		$("a.fancyboxLinkDoc").fancybox({
 			type: "iframe"
 		});
+		
+		<!-- info type de commission-->
+		var type_commission = "{{$product->commission_type}}";
+		if(type_commission == 'Sales commission rate (%)'){
+			$('#commission_rate').show();
+			$('#sales_rate').val({{$product->commision}});
+			$('#fixed_commission').hide();
+		}else if(type_commission == 'Fixed commission ($)'){
+			$('#fixed_commission').show();
+			$('#rate_commission').val({{$product->commision}});
+			$('#commission_rate').hide();
+		}else{
+			$('#fixed_commission').hide();
+			$('#commission_rate').hide();
+		}
+		
+		$('#commision').on('change', function() {
+			var type_commission = this.value;
+			if(type_commission == 'Sales commission rate (%)'){
+				$('#commission_rate').show();
+				$('#fixed_commission').hide();
+			}else if(type_commission == 'Fixed commission ($)'){
+				$('#fixed_commission').show();
+				$('#commission_rate').hide();
+			}else{
+				$('#fixed_commission').hide();
+				$('#commission_rate').hide();
+			}
+		});
+		<!-- fin info type de commission-->
+			
 		set_type_programme($('#cat_programmme_id').val(),{{$product->type_id}});
 		
 		$('#cat_programmme_id').on('change', function() {

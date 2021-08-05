@@ -19,6 +19,7 @@ class BlogController extends Controller {
     protected $post_type = 'blog';
 
     public function index() {
+        Blog::regenerateAllAvatar() ;
         $records = Blog::findRequested();
         $status = Blog::groupBy('status')->pluck('status', 'status');
         return $this->view("index", ['records' => $records, 'status' => $status]);
@@ -51,6 +52,7 @@ class BlogController extends Controller {
         $blog = new Blog();
         if($file=$request->file('image')){
             $image = Image::storeAndSave($file,'blog');
+            $blog::regenerateMyAvatar($image) ;
             $blog->image_id = $image->id;
         }
         $slug = $slugOriginal = generateSlug($request->title);
@@ -146,6 +148,7 @@ class BlogController extends Controller {
 
         if ($file = $request->file('image')) {
             $image = Image::storeAndSave($file,'blog');
+            $blog::regenerateMyAvatar($image) ;
             $blog->image_id = $image->id;
         }
 

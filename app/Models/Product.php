@@ -41,6 +41,7 @@ class Product extends Model {
         \Request::input('price') and $query->where('price',\Request::input('price'));
         \Request::input('currency') and $query->where('currency','like','%'.\Request::input('currency').'%');
         \Request::input('tma') and $query->where('tma',\Request::input('tma'));
+        \Request::input('commission_type') and $query->where('commission_type',\Request::input('commission_type'));
         \Request::input('commision') and $query->where('commision',\Request::input('commision'));
         \Request::input('commision_edited') and $query->where('commision_edited',\Request::input('commision_edited'));
         \Request::input('status') and $query->where('status','like','%'.\Request::input('status').'%');
@@ -94,6 +95,7 @@ class Product extends Model {
         \Request::input('price') and $query->where('price',\Request::input('price'));
         \Request::input('currency') and $query->where('currency','like','%'.\Request::input('currency').'%');
         \Request::input('tma') and $query->where('tma',\Request::input('tma'));
+        \Request::input('commission_type') and $query->where('commission_type',\Request::input('commission_type'));
         \Request::input('commision') and $query->where('commision',\Request::input('commision'));
         \Request::input('commision_edited') and $query->where('commision_edited',\Request::input('commision_edited'));
         \Request::input('status') and $query->where('status','like','%'.\Request::input('status').'%');
@@ -147,6 +149,7 @@ class Product extends Model {
         \Request::input('price') and $query->where('price',\Request::input('price'));
         \Request::input('currency') and $query->where('currency','like','%'.\Request::input('currency').'%');
         \Request::input('tma') and $query->where('tma',\Request::input('tma'));
+        \Request::input('commission_type') and $query->where('commission_type',\Request::input('commission_type'));
         \Request::input('commision') and $query->where('commision',\Request::input('commision'));
         \Request::input('commision_edited') and $query->where('commision_edited',\Request::input('commision_edited'));
         \Request::input('status') and $query->where('status','like','%'.\Request::input('status').'%');
@@ -199,6 +202,7 @@ class Product extends Model {
         \Request::input('price') and $query->where('price',\Request::input('price'));
         \Request::input('currency') and $query->where('currency','like','%'.\Request::input('currency').'%');
         \Request::input('tma') and $query->where('tma',\Request::input('tma'));
+        \Request::input('commission_type') and $query->where('commission_type',\Request::input('commission_type'));
         \Request::input('commision') and $query->where('commision',\Request::input('commision'));
         \Request::input('commision_edited') and $query->where('commision_edited',\Request::input('commision_edited'));
         \Request::input('status') and $query->where('status','like','%'.\Request::input('status').'%');
@@ -254,6 +258,7 @@ class Product extends Model {
         \Request::input('price') and $query->where('price',\Request::input('price'));
         \Request::input('currency') and $query->where('currency','like','%'.\Request::input('currency').'%');
         \Request::input('tma') and $query->where('tma',\Request::input('tma'));
+        \Request::input('commission_type') and $query->where('commission_type',\Request::input('commission_type'));
         \Request::input('commision') and $query->where('commision',\Request::input('commision'));
         \Request::input('commision_edited') and $query->where('commision_edited',\Request::input('commision_edited'));
         \Request::input('status') and $query->where('status','like','%'.\Request::input('status').'%');
@@ -305,6 +310,7 @@ class Product extends Model {
             'price' => '',
             'currency' => 'string|max:10',
             'tma' => '',
+            'commission_type' => '',
             'commision' => '',
             'commision_edited' => 'required|integer',
             'status' => 'required|string|max:20',

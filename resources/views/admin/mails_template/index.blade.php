@@ -43,8 +43,8 @@
 						{!!\Nvd\Crud\Html::sortableTh('template_fr','admin.mails-template.index','Template fr')!!}
 						{!!\Nvd\Crud\Html::sortableTh('sujet_en','admin.mails-template.index','Sujet en')!!}
 						{!!\Nvd\Crud\Html::sortableTh('template_en','admin.mails-template.index','Template en')!!}
-						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.mails-template.index','Created At')!!}
-						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.mails-template.index','Updated At')!!}
+						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.mails-template.index','Créer le')!!}
+						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.mails-template.index','Mis à jour le')!!}
 						<th><a href="javascript:void(0)">@lang('app.table.actions')</a></th>
                     </tr>
                     <tr class="search-row">

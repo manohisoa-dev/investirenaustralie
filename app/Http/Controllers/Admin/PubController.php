@@ -44,7 +44,8 @@ class PubController extends Controller {
         $pub = new Pub();
 
         if ($file = $request->file('image')) {
-            $image = Image::storeAndSave($file);
+            $image = Image::storeAndSave($file, "pub");
+            $pub::regenerateMyAvatar($image) ;
             $pub->image_id = $image->id;
         }
 
@@ -111,7 +112,8 @@ class PubController extends Controller {
 
         //$this->validate($request, Pub::validationRules());
         if ($file = $request->file('image')) {
-            $image = Image::storeAndSave($file);
+            $image = Image::storeAndSave($file, "pub");
+            $pub::regenerateMyAvatar($image) ;
             $pub->image_id = $image->id;
         }
         $pub->title = $request->title;

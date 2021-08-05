@@ -269,9 +269,9 @@
                     <h5><i class="fa fa-line-chart"></i> Repartition des utilisateurs par date d'inscription</h5>
                     <div class="ibox-tools">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-xs btn-white active">Aujourd'hui</button>
+                            {{--<button type="button" class="btn btn-xs btn-white active">Aujourd'hui</button>
                             <button type="button" class="btn btn-xs btn-white">Mensuel</button>
-                            <button type="button" class="btn btn-xs btn-white">Annuel</button>
+                            <button type="button" class="btn btn-xs btn-white">Annuel</button>--}}
                         </div>
                     </div>
                 </div>
@@ -283,29 +283,56 @@
                             </div>
                         </div>
                         <div class="col-lg-3">
+						@php
+							$day = date('Y-m-d');
+							$month = date('m');
+							$year = date('Y');
+							$nb_user_day = \App\Models\User::whereDate('created_at', 'LIKE', $day.'%')->count();
+							$nb_user_month = \App\Models\User::whereMonth('created_at', '=', $month)->count();
+							$nb_user_year = \App\Models\User::whereYear('created_at', '=', $year)->count();
+							$nb_all_user = \App\Models\User::count();    
+							
+							if($nb_user_day == 0){
+								$p_nb_user_day = 0;
+							}else{
+								$p_nb_user_day = ($nb_user_day / $nb_all_user) * 100;
+							}
+							
+							if($nb_user_month == 0){
+								$p_nb_user_month = 0;
+							}else{
+								$p_nb_user_month = ($nb_user_month / $nb_all_user) * 100;
+							}
+							
+							if($nb_user_year == 0){
+								$p_nb_user_year = 0;
+							}else{
+								$p_nb_user_year = ($nb_user_year / $nb_all_user) * 100;
+							}
+						@endphp
                             <ul class="stat-list">
                                 <li>
-                                    <h2 class="no-margins">2,346</h2>
-                                    <small>Total orders in period</small>
-                                    <div class="stat-percent">48% <i class="fa fa-level-up text-navy"></i></div>
+                                    <h2 class="no-margins">{{$nb_user_day}} / {{$nb_all_user}}</h2>
+                                    <small>@lang('app.txt.dasboard_nb_user_inscrit_jour')</small>
+                                    <div class="stat-percent">{{number_format($p_nb_user_day,2)}}%</div>
                                     <div class="progress progress-mini">
-                                        <div style="width: 48%;" class="progress-bar"></div>
+                                        <div style="width: {{$p_nb_user_day}}%;" class="progress-bar"></div>
                                     </div>
                                 </li>
                                 <li>
-                                    <h2 class="no-margins ">4,422</h2>
-                                    <small>Orders in last month</small>
-                                    <div class="stat-percent">60% <i class="fa fa-level-down text-navy"></i></div>
+                                    <h2 class="no-margins ">{{$nb_user_month}} / {{$nb_all_user}}</h2>
+                                    <small>@lang('app.txt.dasboard_nb_user_inscrit_mois')</small>
+                                    <div class="stat-percent">{{number_format($p_nb_user_month,2)}}%</div>
                                     <div class="progress progress-mini">
-                                        <div style="width: 60%;" class="progress-bar"></div>
+                                        <div style="width: {{$p_nb_user_month}}%;" class="progress-bar"></div>
                                     </div>
                                 </li>
                                 <li>
-                                    <h2 class="no-margins ">9,180</h2>
-                                    <small>Monthly income from orders</small>
-                                    <div class="stat-percent">22% <i class="fa fa-bolt text-navy"></i></div>
+                                    <h2 class="no-margins ">{{$nb_user_year}} / {{$nb_all_user}}</h2>
+                                    <small>@lang('app.txt.dasboard_nb_user_inscrit_annee')</small>
+                                    <div class="stat-percent">{{number_format($p_nb_user_year,2)}}%</div>
                                     <div class="progress progress-mini">
-                                        <div style="width: 22%;" class="progress-bar"></div>
+                                        <div style="width: {{$p_nb_user_year}}%;" class="progress-bar"></div>
                                     </div>
                                 </li>
                             </ul>
@@ -324,9 +351,9 @@
                     <h5><i class="fa fa-line-chart"></i> Repartition des produits par date</h5>
                     <div class="ibox-tools">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-xs btn-white active">Aujourd'hui</button>
+                            {{--<button type="button" class="btn btn-xs btn-white active">Aujourd'hui</button>
                             <button type="button" class="btn btn-xs btn-white">Mensuel</button>
-                            <button type="button" class="btn btn-xs btn-white">Annuel</button>
+                            <button type="button" class="btn btn-xs btn-white">Annuel</button>--}}
                         </div>
                     </div>
                 </div>
@@ -339,29 +366,56 @@
                             </div>
                         </div>
                         <div class="col-lg-3">
+						@php
+							$day = date('Y-m-d');
+							$month = date('m');
+							$year = date('Y');
+							$nb_product_day = \App\Models\Product::whereDate('created_at', 'LIKE', $day.'%')->count();
+							$nb_product_month = \App\Models\Product::whereMonth('created_at', '=', $month)->count();
+							$nb_product_year = \App\Models\Product::whereYear('created_at', '=', $year)->count();
+							$nb_all_product = \App\Models\Product::count();    
+							
+							if($nb_product_day == 0){
+								$p_nb_product_day = 0;
+							}else{
+								$p_nb_product_day = ($nb_product_day / $nb_all_product) * 100;
+							}
+							
+							if($nb_product_month == 0){
+								$p_nb_product_month = 0;
+							}else{
+								$p_nb_product_month = ($nb_product_month / $nb_all_product) * 100;
+							}
+							
+							if($nb_product_year == 0){
+								$p_nb_product_year = 0;
+							}else{
+								$p_nb_product_year = ($nb_product_year / $nb_all_product) * 100;
+							}
+						@endphp
                             <ul class="stat-list">
                                 <li>
-                                    <h2 class="no-margins">2,346</h2>
-                                    <small>Total orders in period</small>
-                                    <div class="stat-percent">48% <i class="fa fa-level-up text-navy"></i></div>
+                                    <h2 class="no-margins">{{$nb_product_day}} / {{$nb_all_product}}</h2>
+                                    <small>@lang('app.txt.dasboard_nb_prd_inscrit_jour')</small>
+                                    <div class="stat-percent">{{number_format($p_nb_product_day,2)}}%</div>
                                     <div class="progress progress-mini">
-                                        <div style="width: 48%;" class="progress-bar"></div>
+                                        <div style="width: {{$p_nb_product_day}}%;" class="progress-bar"></div>
                                     </div>
                                 </li>
                                 <li>
-                                    <h2 class="no-margins ">4,422</h2>
-                                    <small>Orders in last month</small>
-                                    <div class="stat-percent">60% <i class="fa fa-level-down text-navy"></i></div>
+                                    <h2 class="no-margins ">{{$nb_product_month}} / {{$nb_all_product}}</h2>
+                                    <small>@lang('app.txt.dasboard_nb_prd_inscrit_mois')</small>
+                                    <div class="stat-percent">{{number_format($p_nb_product_month,2)}}%</div>
                                     <div class="progress progress-mini">
-                                        <div style="width: 60%;" class="progress-bar"></div>
+                                        <div style="width: {{$p_nb_product_month}}%;" class="progress-bar"></div>
                                     </div>
                                 </li>
                                 <li>
-                                    <h2 class="no-margins ">9,180</h2>
-                                    <small>Monthly income from orders</small>
-                                    <div class="stat-percent">22% <i class="fa fa-bolt text-navy"></i></div>
+                                    <h2 class="no-margins ">{{$nb_product_year}} / {{$nb_all_product}}</h2>
+                                    <small>@lang('app.txt.dasboard_nb_prd_inscrit_annee')</small>
+                                    <div class="stat-percent">{{number_format($p_nb_product_year,2)}}%</div>
                                     <div class="progress progress-mini">
-                                        <div style="width: 22%;" class="progress-bar"></div>
+                                        <div style="width: {{$p_nb_product_year}}%;" class="progress-bar"></div>
                                     </div>
                                 </li>
                             </ul>
@@ -379,7 +433,7 @@
         <div class="col-lg-12">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h5>@lang('app.txt.recent_publication')</h5>
+                    <h5>@lang('app.txt.recent_publication') PP</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -417,13 +471,13 @@
         <div class="col-lg-12">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h5><i class="fa fa-line-chart"></i> Repartition des publications par date </h5>
+                    <h5><i class="fa fa-line-chart"></i> Repartition des publications par date</h5>
                     <div class="ibox-tools">
-                        <div class="btn-group">
+                        <!--<div class="btn-group">
                             <button type="button" class="btn btn-xs btn-white active">Aujourd'hui</button>
                             <button type="button" class="btn btn-xs btn-white">Mensuel</button>
                             <button type="button" class="btn btn-xs btn-white">Annuel</button>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
                 <div class="ibox-content">

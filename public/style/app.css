@@ -320,3 +320,6 @@ a.compose-mail {
   font-size: 1.2rem;
   padding-top: 0.3rem;
 }
+.white-color-light{
+  color: rgba(255, 255, 255, 0.6) !important ;
+}
