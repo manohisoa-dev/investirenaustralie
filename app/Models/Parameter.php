@@ -11,4 +11,8 @@ class Parameter extends Model
         return $this::where('name','=','nb_day_end_apl')->first()->value;
     }
 
+    public function scopeNbDayEndAfa(){
+        return $this::where('name','=','nb_day_end_afa')->first()->value;
+    }
+
 }

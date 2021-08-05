@@ -1,7 +1,7 @@
 @extends('layouts.backend')
 
 @section('subcontent')
-<div class="col-lg-8 col-xl-9">
+
     <div class="profile-content-area m-40px-tb card card-body">
       @if(!$item)
         <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
@@ -83,5 +83,5 @@
         </div>
       @endif        
     </div>
-</div>
+
 @endsection

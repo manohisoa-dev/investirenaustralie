@@ -20,6 +20,8 @@ use App\Models\Message;
 use App\Models\Temoignage;
 use App\Models\RelationMembreApl;
 use App\Models\Parameter;
+use App\Models\DossierTransaction;
+use App\Models\Product;
 use Session;
 
 class MemberController extends Controller {
@@ -522,7 +524,8 @@ class MemberController extends Controller {
 
         // Update AFA
         Auth::user()->afa_id = $afa->id;
-        // Auth::user()->afa_ends_at = \Carbon\Carbon::now()->addDays(option('payment.afa_ends_at', 180));
+        Auth::user()->afa_ends_at = \Carbon\Carbon::now()->addDays(option('payment.afa_ends_at',
+            Parameter::nbDayEndAfa()));
         Auth::user()->save();
 
         // Notify User
@@ -582,12 +585,18 @@ class MemberController extends Controller {
      * @param  \App\Models\Product
      * @return \Illuminate\Http\Response
      */
-    public function goThere(Request $request,$prod=null) {
+    // public function goThere(Request $request, $slug=null,$prod=null) {
+    public function goThere(Request $request, Product $product) {
         $this->middleware('auth');
         $this->middleware('role:5');
 
-        if($prod){
-            $prodUrl = url('product/'.$prod);
+        if($product){
+            $prod_id = $product->id;
+            $prodUrl = url('product/'.$product->slug);
+
+            if(!Auth::user()->isCheckedDossierTransaction($prod_id)){
+                $this->creationDossierTransaction($product);
+            }
 
             if (Auth::user()->hasAfa()) {
                 return redirect($prodUrl)->with('engagement', trans('afa.condition_deplacement_afa', ['afa' =>
@@ -598,6 +607,59 @@ class MemberController extends Controller {
         }
 
         abort(404);
+    }
+
+    public function creationDossierTransaction(Product $prod){
+        $prefix = "";
+        $status = 'current'; //current=>en_cours, pending=>en_attente, completed=>complété
+        $user_id = Auth::id();
+        $prod_id = $prod->id;
+        $prod_cat_id = $prod->category_id;
+        $numero = $this->generateNumDossier($prod_cat_id);
+        
+        return DossierTransaction::create(['numero'=>$numero, 'user_id'=>$user_id, 'product_id'=>$prod_id, 'status'=>$status]);
+    }
+
+    /*
+    * Generate num dossier
+    *
+    */
+    private function generateNumDossier($cat_id){
+        $dossierPrefix = "";
+        $dossierNum = 00000;
+        $roleId=0;
+
+        switch ($cat_id) {
+            case '1':
+                $dossierPrefix = 'RES-';
+                break;
+
+            case '2':
+                $dossierPrefix = 'FON-';
+                break;
+            
+            case '3':
+                $dossierPrefix = 'IND-';
+                break;
+            
+            case '4':
+                $dossierPrefix = 'COM-';
+                break;
+
+            default:
+                abort(404);
+                break;
+        }
+
+        $dossierMax = DossierTransaction::where('numero', 'like', '%'.$dossierPrefix.'%')->orderBy('numero','DESC')->first();
+
+        if($dossierMax !== null){
+            $num = $dossierMax->immat;
+            $explodeNum = explode('-',$num);
+            $dossierNum = $explodeNum[1];
+        }
+
+        return $dossierPrefix . str_pad($dossierNum+1, 5, "0", STR_PAD_LEFT);
     }
 
 

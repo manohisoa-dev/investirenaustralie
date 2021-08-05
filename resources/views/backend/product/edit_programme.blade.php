@@ -1,7 +1,7 @@
 @extends('layouts.backend')
 
 @section('subcontent')
-<div class="col-lg-8 col-xl-9">						
+				
     <div class="profile-content-area m-40px-tb">
 		
 		<ol class="breadcrumb">
@@ -50,7 +50,7 @@
 						<label for="title">@lang('app.form.programme_choix_nature') *</label>
 						<select class="form-control" name="natureBien" id="natureBien" disabled="disabled">
 							<option value="@lang('app.txt.real_estate_program')" {{$product->natureBien == 'Programme immobilier' ? 'selected' : ''}}>@lang('app.txt.real_estate_program')</option>
-							<option value="@lang('app.txt.isolated_product')" {{$product->natureBien == 'Produit isolé' ? 'selected' : ''}}>@lang('app.txt.isolated_product')</option>
+							<option value="@lang('app.txt.isolated_product')" {{$product->natureBien == 'Produit isolï¿½' ? 'selected' : ''}}>@lang('app.txt.isolated_product')</option>
 						</select>
 						<input type="hidden" name="natureBien" value="@lang('app.txt.real_estate_program')" />
 					</div>
@@ -274,7 +274,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+
 @endsection
 
 @push('script')

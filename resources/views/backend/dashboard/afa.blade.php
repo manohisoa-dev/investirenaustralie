@@ -1,7 +1,7 @@
 @extends('layouts.backend')
 
 @section('subcontent')
-<div class="col-lg-8 col-xl-9">
+
     @include('includes.alerts')
     <div class="profile-content-area m-40px-tb card card-body">
         <div class="border-color-dark-gray m-35px-b p-10px-b">
@@ -95,5 +95,5 @@
         </div>
         </div>
     </div>
-</div>
+
 @endsection

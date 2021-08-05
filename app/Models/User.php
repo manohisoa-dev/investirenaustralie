@@ -889,4 +889,24 @@ class User extends Authenticatable {
                     ->get();
     }
 
+    public function isCheckedDossierTransaction($prod_id){
+        $dosTransUser = DossierTransaction::where('user_id',$this->id)->where('product_id',$prod_id)->first();
+        
+        if($dosTransUser !== null){
+            return true;
+        }
+
+        return false;
+    }
+
+    public function hasCurrentTransaction(){
+        $dosTransUser = DossierTransaction::where('user_id',$this->id)->where('status','current')->get();
+
+        if($dosTransUser){
+            return true;
+        }
+
+        return false;
+    }
+
 }

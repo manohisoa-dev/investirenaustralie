@@ -2,7 +2,7 @@
 
 @section('subcontent')
 
-<div class="col-lg-8 col-xl-9">
+
     @include('includes.alerts')
     <div class="profile-content-area m-40px-tb card card-body">
         <form action="{{route('profile.edit')}}" method="POST" enctype="multipart/form-data" id="form_profil">
@@ -397,7 +397,7 @@
             </div>
         </form>
     </div>
-</div>
+
 
 @push('script')
     <script src="{{ asset('/js/sweetalert2.js') }}"></script>

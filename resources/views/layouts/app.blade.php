@@ -269,7 +269,7 @@
                                 <ul class="px-dropdown-menu mm-dorp-in">
                                     <li><a href="{{url(\App\Models\User::find(Auth::id())->roleUser->role_initial)}}">@lang('app.dashboard')</a></li>
                                     <li><a href="@if(!Auth::user()->isAdmin() && !Auth::user()->isAdminBlog() && !Auth::user()->isAdminDelegate()) {{ route('profile') }} @else {{ Auth::user()->isAdmin() ? route('admin.profile') : route('admin.collaborator.admin.profile') }} @endif">@lang('app.profile')</a></li>
-                                    <li><a href="{{route('logout')}}">@lang('app.logout')</a></li>
+                                    <li><a href="{{route('logout')}}" id="btnLogout">@lang('app.logout')</a></li>
                                 </ul>
                             </li>
 
@@ -444,6 +444,25 @@
     </div>
     <!-- Fin modal -->
 
+    <!-- Modal of member has dossier transaction -->
+    @if(Auth::check() && Auth::user()->hasRole(5))
+        <div id="memberHasDossierTransactionModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content white-bg">
+                    <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
+                        <h4 class="modal-title white-color text-center">{{ strtoupper(trans('member.message.transaction.title')) }} </h4>
+                    </div>
+                    <div class="modal-body">
+                    {!! trans('member.message.transaction.content', ['name'=> Auth::user()->isPerson()?(Auth::user()->userinfos()->first()->last_name.' '.Auth::user()->userinfos()->first()->first_name):Auth::user()->userinfos()->first()->orga_name, 'url'=>url(Auth::user()->roleUser->role_initial), 'id'=>'btnDashboard' ]) !!}
+                    </div>
+                    <div class="modal-footer">
+                        <a type="button" class="m-btn m-btn-theme2nd" href="javascript:void(0)" data-dismiss="modal" id="btnOkNotifTrans">@lang('app.btn.ok')</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <!-- jquery -->
     <script src="{{ asset('js/jquery-3.0.0.min.js') }}"></script>
     <script src="{{ asset('js/jquery-migrate-3.0.0.min.js') }}"></script>
@@ -531,7 +550,27 @@
     <script type="text/javascript">
         $(function () {
             $('[data-toggle="tooltip"]').tooltip();
+
+            // Show notification current transaction member
+            if('{{ Auth::check() && Auth::user()->hasCurrentTransaction() }}' && !sessionStorage.getItem('notif_trans_member')){
+                $('#memberHasDossierTransactionModal').modal('show');
+            }
         });
+
+        $('#btnOkNotifTrans').click(function(){
+            // 1: notificaiton seen
+            return sessionStorage.setItem('notif_trans_member', 1);
+        })
+
+        $('#btnDashboard').click(function(){
+            // 1: notificaiton seen
+            return sessionStorage.setItem('notif_trans_member', 1);
+        })
+        
+        $('#btnLogout').click(function(){
+            // clear all session js
+            return sessionStorage.clear();
+        })
 
         $('#apl_list').on('click','.country_apl_item',function(){
             var val = $(this).attr('value');

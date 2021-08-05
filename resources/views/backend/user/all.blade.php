@@ -1,7 +1,7 @@
 @extends('layouts.backend')
 
 @section('subcontent')
-<div class="col-lg-8 col-xl-9">
+
     <div class="profile-content-area m-40px-tb card card-body">
         <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
             <h5>{{$title}}</h5>
@@ -20,6 +20,6 @@
             </div>
         </div>
     </div>
-</div>
+
 @endsection
 

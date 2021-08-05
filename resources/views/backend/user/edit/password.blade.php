@@ -1,7 +1,7 @@
 @extends('layouts.backend')
 
 @section('subcontent')
-<div class="col-lg-8 col-xl-9">
+
     @include('includes.alerts')
 
     {!! Auth::user()->use_default_password != 0 ? '<div class="alert alert-info alert-dismissible fade show col-lg-12 m-40px-t" role="alert">
@@ -46,6 +46,6 @@
             </div>
         </div>
     </div>
-</div>
+
 @endsection
 

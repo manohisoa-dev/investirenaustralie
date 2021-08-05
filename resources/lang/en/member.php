@@ -13,21 +13,17 @@ return [
     "pay_order" => "Pay the order",
     "pay_now" => "Pay now",
     "goto_payment" => "Proceed to payment",
-    
     "orders" => "Products Pending Purchase",
     "purchases" => "Previous Purchases",
-    
     "contact_admin" => "Contact ADMIN",
     "contact_apl"   => "Contact APL",
     "contact_afa"   => "Contact AFA",
     "select.apl"    => "Choose an APL",
     "choose"        => "Choose",
     "select"        => "Select",
-    
     "info"         => "Information",
     "info_has_apl" => "You are already in an exclusive relationship with an APL.",
     "info_no_apl"  => "You have 180 days to be in contact with an APL.",
-    
     "accept_term_and_condition_apl"  => "Accept the terms and conditions",
     "accept_term_and_condition_afa"  => "Accept the terms and conditions",
     "select_afa"  => "If you click on the &ldquo;Select&rdquo; button it will select definitely this particular AFA for any subsequent interaction regarding a program.",
@@ -41,4 +37,6 @@ return [
     "historique_relation" => "Relationship histories",
     "gothere.select_afa" => "You will first have to go through the selection phase of an AFA",
     "btn.select_afa" => "Select AFA",
+    "message.transaction.title" => "Transaction reminder message to member",
+    "message.transaction.content" => "<p>Hello <b>:name</b>,</p> <p>We remember that you have a transaction in progress, opened in your account.</p> <p>You can access it in your &ldquo;<a href=:url id=:id>Dashboard</a>&rdquo; control panel.</p>",
 ];
