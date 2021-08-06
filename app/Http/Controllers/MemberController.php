@@ -468,7 +468,13 @@ class MemberController extends Controller {
         $postCode = $product->location()->first()->postalCode;
 
         // $afas = User::ofRole(3)->isActive()->has('location')->with('location')->get();
-        $afas = User::ofRole(3)->isActive()->has('location')->hasPostalCode($postCode)->get(['users.*']);
+        // if product is deposed with AFA (SBA)
+        if($product->seller()->first() !== null){
+            // $afas = User::ofRole(3)->isActive()->has('location')->where('id',$product->seller_id)->get();
+            $afas = $product->seller()->get();
+        }else{
+            $afas = User::ofRole(3)->isActive()->has('location')->hasPostalCode($postCode)->get(['users.*']);
+        }
 
         $userApl = Auth::user()->apl;
 

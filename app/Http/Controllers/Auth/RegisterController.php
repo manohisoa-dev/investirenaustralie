@@ -679,6 +679,11 @@ class RegisterController extends Controller
             // generate immatriculation user
             $datas['immat'] = $this->generateImmat($role,$type);
 
+            // Set User is seller
+            if($role === 'seller'){
+                $datas['is_seller'] = 1;
+            }
+
             unset($datas['type']);
             $user = User::create($datas);
             $datas['user_id'] = $user->id;
