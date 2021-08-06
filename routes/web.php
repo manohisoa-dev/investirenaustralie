@@ -160,7 +160,7 @@ Route::middleware(["auth", "role:5"])->group(function(){
         // Route::get('go-there/{slug?}', 'MemberController@goThere')->name('member.go.there');
         Route::get('go-there/{product}', 'MemberController@goThere')->name('member.go.there');
         Route::get('send-courriel', 'MemberController@sendCourriel')->name('member.send.courriel');
-        Route::get('buy-this-product/{prod?}', 'MemberController@buyThisProduct')->name('member.buy.product');
+        Route::get('buy-this-product/{product?}', 'MemberController@buyThisProduct')->name('member.buy.product');
 
         Route::get('/', 'BackendController@dashboard');
         Route::get('favorites', 'BackendController@favorites');

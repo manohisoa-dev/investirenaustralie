@@ -286,7 +286,7 @@
   <div class="modal-dialog modal-lg">
       <div class="modal-content white-bg">
           <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
-              <h4 class="modal-title white-color">@lang('app.txt.engagement')</h4>
+              <h4 class="modal-title white-color">@lang('app.message')</h4>
           </div>
           <div class="modal-body">
             {!! Session()->get('engagement') !!}
@@ -323,11 +323,8 @@
             @endif
           </div>
           <div class="modal-footer">
-            @if (!Session::has('mail_send'))
+            @if (!Session::has('waiting'))
               <a type="button" class="pull-left m-btn m-btn-theme" id="btn_cancel" href="javascript:void(0)" data-dismiss="modal">@lang('app.btn.abandonner')</a>
-              @if(Session()->get('hasAfa')!==0)
-                <a type="button" class="m-btn m-btn-theme2nd" id="btn_continue" >@lang('app.btn.continuer')</a>  
-              @endif
             @else
               <a type="button" class="m-btn m-btn-theme2nd" href="javascript:void(0)" data-dismiss="modal" id="btn_continue">@lang('app.btn.ok')</a>
             @endif
@@ -500,7 +497,7 @@
           }
         }
       }else{
-        location.href="{{route('member.buy.product', $item->slug)}}";
+        location.href="{{route('member.buy.product', $item)}}";
       }
        
     });

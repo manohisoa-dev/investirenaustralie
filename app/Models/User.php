@@ -920,4 +920,8 @@ class User extends Authenticatable {
         return false;
     }
 
+    public function afaHasSendCa(){
+        return false;
+    }
+
 }

@@ -28,11 +28,11 @@ return [
     "accept_term_and_condition_afa"  => "Accept the terms and conditions",
     "select_afa"  => "If you click on the &ldquo;Select&rdquo; button it will select definitely this particular AFA for any subsequent interaction regarding a program.",
     "member_identity"  => "Member Identity",
-    "public_organization" => 'Public organization',
-    "private_entreprise" => 'Private entreprise',
-    "mixed_organization" => 'Mixed organization',
-    "menu_temoignage" => 'Testimonial',
-    "menu_relation_apl" => 'APL relationship',
+    "public_organization" => "Public organization",
+    "private_entreprise" => "Private entreprise",
+    "mixed_organization" => "Mixed organization",
+    "menu_temoignage" => "Testimonial",
+    "menu_relation_apl" => "APL relationship",
     "relation_active" => "Active APL relationship",
     "historique_relation" => "Relationship histories",
     "gothere.select_afa" => "You will first have to go through the selection phase of an AFA",
@@ -60,4 +60,9 @@ return [
     "gothere.select_afa.checkbox.2" => "I undertake and oblige myself to irrevocably and exclusively grant to the Francophone Australienne Agency that I will select a search mandate for goods and the conduct until the end of the procedure of the possible acquisition transaction which would result from it.",
     "gothere.select_afa.checkbox.3" => "I commit and oblige myself imperatively and formally, after having contacted the selected AFA and that this one has accompanied me in my visits on the spot, if I wish to concretize the purchase of a good which me. will have been presented by the AFA, come back to the IEA portal and click on the &ldquo;I would like to buy this property&rdquo; button. to start the purchase process.",
     "gothere.select_afa.checkbox.4" => "I understand, consent and formally oblige myself, in the event of an effective transaction concerning a property presented by the selected AFA, but concluded through a third-party Australian real estate agency, to be paid to the managing company of the IEA portal , in compensation for the damage suffered, compensation corresponding to the amount of the agency commission that should have been received by the AFA, any dispute on this point falling within the jurisdiction of the jurisdiction of the headquarters of the company managing the IEA portal.",
+    "gothere.select_afa.waiting_message" => ":date – :hour<hr> <p>Hello <b>:name</b>,</p> <p>Thank you for choosing the agency &ldquo;:afa&rdquo;.</p>
+    <p>When you make your trip to Australia this French-speaking Australian Agency will pilot you on site and show you the property that interests you or others that are published on the IEA portal.
+    The AFA will even be able to make you visit possibly projects or goods which would not yet appear on the portal.</p><p>We will get back to you as soon as we have received confirmation from the AFA.
+    You will then receive a message via the portal&rsquo;s messaging system which will provide you with instructions and a link to download the official Australian standard form granting a search warrant to the AFA.
+    After you have completed, dated, signed and scanned this official form, you will need to resend it by following the instructions given to you in the message. </p> <p> In the meantime,</p><p>Best regards </p> <p> Investing in Australia</p>",    
 ];
