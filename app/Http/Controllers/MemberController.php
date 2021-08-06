@@ -23,6 +23,7 @@ use App\Models\Parameter;
 use App\Models\DossierTransaction;
 use App\Models\Product;
 use Session;
+use Carbon\Carbon;
 
 class MemberController extends Controller {
     /**
@@ -450,12 +451,12 @@ class MemberController extends Controller {
      * @param  \App\Models\Localisation
      * @return \Illuminate\Http\Response
      */
-    public function selectAfa(Request $request,$prod=null) {
+    public function selectAfa(Request $request,Product $product) {
         $this->middleware('auth');
         $this->middleware('role:5');
 
-        if($prod){
-            $prodUrl = url('product/'.$prod);
+        if($product){
+            $prodUrl = url('product/'.$product->slug);
             session()->put('link_product',$prodUrl);
         }
 
@@ -464,8 +465,10 @@ class MemberController extends Controller {
             $distance = 100;
 
         $data = [];
+        $postCode = $product->location()->first()->postalCode;
 
-        $afas = User::ofRole(3)->isActive()->has('location')->with('location')->get();
+        // $afas = User::ofRole(3)->isActive()->has('location')->with('location')->get();
+        $afas = User::ofRole(3)->isActive()->has('location')->hasPostalCode($postCode)->get(['users.*']);
 
         $userApl = Auth::user()->apl;
 
@@ -593,6 +596,10 @@ class MemberController extends Controller {
         if($product){
             $prod_id = $product->id;
             $prodUrl = url('product/'.$product->slug);
+            $dt = Carbon::now();
+            $dtDate = $dt->format('m-d-Y');
+            $dtTime = $dt->format('H:i:m');
+            $user= Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name;
 
             if(!Auth::user()->isCheckedDossierTransaction($prod_id)){
                 $this->creationDossierTransaction($product);
@@ -602,7 +609,7 @@ class MemberController extends Controller {
                 return redirect($prodUrl)->with('engagement', trans('afa.condition_deplacement_afa', ['afa' =>
                     Auth::user() ? Auth::user()->afa->name : '']));
             } else {
-                return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa'))->with('hasAfa',0);
+                return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa', ['date'=>$dtDate, 'hour'=>$dtTime, 'name'=>$user]))->with('hasAfa',0);
             }
         }
 

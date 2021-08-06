@@ -1368,4 +1368,5 @@ return
     'txt.dasboard_nb_prd_inscrit_jour' => 'Total des produits crées ce jour',
     'txt.dasboard_nb_prd_inscrit_mois' => 'Total des produits crées ce mois',
     'txt.dasboard_nb_prd_inscrit_annee' => 'Total des produits crées cette année',
+    'txt.cordial_greetings' => 'Cordiales salutations',
 ];

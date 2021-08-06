@@ -39,4 +39,25 @@ return [
     "btn.select_afa" => "Select AFA",
     "message.transaction.title" => "Transaction reminder message to member",
     "message.transaction.content" => "<p>Hello <b>:name</b>,</p> <p>We remember that you have a transaction in progress, opened in your account.</p> <p>You can access it in your &ldquo;<a href=:url id=:id>Dashboard</a>&rdquo; control panel.</p>",
+    
+    "gothere.select_afa" => ":date – :hour<hr> <p>Hello <b>:name</b>,</p> <p>You are interested in a property presented on the &ldquo;Investing In Australia&rdquo; (IEA) portal and you want to go to Australia to get a better idea of ​​the consistency of the property and its environment.</p>
+    <p>This initiates a process which will perhaps lead you to an effective investment, and is therefore an important decision on your part that we welcome.</p>
+    <p>You should know that you can revisit your investment decision at any time throughout the procedure piloted by the IEA portal. However, we invite you to ask yourself questions about the conditions under which you will commit.
+    You will be particularly useful in this reflection by browsing the various articles of the blog.</p>
+    <p>We would like to stress right now that the Australian real estate market is extremely dynamic and volatile. We strongly recommend that when your decision to purchase is firmly made,
+    in order not to experience any disappointments, to pay the greatest attention to the instructions sent to you via the portal and to follow the procedures and produce the documents requested with promptness, precision and diligence. </p>
+    <p> The IEA system is on hand to facilitate this process. When you make this trip, an Australian Francophone Agency (AFA) will pilot you on site and show you the property that interests you or others that are published on the IEA portal.
+    The AFA will even be able to make you visit possibly projects or goods which would not yet appear on the portal.</p>
+    <p>It is therefore necessary to select an AFA in the city where you wish to carry out your investment project. We therefore invite you, before continuing the travel procedure in Australia, to follow the link below to select an AFA in the city that interests you. </p>
+    <p> Before selecting an AFA you must commit below, for the safety of future procedures, to:<br/>
+    - follow the rules and procedures of the &ldquo;Invest In Australia&rdquo; portal <br/>
+    - irrevocably and exclusively grant the selected AFA a mandate to search for property and to carry out the procedure for any resulting transaction to its conclusion; <br/>
+    - after having made contact with the selected AFA and that this one accompanied you in Australia in visits of goods on the spot, if you wish to concretize the purchase of a good, you must imperatively and formally return on the portal IEA and click on the &ldquo;I would like to buy this property&rdquo; button. to start the purchase process; <br/>
+    - approve the clause requiring you, in the event of an effective transaction concerning a property presented by the selected AFA, but concluded through a third-party Australian real estate agency, to have to pay to the managing company of the IEA portal, in repair of the damage suffered, compensation corresponding to the amount of the agency commission that should have been received by the AFA,
+    any dispute on this point falling within the jurisdiction of the jurisdiction of the headquarters of the company managing the IEA portal.
+    </p>",
+    "gothere.select_afa.checkbox.1" => "I agree to abide by the rules and procedures of the &ldquo;Invest In Australia&rdquo; portal.",
+    "gothere.select_afa.checkbox.2" => "I undertake and oblige myself to irrevocably and exclusively grant to the Francophone Australienne Agency that I will select a search mandate for goods and the conduct until the end of the procedure of the possible acquisition transaction which would result from it.",
+    "gothere.select_afa.checkbox.3" => "I commit and oblige myself imperatively and formally, after having contacted the selected AFA and that this one has accompanied me in my visits on the spot, if I wish to concretize the purchase of a good which me. will have been presented by the AFA, come back to the IEA portal and click on the &ldquo;I would like to buy this property&rdquo; button. to start the purchase process.",
+    "gothere.select_afa.checkbox.4" => "I understand, consent and formally oblige myself, in the event of an effective transaction concerning a property presented by the selected AFA, but concluded through a third-party Australian real estate agency, to be paid to the managing company of the IEA portal , in compensation for the damage suffered, compensation corresponding to the amount of the agency commission that should have been received by the AFA, any dispute on this point falling within the jurisdiction of the jurisdiction of the headquarters of the company managing the IEA portal.",
 ];

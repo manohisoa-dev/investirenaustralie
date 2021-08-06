@@ -153,7 +153,7 @@ Route::middleware(["auth", "role:5"])->group(function(){
         Route::get('select-apl', 'MemberController@selectApl')->name('member.select.apl');
         Route::post('select-apl', 'MemberController@updateApl');
 
-        Route::get('select-afa/{prod?}', 'MemberController@selectAfa')->name('member.select.afa');
+        Route::get('select-afa/{product?}', 'MemberController@selectAfa')->name('member.select.afa');
         Route::get('contact-afa', 'MemberController@contactAfa')->name('member.contact.afa');
         Route::post('select-afa', 'MemberController@updateAfa');
         // Route::get('go-there/{slug?}', 'MemberController@goThere')->name('member.go.there');

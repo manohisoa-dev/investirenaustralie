@@ -654,6 +654,11 @@
             },1000);
             $(this).attr('hidden','true');
         });
+
+        function loadingPage(){
+            $('#loading').css('background','rgba(174,68,53, 0.5)');
+            $('#loading').show();
+        }
     </script>
 
     <script type="text/javascript">
