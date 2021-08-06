@@ -16,11 +16,15 @@
                 <span class="m-r-sm text-muted welcome-message">@lang('app.txt.head_welcome_admin') | e-marketplace.</span>
             </li>
             <li class="dropdown">
-                <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+			@php
+				$id_user = Auth::user()->id;
+				$nb_new_email = \App\Models\MailUser::where('user_id', '=', $id_user)->count();
+			@endphp
+                <a class="dropdown-toggle count-info" href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.mail.list',['filter'=>'inbox']):route('admin.mail.list',['filter'=>'inbox'])}}">
                     <i class="fa fa-envelope"></i>  
-					<span class="label label-warning">8</span>
+					<span class="label label-warning">{{$nb_new_email}}</span>
                 </a>
-
+				{{--
                 <ul class="dropdown-menu dropdown-alerts">
                     <li>
                         <a href="mailbox.html" class="dropdown-item">
@@ -58,21 +62,31 @@
                         </div>
                     </li>
                 </ul>
+				--}}
             </li>
             <li class="dropdown">
+				@php
+					$messages = \App\Models\Message::where("to_id", Auth::user()->id)
+					->join('users', 'users.id','=','messages.from_id')
+					->select('messages.*', 'messages.created_at as dt' , 'users.name', 'users.immat', 'users.id as user_id', 'users.role')
+					->orderBy('created_at' , 'ASC')
+					->groupBy('from_id')
+					->get();
+				@endphp
                 <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                    <i class="fa fa-bell"></i>  <span class="label label-primary">{{\App\Models\Mail::inboxcount(Auth::user()->id)}}</span>
+                    <i class="fa fa-bell"></i>  
+					<span class="label label-primary">{{count($messages)}}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-messages dropdown-menu-right">
-                    @foreach(\App\Models\Mail::inboxlist(Auth::user()->id) as $mail)
+                    @foreach($messages as $msg)
                         <li>
                             <div class="dropdown-messages-box">
-                                <a class="dropdown-item float-left" href="{{route('admin.mail.index')}}/{{$mail->id}}">
-                                    <img alt="image" class="rounded-circle" src="{{$mail->sender->imageUrl()}}">
+                                <a class="dropdown-item float-left" href="javascript:void(0)" onclick="userChatBull('{{$msg->user_id}}','{{$msg->immat}}')">
+                                    <img alt="image" class="rounded-circle" src="{{asset("images/iea.png")}}">
                                 </a>
                                 <div class="media-body">
-                                    {!! trans('app.txt.you_have_received_message_from', ['user'=>$mail->sender->name]) !!} <br>
-                                    <small class="text-muted">{{ $mail->created_at ? $mail->created_at->diffForHumans() : '' }}</small>
+                                    {!! trans('app.txt.you_have_received_message_from', ['user'=>$msg->name]) !!} <br>
+                                    <small class="text-muted">{{ $msg->created_at ? $msg->created_at->diffForHumans() : '' }}</small>
                                 </div>
                             </div>
                         </li>

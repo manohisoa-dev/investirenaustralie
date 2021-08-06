@@ -8,6 +8,7 @@ use Validator;
 
 use App\Models\User;
 use App\Models\Mail;
+use App\Models\MailUser;
 use App\Notifications\NewMail;
 use App\Models\Localisation;
 use App\Models\Role;
@@ -60,7 +61,6 @@ class MailController extends Controller {
             }
             return back()->with('success', trans('app.txt.message_sent'));
         }
-
         $locale = \App::getLocale();
         $content = \App\Models\Config::login()->get_meta_array('content', $locale);
         $address = \App\Models\Config::login()->get_meta_array('address', $locale);
@@ -243,13 +243,39 @@ class MailController extends Controller {
     public function saveNewsletter(Request $request) {
         //$validator = $this->validate($request, Newsletter::validationRules());
         $datas = $request->all();
-        $validator = Validator::make($datas, ['email_adresse' => 'required|unique:newsletters|string|max:255|email']);
+        $validator = Validator::make($datas, ['email_adresse' =>
+            'required|unique:newsletters|string|max:255|email']);
         if ($validator->fails()) {
-            return response()->json(['reponse'=> $request->email_adresse.' est déjà enregistré']);
-        }else{
+            return response()->json(['reponse' => $request->email_adresse .
+                ' est déjà enregistré']);
+        } else {
             Newsletter::create($request->all());
             return response()->json(['reponse' => 'OK']);
-        }        
+        }
+    }
+
+    public function ajaxSendEmail(Request $request) {
+        //save email
+        $item = new Mail();
+        $item->subject = $request->subject;
+        $item->content = $request->content;
+        $item->sender_id = $request->sender_id;
+        $item->status = 'send';
+        $item->save();
+
+        //save email user
+        $mailItem = new MailUser();
+        $mailItem->mail_id = $item->id;
+        $mailItem->user_id = 1;
+        $mailItem->is_sent = 1;
+        $mailItem->read = 0;
+        $mailItem->save();
+        
+        //envoyer un email
+        $email_send = $request->sender_email;
+        $receiverAddress = 'dev4.easydata@gmail.com';
+        //Mail::to($email_send)->send(new MailTemplate($request->content, $request->subject));
+        return response()->json(['success' => 'true']);
     }
 
 
