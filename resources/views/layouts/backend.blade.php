@@ -567,10 +567,16 @@
                                         <i class="fas fa-chevron-right"></i>
                                     </div>
                                 </a>
-                                <a href="{{route('member.dossier')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb align-items-center {{ (request()->is('member/dossier')) ? 'menu-active' : '' }}">
+                                <a href="{{route('member.dossier')}}" class="{{ Auth::user()->hasCurrentTransaction()?'theme2nd-bg-alt':'' }} list-group-item list-group-item-action d-flex justify-content-between p15px-tb align-items-center {{ (request()->is('member/dossier')) ? 'menu-active' : '' }}">
                                     <div>
                                         <i class="fa fa-folder m-10px-r"></i>
-                                        <span>@lang('app.txt.file')</span>
+                                        @if(Auth::user()->hasCurrentTransaction())
+                                            <b>
+                                        @endif
+                                            <span class="{{ Auth::user()->hasCurrentTransaction()?'theme2nd-color':'' }}">@lang('app.txt.file')</span>
+                                        @if(Auth::user()->hasCurrentTransaction())
+                                            </b>
+                                        @endif
                                     </div>
                                     <div>
                                         <i class="fas fa-chevron-right"></i>
@@ -832,7 +838,7 @@
                                         $rl = 'apl';
                                     @endphp
                                 @endif
-                                <a href="{{route($rl.'.show.message', ['role'=>$rl])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is(\App\Models\User::find(Auth::id())->roleUser->role_initial.'/mails/inbox')) ? 'menu-active' : '' }}">
+                                <a href="{{route($rl.'.show.message', ['role'=>$rl])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is(\App\Models\User::find(Auth::id())->roleUser->role_initial.'/message/*')) ? 'menu-active' : '' }}">
                                     <div>
                                         <i class="far fa-comments m-10px-r"></i>
                                         <span>@lang('app.chats')</span>

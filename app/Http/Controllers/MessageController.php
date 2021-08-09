@@ -115,6 +115,10 @@ class MessageController extends Controller
                             ->orderBy('created_at', 'ASC')
                             ->get();
 
+        if(Auth::user()->hasRole(3)){
+            $hasSendCa = Auth::user()->afaHasSendCa()?1:0; // 0: CA not send  1:CA send 
+        }
+
         $data = [];
         foreach($messages as $message){
             $data[] = [
@@ -127,6 +131,7 @@ class MessageController extends Controller
                 'created_at' => $message->created_at,
                 'created_at_send' => $message->created_at->diffForHumans(),
                 'seen' => $message->seen? trans('app.txt.read') : trans('app.txt.unread'),
+                'hasSendCa' => $hasSendCa,
             ];
         }
 

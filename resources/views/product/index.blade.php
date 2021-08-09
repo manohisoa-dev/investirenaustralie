@@ -283,22 +283,48 @@
 
 <!-- Modal for member and afa engagement -->
 <div id="engagementModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
       <div class="modal-content white-bg">
           <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
-              <h4 class="modal-title white-color">@lang('app.txt.engagement')</h4>
+              <h4 class="modal-title white-color">@lang('app.message')</h4>
           </div>
           <div class="modal-body">
             {!! Session()->get('engagement') !!}
+
+            @if(Session()->get('hasAfa')===0)  
+              <hr>
+              <div>
+                  <div class="form-group m-25px-t m-50px-b">
+                      <div class="custom-control custom-checkbox m-10px-b">
+                          <input type="checkbox" class="custom-control-input" name="condition[]" id="checkbox-1" required>
+                          <label class="custom-control-label" for="checkbox-1"><b>@lang('member.gothere.select_afa.checkbox.1') *</b></label>
+                      </div>
+                      <div class="custom-control custom-checkbox m-10px-b">
+                          <input type="checkbox" class="custom-control-input" name="condition[]" id="checkbox-2" required>
+                          <label class="custom-control-label" for="checkbox-2"><b>@lang('member.gothere.select_afa.checkbox.2') *</b></label>
+                      </div>
+                      <div class="custom-control custom-checkbox m-10px-b">
+                        <input type="checkbox" class="custom-control-input" name="condition[]" id="checkbox-3" required>
+                        <label class="custom-control-label" for="checkbox-3"><b>@lang('member.gothere.select_afa.checkbox.3') *</b></label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" name="condition[]" id="checkbox-4" required>
+                      <label class="custom-control-label" for="checkbox-4"><b>@lang('member.gothere.select_afa.checkbox.4') *</b></label>
+                  </div>
+                  </div>
+              </div>
+              <div class="m-25px-b">
+                <a type="button" id="btnSelectAfa" class="m-btn m-btn-theme2nd col-md-12" disabled href="{{ route("member.select.afa", $item) }}" >{{ strtoupper(trans('app.select_afa')) }}</a>
+              </div>
+              <div>
+                  <p>@lang('app.txt.cordial_greetings')</p>
+                  <p>@lang('app.app_name')</p>
+              </div>
+            @endif
           </div>
           <div class="modal-footer">
-            @if (!Session::has('mail_send'))
+            @if (!Session::has('waiting'))
               <a type="button" class="pull-left m-btn m-btn-theme" id="btn_cancel" href="javascript:void(0)" data-dismiss="modal">@lang('app.btn.abandonner')</a>
-              @if(Session()->get('hasAfa')!==0)
-                <a type="button" class="m-btn m-btn-theme2nd" id="btn_continue" >@lang('app.btn.continuer')</a>  
-              @else
-                <a type="button" class="m-btn m-btn-theme2nd"  href="{{ route("member.select.afa", $item->slug) }}" >@lang('member.btn.select_afa')</a>
-              @endif
             @else
               <a type="button" class="m-btn m-btn-theme2nd" href="javascript:void(0)" data-dismiss="modal" id="btn_continue">@lang('app.btn.ok')</a>
             @endif
@@ -471,9 +497,43 @@
           }
         }
       }else{
-        location.href="{{route('member.buy.product', $item->slug)}}";
+        location.href="{{route('member.buy.product', $item)}}";
       }
        
     });
+  </script>
+  <script>
+    // Script verification checked condition befor afa selection
+    $('#checkbox-1').click(function(){
+      verifyCheckboxCondition();
+    });
+
+    $('#checkbox-2').click(function(){
+      verifyCheckboxCondition();
+    });
+
+    $('#checkbox-3').click(function(){
+      verifyCheckboxCondition();
+    });
+
+    $('#checkbox-4').click(function(){
+      verifyCheckboxCondition();
+    });
+
+    $('#btn_go_there').click(function(){
+      loadingPage();
+    });
+
+    function verifyCheckboxCondition(){
+      var checkCondition = $('[name="condition[]"]:checked');
+
+      if(checkCondition.length === 4){
+        $('#btnSelectAfa').removeAttr('disabled');
+      }else{
+        $('#btnSelectAfa').attr('disabled','disabled');
+      }
+
+      return false;
+    }
   </script>
 @endpush

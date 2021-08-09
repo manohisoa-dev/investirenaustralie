@@ -203,6 +203,20 @@
                                     var createdAtSend = dt[i].created_at_send;
                                     var message = dt[i].body;
                                     var seen = dt[i].seen;
+                                    var hasSendCa = dt[i].hasSendCa;
+                                    var identity = "";
+                                    var msg = $.parseHTML(message);
+                                    var msges = "";
+
+                                    // Parse message data to html
+                                    for(var j=0;j<msg.length;j++){
+                                        msges += msg[j]['data'];
+                                    }
+
+                                    if(hasSendCa===0)
+                                       identity = fromImmat; 
+                                    else 
+                                       identity = fromImmat+'<br/><small>'+fromName+'</small>';
 
 
                                     if(dt[i].from_id !== {{ Auth::user()->id }}){
@@ -213,11 +227,11 @@
                                                 '</span>'+
                                                 '<div class="chat-body clearfix">'+
                                                     '<div class="header">'+
-                                                        '<strong class="primary-font">'+fromImmat+'</strong> <small class="pull-right text-muted">'+
+                                                        '<strong class="primary-font">'+identity+'</strong> <small class="pull-right text-muted">'+
                                                         '<span class="glyphicon glyphicon-time"></span><i>'+createdAtSend+', '+seen+'</i></small>'+
                                                     '</div>'+
                                                     '<p class="pull-left p-10px-t">'+
-                                                        message +
+                                                        msges +
                                                     '</p>'+
                                                 '</div>'+
                                             '</li>';

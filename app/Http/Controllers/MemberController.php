@@ -10,6 +10,7 @@ use App\Notifications\NewMail;
 use App\Notifications\AplChanged;
 use App\Notifications\AfaChanged;
 use App\Notifications\AfaCourriel;
+use App\Notifications\AfaConjunctionAgreementMessage;
 
 use App\Models\Order;
 use App\Models\User;
@@ -23,6 +24,8 @@ use App\Models\Parameter;
 use App\Models\DossierTransaction;
 use App\Models\Product;
 use Session;
+use Carbon\Carbon;
+use App;
 
 class MemberController extends Controller {
     /**
@@ -450,12 +453,12 @@ class MemberController extends Controller {
      * @param  \App\Models\Localisation
      * @return \Illuminate\Http\Response
      */
-    public function selectAfa(Request $request,$prod=null) {
+    public function selectAfa(Request $request,Product $product) {
         $this->middleware('auth');
         $this->middleware('role:5');
 
-        if($prod){
-            $prodUrl = url('product/'.$prod);
+        if($product){
+            $prodUrl = url('product/'.$product->slug);
             session()->put('link_product',$prodUrl);
         }
 
@@ -464,8 +467,15 @@ class MemberController extends Controller {
             $distance = 100;
 
         $data = [];
+        $postCode = $product->location()->first()->postalCode;
 
-        $afas = User::ofRole(3)->isActive()->has('location')->with('location')->get();
+        // if product is deposed with AFA (SBA)
+        if($product->seller()->first() !== null){
+            // $afas = User::ofRole(3)->isActive()->has('location')->where('id',$product->seller_id)->get();
+            $afas = $product->seller()->get();
+        }else{
+            $afas = User::ofRole(3)->isActive()->has('location')->hasPostalCode($postCode)->get(['users.*']);
+        }
 
         $userApl = Auth::user()->apl;
 
@@ -506,6 +516,10 @@ class MemberController extends Controller {
         $this->middleware('role:5');
 
         $afa = null;
+        $dt = Carbon::now();
+        $dtDate = $dt->format('m-d-Y');
+        $dtTime = $dt->format('H:i:m');
+        $user= Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name;
 
         if ($request->has('afa')) {
             $afa = User::ofRole('3')->isActive()->where('id', '=', $request->afa)->first();
@@ -546,11 +560,23 @@ class MemberController extends Controller {
             $linkProduct = session()->get('link_product');
             session()->forget('link_product');
 
-            return redirect($linkProduct)->with('engagement', trans('afa.condition_deplacement_afa', ['afa' =>
-                Auth::user() ? Auth::user()->afa->name : '']));
+            // Declenche Conjuction Agreement Module
+            App::setLocale('en');
+            $this->sendConjuctionAgreementModule(Auth::user()->afa_id,Auth::user()->afa->email,trans('member.gothere.select_afa.ca.message_to_afa', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'immat'=>Auth::user()->immat,'agence' => 'IEA']));
+
+            return redirect($linkProduct)->with('engagement', trans('member.gothere.select_afa.waiting_message', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'afa' => Auth::user()->afa->name]))->with('waiting',1);
         }
 
         return back()->with('success', trans('app.txt.info_saved'));
+    }
+
+    // 
+    public function sendConjuctionAgreementModule($afa_id,$afa_mail,$content){
+        // send chat message to afa from IEA (admin)
+        Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$afa_id,'body'=>$content]);
+
+        // send notification email to afa from IEA
+        User::whereId($afa_id)->first()->notify(new AfaConjunctionAgreementMessage(Auth::user()));
     }
 
     /**
@@ -560,16 +586,20 @@ class MemberController extends Controller {
      * @param  \App\Models\Product
      * @return \Illuminate\Http\Response
      */
-    public function buyThisProduct(Request $request,$prod=null) {
+    public function buyThisProduct(Request $request,Product $product) {
         $this->middleware('auth');
         $this->middleware('role:5');
 
-        if($prod){
-            $prodUrl = url('product/'.$prod);
+        if($product){
+            $prod_id = $product->id;
+            $prodUrl = url('product/'.$product->slug);
+            $dt = Carbon::now();
+            $dtDate = $dt->format('m-d-Y');
+            $dtTime = $dt->format('H:i:m');
+            $user= Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name;
             
             if (Auth::user()->hasAfa()) {
-                return redirect($prodUrl)->with('engagement', trans('afa.condition_deplacement_afa', ['afa' =>
-                    Auth::user() ? Auth::user()->afa->name : '']));
+                return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa.waiting_message', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'afa' => Auth::user()->afa->name]))->with('waiting',1);
             } 
                 
             return redirect()->route('member.select.afa', $prod)->with('error', trans('app.txt.choose_an_afa'));
@@ -593,16 +623,19 @@ class MemberController extends Controller {
         if($product){
             $prod_id = $product->id;
             $prodUrl = url('product/'.$product->slug);
+            $dt = Carbon::now();
+            $dtDate = $dt->format('m-d-Y');
+            $dtTime = $dt->format('H:i:m');
+            $user= Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name;
 
             if(!Auth::user()->isCheckedDossierTransaction($prod_id)){
                 $this->creationDossierTransaction($product);
             }
 
             if (Auth::user()->hasAfa()) {
-                return redirect($prodUrl)->with('engagement', trans('afa.condition_deplacement_afa', ['afa' =>
-                    Auth::user() ? Auth::user()->afa->name : '']));
+                return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa.waiting_message', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'afa' => Auth::user()->afa->name]))->with('waiting',1);
             } else {
-                return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa'))->with('hasAfa',0);
+                return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa', ['date'=>$dtDate, 'hour'=>$dtTime, 'name'=>$user]))->with('hasAfa',0);
             }
         }
 

@@ -210,6 +210,17 @@ class User extends Authenticatable {
         return $query->where('status', 'active');
     }
 
+    /**
+     * Scope a query to only include users is active
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeHasPostalCode($query,$postal_code) {
+        
+        return $query->join('localizations','users.location_id','=','localizations.id')->where('localizations.postalCode',$postal_code);
+    }
+
     // /**
     //  * Scope a query to only include users is active
     //  *
@@ -906,6 +917,10 @@ class User extends Authenticatable {
             return true;
         }
 
+        return false;
+    }
+
+    public function afaHasSendCa(){
         return false;
     }
 
