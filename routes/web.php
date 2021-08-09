@@ -264,7 +264,7 @@ Route::prefix('seller')->middleware(["auth","role:2"])->group(function(){
     Route::get('pins', 'BackendController@pins');
     Route::get('searches', 'BackendController@searches');
 
-    Route::get('products', 'SellerController@products')->name('seller.products');
+    Route::get('products', 'SellerController@products')->name('seller.products');    
     Route::get('sales', 'SellerController@sales')->name('seller.sales');
     Route::get('orders', 'SellerController@orders')->name('seller.orders');
     Route::get('cartitem/{cartitem}', 'CartItemController@show')->name('seller.cartitem.show');
