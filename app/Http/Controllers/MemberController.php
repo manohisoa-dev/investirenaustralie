@@ -10,6 +10,7 @@ use App\Notifications\NewMail;
 use App\Notifications\AplChanged;
 use App\Notifications\AfaChanged;
 use App\Notifications\AfaCourriel;
+use App\Notifications\AfaConjunctionAgreementMessage;
 
 use App\Models\Order;
 use App\Models\User;
@@ -24,6 +25,7 @@ use App\Models\DossierTransaction;
 use App\Models\Product;
 use Session;
 use Carbon\Carbon;
+use App;
 
 class MemberController extends Controller {
     /**
@@ -558,10 +560,23 @@ class MemberController extends Controller {
             $linkProduct = session()->get('link_product');
             session()->forget('link_product');
 
-            return redirect($linkProduct)->with('engagement', trans('member.gothere.select_afa.waiting_message', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'afa' => Auth::user()->afa->name]));
+            // Declenche Conjuction Agreement Module
+            App::setLocale('en');
+            $this->sendConjuctionAgreementModule(Auth::user()->afa_id,Auth::user()->afa->email,trans('member.gothere.select_afa.ca.message_to_afa', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'immat'=>Auth::user()->immat,'agence' => 'IEA']));
+
+            return redirect($linkProduct)->with('engagement', trans('member.gothere.select_afa.waiting_message', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'afa' => Auth::user()->afa->name]))->with('waiting',1);
         }
 
         return back()->with('success', trans('app.txt.info_saved'));
+    }
+
+    // 
+    public function sendConjuctionAgreementModule($afa_id,$afa_mail,$content){
+        // send chat message to afa from IEA (admin)
+        Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$afa_id,'body'=>$content]);
+
+        // send notification email to afa from IEA
+        User::whereId($afa_id)->first()->notify(new AfaConjunctionAgreementMessage(Auth::user()));
     }
 
     /**
@@ -584,7 +599,7 @@ class MemberController extends Controller {
             $user= Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name;
             
             if (Auth::user()->hasAfa()) {
-                return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa.waiting_message', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'afa' => Auth::user()->afa->name]));
+                return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa.waiting_message', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'afa' => Auth::user()->afa->name]))->with('waiting',1);
             } 
                 
             return redirect()->route('member.select.afa', $prod)->with('error', trans('app.txt.choose_an_afa'));

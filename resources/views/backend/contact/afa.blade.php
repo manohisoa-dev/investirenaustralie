@@ -205,6 +205,13 @@
                                     var seen = dt[i].seen;
                                     var hasSendCa = dt[i].hasSendCa;
                                     var identity = "";
+                                    var msg = $.parseHTML(message);
+                                    var msges = "";
+
+                                    // Parse message data to html
+                                    for(var j=0;j<msg.length;j++){
+                                        msges += msg[j]['data'];
+                                    }
 
                                     if(hasSendCa===0)
                                        identity = fromImmat; 
@@ -224,7 +231,7 @@
                                                         '<span class="glyphicon glyphicon-time"></span><i>'+createdAtSend+', '+seen+'</i></small>'+
                                                     '</div>'+
                                                     '<p class="pull-left p-10px-t">'+
-                                                        message+
+                                                        msges +
                                                     '</p>'+
                                                 '</div>'+
                                             '</li>';
