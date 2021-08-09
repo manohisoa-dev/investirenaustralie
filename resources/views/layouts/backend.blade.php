@@ -778,7 +778,7 @@
 										</a>
 									</li>
 								</ul> 
-                              <a href="{{route('seller.products')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('seller/products')) ? 'menu-active' : '' }}">
+                              {{--<a href="{{route('seller.products')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('seller/products')) ? 'menu-active' : '' }}">
                                   <div>
                                       <i class="fa fa-paperclip m-10px-r"></i>
                                       <span>@lang('seller.products')</span>
@@ -786,7 +786,7 @@
                                   <div>
                                       <i class="fas fa-chevron-right"></i>
                                   </div>
-                              </a>
+                              </a>--}}
                               <a href="{{route('seller.orders')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('seller/orders')) ? 'menu-active' : '' }}">
                                   <div>
                                       <i class="fa fa-cart-plus m-10px-r"></i>
