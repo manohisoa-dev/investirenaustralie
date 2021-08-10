@@ -26,6 +26,7 @@ use App\Models\Product;
 use Session;
 use Carbon\Carbon;
 use App;
+use PDF;
 
 class MemberController extends Controller {
     /**
@@ -503,7 +504,6 @@ class MemberController extends Controller {
             json_encode($data));
     }
 
-
     /**
      * Update AFA
      *
@@ -570,13 +570,24 @@ class MemberController extends Controller {
         return back()->with('success', trans('app.txt.info_saved'));
     }
 
-    // 
+    // Declanche Conjunction Agreement (CA)
     public function sendConjuctionAgreementModule($afa_id,$afa_mail,$content){
+        // Create CA pdf
+        $this->createCaPdf();
+        
         // send chat message to afa from IEA (admin)
         Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$afa_id,'body'=>$content]);
 
         // send notification email to afa from IEA
         User::whereId($afa_id)->first()->notify(new AfaConjunctionAgreementMessage(Auth::user()));
+    }
+
+    public function createCaPdf() {
+        $pdf_file = 'pdf.conjunction_agreement';
+        $user = Auth::user();
+        $iea = ['name'=>'IEA', 'abn'=>'XXXXXXXXXXX', 'license'=>'XXXXXXXXXX', 'licence_expire_date'=>'12/12/2022', 'address'=>'Australie', 'mobile'=>'+ 255 66 999 69', 'email'=>'admin@investirenaustralie.com', 'director'=>'Philippe', 'director_license'=>'XXXXXXXXXXXXXXXXX', 'directore_licence_expire_date'=>'12/12/2022'];
+        $pdfName = 'CA-'.$user->afa->immat;
+        return PDF::loadView($pdf_file,['user'=>$user, 'iea'=>$iea])->save('uploads/pdf/ca/'.$pdfName.'.pdf');
     }
 
     /**

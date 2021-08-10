@@ -303,5 +303,9 @@ Route::get('checkout', array('as' => 'paypal.paypalwithpayments','uses' => 'Payp
 Route::post('paypal', array('as' => 'paypal.paypal','uses' => 'Paypal@postPaymentWithpaypal',));
 Route::get('paypal', array('as' => 'payment.status','uses' => 'Paypal@getPaymentStatus',));
 
+Route::get('testCaPdf', 'MemberController@createTemplateCaPdf');
+
+
+
 
 
