@@ -1128,4 +1128,6 @@ return
     'txt.dasboard_nb_prd_inscrit_mois' => 'Total products created this month',
     'txt.dasboard_nb_prd_inscrit_annee' => 'Total products created this year',
 	'txt.cordial_greetings' => 'Cordial greetings',
+    'txt.eoi_dossier' => 'Choose one or more photos for the expression of interest',
+    'table.eoi_dossier' => 'Expression Of Interest',
 ];

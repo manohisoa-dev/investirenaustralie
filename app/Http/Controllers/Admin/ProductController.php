@@ -16,6 +16,7 @@ use App\Models\Localisation;
 use App\Models\Type;
 use App\Models\ProductsImage;
 use App\Models\FondsDossier;
+use App\Models\EoiDossier;
 use Auth;
 use App;
 use Carbon\Carbon;
@@ -108,6 +109,11 @@ class ProductController extends Controller {
                     $this->save_photo_programme($value, $id_programme, $is_principal);
                 }
             }
+            if ($request->eoiDossier) {
+                foreach ($request->eoiDossier as $key => $value) {
+                    $this->save_eoi_dossier($value, $id_programme);
+                }
+            }
             if ($request->fondDossier) {
                 foreach ($request->fondDossier as $key => $value) {
                     $this->save_fond_dossier($value, $id_programme);
@@ -153,6 +159,12 @@ class ProductController extends Controller {
                                     $is_principal = 0;
                                 }
                                 $this->save_photo_programme($value, $id_programme, $is_principal);
+                            }
+                        }
+
+                        if ($request->eoiDossier) {
+                            foreach ($request->eoiDossier as $key => $value) {
+                                $this->save_eoi_dossier($value, $id_programme);
                             }
                         }
 
@@ -206,14 +218,20 @@ class ProductController extends Controller {
                     } else {
                         $taux_commision_prd = $request->rate_commission_product;
                     }
-                    $this->save_new_produit($anciennete, $nature, $request->title_product, $request->file
-                        ('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
+                    $id_produit = $this->save_new_produit($anciennete, $nature, $request->title_product,
+                        $request->file('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
                         $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
                         $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
                         $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
                         $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                         -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine, $request->commision_product,
                         $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison);
+
+                    if ($request->p_eoiDossier) {
+                        foreach ($request->p_eoiDossier as $key => $value) {
+                            $this->save_eoi_dossier($value, $id_produit);
+                        }
+                    }
                 }
             } else {
                 //si ancienneté == ancien
@@ -362,6 +380,8 @@ class ProductController extends Controller {
         $detectLang = getGTranslateLangDetect($content);
         $detectLang === 'fr' ? setTranslate('fr', 'en', $content, 'programme', $product) :
             setTranslate('en', 'fr', $content, 'programme', $product);
+
+        return $product->id;
     }
 
     /**
@@ -385,18 +405,27 @@ class ProductController extends Controller {
             $fonDossier = FondsDossier::where('products_fond_dossier.product_id', '=', $product->id)->join('images',
                 'products_fond_dossier.image_id', '=', 'images.id')->select('*',
                 'products_fond_dossier.id as prdFondId')->get();
+
+            $eoiDossier = EoiDossier::where('product_eoi.product_id', '=', $product->id)->join('images',
+                'product_eoi.image_id', '=', 'images.id')->select('*',
+                'product_eoi.id as prdEoiId')->get();
+
             $produit_lie = Product::where('parent_id', $product->id)->get();
             $photo = ProductsImage::where('products_images.product_id', '=', $product->id)->join('images',
                 'products_images.image_id', '=', 'images.id')->select('*',
                 'products_images.id as prdImageId')->get();
 
             return $this->view("edit_programme", ['product' => $product, 'type' =>
-                'programme', 'localisation' => $localisation, 'dossier' => $fonDossier, 'photos' =>
-                $photo, 'product_lies' => $produit_lie]);
+                'programme', 'localisation' => $localisation, 'dossier' => $fonDossier,
+                'eoidossier' => $eoiDossier, 'photos' => $photo, 'product_lies' => $produit_lie]);
         } else {
             //modification proudiut
+            $eoiDossier = EoiDossier::where('product_eoi.product_id', '=', $product->id)->join('images',
+                'product_eoi.image_id', '=', 'images.id')->select('*',
+                'product_eoi.id as prdEoiId')->get();
+
             return $this->view("edit", ['product' => $product, 'type' => 'produit',
-                'localisation' => $localisation]);
+                'localisation' => $localisation, 'eoidossier' => $eoiDossier]);
         }
     }
 
@@ -726,6 +755,20 @@ class ProductController extends Controller {
         return response()->json(['success' => 'true']);
     }
 
+    public function AjaxEoiDossierEdit(Request $request) {
+        $id_programme = $request->id_programme;
+        $image = $request->file('file');
+
+        $fileInfo = $image->getClientOriginalName();
+        $filename = pathinfo($fileInfo, PATHINFO_FILENAME);
+        $extension = pathinfo($fileInfo, PATHINFO_EXTENSION);
+        $file_name = $filename . '-' . time() . '.' . $extension;
+        $image->move(public_path('uploads/product'), $file_name);
+
+        $this->save_eoi_dossier($file_name, $id_programme);
+        return response()->json(['success' => 'true']);
+    }
+
     public function ajaxDropPhotoIcon(Request $request) {
         ProductsImage::where('id', $request->id_photo_prd_image)->delete();
         return response()->json(['success' => 'true']);
@@ -733,6 +776,11 @@ class ProductController extends Controller {
 
     public function ajaxDropFondDossier(Request $request) {
         FondsDossier::where('id', $request->id_fond_dossier)->delete();
+        return response()->json(['success' => 'true']);
+    }
+
+    public function ajaxDropEoiDossier(Request $request) {
+        EoiDossier::where('id', $request->id_eoi_dossier)->delete();
         return response()->json(['success' => 'true']);
     }
 
@@ -779,6 +827,24 @@ class ProductController extends Controller {
 
         //save photo programme "table products_fond_dossier"
         $fond_dossier = new FondsDossier();
+        $fond_dossier->product_id = $id_programme;
+        $fond_dossier->image_id = $image->id;
+        $fond_dossier->author_id = Auth::user()->id;
+        $fond_dossier->save();
+    }
+
+    public function save_eoi_dossier($nom_photo, $id_programme) {
+        //save image "table image"
+        $image = new Image();
+        $image->url = $nom_photo;
+        $image->filename = $nom_photo;
+        $image->filemime = '';
+        $image->filepath = 'uploads/product/' . $nom_photo;
+        $image->author_id = Auth::user()->id;
+        $image->save();
+
+        //save photo programme "table products_fond_dossier"
+        $fond_dossier = new EoiDossier();
         $fond_dossier->product_id = $id_programme;
         $fond_dossier->image_id = $image->id;
         $fond_dossier->author_id = Auth::user()->id;

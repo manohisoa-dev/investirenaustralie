@@ -194,6 +194,15 @@
 					
 					<div class="row">
 						<div class="col-lg-12">
+							<label for="title">@lang('app.table.eoi_dossier')</label>
+							<div class="dropzone" id="eoi_dossier" multiple style="margin-bottom:25px">
+								<div id="template" class="file-row"></div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-lg-12">
 							<label for="title">@lang('app.txt.photo_programme')</label>
 							<div class="dropzone" id="image_upload" multiple>
 								<div id="template" class="file-row"></div>
@@ -315,6 +324,65 @@
 				file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'>"+response.success+"</label>");
 				file.previewElement.appendChild(file._captionBox);
 				$('#programmeForm').append('<input type="hidden" name="fondDossier[]" value="'+response.success +'">');
+				olddatadzname.innerHTML = response.success;
+            },
+            error: function(file, response)
+            {
+               if($.type(response) === "string")
+					var message = response; //dropzone sends it's own error messages in string
+				else
+					var message = response.message;
+				file.previewElement.classList.add("dz-error");
+				_ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+				_results = [];
+				for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+					node = _ref[_i];
+					_results.push(node.textContent = message);
+				}
+				return _results;
+            }
+		});
+		
+		$("#eoi_dossier").dropzone({
+			maxFiles: 25, 
+            maxFilesize: 25,
+			dictDefaultMessage: "@lang('app.txt.eoi_dossier')",
+			url: "{{ route('ajaxDropZone') }}",
+			params: {"_token": "{{ csrf_token() }}"},
+            acceptedFiles: ".jpeg,.jpg,.png,.gif,.doc,.docx,.xls,.xlsx,.pdf",
+            addRemoveLinks: true,
+            timeout: 50000,
+            init:function() {
+				// Get images
+				var myDropzone = this;
+			},
+            removedfile: function(file) 
+            {
+				if (this.options.dictRemoveFile) {
+				  return Dropzone.confirm("Are You Sure to "+this.options.dictRemoveFile, function() {
+					if(file.previewElement.id != ""){
+						var name = file.previewElement.id;
+					}else{
+						var name = file.name;
+					}
+					//console.log(name);
+					var fileRef;
+						return (fileRef = file.previewElement) != null ? 
+						fileRef.parentNode.removeChild(file.previewElement) : void 0;
+				  });
+			    }		
+            },
+       
+            success: function(file, response) 
+            {
+				file.previewElement.id = response.success;
+				//console.log(file.previewElement.id); 
+				// set new images names in dropzone’s preview box.
+                var olddatadzname = file.previewElement.querySelector("[data-dz-name]");   
+				file.previewElement.querySelector("img").alt = response.success;
+				file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'>"+response.success+"</label>");
+				file.previewElement.appendChild(file._captionBox);
+				$('#programmeForm').append('<input type="hidden" name="eoiDossier[]" value="'+response.success +'">');
 				olddatadzname.innerHTML = response.success;
             },
             error: function(file, response)

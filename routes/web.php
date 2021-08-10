@@ -52,6 +52,7 @@ Route::post('ajaxDropZone', 'ProductController@ajaxDropZone')->name('ajaxDropZon
 Route::get('ajaxCheckTitreProgramme', 'ProductController@ajaxCheckTitreProgramme')->name('ajaxCheckTitreProgramme');
 Route::post('ajaxDropZoneEdit', 'ProductController@ajaxDropZoneEdit')->name('ajaxDropZoneEdit');  
 Route::post('AjaxFonDossierEdit', 'ProductController@AjaxFonDossierEdit')->name('AjaxFonDossierEdit'); 
+Route::post('AjaxEoiDossierEdit', 'ProductController@AjaxEoiDossierEdit')->name('AjaxEoiDossierEdit'); 
 Route::post('ajaxChangeIconPhotoActive', 'ProductController@ajaxChangeIconPhotoActive')->name('ajaxChangeIconPhotoActive');
 Route::post('ajaxDropPhotoIcon', 'ProductController@ajaxDropPhotoIcon')->name('ajaxDropPhotoIcon');
 Route::post('ajaxGetProductById', 'ProductController@ajaxGetProductById')->name('ajaxGetProductById');  
@@ -67,6 +68,8 @@ Route::get('mes-produits', 'ProductController@mesProduits')->name('mes-produits'
 Route::get('nouveau-produit', 'ProductController@nouveauProduit')->name('nouveau-produit');
 Route::post('save-product', 'ProductController@saveProduct')->name('save-product'); 
 Route::post('ajaxDropFondDossier', 'ProductController@ajaxDropFondDossier')->name('ajaxDropFondDossier'); 
+Route::post('ajaxDropEoiDossier', 'ProductController@ajaxDropEoiDossier')->name('ajaxDropEoiDossier'); 
+
 Route::post('ajaxDropZoneDeleteFile', 'ProductController@ajaxDropZoneDeleteFile')->name('ajaxDropZoneDeleteFile'); 
 // Programme
 Route::get('programmes/{filter?}', 'ProgrammeController@all')->name('programme.all');// List programme by filter OR no
