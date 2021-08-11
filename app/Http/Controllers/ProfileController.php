@@ -169,8 +169,8 @@ class ProfileController extends Controller
                     'contact_email' => 'required|max:100',
                     'contact_phone' => 'required|max:100',
 
-                    'crm_name'   => 'required|max:100',
-                    'crm_email'  => 'required|max:100',
+//                    'crm_name'   => 'required|max:100',
+//                    'crm_email'  => 'required|max:100',
                 ];
                 break;
             case 4:  // APL
