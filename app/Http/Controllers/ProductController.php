@@ -629,6 +629,15 @@ class ProductController extends Controller {
             $fonDossier]);
     }
 
+    public function editProduit(Request $request, Product $product) {
+        $localisation = Localisation::find($product->location_id);
+        $eoiDossier = EoiDossier::where('product_eoi.product_id', '=', $product->id)->join('images',
+            'product_eoi.image_id', '=', 'images.id')->select('*',
+            'product_eoi.id as prdEoiId')->get();
+        return view('backend.product.edit_produit', ['product' => $product,
+            'localisation' => $localisation, 'eoidossier' => $eoiDossier, 'title' => __('afa.programme.title')]);
+    }
+
     public function updateProgramme(Request $request) {
         $adresse = $request->display_address . ' ' . $request->suburb . ' ' . $request->ville .
             ' Australie';
@@ -677,6 +686,68 @@ class ProductController extends Controller {
         // updateTranslate('programme',$product,$request->description);
 
         return redirect()->route('edit.programme', $product->id)->with('success',
+            "Produit a été créer avec succès");
+    }
+
+    public function updateProduit(Request $request) {
+        $product = Product::find($request->id);
+        if ($request->location_Id != 0) {
+            Localisation::where('id', $request->location_Id)->update(['area_level_1' => $request->suburb_product,
+                'country' => $request->countryId_product, 'postalCode' => $request->postalCode_product,
+                'locality' => $request->ville_product, 'route' => $request->display_address,
+                'longitude' => $longitude, 'latitude' => $latitude]);
+            $id_location = $request->location_Id;
+        } else {
+            $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
+                $request->postalCode_product, $request->ville_product, $request->display_address);
+        }
+
+        if ($request->commision_product == 'Sales commission rate (%)') {
+            $taux_commision = $request->sales_rate_product;
+        } else {
+            $taux_commision = $request->rate_commission_product;
+        }
+
+        $slug = $slugOriginal = generateSlug($request->title);
+        $product->slug = $slug;
+        $product->title = $request->title;
+        if ($request->file('image')) {
+            $file = $request->file('image');
+            $image = Image::storeAndSave($file, 'product');
+            $product->image_id = $image->id;
+        }
+        $product->content = $request->desc_product;
+        $product->type_id = $request->type_id;
+        $product->display_address = $request->display_address;
+        $product->state_id = $request->state_id;
+        $product->min_price = $request->min_price;
+        $product->max_price = $request->max_price;
+        $product->status = $request->status;
+        $product->quantity = $request->quantity;
+        $product->bedrooms = $request->bedrooms;
+        $product->ensuite = $request->ensuite;
+        $product->bathrooms = $request->bathrooms;
+        $product->interior_area = $request->interior_area;
+        $product->exterior_area = $request->exterior_area;
+        $product->location_id = $id_location;
+        $product->commission_type = $request->commision_product;
+        $product->commision = $taux_commision;
+        if ($product->ancienneteBien == 'Ancien') {
+            $product->year_built = $request->year_built;
+        }
+        if ($product->ancienneteBien == 'Neuf' && $product->natureBien ==
+            'Produit isolé') {
+            $product->superficie_jardin = $request->superficie_jardin;
+            $product->dt_db_travaux = $request->dt_db_travaux;
+            $product->dt_prevu_livraison = $request->dt_prevu_livraison;
+        }
+        $product->total_area = $request->total_area;
+
+        $product->garage_spaces = $request->garage_spaces;
+        $product->carport_spaces = $request->carport_spaces;
+
+        $product->save();
+        return redirect()->route('mes-produits')->with('success',
             "Produit a été créer avec succès");
     }
 
@@ -970,7 +1041,7 @@ class ProductController extends Controller {
                     $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                     -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine, $request->commision_product,
                     $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison);
-                    
+
                 if ($request->p_eoiDossier) {
                     foreach ($request->p_eoiDossier as $key => $value) {
                         $this->save_eoi_dossier($value, $id_produit);

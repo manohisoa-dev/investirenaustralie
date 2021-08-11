@@ -66,6 +66,8 @@ Route::get('produit-programme/{product}', 'ProductController@produitProgramme')-
 Route::post('updateProgramme', 'ProductController@updateProgramme')->name('updateProgramme');
 Route::get('mes-produits', 'ProductController@mesProduits')->name('mes-produits'); 
 Route::get('nouveau-produit', 'ProductController@nouveauProduit')->name('nouveau-produit');
+Route::get('edit-produit/{product}', 'ProductController@editProduit')->name('edit.produit'); 
+Route::post('updateProduit', 'ProductController@updateProduit')->name('updateProduit');
 Route::post('save-product', 'ProductController@saveProduct')->name('save-product'); 
 Route::post('ajaxDropFondDossier', 'ProductController@ajaxDropFondDossier')->name('ajaxDropFondDossier'); 
 Route::post('ajaxDropEoiDossier', 'ProductController@ajaxDropEoiDossier')->name('ajaxDropEoiDossier'); 

@@ -1371,4 +1371,6 @@ return
     'txt.cordial_greetings' => 'Cordiales salutations',
     'txt.eoi_dossier' => 'Choisissez un ou plusieurs photos pour le manifestation d\'intérêt',
     'table.eoi_dossier' => 'Manifestation d\'intérêt',
+    'tab.title_programme' => 'Mes programmes',
+    'tab.title_produits' => 'Mes produits',
 ];

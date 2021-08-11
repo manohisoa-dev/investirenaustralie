@@ -100,6 +100,33 @@ class Paypal extends Controller {
         $result = $pay_paypal->execute($execution, $this->_api_context);
 
         if ($result->getState() == 'approved') {
+            //info transaction
+            $trans = $result->getTransactions();
+            $acheteur = $result->getPayer();
+            $a = array($trans,$acheteur);
+            dd($a);
+            /*$Subtotal = $trans[0]->getAmount()->getDetails()->getSubtotal();
+            $currency = $trans[0]->getAmount()->currency();
+            $Tax = $trans[0]->getAmount()->getDetails()->getTax();*/
+
+            //info acheteur
+            
+            
+            echo $nom = $acheteur[0]->getPayerInfo()->getFirstname();
+            var_dump($acheteur);
+            /*$mode_payement = $acheteur[0]->getPayment_method();
+            $email = $acheteur[0]->getPayerInfo()()->email();
+            $nom = $acheteur[0]->getPayerInfo()->first_name();
+            $prenom = $acheteur[0]->getPayerInfo()->last_name();
+
+            $info = array(
+                'total' => $Subtotal,
+                'currency' => $currency,
+                'mode p' => $mode_payement,
+                'email' => $email,
+                'nom' => $nom,
+                'prenom' => $prenom);*/
+            dd('virta');
 
             \Session::put('success', 'Payment success');
             return Redirect::route('paypal.paypalwithpayments');

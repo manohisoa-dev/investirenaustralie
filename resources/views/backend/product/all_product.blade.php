@@ -2,19 +2,23 @@
 
 @section('subcontent')
 
-    <div class="profile-content-area m-40px-tb">
-		<div class="card m-40px-b">
-			<div class="card-header">
-				<div class="row">
-					<div class="col-5 col-lg-8">
-						<span class="h6 font-w-500">@lang('afa.product.title')</span>
-					</div>
-					<div class="col-7 col-lg-4 text-right">
-						<a href="{{route('nouveau-produit')}}" class="m-btn m-btn-radius m-btn-theme m-btn-sm">@lang('app.txt.add_product') </a>
-					</div>
-				</div>
-			</div>
-			<div class="card-body">
+    <div class="profile-content-area m-40px-tb card card-body">
+        <div class="tab-style-4">
+			<ul class="nav nav-fill nav-tabs">
+				<li class="nav-item">
+					<a href="{{route('mes-programmes')}}" class="{{Request::is('mes-programmes') ? 'active' : ''}}">
+						<div class="icon"><i class="fa fa-briefcase"></i></div>
+						<span>@lang('app.tab.title_programme')</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a href="{{route('mes-produits')}}" class="{{Request::is('mes-produits') ? 'active' : ''}}">
+						<div class="icon"><i class="fa fa-building"></i></div>
+						<span>@lang('app.tab.title_produits')</span>
+					</a>
+				</li>
+			</ul>
+			<div class="tab-content">
 				<table class="table table-bordered" style="font-size:12px">
 					<thead>
 						<tr>
@@ -33,13 +37,9 @@
 							<td>{{$index + $records->firstItem()}}</td>
 							<td>
 								@if (@getimagesize($record->imageUrl()))
-									<a href="{{route('admin.product.index')}}/{{$record->id}}">
-										<img src="{{$record->imageUrl()}}" class="img-responsive" style="height:50px" />
-									</a>
+									<img src="{{$record->imageUrl()}}" class="img-responsive" style="height:50px" />
 								@else
-									<a href="{{route('admin.product.index')}}/{{$record->id}}">
-										<img class="img-responsive" src="{{asset('img/500x500.jpg')}}" style="height:50px">
-									</a>
+									<img class="img-responsive" src="{{asset('img/500x500.jpg')}}" style="height:50px">
 								@endif		
 							</td>
 							<td>{{ $record->title }}<br />{{str_limit(strip_tags($record->excerpt()),"100","...")}}</td>
@@ -55,7 +55,7 @@
 							@endif
 							</td>
 							<td align="center">
-								<a href="javascript:void(0)" onclick="edit_product({{$record->id}})" class="" title="@lang('app.table.btn_title_modification')">
+								<a href="{{route('edit.produit', $record->id)}}" class="" title="@lang('app.table.btn_title_modification')">
 									<i class="fa fa-edit"></i>
 								</a>&nbsp;
 								<a href="javascript:void(0)" onclick="delete_product({{$record->id}})" class="" title="@lang('app.table.btn_title_delete')">
@@ -69,7 +69,6 @@
 			</div>
 		</div>
 	</div>
-
 @endsection
 
 @push('script')
