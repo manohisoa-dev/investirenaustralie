@@ -10,6 +10,7 @@ use App\Notifications\PasswordReseted;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 use Session;
+use App\Models\Product;
 
 class User extends Authenticatable {
     use Notifiable;
@@ -920,8 +921,14 @@ class User extends Authenticatable {
         return false;
     }
 
-    public function afaHasSendCa(){
-        return false;
+    public function afaHasSendCa($from_id,$to_id){
+        $ca = Product::conjunctionAgreement()->where('from_id','=',$from_id)->where('to_id','=',$to_id)->first();
+
+        if($ca->status === 0){
+            return false;
+        }else{
+            return true;
+        }
     }
 
 }

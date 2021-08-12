@@ -110,13 +110,14 @@ class MessageController extends Controller
 
     public function showContactMessage(Request $request ,$to_id){
         $from_id = $request->get('contact_id');
+        $hasSendCa = "";
 
         $messages = Message::whereRaw("(from_id = ".$from_id." AND to_id = $to_id ) OR (to_id = ".$from_id." AND from_id = $to_id )" )
                             ->orderBy('created_at', 'ASC')
                             ->get();
 
-        if(Auth::user()->hasRole(3)){
-            $hasSendCa = Auth::user()->afaHasSendCa()?1:0; // 0: CA not send  1:CA send 
+        if(Auth::user()->hasRole(3) && $from_id !== '1'){
+            $hasSendCa = Auth::user()->afaHasSendCa($from_id,$to_id)?1:0; // 0: CA not send  1:CA send 
         }
 
         $data = [];
