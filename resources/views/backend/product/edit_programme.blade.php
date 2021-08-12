@@ -2,311 +2,387 @@
 
 @section('subcontent')
 				
-    <div class="profile-content-area m-40px-tb">
-		
-		<ol class="breadcrumb">
-			<li class="breadcrumb-item">
-				<a href="{{route('mes-programmes')}}">@lang('app.txt.all_programmes')</a>
-			</li>
-			<li class="breadcrumb-item active">
-				<strong>@lang('app.form.programme_edition')</strong>
-			</li>
-		</ol>
-
-		
-		<div class="card m-40px-b">		
-			<div class="card-header">
-				<div class="row">
-					<div class="col-5 col-lg-8">
-						<span class="h6 font-w-500">@lang('app.txt.new_programme')</span>
+    <div class="profile-content-area m-40px-tb card card-body">
+        <div class="tab-style-4">
+			<ul class="nav nav-fill nav-tabs">
+				<li class="nav-item">
+					<a href="{{route('mes-programmes')}}" class="active">
+						<div class="icon"><i class="fa fa-briefcase"></i></div>
+						<span>@lang('app.tab.title_programme')</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a href="{{route('mes-produits')}}" class="{{Request::is('mes-produits') ? 'active' : ''}}">
+						<div class="icon"><i class="fa fa-building"></i></div>
+						<span>@lang('app.tab.title_produits')</span>
+					</a>
+				</li>
+			</ul>
+			<div class="tab-content">
+				<div class="profile-content-area m-40px-tb">		
+					<div class="card m-40px-b">		
+						<div class="card-header">
+							<div class="row">
+								<div class="col-5 col-lg-8">
+									<span class="h6 font-w-500">@lang('app.form.programme_edition') {{$product->title}}</span>
+								</div>
+							</div>
+						</div>
+						<div class="card-body">
+							<form class="form-validation form-padding" action="{{route('updateProgramme')}}" method="post" id="programmeForm" enctype="multipart/form-data">
+								{{ csrf_field() }}
+								<input type="hidden"  name="location_Id" value="{{$product->location_id}}" />  
+								<input type="hidden" name="id" value="{{$product->id}}" />     
+								<div class="form-group">
+									<label>@lang('app.form.programme_choix_categorie') *</label>
+									<select class="form-control" name="cat_programmme_id" id="cat_programmme_id" disabled>
+										<option value="">@lang('app.form.choix_txt')</option>
+										@foreach(\App\Models\Category::all() as $category)
+											<option value="{{$category->id}}" {{$category->id == $product->category_id ? 'selected' : ''}}>{{$category->title}}</option>
+										@endforeach
+									</select>
+								</div>
+								
+								<div class="form-group">
+									<label for="title">@lang('app.form.programme_choix_anciennete') *</label>
+									<select class="form-control" name="ancienneteBien" id="ancienneteBien" disabled="disabled">
+										<option value="@lang('app.txt.new')" {{$product->ancienneteBien == 'Neuf' ? 'selected' : ''}}>@lang('app.txt.new')</option>
+										<option value="@lang('app.txt.old')" {{$product->ancienneteBien == 'Ancien' ? 'selected' : ''}}>@lang('app.txt.old')</option>
+									</select>
+									<input type="hidden" name="ancienneteBien" value="Neuf" />
+								</div>
+								
+								<div class="form-group">
+									<label for="title">@lang('app.form.programme_choix_nature') *</label>
+									<select class="form-control" name="natureBien" id="natureBien" disabled="disabled">
+										<option value="@lang('app.txt.real_estate_program')" {{$product->natureBien == 'Programme immobilier' ? 'selected' : ''}}>@lang('app.txt.real_estate_program')</option>
+										<option value="@lang('app.txt.isolated_product')" {{$product->natureBien == 'Produit isol�' ? 'selected' : ''}}>@lang('app.txt.isolated_product')</option>
+									</select>
+									<input type="hidden" name="natureBien" value="@lang('app.txt.real_estate_program')" />
+								</div>
+								
+								<div class="form-group">
+									<label for="title">@lang('app.form.programme_title') *</label>
+									<input name="title_programme_now" id="title_programme_now" class="form-control" type="hidden" value="{{$product->title}}">
+									<input name="title_programme" id="title_programme" class="form-control" type="text" value="{{$product->title}}">
+								</div>
+								
+								<div class="form-group">
+									<label for="title">@lang('app.form.programme_content')</label>
+									<textarea class="form-control" rows="10" name="description" id="description">{{$product->content}}</textarea>
+								</div>
+								
+								<div class="row">
+									<div class="col-lg-4">
+										<div class="form-group">
+											<label for="title">@lang('app.form.programme_commission_type')</label>
+											<select class="form-control" name="commision" id="commision">
+												<option value="">Choisir...</option>
+												<option value="Sales commission rate (%)" {{$product->commission_type == 'Sales commission rate (%)' ? 'selected' : ''}}>@lang('app.form.programme_commission_option1') (%)</option>
+												<option value="Fixed commission ($)" {{$product->commission_type == 'Fixed commission ($)' ? 'selected' : ''}}>@lang('app.form.programme_commission_option2') ($)</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-lg-4">
+										<div id="commission_rate" style="display:none">
+											<div class="form-group">
+												<label for="title">@lang('app.form.programme_taux_commission')</label>
+												<div class="input-group m-b">
+													<input type="number" class="form-control" name="sales_rate" id="sales_rate">
+													<div class="input-group-append">
+														<span class="input-group-text">%</span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div id="fixed_commission" style="display:none">
+											<div class="form-group">
+												<label for="title">@lang('app.form.programme_mt_commission')</label>
+												<div class="input-group m-b">
+													<input type="number" class="form-control" name="rate_commission" id="rate_commission">
+													<div class="input-group-append">
+														<span class="input-group-text">AUD</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>			
+											
+								<div class="row">
+									<div class="col-lg-4">
+										<label for="title">@lang('app.form.programme_price_min') *</label>
+										<div class="input-group">
+											<input type="number" class="form-control" name="prix_min" id="prix_min" value="{{$product->min_price}}">
+											<div class="input-group-append">
+												<span class="input-group-text">AUD</span>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4">
+										<div class="form-group">
+											<label for="title">@lang('app.form.programme_price_max') *</label>
+											<div class="input-group">
+												<input type="number" class="form-control" name="prix_max" id="prix_max" value="{{$product->max_price}}">
+												<div class="input-group-append">
+													<span class="input-group-text">AUD</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4">
+										<div class="form-group">
+											<label for="title">@lang('app.form.programme_product_type') *</label>
+											<select class="form-control" name="type_id" id="type_id" style="width:100%">
+												
+											</select>
+										</div>
+									</div>
+								</div>
+								
+								<div class="form-group">
+									<label for="title">@lang('app.form.programme_adresse') *</label>
+									<input name="display_address" id="display_address" class="form-control" type="text" value="{{$product->display_address}}">
+								</div>
+								
+								<div class="row">
+									<div class="col-lg-4">
+										<div class="form-group">
+											<label for="title">@lang('app.form.programme_suburb')</label>
+											<input name="suburb" id="suburb" class="form-control" type="text" value="{{$localisation->area_level_1}}">
+										</div>
+									</div>
+									<div class="col-lg-4">
+										<div class="form-group">
+											<label for="title">@lang('app.form.programme_ville')</label>
+											<input name="ville" id="ville" class="form-control" type="text" value="{{$localisation->locality}}">
+										</div>  
+									</div>
+									<div class="col-lg-4">
+										<div class="form-group">
+											<label for="title">@lang('app.form.programme_cp') *</label>
+											<input name="postalCode" id="postalCode" class="form-control" type="text" value="{{$localisation->postalCode}}">
+										</div>
+									</div>
+								</div>
+								
+								<div class="row">
+									<div class="col-lg-4">
+										<div class="form-group">
+											<label for="title">@lang('app.form.programme_pays')</label>
+											<select class="form-control" name="countryId" id="countryId" style="width:100%">
+												@foreach(\App\Models\Country::where('id',12)->get() as $country)
+													<option value="{{$country->id}}" {{$country->id == $localisation->country ? 'selected' : ''}}>{{$country->content}}</option>
+												@endforeach
+											</select>
+										</div>
+									</div>
+									<div class="col-lg-4">
+										<div class="form-group">
+											<label for="title">@lang('app.form.programme_etat') *</label>
+											<select class="form-control" name="state_id" id="state_id" style="width:100%">
+												@foreach(\App\Models\State::all() as $state)
+													<option value="{{$state->id}}" {{$state->id == $product->state_id ? 'selected' : ''}}>{{$state->content}}</option>
+												@endforeach
+											</select>
+										</div> 
+									</div>
+									<div class="col-lg-4">
+										
+									</div>
+								</div>
+								
+								@if ($dossier)
+								<div class="row">
+									 <div class="col-lg-12">
+									 <h5 style="font-weight:normal; font-size:17px; color:#718096">@lang('app.form.programme_fond_dossier')</h5>
+									 @foreach ( $dossier as $dossie )						 	
+									 <div class="file-box">
+										<div class="file">
+											@if(setIconFile($dossie->filepath) == 'images')
+												<a href="{{asset($dossie->filepath)}}" class="fancyboxLink">
+											@elseif(setIconFile($dossie->filepath) == 'pdf')
+												<a class="fancybox-pdf" data-fancybox-type="iframe" href="http://docs.google.com/viewer?embedded=true&url={{asset(urlencode($dossie->filepath))}}">
+											@else
+												<a href="https://docs.google.com/viewer?url={{asset(urlencode($dossie->filepath))}}&embedded=true" class="fancyboxLinkDoc" data-fancybox-type="iframe">
+											@endif	
+												<span class="corner"></span>	
+												@if(setIconFile($dossie->filepath) == 'images')
+													<div class="image">
+														<img alt="image" class="img-fluid" src="{{asset($dossie->filepath)}}">
+													</div>
+												@endif	
+												@if(setIconFile($dossie->filepath) == 'pdf')
+													<div class="icon">
+														<i class="fa fa-file-pdf"></i>
+													</div>
+												@endif	
+												@if(setIconFile($dossie->filepath) == 'doc')
+													<div class="icon">
+														<i class="fa fa-file-word"></i>
+													</div>
+												@endif
+												@if(setIconFile($dossie->filepath) == 'excel')
+													<div class="icon">
+														<i class="fa fa-file-excel"></i>
+													</div>
+												@endif	
+												@if(setIconFile($dossie->filepath) == 'file')
+													<div class="icon">
+														<i class="fa fa-file"></i>
+													</div>
+												@endif									
+												<div class="file-name">
+													@php
+														$filename = $dossie->filename;
+														$filename = preg_replace('/^(.*)\-\d{8,}\.(gif|jpg|png|pdf)$/', '$1.$2', $filename);
+													@endphp
+													<label style="text-transform:lowercase">{{str_limit($filename, 15)}}</label>
+													<a class="pull-right" href="javascript:void(0)" onclick="delete_fond_dossier({{$dossie->prdFondId}})">
+														<i class="fa fa-trash"></i>
+													</a>
+													<br>
+													<small>{{$dossie->created_at ? $dossie->created_at->diffForHumans() : ""}}</small>
+												</div>
+											</a>
+										</div>
+									</div>
+									 @endforeach		
+									 </div>
+								</div>  
+								@endif 
+								
+								<div class="row">
+									<div class="col-lg-12">
+										<label for="title">@lang('app.form.programme_fond_dossier')</label>
+										<div class="dropzone" id="fond_dossier" multiple style="margin-bottom:15px">
+											<div id="template" class="file-row"></div>
+										</div>
+									</div>
+								</div>
+								
+								@if ($eoidossier)
+								<div class="row">
+									 <div class="col-lg-12">
+									 <h5 style="font-weight:normal; font-size:17px; color:#718096">@lang('app.table.eoi_dossier')</h5>
+									 @foreach ( $eoidossier as $dos )
+									 <div class="file-box">
+										<div class="file">
+											@if(setIconFile($dos->filepath) == 'images')
+												<a href="{{asset($dos->filepath)}}" class="fancyboxLink">
+											@elseif(setIconFile($dos->filepath) == 'pdf')
+												<a class="fancybox-pdf" data-fancybox-type="iframe" href="http://docs.google.com/viewer?embedded=true&url={{asset(urlencode($dos->filepath))}}">
+											@else
+												<a href="https://docs.google.com/viewer?url={{asset(urlencode($dos->filepath))}}&embedded=true" class="fancyboxLinkDoc" data-fancybox-type="iframe">
+											@endif								
+												<span class="corner"></span>						
+												@if(setIconFile($dos->filepath) == 'images')
+													<div class="image">
+														<img alt="image" class="img-fluid" src="{{asset($dos->filepath)}}">
+													</div>
+												@endif	
+												@if(setIconFile($dos->filepath) == 'pdf')
+													<div class="icon">
+														<i class="fa fa-file-pdf-o"></i>
+													</div>
+												@endif	
+												@if(setIconFile($dos->filepath) == 'doc')
+													<div class="icon">
+														<i class="fa fa-file-word-o"></i>
+													</div>
+												@endif
+												@if(setIconFile($dos->filepath) == 'excel')
+													<div class="icon">
+														<i class="fa fa-file-excel-o"></i>
+													</div>
+												@endif	
+												@if(setIconFile($dos->filepath) == 'file')
+													<div class="icon">
+														<i class="fa fa-file"></i>
+													</div>
+												@endif		
+												<div class="file-name">
+													@php
+														$filename_eoi = $dos->filename;
+														$filename_eoi = preg_replace('/^(.*)\-\d{8,}\.(gif|jpg|png|pdf)$/', '$1.$2', $filename_eoi);
+													@endphp
+													<label style="text-transform:lowercase">{{str_limit($filename_eoi, 15)}}</label>
+													<a class="pull-right" href="javascript:void(0)" onclick="delete_eoi_dossier({{$dos->prdEoiId}})">
+														<i class="fa fa-trash"></i>
+													</a>
+													<br>
+													<small>{{$dos->created_at ? $dos->created_at->diffForHumans() : ""}}</small>
+												</div>
+											</a>
+										</div>
+									</div>
+									 @endforeach		
+									 </div>
+								</div>  
+								@endif 
+								<div class="row" style="margin-bottom:15px">
+									<div class="col-lg-12">
+										<div class="dropzone" id="eoi_dossier" multiple style="margin-bottom:25px">
+											<div id="template" class="file-row"></div>
+										</div>
+									</div>
+								</div>  
+								
+								@if ($photos)
+								<div class="row">						
+									<div class="col-lg-12">		
+									<h5 style="font-weight:normal; font-size:17px; color:#718096">@lang('app.txt.photo_programme')</h5>				
+									@foreach ( $photos as $photo )					
+									<div class="file-box">
+										<div class="file">								
+											<span class="corner"></span>						
+											<div class="image">
+												<a href="{{asset($photo->filepath)}}" class="fancyboxLink">
+												<img alt="image" class="img-fluid" src="{{asset($photo->filepath)}}">
+												</a>
+											</div>
+											<div class="file-name">
+												<label> 
+													@if($photo->is_principal == 1)
+													<input type="radio" checked="" value="{{$photo->prdImageId}}" name="radioDrop"> @lang('app.dropzone.photoIcon_tex')
+													@else
+													<input type="radio" value="{{$photo->prdImageId}}" name="radioDrop"> @lang('app.dropzone.photoIcon_tex')
+													@endif
+												</label>
+												<a class="pull-right" href="javascript:void(0)" onclick="delete_photo({{$photo->prdImageId}})">
+													<i class="fa fa-trash"></i>
+												</a>
+												<br>
+												<small>{{$photo->created_at ? $photo->created_at->diffForHumans() : ""}}</small>
+											</div>				
+										</div>
+									</div>
+									@endforeach
+									</div>
+								</div>
+								@endif  
+								
+								<div class="row">
+									<div class="col-lg-12">
+										<div class="dropzone" id="image_upload" multiple>
+											<div id="template" class="file-row"></div>
+										</div>
+									</div>
+								</div>						
+								<div class="row">
+									<div class="col-lg-12" style="margin-top:15px">
+										<label class="chk_firb"> 
+											<input type="checkbox" value="" name="chk_firb"> @lang('app.txt.firb_recommendation')
+										</label>
+									</div>
+								</div>
+								<button type="submit" id="savePro" class="btn btn-primary btn-lg pull-right">
+									<i class="fa fa-save"></i> @lang('app.form.programme_btn_edit')
+								</button>			
+							</form>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="card-body">
-				<form class="form-validation form-padding" action="{{route('updateProgramme')}}" method="post" id="programmeForm" enctype="multipart/form-data">
-					{{ csrf_field() }}
-					<input type="hidden"  name="location_Id" value="{{$product->location_id}}" />  
-					<input type="hidden" name="id" value="{{$product->id}}" />     
-					<div class="form-group">
-						<label>@lang('app.form.programme_choix_categorie') *</label>
-						<select class="form-control" name="cat_programmme_id" id="cat_programmme_id" disabled>
-							<option value="">@lang('app.form.choix_txt')</option>
-							@foreach(\App\Models\Category::all() as $category)
-								<option value="{{$category->id}}" {{$category->id == $product->category_id ? 'selected' : ''}}>{{$category->title}}</option>
-							@endforeach
-						</select>
-					</div>
-					
-					<div class="form-group">
-						<label for="title">@lang('app.form.programme_choix_anciennete') *</label>
-						<select class="form-control" name="ancienneteBien" id="ancienneteBien" disabled="disabled">
-							<option value="@lang('app.txt.new')" {{$product->ancienneteBien == 'Neuf' ? 'selected' : ''}}>@lang('app.txt.new')</option>
-							<option value="@lang('app.txt.old')" {{$product->ancienneteBien == 'Ancien' ? 'selected' : ''}}>@lang('app.txt.old')</option>
-						</select>
-						<input type="hidden" name="ancienneteBien" value="Neuf" />
-					</div>
-					
-					<div class="form-group">
-						<label for="title">@lang('app.form.programme_choix_nature') *</label>
-						<select class="form-control" name="natureBien" id="natureBien" disabled="disabled">
-							<option value="@lang('app.txt.real_estate_program')" {{$product->natureBien == 'Programme immobilier' ? 'selected' : ''}}>@lang('app.txt.real_estate_program')</option>
-							<option value="@lang('app.txt.isolated_product')" {{$product->natureBien == 'Produit isol�' ? 'selected' : ''}}>@lang('app.txt.isolated_product')</option>
-						</select>
-						<input type="hidden" name="natureBien" value="@lang('app.txt.real_estate_program')" />
-					</div>
-					
-					<div class="form-group">
-						<label for="title">@lang('app.form.programme_title') *</label>
-						<input name="title_programme_now" id="title_programme_now" class="form-control" type="hidden" value="{{$product->title}}">
-						<input name="title_programme" id="title_programme" class="form-control" type="text" value="{{$product->title}}">
-					</div>
-					
-					<div class="form-group">
-						<label for="title">@lang('app.form.programme_content')</label>
-						<textarea class="form-control" rows="10" name="description" id="description">{{$product->content}}</textarea>
-					</div>
-					
-					<div class="row">
-						<div class="col-lg-4">
-							<div class="form-group">
-								<label for="title">@lang('app.form.programme_commission_type')</label>
-								<select class="form-control" name="commision" id="commision">
-									<option value="">Choisir...</option>
-									<option value="Sales commission rate (%)" {{$product->commission_type == 'Sales commission rate (%)' ? 'selected' : ''}}>@lang('app.form.programme_commission_option1') (%)</option>
-									<option value="Fixed commission ($)" {{$product->commission_type == 'Fixed commission ($)' ? 'selected' : ''}}>@lang('app.form.programme_commission_option2') ($)</option>
-								</select>
-							</div>
-						</div>
-						<div class="col-lg-4">
-							<div id="commission_rate" style="display:none">
-								<div class="form-group">
-									<label for="title">@lang('app.form.programme_taux_commission')</label>
-									<div class="input-group m-b">
-										<input type="number" class="form-control" name="sales_rate" id="sales_rate">
-										<div class="input-group-append">
-											<span class="input-group-text">%</span>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div id="fixed_commission" style="display:none">
-								<div class="form-group">
-									<label for="title">@lang('app.form.programme_mt_commission')</label>
-									<div class="input-group m-b">
-										<input type="number" class="form-control" name="rate_commission" id="rate_commission">
-										<div class="input-group-append">
-											<span class="input-group-text">AUD</span>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>			
-								
-					<div class="row">
-						<div class="col-lg-4">
-							<label for="title">@lang('app.form.programme_price_min') *</label>
-							<div class="input-group">
-								<input type="number" class="form-control" name="prix_min" id="prix_min" value="{{$product->min_price}}">
-								<div class="input-group-append">
-									<span class="input-group-text">AUD</span>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4">
-							<div class="form-group">
-								<label for="title">@lang('app.form.programme_price_max') *</label>
-								<div class="input-group">
-									<input type="number" class="form-control" name="prix_max" id="prix_max" value="{{$product->max_price}}">
-									<div class="input-group-append">
-										<span class="input-group-text">AUD</span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4">
-							<div class="form-group">
-								<label for="title">@lang('app.form.programme_product_type') *</label>
-								<select class="form-control" name="type_id" id="type_id" style="width:100%">
-									
-								</select>
-							</div>
-						</div>
-					</div>
-					
-					<div class="form-group">
-						<label for="title">@lang('app.form.programme_adresse') *</label>
-						<input name="display_address" id="display_address" class="form-control" type="text" value="{{$product->display_address}}">
-					</div>
-					
-					<div class="row">
-						<div class="col-lg-4">
-							<div class="form-group">
-								<label for="title">@lang('app.form.programme_suburb')</label>
-								<input name="suburb" id="suburb" class="form-control" type="text" value="{{$localisation->area_level_1}}">
-							</div>
-						</div>
-						<div class="col-lg-4">
-							<div class="form-group">
-								<label for="title">@lang('app.form.programme_ville')</label>
-								<input name="ville" id="ville" class="form-control" type="text" value="{{$localisation->locality}}">
-							</div>  
-						</div>
-						<div class="col-lg-4">
-							<div class="form-group">
-								<label for="title">@lang('app.form.programme_cp') *</label>
-								<input name="postalCode" id="postalCode" class="form-control" type="text" value="{{$localisation->postalCode}}">
-							</div>
-						</div>
-					</div>
-					
-					<div class="row">
-						<div class="col-lg-4">
-							<div class="form-group">
-								<label for="title">@lang('app.form.programme_pays')</label>
-								<select class="form-control" name="countryId" id="countryId" style="width:100%">
-									@foreach(\App\Models\Country::where('id',12)->get() as $country)
-										<option value="{{$country->id}}" {{$country->id == $localisation->country ? 'selected' : ''}}>{{$country->content}}</option>
-									@endforeach
-								</select>
-							</div>
-						</div>
-						<div class="col-lg-4">
-							<div class="form-group">
-								<label for="title">@lang('app.form.programme_etat') *</label>
-								<select class="form-control" name="state_id" id="state_id" style="width:100%">
-									@foreach(\App\Models\State::all() as $state)
-										<option value="{{$state->id}}" {{$state->id == $product->state_id ? 'selected' : ''}}>{{$state->content}}</option>
-									@endforeach
-								</select>
-							</div> 
-						</div>
-						<div class="col-lg-4">
-							
-						</div>
-					</div>
-					
-					@if ($dossier)
-					<div class="row">
-						 <div class="col-lg-12">
-						 <h5 style="font-weight:normal; font-size:17px; color:#718096">@lang('app.form.programme_fond_dossier')</h5>
-						 @foreach ( $dossier as $dossie )						 	
-						 <div class="file-box">
-							<div class="file">
-								@if(setIconFile($dossie->filepath) == 'images')
-									<a href="{{asset($dossie->filepath)}}" class="fancyboxLink">
-								@elseif(setIconFile($dossie->filepath) == 'pdf')
-									<a class="fancybox-pdf" data-fancybox-type="iframe" href="http://docs.google.com/viewer?embedded=true&url={{asset(urlencode($dossie->filepath))}}">
-								@else
-									<a href="https://docs.google.com/viewer?url={{asset(urlencode($dossie->filepath))}}&embedded=true" class="fancyboxLinkDoc" data-fancybox-type="iframe">
-								@endif	
-									<span class="corner"></span>	
-									@if(setIconFile($dossie->filepath) == 'images')
-										<div class="image">
-											<img alt="image" class="img-fluid" src="{{asset($dossie->filepath)}}">
-										</div>
-									@endif	
-									@if(setIconFile($dossie->filepath) == 'pdf')
-										<div class="icon">
-											<i class="fa fa-file-pdf"></i>
-										</div>
-									@endif	
-									@if(setIconFile($dossie->filepath) == 'doc')
-										<div class="icon">
-											<i class="fa fa-file-word"></i>
-										</div>
-									@endif
-									@if(setIconFile($dossie->filepath) == 'excel')
-										<div class="icon">
-											<i class="fa fa-file-excel"></i>
-										</div>
-									@endif	
-									@if(setIconFile($dossie->filepath) == 'file')
-										<div class="icon">
-											<i class="fa fa-file"></i>
-										</div>
-									@endif									
-									<div class="file-name">
-										@php
-											$filename = $dossie->filename;
-											$filename = preg_replace('/^(.*)\-\d{8,}\.(gif|jpg|png|pdf)$/', '$1.$2', $filename);
-										@endphp
-										<label style="text-transform:lowercase">{{str_limit($filename, 15)}}</label>
-										<a class="pull-right" href="javascript:void(0)" onclick="delete_fond_dossier({{$dossie->prdFondId}})">
-											<i class="fa fa-trash"></i>
-										</a>
-										<br>
-										<small>{{$dossie->created_at ? $dossie->created_at->diffForHumans() : ""}}</small>
-									</div>
-								</a>
-							</div>
-						</div>
-						 @endforeach		
-						 </div>
-					</div>  
-					@endif 
-					
-					<div class="row">
-						<div class="col-lg-12">
-							<label for="title">@lang('app.form.programme_fond_dossier')</label>
-							<div class="dropzone" id="fond_dossier" multiple style="margin-bottom:15px">
-								<div id="template" class="file-row"></div>
-							</div>
-						</div>
-					</div>
-					
-					@if ($photos)
-					<div class="row">						
-						<div class="col-lg-12">		
-						<h5 style="font-weight:normal; font-size:17px; color:#718096">@lang('app.txt.photo_programme')</h5>				
-						@foreach ( $photos as $photo )					
-						<div class="file-box">
-							<div class="file">								
-								<span class="corner"></span>						
-								<div class="image">
-									<a href="{{asset($photo->filepath)}}" class="fancyboxLink">
-									<img alt="image" class="img-fluid" src="{{asset($photo->filepath)}}">
-									</a>
-								</div>
-								<div class="file-name">
-									<label> 
-										@if($photo->is_principal == 1)
-										<input type="radio" checked="" value="{{$photo->prdImageId}}" name="radioDrop"> @lang('app.dropzone.photoIcon_tex')
-										@else
-										<input type="radio" value="{{$photo->prdImageId}}" name="radioDrop"> @lang('app.dropzone.photoIcon_tex')
-										@endif
-									</label>
-									<a class="pull-right" href="javascript:void(0)" onclick="delete_photo({{$photo->prdImageId}})">
-										<i class="fa fa-trash"></i>
-									</a>
-									<br>
-									<small>{{$photo->created_at ? $photo->created_at->diffForHumans() : ""}}</small>
-								</div>				
-							</div>
-						</div>
-						@endforeach
-						</div>
-					</div>
-					@endif  
-					
-					<div class="row">
-						<div class="col-lg-12">
-							<div class="dropzone" id="image_upload" multiple>
-								<div id="template" class="file-row"></div>
-							</div>
-						</div>
-					</div>						
-					<div class="row">
-						<div class="col-lg-12" style="margin-top:15px">
-							<label class="chk_firb"> 
-								<input type="checkbox" value="" name="chk_firb"> @lang('app.txt.firb_recommendation')
-							</label>
-						</div>
-					</div>
-					<button type="submit" id="savePro" class="btn btn-primary btn-lg pull-right">
-						<i class="fa fa-save"></i> @lang('app.form.programme_btn_edit')
-					</button>			
-				</form>
 			</div>
 		</div>
 	</div>
@@ -400,6 +476,57 @@
 			maxFilesize: 25,
 			dictDefaultMessage: "@lang('app.txt.fond_dossier')",
 			url: "{{ route('AjaxFonDossierEdit') }}",
+			params: {"_token": "{{ csrf_token() }}","id_programme": "{{ $product->id }}"},
+			acceptedFiles: ".jpeg,.jpg,.png,.gif,.doc,.docx,.xls,.xlsx,.pdf",
+			addRemoveLinks: true,
+			timeout: 50000,
+			init:function() {
+				// Get images
+				var myDropzone1 = this;
+			},
+			removedfile: function(file) 
+			{
+				if (this.options.dictRemoveFile) {
+				  return Dropzone.confirm("Are You Sure to "+this.options.dictRemoveFile, function() {
+					if(file.previewElement.id != ""){
+						var name = file.previewElement.id;
+					}else{
+						var name = file.name;
+					}
+					//console.log(name);
+					var fileRef;
+						return (fileRef = file.previewElement) != null ? 
+						fileRef.parentNode.removeChild(file.previewElement) : void 0;
+				  });
+				}		
+			},
+	   
+			success: function(file, response) 
+			{
+				location.reload();	
+			},
+			error: function(file, response)
+			{
+			   if($.type(response) === "string")
+					var message = response; //dropzone sends it's own error messages in string
+				else
+					var message = response.message;
+				file.previewElement.classList.add("dz-error");
+				_ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+				_results = [];
+				for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+					node = _ref[_i];
+					_results.push(node.textContent = message);
+				}
+				return _results;
+			}
+		});
+		
+		$("#eoi_dossier").dropzone({
+			maxFiles: 25, 
+			maxFilesize: 25,
+			dictDefaultMessage: "@lang('app.txt.eoi_dossier')",
+			url: "{{ route('AjaxEoiDossierEdit') }}",
 			params: {"_token": "{{ csrf_token() }}","id_programme": "{{ $product->id }}"},
 			acceptedFiles: ".jpeg,.jpg,.png,.gif,.doc,.docx,.xls,.xlsx,.pdf",
 			addRemoveLinks: true,
@@ -647,6 +774,43 @@
 				}); 
 			} else {
 				swal("@lang('app.table.fond_dossier')", "@lang('app.jquery.delete_cancel')", "error");
+			}
+		 });
+	}
+	
+	function delete_eoi_dossier(id_eoi_dossier)
+	{
+		swal({
+			title: "@lang('app.table.eoi_dossier')",
+			text: "@lang('app.dropzone.delete_photo_confirme')",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: '#ff3547',
+			confirmButtonText: "@lang('app.yes')",
+			cancelButtonText: "@lang('app.no')",
+			closeOnConfirm: false,
+			closeOnCancel: false
+		 },
+		 function(isConfirm){	
+		   if (isConfirm){
+				 $.ajax({
+					url : "{{ route('ajaxDropEoiDossier') }}",
+					type: "POST",
+					dataType: "JSON",
+					data:{"_token": "{{ csrf_token() }}",'id_eoi_dossier':id_eoi_dossier},
+					success: function(data)
+					{
+						swal("@lang('app.table.eoi_dossier')", "@lang('app.dropzone.delete_fonds_yes')", "success");
+						location.reload();	
+					},
+					error: function (jqXHR, textStatus, errorThrown)
+					{
+						swal("@lang('app.table.eoi_dossier')", "@lang('app.jquery.error_delete')", "error");
+						location.reload();	
+					}
+				}); 
+			} else {
+				swal("@lang('app.table.eoi_dossier')", "@lang('app.jquery.delete_cancel')", "error");
 			}
 		 });
 	}

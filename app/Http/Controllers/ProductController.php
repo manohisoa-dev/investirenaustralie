@@ -18,6 +18,7 @@ use App\Models\Type;
 use App\Models\Localisation;
 use App\Models\Firb;
 use App\Models\FondsDossier;
+use App\Models\EoiDossier;
 
 use Jleon\LaravelPnotify\Notify;
 use Carbon\Carbon;
@@ -475,6 +476,24 @@ class ProductController extends Controller {
         $fond_dossier->save();
     }
 
+    public function save_eoi_dossier($nom_photo, $id_programme) {
+        //save image "table image"
+        $image = new Image();
+        $image->url = $nom_photo;
+        $image->filename = $nom_photo;
+        $image->filemime = '';
+        $image->filepath = 'uploads/product/' . $nom_photo;
+        $image->author_id = Auth::user()->id;
+        $image->save();
+
+        //save photo programme "table products_fond_dossier"
+        $fond_dossier = new EoiDossier();
+        $fond_dossier->product_id = $id_programme;
+        $fond_dossier->image_id = $image->id;
+        $fond_dossier->author_id = Auth::user()->id;
+        $fond_dossier->save();
+    }
+
     public function saveProgramme(Request $request) {
         $anciennete = $request->ancienneteBien;
         $nature = $request->natureBien;
@@ -505,6 +524,12 @@ class ProductController extends Controller {
                     $is_principal = 0;
                 }
                 $this->save_photo_programme($value, $id_programme, $is_principal);
+            }
+        }
+
+        if ($request->eoiDossier) {
+            foreach ($request->eoiDossier as $key => $value) {
+                $this->save_eoi_dossier($value, $id_programme);
             }
         }
 
@@ -550,6 +575,11 @@ class ProductController extends Controller {
         return response()->json(['success' => 'true']);
     }
 
+    public function ajaxDropEoiDossier(Request $request) {
+        EoiDossier::where('id', $request->id_eoi_dossier)->delete();
+        return response()->json(['success' => 'true']);
+    }
+
     public function AjaxFonDossierEdit(Request $request) {
         $id_programme = $request->id_programme;
         $image = $request->file('file');
@@ -564,9 +594,24 @@ class ProductController extends Controller {
         return response()->json(['success' => 'true']);
     }
 
+    public function AjaxEoiDossierEdit(Request $request) {
+        $id_programme = $request->id_programme;
+        $image = $request->file('file');
+
+        $fileInfo = $image->getClientOriginalName();
+        $filename = pathinfo($fileInfo, PATHINFO_FILENAME);
+        $extension = pathinfo($fileInfo, PATHINFO_EXTENSION);
+        $file_name = $filename . '-' . time() . '.' . $extension;
+        $image->move(public_path('uploads/product'), $file_name);
+
+        $this->save_eoi_dossier($file_name, $id_programme);
+        return response()->json(['success' => 'true']);
+    }
+
     public function editProgramme(Request $request, Product $product) {
         $localisation = Localisation::find($product->location_id);
         $produit_lie = Product::where('parent_id', $product->id)->get();
+
         $photo = ProductsImage::where('products_images.product_id', '=', $product->id)->join('images',
             'products_images.image_id', '=', 'images.id')->select('*',
             'products_images.id as prdImageId')->get();
@@ -574,9 +619,23 @@ class ProductController extends Controller {
             'products_fond_dossier.image_id', '=', 'images.id')->select('*',
             'products_fond_dossier.id as prdFondId')->get();
 
+        $eoiDossier = EoiDossier::where('product_eoi.product_id', '=', $product->id)->join('images',
+            'product_eoi.image_id', '=', 'images.id')->select('*',
+            'product_eoi.id as prdEoiId')->get();
+
         return view('backend.product.edit_programme', ['product' => $product,
-            'localisation' => $localisation, 'photos' => $photo, 'product_lies' => $produit_lie,
-            'title' => __('afa.programme.title'), 'dossier' => $fonDossier]);
+            'localisation' => $localisation, 'photos' => $photo, 'eoidossier' => $eoiDossier,
+            'product_lies' => $produit_lie, 'title' => __('afa.programme.title'), 'dossier' =>
+            $fonDossier]);
+    }
+
+    public function editProduit(Request $request, Product $product) {
+        $localisation = Localisation::find($product->location_id);
+        $eoiDossier = EoiDossier::where('product_eoi.product_id', '=', $product->id)->join('images',
+            'product_eoi.image_id', '=', 'images.id')->select('*',
+            'product_eoi.id as prdEoiId')->get();
+        return view('backend.product.edit_produit', ['product' => $product,
+            'localisation' => $localisation, 'eoidossier' => $eoiDossier, 'title' => __('afa.programme.title')]);
     }
 
     public function updateProgramme(Request $request) {
@@ -627,6 +686,68 @@ class ProductController extends Controller {
         // updateTranslate('programme',$product,$request->description);
 
         return redirect()->route('edit.programme', $product->id)->with('success',
+            "Produit a été créer avec succès");
+    }
+
+    public function updateProduit(Request $request) {
+        $product = Product::find($request->id);
+        if ($request->location_Id != 0) {
+            Localisation::where('id', $request->location_Id)->update(['area_level_1' => $request->suburb_product,
+                'country' => $request->countryId_product, 'postalCode' => $request->postalCode_product,
+                'locality' => $request->ville_product, 'route' => $request->display_address,
+                'longitude' => $longitude, 'latitude' => $latitude]);
+            $id_location = $request->location_Id;
+        } else {
+            $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
+                $request->postalCode_product, $request->ville_product, $request->display_address);
+        }
+
+        if ($request->commision_product == 'Sales commission rate (%)') {
+            $taux_commision = $request->sales_rate_product;
+        } else {
+            $taux_commision = $request->rate_commission_product;
+        }
+
+        $slug = $slugOriginal = generateSlug($request->title);
+        $product->slug = $slug;
+        $product->title = $request->title;
+        if ($request->file('image')) {
+            $file = $request->file('image');
+            $image = Image::storeAndSave($file, 'product');
+            $product->image_id = $image->id;
+        }
+        $product->content = $request->desc_product;
+        $product->type_id = $request->type_id;
+        $product->display_address = $request->display_address;
+        $product->state_id = $request->state_id;
+        $product->min_price = $request->min_price;
+        $product->max_price = $request->max_price;
+        $product->status = $request->status;
+        $product->quantity = $request->quantity;
+        $product->bedrooms = $request->bedrooms;
+        $product->ensuite = $request->ensuite;
+        $product->bathrooms = $request->bathrooms;
+        $product->interior_area = $request->interior_area;
+        $product->exterior_area = $request->exterior_area;
+        $product->location_id = $id_location;
+        $product->commission_type = $request->commision_product;
+        $product->commision = $taux_commision;
+        if ($product->ancienneteBien == 'Ancien') {
+            $product->year_built = $request->year_built;
+        }
+        if ($product->ancienneteBien == 'Neuf' && $product->natureBien ==
+            'Produit isolé') {
+            $product->superficie_jardin = $request->superficie_jardin;
+            $product->dt_db_travaux = $request->dt_db_travaux;
+            $product->dt_prevu_livraison = $request->dt_prevu_livraison;
+        }
+        $product->total_area = $request->total_area;
+
+        $product->garage_spaces = $request->garage_spaces;
+        $product->carport_spaces = $request->carport_spaces;
+
+        $product->save();
+        return redirect()->route('mes-produits')->with('success',
             "Produit a été créer avec succès");
     }
 
@@ -705,6 +826,7 @@ class ProductController extends Controller {
         // // save translation
         // $detectLang = getGTranslateLangDetect($content);
         // $detectLang==='fr'?setTranslate('fr','en',$content,'programme',$product):setTranslate('en','fr',$content,'programme',$product);
+        return $product->id;
     }
 
     public function ajaxSaveProduct(Request $request) {
@@ -871,6 +993,12 @@ class ProductController extends Controller {
                         $this->save_photo_programme($value, $id_programme, $is_principal);
                     }
                 }
+                //save eoi
+                if ($request->eoiDossier) {
+                    foreach ($request->eoiDossier as $key => $value) {
+                        $this->save_eoi_dossier($value, $id_programme);
+                    }
+                }
                 //save fond dossier programme
                 if ($request->fondDossier) {
                     foreach ($request->fondDossier as $key => $value) {
@@ -905,14 +1033,20 @@ class ProductController extends Controller {
                     $taux_commision_prd = $request->rate_commission_product;
                 }
 
-                $this->save_new_produit($anciennete, $nature, $request->title_product, $request->file
-                    ('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
+                $id_produit = $this->save_new_produit($anciennete, $nature, $request->title_product,
+                    $request->file('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
                     $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
                     $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
                     $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
                     $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                     -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine, $request->commision_product,
                     $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison);
+
+                if ($request->p_eoiDossier) {
+                    foreach ($request->p_eoiDossier as $key => $value) {
+                        $this->save_eoi_dossier($value, $id_produit);
+                    }
+                }
             }
         } else {
             //si ancienneté == ancien

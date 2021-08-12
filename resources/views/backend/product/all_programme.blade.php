@@ -2,19 +2,23 @@
 
 @section('subcontent')
 
-    <div class="profile-content-area m-40px-tb">
-		<div class="card m-40px-b">
-			<div class="card-header">
-				<div class="row">
-					<div class="col-5 col-lg-8">
-						<span class="h6 font-w-500">{{$title}}</span>
-					</div>
-					<div class="col-7 col-lg-4 text-right">
-						<a href="{{route('nouveau-programmes')}}" class="m-btn m-btn-radius m-btn-theme m-btn-sm">@lang('app.txt.add_new_programme') </a>
-					</div>
-				</div>
-			</div>
-			<div class="card-body">
+    <div class="profile-content-area m-40px-tb card card-body">
+        <div class="tab-style-4">
+			<ul class="nav nav-fill nav-tabs">
+				<li class="nav-item">
+					<a href="{{route('mes-programmes')}}" class="{{Request::is('mes-programmes') ? 'active' : ''}}">
+						<div class="icon"><i class="fa fa-briefcase"></i></div>
+						<span>@lang('app.tab.title_programme')</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a href="{{route('mes-produits')}}" class="{{Request::is('mes-produits') ? 'active' : ''}}">
+						<div class="icon"><i class="fa fa-building"></i></div>
+						<span>@lang('app.tab.title_produits')</span>
+					</a>
+				</li>
+			</ul>
+			<div class="tab-content">
 				<table class="table table-bordered" style="font-size:12px">
 					<thead>
 						<tr>

@@ -677,7 +677,7 @@
                             @endif
 
                             @If(Auth::user()->hasRole(3))
-							  <a href="#properties" data-toggle="collapse" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{Request::is('mes-programmes') || Request::is('nouveau-programmes') || Request::is('mes-produits') || Request::is('nouveau-produit') ? 'menu-active' : ''}}">
+							  <a href="#properties" data-toggle="collapse" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ Request::is('nouveau-programmes') || Request::is('nouveau-produit') ? 'menu-active' : ''}}">
 									<div>
 										<i class="fa fa-industry m-10px-r"></i>
 										<span>Properties</span>
@@ -686,28 +686,37 @@
 										<i class="fas fa-chevron-right"></i>
 									</div>
 								</a>								
-								<ul id="properties" class="collapse {{Request::is('mes-programmes') || Request::is('nouveau-programmes') || Request::is('mes-produits') || Request::is('nouveau-produit') ? 'show' : ''}}" style="list-style:none">
-									<li>
+								<ul id="properties" class="collapse {{Request::is('nouveau-programmes') || Request::is('nouveau-produit') ? 'show' : ''}}" style="list-style:none">
+									{{--<li>
 										<a href="{{route('mes-programmes')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{Request::is('mes-programmes') ? 'menu-active' : ''}}">
 											@lang('afa.programme.menu')
 										</a>
-									</li>
+									</li>--}}
 									<li>
 										<a href="{{route('nouveau-programmes')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{Request::is('nouveau-programmes') ? 'menu-active' : ''}}">
 											@lang('app.admin.program.add')
 										</a>
 									</li>
-									<li>
+									{{--<li>
 										<a href="{{route('mes-produits')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{Request::is('mes-produits') ? 'menu-active' : ''}}">
 											@lang('app.admin.product.list')
 										</a>
-									</li>
+									</li>--}}
 									<li>
 										<a href="{{route('nouveau-produit')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{Request::is('nouveau-produit') ? 'menu-active' : ''}}">
 											@lang('app.admin.product.add')
 										</a>
 									</li>
 								</ul> 
+                                <a href="{{route('mes-programmes')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ Request::is('mes-programmes') || Request::is('mes-produits') ? 'menu-active' : ''}}">
+                                  <div>
+                                      <i class="fa fa-paperclip m-10px-r"></i>
+                                      <span>@lang('seller.products')</span>
+                                  </div>
+                                  <div>
+                                      <i class="fas fa-chevron-right"></i>
+                                  </div>
+                              </a>
                               <a href="{{route('afa.orders')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('afa/orders')) ? 'menu-active' : '' }}">
                                   <div>
                                       <i class="fa fa-cart-plus m-10px-r"></i>
@@ -756,7 +765,7 @@
                             @endif
 
                             @If(Auth::user()->hasRole(2))
-								<a href="#properties" data-toggle="collapse" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{Request::is('mes-programmes') || Request::is('nouveau-programmes') || Request::is('mes-produits') || Request::is('nouveau-produit') ? 'menu-active' : ''}}">
+								<a href="#properties" data-toggle="collapse" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ Request::is('nouveau-programmes') || Request::is('nouveau-produit') ? 'menu-active' : ''}}">
 									<div>
 										<i class="fa fa-industry m-10px-r"></i>
 										<span>Properties</span>
@@ -765,29 +774,29 @@
 										<i class="fas fa-chevron-right"></i>
 									</div>
 								</a>								
-								<ul id="properties" class="collapse {{Request::is('mes-programmes') || Request::is('nouveau-programmes') || Request::is('mes-produits') || Request::is('nouveau-produit') ? 'show' : ''}}" style="list-style:none">
-									<li>
+								<ul id="properties" class="collapse {{Request::is('nouveau-programmes') || Request::is('nouveau-produit') ? 'show' : ''}}" style="list-style:none">
+									{{--<li>
 										<a href="{{route('mes-programmes')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{Request::is('mes-programmes') ? 'menu-active' : ''}}">
 											@lang('afa.programme.menu')
 										</a>
-									</li>
+									</li>--}}
 									<li>
 										<a href="{{route('nouveau-programmes')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{Request::is('nouveau-programmes') ? 'menu-active' : ''}}">
 											@lang('app.admin.program.add')
 										</a>
 									</li>
-									<li>
+									{{--<li>
 										<a href="{{route('mes-produits')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{Request::is('mes-produits') ? 'menu-active' : ''}}">
 											@lang('app.admin.product.list')
 										</a>
-									</li>
+									</li>--}}
 									<li>
 										<a href="{{route('nouveau-produit')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{Request::is('nouveau-produit') ? 'menu-active' : ''}}">
 											@lang('app.admin.product.add')
 										</a>
 									</li>
 								</ul> 
-                              {{--<a href="{{route('seller.products')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('seller/products')) ? 'menu-active' : '' }}">
+                                <a href="{{route('mes-programmes')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ Request::is('mes-programmes') || Request::is('mes-produits') ? 'menu-active' : ''}}">
                                   <div>
                                       <i class="fa fa-paperclip m-10px-r"></i>
                                       <span>@lang('seller.products')</span>
@@ -795,7 +804,7 @@
                                   <div>
                                       <i class="fas fa-chevron-right"></i>
                                   </div>
-                              </a>--}}
+                              </a>
                               <a href="{{route('seller.orders')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('seller/orders')) ? 'menu-active' : '' }}">
                                   <div>
                                       <i class="fa fa-cart-plus m-10px-r"></i>

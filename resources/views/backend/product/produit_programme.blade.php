@@ -2,82 +2,89 @@
 
 @section('subcontent')
 				
-    <div class="profile-content-area m-40px-tb">
-		
-		<ol class="breadcrumb">
-			<li class="breadcrumb-item">
-				<a href="{{route('mes-programmes')}}">@lang('app.txt.all_programmes')</a>
-			</li>
-			<li class="breadcrumb-item active">
-				<strong>{{$product->title}}</strong>
-			</li>
-		</ol>
-
-		
-		<div class="card m-40px-b">		
-			<div class="card-header">
-				<div class="row">
-					<div class="col-5 col-lg-8">
-						<span class="h6 font-w-500">Liste des produits</span>
-					</div>
-					<div class="col-7 col-lg-4 text-right">
-						<a href="javascript:void(0)" onclick="add_product({{$product->id}})" class="m-btn m-btn-radius m-btn-theme m-btn-sm">@lang('app.form.product_add_ajax') </a>
+    <div class="profile-content-area m-40px-tb card card-body">
+        <div class="tab-style-4">
+			<ul class="nav nav-fill nav-tabs">
+				<li class="nav-item">
+					<a href="{{route('mes-programmes')}}" class="active">
+						<div class="icon"><i class="fa fa-briefcase"></i></div>
+						<span>@lang('app.tab.title_programme')</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a href="{{route('mes-produits')}}" class="{{Request::is('mes-produits') ? 'active' : ''}}">
+						<div class="icon"><i class="fa fa-building"></i></div>
+						<span>@lang('app.tab.title_produits')</span>
+					</a>
+				</li>
+			</ul>
+			<div class="tab-content">
+				<div class="profile-content-area m-40px-tb">
+					<div class="card m-40px-b">		
+						<div class="card-header">
+							<div class="row">
+								<div class="col-5 col-lg-8">
+									<span class="h6 font-w-500">Liste des produits <strong>{{$product->title}}</strong></span>
+								</div>
+								<div class="col-7 col-lg-4 text-right">
+									<a href="javascript:void(0)" onclick="add_product({{$product->id}})" class="m-btn m-btn-radius m-btn-theme m-btn-sm">@lang('app.form.product_add_ajax') </a>
+								</div>
+							</div>
+						</div>
+						<div class="card-body">
+							<table class="table table-bordered" style="font-size:12px">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>@lang('app.table.produit_image')</th>
+										<th>@lang('app.table.produit_titre')</th>
+										<th>@lang('app.table.produit_prix_min')</th>
+										<th>@lang('app.table.produit_prix_max')</th>
+										<th>@lang('app.table.status')</th>
+										<th style="text-align:center">@lang('app.table.actions')</th>
+									</tr>
+								</thead>
+								<tbody>
+								@foreach($product_lies as $key=>$product_lie)
+									<tr>
+										<td>{{$key + 1}}</td>
+										<td>
+											@if (@getimagesize($product_lie->imageUrl()))
+												<img src="{{$product_lie->imageUrl()}}" class="img-responsive" style="height:50px" />
+											@else
+												<img class="img-responsive" src="{{asset('img/500x500.jpg')}}" style="height:50px" >
+											@endif
+										</td>
+										<td><b>{{ $product_lie->title }}</b><br />{!! $product_lie->excerpt() !!}</td>
+										<td>{{ $product_lie->currency }}&nbsp;{{ number_format($product_lie->min_price, 0, '.', ' ') }}</td>
+										<td>{{ $product_lie->currency }}&nbsp;{{ number_format($product_lie->max_price, 0, '.', ' ') }}</td>
+										<td>
+											@if($product_lie->status=='published')
+											<span class="label label-success">@lang('app.'.$product_lie->status)</span>
+											@else
+											<span class="label label-warning">@lang('app.'.$product_lie->status)</span>
+											@endif
+										</td>
+										<td class="actions-cell text-center">								
+											<a href="javascript:void(0)" onclick="edit_product({{$product_lie->id}})" class="" title="@lang('app.table.btn_title_modification')">
+												<i class="fa fa-edit"></i>
+											</a>&nbsp;
+											<a href="javascript:void(0)" onclick="delete_product({{$product_lie->id}})" class="" title="@lang('app.table.btn_title_delete')">
+												<i class="fa fa-times text-danger"></i>
+											</a>
+										</td>
+									</tr>
+								@endforeach
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div class="card-body">
-				<table class="table table-bordered" style="font-size:12px">
-					<thead>
-						<tr>
-							<th>ID</th>
-							<th>@lang('app.table.produit_image')</th>
-							<th>@lang('app.table.produit_titre')</th>
-							<th>@lang('app.table.produit_prix_min')</th>
-							<th>@lang('app.table.produit_prix_max')</th>
-							<th>@lang('app.table.status')</th>
-							<th style="text-align:center">@lang('app.table.actions')</th>
-						</tr>
-					</thead>
-					<tbody>
-					@foreach($product_lies as $key=>$product_lie)
-						<tr>
-							<td>{{$key + 1}}</td>
-							<td>
-								@if (@getimagesize($product_lie->imageUrl()))
-									<a href="{{route('admin.product.index')}}/{{$product_lie->id}}">
-										<img src="{{$product_lie->imageUrl()}}" class="img-responsive" style="height:80px" />
-									</a>
-								@else
-									<a href="{{route('admin.product.index')}}/{{$product_lie->id}}">
-										<img class="img-responsive" src="{{asset('img/500x500.jpg')}}" width="80">
-									</a>
-								@endif
-							</td>
-							<td><b>{{ $product_lie->title }}</b><br />{!! $product_lie->excerpt() !!}</td>
-							<td>{{ $product_lie->currency }}&nbsp;{{ number_format($product_lie->min_price, 0, '.', ' ') }}</td>
-							<td>{{ $product_lie->currency }}&nbsp;{{ number_format($product_lie->max_price, 0, '.', ' ') }}</td>
-							<td>
-								@if($product_lie->status=='published')
-								<span class="label label-success">@lang('app.'.$product_lie->status)</span>
-								@else
-								<span class="label label-warning">@lang('app.'.$product_lie->status)</span>
-								@endif
-							</td>
-							<td class="actions-cell text-center">								
-								<a href="javascript:void(0)" onclick="edit_product({{$product_lie->id}})" class="" title="@lang('app.table.btn_title_modification')">
-									<i class="fa fa-edit"></i>
-								</a>&nbsp;
-								<a href="javascript:void(0)" onclick="delete_product({{$product_lie->id}})" class="" title="@lang('app.table.btn_title_delete')">
-									<i class="fa fa-times text-danger"></i>
-								</a>
-							</td>
-						</tr>
-					@endforeach
-					</tbody>
-				</table>
-			</div>
 		</div>
 	</div>
+	
+	
 
 @endsection
 
