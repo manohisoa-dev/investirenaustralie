@@ -35,4 +35,7 @@ return [
     "product.menu"  => "Produits",
     "product.title"  => "Mes produits",
     "new.product.title"  => "Nouveau produit",
+    "folders.title"  => "Mes dossiers",
+    "folders.status.to_download"  => "A télécharger",
+    "folders.status.finalized"  => "Finalisé",
 ];

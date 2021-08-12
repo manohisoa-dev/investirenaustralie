@@ -23,6 +23,7 @@ use App\Models\RelationMembreApl;
 use App\Models\Parameter;
 use App\Models\DossierTransaction;
 use App\Models\Product;
+use App\Models\ConjunctionAgreement;
 use Session;
 use Carbon\Carbon;
 use App;
@@ -460,6 +461,7 @@ class MemberController extends Controller {
 
         if($product){
             $prodUrl = url('product/'.$product->slug);
+            session()->put('id_product',$product->id);
             session()->put('link_product',$prodUrl);
         }
 
@@ -559,10 +561,12 @@ class MemberController extends Controller {
         if (session()->get('link_product')) {
             $linkProduct = session()->get('link_product');
             session()->forget('link_product');
+            $downloadCaLink = url("uploads/pdf/ca/CA-".Auth::user()->afa->immat."_".time().".pdf");
+            $uploadCaLink = route('afa.dossier');
 
             // Declenche Conjuction Agreement Module
             App::setLocale('en');
-            $this->sendConjuctionAgreementModule(Auth::user()->afa_id,Auth::user()->afa->email,trans('member.gothere.select_afa.ca.message_to_afa', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'immat'=>Auth::user()->immat,'agence' => 'IEA']));
+            $this->sendConjuctionAgreementModule(Auth::user()->afa_id,Auth::user()->afa->email,trans('member.gothere.select_afa.ca.message_to_afa', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'immat'=>Auth::user()->immat,'agence' => 'IEA', 'download_ca'=>$downloadCaLink,'upload_ca'=>$uploadCaLink]));
 
             return redirect($linkProduct)->with('engagement', trans('member.gothere.select_afa.waiting_message', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'afa' => Auth::user()->afa->name]))->with('waiting',1);
         }
@@ -583,11 +587,18 @@ class MemberController extends Controller {
     }
 
     public function createCaPdf() {
-        $pdf_file = 'pdf.conjunction_agreement';
+        $pdf_template = 'pdf.conjunction_agreement';
         $user = Auth::user();
         $iea = ['name'=>'IEA', 'abn'=>'XXXXXXXXXXX', 'license'=>'XXXXXXXXXX', 'licence_expire_date'=>'12/12/2022', 'address'=>'Australie', 'mobile'=>'+ 255 66 999 69', 'email'=>'admin@investirenaustralie.com', 'director'=>'Philippe', 'director_license'=>'XXXXXXXXXXXXXXXXX', 'directore_licence_expire_date'=>'12/12/2022'];
-        $pdfName = 'CA-'.$user->afa->immat;
-        return PDF::loadView($pdf_file,['user'=>$user, 'iea'=>$iea])->save('uploads/pdf/ca/'.$pdfName.'.pdf');
+        $pdfName = 'CA-'.$user->afa->immat."_".time().".pdf";
+        $path = 'uploads/pdf/ca/'.$pdfName.'.pdf';
+        $prod_id = session()->get('id_product');
+
+        // Save conjunction agreement in 
+        ConjunctionAgreement::create(['file_name'=>$pdfName,'path'=>$path,'product_id'=>$prod_id,'from_id'=>$user->id,'to_id'=>$user->afa->id]);
+        session()->forget('id_product');
+
+        return PDF::loadView($pdf_template,['user'=>$user, 'iea'=>$iea])->save($path);
     }
 
     /**
@@ -613,7 +624,7 @@ class MemberController extends Controller {
                 return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa.waiting_message', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'afa' => Auth::user()->afa->name]))->with('waiting',1);
             } 
                 
-            return redirect()->route('member.select.afa', $prod)->with('error', trans('app.txt.choose_an_afa'));
+            return redirect()->route('member.select.afa', $product)->with('error', trans('app.txt.choose_an_afa'));
         }
 
         abort(404);

@@ -517,5 +517,9 @@ class Product extends Model {
         return $this->hasMany(ProductsImage::class, 'product_id', 'id');
     }
 
+    public function conjunctionAgreement(){
+        return $this->belongsToMany(ConjunctionAgreement::class, 'id', 'product_id');
+    }
+
 }
 

@@ -555,8 +555,10 @@
             $('[data-toggle="tooltip"]').tooltip();
 
             // Show notification current transaction member
-            if('{{ Auth::check() && Auth::user()->hasCurrentTransaction() }}' && !sessionStorage.getItem('notif_trans_member')){
-                $('#memberHasDossierTransactionModal').modal('show');
+            if('{{ !Request::is("product/*") }}'){
+                if('{{ Auth::check() && Auth::user()->hasCurrentTransaction() }}' && !sessionStorage.getItem('notif_trans_member')){
+                    $('#memberHasDossierTransactionModal').modal('show');
+                }
             }
         });
 
@@ -658,6 +660,11 @@
         function loadingPage(){
             $('#loading').css('background','rgba(174,68,53, 0.5)');
             $('#loading').show();
+        }
+
+        function stopLoadingPage(){
+            $('#loading').css('background','rgba(174,68,53, 0.5)');
+            $('#loading').hide();
         }
     </script>
 

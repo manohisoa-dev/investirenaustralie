@@ -16,6 +16,7 @@ class AfaConjunctionAgreementMessage extends Notification
     private $user;
     private $dt;
     private $hr;
+    private $uploadCa;
         
     /**
      * Create a new notification instance.
@@ -27,6 +28,7 @@ class AfaConjunctionAgreementMessage extends Notification
         $this->user = $user;
         $this->dt = Carbon::now()->format('m-d-Y');
         $this->hr = Carbon::now()->format('H:i:m');
+        $this->uploadCa = 'CA-'.$user->afa->immat.'.pdf';
     }
 
     /**
@@ -51,12 +53,13 @@ class AfaConjunctionAgreementMessage extends Notification
         $user = $this->user;
         $dt = $this->dt;
         $hr = $this->hr;
+        $uploadCa = url("uploads/pdf/ca/".$this->uploadCa);
 
         return (new MailMessage)
             ->from(env('ADMIN_MAIL'))
             ->subject(__('app.message'))
             ->subject(__('mail.created.subject', ['app'=>app_name()]))
-            ->line(__('member.gothere.select_afa.ca.message_to_afa', ['date'=>$dt,'hour'=>$hr,'name'=>$user->name,'immat'=>$user->immat,'agence' => 'IEA']));
+            ->line(__('member.gothere.select_afa.ca.message_to_afa', ['date'=>$dt,'hour'=>$hr,'name'=>$user->name,'immat'=>$user->immat,'agence' => 'IEA', 'upload_ca'=>$uploadCa]));
     }
 
     /**
