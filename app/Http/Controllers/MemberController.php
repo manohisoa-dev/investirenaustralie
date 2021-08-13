@@ -566,7 +566,7 @@ class MemberController extends Controller {
 
             // Declenche Conjuction Agreement Module
             App::setLocale('en');
-            $this->sendConjuctionAgreementModule(Auth::user()->afa_id,Auth::user()->afa->email,trans('member.gothere.select_afa.ca.message_to_afa', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'immat'=>Auth::user()->immat,'agence' => 'IEA', 'download_ca'=>$downloadCaLink,'upload_ca'=>$uploadCaLink]));
+            $this->sendConjuctionAgreementModule(Auth::user()->afa_id,Auth::user()->afa->email,trans('member.gothere.select_afa.ca.message_to_afa', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'immat'=>Auth::user()->immat,'agence' => 'IEA', 'download_ca'=>$downloadCaLink,'upload_ca'=>$uploadCaLink]), $downloadCaLink, $uploadCaLink);
 
             return redirect($linkProduct)->with('engagement', trans('member.gothere.select_afa.waiting_message', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'afa' => Auth::user()->afa->name]))->with('waiting',1);
         }
@@ -575,7 +575,7 @@ class MemberController extends Controller {
     }
 
     // Declanche Conjunction Agreement (CA)
-    public function sendConjuctionAgreementModule($afa_id,$afa_mail,$content){
+    public function sendConjuctionAgreementModule($afa_id,$afa_mail,$content,$downloadCaLink,$uploadCaLink){
         // Create CA pdf
         $this->createCaPdf();
         
@@ -583,7 +583,7 @@ class MemberController extends Controller {
         Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$afa_id,'body'=>$content]);
 
         // send notification email to afa from IEA
-        User::whereId($afa_id)->first()->notify(new AfaConjunctionAgreementMessage(Auth::user()));
+        User::whereId($afa_id)->first()->notify(new AfaConjunctionAgreementMessage(Auth::user(),$downloadCaLink,$uploadCaLink));
     }
 
     public function createCaPdf() {

@@ -17,18 +17,20 @@ class AfaConjunctionAgreementMessage extends Notification
     private $dt;
     private $hr;
     private $uploadCa;
+    private $downloadCa;
         
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(User $user,$downloadCa,$uploadCa)
     {
         $this->user = $user;
         $this->dt = Carbon::now()->format('m-d-Y');
         $this->hr = Carbon::now()->format('H:i:m');
-        $this->uploadCa = 'CA-'.$user->afa->immat.'.pdf';
+        $this->uploadCa = $uploadCa;
+        $this->downloadCa = $downloadCa;
     }
 
     /**
@@ -53,13 +55,14 @@ class AfaConjunctionAgreementMessage extends Notification
         $user = $this->user;
         $dt = $this->dt;
         $hr = $this->hr;
-        $uploadCa = url("uploads/pdf/ca/".$this->uploadCa);
+        $downloadCa = $this->downloadCa;
+        $uploadCa = $this->uploadCa;
 
         return (new MailMessage)
             ->from(env('ADMIN_MAIL'))
             ->subject(__('app.message'))
             ->subject(__('mail.created.subject', ['app'=>app_name()]))
-            ->line(__('member.gothere.select_afa.ca.message_to_afa', ['date'=>$dt,'hour'=>$hr,'name'=>$user->name,'immat'=>$user->immat,'agence' => 'IEA', 'upload_ca'=>$uploadCa]));
+            ->line(__('member.gothere.select_afa.ca.message_to_afa', ['date'=>$dt,'hour'=>$hr,'name'=>$user->name,'immat'=>$user->immat,'agence' => 'IEA', 'download_ca'=>$downloadCa, 'upload_ca'=>$uploadCa]));
     }
 
     /**

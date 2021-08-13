@@ -20,10 +20,10 @@ class DossierController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function showDossier() {
+    public function showMemberDossier() {
         $aplActive = User::find(Auth::user()->id);
         $allApl = RelationMembreApl::where('membre_id', Auth::user()->id)->get();
-        return view('backend.dossier.index')->with('title', __('member.menu_relation_apl'))->with('aplActive',
+        return view('backend.dossier.member')->with('title', __('member.menu_relation_apl'))->with('aplActive',
             $aplActive)->with('allApl', $allApl);
     }
 

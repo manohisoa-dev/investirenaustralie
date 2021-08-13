@@ -100,8 +100,10 @@
         }
 
         function timelineContent(folderInfo){
-            var dayCreate = $.format.prettyDate(folderInfo.created_at, 'yyyy MMM dd');
+            var dayCreate = $.format.prettyDate(folderInfo.created_at);
             var dateCreate = $.format.date(folderInfo.created_at, 'yyyy MMM dd');
+            var dayUpdate = $.format.prettyDate(folderInfo.updated_at);
+            var dateUpdate = $.format.date(folderInfo.updated_at, 'yyyy MMM dd');
             var origin   = window.location.origin;
             var downloadLink = origin+'/'+folderInfo.path;
             var status = folderInfo.status;
@@ -141,6 +143,10 @@
                                         '<form id="formSendCaFile">'+
                                             '<input type="file" id="FileUpload1" onchange="fileUploadChange('+folderInfo.id+')" name="file_ca" style="display: none" />'+
                                         '</form>'+
+                                        '<span class="vertical-date">'+
+                                            dayUpdate+'<br/>'+
+                                            '<small>'+dateUpdate+'</small>'+
+                                        '</span>'+
                                     '</div>'+
                                 '</div>'+
                             '</div>'+

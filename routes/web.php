@@ -205,7 +205,7 @@ Route::middleware(["auth", "role:5"])->group(function(){
         });
 
         // Dossier Controller
-        Route::get('dossier', 'DossierController@showDossier')->name('member.dossier');
+        Route::get('dossier', 'DossierController@showMemberDossier')->name('member.dossier');
     });
 
 });

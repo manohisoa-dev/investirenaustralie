@@ -23,6 +23,7 @@ class MessageController extends Controller
 {
     public function getAllMessage(Request $request, $role){
         $user_id=Auth::user()->id;
+        $hasSendCa = "";
 
         if($role==='admin'){
             $to_id=1;
@@ -39,6 +40,10 @@ class MessageController extends Controller
         $messages = Message::whereRaw("(from_id = ".$user_id." AND to_id = $to_id ) OR (to_id = ".$user_id." AND from_id = $to_id )" )
                             ->orderBy('created_at', 'ASC')
                             ->get();
+        
+        if(Auth::user()->hasRole(5) && $user_id !== '1'){
+            $hasSendCa = Auth::user()->afaHasSendCa($user_id,$to_id)?1:0; // 0: CA not send  1:CA send 
+        }
 
         $data = [];
         foreach($messages as $message){
@@ -52,6 +57,7 @@ class MessageController extends Controller
                 'created_at' => $message->created_at,
                 'created_at_send' => $message->created_at->diffForHumans(),
                 'seen' => $message->seen? trans('app.txt.read') : trans('app.txt.unread'),
+                'hasSendCa' => $hasSendCa
             ];
         }
 
