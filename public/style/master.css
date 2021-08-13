@@ -305,11 +305,11 @@ a:hover {
 }
 
 .m-btn.m-btn-theme {
-  background: #323232;
+  background: #555658;
   color: #ffffff;
 }
 .m-btn.m-btn-theme.active, .m-btn.m-btn-theme:focus, .m-btn.m-btn-theme:hover {
-  background: #AE4435;
+  background: #323232;
   color: #ffffff;
 }
 

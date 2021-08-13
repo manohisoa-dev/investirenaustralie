@@ -10,6 +10,7 @@ use App\Notifications\PasswordReseted;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 use Session;
+use App\Models\Product;
 
 class User extends Authenticatable {
     use Notifiable;
@@ -913,15 +914,41 @@ class User extends Authenticatable {
     public function hasCurrentTransaction(){
         $dosTransUser = DossierTransaction::where('user_id',$this->id)->where('status','current')->get();
 
-        if($dosTransUser){
+        if(sizeof($dosTransUser) !== 0){
             return true;
         }
 
         return false;
     }
 
-    public function afaHasSendCa(){
-        return false;
+    public function dossierTransaction(){
+        $dossierTrans = DossierTransaction::where('user_id',$this->id)->where('status','current');
+
+        return $dossierTrans;
+    }
+
+    public function afaHasSendCa($from_id,$to_id){
+        $ca = Product::conjunctionAgreement()->where('from_id','=',$from_id)->where('to_id','=',$to_id)->first();
+
+        if(sizeof($ca)!==0){
+            if($ca->status === 0){
+                return false;
+            }else{
+                return true;
+            }
+        }
+
+        return true;
+    }
+
+    public function conjunctionAgreement($from_id,$to_id){
+        $ca = Product::conjunctionAgreement()->where('from_id','=',$from_id)->where('to_id','=',$to_id)->first();
+
+        if(sizeof($ca)!==0){
+            return $ca;
+        }
+
+        return '';
     }
 
 }

@@ -517,5 +517,10 @@ class Product extends Model {
         return $this->hasMany(ProductsImage::class, 'product_id', 'id');
     }
 
+    public function scopeConjunctionAgreement(){
+        
+        return Product::select('ca.*')->join('conjunction_agreements as ca','products.id','=','ca.product_id');
+    }
+
 }
 

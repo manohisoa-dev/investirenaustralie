@@ -386,7 +386,6 @@
 
       // show engagement modal
       if(eng !== '0'){
-        $('#memberHasDossierTransactionModal').modal('hide'); //hide dossier transaction notification
         $('#engagementModal').modal('show');
       }
 

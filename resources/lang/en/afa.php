@@ -32,4 +32,7 @@ return [
     the Foreign Investment Review Board (FIRB).',
     "product.menu"  => "Products",
     "new.product.title"  => "New product",
+    "folders.title"  => "My folders",
+    "folders.status.to_download"  => "To download",
+    "folders.status.finalized"  => "Finalized",
 ];

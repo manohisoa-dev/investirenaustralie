@@ -205,7 +205,7 @@ Route::middleware(["auth", "role:5"])->group(function(){
         });
 
         // Dossier Controller
-        Route::get('dossier', 'DossierController@showDossier')->name('member.dossier');
+        Route::get('dossier', 'DossierController@showMemberDossier')->name('member.dossier');
     });
 
 });
@@ -260,6 +260,11 @@ Route::prefix('afa')->middleware(["auth","role:3"])->group(function(){
     });
 
     Route::get('message/{role}/show', 'AfaController@showMessage')->name('afa.show.message');
+
+    // Dossier Controller
+    Route::get('dossier', 'DossierController@showAfaDossier')->name('afa.dossier');
+    Route::post('dossier', 'DossierController@uploadAfaDossierCa')->name('afa.dossier.upload_ca');
+    Route::post('dossier/update_ca', 'DossierController@updateCa')->name('afa.dossier.update_ca');
 });
 
 Route::prefix('seller')->middleware(["auth","role:2"])->group(function(){
