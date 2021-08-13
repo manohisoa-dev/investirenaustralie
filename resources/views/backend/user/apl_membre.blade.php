@@ -35,13 +35,13 @@
 							<td>{{ $aplActive->apl->name }}</td>
 							<td>{{ $aplActive->apl->email }}</td>
 							<td>{{\Carbon\Carbon::parse($aplActive->apl_ends_at)->formatLocalized('%d %b %Y')}}</td>
-							<td>
+							<td align="center">
 								<a href="javascript:void(0)" onclick="renew_relation({{$aplActive->id}})" class="btn btn-default btn-circle" title="@lang('app.txt.renew_relationship')">
 									<i class="icon-refresh text-success"></i>
 								</a>
-								<a href="javascript:void(0)" onclick="annuler_relation({{$aplActive->id}})" class="btn btn-default btn-circle" title="@lang('app.txt.end_relationship')">
+								{{--<a href="javascript:void(0)" onclick="annuler_relation({{$aplActive->id}})" class="btn btn-default btn-circle" title="@lang('app.txt.end_relationship')">
 									<i class="fa fa-times text-danger"></i>
-								</a>
+								</a>--}}
 							</td>
 						</tr>
 					</tbody>

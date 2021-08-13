@@ -29,11 +29,12 @@
 							</div>
 						</div>
 						<div class="card-body">
-							<form class="form-padding wizard-big" action="{{ route('updateProduit') }}" method="post" id="form" enctype="multipart/form-data">
+							<form class="form-padding wizard-big" action="{{ route('updateProduit') }}" method="post" id="productForm" enctype="multipart/form-data">
 								{{ csrf_field() }}
 								<input type="hidden" name="category_id" id="cat_programmme_id" value="{{$product->category_id}}" />
 								<input type="hidden" name="location_id" value="{{$product->location_id}}" />
-								<input type="hidden" name="id" value="{{$product->id}}" />     
+								<input type="hidden" name="id" value="{{$product->id}}" /> 
+								<input type="hidden" name="" id="natureBien" value="{{$product->natureBien}}" />    
 								<div class="row">
 									<div class="col-lg-12">
 										<div class="form-group">
@@ -242,8 +243,18 @@
 										</div>
 									</div>
 								</div>
-								
-								<div class="row">							
+								<div class="row" id="price_simple" style="display:none">
+									<div class="col-lg-6">
+										<label for="title">Price *</label>
+										<div class="input-group" style="margin-bottom: .5rem;">
+											<input type="number" class="form-control" name="simple_price" id="simple_price" value="{{$product->price}}">
+											<div class="input-group-append">
+												<span class="input-group-text">AUD</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row" id="price_max_min" style="display:none">							
 									<div class="col-lg-6">
 										<div class="form-group">
 											<label for="title">@lang('app.form.product_prix_min') *</label>
@@ -455,6 +466,8 @@
 	<script src="{{ asset('administrator/js/plugins/dropzone/dropzone.js') }}"></script>
 	<script src="{{asset('administrator/plugins/ckeditor/ckeditor.js')}}"></script>	
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+	<!-- Jquery Validate -->
+	<script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
 	<script>
 	Dropzone.autoDiscover = false;
 	$(document).ready(function(){
@@ -549,9 +562,13 @@
 			$('#bloc_eoi_doc').show();
 			$('#dt_db_travaux').val('{{$product->dt_db_travaux}}');
 			$('#dt_prevu_livraison').val('{{$product->dt_prevu_livraison}}');
+			$('#price_simple').show();
+			$('#price_max_min').hide();
 		}else{
 			$('#info-date-isole').hide();
 			$('#bloc_eoi_doc').hide();
+			$('#price_simple').hide();
+			$('#price_max_min').show();
 		}
 		
 		$('#commision_product').on('change', function() {
@@ -583,11 +600,34 @@
 				type_id: {
 					required: true
 				},
+				simple_price: {
+					required: {
+						depends: function(element) {
+							if($("#natureBien").val() == 'Produit isolé'){
+								return true;	
+							}
+						}
+					},
+					number: true
+				},
 				min_price: {
-					required: true
+					required: {
+						depends: function(element) {
+							if($("#natureBien").val() == 'Programme immobilier'){
+								return true;	
+							}
+						}
+					},
+					number: true
 				},
 				max_price: {
-					required: true,
+					required: {
+						depends: function(element) {
+							if($("#natureBien").val() == 'Programme immobilier'){
+								return true;	
+							}
+						}
+					},
 					number: true,
 					min: function ()  { return parseInt($("#min_price").val())}
 				},
@@ -633,7 +673,7 @@
 			},
 			errorPlacement: function ( error, element ) {
 				if(element.parent().hasClass('input-group')){
-					error.insertBefore( element.parent() );
+					error.insertAfter( element.parent() );
 				}else{
 					error.insertAfter( element );
 				}

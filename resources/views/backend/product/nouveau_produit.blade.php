@@ -396,7 +396,18 @@
 							</div>
 						</div>
 						<!-- fin eoi-->
-						<div class="row">
+						<div class="row" id="price_simple" style="display:none">
+							<div class="col-lg-6">
+								<label for="title">@lang('app.table.price') *</label>
+								<div class="input-group" style="margin-bottom: .5rem;">
+									<input type="number" class="form-control" name="simple_price" id="simple_price">
+									<div class="input-group-append">
+										<span class="input-group-text">AUD</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row" id="price_max_min" style="display:none">
 							<div class="col-lg-6">
 								<label for="title">@lang('app.form.product_prix_min') *</label>
 								<div class="input-group" style="margin-bottom: .5rem;">
@@ -640,6 +651,8 @@
 					$('#info-date-isole').hide();
 					$("#progTitle").text(titre_programme);
 					$('#bloc_eoi_doc').hide();
+					$('#price_simple').hide();
+					$('#price_max_min').show();
 				}else if(ancienneteBien == 'Neuf' && natureBien == 'Produit isolé'){
 					$('#title_product').val('');
 					$('#jardin_info').show();
@@ -649,6 +662,8 @@
 					$('#commission_product').show();
 					$('#info-date-isole').show();
 					$('#bloc_eoi_doc').show();
+					$('#price_simple').show();
+					$('#price_max_min').hide();
 				}else if(ancienneteBien == 'Ancien'){
 					$('#title_product').val('');
 					$('[name="year_built"]').val($('#annee_const').val()).prop("readonly", true);
@@ -660,6 +675,8 @@
 					$('#commission_product').show();
 					$('#info-date-isole').hide();
 					$('#bloc_eoi_doc').hide();
+					$('#price_simple').hide();
+					$('#price_max_min').show();
 				}
 				// Always allow going backward even if the current step contains invalid fields!
 				if (currentIndex > newIndex)
@@ -891,8 +908,25 @@
 				display_address_product: {
 					required: true
 				},
+				simple_price: {
+					required: {
+						depends: function(element) {
+							if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Produit isolé'){
+								return true;	
+							}
+						}
+					},
+					number: true
+				},
 				price: {
-					required: true
+					required: {
+						depends: function(element) {
+							if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier'){
+								return true;	
+							}
+						}
+					},
+					number: true
 				},
 				commision_product: {
 					required: true
@@ -916,7 +950,15 @@
 					}
 				},
 				price_max_prd: {
-					required: true
+					required: {
+						depends: function(element) {
+							if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier'){
+								return true;	
+							}
+						}
+					},
+					number: true,
+					min: function ()  { return parseInt($("#price").val())}
 				},
 				interior_area: {
 					required: true,
@@ -978,6 +1020,9 @@
 					required: "@lang('app.txt.champobligatoire')"
 				},
 				natureBien: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				simple_price:{
 					required: "@lang('app.txt.champobligatoire')"
 				},
 				prix_min: {
