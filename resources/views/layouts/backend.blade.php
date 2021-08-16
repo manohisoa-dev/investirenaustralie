@@ -703,7 +703,7 @@
 										</a>
 									</li>--}}
 									<li>
-										<a href="{{route('nouveau-produit')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{Request::is('nouveau-produit') ? 'menu-active' : ''}}">
+										<a href="javascript:void(0)" id="newProduct" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{Request::is('nouveau-produit') ? 'menu-active' : ''}}">
 											@lang('app.admin.product.add')
 										</a>
 									</li>
@@ -786,7 +786,7 @@
 										</a>
 									</li>
 									{{--<li>
-										<a href="{{route('mes-produits')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{Request::is('mes-produits') ? 'menu-active' : ''}}">
+										<a href="javascript:void(0)" id="newProduct" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{Request::is('mes-produits') ? 'menu-active' : ''}}">
 											@lang('app.admin.product.list')
 										</a>
 									</li>--}}
@@ -1047,7 +1047,24 @@
     <script src="{{asset('administrator/plugins/bootstrap-fileupload/js/bootstrap-fileupload.js')}}"></script>
     <script>
         $(document).ready(function(){
-            
+			$('#newProduct').click(function(e){
+				e.preventDefault();
+				var link = $(this).attr('href');
+				
+				swal({
+					title: 'Investir en Australie',
+					text: '<p style="text-align: justify;margin-bottom: 15px">@lang("app.txt.confirm_creation")</p><p style="text-align: justify">@lang("app.txt.confirm_creation1")</p>',
+					visible: false,
+					html:true,
+					showCancelButton: true,
+					confirmButtonText: '@lang("app.txt_confirm_btn_creation")',
+					cancelButtonText: '@lang("app.txt_cancel_btn_creation")',
+					confirmButtonColor: '#AE4435'
+				},
+				function(){
+					window.location.href = '{{route('nouveau-produit')}}';
+				});
+			});
             // Show unread message count in left sidebar
             showUnreadCount();
 

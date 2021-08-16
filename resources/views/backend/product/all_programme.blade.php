@@ -23,11 +23,11 @@
 					<thead>
 						<tr>
 							<th>ID</th>
-							<th>Image</th>
-							<th>Titre</th>
-							<th>Categorie</th>
-							<th>Statut</th>
-							<th>Action</th>
+							<th>@lang('app.table.produit_image')</th>
+							<th>@lang('app.table.produit_titre')</th>
+							<th>@lang('app.admin.categories')</th>
+							<th>@lang('app.form.product_status')</th>
+							<th>@lang('app.table.action')</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -69,7 +69,7 @@
 							@endif
 							</td>
 							<td align="center">
-								<a href="{{route('produit.programme', $record->id)}}" title="Produits programme">
+								<a href="{{route('produit.programme', $record->id)}}" title="@lang('app.table.product_programme')">
 									<i class="fa fa-building"></i>
 								</a>&nbsp;
 								<a href="{{route('edit.programme', $record->id)}}" title="@lang('app.table.btn_title_modification')">

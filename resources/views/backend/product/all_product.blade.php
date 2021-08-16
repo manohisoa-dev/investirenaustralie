@@ -23,12 +23,12 @@
 					<thead>
 						<tr>
 							<th>ID</th>
-							<th>Image</th>
-							<th>Titre</th>
-							<th>Prix min</th>
-							<th>Prix max</th>
-							<th>Statut</th>
-							<th>Action</th>
+							<th>@lang('app.table.produit_image')</th>
+							<th>@lang('app.table.produit_titre')</th>
+							<th>@lang('app.form.programme_price_min')</th>
+							<th>@lang('app.form.programme_price_max')</th>
+							<th>@lang('app.form.product_status')</th>
+							<th>@lang('app.table.action')</th>
 						</tr>
 					</thead>
 					<tbody>
