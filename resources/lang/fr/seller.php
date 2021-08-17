@@ -4,7 +4,7 @@ return [
 
     "empty" => "Aucun élément trouvé.",
 
-    "products"  => "Mes produits",
+    "products"  => "Mes propriétés",
     "orders"    => "Ventes En Cours",
     "sales"     => "Ventes Effectuées",
     "customers"   => "Clients",

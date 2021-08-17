@@ -72,12 +72,14 @@
 								<a href="{{route('produit.programme', $record->id)}}" title="@lang('app.table.product_programme')">
 									<i class="fa fa-building"></i>
 								</a>&nbsp;
+								@if($record->status=='waiting')
 								<a href="{{route('edit.programme', $record->id)}}" title="@lang('app.table.btn_title_modification')">
 									<i class="fa fa-edit"></i>
 								</a>&nbsp;
-								<a href="" title="@lang('app.table.btn_title_modification')">
+								<a href="javascript:void(0)" onclick="delete_programme({{$record->id}})" title="@lang('app.table.btn_title_delete')">
 									<i class="fa fa-trash text-danger"></i>
 								</a>
+								@endif
 							</td>
 						</tr>
 					@endforeach
@@ -88,3 +90,45 @@
 	</div>
 
 @endsection
+
+@push('script')
+<script src="{{ asset('administrator/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
+<script type="text/javascript">
+	function delete_programme(id_programm)
+	{
+		swal({
+			title: "@lang('app.txt.programme')",
+			text: "@lang('app.dropzone.delete_photo_confirme')",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: '#ff3547',
+			confirmButtonText: "@lang('app.yes')",
+			cancelButtonText: "@lang('app.no')",
+			closeOnConfirm: false,
+			closeOnCancel: false
+		 },
+		 function(isConfirm){	
+		   if (isConfirm){
+				 $.ajax({
+					url : "{{ route('ajaxDropProgramm') }}",
+					type: "POST",
+					dataType: "JSON",
+					data:{"_token": "{{ csrf_token() }}",'id_programm':id_programm},
+					success: function(data)
+					{
+						swal("@lang('app.txt.programme')", "@lang('app.jquery.delete_product_yes')", "success");
+						location.reload();	
+					},
+					error: function (jqXHR, textStatus, errorThrown)
+					{
+						swal("@lang('app.txt.programme')", "@lang('app.jquery.error_delete')", "error");
+						location.reload();	
+					}
+				}); 
+			} else {
+				swal("@lang('app.txt.programme')", "@lang('app.jquery.delete_cancel')", "error");
+			}
+		 });
+	}
+</script>
+@endpush

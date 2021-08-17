@@ -23,13 +23,21 @@
 				</div>
 			</div>
 			<div class="card-body">
+				<div class="media-comment" style="margin-bottom:15px">
+					<h6>@lang('app.txt_information_title') </h6>
+					<p>@lang('app.txt_information_p')</p>
+					<ul>
+						<li>@lang('app.txt_information_etape1')</li>
+						<li>@lang('app.txt_information_etape2')</li>
+					</ul>
+				</div>
 				<form class="form-validation form-padding" action="{{route('save-programme')}}" method="post" id="programmeForm" enctype="multipart/form-data">
 					{{ csrf_field() }}
 					<div class="form-group">
 						<label>@lang('app.form.programme_choix_categorie') *</label>
 						<select class="form-control" name="cat_programmme_id" id="cat_programmme_id">
 							<option value="">@lang('app.form.choix_txt')</option>
-							@foreach(\App\Models\Category::all() as $category)
+							@foreach(\App\Models\Category::where('is_programm', '=', 1)->get() as $category)
 								<option value="{{$category->id}}">{{ trans('app.txt.'.$category->title) }}</option>
 							@endforeach
 						</select>
@@ -38,8 +46,8 @@
 					<div class="form-group">
 						<label for="title">@lang('app.form.programme_choix_anciennete') *</label>
 						<select class="form-control" name="ancienneteBien" id="ancienneteBien" disabled="disabled">
-							<option value="@lang('app.txt.new')">@lang('app.txt.new')</option>
-							<option value="@lang('app.txt.old')">@lang('app.txt.old')</option>
+							<option value="Neuf">@lang('app.txt.new')</option>
+							<option value="Ancien">@lang('app.txt.old')</option>
 						</select>
 						<input type="hidden" name="ancienneteBien" value="Neuf" />
 					</div>
@@ -47,10 +55,10 @@
 					<div class="form-group">
 						<label for="title">@lang('app.form.programme_choix_nature') *</label>
 						<select class="form-control" name="natureBien" id="natureBien" disabled="disabled">
-							<option value="@lang('app.txt.real_estate_program')">@lang('app.txt.real_estate_program')</option>
-							<option value="@lang('app.txt.isolated_product')">@lang('app.txt.isolated_product')</option>
+							<option value="Programme immobilier">@lang('app.txt.real_estate_program')</option>
+							<option value="Produit isolé">@lang('app.txt.isolated_product')</option>
 						</select>
-						<input type="hidden" name="natureBien" value="@lang('app.txt.real_estate_program')" />
+						<input type="hidden" name="natureBien" value="Programme immobilier" />
 					</div>
 					
 					<div class="form-group">
@@ -139,13 +147,13 @@
 					<div class="row">
 						<div class="col-lg-4">
 							<div class="form-group">
-								<label for="title">@lang('app.form.programme_suburb')</label>
+								<label for="title">@lang('app.form.programme_suburb') *</label>
 								<input name="suburb" id="suburb" class="form-control" type="text" value="">
 							</div>
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
-								<label for="title">@lang('app.form.programme_ville')</label>
+								<label for="title">@lang('app.form.programme_ville') *</label>
 								<input name="ville" id="ville" class="form-control" type="text">
 							</div>  
 						</div>
@@ -160,7 +168,7 @@
 					<div class="row">
 						<div class="col-lg-4">
 							<div class="form-group">
-								<label for="title">@lang('app.form.programme_pays')</label>
+								<label for="title">@lang('app.form.programme_pays') *</label>
 								<select class="form-control" name="countryId" id="countryId" style="width:100%">
 									@foreach(\App\Models\Country::where('id',12)->get() as $country)
 										<option value="{{$country->id}}">{{$country->content}}</option>
@@ -508,6 +516,12 @@
 				postalCode: {
 					required: true
 				},
+				suburb: {
+					required: true
+				},
+				ville: {
+					required: true
+				},
 				state_id: {
 					required: true
 				},
@@ -557,6 +571,12 @@
 					required: "@lang('app.txt.champobligatoire')"
 				},
 				postalCode: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				suburb: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				ville: {
 					required: "@lang('app.txt.champobligatoire')"
 				},
 				state_id: {

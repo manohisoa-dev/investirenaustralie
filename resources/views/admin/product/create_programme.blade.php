@@ -66,7 +66,7 @@
 										<option value="Programme immobilier">@lang('app.txt.real_estate_program')</option>
 										<option value="Produit isolé">@lang('app.txt.isolated_product')</option>
 									</select>
-									<input type="hidden" name="natureBien" value="@lang('app.txt.real_estate_program')" />
+									<input type="hidden" name="natureBien" value="Programme immobilier" />
 								</div>
 							</div>
 						</div>
