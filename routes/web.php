@@ -59,6 +59,7 @@ Route::post('ajaxGetProductById', 'ProductController@ajaxGetProductById')->name(
 Route::post('ajaxSaveProduct', 'ProductController@ajaxSaveProduct')->name('ajaxSaveProduct');
 Route::post('ajaxModifProduct', 'ProductController@ajaxModifProduct')->name('ajaxModifProduct');
 Route::post('ajaxDropProduit', 'ProductController@ajaxDropProduit')->name('ajaxDropProduit');  
+Route::post('ajaxDropProgramm', 'ProductController@ajaxDropProgramm')->name('ajaxDropProgramm');  
 Route::get('ajaxCheckFirb', 'ProductController@ajaxCheckFirb')->name('ajaxCheckFirb'); 
 Route::post('save-programme', 'ProductController@saveProgramme')->name('save-programme');  
 Route::get('edit-programme/{product}', 'ProductController@editProgramme')->name('edit.programme'); 

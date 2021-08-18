@@ -413,43 +413,69 @@
 							</div>
 						</div>
 						
-						<div class="row">							
-							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="title">@lang('app.form.product_prix_min') *</label>
-									<div class="input-group m-b">
-										<input type="number" class="form-control" name="price" id="price">
-										<div class="input-group-append">
-											<span class="input-group-addon">AUD</span>
+						<div class="row">
+							<div class="col-md-6">
+								<div id="price_max_min" style="display:none">
+									<div class="row">
+										<div class="col-lg-6">
+											<div class="form-group">
+												<label for="title">@lang('app.form.product_prix_min') *</label>
+												<div class="input-group m-b">
+													<input type="number" class="form-control" name="price" id="price">
+													<div class="input-group-append">
+														<span class="input-group-addon">AUD</span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-6">
+											<div class="form-group">
+												<label for="title">@lang('app.form.product_prix_max') *</label>
+												<div class="input-group m-b">
+													<input type="number" class="form-control" name="price_max_prd" id="price_max_prd">
+													<div class="input-group-append">
+														<span class="input-group-addon">AUD</span>
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="title">@lang('app.form.product_prix_max') *</label>
-									<div class="input-group m-b">
-										<input type="number" class="form-control" name="price_max_prd" id="price_max_prd">
-										<div class="input-group-append">
-											<span class="input-group-addon">AUD</span>
+								
+								<div id="price_simple" style="display:none">
+									<div class="row">
+										<div class="col-lg-12">
+											<div class="form-group">
+												<label for="title">@lang('app.table.price') *</label>
+												<div class="input-group m-b">
+													<input type="number" class="form-control" name="simple_price" id="simple_price">
+													<div class="input-group-append">
+														<span class="input-group-addon">AUD</span>
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="title">@lang('app.form.product_status')</label>
-									<select class="form-control" name="status" id="status">
-										<option value="published">Publier</option>
-										<option value="waiting">En attente</option>
-									</select>
-								</div>
-							</div>
-							<div class="col-lg-3">
-								<div id="info_qte">
-									<div class="form-group">
-										<label for="title">@lang('app.form.product_qte')</label>
-										<input name="quantity" id="quantity" class="form-control" type="number" value="1">
+							</div>	
+							<div class="col-md-6">
+								<div class="row">
+									<div class="col-lg-6">
+										<div class="form-group">
+											<label for="title">@lang('app.form.product_status')</label>
+											<select class="form-control" name="status" id="status">
+												<option value="published">Publier</option>
+												<option value="waiting">En attente</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div id="info_qte">
+											<div class="form-group">
+												<label for="title">@lang('app.form.product_qte')</label>
+												<input name="quantity" id="quantity" class="form-control" type="number" value="1">
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -647,6 +673,8 @@
 						$('#info-date-isole').hide();
 						$("#progTitle").text(titre_programme);
 						$('#bloc_eoi_doc').hide();
+						$('#price_simple').hide();
+						$('#price_max_min').show();
 					}else if(ancienneteBien == 'Neuf' && natureBien == 'Produit isolé'){
 						$('#title_product').val('');
 						$('#jardin_info').show();
@@ -656,6 +684,8 @@
 						$('#commission_product').show();
 						$('#info-date-isole').show();
 						$('#bloc_eoi_doc').show();
+						$('#price_simple').show();
+						$('#price_max_min').hide();
 					}else if(ancienneteBien == 'Ancien'){
 						$('#title_product').val('');
 						$('[name="year_built"]').val($('#annee_const').val()).prop("readonly", true);
@@ -667,6 +697,8 @@
 						$('#commission_product').show();
 						$('#info-date-isole').hide();
 						$('#bloc_eoi_doc').hide();
+						$('#price_simple').hide();
+						$('#price_max_min').show();
 					}
 					// Always allow going backward even if the current step contains invalid fields!
                     if (currentIndex > newIndex)
@@ -879,8 +911,25 @@
 					display_address_product: {
 						required: true
 					},
+					simple_price: {
+						required: {
+							depends: function(element) {
+								if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Produit isolé'){
+									return true;	
+								}
+							}
+						},
+						number: true
+					},
 					price: {
-						required: true
+						required: {
+							depends: function(element) {
+								if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier'){
+									return true;	
+								}
+							}
+						},
+						number: true
 					},
 					commision_product: {
 						required: true
@@ -904,7 +953,15 @@
 						}
 					},
 					price_max_prd: {
-						required: true
+						required: {
+							depends: function(element) {
+								if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier'){
+									return true;	
+								}
+							}
+						},
+						number: true,
+						min: function ()  { return parseInt($("#price").val())}
 					},
 					interior_area: {
 						required: true,
@@ -1026,6 +1083,9 @@
 						required: "@lang('app.txt.champobligatoire')"
 					},
 					display_address_product: {
+						required: "@lang('app.txt.champobligatoire')"
+					},
+					simple_price: {
 						required: "@lang('app.txt.champobligatoire')"
 					},
 					price: {

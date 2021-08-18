@@ -396,7 +396,18 @@
 							</div>
 						</div>
 						<!-- fin eoi-->
-						<div class="row">
+						<div class="row" id="price_simple" style="display:none">
+							<div class="col-lg-6">
+								<label for="title">@lang('app.table.price') *</label>
+								<div class="input-group" style="margin-bottom: .5rem;">
+									<input type="number" class="form-control" name="simple_price" id="simple_price">
+									<div class="input-group-append">
+										<span class="input-group-text">AUD</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row" id="price_max_min" style="display:none">
 							<div class="col-lg-6">
 								<label for="title">@lang('app.form.product_prix_min') *</label>
 								<div class="input-group" style="margin-bottom: .5rem;">
@@ -552,10 +563,43 @@
 								</div>
 							</div>
 							
+							
+							<div class="col-lg-12">
+								<div id="legal_prd_isole" style="display:none">
+									<label><strong>@lang('app.txt.declaration_annonceur')</strong></label>
+									<label>@lang('app.txt.type_annonceur')</label>
+									<label>@lang('app.txt.legal_owner')</label>
+									<label class="form-check"> 
+										<div class="form-check">
+											<input class="form-check-input" type="radio" name="certificat" id="certificat"/>
+											<label class="form-check-label" for="certificat"> @lang('app.txt.radio_legal_owner_choix_1')</label>
+										</div>
+										@If(Auth::user()->hasRole(2))
+										<div class="form-check" id="choix_seller">
+											<input class="form-check-input" type="radio" name="certificat" id="certificat1"/>
+											<label class="form-check-label" for="certificat1"> @lang('app.txt.radio_legal_owner_choix_2')</label>
+										</div>
+										@endif
+									</label>
+									
+									<label> 
+										<input type="checkbox" value="1" name="certicat2"> @lang('app.txt.certificat_loi_investissement')
+									</label>
+									
+									<label> 
+										<input type="checkbox" value="1" name="certicat3"> @lang('app.txt.certificat_responsabilite')
+									</label>
+									
+									<label> 
+										<input type="checkbox" value="1" name="certicat4"> @lang('app.txt.certificat_acceptation')
+									</label>
+								</div>
+							</div>
+							
 							<div class="col-lg-12">
 								<div id="chk_firb" style="display:none">
 									<label class="chk_firb"> 
-										<input type="checkbox" value="" name="chk_firb"> The Seller certifies under their sole responsibilitythatthis property canbe sold to non-residentforeigners in accordance with Australian law and the rules applicable by the Foreign Investment Review Board (FIRB).
+										<input type="checkbox" value="" name="chk_firb"> @lang('app.txt.firb_recommendation')
 									</label>
 								</div>
 							</div>
@@ -640,6 +684,9 @@
 					$('#info-date-isole').hide();
 					$("#progTitle").text(titre_programme);
 					$('#bloc_eoi_doc').hide();
+					$('#price_simple').hide();
+					$('#price_max_min').show();
+					$('#legal_prd_isole').hide();
 				}else if(ancienneteBien == 'Neuf' && natureBien == 'Produit isolé'){
 					$('#title_product').val('');
 					$('#jardin_info').show();
@@ -649,6 +696,9 @@
 					$('#commission_product').show();
 					$('#info-date-isole').show();
 					$('#bloc_eoi_doc').show();
+					$('#price_simple').show();
+					$('#price_max_min').hide();
+					$('#legal_prd_isole').show();
 				}else if(ancienneteBien == 'Ancien'){
 					$('#title_product').val('');
 					$('[name="year_built"]').val($('#annee_const').val()).prop("readonly", true);
@@ -660,6 +710,9 @@
 					$('#commission_product').show();
 					$('#info-date-isole').hide();
 					$('#bloc_eoi_doc').hide();
+					$('#price_simple').hide();
+					$('#price_max_min').show();
+					$('#legal_prd_isole').hide();
 				}
 				// Always allow going backward even if the current step contains invalid fields!
 				if (currentIndex > newIndex)
@@ -722,12 +775,13 @@
 			ignore: [],
 			onkeyup: false,
 			ignore:":not(:visible)",
+			errorElement: 'div',
 			errorPlacement: function (error, element)
 			{
 				if(element.parent().hasClass('input-group')){
 					error.insertAfter( element.parent() );
 				}else{
-					error.insertAfter( element );
+					error.insertBefore( element );
 				}
 			},
 			rules: {
@@ -891,8 +945,25 @@
 				display_address_product: {
 					required: true
 				},
+				simple_price: {
+					required: {
+						depends: function(element) {
+							if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Produit isolé'){
+								return true;	
+							}
+						}
+					},
+					number: true
+				},
 				price: {
-					required: true
+					required: {
+						depends: function(element) {
+							if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier'){
+								return true;	
+							}
+						}
+					},
+					number: true
 				},
 				commision_product: {
 					required: true
@@ -916,7 +987,15 @@
 					}
 				},
 				price_max_prd: {
-					required: true
+					required: {
+						depends: function(element) {
+							if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier'){
+								return true;	
+							}
+						}
+					},
+					number: true,
+					min: function ()  { return parseInt($("#price").val())}
 				},
 				interior_area: {
 					required: true,
@@ -968,6 +1047,51 @@
 				},
 				state_id_product:{
 					required: true,
+				},
+				certificat: {
+					required: {
+						depends: function(element) {
+							if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Produit isolé'){
+								return true;	
+							}
+						}
+					}
+				},
+				certicat2: {
+					required: {
+						depends: function(element) {
+							if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Produit isolé'){
+								return true;	
+							}
+						}
+					}
+				},
+				certicat3: {
+					required: {
+						depends: function(element) {
+							if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Produit isolé'){
+								return true;	
+							}
+						}
+					}
+				},
+				certicat4: {
+					required: {
+						depends: function(element) {
+							if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Produit isolé'){
+								return true;	
+							}
+						}
+					}
+				},
+				chk_firb: {
+					required: {
+						depends: function(element) {
+							if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Produit isolé'){
+								return true;	
+							}
+						}
+					}
 				}
 			},
 			messages: {
@@ -978,6 +1102,9 @@
 					required: "@lang('app.txt.champobligatoire')"
 				},
 				natureBien: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				simple_price:{
 					required: "@lang('app.txt.champobligatoire')"
 				},
 				prix_min: {
@@ -1045,6 +1172,21 @@
 					required: "@lang('app.txt.champobligatoire')"
 				},
 				state_id_product: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				certificat: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				certicat2: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				certicat3: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				certicat4: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				chk_firb: {
 					required: "@lang('app.txt.champobligatoire')"
 				}
 			},

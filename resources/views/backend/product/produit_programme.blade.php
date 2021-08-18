@@ -37,7 +37,7 @@
 									<tr>
 										<th>ID</th>
 										<th>@lang('app.table.produit_image')</th>
-										<th>@lang('app.table.produit_titre')</th>
+										<th>@lang('app.form.product_title')</th>
 										<th>@lang('app.table.produit_prix_min')</th>
 										<th>@lang('app.table.produit_prix_max')</th>
 										<th>@lang('app.table.status')</th>
@@ -65,13 +65,15 @@
 											<span class="label label-warning">@lang('app.'.$product_lie->status)</span>
 											@endif
 										</td>
-										<td class="actions-cell text-center">								
+										<td class="actions-cell text-center">	
+										@if($product_lie->status=='waiting')							
 											<a href="javascript:void(0)" onclick="edit_product({{$product_lie->id}})" class="" title="@lang('app.table.btn_title_modification')">
 												<i class="fa fa-edit"></i>
 											</a>&nbsp;
 											<a href="javascript:void(0)" onclick="delete_product({{$product_lie->id}})" class="" title="@lang('app.table.btn_title_delete')">
 												<i class="fa fa-times text-danger"></i>
 											</a>
+										@endif
 										</td>
 									</tr>
 								@endforeach
@@ -125,6 +127,15 @@
 			}
 		});
 		
+		$('#bonus_vente').on('change', function() {
+			var type_bonus = this.value;
+			if(type_bonus == 'YES'){
+				$('#montant_bonus_vente').show();
+			}else{
+				$('#montant_bonus_vente').hide();
+			}
+		});
+		
 		<!-- commission product -->			
 		$('#commision_product').on('change', function() {
 			var type_commission_product = this.value;
@@ -163,12 +174,24 @@
 	function add_product(id_programme)
 	{
 		save_method = 'add';
+		var type_commission = '{{$product->commission_type}}';
 		$('#form_product')[0].reset();
 		$('.form-group').removeClass('has-error');
 		$('.help-block').empty(); 
 		$('#id_programme').val(id_programme);
 		$('#title_new_programme').val($('#title_programme').val());	
-		set_type_programme({{$product->category_id}},0);
+		set_type_programme({{$product->category_id}},{{$product->type_id}});
+		if(type_commission == 'Sales commission rate (%)'){
+			$('#commission_rate_prd').show();
+			$('#fixed_commission_prd').hide();
+			$('#sales_rate_product').val({{$product->commision}});
+			$('#rate_commission_product').val('');
+		}else{
+			$('#commission_rate_prd').hide();
+			$('#fixed_commission_prd').show();
+			$('#sales_rate_product').val('');
+			$('#rate_commission_product').val({{$product->commision}});
+		}
 		$('#modal_form_product').modal('show'); 
 		CKEDITOR.replace( 'desc_product' );
 		$('.modal-title').text("@lang('app.form.product_add_ajax')");
@@ -217,6 +240,8 @@
 				$('[name="id_programme"]').val(data.product.parent_id);
 				$('[name="id_product"]').val(data.product.id);
 				$('[name="id_location_product"]').val(data.product.location_id);
+				$('[name="bonus_vente"]').val(data.product.avoir_bonus);
+				$('[name="bonus_amount"]').val(data.product.amount_bonus);
 				
 				$('[name="commision_product"]').val(data.product.commission_type);
 				if(data.product.commission_type == 'Sales commission rate (%)'){
@@ -230,6 +255,12 @@
 				}else{
 					$('#commission_rate_prd').hide();
 					$('#fixed_commission_prd').hide();
+				}
+				
+				if(data.product.avoir_bonus == 'YES'){
+					$('#montant_bonus_vente').show();
+				}else{
+					$('#montant_bonus_vente').hide();
 				}
 				
 				set_type_programme({{$product->category_id}},data.product.type_id);
@@ -304,6 +335,21 @@
 				},
 				year_built: {
 					required: true
+				},
+				bonus_vente: {
+					required: true
+				},
+				bonus_amount: {
+					required: {
+						depends: function(element) {
+							if($("#bonus_vente").val() == 'YES'){
+								return true;	
+							}
+						}
+					}
+				},
+				commision_product: {
+					required: true
 				}
 			},
 			messages: {
@@ -340,6 +386,15 @@
 					required: "@lang('app.txt.champobligatoire')"
 				},
 				year_built:{
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				bonus_vente: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				bonus_amount:{
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				commision_product:{
 					required: "@lang('app.txt.champobligatoire')"
 				}
 			},
@@ -473,19 +528,19 @@
 							<div class="col-lg-3">
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_suburb')</label>
-									<input name="suburb_product" id="suburb_product" class="form-control" type="text" value="">
+									<input name="suburb_product" id="suburb_product" class="form-control" type="text" value="{{$localisation->area_level_1}}">
 								</div>
 							</div>
 							<div class="col-lg-3">
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_ville')</label>
-									<input name="ville_product" id="ville_product" class="form-control" type="text">
+									<input name="ville_product" id="ville_product" class="form-control" type="text" value="{{$localisation->locality}}">
 								</div>  
 							</div>
 							<div class="col-lg-3">
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_cp') *</label>
-									<input name="postalCode_product" id="postalCode_product" class="form-control" type="text" value="">
+									<input name="postalCode_product" id="postalCode_product" class="form-control" type="text" value="{{$localisation->postalCode}}">
 								</div>
 							</div>
 						</div>
@@ -493,7 +548,7 @@
 							<div class="col-lg-4">
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_adresse') *</label>
-									<input name="display_address_product" id="display_address_product" class="form-control" type="text" value="">
+									<input name="display_address_product" id="display_address_product" class="form-control" type="text" value="{{$product->display_address}}">
 								</div>
 							</div>
 							<div class="col-lg-4">
@@ -502,7 +557,7 @@
 									<select class="form-control" name="state_id_product" id="state_id_product" style="width:100%">
 										<option value="">Sélectionner état...</option>
 										@foreach(\App\Models\State::all() as $state)
-											<option value="{{$state->id}}">{{$state->content}}</option>
+											<option value="{{$state->id}}" {{$state->id == $product->state_id ? 'selected' : ''}}>{{$state->content}}</option>
 										@endforeach
 									</select>
 								</div>
@@ -520,17 +575,17 @@
 						</div>
 						
 						<div class="row">
-							<div class="col-lg-4">
+							<div class="col-lg-3">
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_commission_type')</label>
 									<select class="form-control" name="commision_product" id="commision_product">
 										<option value="">Choisir...</option>
-										<option value="Sales commission rate (%)">@lang('app.form.programme_commission_option1') (%)</option>
-										<option value="Fixed commission ($)">@lang('app.form.programme_commission_option2') ($)</option>
+										<option value="Sales commission rate (%)" {{$product->commission_type == 'Sales commission rate (%)' ? 'selected' : ''}}>@lang('app.form.programme_commission_option1') (%)</option>
+										<option value="Fixed commission ($)" {{$product->commission_type == 'Fixed commission ($)' ? 'selected' : ''}}>@lang('app.form.programme_commission_option2') ($)</option>
 									</select>
 								</div>
 							</div>
-							<div class="col-lg-4">
+							<div class="col-lg-3">
 								<div id="commission_rate_prd" style="display:none">
 									<div class="form-group">
 										<label for="title">@lang('app.form.programme_taux_commission')</label>
@@ -547,6 +602,29 @@
 										<label for="title">@lang('app.form.programme_mt_commission')</label>
 										<div class="input-group m-b">
 											<input type="number" class="form-control" name="rate_commission_product" id="rate_commission_product">
+											<div class="input-group-append">
+												<span class="input-group-text">AUD</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Bonus</label>
+									<select class="form-control" name="bonus_vente" id="bonus_vente">
+										<option value="">Choisir...</option>
+										<option value="YES">@lang('app.txt.yes')</option>
+										<option value="NO">@lang('app.txt.no')</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-3">
+								<div id="montant_bonus_vente" style="display:none">
+									<div class="form-group">
+										<label for="title">Bonus amount</label>
+										<div class="input-group m-b">
+											<input type="number" class="form-control" name="bonus_amount" id="bonus_amount">
 											<div class="input-group-append">
 												<span class="input-group-text">AUD</span>
 											</div>
@@ -587,7 +665,7 @@
 								<div id="info_qte">
 									<div class="form-group">
 										<label for="title">@lang('app.form.product_qte')</label>
-										<input name="quantity" id="quantity" class="form-control" type="number" value="1">
+										<input name="quantity" id="quantity" class="form-control" type="number" value="1" min="1">
 									</div>
 								</div>
 							</div>

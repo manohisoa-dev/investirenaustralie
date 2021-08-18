@@ -720,8 +720,13 @@ class ProductController extends Controller {
         $product->type_id = $request->type_id;
         $product->display_address = $request->display_address;
         $product->state_id = $request->state_id;
-        $product->min_price = $request->min_price;
-        $product->max_price = $request->max_price;
+        if ($product->natureBien == 'Produit isolé') {
+            $product->price = $request->simple_price;
+        } else {
+            $product->min_price = $request->min_price;
+            $product->max_price = $request->max_price;
+        }
+
         $product->status = $request->status;
         $product->quantity = $request->quantity;
         $product->bedrooms = $request->bedrooms;
@@ -753,8 +758,9 @@ class ProductController extends Controller {
 
     public function produitProgramme(Request $request, Product $product) {
         $produit_lie = Product::where('parent_id', $product->id)->get();
+        $localisation = Localisation::find($product->location_id);
         return view('backend.product.produit_programme', ['product' => $product, 'title' =>
-            __('afa.programme.title'), 'product_lies' => $produit_lie]);
+            __('afa.programme.title'), 'product_lies' => $produit_lie,'localisation'=>$localisation]);
     }
 
     public function ajaxGetProductById(Request $request) {
@@ -766,9 +772,10 @@ class ProductController extends Controller {
     function save_new_produit($anciennete, $nature, $title, $photo, $content, $qty,
         $area, $interior_area, $exterior_area, $total_area, $carport_spaces, $garage_spaces,
         $bathrooms, $bedrooms, $sweet, $number_of_floors, $new_construction, $year_built,
-        $display_address, $min_price, $max_price, $currency, $status, $type_id, $cat_programmme_id,
-        $postalCode, $state_id, $programme_id, $location_id, $superficie_jardin, $avoir_parking_voie_public,
-        $avoir_piscine, $type_commission, $taux_commission, $dt_db_travaux, $dt_prevu_livraison) {
+        $display_address, $price, $min_price, $max_price, $currency, $status, $type_id,
+        $cat_programmme_id, $postalCode, $state_id, $programme_id, $location_id, $superficie_jardin,
+        $avoir_parking_voie_public, $avoir_piscine, $type_commission, $taux_commission,
+        $dt_db_travaux, $dt_prevu_livraison, $avoir_bonus, $mt_bonus) {
 
         $product = new Product();
         $lastId = Product::latest('id')->first();
@@ -801,6 +808,7 @@ class ProductController extends Controller {
         $product->new_construction = $new_construction;
         $product->year_built = $year_built;
         $product->display_address = $display_address;
+        $product->price = $price;
         $product->min_price = $min_price;
         $product->max_price = $max_price;
         $product->currency = $currency;
@@ -818,6 +826,8 @@ class ProductController extends Controller {
         $product->avoir_piscine = $avoir_piscine;
         $product->commission_type = $type_commission;
         $product->commision = $taux_commission;
+        $product->avoir_bonus = $avoir_bonus;
+        $product->amount_bonus = $mt_bonus;
         $product->dt_db_travaux = $dt_db_travaux;
         $product->dt_prevu_livraison = $dt_prevu_livraison;
         $product->validated_at = Carbon::now();
@@ -844,15 +854,17 @@ class ProductController extends Controller {
         } else {
             $taux_commission = $request->rate_commission_product;
         }
+
         if ($request->prg_anciennete && $request->prg_nature) {
             $this->save_new_produit($request->prg_anciennete, $request->prg_nature, $titre_product,
                 $request->file('image'), $request->desc_product, 1, 0, $request->interior_area,
                 $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
                 $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
-                $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
+                0, $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
                 $request->prg_cat_id, $request->postalCode_product, $request->state_id_product,
                 $request->id_programme, $id_location, 0, $avoir_parking, 0, $request->commision_product,
-                $taux_commission, $request->dt_db_travaux, $request->dt_prevu_livraison);
+                $taux_commission, $request->dt_db_travaux, $request->dt_prevu_livraison, $request->bonus_vente,
+                $request->bonus_amount);
 
             return response()->json(['success' => 'true']);
         } else {
@@ -904,7 +916,8 @@ class ProductController extends Controller {
             'avoir_parking_voie_public' => $avoir_parking, 'avoir_piscine' => $avoir_piscine,
             'location_id' => $id_location, 'commission_type' => $request->commision_product,
             'commision' => $taux_commission, 'dt_db_travaux' => $request->dt_db_travaux,
-            'dt_prevu_livraison' => $request->dt_prevu_livraison]);
+            'dt_prevu_livraison' => $request->dt_prevu_livraison, 'avoir_bonus' => $request->bonus_vente,
+            'amount_bonus' => $request->bonus_amount]);
 
 
         if ($request->file('image')) {
@@ -921,6 +934,11 @@ class ProductController extends Controller {
 
     public function ajaxDropProduit(Request $request) {
         Product::where('id', $request->id_produit)->delete();
+        return response()->json(['success' => 'true']);
+    }
+
+    public function ajaxDropProgramm(Request $request) {
+        Product::where('id', $request->id_programm)->delete();
         return response()->json(['success' => 'true']);
     }
 
@@ -1018,10 +1036,10 @@ class ProductController extends Controller {
                     $request->desc_product, 1, 0, $request->interior_area, $request->exterior_area,
                     $request->total_area, $request->carport_spaces, $request->garage_spaces, $request->bathrooms,
                     $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
-                    $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
+                    0, $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
                     $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                     $id_programme, $id_location, 0, $avoir_parking, 0, $request->commision_product,
-                    $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison);
+                    $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison,'',0);
             } else {
                 //creation location produit isolé
                 $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
@@ -1037,10 +1055,10 @@ class ProductController extends Controller {
                     $request->file('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
                     $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
                     $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
-                    $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
+                    $request->simple_price, 0, 0, 'AUD', $request->status, $request->product_type_id,
                     $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                     -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine, $request->commision_product,
-                    $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison);
+                    $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison,'',0);
 
                 if ($request->p_eoiDossier) {
                     foreach ($request->p_eoiDossier as $key => $value) {
@@ -1062,10 +1080,10 @@ class ProductController extends Controller {
                 ('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
                 $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
                 $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
-                $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
+                0, $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
                 $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                 -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine, $request->commision_product,
-                $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison);
+                $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison,'',0);
         }
 
 

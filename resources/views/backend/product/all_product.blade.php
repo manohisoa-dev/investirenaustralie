@@ -23,12 +23,12 @@
 					<thead>
 						<tr>
 							<th>ID</th>
-							<th>Image</th>
-							<th>Titre</th>
-							<th>Prix min</th>
-							<th>Prix max</th>
-							<th>Statut</th>
-							<th>Action</th>
+							<th>@lang('app.table.produit_image')</th>
+							<th>@lang('app.table.produit_titre')</th>
+							<th>@lang('app.form.programme_price_min')</th>
+							<th>@lang('app.form.programme_price_max')</th>
+							<th>@lang('app.form.product_status')</th>
+							<th>@lang('app.table.action')</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -55,12 +55,14 @@
 							@endif
 							</td>
 							<td align="center">
+							@if($record->status=='waiting')
 								<a href="{{route('edit.produit', $record->id)}}" class="" title="@lang('app.table.btn_title_modification')">
 									<i class="fa fa-edit"></i>
 								</a>&nbsp;
 								<a href="javascript:void(0)" onclick="delete_product({{$record->id}})" class="" title="@lang('app.table.btn_title_delete')">
 									<i class="fa fa-trash text-danger"></i>
 								</a>
+							@endif
 							</td>
 						</tr>
 					@endforeach

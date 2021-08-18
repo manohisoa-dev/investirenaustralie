@@ -37,6 +37,7 @@
                     {{ method_field("PUT") }}
 					<input type="hidden" name="category_id" id="cat_programmme_id" value="{{$product->category_id}}" />
 					<input type="hidden" name="location_id" value="{{$product->location_id}}" />
+					<input type="hidden" name="" id="natureBien" value="{{$product->natureBien}}" />    
                     <div class="row">
 						<div class="col-lg-12">
 							<div class="form-group">
@@ -241,49 +242,76 @@
 								</div>
 							</div>
 						</div>
+					</div>					
+					
+					<div class="row">
+						<div class="col-md-6">
+							<div id="price_max_min" style="display:none">
+								<div class="row">
+									<div class="col-lg-6">
+										<div class="form-group">
+											<label for="title">@lang('app.form.product_prix_min') *</label>
+											<div class="input-group m-b">
+												<input type="number" class="form-control" name="min_price" id="min_price" value="{{$product->min_price}}">
+												<div class="input-group-append">
+													<span class="input-group-addon">AUD</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="form-group">
+											<label for="title">@lang('app.form.product_prix_max') *</label>
+											<div class="input-group m-b">
+												<input type="number" class="form-control" name="max_price" id="max_price" value="{{$product->max_price}}">
+												<div class="input-group-append">
+													<span class="input-group-addon">AUD</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<div id="price_simple" style="display:none">
+								<div class="row">
+									<div class="col-lg-12">
+										<div class="form-group">
+											<label for="title">@lang('app.table.price') *</label>
+											<div class="input-group m-b">
+												<input type="number" class="form-control" name="simple_price" id="simple_price" value="{{$product->price}}">
+												<div class="input-group-append">
+													<span class="input-group-addon">AUD</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>	
+						<div class="col-md-6">
+							<div class="row">
+								<div class="col-lg-6">
+									<div class="form-group">
+										<label for="title">@lang('app.form.product_status')</label>
+										<select class="form-control" name="status" id="status">
+											<option value="published" {{$product->status == 'published' ? 'selected' : ''}}>Publier</option>
+											<option value="En attente" {{$product->status == 'En attente' ? 'selected' : ''}}>En attente</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div id="info_qte">
+										<div class="form-group">
+											<label for="title">@lang('app.form.product_qte')</label>
+											<input name="quantity" id="quantity" class="form-control" type="number" value="{{$product->quantity}}">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 					
-					<div class="row">							
-						<div class="col-lg-3">
-							<div class="form-group">
-								<label for="title">@lang('app.form.product_prix_min') *</label>
-								<div class="input-group m-b">
-									<input type="number" class="form-control" name="min_price" id="min_price" value="{{$product->min_price}}">
-									<div class="input-group-append">
-										<span class="input-group-addon">AUD</span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3">
-							<div class="form-group">
-								<label for="title">@lang('app.form.product_prix_max') *</label>
-								<div class="input-group m-b">
-									<input type="number" class="form-control" name="max_price" id="max_price" value="{{$product->max_price}}">
-									<div class="input-group-append">
-										<span class="input-group-addon">AUD</span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3">
-							<div class="form-group">
-								<label for="title">@lang('app.form.product_status')</label>
-								<select class="form-control" name="status" id="status">
-									<option value="published" {{$product->status == 'published' ? 'selected' : ''}}>Publier</option>
-									<option value="En attente" {{$product->status == 'En attente' ? 'selected' : ''}}>En attente</option>
-								</select>
-							</div>
-						</div>
-						<div class="col-lg-3">
-							<div id="info_qte">
-								<div class="form-group">
-									<label for="title">@lang('app.form.product_qte')</label>
-									<input name="quantity" id="quantity" class="form-control" type="number" value="{{$product->quantity}}">
-								</div>
-							</div>
-						</div>
-					</div>
 					<div class="row">
 						<div class="col-lg-4">
 							<div class="form-group">
@@ -541,9 +569,13 @@
 			$('#bloc_eoi_doc').show();
 			$('#dt_db_travaux').val('{{$product->dt_db_travaux}}');
 			$('#dt_prevu_livraison').val('{{$product->dt_prevu_livraison}}');
+			$('#price_simple').show();
+			$('#price_max_min').hide();
 		}else{
 			$('#info-date-isole').hide();
 			$('#bloc_eoi_doc').hide();
+			$('#price_simple').hide();
+			$('#price_max_min').show();
 		}
 		
 		$('#commision_product').on('change', function() {
@@ -575,11 +607,34 @@
 				type_id: {
 					required: true
 				},
+				simple_price: {
+					required: {
+						depends: function(element) {
+							if($("#natureBien").val() == 'Produit isolé'){
+								return true;	
+							}
+						}
+					},
+					number: true
+				},
 				min_price: {
-					required: true
+					required: {
+						depends: function(element) {
+							if($("#natureBien").val() == 'Programme immobilier'){
+								return true;	
+							}
+						}
+					},
+					number: true
 				},
 				max_price: {
-					required: true,
+					required: {
+						depends: function(element) {
+							if($("#natureBien").val() == 'Programme immobilier'){
+								return true;	
+							}
+						}
+					},
 					number: true,
 					min: function ()  { return parseInt($("#min_price").val())}
 				},
@@ -601,6 +656,9 @@
 					required: "@lang('app.txt.champobligatoire')"
 				},
 				type_id: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				simple_price: {
 					required: "@lang('app.txt.champobligatoire')"
 				},
 				min_price: {
@@ -625,7 +683,7 @@
 			},
 			errorPlacement: function ( error, element ) {
 				if(element.parent().hasClass('input-group')){
-					error.insertBefore( element.parent() );
+					error.insertAfter( element.parent() );
 				}else{
 					error.insertAfter( element );
 				}
