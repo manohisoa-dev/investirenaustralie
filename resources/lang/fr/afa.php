@@ -9,12 +9,6 @@ return [
     "customers"   => "Clients",
     "contact_customer"   => "Contacter ce client",
     'accept_term' => 'Veuillez accepter les termes et conditions pour continuer.',
-    'notif_after_send_mail' => " La réglementation australienne impose une rédaction officielle de ce type de mandat du type
-    <b>&ldquo;Property Occupations - Form 6&ldquo;</b> et qu&lsquo;en conséquence un courriel vous a été envoyé avec des
-    copies imprimables de votre engagement, du mandat de recherche officiel Form 6 en anglais et
-    de sa traduction en français. Il vous est impérativement demandé d'imprimer le formulaire Form 6
-    en anglais, d'en parapher les pages, de le dater et le signer, d&lsquo;en faire une copie scannée au
-    format PDF à envoyer à l&lsquo;AFA pour la nécessaire validation de son mandat de recherche.",
     "programme.menu"  => "Programmes",
     "programme.title"  => "Mes programmes",
     'condition.step_1' => 'ÉTAPE 1 – Service francophone',
