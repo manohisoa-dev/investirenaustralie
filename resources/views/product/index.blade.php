@@ -86,6 +86,10 @@
                                                 </div>
                                             </div>
                                           </div>
+                                          {{-- Badge agence exclusive --}}
+                                          @if(!$item->isExclusiveAgency())
+                                            <span class="notify-badge-prod">@lang('app.txt.exclusive_agency')</span>
+                                          @endif
                                         </div>
                                     </div>
                                 </div>
@@ -127,6 +131,10 @@
                                   </div>
                               </div>
                             </div>
+                            {{-- Badge agence exclusive --}}
+                            @if(!$item->isExclusiveAgency())
+                              <span class="notify-badge-prod">@lang('app.txt.exclusive_agency')</span>
+                            @endif
                           </div>
                       </div>
                   </div>
@@ -326,7 +334,11 @@
             @if (!Session::has('waiting'))
               <a type="button" class="pull-left m-btn m-btn-theme" id="btn_cancel" href="javascript:void(0)" data-dismiss="modal">@lang('app.btn.abandonner')</a>
             @else
-              <a type="button" class="m-btn m-btn-theme2nd" href="javascript:void(0)" data-dismiss="modal" id="btn_continue">@lang('app.btn.ok')</a>
+              @if (Session::get('waiting')===0)
+                <a type="button" class="m-btn m-btn-theme2nd" href="javascript:void(0)" id="btn_continue_mandat_recherche">@lang('app.btn.continuer')</a>
+              @else
+                <a type="button" class="m-btn m-btn-theme2nd" href="javascript:void(0)" data-dismiss="modal" id="btn_continue">@lang('app.btn.ok')</a>  
+              @endif
             @endif
           </div>
       </div>
@@ -378,6 +390,17 @@
     #map{
       height: 25rem;
     }
+
+    .notify-badge-prod{
+        position: absolute;
+        left: 15px;
+        top: 50px;
+        text-align: center;
+        background: rgba(255,255,255, 0.8);
+        color:#AE4435;
+        padding:5px 10px;
+        font-size:14px;
+    }
   </style>
   <script>
     $(document).ready(function(){
@@ -397,6 +420,22 @@
     });
   </script>
   <script>
+        $('#btn_continue_mandat_recherche').click(function(event){
+          // Load icon
+          loadingPage();
+
+          // Send message to member from iea with Mandat Agence Immobilière
+          $.ajax({
+            url:'{{ route("member.ajaxSendMandatIeaToMember") }}',
+            type:'get',
+            dataType:'json',
+            success:function(data){
+              return location.href="{{route('member.contact', ['role'=>'admin'])}}";
+            }
+          }); 
+        });
+
+
         $('#btn_continue').click(function(event){
           if($('#condition').is(":checked"))
           {

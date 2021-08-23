@@ -11,6 +11,7 @@ use App\Notifications\AplChanged;
 use App\Notifications\AfaChanged;
 use App\Notifications\AfaCourriel;
 use App\Notifications\AfaConjunctionAgreementMessage;
+use App\Notifications\MemberMandatRechercheMessage;
 
 use App\Models\Order;
 use App\Models\User;
@@ -24,6 +25,7 @@ use App\Models\Parameter;
 use App\Models\DossierTransaction;
 use App\Models\Product;
 use App\Models\ConjunctionAgreement;
+use App\Models\MandatRecherche;
 use Session;
 use Carbon\Carbon;
 use App;
@@ -601,6 +603,54 @@ class MemberController extends Controller {
         return PDF::loadView($pdf_template,['user'=>$user, 'iea'=>$iea])->save($path);
     }
 
+    // Declanche Mandat de Recherche
+    public function ajaxSendMandatIeaToMember(){
+
+        // Create Mandat de recherche form6 pdf
+        $mdRch = $this->createForm6Pdf();
+
+        $dt = Carbon::now();
+        $dtDate = $dt->format('m-d-Y');
+        $dtTime = $dt->format('H:i:m');
+        $downloadForm6Link = url($mdRch->path);
+        $uploadForm6Link = route('member.dossier');
+        $user = Auth::user();
+        $user_name= $user->isPerson()?$user->name:$user->userinfos()->first()->orga_name;
+        $user_immat = $user->immat;
+        $afa = $user->afa->name;
+        $prod_id = session()->get('id_product');
+        $product = Product::whereId($prod_id)->first();
+        $abort = trans('member.btn.abort', ['link'=>'#']);
+        $content = trans('member.gothere.select_afa.mr.message_to_member', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user_name,'immat'=>$user_immat,'etat'=>$product->location->area_level_1,'afa'=>$afa,'download_mr'=>$downloadForm6Link,'upload_mr'=>$uploadForm6Link, 'abort'=>$abort]);
+        session()->forget('id_product');
+
+        // send chat message to Member from IEA (admin)
+        Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$user->id,'body'=>$content]);
+
+        // send notification email to afa from IEA
+        // $user->notify(new MemberMandatRechercheMessage($user,$product,$downloadForm6Link,$uploadForm6Link,$abort));
+
+
+        return response()->json(['success'=>'Success']);
+    }
+
+    public function createForm6Pdf() {
+        $pdf_template = 'pdf.form6';
+        $user = Auth::user();
+        $iea = ['name'=>'IEA', 'abn'=>'XXXXXXXXXXX', 'license'=>'XXXXXXXXXX', 'licence_expire_date'=>'12/12/2022', 'address'=>'Australie', 'mobile'=>'+ 255 66 999 69', 'email'=>'admin@investirenaustralie.com', 'director'=>'Philippe', 'director_license'=>'XXXXXXXXXXXXXXXXX', 'directore_licence_expire_date'=>'12/12/2022'];
+        $prod_id = session()->get('id_product');
+        $product = Product::whereId($prod_id)->first();
+
+        $pdfName = 'Form6_'.$product->location->area_level_1.'_'.$user->immat."_".time().".pdf";
+        $path = 'uploads/pdf/form6/'.$pdfName;
+
+        // Save form6 pdf in path
+        PDF::loadView($pdf_template,['user'=>$user, 'iea'=>$iea, 'product'=>$product])->save($path);
+
+        // Save Research Mandate
+        return MandatRecherche::create(['file_name'=>$pdfName,'path'=>$path,'product_id'=>$prod_id,'from_id'=>1,'to_id'=>$user->id,'afa_id'=>$user->afa->id]);
+    }
+
     /**
      * By this property
      *
@@ -655,7 +705,12 @@ class MemberController extends Controller {
             }
 
             if (Auth::user()->hasAfa()) {
-                return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa.waiting_message', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'afa' => Auth::user()->afa->name]))->with('waiting',1);
+                if(Auth::user()->afaHasSendCa(Auth::user()->id,Auth::user()->afa->id)){
+                    Session::put('id_product',$prod_id);
+                    return redirect($prodUrl)->with('engagement', trans('member.gothere.notification.after_afa_send_finalized_ca'))->with('waiting',0);
+                }else{
+                    return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa.waiting_message', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'afa' => Auth::user()->afa->name]))->with('waiting',1);
+                }
             } else {
                 return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa', ['date'=>$dtDate, 'hour'=>$dtTime, 'name'=>$user]))->with('hasAfa',0);
             }

@@ -951,4 +951,28 @@ class User extends Authenticatable {
         return '';
     }
 
+    public function memberHasSendMr($from_id,$to_id,$afa_id){
+        $mr = Product::mandatRecherche()->where('from_id','=',$from_id)->where('to_id','=',$to_id)->where('afa_id','=',$afa_id)->first();
+
+        if(sizeof($mr)!==0){
+            if($mr->status === 0){
+                return false;
+            }else{
+                return true;
+            }
+        }
+
+        return true;
+    }
+
+    public function mandatRecherche($from_id,$to_id,$afa_id){
+        $mr = Product::mandatRecherche()->where('from_id','=',$from_id)->where('to_id','=',$to_id)->where('afa_id','=',$afa_id)->first();
+
+        if(sizeof($mr)!==0){
+            return $mr;
+        }
+
+        return '';
+    }
+
 }

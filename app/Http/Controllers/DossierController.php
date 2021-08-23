@@ -7,10 +7,15 @@ use App\Models\User;
 use App\Models\RelationMembreApl;
 use App\Models\Product;
 use App\Models\ConjunctionAgreement;
-use Auth;
-use Validator;
+use App\Models\MandatRecherche;
+use App\Models\Message;
+use App\Notifications\AfaMandatRechercheMessage;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
+use Carbon\Carbon;
+use Validator;
+use Auth;
+use App;
 
 
 class DossierController extends Controller
@@ -62,6 +67,46 @@ class DossierController extends Controller
         
         return response()->json(['response'=>'true']);
     }
+    
+    /*
+    * Store mr for afa in storage file
+    *
+    * @param  Illuminate\Http\Request  $request
+    * @return \Illuminate\Http\Response
+    */
+    public function uploadMemberDossierMr(Request $request)
+    {    
+        $datas = $request->all();
+        $validator = Validator::make($datas, ['file_mr' => 'required|mimes:pdf']);
+
+        // Validate file
+        if ($validator->fails()) {
+            return response()->json(['response'=>'false']);
+        }
+
+        // Handle file Upload to uploads/pdf/transaction path
+        $file = $request->file('file_mr');
+        $path = public_path('uploads/pdf/transaction');
+        $this->storeFile($file,$path);
+
+        // Send message and email to afa from IEA
+        App::setLocale('en'); //change lang to en
+        $user=Auth::user();
+        $dt = Carbon::now();
+        $dtDate = $dt->format('m-d-Y');
+        $dtTime = $dt->format('H:i:m');
+        $user_name= $user->isPerson()?$user->name:$user->userinfos()->first()->orga_name;
+        $mr_id=$request->mr_id;
+        $mandatesearch= url(MandatRecherche::whereId($mr_id)->first()->path);
+        $city=$user->afa->location->locality;
+        $content=trans('member.gothere.mr.message_to_afa', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user_name,'immat'=>$user->immat,'city'=>$city,'afa' =>$user->afa->name,'mandatesearch'=>$mandatesearch]);
+        // send message
+        Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$user->afa->id,'body'=>$content]);
+        // send email
+        // $user->afa->notify(new AfaMandatRechercheMessage($user,$mandatesearch));
+        
+        return response()->json(['response'=>'true']);
+    }
 
     private function storeFile($file,$path){
         // Get filename with the extension
@@ -71,7 +116,7 @@ class DossierController extends Controller
         // Get just ext
         $extension = $file->getClientOriginalExtension();
         // Filename to store
-        $fileNameToStore = $filename.'_finalized.'.$extension;
+        $fileNameToStore = $filename.'.'.$extension;
         // Upload Image
         $path = $file->move($path, $fileNameToStore);
 
@@ -83,4 +128,11 @@ class DossierController extends Controller
 
         return response()->json(['success' => 'true']);
     }
+
+    public function updateMr(Request $request){
+        MandatRecherche::where('id', $request->id)->update(['status' => 1]);
+
+        return response()->json(['success' => 'true']);
+    }
+
 }

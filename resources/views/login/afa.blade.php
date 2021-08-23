@@ -44,9 +44,7 @@
                         <div role="main">
                             <div id="breadcrumbs" class="group font-size-14">
                                 <div id="entry" class="group">
-                                    <div class="hasfloat aligncenter">
-                                        <b>@lang('app.form.register.afa.desc')</b>
-                                    </div>
+                                    <div class="hasfloat aligncenter"></div>
                                     <div class="hasfloat">
                                     <form class="form-horizontal" role="form" id="formAfaRegistrator" onclick="myFunction()" method="post" action="{{route('register.store', ['role'=>'afa'])}}" enctype="multipart/form-data">
                                         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
@@ -141,7 +139,7 @@
                                                         <span class="input-group-text form-control">(+61)</span>
                                                     </div>
                                                     <div class="custom-file">
-                                                        <input type="text" pattern="[0-9]{1}[0-9]{7}" minlength="8" maxlength="8" placeholder="XXXXXXXX" class="form-control m-15px-t" id="orga_phone" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):'' }}" required>
+                                                        <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="8" maxlength="9" placeholder="XXXXXXXX" class="form-control m-15px-t" id="orga_phone" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):'' }}" required>
                                                     </div>
                                                 </div>
                                                 <span class="text-danger m-5px-l">{{ $errors->first('orga_phone') }}</span>
@@ -165,7 +163,7 @@
                                                         <span class="input-group-text form-control">(+61)</span>
                                                     </div>
                                                     <div class="custom-file">
-                                                        <input type="text" pattern="[0-9]{1}[0-9]{7}" minlength="8" maxlength="8" placeholder="XXXXXXXX" class="form-control m-15px-t" id="orga_mobile_phone" name="orga_mobile_phone" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):'' }}" required>
+                                                        <input type="text" pattern="[0-9]{1}[0-9]{8}" minlength="9" maxlength="9" placeholder="XXXXXXXXX" class="form-control m-15px-t" id="orga_mobile_phone" name="orga_mobile_phone" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):'' }}" required>
                                                     </div>
                                                 </div>
                                                 <span class="text-danger m-5px-l">{{ $errors->first('orga_mobile_phone') }}</span>

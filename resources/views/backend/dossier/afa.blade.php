@@ -133,7 +133,7 @@
 
                                 '<div class="vertical-timeline-block">'+
                                     '<div class="vertical-timeline-icon black-bg">'+
-                                        '<i class="fa fa-upload"></i>'+
+                                        '<i class="fa fa-paper-plane"></i>'+
                                     '</div>'+
                                     '<div class="vertical-timeline-content">'+
                                         '<h2>SEND FINALIZED CONJUNCTION AGREEMENT</h2>'+
@@ -163,14 +163,13 @@
             var filePath = $("#spnFilePath");
             var button = $("#btnUploadFile");
             var folderId = button.val();
-            var buttonsend = '<button type="button" class="m-btn m-btn-sm m-btn-theme4rd" onclick="sendFile('+folderId+')" id="btnSendFile">Send</button>';
+            var buttonsend = '<button type="button" class="m-btn m-btn-sm m-btn-theme4rd" onclick="sendFile('+folderId+')" title={{trans("app.btn.send")}} id="btnSendFile"><i class="fa fa-paper-plane"></i></button>';
 
             button.click(function () {
-                fileupload.click();
-            });
-            fileupload.change(function () {
-                var fileName = $(this).val().split('\\')[$(this).val().split('\\').length - 1];
-                filePath.html("<b>Selected File: </b>" + fileName +" " +buttonsend);
+                fileupload.change(function () {
+                    var fileName = $(this).val().split('\\')[$(this).val().split('\\').length - 1];
+                    filePath.html("<b>Selected File: </b>" + fileName +" " +buttonsend);
+                });
             });
         });
 
@@ -218,8 +217,8 @@
                     // hide loading icon
                     stopLoadingPage();
 
-                    if(data.success == 'false'){
-					swal("Upload Conjunction Agreement", "Upload error", "error");
+                    if(data.response == 'false'){
+					swal("Upload Conjunction Agreement", "Upload error! Choose a right format .pdf", "error");
                     }else{
                         // Change ca status to 1: ca finalized
                         updateCaTable(caId);
@@ -238,6 +237,11 @@
                         }
                         );
                     }
+                },
+                error:function(){
+                    // hide loading icon
+                    stopLoadingPage();
+                    swal("Upload Research Mandate", "Upload error", "error");
                 }
             });  
         }

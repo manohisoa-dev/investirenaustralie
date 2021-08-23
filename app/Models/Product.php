@@ -522,5 +522,24 @@ class Product extends Model {
         return Product::select('ca.*')->join('conjunction_agreements as ca','products.id','=','ca.product_id');
     }
 
+    public function scopeMandatRecherche(){
+        
+        return Product::select('mr.*')->join('mandat_recherches as mr','products.id','=','mr.product_id');
+    }
+    
+    /**
+     * Check if product is exclusive agency
+     *
+     * @return Boolean
+     */
+    public function isExclusiveAgency()
+    {
+        if($this->author->role !== 3){
+            return true;
+        }
+
+        return false;
+    }
+
 }
 
