@@ -1130,7 +1130,7 @@ return
 	'txt.country' => 'Pays',
 	'txt.your_login' => 'Votre login',
 	'txt.define' => 'Définir',
-	'txt.fond_dossier' => 'Choisissez un ou plusieurs photos pour le fond de dossier',
+	'txt.fond_dossier' => 'Télécharger divers fichiers d\'informations concernant le programme d\'accompagnement du<b> « Réseau Local d\'Agences Partenaires »</b>',
 	'txt.photo_programme' => 'Photos programme',
 	'Agence_Francophone_Australienne' => 'Agence Francophone Australienne',
 	'Agence_Partenaire_Locale' => 'Agence Partenaire Locale',
@@ -1406,4 +1406,6 @@ return
     'txt_information_p' => 'Il y a deux étapes pour enregistrer un programme :',
     'txt_information_etape1' => 'Enregistrez d\'abord le programme lui-même (exemple : un bâtiment) ;',
     'txt_information_etape2' => 'Enregistrez les types de produits inclus, l\'un après l\'autre (exemple : types d\'unités). Après avoir créé le programme, vous pourrez créer des produits inclus dans votre tableau de bord "Mes propriétés"-"Mes programmes" et en cliquant sur le pictogramme "Produits du programme" .',
+    'table.lia_dossier' => 'Mandat de vente',
+    'txt.lia_dossier' => 'Choisir le mandat de vente du vendeur à l\'agence interne de IEA',
 ];

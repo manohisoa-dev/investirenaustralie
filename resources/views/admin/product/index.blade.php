@@ -13,9 +13,9 @@
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.create'):route('admin.product.create') }}?type=produit" type="button" class="btn btn-primary btn-block">
+            {{--<a href="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.create'):route('admin.product.create') }}?type=produit" type="button" class="btn btn-primary btn-block">
 				<i class="fa fa-plus"></i> @lang('app.txt.add_new_product') 
-			</a>
+			</a>--}}
         </div>
     </div>
 </div>
