@@ -1448,4 +1448,7 @@ return
 	'txt.iicc_address' =>'Adresse',
 	'txt.iicc_mobile' =>'Mobile',
 	'txt.iicc_email' =>'Email',
+	'txt.no_records_to_display' => 'Aucun dossier à afficher',
+	'txt.research_mandate' => 'Mandat de Recherche',
+	'txt.conjunction_agreement' => 'Accord de conjonction',
 ];

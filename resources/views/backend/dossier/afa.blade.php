@@ -28,36 +28,52 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($records as $index =>$record)
-                        <tr>
-                            <td>
-                                @if (@getimagesize(App\Models\Product::whereId($record->product_id)->first()->imageUrl()))
-                                    <a href="{{route('admin.product.index')}}/{{$record->id}}">
-                                        <img src="{{App\Models\Product::whereId($record->product_id)->first()->imageUrl()}}" class="img-responsive" style="height:50px" />
-                                    </a>
-                                @else
-                                    <a href="{{route('admin.product.index')}}/{{$record->id}}">
-                                        <img class="img-responsive" src="{{asset('img/500x500.jpg')}}" style="height:50px">
-                                    </a>
-                                @endif
-                            </td>
-                            <td>{{ App\Models\Product::whereId($record->product_id)->first()->title }}</td>
-                            <td>Conjunction Agreement</td>
-                            <td>{{ $record->file_name }}</td>
-                            <td>
-                            @if($record->status=='0')
-                                <span class="badge badge-pill badge-danger white-color">@lang('afa.folders.status.to_download')</span>
-                            @else
-                                <span class="badge badge-pill badge-success white-color">@lang('afa.folders.status.finalized')</span>
-                            @endif
-                            </td>
-                            <td align="center">
-                                <a href="javascript:void(0)" onclick="showTimeline({{$record}})" title="Show timeline for this product" class="">
-                                    <i class="fa fa-eye"></i>
-                                </a>&nbsp;
-                            </td>
-                        </tr>
-                    @endforeach
+                        @if (sizeOf($records)!==0)
+                            @foreach($records as $index =>$record)
+                                <tr>
+                                    <td>
+                                        @if (@getimagesize(App\Models\Product::whereId($record->product_id)->first()->imageUrl()))
+                                            <a href="{{route('admin.product.index')}}/{{$record->id}}">
+                                                <img src="{{App\Models\Product::whereId($record->product_id)->first()->imageUrl()}}" class="img-responsive" style="height:50px" />
+                                            </a>
+                                        @else
+                                            <a href="{{route('admin.product.index')}}/{{$record->id}}">
+                                                <img class="img-responsive" src="{{asset('img/500x500.jpg')}}" style="height:50px">
+                                            </a>
+                                        @endif
+                                    </td>
+                                    <td>{{ App\Models\Product::whereId($record->product_id)->first()->title }}</td>
+                                    <td>
+                                        {{ sizeOf($record)!==0?'*'.trans('app.txt.conjunction_agreement'):'' }} <br>
+                                        {{ sizeOf($mandatesearch)!==0?'*'.trans('app.txt.research_mandate'):'' }}
+                                    </td>
+                                    <td>
+                                        {{ sizeOf($record)!==0?'*'.$record->file_name:'' }} <br>
+                                        {{ sizeOf($mandatesearch)!==0?'*'.$mandatesearch[$index]->file_name:'' }}
+                                    </td>
+                                    <td>
+                                    {{-- @if($record->status=='0') --}}
+                                    {{-- if dossiier is current --}}
+                                        <span class="badge badge-pill badge-info white-color">@lang('app.txt.file.current')</span>
+                                    {{-- @else --}}
+                                        {{-- if dossiier is closed --}}
+                                        {{-- <span class="badge badge-pill badge-success white-color">@lang('afa.folders.status.finalized')</span> --}}
+                                    {{-- @endif --}}
+                                    </td>
+                                    <td align="center">
+                                        <a href="javascript:void(0)" onclick="showTimeline({{$record}},{{$mandatesearch[$index]}})" title="Show timeline for this product" class="">
+                                            <i class="fa fa-eye"></i>
+                                        </a>&nbsp;
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td class="text-center" colspan="6">
+                                    <small>@lang('app.txt.no_records_to_display')</small>
+                                </td>
+                            </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>
@@ -88,28 +104,29 @@
 	<script src="{{ asset('/js/jquery-dateFormat.min.js') }}"></script>
     
     <script type="text/javascript">
-        function showTimeline(folder){
+        function showTimeline(ca,mr){
             var content = $('#showTimelineModal .modal-body');
             content.html();
 
             // set timeline data
-            content.html(timelineContent(folder));
+            content.html(timelineContent(ca,mr));
 
             // show timeline
             $('#showTimelineModal').modal('show');
         }
 
-        function timelineContent(folderInfo){
-            var dayCreate = $.format.prettyDate(folderInfo.created_at);
-            var dateCreate = $.format.date(folderInfo.created_at, 'yyyy MMM dd');
-            var dayUpdate = $.format.prettyDate(folderInfo.updated_at);
-            var dateUpdate = $.format.date(folderInfo.updated_at, 'yyyy MMM dd');
+        function timelineContent(ca,mr){
+            var dayCreate = $.format.prettyDate(ca.created_at);
+            var dateCreate = $.format.date(ca.created_at, 'yyyy MMM dd');
+            var dayUpdate = $.format.prettyDate(ca.updated_at);
+            var dateUpdate = $.format.date(ca.updated_at, 'yyyy MMM dd');
             var origin   = window.location.origin;
-            var downloadLink = origin+'/'+folderInfo.path;
-            var status = folderInfo.status;
+            var downloadLink = origin+'/'+ca.path;
+            var status = ca.status;
             var disabledLink = status!==0?'disabled':'';
+            var stepStatus = status!==0?'<i class="badge badge-pill badge-success white-color">@lang("app.txt.finalized")</i>':'<i class="badge badge-pill badge-danger white-color">@lang("afa.folders.status.to_download")</i>';
             var textBtnUpload = status!==0?'File sent':'Upload file';
-            var fileName = status!==0?folderInfo.file_name:'';
+            var fileName = status!==0?ca.file_name:'';
             var content = '<div class="profile-content-area m-40px-tb">'+
                 '<div class="card m-40px-b">'+
                     '<div class="card-body">'+
@@ -128,6 +145,7 @@
                                             dayCreate+'<br/>'+
                                             '<small>'+dateCreate+'</small>'+
                                         '</span>'+
+                                        '<span class="col-lg-12 text-right"><small><b>@lang("app.status") : </b>'+stepStatus+'</small></span>'+
                                     '</div>'+
                                 '</div>'+
 
@@ -138,15 +156,33 @@
                                     '<div class="vertical-timeline-content">'+
                                         '<h2>SEND FINALIZED CONJUNCTION AGREEMENT</h2>'+
                                         '<p>Send the finalized conjunction agreement.</p>'+
-                                        '<button href="javascript:void(0)" class="m-btn m-btn-sm m-btn-theme float-right" id="btnUploadFile" onclick="uploadFile('+folderInfo.id+')" value="'+folderInfo.id+'" '+disabledLink+'> '+textBtnUpload+' </button>'+
+                                        '<button href="javascript:void(0)" class="m-btn m-btn-sm m-btn-theme float-right" id="btnUploadFile" onclick="uploadFile('+ca.id+')" value="'+ca.id+'" '+disabledLink+'> '+textBtnUpload+' </button>'+
                                         '<span id="spnFilePath">'+fileName+'</span>'+
                                         '<form id="formSendCaFile">'+
-                                            '<input type="file" id="FileUpload1" onchange="fileUploadChange('+folderInfo.id+')" name="file_ca" style="display: none" />'+
+                                            '<input type="file" id="FileUpload1" onchange="fileUploadChange('+ca.id+')" name="file_ca" style="display: none" />'+
                                         '</form>'+
                                         '<span class="vertical-date">'+
                                             dayUpdate+'<br/>'+
                                             '<small>'+dateUpdate+'</small>'+
                                         '</span>'+
+                                        '<span class="col-lg-12 text-right"><small><b>@lang("app.status") : </b>'+stepStatus+'</small></span>'+
+                                    '</div>'+
+                                '</div>'+
+
+                                '<div class="vertical-timeline-block">'+
+                                    '<div class="vertical-timeline-icon grenate-bg">'+
+                                        '<i class="fa fa-download"></i>'+
+                                    '</div>'+
+                                    '<div class="vertical-timeline-content">'+
+                                        '<h2>RESERCH MANDATE</h2>'+
+                                        '<p>Download the reseach mandate.'+
+                                        '</p>'+
+                                        '<a href="'+downloadLink+'" class="m-btn m-btn-sm m-btn-theme2nd" '+disabledLink+'> Download</a>'+
+                                        '<span class="vertical-date">'+
+                                            dayCreate+'<br/>'+
+                                            '<small>'+dateCreate+'</small>'+
+                                        '</span>'+
+                                        '<span class="col-lg-12 text-right"><small><b>@lang("app.status") : </b>'+stepStatus+'</small></span>'+
                                     '</div>'+
                                 '</div>'+
                             '</div>'+

@@ -39,8 +39,9 @@ class DossierController extends Controller
      */
     public function showAfaDossier() {
         $records = ConjunctionAgreement::getAllFolders();
+        $mandatesearch = MandatRecherche::getAllFolders();
 
-        return view('backend.dossier.afa')->with('records',$records);
+        return view('backend.dossier.afa')->with('records',$records)->with('mandatesearch',$mandatesearch);
     }
 
     /*

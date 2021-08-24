@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Auth;
 
 class MandatRecherche extends Model
 {
@@ -18,6 +19,6 @@ class MandatRecherche extends Model
     }   
 
     public function scopeGetAllFolders(){
-        return $this->where('to_id',Auth::user()->id)->get();
+        return $this->where('afa_id',Auth::user()->id)->get();
     }
 }

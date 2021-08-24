@@ -710,14 +710,20 @@ class RegisterController extends Controller
                 if(session('seller_class') == 'non_professional_natural_persons' || (session('seller_class') == 'seller_by_afa' && $type == 'individual' )){
                     for($i=0;$i<2;$i++){
                         $sfx = $i!=1?'':'_2';
-                        $dtOfbirth = $datas['date_of_birth'.$sfx];
-                        $dt = new Carbon($dtOfbirth);
+
+                        if(session('seller_class')!=='seller_by_afa'){
+                            $dtOfbirth = $datas['date_of_birth'.$sfx];
+                            $dt = new Carbon($dtOfbirth);
+                            $dt = $dt->toDateString();
+                        }else{
+                            $dt ="";
+                        }
             
                         $si= SellerIndividual::create([
                             'user_id'=>$user->id, 
                             'last_name'=>$datas['last_name'.$sfx], 
                             'first_name'=>$datas['first_name'.$sfx], 
-                            'date_of_birth'=>session('seller_class')!=='seller_by_afa'?$dt->toDateString():'', 
+                            'date_of_birth'=>session('seller_class')!=='seller_by_afa'?$dt:'', 
                             'place_of_birth'=>session('seller_class')!=='seller_by_afa'?$datas['place_of_birth'.$sfx]:'', 
                             'nationality'=>session('seller_class')!=='seller_by_afa'?$datas['nationality'.$sfx]:'', 
                             'street_adr'=>$datas['street_adr'.$sfx], 

@@ -1179,7 +1179,6 @@ return
     'txt_information_p' => 'There are two steps to registering a program :',
     'txt_information_etape1' => 'Register the program itself first (example : a building);',
     'txt_information_etape2' => 'Register the included product types, one after another (example : unit types).After you have created the program, you will be able to create included products in your dashboard "My Properties"-"My Programs" and clicking "Program Products" pictogram.',
-<<<<<<< HEAD
 	'config.lia' =>'Internal Agency IEA (LIA)',
 	'config.iicc' =>'Platform Manager (IICC)',
 	'txt.lia' =>'LIA',
@@ -1200,8 +1199,9 @@ return
 	'txt.iicc_address' =>'Address',
 	'txt.iicc_mobile' =>'Mobile',
 	'txt.iicc_email' =>'Email',
-=======
     'table.lia_dossier' => 'Sales mandate',
-    'txt.lia_dossier' => 'Choose the seller\'s mandate to sell to the IEA internal agency',
->>>>>>> 1d53bd2308d91f2ee98f86cfec5637b45befad7b
+    'txt.lia_dossier' => 'Choose the seller&rsquo;s mandate to sell to the IEA internal agency',
+	'txt.no_records_to_display' => 'No records to display',
+	'txt.research_mandate' => 'Research Mandate',
+	'txt.conjunction_agreement' => 'Conjunction Agreement',
 ];
