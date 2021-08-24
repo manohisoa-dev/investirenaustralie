@@ -405,10 +405,10 @@
 			<div class="ibox-title">
 				<h5>@lang('app.table.product_programme_title')</h5>
 				<div class="ibox-tools">
-					<a href="javascript:void(0)" onclick="add_product({{$product->id}})" class="btn btn-primary">
+					{{--<a href="javascript:void(0)" onclick="add_product({{$product->id}})" class="btn btn-primary">
 						<i class="fa fa-plus"></i> @lang('app.form.product_add_ajax')
 					</a>
-					<div style="clear:both"></div>
+					<div style="clear:both"></div>--}}
 				</div>
 				<div style="clear:both"></div>
 			</div>

@@ -19,6 +19,7 @@ use App\Models\Localisation;
 use App\Models\Firb;
 use App\Models\FondsDossier;
 use App\Models\EoiDossier;
+use App\Models\LiaDossier;
 
 use Jleon\LaravelPnotify\Notify;
 use Carbon\Carbon;
@@ -494,6 +495,24 @@ class ProductController extends Controller {
         $fond_dossier->save();
     }
 
+    public function save_lia_dossier($nom_photo, $id_programme) {
+        //save image "table image"
+        $image = new Image();
+        $image->url = $nom_photo;
+        $image->filename = $nom_photo;
+        $image->filemime = '';
+        $image->filepath = 'uploads/product/' . $nom_photo;
+        $image->author_id = Auth::user()->id;
+        $image->save();
+
+        //save photo programme "table products_fond_dossier"
+        $fond_dossier = new LiaDossier();
+        $fond_dossier->product_id = $id_programme;
+        $fond_dossier->image_id = $image->id;
+        $fond_dossier->author_id = Auth::user()->id;
+        $fond_dossier->save();
+    }
+
     public function saveProgramme(Request $request) {
         $anciennete = $request->ancienneteBien;
         $nature = $request->natureBien;
@@ -530,6 +549,12 @@ class ProductController extends Controller {
         if ($request->eoiDossier) {
             foreach ($request->eoiDossier as $key => $value) {
                 $this->save_eoi_dossier($value, $id_programme);
+            }
+        }
+
+        if ($request->liaDossier) {
+            foreach ($request->liaDossier as $key => $value) {
+                $this->save_lia_dossier($value, $id_programme);
             }
         }
 
@@ -579,6 +604,11 @@ class ProductController extends Controller {
         EoiDossier::where('id', $request->id_eoi_dossier)->delete();
         return response()->json(['success' => 'true']);
     }
+    
+    public function ajaxDropLiaDossier(Request $request) {
+        LiaDossier::where('id', $request->id_lia_dossier)->delete();
+        return response()->json(['success' => 'true']);
+    }
 
     public function AjaxFonDossierEdit(Request $request) {
         $id_programme = $request->id_programme;
@@ -607,6 +637,20 @@ class ProductController extends Controller {
         $this->save_eoi_dossier($file_name, $id_programme);
         return response()->json(['success' => 'true']);
     }
+    
+    public function AjaxLiaDossierEdit(Request $request) {
+        $id_programme = $request->id_programme;
+        $image = $request->file('file');
+
+        $fileInfo = $image->getClientOriginalName();
+        $filename = pathinfo($fileInfo, PATHINFO_FILENAME);
+        $extension = pathinfo($fileInfo, PATHINFO_EXTENSION);
+        $file_name = $filename . '-' . time() . '.' . $extension;
+        $image->move(public_path('uploads/product'), $file_name);
+
+        $this->save_lia_dossier($file_name, $id_programme);
+        return response()->json(['success' => 'true']);
+    }
 
     public function editProgramme(Request $request, Product $product) {
         $localisation = Localisation::find($product->location_id);
@@ -623,10 +667,14 @@ class ProductController extends Controller {
             'product_eoi.image_id', '=', 'images.id')->select('*',
             'product_eoi.id as prdEoiId')->get();
 
+        $liaDossier = LiaDossier::where('product_lia.product_id', '=', $product->id)->join('images',
+            'product_lia.image_id', '=', 'images.id')->select('*',
+            'product_lia.id as prdLiaId')->get();
+
         return view('backend.product.edit_programme', ['product' => $product,
             'localisation' => $localisation, 'photos' => $photo, 'eoidossier' => $eoiDossier,
-            'product_lies' => $produit_lie, 'title' => __('afa.programme.title'), 'dossier' =>
-            $fonDossier]);
+            'liadossier' => $liaDossier, 'product_lies' => $produit_lie, 'title' => __('afa.programme.title'),
+            'dossier' => $fonDossier]);
     }
 
     public function editProduit(Request $request, Product $product) {
@@ -760,7 +808,7 @@ class ProductController extends Controller {
         $produit_lie = Product::where('parent_id', $product->id)->get();
         $localisation = Localisation::find($product->location_id);
         return view('backend.product.produit_programme', ['product' => $product, 'title' =>
-            __('afa.programme.title'), 'product_lies' => $produit_lie,'localisation'=>$localisation]);
+            __('afa.programme.title'), 'product_lies' => $produit_lie, 'localisation' => $localisation]);
     }
 
     public function ajaxGetProductById(Request $request) {
@@ -1039,7 +1087,8 @@ class ProductController extends Controller {
                     0, $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
                     $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                     $id_programme, $id_location, 0, $avoir_parking, 0, $request->commision_product,
-                    $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison,'',0);
+                    $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison, '',
+                    0);
             } else {
                 //creation location produit isolé
                 $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
@@ -1058,7 +1107,8 @@ class ProductController extends Controller {
                     $request->simple_price, 0, 0, 'AUD', $request->status, $request->product_type_id,
                     $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                     -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine, $request->commision_product,
-                    $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison,'',0);
+                    $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison, '',
+                    0);
 
                 if ($request->p_eoiDossier) {
                     foreach ($request->p_eoiDossier as $key => $value) {
@@ -1083,7 +1133,8 @@ class ProductController extends Controller {
                 0, $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
                 $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                 -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine, $request->commision_product,
-                $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison,'',0);
+                $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison, '',
+                0);
         }
 
 
