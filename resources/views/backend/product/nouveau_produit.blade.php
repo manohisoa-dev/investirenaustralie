@@ -23,7 +23,8 @@
 				</div>
 			</div>
 			<div class="card-body">
-				<form class="form-padding wizard-big" action="{{ route('save-product') }}" method="post" id="form" enctype="multipart/form-data">
+				{{--{{ route('save-product') }}--}}
+				<form class="form-padding wizard-big" action="#" method="post" id="form" enctype="multipart/form-data">
 					<h1>@lang('app.config')</h1>
 					<fieldset>
 						<h4>@lang('app.txt.info_programme')</h4>
@@ -41,13 +42,15 @@
 								</div>
 							</div>
 							<div class="col-lg-7">
-								<div class="form-group">
-									<label for="title">@lang('app.form.programme_choix_anciennete') *</label>
-									<select class="form-control" name="ancienneteBien" id="ancienneteBien">
-										<option value="">@lang('app.form.choix_txt')</option>
-										<option value="Neuf">Neuf</option>
-										<option value="Ancien">Ancien</option>
-									</select>
+								<div id="Age_of_Property" style="display:none">
+									<div class="form-group">
+										<label for="title">@lang('app.form.programme_choix_anciennete') *</label>
+										<select class="form-control" name="ancienneteBien" id="ancienneteBien">
+											<option value="">@lang('app.form.choix_txt')</option>
+											<option value="Neuf">Neuf</option>
+											<option value="Ancien">Ancien</option>
+										</select>
+									</div>
 								</div>
 							</div>
 							<div class="col-lg-5">
@@ -213,21 +216,23 @@
 									</div>
 								</div>
 							</div>
+							<div class="row">
+								<div class="col-lg-12">
+									<label for="title">@lang('app.table.lia_dossier')</label>
+									<div class="dropzone" id="lia_dossier" multiple style="margin-bottom:25px">
+										<div id="template" class="file-row"></div>
+									</div>
+								</div>
+							</div>
 							<div class="row mb-2">
 								<div class="col-lg-12">
 									<label for="title">@lang('app.txt.photo_programme')</label>
 									<div class="dropzone" id="image_upload"></div>
 								</div>
-							</div>
-							<div class="row">
-								<div class="col-lg-12">
-									<label class="chk_firb_programme"> 
-										<input type="checkbox" value="" name="chk_firb_programme" id="chk_firb_programme" required> The Seller certifies under their sole responsibilitythatthis property canbe sold to non-residentforeigners in accordance with Australian law and the rules applicable by the Foreign Investment Review Board (FIRB).
-									</label>
-								</div>
-							</div>
+							</div>							
 						</div>
 						<!-- fin information programme -->
+						
 						<!-- si ancienneté est encien -->
 						<div id="info_code_postal" style="display:none">
 							<div class="row">
@@ -244,15 +249,15 @@
 									</div>
 								</div>
 							</div>
-							<div class="row">
-								<div class="col-lg-12">
-									<label class="chk_firb1"> 
-										<input type="checkbox" value="" name="chk_firb1"> The Seller certifies undertheir sole responsibilitythatthispropertycanbesold to non-residentforeigners in accordance withAustralianlaw and the rules applicable by the ForeignInvestmentReviewBoard (FIRB)
-									</label>
-								</div>
-							</div>
 						</div>
 						<!-- fin si ancienneté est encien -->
+						<div class="row">
+							<div class="col-lg-12">
+								<label class="chk_firb_programme"> 
+									<input type="checkbox" value="" name="chk_firb_programme" id="chk_firb_programme" required> The Seller certifies under their sole responsibilitythatthis property canbe sold to non-residentforeigners in accordance with Australian law and the rules applicable by the Foreign Investment Review Board (FIRB).
+								</label>
+							</div>
+						</div>
 					</fieldset>
 					
 					<h1>@lang('app.product')</h1>
@@ -394,6 +399,12 @@
 									<div id="template" class="file-row"></div>
 								</div>
 							</div>
+							<div class="col-lg-12">
+								<label for="title">@lang('app.table.lia_dossier')</label>
+								<div class="dropzone" id="p_lia_dossier" multiple style="margin-bottom:25px">
+									<div id="template" class="file-row"></div>
+								</div>
+							</div>
 						</div>
 						<!-- fin eoi-->
 						<div class="row" id="price_simple" style="display:none">
@@ -445,45 +456,13 @@
 							</div>
 						</div>
 						<!-- fin info date produit isolé-->
-						<div class="row">					
-							<div class="col-lg-6">
-								<div class="form-group">
-									<label for="title">@lang('app.input.nbchambre')</label>
-									<input name="bedrooms" id="bedrooms" class="form-control" type="number" value="0">
-								</div>  
-							</div>
-							<div class="col-lg-6">
-								<div class="form-group">
-									<label for="title">@lang('app.input.nbchambresuite')</label>
-									<input name="ensuite" id="ensuite" class="form-control" type="number" value="0">
-								</div>
-							</div>														
-						</div>
-						<div class="row">							
-							<div class="col-lg-6">
-								<div class="form-group">
-									<label for="title">@lang('app.input.nbsalledebain')</label>
-									<input name="bathrooms" id="bathrooms" class="form-control" type="number" value="0">
-								</div> 
-							</div>	
-							<div class="col-lg-6">
-								<div id="info_qte">
-									<div class="form-group">
-										<label for="title">@lang('app.form.product_qte')</label>
-										<input name="quantity" id="quantity" class="form-control" type="number" value="1">
-									</div>
-								</div>
-							</div>						
-						</div>
 						<div class="row">
-							<div class="col-lg-12">
+							<div class="col-lg-6">
 								<div class="form-group">
 									<label for="title">@lang('app.table.produit_image')</label>
 									<input name="image" class="form-control" type="file" accept="image/png, image/jpeg">
 								</div>
-							</div>							
-						</div>
-						<div class="row">
+							</div>	
 							<div class="col-lg-6">
 								<div id="yearConstruct" style="display:none">								
 									<div class="form-group">
@@ -491,79 +470,165 @@
 										<input name="year_built" id="year_built" class="form-control" type="number" value="0">
 									</div>
 								</div>
+							</div>						
+						</div>
+						
+						<!-- info pour le produit résidentiel -->
+						<div id="info_prd_residentiel" style="display:none">
+							<div class="row">					
+								<div class="col-lg-6">
+									<div class="form-group">
+										<label for="title">@lang('app.input.nbchambre')</label>
+										<input name="bedrooms" id="bedrooms" class="form-control" type="number" value="0">
+									</div>  
+								</div>
+								<div class="col-lg-6">
+									<div class="form-group">
+										<label for="title">@lang('app.input.nbchambresuite')</label>
+										<input name="ensuite" id="ensuite" class="form-control" type="number" value="0">
+									</div>
+								</div>														
 							</div>
-							<div class="col-lg-6">
-								<div id="jardin_info" style="display:none">
-									<label for="title">@lang('app.form.product_jardin_space')</label>
+							<div class="row">							
+								<div class="col-lg-6">
+									<div class="form-group">
+										<label for="title">@lang('app.input.nbsalledebain')</label>
+										<input name="bathrooms" id="bathrooms" class="form-control" type="number" value="0">
+									</div> 
+								</div>	
+								<div class="col-lg-6">
+									<div id="info_qte">
+										<div class="form-group">
+											<label for="title">@lang('app.form.product_qte')</label>
+											<input name="quantity" id="quantity" class="form-control" type="number" value="1">
+										</div>
+									</div>
+								</div>						
+							</div>
+							<div class="row">
+								<div class="col-lg-4">
+									<label for="title">@lang('app.form.product_area_interior') *</label>
 									<div class="input-group" style="margin-bottom: .5rem;">
-										<input type="number" class="form-control" name="superficie_jardin" id="superficie_jardin" value="0">
+										<input type="text" name="interior_area" id="interior_area" class="form-control">
 										<div class="input-group-append">
 											<span class="input-group-text">.m2</span>
 										</div>
 									</div>
 								</div>
-							</div>							
-						</div>
-						<div class="row">
-							<div class="col-lg-4">
-								<label for="title">@lang('app.form.product_area_interior') *</label>
-								<div class="input-group" style="margin-bottom: .5rem;">
-									<input type="text" name="interior_area" id="interior_area" class="form-control">
-									<div class="input-group-append">
-										<span class="input-group-text">.m2</span>
+								<div class="col-lg-4">
+									<label for="title">@lang('app.form.product_area_exterior') *</label>
+									<div class="input-group" style="margin-bottom: .5rem;">
+										<input type="text" name="exterior_area" id="exterior_area" class="form-control">
+										<div class="input-group-append">
+											<span class="input-group-text">.m2</span>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-4">
+									<label for="title">@lang('app.form.product_area_total') *</label>
+									<div class="input-group" style="margin-bottom: .5rem;">
+										<input type="text" name="total_area" id="total_area" class="form-control" readonly="">
+										<div class="input-group-append">
+											<span class="input-group-text">.m2</span>
+										</div>
 									</div>
 								</div>
 							</div>
-							<div class="col-lg-4">
-								<label for="title">@lang('app.form.product_area_exterior') *</label>
-								<div class="input-group" style="margin-bottom: .5rem;">
-									<input type="text" name="exterior_area" id="exterior_area" class="form-control">
-									<div class="input-group-append">
-										<span class="input-group-text">.m2</span>
+							<div class="row">							
+								<div class="col-lg-6">
+									<div class="form-group">
+										<label for="title">@lang('app.form.product_parking_ferme')</label>
+										<input name="garage_spaces" id="garage_spaces" class="form-control" type="number" value="0">
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="form-group">
+										<label for="title">@lang('app.form.product_parking_carpot')</label>
+										<input name="carport_spaces" id="carport_spaces" class="form-control" type="number" value="0">
 									</div>
 								</div>
 							</div>
-							<div class="col-lg-4">
-								<label for="title">@lang('app.form.product_area_total') *</label>
-								<div class="input-group" style="margin-bottom: .5rem;">
-									<input type="text" name="total_area" id="total_area" class="form-control" readonly="">
-									<div class="input-group-append">
-										<span class="input-group-text">.m2</span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row">							
-							<div class="col-lg-6">
-								<div class="form-group">
-									<label for="title">@lang('app.form.product_parking_ferme')</label>
-									<input name="garage_spaces" id="garage_spaces" class="form-control" type="number" value="0">
-								</div>
-							</div>
-							<div class="col-lg-6">
-								<div class="form-group">
-									<label for="title">@lang('app.form.product_parking_carpot')</label>
-									<input name="carport_spaces" id="carport_spaces" class="form-control" type="number" value="0">
-								</div>
-							</div>
-						</div>
-						
-						<div class="row">
-							<div class="col-lg-12">
-								<label class="chk_parking"> 
-									<input type="checkbox" value="1" id="chk_parking" name="chk_parking"> @lang('app.form.product_parking_vPublic')
-								</label>
-							</div>
-							
-							<div class="col-lg-12">
-								<div id="chk_picine" style="display:none">
-									<label class="chk_picine"> 
-										<input type="checkbox" value="1" name="chk_picine"> @lang('app.form.product_piscine')
+							<div class="row">
+								<div class="col-lg-12">
+									<label class="chk_parking"> 
+										<input type="checkbox" value="1" id="chk_parking" name="chk_parking"> @lang('app.form.product_parking_vPublic')
 									</label>
 								</div>
+								
+								<div class="col-lg-12">
+									<div id="chk_picine" style="display:none">
+										<label class="chk_picine"> 
+											<input type="checkbox" value="1" name="chk_picine"> @lang('app.form.product_piscine')
+										</label>
+									</div>
+								</div>
 							</div>
-							
-							
+						</div>
+						<!-- fin info pour le produit résidentiel -->
+						
+						<!-- info pour le produit foncier -->
+						<div id="info_prd_foncier" style="display:none">
+							<div class="row">
+								<div class="col-lg-6">
+									<div class="form-group">
+										<label for="title">Surface *</label>
+										<input type="number" name="surface_foncier" id="surface_foncier" class="form-control">
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="form-group">
+										<label for="title">Unité de surface *</label>
+										<select class="form-control" name="unite_surface">
+											<option value="m2">m2</option>
+											<option value="Ha">Ha</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- fin info pour le produit foncier -->
+						
+						<!-- info pour le produit industriel -->
+						<div id="info_prd_industriel" style="display:none">
+							<div class="row">
+								<div class="col-md-12">
+									<label for="title">Property details *</label>
+									<textarea class="form-control" rows="4" name="property_detail"></textarea>
+								</div>
+							</div>
+						</div>
+						<!-- info pour le produit industriel -->
+						
+						<!-- info pour le produit commercial -->
+						<div id="info_prd_commercial" style="display:none">
+							<div class="row">
+								<div class="col-md-4">
+									<label for="title">Sales area *</label>
+									<div class="input-group" style="margin-bottom: .5rem;">
+										<input type="text" name="surface_commercial" id="surface_commercial" class="form-control">
+										<div class="input-group-append">
+											<span class="input-group-text">.m2</span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<label for="title">Customer parking *</label>
+									<select class="form-control" name="type_cutomer_parking">
+										<option value="">Choisir...</option>
+										<option value="Oui">Oui</option>
+										<option value="Non">Non</option>
+									</select>
+								</div>
+								<div class="col-md-4">
+									<label for="title">Number of parking spots *</label>
+									<input type="number" class="form-control" name="nb_cutomer_parking" />
+								</div>
+							</div>
+						</div>
+						<!-- fin info pour le produit commercial -->
+						
+						
+						<div class="row">
 							<div class="col-lg-12">
 								<div id="legal_prd_isole" style="display:none">
 									<label><strong>@lang('app.txt.declaration_annonceur')</strong></label>
@@ -652,6 +717,7 @@
 			{
 				var ancienneteBien = $('#ancienneteBien').val();
 				var natureBien = $('#natureBien').val();
+				var cat = $('#cat_programmme_id').val();
 				if(ancienneteBien == 'Neuf' && natureBien == 'Programme immobilier'){
 					var titre_programme = $('#title_programme').val();
 					$('[name="product_type_id"]').val($('#type_id').val());
@@ -694,7 +760,11 @@
 					$('#chk_firb').show();
 					$('#yearConstruct').hide();
 					$('#commission_product').show();
-					$('#info-date-isole').show();
+					if(cat == 1){
+						$('#info-date-isole').show();
+					}else{
+						$('#info-date-isole').hide();
+					}
 					$('#bloc_eoi_doc').show();
 					$('#price_simple').show();
 					$('#price_max_min').hide();
@@ -710,8 +780,8 @@
 					$('#commission_product').show();
 					$('#info-date-isole').hide();
 					$('#bloc_eoi_doc').hide();
-					$('#price_simple').hide();
-					$('#price_max_min').show();
+					$('#price_simple').show();
+					$('#price_max_min').hide();
 					$('#legal_prd_isole').hide();
 				}
 				// Always allow going backward even if the current step contains invalid fields!
@@ -789,12 +859,18 @@
 					required: true
 				},
 				ancienneteBien: {
-					required: true
+					required: {
+						depends: function(element) {
+							if($("#cat_programmme_id").val() == 1){
+								return true;	
+							}
+						}
+					}
 				},
 				natureBien: {
 					required: {
 						depends: function(element) {
-							if($("#ancienneteBien").val() == 'Neuf'){
+							if($("#cat_programmme_id").val() == 1 && $("#ancienneteBien").val() == 'Neuf'){
 								return true;	
 							}
 						}
@@ -909,14 +985,8 @@
 						}
 					}
 				},
-				chk_firb1: {
-					required: {
-						depends: function(element) {
-							if($("#info_code_postal").is(":visible")){
-								return true;	
-							}
-						}
-					}
+				chk_firb_programme: {
+					required: true
 				},
 				title_product: {
 					required: true,
@@ -1036,15 +1106,6 @@
 						}
 					}
 				},
-				chk_firb_programme: {
-					required: {
-						depends: function(element) {
-							if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier'){
-								return true;	
-							}
-						}
-					}
-				},
 				state_id_product:{
 					required: true,
 				},
@@ -1123,9 +1184,6 @@
 				},
 				annee_const: {
 					required: "@lang('app.txt.champobligatoire')",
-				},
-				chk_firb1: {
-					required: "@lang('app.txt.champobligatoire')"
 				},
 				title_product: {
 					required: "@lang('app.txt.champobligatoire')",
@@ -1377,6 +1435,65 @@
 			}
 		});
 		
+		$("#lia_dossier").dropzone({
+			maxFiles: 1, 
+            maxFilesize: 25,
+			dictDefaultMessage: "@lang('app.txt.lia_dossier')",
+			url: "{{ route('ajaxDropZone') }}",
+			params: {"_token": "{{ csrf_token() }}"},
+            acceptedFiles: ".pdf",
+            addRemoveLinks: true,
+            timeout: 50000,
+            init:function() {
+				// Get images
+				var myDropzone = this;
+			},
+            removedfile: function(file) 
+            {
+				if (this.options.dictRemoveFile) {
+				  return Dropzone.confirm("Are You Sure to "+this.options.dictRemoveFile, function() {
+					if(file.previewElement.id != ""){
+						var name = file.previewElement.id;
+					}else{
+						var name = file.name;
+					}
+					//console.log(name);
+					var fileRef;
+						return (fileRef = file.previewElement) != null ? 
+						fileRef.parentNode.removeChild(file.previewElement) : void 0;
+				  });
+			    }		
+            },
+       
+            success: function(file, response) 
+            {
+				file.previewElement.id = response.success;
+				//console.log(file.previewElement.id); 
+				// set new images names in dropzone’s preview box.
+                var olddatadzname = file.previewElement.querySelector("[data-dz-name]");   
+				file.previewElement.querySelector("img").alt = response.success;
+				file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'>"+response.success+"</label>");
+				file.previewElement.appendChild(file._captionBox);
+				$('#programmeForm').append('<input type="hidden" name="liaDossier[]" value="'+response.success +'">');
+				olddatadzname.innerHTML = response.success;
+            },
+            error: function(file, response)
+            {
+               if($.type(response) === "string")
+					var message = response; //dropzone sends it's own error messages in string
+				else
+					var message = response.message;
+				file.previewElement.classList.add("dz-error");
+				_ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+				_results = [];
+				for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+					node = _ref[_i];
+					_results.push(node.textContent = message);
+				}
+				return _results;
+            }
+		});
+		
 		$("#p_eoi_dossier").dropzone({
 			maxFiles: 25, 
 			maxFilesize: 25,
@@ -1434,6 +1551,65 @@
 				}
 				return _results;
 			}
+		});
+		
+		$("#p_lia_dossier").dropzone({
+			maxFiles: 1, 
+            maxFilesize: 25,
+			dictDefaultMessage: "@lang('app.txt.lia_dossier')",
+			url: "{{ route('ajaxDropZone') }}",
+			params: {"_token": "{{ csrf_token() }}"},
+            acceptedFiles: ".pdf",
+            addRemoveLinks: true,
+            timeout: 50000,
+            init:function() {
+				// Get images
+				var myDropzone = this;
+			},
+            removedfile: function(file) 
+            {
+				if (this.options.dictRemoveFile) {
+				  return Dropzone.confirm("Are You Sure to "+this.options.dictRemoveFile, function() {
+					if(file.previewElement.id != ""){
+						var name = file.previewElement.id;
+					}else{
+						var name = file.name;
+					}
+					//console.log(name);
+					var fileRef;
+						return (fileRef = file.previewElement) != null ? 
+						fileRef.parentNode.removeChild(file.previewElement) : void 0;
+				  });
+			    }		
+            },
+       
+            success: function(file, response) 
+            {
+				file.previewElement.id = response.success;
+				//console.log(file.previewElement.id); 
+				// set new images names in dropzone’s preview box.
+                var olddatadzname = file.previewElement.querySelector("[data-dz-name]");   
+				file.previewElement.querySelector("img").alt = response.success;
+				file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'>"+response.success+"</label>");
+				file.previewElement.appendChild(file._captionBox);
+				$('#programmeForm').append('<input type="hidden" name="p_liaDossier[]" value="'+response.success +'">');
+				olddatadzname.innerHTML = response.success;
+            },
+            error: function(file, response)
+            {
+               if($.type(response) === "string")
+					var message = response; //dropzone sends it's own error messages in string
+				else
+					var message = response.message;
+				file.previewElement.classList.add("dz-error");
+				_ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+				_results = [];
+				for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+					node = _ref[_i];
+					_results.push(node.textContent = message);
+				}
+				return _results;
+            }
 		});
 		
 		$("#image_upload").dropzone({
@@ -1506,18 +1682,54 @@
 		
 		$('#cat_programmme_id').on('change', function() {
 			$('#nature_enregistrement').hide();
+			$('#Age_of_Property').hide();
 			$('#info-programme').hide();	
 			$('#infoAdresse').hide();
 			$('#info_code_postal').hide();
 			$('[name="ancienneteBien"]').val('');
 			var category = this.value;
-			if(category != 1){
-				$('#natureBien').empty().append($('<option />').text("@lang('app.form.choix_txt')").val(''),$('<option />').text('Produit isolé').val('Produit isolé'));
-				$('#info_qte').show();
-			}else{
-				console.log('Residentiel');
+			if(category == 1){
+				//pour le categorie residentiel
 				$('#natureBien').empty().append($('<option />').text("@lang('app.form.choix_txt')").val(''),$('<option />').text('Programme immobilier').val('Programme immobilier'),$('<option />').text('Produit isolé').val('Produit isolé'));
 				$('#info_qte').hide();
+				$('#info_prd_residentiel').show();
+				$('#info_prd_foncier').hide();
+				$('#info_prd_industriel').hide();
+				$('#info_prd_commercial').hide();
+				$('#Age_of_Property').show();
+				$('#nature_enregistrement').show();
+			}else if(category == 2){
+				//pour categorie foncier 
+				$('#natureBien').empty().append($('<option />').text("@lang('app.form.choix_txt')").val(''),$('<option />').text('Produit isolé').val('Produit isolé'));
+				$('#info_qte').show();
+				$('#info-date-isole').hide();
+				$('#info_prd_residentiel').hide();
+				$('#info_prd_foncier').show();
+				$('#info_prd_industriel').hide();
+				$('#info_prd_commercial').hide();
+				$('#Age_of_Property').hide();
+				$('#nature_enregistrement').hide();
+				$('#price_simple').show();
+			}else if(category == 3){
+				// pour categorie industriel
+				$('#natureBien').empty().append($('<option />').text("@lang('app.form.choix_txt')").val(''),$('<option />').text('Produit isolé').val('Produit isolé'));
+				$('#info_prd_residentiel').hide();
+				$('#info_prd_foncier').hide();
+				$('#info_prd_industriel').show();
+				$('#info_prd_commercial').hide();
+				$('#Age_of_Property').hide();
+				$('#nature_enregistrement').hide();
+				$('#price_simple').show();
+			}else if(category == 4){
+				//pour categorie commercial
+				$('#natureBien').empty().append($('<option />').text("@lang('app.form.choix_txt')").val(''),$('<option />').text('Produit isolé').val('Produit isolé'));
+				$('#info_prd_residentiel').hide();
+				$('#info_prd_foncier').hide();
+				$('#info_prd_industriel').hide();
+				$('#info_prd_commercial').show();
+				$('#Age_of_Property').hide();
+				$('#nature_enregistrement').hide();
+				$('#price_simple').show();
 			}
 			
 			//changer list type produit par rapport au programme
@@ -1537,9 +1749,9 @@
 		$('#ancienneteBien').on('change', function() {
 			var anciennete = this.value;
 			if(anciennete == 'Neuf'){
-				$('#nature_enregistrement').show();
 				$('#infoAdresse').show();
 				$('#info_code_postal').hide();
+				$('#nature_enregistrement').show();
 				
 				$('#natureBien').on('change', function() {
 					var nature = this.value;
@@ -1555,8 +1767,8 @@
 			}else{
 				$('#info_code_postal').show();
 				$('#infoAdresse').hide();
-				$('#nature_enregistrement').hide();
 				$('#info-programme').hide();	
+				$('#nature_enregistrement').hide();
 			}
 		});
 		

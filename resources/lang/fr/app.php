@@ -1418,7 +1418,7 @@ return
     'txt.confirm_creation' => "Les biens affichés sur le portail « Investir en Australie » s&rsquo;adressent à une clientèle internationale francophone composée majoritairement de personnes résidant hors des frontières australiennes et qualifiées de « Non-Resident Foreigners » par la loi australienne. Ces personnes sont confrontées à un certain nombre de limitations d&rsquo;investissement en Australie.",
     'txt.confirm_creation1' => "Par conséquent, il vous sera demandé de certifier que vous disposez d&rsquo;un titre légal pour disposer de cette propriété et qu&rsquo;elle peut être vendue à des étrangers non-résidents en vertu de la réglementation australienne sur les investissements directs étrangers appliquée par le Foreign Investment Review Board.",
     'txt_confirm_btn_creation' => 'Oui, je confirme',
-    'txt_cancel_btn_creation' => "Non, j&rsquo;annule",
+    'txt_cancel_btn_creation' => "Non, j\'annule",
     'txt_register_programme' => 'Enregistrer les propriétés',
     'txt_information_title' => 'Informations sur le programme',
     'txt_information_p' => 'Il y a deux étapes pour enregistrer un programme :',

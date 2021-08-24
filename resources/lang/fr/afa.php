@@ -28,7 +28,7 @@ return [
     le Conseil d&rsquo;examen des investissements étrangers (FIRB).',
     "product.menu"  => "Produits",
     "product.title"  => "Mes produits",
-    "new.product.title"  => "Nouveau produit",
+    "new.product.title"  => "Nouveau produit autonome",
     "folders.title"  => "Mes dossiers",
     "folders.status.to_download"  => "A télécharger",
     "folders.status.finalized"  => "Finalisé",

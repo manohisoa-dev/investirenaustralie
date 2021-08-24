@@ -1451,7 +1451,6 @@
 					$('#natureBien').empty().append($('<option />').text("@lang('app.form.choix_txt')").val(''),$('<option />').text('Produit isolé').val('Produit isolé'));
 					$('#info_qte').show();
 				}else{
-					console.log('Residentiel');
 					$('#natureBien').empty().append($('<option />').text("@lang('app.form.choix_txt')").val(''),$('<option />').text('Programme immobilier').val('Programme immobilier'),$('<option />').text('Produit isolé').val('Produit isolé'));
 					$('#info_qte').hide();
 				}

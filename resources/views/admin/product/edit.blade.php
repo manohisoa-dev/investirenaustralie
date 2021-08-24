@@ -119,7 +119,7 @@
 					</div>
 					
 					
-					@if ($eoidossier)
+					@if (count($eoidossier)>0)
 					<div class="row">
 						 <div class="col-lg-12">
 						 <h5>@lang('app.table.eoi_dossier')</h5>
@@ -180,8 +180,74 @@
 					@endif 
 					<div class="row" id="bloc_eoi_doc" style="display:none">
 						<div class="col-lg-12">
-							<h5>@lang('app.table.eoi_dossier')</h5>
 							<div class="dropzone" id="p_eoi_dossier" multiple style="margin-bottom:25px">
+								<div id="template" class="file-row"></div>
+							</div>
+						</div>
+					</div>
+					
+					@if (count($liadossier)>0)
+					<div class="row">
+						 <div class="col-lg-12">
+						 <h5>@lang('app.table.lia_dossier')</h5>
+						 @foreach ( $liadossier as $dos )
+						 <div class="file-box">
+							<div class="file">
+								@if(setIconFile($dos->filepath) == 'images')
+									<a href="{{asset($dos->filepath)}}" class="fancyboxLink">
+								@elseif(setIconFile($dos->filepath) == 'pdf')
+									<a class="fancybox-pdf" data-fancybox-type="iframe" href="http://docs.google.com/viewer?embedded=true&url={{asset(urlencode($dos->filepath))}}">
+								@else
+									<a href="https://docs.google.com/viewer?url={{asset(urlencode($dos->filepath))}}&embedded=true" class="fancyboxLinkDoc" data-fancybox-type="iframe">
+								@endif								
+									<span class="corner"></span>						
+									@if(setIconFile($dos->filepath) == 'images')
+										<div class="image">
+											<img alt="image" class="img-fluid" src="{{asset($dos->filepath)}}">
+										</div>
+									@endif	
+									@if(setIconFile($dos->filepath) == 'pdf')
+										<div class="icon">
+											<i class="fa fa-file-pdf-o"></i>
+										</div>
+									@endif	
+									@if(setIconFile($dos->filepath) == 'doc')
+										<div class="icon">
+											<i class="fa fa-file-word-o"></i>
+										</div>
+									@endif
+									@if(setIconFile($dos->filepath) == 'excel')
+										<div class="icon">
+											<i class="fa fa-file-excel-o"></i>
+										</div>
+									@endif	
+									@if(setIconFile($dos->filepath) == 'file')
+										<div class="icon">
+											<i class="fa fa-file"></i>
+										</div>
+									@endif		
+									<div class="file-name">
+										@php
+											$filename_eoi = $dos->filename;
+											$filename_eoi = preg_replace('/^(.*)\-\d{8,}\.(gif|jpg|png|pdf)$/', '$1.$2', $filename_eoi);
+										@endphp
+										<label style="text-transform:lowercase">{{str_limit($filename_eoi, 15)}}</label>
+										<a class="pull-right" href="javascript:void(0)" onclick="delete_lia_dossier({{$dos->prdLiaId}})">
+											<i class="fa fa-trash"></i>
+										</a>
+										<br>
+										<small>{{$dos->created_at ? $dos->created_at->diffForHumans() : ""}}</small>
+									</div>
+								</a>
+							</div>
+						</div>
+						 @endforeach		
+						 </div>
+					</div>  
+					@endif 
+					<div class="row" id="bloc_lia_doc" style="margin-bottom:15px;display:none">
+						<div class="col-lg-12">
+							<div class="dropzone" id="lia_dossier" multiple style="margin-bottom:25px">
 								<div id="template" class="file-row"></div>
 							</div>
 						</div>
@@ -474,6 +540,7 @@
 
 @section('custom-script')
 	<script src="{{asset('administrator/plugins/ckeditor/ckeditor.js')}}"></script>	
+	<script src="{{ asset('administrator/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 	<script>
 	Dropzone.autoDiscover = false;
@@ -489,6 +556,57 @@
 			url: "{{ Auth::user()->isAdmin()?route('admin.AjaxEoiDossierEdit'):route('admin.collaborators.admin.AjaxEoiDossierEdit') }}",
 			params: {"_token": "{{ csrf_token() }}","id_programme": "{{ $product->id }}"},
 			acceptedFiles: ".jpeg,.jpg,.png,.gif,.doc,.docx,.xls,.xlsx,.pdf",
+			addRemoveLinks: true,
+			timeout: 50000,
+			init:function() {
+				// Get images
+				var myDropzone1 = this;
+			},
+			removedfile: function(file) 
+			{
+				if (this.options.dictRemoveFile) {
+				  return Dropzone.confirm("Are You Sure to "+this.options.dictRemoveFile, function() {
+					if(file.previewElement.id != ""){
+						var name = file.previewElement.id;
+					}else{
+						var name = file.name;
+					}
+					//console.log(name);
+					var fileRef;
+						return (fileRef = file.previewElement) != null ? 
+						fileRef.parentNode.removeChild(file.previewElement) : void 0;
+				  });
+				}		
+			},
+	   
+			success: function(file, response) 
+			{
+				location.reload();	
+			},
+			error: function(file, response)
+			{
+			   if($.type(response) === "string")
+					var message = response; //dropzone sends it's own error messages in string
+				else
+					var message = response.message;
+				file.previewElement.classList.add("dz-error");
+				_ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+				_results = [];
+				for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+					node = _ref[_i];
+					_results.push(node.textContent = message);
+				}
+				return _results;
+			}
+		});
+		
+		$("#lia_dossier").dropzone({
+			maxFiles: 1, 
+			maxFilesize: 25,
+			dictDefaultMessage: "@lang('app.txt.lia_dossier')",
+			url: "{{ Auth::user()->isAdmin()?route('admin.AjaxLiaDossierEdit'):route('admin.collaborators.admin.AjaxLiaDossierEdit') }}",
+			params: {"_token": "{{ csrf_token() }}","id_programme": "{{ $product->id }}"},
+			acceptedFiles: ".pdf",
 			addRemoveLinks: true,
 			timeout: 50000,
 			init:function() {
@@ -567,6 +685,7 @@
 		if(nature_produit == 'Produit isolé'){
 			$('#info-date-isole').show();
 			$('#bloc_eoi_doc').show();
+			$('#bloc_lia_doc').show();
 			$('#dt_db_travaux').val('{{$product->dt_db_travaux}}');
 			$('#dt_prevu_livraison').val('{{$product->dt_prevu_livraison}}');
 			$('#price_simple').show();
@@ -574,6 +693,7 @@
 		}else{
 			$('#info-date-isole').hide();
 			$('#bloc_eoi_doc').hide();
+			$('#bloc_lia_doc').hide();
 			$('#price_simple').hide();
 			$('#price_max_min').show();
 		}
@@ -719,6 +839,80 @@
 			  $('#product_type_id').html(data);
 		   }
 		});
+	}
+	
+	function delete_lia_dossier(id_lia_dossier)
+	{
+		swal({
+			title: "@lang('app.table.lia_dossier')",
+			text: "@lang('app.dropzone.delete_photo_confirme')",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: '#ff3547',
+			confirmButtonText: "@lang('app.yes')",
+			cancelButtonText: "@lang('app.no')",
+			closeOnConfirm: false,
+			closeOnCancel: false
+		 },
+		 function(isConfirm){	
+		   if (isConfirm){
+				 $.ajax({
+					url : "{{ Auth::user()->isAdmin()?route('admin.ajaxDropLiaDossier'):route('admin.collaborators.admin.ajaxDropLiaDossier') }}",
+					type: "POST",
+					dataType: "JSON",
+					data:{"_token": "{{ csrf_token() }}",'id_lia_dossier':id_lia_dossier},
+					success: function(data)
+					{
+						swal("@lang('app.table.lia_dossier')", "@lang('app.dropzone.delete_fonds_yes')", "success");
+						location.reload();	
+					},
+					error: function (jqXHR, textStatus, errorThrown)
+					{
+						swal("@lang('app.table.lia_dossier')", "@lang('app.jquery.error_delete')", "error");
+						location.reload();	
+					}
+				}); 
+			} else {
+				swal("@lang('app.table.lia_dossier')", "@lang('app.jquery.delete_cancel')", "error");
+			}
+		 });
+	}
+	
+	function delete_eoi_dossier(id_eoi_dossier)
+	{
+		swal({
+			title: "@lang('app.table.eoi_dossier')",
+			text: "@lang('app.dropzone.delete_photo_confirme')",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: '#ff3547',
+			confirmButtonText: "@lang('app.yes')",
+			cancelButtonText: "@lang('app.no')",
+			closeOnConfirm: false,
+			closeOnCancel: false
+		 },
+		 function(isConfirm){	
+		   if (isConfirm){
+				 $.ajax({
+					url : "{{ Auth::user()->isAdmin()?route('admin.ajaxDropEoiDossier'):route('admin.collaborators.admin.ajaxDropEoiDossier') }}",
+					type: "POST",
+					dataType: "JSON",
+					data:{"_token": "{{ csrf_token() }}",'id_eoi_dossier':id_eoi_dossier},
+					success: function(data)
+					{
+						swal("@lang('app.table.eoi_dossier')", "@lang('app.dropzone.delete_fonds_yes')", "success");
+						location.reload();	
+					},
+					error: function (jqXHR, textStatus, errorThrown)
+					{
+						swal("@lang('app.table.eoi_dossier')", "@lang('app.jquery.error_delete')", "error");
+						location.reload();	
+					}
+				}); 
+			} else {
+				swal("@lang('app.table.eoi_dossier')", "@lang('app.jquery.delete_cancel')", "error");
+			}
+		 });
 	}
 	</script>
 @endsection
