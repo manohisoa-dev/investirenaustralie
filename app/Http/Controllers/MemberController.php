@@ -26,10 +26,12 @@ use App\Models\DossierTransaction;
 use App\Models\Product;
 use App\Models\ConjunctionAgreement;
 use App\Models\MandatRecherche;
+use App\Models\Config;
 use Session;
 use Carbon\Carbon;
 use App;
 use PDF;
+
 
 class MemberController extends Controller {
     /**
@@ -591,7 +593,19 @@ class MemberController extends Controller {
     public function createCaPdf() {
         $pdf_template = 'pdf.conjunction_agreement';
         $user = Auth::user();
-        $iea = ['name'=>'IEA', 'abn'=>'XXXXXXXXXXX', 'license'=>'XXXXXXXXXX', 'licence_expire_date'=>'12/12/2022', 'address'=>'Australie', 'mobile'=>'+ 255 66 999 69', 'email'=>'admin@investirenaustralie.com', 'director'=>'Philippe', 'director_license'=>'XXXXXXXXXXXXXXXXX', 'directore_licence_expire_date'=>'12/12/2022'];
+        $lia = Config::lia();
+        $lia_name = $lia->get_meta('lia_name')->value;
+        $lia_abn = $lia->get_meta('lia_abn')->value;
+        $lia_license = $lia->get_meta('lia_license')->value;
+        $lia_license_expire_date = $lia->get_meta('lia_license_expire_date')->value;
+        $lia_address = $lia->get_meta('lia_address')->value;
+        $lia_mobile = $lia->get_meta('lia_mobile')->value;
+        $lia_email = $lia->get_meta('lia_email')->value;
+        $lia_dir = $lia->get_meta('lia_dir')->value;
+        $lia_dir_license = $lia->get_meta('lia_dir_license')->value;
+        $lia_dir_license_expire_date = $lia->get_meta('lia_dir_license_expire_date')->value;
+
+        $iea = ['name'=>$lia_name, 'abn'=>$lia_abn, 'license'=>$lia_license, 'licence_expire_date'=>$lia_license_expire_date, 'address'=>$lia_address, 'mobile'=>$lia_mobile, 'email'=>$lia_email, 'director'=>$lia_dir, 'director_license'=>$lia_dir_license, 'directore_licence_expire_date'=>$lia_dir_license_expire_date];
         $pdfName = 'CA-'.$user->afa->immat."_".time().".pdf";
         $path = 'uploads/pdf/ca/'.$pdfName.'.pdf';
         $prod_id = session()->get('id_product');
@@ -637,7 +651,19 @@ class MemberController extends Controller {
     public function createForm6Pdf() {
         $pdf_template = 'pdf.form6';
         $user = Auth::user();
-        $iea = ['name'=>'IEA', 'abn'=>'XXXXXXXXXXX', 'license'=>'XXXXXXXXXX', 'licence_expire_date'=>'12/12/2022', 'address'=>'Australie', 'mobile'=>'+ 255 66 999 69', 'email'=>'admin@investirenaustralie.com', 'director'=>'Philippe', 'director_license'=>'XXXXXXXXXXXXXXXXX', 'directore_licence_expire_date'=>'12/12/2022'];
+        $lia = Config::lia();
+        $lia_name = $lia->get_meta('lia_name')->value;
+        $lia_abn = $lia->get_meta('lia_abn')->value;
+        $lia_license = $lia->get_meta('lia_license')->value;
+        $lia_license_expire_date = $lia->get_meta('lia_license_expire_date')->value;
+        $lia_address = $lia->get_meta('lia_address')->value;
+        $lia_mobile = $lia->get_meta('lia_mobile')->value;
+        $lia_email = $lia->get_meta('lia_email')->value;
+        $lia_dir = $lia->get_meta('lia_dir')->value;
+        $lia_dir_license = $lia->get_meta('lia_dir_license')->value;
+        $lia_dir_license_expire_date = $lia->get_meta('lia_dir_license_expire_date')->value;
+
+        $iea = ['name'=>$lia_name, 'abn'=>$lia_abn, 'license'=>$lia_license, 'licence_expire_date'=>$lia_license_expire_date, 'address'=>$lia_address, 'mobile'=>$lia_mobile, 'email'=>$lia_email, 'director'=>$lia_dir, 'director_license'=>$lia_dir_license, 'directore_licence_expire_date'=>$lia_dir_license_expire_date];
         $prod_id = session()->get('id_product');
         $product = Product::whereId($prod_id)->first();
 
@@ -649,6 +675,25 @@ class MemberController extends Controller {
 
         // Save Research Mandate
         return MandatRecherche::create(['file_name'=>$pdfName,'path'=>$path,'product_id'=>$prod_id,'from_id'=>1,'to_id'=>$user->id,'afa_id'=>$user->afa->id]);
+    }
+
+    public function autoCompleteForm6(){
+
+        // require (__DIR__.'/Fpdm/fpdm.php');
+        
+        // $fields = array(
+        //     'name'    => 'My name',
+        //     'address' => 'My address',
+        //     'city'    => 'My city',
+        //     'phone'   => 'My phone number'
+        // );
+        
+        // $pdf = new FPDM(__DIR__.'/Fpdm/fom6.pdf');
+        // $pdf->Load($fields, false); // second parameter: false if field values are in ISO-8859-1, true if UTF-8
+        // $pdf->Merge();
+        // $pdf->Output();
+
+        return 'autoCompleteForm6';
     }
 
     /**
