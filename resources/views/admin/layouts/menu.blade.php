@@ -223,6 +223,8 @@
         <a href="#"><i class="fa fa-wrench" title="Configurations"></i> <span class="nav-label">@lang('app.configs')</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
             <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.config.site'):route('admin.config.site')}}">@lang('app.config.site')</a></li>
+            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.config.lia'):route('admin.config.lia')}}">@lang('app.config.lia')</a></li>
+            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.config.iicc'):route('admin.config.iicc')}}">@lang('app.config.iicc')</a></li>
             {{--<li><a href="{{route('admin.config.login')}}">Ecran de connexion</a></li>--}}
             <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.config.social'):route('admin.config.social')}}">@lang('app.config.social')</a></li>
             {{--<li><a href="{{route('admin.config.payment')}}">Paiement</a></li>--}}

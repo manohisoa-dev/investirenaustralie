@@ -119,6 +119,10 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::prefix('config')->as('config.')->group(function () {
         Route::get('site', 'ConfigController@site')->name('site');
         Route::post('site', 'ConfigController@site')->name('site.update');
+        Route::get('lia', 'ConfigController@lia')->name('lia');
+        Route::post('lia', 'ConfigController@lia')->name('lia.update');
+        Route::get('iicc', 'ConfigController@iicc')->name('iicc');
+        Route::post('iicc', 'ConfigController@iicc')->name('iicc.update');
         Route::get('login', 'ConfigController@login')->name('login');
         Route::post('login', 'ConfigController@login')->name('login.update');
         Route::get('social', 'ConfigController@social')->name('social');
@@ -153,7 +157,7 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::post('message', 'MessageController@sendMessage')->name('ajax.send.message');
     Route::get('message/unread', 'MessageController@getUnreadMessage')->name('ajax.get.unread.message');
     
-    //Route modèle message
+    //Route modï¿½le message
     Route::resource('model-message','ModelMessageController');
     //Route template newsletters
     Route::resource('newsletter-template','NewsletterTemplateController');
@@ -407,6 +411,10 @@ Route::prefix('collaborators')->namespace('Admin')->as('admin.')->middleware(["a
     Route::prefix('config')->as('collaborators.config.')->group(function () {
         Route::get('/admin/site', 'ConfigController@site')->name('site');
         Route::post('/admin/site', 'ConfigController@site')->name('site.update');
+        Route::get('/admin/lia', 'ConfigController@lia')->name('lia');
+        Route::post('/admin/lia', 'ConfigController@lia')->name('lia.update');
+        Route::get('/admin/iicc', 'ConfigController@iicc')->name('iicc');
+        Route::post('/admin/iicc', 'ConfigController@iicc')->name('iicc.update');
         Route::get('/admin/login', 'ConfigController@login')->name('login');
         Route::post('/admin/login', 'ConfigController@login')->name('login.update');
         Route::get('/admin/social', 'ConfigController@social')->name('social');

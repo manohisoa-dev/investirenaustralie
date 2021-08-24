@@ -90,6 +90,112 @@ class ConfigController extends Controller
     }
 
     /**
+     * Show the Internal Agency IEA (LIA).
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function lia(Request $request)
+    {
+        $item = Config::lia();
+        $keys = Config::liaRules();
+
+        if ($request->isMethod('post')) {
+
+            // Validate request
+            $datas = $request->all();
+            $validator = Validator::make($datas, $keys);
+
+            // Check validation
+            if ($validator->fails()) {
+                #notification
+                Notify::error($validator);
+                return back()->withErrors($validator)->withInput() ;
+            }
+
+            // Save Config into MetaData By Validator rules key
+            foreach($keys as $key=>$val){
+                if($key == 'lia_email'){
+                    if($request->input('lia_email') === null){
+                        $item->update_meta('lia_email', "");
+                    }else{
+                        if($value = $request->input($key)) $item->update_meta('lia_email', $value);    
+                    }
+                }elseif($key == 'lia_mobile'){
+                    if($request->input('lia_mobile') === null){
+                        $item->update_meta('lia_mobile', "");
+                    }else{
+                        if($value = $request->input($key)) $item->update_meta('lia_mobile', $value);    
+                    }
+                }else{
+                    if($value = $request->input($key)) $item->update_meta($key, $value);
+                }
+
+            }
+
+            # notification
+            Notify::success('La configuration a été modifiée avec succés ! ');
+            return back() ;
+        }
+
+        return view('admin.config.lia',compact('item', 'keys'))
+            ->with('admins', User::isActive()->ofRole('admin')->get())
+            ->with('breadcrumbs', __('app.config'));
+    }
+
+    /**
+     * Show the platform manager (IICC).
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function iicc(Request $request)
+    {
+        $item = Config::iicc();
+        $keys = Config::iiccRules();
+
+        if ($request->isMethod('post')) {
+
+            // Validate request
+            $datas = $request->all();
+            $validator = Validator::make($datas, $keys);
+
+            // Check validation
+            if ($validator->fails()) {
+                #notification
+                Notify::error($validator);
+                return back()->withErrors($validator)->withInput() ;
+            }
+
+            // Save Config into MetaData By Validator rules key
+            foreach($keys as $key=>$val){
+                if($key == 'iicc_email'){
+                    if($request->input('iicc_email') === null){
+                        $item->update_meta('iicc_email', "");
+                    }else{
+                        if($value = $request->input($key)) $item->update_meta('iicc_email', $value);    
+                    }
+                }elseif($key == 'iicc_mobile'){
+                    if($request->input('iicc_mobile') === null){
+                        $item->update_meta('iicc_mobile', "");
+                    }else{
+                        if($value = $request->input($key)) $item->update_meta('iicc_mobile', $value);    
+                    }
+                }else{
+                    if($value = $request->input($key)) $item->update_meta($key, $value);
+                }
+
+            }
+
+            # notification
+            Notify::success('La configuration a été modifiée avec succés ! ');
+            return back() ;
+        }
+
+        return view('admin.config.iicc',compact('item', 'keys'))
+            ->with('admins', User::isActive()->ofRole('admin')->get())
+            ->with('breadcrumbs', __('app.config'));
+    }
+
+    /**
      * Show login config
      *
      * @return \Illuminate\Http\Response

@@ -25,6 +25,8 @@ class Config extends BaseModel
     public static $STYLE_ID = 4;
     public static $LOGIN_ID = 5;
     public static $SMTP_ID = 6;
+    public static $LIA_ID = 9;
+    public static $IICC_ID = 10;
     
     public static $TRIAL = "payment.trial_delay";
     
@@ -50,6 +52,38 @@ class Config extends BaseModel
             'meta_title'    => 'required|max:100',
             'meta_desc'     => 'required|max:500',
             'meta_keywords' => 'required|max:500',
+        ];
+    }
+
+    public static function lia(){
+        return Config::findOrFail(self::$LIA_ID);
+    }
+    
+    public static function liaRules(){
+        return [
+            'lia_name' => 'required|max:100',
+            'lia_abn' => 'required|digits_between:11,11|numeric',
+            'lia_license'  => 'nullable|digits_between:9,9|numeric',
+            'lia_license_expire_date'  => 'required|min:10|max:10',
+            'lia_address' => 'required|max:100',
+            'lia_email' => 'max:100',
+            'lia_mobile' => 'max:9',
+            'lia_dir' => 'required|max:100',
+            'lia_dir_license'  => 'nullable|digits_between:9,9|numeric',
+            'lia_dir_license_expire_date'  => 'required|min:10|max:10',
+        ];
+    }
+
+    public static function iicc(){
+        return Config::findOrFail(self::$IICC_ID);
+    }
+    
+    public static function iiccRules(){
+        return [
+            'iicc_name' => 'required|max:100',
+            'iicc_address' => 'required|max:100',
+            'iicc_email' => 'max:100',
+            'iicc_mobile' => 'max:9',
         ];
     }
     
