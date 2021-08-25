@@ -7,12 +7,10 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Carbon\Carbon;
-use App\Models\User;
 
-class AfaMandatRechercheMessage extends Notification
+class AfaMandateSearchMessage extends Notification
 {
     use Queueable;
-
     private $user;
     private $dt;
     private $hr;
@@ -23,7 +21,7 @@ class AfaMandatRechercheMessage extends Notification
      *
      * @return void
      */
-    public function __construct(User $user,$mandatesearch)
+    public function __construct($user,$mandatesearch)
     {
         $this->user = $user;
         $this->dt = Carbon::now()->format('m-d-Y');
@@ -60,7 +58,7 @@ class AfaMandatRechercheMessage extends Notification
             ->from(env('ADMIN_MAIL'))
             ->subject(__('app.message'))
             ->subject(__('mail.created.subject', ['app'=>app_name()]))
-            ->line(__('member.gothere.mr.message_to_afa', ['date'=>$dt,'hour'=>$hr,'name'=>$user_name,'immat'=>$user->immat,'city'=>$city,'afa' =>$user->afa->name,'mandatesearch'=>$mandatesearch]));
+            ->line(__('member.gothere.mr.message_to_afa', ['date'=>$dt,'hour'=>$hr,'name'=>$user->name,'immat'=>$user->immat,'city'=>$city,'afa' =>$user->afa->name,'mandatesearch'=>$mandatesearch]));
     }
 
     /**

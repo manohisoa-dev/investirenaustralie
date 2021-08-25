@@ -723,7 +723,7 @@ class RegisterController extends Controller
                             'user_id'=>$user->id, 
                             'last_name'=>$datas['last_name'.$sfx], 
                             'first_name'=>$datas['first_name'.$sfx], 
-                            'date_of_birth'=>session('seller_class')!=='seller_by_afa'?$dt:'', 
+                            'date_of_birth'=>$dt, 
                             'place_of_birth'=>session('seller_class')!=='seller_by_afa'?$datas['place_of_birth'.$sfx]:'', 
                             'nationality'=>session('seller_class')!=='seller_by_afa'?$datas['nationality'.$sfx]:'', 
                             'street_adr'=>$datas['street_adr'.$sfx], 
