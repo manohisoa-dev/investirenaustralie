@@ -31,7 +31,7 @@ return [
     sold to non-resident foreigners in accordance with the Australian law and the rules applicable to foreign investment by
     the Foreign Investment Review Board (FIRB).',
     "product.menu"  => "Products",
-    "new.product.title"  => "New product",
+    "new.product.title"  => "New Stand-Alone Product",
     "folders.title"  => "My folders",
     "folders.status.to_download"  => "To download",
     "folders.status.finalized"  => "Finalized",

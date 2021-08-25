@@ -1065,6 +1065,12 @@ class ProductController extends Controller {
                         $this->save_eoi_dossier($value, $id_programme);
                     }
                 }
+                //save lia
+                if ($request->liaDossier) {
+                    foreach ($request->liaDossier as $key => $value) {
+                        $this->save_lia_dossier($value, $id_programme);
+                    }
+                }
                 //save fond dossier programme
                 if ($request->fondDossier) {
                     foreach ($request->fondDossier as $key => $value) {
@@ -1115,6 +1121,11 @@ class ProductController extends Controller {
                         $this->save_eoi_dossier($value, $id_produit);
                     }
                 }
+                if ($request->p_liaDossier) {
+                    foreach ($request->p_liaDossier as $key => $value) {
+                        $this->save_lia_dossier($value, $id_produit);
+                    }
+                }
             }
         } else {
             //si ancienneté == ancien
@@ -1130,7 +1141,7 @@ class ProductController extends Controller {
                 ('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
                 $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
                 $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
-                0, $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
+                $request->simple_price, 0, 0, 'AUD', $request->status, $request->product_type_id,
                 $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                 -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine, $request->commision_product,
                 $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison, '',

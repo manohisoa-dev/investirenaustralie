@@ -387,7 +387,75 @@
 								<div id="template" class="file-row"></div>
 							</div>
 						</div>
-					</div>	                                                                                                                    
+					</div>	     
+					
+					@if ($liadossier)
+					<div class="row">
+						 <div class="col-lg-12">
+						 <h5>@lang('app.table.lia_dossier')</h5>
+						 @foreach ( $liadossier as $dos )
+						 <div class="file-box">
+							<div class="file">
+								@if(setIconFile($dos->filepath) == 'images')
+									<a href="{{asset($dos->filepath)}}" class="fancyboxLink">
+								@elseif(setIconFile($dos->filepath) == 'pdf')
+									<a class="fancybox-pdf" data-fancybox-type="iframe" href="http://docs.google.com/viewer?embedded=true&url={{asset(urlencode($dos->filepath))}}">
+								@else
+									<a href="https://docs.google.com/viewer?url={{asset(urlencode($dos->filepath))}}&embedded=true" class="fancyboxLinkDoc" data-fancybox-type="iframe">
+								@endif								
+									<span class="corner"></span>						
+									@if(setIconFile($dos->filepath) == 'images')
+										<div class="image">
+											<img alt="image" class="img-fluid" src="{{asset($dos->filepath)}}">
+										</div>
+									@endif	
+									@if(setIconFile($dos->filepath) == 'pdf')
+										<div class="icon">
+											<i class="fa fa-file-pdf-o"></i>
+										</div>
+									@endif	
+									@if(setIconFile($dos->filepath) == 'doc')
+										<div class="icon">
+											<i class="fa fa-file-word-o"></i>
+										</div>
+									@endif
+									@if(setIconFile($dos->filepath) == 'excel')
+										<div class="icon">
+											<i class="fa fa-file-excel-o"></i>
+										</div>
+									@endif	
+									@if(setIconFile($dos->filepath) == 'file')
+										<div class="icon">
+											<i class="fa fa-file"></i>
+										</div>
+									@endif		
+									<div class="file-name">
+										@php
+											$filename_eoi = $dos->filename;
+											$filename_eoi = preg_replace('/^(.*)\-\d{8,}\.(gif|jpg|png|pdf)$/', '$1.$2', $filename_eoi);
+										@endphp
+										<label style="text-transform:lowercase">{{str_limit($filename_eoi, 15)}}</label>
+										<a class="pull-right" href="javascript:void(0)" onclick="delete_lia_dossier({{$dos->prdLiaId}})">
+											<i class="fa fa-trash"></i>
+										</a>
+										<br>
+										<small>{{$dos->created_at ? $dos->created_at->diffForHumans() : ""}}</small>
+									</div>
+								</a>
+							</div>
+						</div>
+						 @endforeach		
+						 </div>
+					</div>  
+					@endif 
+					<div class="row" style="margin-bottom:15px">
+						<div class="col-lg-12">
+							<div class="dropzone" id="lia_dossier" multiple style="margin-bottom:25px">
+								<div id="template" class="file-row"></div>
+							</div>
+						</div>
+					</div>  
+					                                                                                                               
                     <button type="submit" class="btn btn-primary btn-lg pull-right">
 						<i class="fa fa-save"></i> @lang('app.form.programme_btn_edit')
 					</button>
@@ -510,6 +578,15 @@
 				$('#fixed_commission').hide();
 				$('#commission_rate').hide();
 			}
+			
+			$('#bonus_vente').on('change', function() {
+				var type_bonus = this.value;
+				if(type_bonus == 'YES'){
+					$('#montant_bonus_vente').show();
+				}else{
+					$('#montant_bonus_vente').hide();
+				}
+			});
 			
 			$('#commision').on('change', function() {
 				var type_commission = this.value;
@@ -635,6 +712,57 @@
 				url: "{{ Auth::user()->isAdmin()?route('admin.AjaxEoiDossierEdit'):route('admin.collaborators.admin.AjaxEoiDossierEdit') }}",
 				params: {"_token": "{{ csrf_token() }}","id_programme": "{{ $product->id }}"},
 				acceptedFiles: ".jpeg,.jpg,.png,.gif,.doc,.docx,.xls,.xlsx,.pdf",
+				addRemoveLinks: true,
+				timeout: 50000,
+				init:function() {
+					// Get images
+					var myDropzone1 = this;
+				},
+				removedfile: function(file) 
+				{
+					if (this.options.dictRemoveFile) {
+					  return Dropzone.confirm("Are You Sure to "+this.options.dictRemoveFile, function() {
+						if(file.previewElement.id != ""){
+							var name = file.previewElement.id;
+						}else{
+							var name = file.name;
+						}
+						//console.log(name);
+						var fileRef;
+							return (fileRef = file.previewElement) != null ? 
+							fileRef.parentNode.removeChild(file.previewElement) : void 0;
+					  });
+					}		
+				},
+		   
+				success: function(file, response) 
+				{
+					location.reload();	
+				},
+				error: function(file, response)
+				{
+				   if($.type(response) === "string")
+						var message = response; //dropzone sends it's own error messages in string
+					else
+						var message = response.message;
+					file.previewElement.classList.add("dz-error");
+					_ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+					_results = [];
+					for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+						node = _ref[_i];
+						_results.push(node.textContent = message);
+					}
+					return _results;
+				}
+			});
+			
+			$("#lia_dossier").dropzone({
+				maxFiles: 1, 
+				maxFilesize: 25,
+				dictDefaultMessage: "@lang('app.txt.lia_dossier')",
+				url: "{{ Auth::user()->isAdmin()?route('admin.AjaxLiaDossierEdit'):route('admin.collaborators.admin.AjaxLiaDossierEdit') }}",
+				params: {"_token": "{{ csrf_token() }}","id_programme": "{{ $product->id }}"},
+				acceptedFiles: ".pdf",
 				addRemoveLinks: true,
 				timeout: 50000,
 				init:function() {
@@ -1028,6 +1156,43 @@
 			 });
 		}
 		
+		function delete_lia_dossier(id_lia_dossier)
+		{
+			swal({
+				title: "@lang('app.table.lia_dossier')",
+				text: "@lang('app.dropzone.delete_photo_confirme')",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: '#ff3547',
+				confirmButtonText: "@lang('app.yes')",
+				cancelButtonText: "@lang('app.no')",
+				closeOnConfirm: false,
+				closeOnCancel: false
+			 },
+			 function(isConfirm){	
+			   if (isConfirm){
+					 $.ajax({
+						url : "{{ Auth::user()->isAdmin()?route('admin.ajaxDropLiaDossier'):route('admin.collaborators.admin.ajaxDropLiaDossier') }}",
+						type: "POST",
+						dataType: "JSON",
+						data:{"_token": "{{ csrf_token() }}",'id_lia_dossier':id_lia_dossier},
+						success: function(data)
+						{
+							swal("@lang('app.table.lia_dossier')", "@lang('app.dropzone.delete_fonds_yes')", "success");
+							location.reload();	
+						},
+						error: function (jqXHR, textStatus, errorThrown)
+						{
+							swal("@lang('app.table.lia_dossier')", "@lang('app.jquery.error_delete')", "error");
+							location.reload();	
+						}
+					}); 
+				} else {
+					swal("@lang('app.table.lia_dossier')", "@lang('app.jquery.delete_cancel')", "error");
+				}
+			 });
+		}
+		
 		function delete_product(id_prd)
 		{
 			swal({
@@ -1119,6 +1284,12 @@
 						$('#fixed_commission_prd').hide();
 					}
 					
+					if(data.product.avoir_bonus == 'YES'){
+						$('#montant_bonus_vente').show();
+					}else{
+						$('#montant_bonus_vente').hide();
+					}
+					
 					$('#title_new_programme').val($('#title_programme').val());
 					$("#progTitle").text($('#title_programme').val());
 					$('[name="title_product"]').val(data.product.title);
@@ -1144,6 +1315,8 @@
 					$('[name="id_programme"]').val(data.product.parent_id);
 					$('[name="id_product"]').val(data.product.id);
 					$('[name="id_location_product"]').val(data.product.location_id);
+					$('[name="bonus_vente"]').val(data.product.avoir_bonus);
+					$('[name="bonus_amount"]').val(data.product.amount_bonus);
 					
 					if(data.product.ancienneteBien == 'Ancien'){
 						$('#yearConstruct').show();
@@ -1459,7 +1632,7 @@
 						</div>
 						
 						<div class="row">
-							<div class="col-lg-4">
+							<div class="col-lg-3">
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_commission_type')</label>
 									<select class="form-control" name="commision_product" id="commision_product">
@@ -1469,7 +1642,7 @@
 									</select>
 								</div>
 							</div>
-							<div class="col-lg-4">
+							<div class="col-lg-3">
 								<div id="commission_rate_prd" style="display:none">
 									<div class="form-group">
 										<label for="title">@lang('app.form.programme_taux_commission')</label>
@@ -1488,6 +1661,29 @@
 											<input type="number" class="form-control" name="rate_commission_product" id="rate_commission_product">
 											<div class="input-group-append">
 												<span class="input-group-addon">AUD</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="title">Bonus</label>
+									<select class="form-control" name="bonus_vente" id="bonus_vente">
+										<option value="">Choisir...</option>
+										<option value="YES">@lang('app.txt.yes')</option>
+										<option value="NO">@lang('app.txt.no')</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-3">
+								<div id="montant_bonus_vente" style="display:none">
+									<div class="form-group">
+										<label for="title">Bonus amount</label>
+										<div class="input-group m-b">
+											<input type="number" class="form-control" name="bonus_amount" id="bonus_amount">
+											<div class="input-group-append">
+												<span class="input-group-text">AUD</span>
 											</div>
 										</div>
 									</div>

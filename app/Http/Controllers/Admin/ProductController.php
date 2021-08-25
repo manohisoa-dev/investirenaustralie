@@ -17,6 +17,7 @@ use App\Models\Type;
 use App\Models\ProductsImage;
 use App\Models\FondsDossier;
 use App\Models\EoiDossier;
+use App\Models\LiaDossier;
 use Auth;
 use App;
 use Carbon\Carbon;
@@ -322,7 +323,7 @@ class ProductController extends Controller {
         $display_address, $price, $min_price, $max_price, $currency, $status, $type_id,
         $cat_programmme_id, $postalCode, $state_id, $programme_id, $location_id, $superficie_jardin,
         $avoir_parking_voie_public, $avoir_piscine, $type_commission, $taux_commission,
-        $dt_db_travaux, $dt_prevu_livraison) {
+        $dt_db_travaux, $dt_prevu_livraison,$avoir_bonus, $mt_bonus) {
 
         $product = new Product();
         $lastId = Product::latest('id')->first();
@@ -373,6 +374,8 @@ class ProductController extends Controller {
         $product->avoir_piscine = $avoir_piscine;
         $product->commission_type = $type_commission;
         $product->commision = $taux_commission;
+        $product->avoir_bonus = $avoir_bonus;
+        $product->amount_bonus = $mt_bonus;
         $product->dt_db_travaux = $dt_db_travaux;
         $product->dt_prevu_livraison = $dt_prevu_livraison;
         $product->validated_at = Carbon::now();
@@ -412,6 +415,10 @@ class ProductController extends Controller {
                 'product_eoi.image_id', '=', 'images.id')->select('*',
                 'product_eoi.id as prdEoiId')->get();
 
+            $liaDossier = LiaDossier::where('product_lia.product_id', '=', $product->id)->join('images',
+                'product_lia.image_id', '=', 'images.id')->select('*',
+                'product_lia.id as prdLiaId')->get();
+
             $produit_lie = Product::where('parent_id', $product->id)->get();
             $photo = ProductsImage::where('products_images.product_id', '=', $product->id)->join('images',
                 'products_images.image_id', '=', 'images.id')->select('*',
@@ -419,15 +426,18 @@ class ProductController extends Controller {
 
             return $this->view("edit_programme", ['product' => $product, 'type' =>
                 'programme', 'localisation' => $localisation, 'dossier' => $fonDossier,
-                'eoidossier' => $eoiDossier, 'photos' => $photo, 'product_lies' => $produit_lie]);
+                'eoidossier' => $eoiDossier,'liadossier' => $liaDossier, 'photos' => $photo, 'product_lies' => $produit_lie]);
         } else {
             //modification proudiut
             $eoiDossier = EoiDossier::where('product_eoi.product_id', '=', $product->id)->join('images',
                 'product_eoi.image_id', '=', 'images.id')->select('*',
                 'product_eoi.id as prdEoiId')->get();
+            $liaDossier = LiaDossier::where('product_lia.product_id', '=', $product->id)->join('images',
+                'product_lia.image_id', '=', 'images.id')->select('*',
+                'product_lia.id as prdLiaId')->get();
 
             return $this->view("edit", ['product' => $product, 'type' => 'produit',
-                'localisation' => $localisation, 'eoidossier' => $eoiDossier]);
+                'localisation' => $localisation, 'eoidossier' => $eoiDossier,'liadossier' => $liaDossier]);
         }
     }
 
@@ -770,6 +780,20 @@ class ProductController extends Controller {
         $this->save_eoi_dossier($file_name, $id_programme);
         return response()->json(['success' => 'true']);
     }
+    
+    public function AjaxLiaDossierEdit(Request $request) {
+        $id_programme = $request->id_programme;
+        $image = $request->file('file');
+
+        $fileInfo = $image->getClientOriginalName();
+        $filename = pathinfo($fileInfo, PATHINFO_FILENAME);
+        $extension = pathinfo($fileInfo, PATHINFO_EXTENSION);
+        $file_name = $filename . '-' . time() . '.' . $extension;
+        $image->move(public_path('uploads/product'), $file_name);
+
+        $this->save_lia_dossier($file_name, $id_programme);
+        return response()->json(['success' => 'true']);
+    }
 
     public function ajaxDropPhotoIcon(Request $request) {
         ProductsImage::where('id', $request->id_photo_prd_image)->delete();
@@ -783,6 +807,11 @@ class ProductController extends Controller {
 
     public function ajaxDropEoiDossier(Request $request) {
         EoiDossier::where('id', $request->id_eoi_dossier)->delete();
+        return response()->json(['success' => 'true']);
+    }
+    
+    public function ajaxDropLiaDossier(Request $request) {
+        LiaDossier::where('id', $request->id_lia_dossier)->delete();
         return response()->json(['success' => 'true']);
     }
 
@@ -852,6 +881,24 @@ class ProductController extends Controller {
         $fond_dossier->author_id = Auth::user()->id;
         $fond_dossier->save();
     }
+    
+    public function save_lia_dossier($nom_photo, $id_programme) {
+        //save image "table image"
+        $image = new Image();
+        $image->url = $nom_photo;
+        $image->filename = $nom_photo;
+        $image->filemime = '';
+        $image->filepath = 'uploads/product/' . $nom_photo;
+        $image->author_id = Auth::user()->id;
+        $image->save();
+
+        //save photo programme "table products_fond_dossier"
+        $fond_dossier = new LiaDossier();
+        $fond_dossier->product_id = $id_programme;
+        $fond_dossier->image_id = $image->id;
+        $fond_dossier->author_id = Auth::user()->id;
+        $fond_dossier->save();
+    }
 
     public function ajaxSaveProduct(Request $request) {
         $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
@@ -878,7 +925,8 @@ class ProductController extends Controller {
                 0, $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
                 $request->prg_cat_id, $request->postalCode_product, $request->state_id_product,
                 $request->id_programme, $id_location, 0, $avoir_parking, 0, $request->commision_product,
-                $taux_commission, $request->dt_db_travaux, $request->dt_prevu_livraison);
+                $taux_commission, $request->dt_db_travaux, $request->dt_prevu_livraison,$request->bonus_vente,
+                $request->bonus_amount);
 
             return response()->json(['success' => 'true']);
         } else {
@@ -936,7 +984,8 @@ class ProductController extends Controller {
             'garage_spaces' => $request->garage_spaces, 'carport_spaces' => $request->carport_spaces,
             'avoir_parking_voie_public' => $avoir_parking, 'avoir_piscine' => $avoir_piscine,
             'location_id' => $id_location, 'commission_type' => $request->commision_product,
-            'commision' => $taux_commission]);
+            'commision' => $taux_commission,'avoir_bonus' => $request->bonus_vente,
+            'amount_bonus' => $request->bonus_amount]);
 
 
         if ($request->file('image')) {
