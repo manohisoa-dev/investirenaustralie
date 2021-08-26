@@ -9,7 +9,7 @@ use App\Models\Product;
 use App\Models\ConjunctionAgreement;
 use App\Models\MandatRecherche;
 use App\Models\Message;
-use App\Notifications\AfaMandatRechercheMessage;
+use App\Notifications\AfaMandateSearchMessage;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 use Carbon\Carbon;
@@ -104,7 +104,7 @@ class DossierController extends Controller
         // send message
         Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$user->afa->id,'body'=>$content]);
         // send email
-        // $user->afa->notify(new AfaMandatRechercheMessage($user,$mandatesearch));
+        $user->afa->notify(new AfaMandateSearchMessage($user,$mandatesearch));
         
         return response()->json(['response'=>'true']);
     }

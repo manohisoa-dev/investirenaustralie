@@ -11,7 +11,7 @@ use App\Notifications\AplChanged;
 use App\Notifications\AfaChanged;
 use App\Notifications\AfaCourriel;
 use App\Notifications\AfaConjunctionAgreementMessage;
-use App\Notifications\MemberMandatRechercheMessage;
+use App\Notifications\MemberMandateSearchMessage;
 
 use App\Models\Order;
 use App\Models\User;
@@ -642,7 +642,7 @@ class MemberController extends Controller {
         Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$user->id,'body'=>$content]);
 
         // send notification email to afa from IEA
-        // $user->notify(new MemberMandatRechercheMessage($user,$product,$downloadForm6Link,$uploadForm6Link,$abort));
+        $user->notify(new MemberMandateSearchMessage($user,$product,$downloadForm6Link,$uploadForm6Link,$abort));
 
 
         return response()->json(['success'=>'Success']);

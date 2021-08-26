@@ -7,9 +7,8 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Carbon\Carbon;
-use App\Models\User;
 
-class MemberMandatRechercheMessage extends Notification
+class MemberMandateSearchMessage extends Notification
 {
     use Queueable;
 
@@ -18,22 +17,22 @@ class MemberMandatRechercheMessage extends Notification
     private $dt;
     private $hr;
     private $uploadForm6;
-    private $downlodForm6;
+    private $downloadForm6;
     private $abort;
-        
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(User $user,Product $product,$downlodForm6,$uploadForm6,$abort)
+    public function __construct($user,$product,$downloadForm6,$uploadForm6,$abort)
     {
         $this->user = $user;
         $this->product = $product;
         $this->dt = Carbon::now()->format('m-d-Y');
         $this->hr = Carbon::now()->format('H:i:m');
         $this->uploadForm6 = $uploadForm6;
-        $this->downlodForm6 = $downlodForm6;
+        $this->downloadForm6 = $downloadForm6;
         $this->abort = $abort;
     }
 
@@ -60,8 +59,8 @@ class MemberMandatRechercheMessage extends Notification
         $product = $this->product;
         $dt = $this->dt;
         $hr = $this->hr;
-        $downloForm6 = $this->downloForm6;
         $uploadForm6 = $this->uploadForm6;
+        $downloadForm6 = $this->downloadForm6;
         $abort = $this->abort;
 
         return (new MailMessage)
