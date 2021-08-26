@@ -604,7 +604,7 @@ class ProductController extends Controller {
         EoiDossier::where('id', $request->id_eoi_dossier)->delete();
         return response()->json(['success' => 'true']);
     }
-    
+
     public function ajaxDropLiaDossier(Request $request) {
         LiaDossier::where('id', $request->id_lia_dossier)->delete();
         return response()->json(['success' => 'true']);
@@ -637,7 +637,7 @@ class ProductController extends Controller {
         $this->save_eoi_dossier($file_name, $id_programme);
         return response()->json(['success' => 'true']);
     }
-    
+
     public function AjaxLiaDossierEdit(Request $request) {
         $id_programme = $request->id_programme;
         $image = $request->file('file');
@@ -818,12 +818,13 @@ class ProductController extends Controller {
     }
 
     function save_new_produit($anciennete, $nature, $title, $photo, $content, $qty,
-        $area, $interior_area, $exterior_area, $total_area, $carport_spaces, $garage_spaces,
-        $bathrooms, $bedrooms, $sweet, $number_of_floors, $new_construction, $year_built,
-        $display_address, $price, $min_price, $max_price, $currency, $status, $type_id,
-        $cat_programmme_id, $postalCode, $state_id, $programme_id, $location_id, $superficie_jardin,
-        $avoir_parking_voie_public, $avoir_piscine, $type_commission, $taux_commission,
-        $dt_db_travaux, $dt_prevu_livraison, $avoir_bonus, $mt_bonus) {
+        $area, $unite_area, $interior_area, $exterior_area, $total_area, $carport_spaces,
+        $garage_spaces, $bathrooms, $bedrooms, $sweet, $number_of_floors, $new_construction,
+        $year_built, $display_address, $price, $min_price, $max_price, $currency, $status,
+        $type_id, $cat_programmme_id, $postalCode, $state_id, $programme_id, $location_id,
+        $superficie_jardin, $avoir_parking_voie_public, $avoir_piscine, $type_commission,
+        $taux_commission, $dt_db_travaux, $dt_prevu_livraison, $avoir_bonus, $mt_bonus,
+        $property_detail, $nb_parking_spots) {
 
         $product = new Product();
         $lastId = Product::latest('id')->first();
@@ -844,6 +845,7 @@ class ProductController extends Controller {
         $product->is_new = 1;
         $product->view_count = 0;
         $product->area = $area;
+        $product->unite_area = $unite_area;
         $product->interior_area = $interior_area;
         $product->exterior_area = $exterior_area;
         $product->total_area = $total_area;
@@ -878,6 +880,8 @@ class ProductController extends Controller {
         $product->amount_bonus = $mt_bonus;
         $product->dt_db_travaux = $dt_db_travaux;
         $product->dt_prevu_livraison = $dt_prevu_livraison;
+        $product->property_detail = $property_detail;
+        $product->nb_parking_spots = $nb_parking_spots;
         $product->validated_at = Carbon::now();
         $product->save();
 
@@ -912,7 +916,7 @@ class ProductController extends Controller {
                 $request->prg_cat_id, $request->postalCode_product, $request->state_id_product,
                 $request->id_programme, $id_location, 0, $avoir_parking, 0, $request->commision_product,
                 $taux_commission, $request->dt_db_travaux, $request->dt_prevu_livraison, $request->bonus_vente,
-                $request->bonus_amount);
+                $request->bonus_amount, '', 0);
 
             return response()->json(['success' => 'true']);
         } else {
@@ -1011,6 +1015,7 @@ class ProductController extends Controller {
     }
 
     public function saveProduct(Request $request) {
+        $categorie = $request->cat_programmme_id;
         $anciennete = $request->ancienneteBien;
         $nature = $request->natureBien;
 
@@ -1026,95 +1031,138 @@ class ProductController extends Controller {
             $avoir_piscine = 0;
         }
 
-        if ($request->commision == 'Sales commission rate (%)') {
-            $taux_commision = $request->sales_rate;
-        } else {
-            $taux_commision = $request->rate_commission;
-        }
+        if ($categorie == 1) {
+            //enregistrement categorie résidentiel
+            if ($anciennete == 'Neuf') {
+                if ($nature == 'Programme immobilier') {
+                    //creation location
+                    $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
+                        $request->ville, $request->display_address);
+                    if ($request->commision == 'Sales commission rate (%)') {
+                        $taux_commision = $request->sales_rate;
+                    } else {
+                        $taux_commision = $request->rate_commission;
+                    }
+                    //save programme
+                    $id_programme = $this->save_programme($categorie, $anciennete, $nature, $request->prix_min,
+                        $request->prix_max, $request->type_id, $request->display_address, $request->postalCode,
+                        $request->state_id, $request->title_programme, $request->description, $id_location,
+                        $request->file('fond_dossier'), 'waiting', $request->commision, $taux_commision);
 
-        if ($anciennete == 'Neuf') {
-            if ($nature == 'Programme immobilier') {
-                //creation programme
-                $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
-                    $request->ville, $request->display_address);
-
-                $id_programme = $this->save_programme($request->cat_programmme_id, $request->ancienneteBien,
-                    $request->natureBien, $request->prix_min, $request->prix_max, $request->type_id,
-                    $request->display_address, $request->postalCode, $request->state_id, $request->title_programme,
-                    $request->description, $id_location, $request->file('fond_dossier'), 'waiting',
-                    $request->commision, $taux_commision);
-
-                //save photo programme
-                if ($request->dropPhoto) {
-                    foreach ($request->dropPhoto as $key => $value) {
-                        if ($request->radioDrop) {
-                            if ($request->radioDrop == $value) {
-                                $is_principal = 1;
+                    //save photo programme
+                    if ($request->dropPhoto) {
+                        foreach ($request->dropPhoto as $key => $value) {
+                            if ($request->radioDrop) {
+                                if ($request->radioDrop == $value) {
+                                    $is_principal = 1;
+                                } else {
+                                    $is_principal = 0;
+                                }
                             } else {
                                 $is_principal = 0;
                             }
-                        } else {
-                            $is_principal = 0;
+                            $this->save_photo_programme($value, $id_programme, $is_principal);
                         }
-                        $this->save_photo_programme($value, $id_programme, $is_principal);
                     }
-                }
-                //save eoi
-                if ($request->eoiDossier) {
-                    foreach ($request->eoiDossier as $key => $value) {
-                        $this->save_eoi_dossier($value, $id_programme);
-                    }
-                }
-                //save lia
-                if ($request->liaDossier) {
-                    foreach ($request->liaDossier as $key => $value) {
-                        $this->save_lia_dossier($value, $id_programme);
-                    }
-                }
-                //save fond dossier programme
-                if ($request->fondDossier) {
-                    foreach ($request->fondDossier as $key => $value) {
-                        $this->save_fond_dossier($value, $id_programme);
-                    }
-                }
 
-                //creation produit
-                $titre_product = $request->title_programme . '-' . $request->title_product;
-                if ($request->commision_product == 'Sales commission rate (%)') {
-                    $taux_commision_prd = $request->sales_rate_product;
+                    //save eoi
+                    if ($request->eoiDossier) {
+                        foreach ($request->eoiDossier as $key => $value) {
+                            $this->save_eoi_dossier($value, $id_programme);
+                        }
+                    }
+                    //save lia
+                    if ($request->liaDossier) {
+                        foreach ($request->liaDossier as $key => $value) {
+                            $this->save_lia_dossier($value, $id_programme);
+                        }
+                    }
+                    //save fond dossier programme
+                    if ($request->fondDossier) {
+                        foreach ($request->fondDossier as $key => $value) {
+                            $this->save_fond_dossier($value, $id_programme);
+                        }
+                    }
+
+                    //creation produit
+                    $titre_product = $request->title_programme . '-' . $request->title_product;
+                    if ($request->commision_product == 'Sales commission rate (%)') {
+                        $taux_commision_prd = $request->sales_rate_product;
+                    } else {
+                        $taux_commision_prd = $request->rate_commission_product;
+                    }
+                    $this->save_new_produit($anciennete, $nature, $titre_product, $request->file('image'),
+                        $request->desc_product, 1, 0, 'm2', $request->interior_area, $request->exterior_area,
+                        $request->total_area, $request->carport_spaces, $request->garage_spaces, $request->bathrooms,
+                        $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
+                        0, $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
+                        $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
+                        $id_programme, $id_location, 0, $avoir_parking, 0, $request->commision_product,
+                        $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison, $request->bonus_vente,
+                        $request->bonus_amount, '', 0);
                 } else {
-                    $taux_commision_prd = $request->rate_commission_product;
-                }
+                    //produit isolé
+                    $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
+                        $request->postalCode_product, $request->ville_product, $request->display_address_product);
+                    if ($request->commision_product == 'Sales commission rate (%)') {
+                        $taux_commision_prd = $request->sales_rate_product;
+                    } else {
+                        $taux_commision_prd = $request->rate_commission_product;
+                    }
 
-                $this->save_new_produit($anciennete, $nature, $titre_product, $request->file('image'),
-                    $request->desc_product, 1, 0, $request->interior_area, $request->exterior_area,
-                    $request->total_area, $request->carport_spaces, $request->garage_spaces, $request->bathrooms,
-                    $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
-                    0, $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
-                    $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
-                    $id_programme, $id_location, 0, $avoir_parking, 0, $request->commision_product,
-                    $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison, '',
-                    0);
+                    $id_produit = $this->save_new_produit($anciennete, $nature, $request->title_product,
+                        $request->file('image'), $request->desc_product, $request->quantity, 0, 'm2', $request->interior_area,
+                        $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
+                        $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
+                        $request->simple_price, 0, 0, 'AUD', $request->status, $request->product_type_id,
+                        $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
+                        -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine, $request->commision_product,
+                        $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison, $request->bonus_vente,
+                        $request->bonus_amount, '', 0);
+
+                    //save fond dossier programme
+                    if ($request->p_fondDossier) {
+                        foreach ($request->p_fondDossier as $key => $value) {
+                            $this->save_fond_dossier($value, $id_produit);
+                        }
+                    }
+
+                    if ($request->p_eoiDossier) {
+                        foreach ($request->p_eoiDossier as $key => $value) {
+                            $this->save_eoi_dossier($value, $id_produit);
+                        }
+                    }
+                    if ($request->p_liaDossier) {
+                        foreach ($request->p_liaDossier as $key => $value) {
+                            $this->save_lia_dossier($value, $id_produit);
+                        }
+                    }
+                }
             } else {
-                //creation location produit isolé
                 $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
                     $request->postalCode_product, $request->ville_product, $request->display_address_product);
-
                 if ($request->commision_product == 'Sales commission rate (%)') {
                     $taux_commision_prd = $request->sales_rate_product;
                 } else {
                     $taux_commision_prd = $request->rate_commission_product;
                 }
 
-                $id_produit = $this->save_new_produit($anciennete, $nature, $request->title_product,
-                    $request->file('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
+                $id_produit = $this->save_new_produit($anciennete, '', $request->title_product,
+                    $request->file('image'), $request->desc_product, $request->quantity, 0, 'm2', $request->interior_area,
                     $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
                     $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
                     $request->simple_price, 0, 0, 'AUD', $request->status, $request->product_type_id,
                     $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                     -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine, $request->commision_product,
-                    $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison, '',
-                    0);
+                    $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison, $request->bonus_vente,
+                    $request->bonus_amount, '', 0);
+
+                //save fond dossier programme
+                if ($request->p_fondDossier) {
+                    foreach ($request->p_fondDossier as $key => $value) {
+                        $this->save_fond_dossier($value, $id_produit);
+                    }
+                }
 
                 if ($request->p_eoiDossier) {
                     foreach ($request->p_eoiDossier as $key => $value) {
@@ -1127,8 +1175,82 @@ class ProductController extends Controller {
                     }
                 }
             }
-        } else {
-            //si ancienneté == ancien
+        } elseif ($categorie == 2) {
+            //produit foncier
+            $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
+                $request->postalCode_product, $request->ville_product, $request->display_address_product);
+
+            if ($request->commision_product == 'Sales commission rate (%)') {
+                $taux_commision_prd = $request->sales_rate_product;
+            } else {
+                $taux_commision_prd = $request->rate_commission_product;
+            }
+
+            $id_produit = $this->save_new_produit('', 'Produit isolé', $request->title_product,
+                $request->file('image'), $request->desc_product, $request->quantity, $request->surface_foncier,
+                $request->unite_surface, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, date('Y'), $request->display_address_product,
+                $request->simple_price, 0, 0, 'AUD', $request->status, $request->product_type_id,
+                $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
+                -1, $id_location, $request->superficie_jardin, 0, 0, $request->commision_product,
+                $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison, $request->bonus_vente,
+                $request->bonus_amount, '', 0);
+
+            //save fond dossier programme
+            if ($request->p_fondDossier) {
+                foreach ($request->p_fondDossier as $key => $value) {
+                    $this->save_fond_dossier($value, $id_produit);
+                }
+            }
+
+            if ($request->p_eoiDossier) {
+                foreach ($request->p_eoiDossier as $key => $value) {
+                    $this->save_eoi_dossier($value, $id_produit);
+                }
+            }
+            if ($request->p_liaDossier) {
+                foreach ($request->p_liaDossier as $key => $value) {
+                    $this->save_lia_dossier($value, $id_produit);
+                }
+            }
+        } elseif ($categorie == 3) {
+            //produit industriel
+            $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
+                $request->postalCode_product, $request->ville_product, $request->display_address_product);
+
+            if ($request->commision_product == 'Sales commission rate (%)') {
+                $taux_commision_prd = $request->sales_rate_product;
+            } else {
+                $taux_commision_prd = $request->rate_commission_product;
+            }
+
+            $id_produit = $this->save_new_produit('', 'Produit isolé', $request->title_product,
+                $request->file('image'), $request->desc_product, $request->quantity, 0, '', 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, date('Y'), $request->display_address_product, $request->simple_price,
+                0, 0, 'AUD', $request->status, $request->product_type_id, $request->cat_programmme_id,
+                $request->postalCode_product, $request->state_id_product, -1, $id_location, $request->superficie_jardin,
+                0, 0, $request->commision_product, $taux_commision_prd, $request->dt_db_travaux,
+                $request->dt_prevu_livraison, $request->bonus_vente, $request->bonus_amount, $request->property_detail,
+                0);
+
+            //save fond dossier programme
+            if ($request->p_fondDossier) {
+                foreach ($request->p_fondDossier as $key => $value) {
+                    $this->save_fond_dossier($value, $id_produit);
+                }
+            }
+
+            if ($request->p_eoiDossier) {
+                foreach ($request->p_eoiDossier as $key => $value) {
+                    $this->save_eoi_dossier($value, $id_produit);
+                }
+            }
+            if ($request->p_liaDossier) {
+                foreach ($request->p_liaDossier as $key => $value) {
+                    $this->save_lia_dossier($value, $id_produit);
+                }
+            }
+        } elseif ($categorie == 4) {
+            //produit commercial
             $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
                 $request->postalCode_product, $request->ville_product, $request->display_address_product);
             if ($request->commision_product == 'Sales commission rate (%)') {
@@ -1136,16 +1258,33 @@ class ProductController extends Controller {
             } else {
                 $taux_commision_prd = $request->rate_commission_product;
             }
-
-            $this->save_new_produit($anciennete, '', $request->title_product, $request->file
-                ('image'), $request->desc_product, $request->quantity, 0, $request->interior_area,
-                $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
-                $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
+            
+            $id_produit = $this->save_new_produit('', 'Produit isolé', $request->title_product,
+                $request->file('image'), $request->desc_product, $request->quantity, $request->surface_commercial,
+                'm2', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, date('Y'), $request->display_address_product,
                 $request->simple_price, 0, 0, 'AUD', $request->status, $request->product_type_id,
                 $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
-                -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine, $request->commision_product,
-                $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison, '',
-                0);
+                -1, $id_location, $request->superficie_jardin, $request->type_cutomer_parking, 0,
+                $request->commision_product, $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison,
+                $request->bonus_vente, $request->bonus_amount, $request->property_detail, $request->nombre_cutomer_parking);
+
+            //save fond dossier programme
+            if ($request->p_fondDossier) {
+                foreach ($request->p_fondDossier as $key => $value) {
+                    $this->save_fond_dossier($value, $id_produit);
+                }
+            }
+
+            if ($request->p_eoiDossier) {
+                foreach ($request->p_eoiDossier as $key => $value) {
+                    $this->save_eoi_dossier($value, $id_produit);
+                }
+            }
+            if ($request->p_liaDossier) {
+                foreach ($request->p_liaDossier as $key => $value) {
+                    $this->save_lia_dossier($value, $id_produit);
+                }
+            }
         }
 
 
