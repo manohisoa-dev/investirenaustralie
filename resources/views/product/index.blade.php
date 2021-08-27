@@ -204,7 +204,7 @@
                           <div id="map"></div>
                       </div>
                   </div>
-                  <div class="m-35px-t">
+                  <div class="m-35px-tb">
                     <a href="{{ url()->previous() }}" class="m-btn m-btn-theme"><i class="fa fa-arrow-left"></i> @lang('app.btn.return')</a>
                   </div>
                 </div>

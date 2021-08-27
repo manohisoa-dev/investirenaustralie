@@ -823,10 +823,6 @@
 
 
     {{-- Google map autocomplete --}}
-    {{-- <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA&callback=initAutocomplete&libraries=places&v=weekly"
-    defer
-    ></script> --}}
     <script>
         // This sample uses the Autocomplete widget to help the user select a
         // place, then it retrieves the address components associated with that
@@ -866,7 +862,7 @@
             ); 
         }
 
-        function initAutocomplete() {
+        function initMap() {
             var options = {
                 types: ["(regions)"],
                 componentRestrictions: {country: "au"},
