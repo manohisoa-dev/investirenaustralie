@@ -192,7 +192,9 @@
                                 <h2>@lang('app.txt.dossier.i_would_like_to_buy_this')</h2>
                                 <p>@lang('app.txt.dossier.i_would_like_to_buy_this.description')</p>
                                 <div class="row col-lg-12 m-15px-t">
-                                    <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-info white-color">@lang('app.waiting')</i></small></span>
+                                    @if (Auth::user()->hasAfa())
+                                        @if (Auth::user()->memberHasSendMr(1,Auth::user()->id,Auth::user()->afa->id))<span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-info white-color">@lang('app.waiting')</i></small></span>@endif
+                                    @endif
                                 </div>
                             </div>
                         </div>

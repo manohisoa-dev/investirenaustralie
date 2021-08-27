@@ -1317,7 +1317,6 @@
         });
 
     </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA&callback=initMap"></script>
     {{-- Fin google map location --}}
     
     <script>

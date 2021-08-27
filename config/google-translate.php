@@ -5,7 +5,7 @@ return [
     /**
      * Google key for authentication
      */
-    'api_key' => 'AIzaSyDIUNfqnq2JLDFTeHu1kXRg2CeLYb80e3k',
+    'api_key' => 'AIzaSyD2izG_M7K3gP6pFUH5cyzmDjuGpOYfgc4',
 
     /**
      * Url to translation REST service

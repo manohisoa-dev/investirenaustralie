@@ -839,10 +839,10 @@
     </script>
 
 {{-- Autocompletion google map --}}
-    <script
+    {{-- <script
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA&callback=initAutocomplete&libraries=places&v=weekly"
     defer
-    ></script>
+    ></script> --}}
     <script>
     // This sample uses the Autocomplete widget to help the user select a
     // place, then it retrieves the address components associated with that
