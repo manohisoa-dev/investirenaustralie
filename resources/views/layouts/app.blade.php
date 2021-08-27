@@ -814,9 +814,11 @@
       transition:all .6s ease-out;
     }
   </style>
-
-
-
+    @php
+        $key = env('GMAP_API_KEY');
+        $url = "https://maps.googleapis.com/maps/api/js?key=".$key."&callback=initMap&libraries=places&v=weekly";
+    @endphp
+    <script async defer src={{$url}}></script>
     @stack('script')
     <!-- end -->
 

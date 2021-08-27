@@ -103,6 +103,8 @@ Route::middleware('guest')->group(function(){
     Route::get('verify-user/{code}', 'Auth\RegisterController@activateUser')->name('activate.user');
     Route::get('resend-code/{user}', 'Auth\RegisterController@resendActivation')->name('resend_code');
     Route::post('login/sellerByAfa', 'Auth\LoginController@loginSellerByAfa')->name('login.sellerbyafa');
+    Route::get('ajaxCheckLogin', 'Auth\RegisterController@ajaxCheckLogin')->name('ajaxCheckLogin');
+    Route::get('ajaxCheckEmail', 'Auth\RegisterController@ajaxCheckEmail')->name('ajaxCheckEmail');
 });
 
 Route::middleware(["auth"])->group(function(){

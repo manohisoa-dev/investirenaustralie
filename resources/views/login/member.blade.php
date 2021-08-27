@@ -90,7 +90,7 @@
                             <div class="panel-body">
                                 @include('includes.alerts')
                                 <div class="row">
-                                    <label for="type" class="col-sm-3 control-label">@lang('app.txt.typemembre') *</label>
+                                    <label for="type" class="col-sm-12 col-lg-3 control-label">@lang('app.txt.typemembre') *</label>
                                     <div class="col-md-3">
                                         <select class="form-control" id="type" required>
                                             <option value="person" {{ old('type')=='person'?'selected':'' }}>@lang('app.txt.particulier')</option>
@@ -212,7 +212,7 @@
                                             <div class="form-group m-50px-t">
                                                 <div class="row col-lg-12">
                                                     <div class="col-lg-2">
-                                                        <select name="newsletter" class="form-control" required>
+                                                        <select name="newsletter" class="form-control">
                                                             <option value="" selected disabled>@lang('app.txt.select')</option>
                                                             <option value="yes" {{ old('allow_sharing')=='yes'?'selected':'' }}>@lang('app.txt.yes')</option>
                                                             <option value="no" {{ old('allow_sharing')=='no'?'selected':'' }}>@lang('app.txt.no')</option>
@@ -226,7 +226,7 @@
                                             <div class="form-group m-50px-t">
                                                 <div class="row col-lg-12">
                                                     <div class="col-lg-2">
-                                                        <select name="allow_sharing" class="form-control" required>
+                                                        <select name="allow_sharing" class="form-control">
                                                             <option value="" selected disabled>@lang('app.txt.select')</option>
                                                             <option value="yes" {{ old('allow_sharing')=='yes'?'selected':'' }}>@lang('app.txt.yes')</option>
                                                             <option value="no" {{ old('allow_sharing')=='no'?'selected':'' }}>@lang('app.txt.no')</option>
@@ -256,7 +256,7 @@
                                                 <label class="custom-control-label" for="checkbox-3"><b>@lang('app.form.register.politic') *</b></label>
                                             </div>
                                             <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" name="politic" id="checkbox-4" required>
+                                                <input type="checkbox" class="custom-control-input" name="condition" id="checkbox-4" required>
                                                 <label class="custom-control-label" for="checkbox-4"><b>@lang('app.form.register.condition') *</b></label>
                                             </div>
                                         </div>
@@ -280,21 +280,21 @@
                                         <div class="form-group">
                                             <label class="col-sm-12 control-label" for="name">@lang('app.txt.login') *</label>
                                             <div class="col-sm-12">
-                                                <input type="text" class="form-control" name="name" placeholder="@lang('app.txt.login')" value="{{ old('name') ? old('name') : '' }}" required>
+                                                <input type="text" class="form-control" id="name_2" name="name" placeholder="@lang('app.txt.login')" value="{{ old('name') ? old('name') : '' }}" required>
                                                 <span class="text-danger">{{ $errors->first('name') }}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-12 control-label" for="email">@lang('app.txt.email') *</label>
                                             <div class="col-sm-12">
-                                                <input type="text" class="form-control" name="email" placeholder="you@exemple.com" value="{{ old('email') ? old('email') : '' }}" required>
+                                                <input type="text" class="form-control" id="email_2" name="email" placeholder="you@exemple.com" value="{{ old('email') ? old('email') : '' }}" required>
                                                 <span class="text-danger">{{ $errors->first('email') }}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="orga_phone" class="col-sm-12 control-label"> @lang('app.txt.businessphone') *</label>
                                             <div class="col-sm-12">
-                                                <input type="text" class="form-control" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):'' }}" required>
+                                                <input type="text" minlength="8" maxlength="9" class="form-control" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):'' }}" required>
                                                 <span class="text-danger">{{ $errors->first('orga_phone') }}</span>
                                             </div>
                                         </div>
@@ -308,7 +308,7 @@
                                         <div class="form-group">
                                             <label for="orga_mobile_phone" class="col-sm-12 control-label"> @lang('app.txt.businessmobile') *</label>
                                             <div class="col-sm-12">
-                                                <input type="text" class="form-control" name="orga_mobile_phone" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):'' }}" required>
+                                                <input type="text" class="form-control" minlength="9" maxlength="9" name="orga_mobile_phone" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):'' }}" required>
                                                 <span class="text-danger">{{ $errors->first('orga_mobile_phone') }}</span>
                                             </div>
                                         </div>
@@ -661,6 +661,451 @@
 
 @push('script')
     <script src="{{asset('js/myJs.js')}}"></script>
+    <!-- Jquery Validate -->
+<script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
+<script>
+    $.validator.addMethod('le', function (value, element, param) {
+        return this.optional(element) || value !== $(param).val();
+    }, '@lang("app.txt.invalid_value")');
+
+    $('#particulierForm').validate({
+        ignore: [],
+        rules: {
+            name: {
+                required: {
+                    depends: function(element) {
+                        if($("#particulierForm").is(":visible")){
+                            return true;	
+                        }
+                    }
+                },
+                remote: {
+                    url: "{{ route('ajaxCheckLogin') }}",
+                    type: "get",
+                    data: {
+                        name: function () {
+                            return $("input[name='name']").val();
+                        }
+                    }
+                }
+            },
+            email: {
+                required: {
+                    depends: function(element) {
+                        if($("#particulierForm").is(":visible")){
+                            return true;	
+                        }
+                    }
+                },
+                email:true,
+                remote: {
+                    url: "{{ route('ajaxCheckEmail') }}",
+                    type: "get",
+                    data: {
+                        email: function () {
+                            return $("input[name='email']").val();
+                        }
+                    }
+                }
+            },
+            country: {
+                required: true,
+            },
+            nationality: {
+                required: true,
+            },
+            sexe: {
+                required: true,
+            },
+            civility: {
+                required: true,
+            },
+            last_name: {
+                required: true,
+            },
+            first_name: {
+                required: true,
+            },
+            newsletter: {
+                required: {
+                    depends: function(element) {
+                        if($("#particulierForm").is(":visible")){
+                            return true;	
+                        }
+                    }
+                },
+            },
+            allow_sharing: {
+                required: {
+                    depends: function(element) {
+                        if($("#particulierForm").is(":visible")){
+                            return true;	
+                        }
+                    }
+                },
+            },
+            politic: {
+                required: {
+                    depends: function(element) {
+                        if($("#particulierForm").is(":visible")){
+                            return true;	
+                        }
+                    }
+                },
+            },
+            condition: {
+                required: {
+                    depends: function(element) {
+                        if($("#particulierForm").is(":visible")){
+                            return true;	
+                        }
+                    }
+                },
+            },
+        },
+        messages: {
+            name: {
+                required: "@lang('app.txt.champobligatoire')",
+                remote: jQuery.validator.format("{0} @lang('app.txt.form.already_exist')")
+            },
+            email: {
+                required: "@lang('app.txt.champobligatoire')",
+                remote: jQuery.validator.format("{0} @lang('app.txt.form.already_exist')"),
+            },
+            nationality: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            sexe: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            civility: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            last_name: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            first_name: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            newsletter: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            allow_sharing: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            politic: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            condition: {
+                required: "@lang('app.txt.champobligatoire')"
+            },
+        },
+        errorPlacement: function ( error, element ) {
+            if(element.parent().hasClass('input-group')){
+                error.insertBefore( element.parent() );
+            }else{
+                error.insertAfter( element );
+            }
+        },
+    });
+
+    $('#particulierForm').submit(function() { // fires on every keyup & blur
+        if ($('#particulierForm').valid()) {  // checks form for validity
+            sessionStorage.removeItem('member_type');
+
+            // set btn submit to loading btn
+            $('#btn_member_part_register').attr('disabled','disabled');
+            $('#btn_member_part_register').html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>@lang("app.txt.loading")');
+        } else {
+            $('btn_member_part_register').prop('disabled', false);   // enable button
+            $('#btn_member_part_register').html('@lang("app.btn.register")');
+        }
+    });
+
+    $('#organisationForm').validate({
+        ignore: [],
+        rules: {
+            name: {
+                required: {
+                    depends: function(element) {
+                        if($("#organisationForm").is(":visible")){
+                            return true;	
+                        }
+                    }
+                },
+                remote: {
+                    url: "{{ route('ajaxCheckLogin') }}",
+                    type: "get",
+                    data: {
+                        name: function () {
+                            return $("input[id='name_2']").val();
+                        }
+                    }
+                }
+            },
+            email: {
+                required: {
+                    depends: function(element) {
+                        if($("#organisationForm").is(":visible")){
+                            return true;	
+                        }
+                    }
+                },
+                email:true,
+                remote: {
+                    url: "{{ route('ajaxCheckEmail') }}",
+                    type: "get",
+                    data: {
+                        email: function () {
+                            return $("input[id='email_2']").val();
+                        }
+                    }
+                }
+            },
+            orga_phone: {
+                required: true,
+                number:true,
+                minlength:8,
+                maxlength:9,
+            },
+            orga_mobile_phone: {
+                required: true,
+                number:true,
+                minlength:9,
+                maxlength:9,
+            },
+            orga_name: {
+                required: true,
+            },
+            orga_registration_number: {
+                required: true,
+            },
+            orga_type: {
+                required: true,
+            },
+            orga_form: {
+                required: {
+                    depends: function(element) {
+                        if($("#orgaForm").is(":visible") || $("#orga_form_mixte").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            orga_presentation: {
+                maxlength:1000,
+            },
+            route: {
+                required: true,
+            },
+            route_number: {
+                required: true,
+            },
+            locality: {
+                required: true,
+            },
+            postalCode: {
+                required: true,
+                number:true
+            },
+            country: {
+                required: true,
+            },
+            adrpost_postal_box: {
+                number:true,
+                required: {
+                    depends: function(element) {
+                        if($("#postalAddress").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            adrpost_locality: {
+                required: {
+                    depends: function(element) {
+                        if($("#postalAddress").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            adrpost_postalCode: {
+                number:true,
+                required: {
+                    depends: function(element) {
+                        if($("#postalAddress").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            adrpost_country: {
+                required: {
+                    depends: function(element) {
+                        if($("#postalAddress").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            }, 
+            contact_name: {
+                required: true,
+            },
+            contact_phone: {
+                required: true,
+                number:true,
+                minlength: 9,
+                maxlength: 9,
+            },
+            contact_email: {
+                required: true,
+                email:true,
+            },
+            newsletter: {
+                required: {
+                    depends: function(element) {
+                        if($("#organisationForm").is(":visible")){
+                            return true;	
+                        }
+                    }
+                },
+            },
+            allow_sharing: {
+                required: {
+                    depends: function(element) {
+                        if($("#organisationForm").is(":visible")){
+                            return true;	
+                        }
+                    }
+                },
+            },
+            politic: {
+                required: {
+                    depends: function(element) {
+                        if($("#organisationForm").is(":visible")){
+                            return true;	
+                        }
+                    }
+                },
+            },
+            condition: {
+                required: {
+                    depends: function(element) {
+                        if($("#organisationForm").is(":visible")){
+                            return true;	
+                        }
+                    }
+                },
+            },
+        },
+        messages: {
+            name: {
+                required: "@lang('app.txt.champobligatoire')",
+                remote: jQuery.validator.format("{0} @lang('app.txt.form.already_exist')")
+            },
+            email: {
+                required: "@lang('app.txt.champobligatoire')",
+                remote: jQuery.validator.format("{0} @lang('app.txt.form.already_exist')"),
+            },
+            orga_phone: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            orga_mobile_phone: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            orga_name: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            orga_registration_number: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            orga_type: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            orga_form: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            orga_presentation: {
+                maxlength:1000,
+            },
+            route: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            route_number: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            locality: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            postalCode: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            country: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            adrpost_postal_box: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            adrpost_locality: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            adrpost_postalCode: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            adrpost_country: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            contact_name: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            contact_phone: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            contact_email: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            newsletter: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            allow_sharing: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            politic: {
+                required: "@lang('app.txt.champobligatoire')"
+            },
+            condition: {
+                required: "@lang('app.txt.champobligatoire')"
+            },
+        },
+        errorPlacement: function ( error, element ) {
+            if(element.parent().hasClass('input-group')){
+                error.insertBefore( element.parent() );
+            }else{
+                error.insertAfter( element );
+            }
+        },
+    });
+
+    $('#organisationForm').submit(function() { // fires on every keyup & blur
+        if ($('#organisationForm').valid()) {                 // checks form for validity
+            sessionStorage.removeItem('member_type');
+            // set btn submit to loading btn
+            $('#btn_member_org_register').attr('disabled','disabled');
+            $('#btn_member_org_register').html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>@lang("app.txt.loading")');
+        } else {
+            $('btn_member_org_register').prop('disabled', false);   // enable button
+            $('#btn_member_org_register').html('@lang("app.btn.register")');
+        }
+    });
+</script>
+<style>
+    .error {
+        color: #F00;
+        background-color: #FFF;
+    }
+</style>
+<!-- End Jquery Validate -->
     <script type="text/javascript">
         $(document).ready(function(){
             $('#myModal').modal('show');
@@ -690,16 +1135,35 @@
         });
     </script>
     <script>
+        // Show default form (particularForm or organizationForm)
+        $(function(){
+            showForm();
+        });
+
         $('#type').change(function(){
             var val = $(this).val();
             if(val!='person'){
+                sessionStorage.setItem('member_type','organization');
                 $('#organisationForm').removeAttr('hidden');
                 $('#particulierForm').attr('hidden','hidden');
             }else{
+                sessionStorage.setItem('member_type','person');
                 $('#organisationForm').attr('hidden','hidden');
                 $('#particulierForm').removeAttr('hidden');
             }            
         });
+
+        function showForm(){
+            if(sessionStorage.getItem('member_type')!=='person'){
+                $("#type option:eq(1)").prop('selected',true);
+                $('#organisationForm').removeAttr('hidden');
+                $('#particulierForm').attr('hidden','hidden');
+            }else{
+                $("#type option:eq(0)").prop('selected',true);
+                $('#organisationForm').attr('hidden','hidden');
+                $('#particulierForm').removeAttr('hidden');
+            }
+        }
     </script>
 
     {{-- Google map location --}}
@@ -853,51 +1317,38 @@
         });
 
     </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA&callback=initMap"></script>
     {{-- Fin google map location --}}
     
     <script>
-        $('#particulierForm').submit(function(){
-            // set btn submit to loading btn
-            $('#btn_member_part_register').attr('disabled','disabled');
-            $('#btn_member_part_register').html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>@lang("app.txt.loading")');
-        });
-
-        $('#organisationForm').submit(function(){
-            // set btn submit to loading btn
-            $('#btn_member_org_register').attr('disabled','disabled');
-            $('#btn_member_org_register').html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>@lang("app.txt.loading")');
-        });
-
         function resetOrgaForm(){
             $('#orgaForm').attr('hidden','hidden');
-            $('#orga_form').removeAttr('required');
             $('#defineOrgaForm').attr('hidden','hidden');
-            $('#define_orga_form').removeAttr('required');
             $('#define_orga_form').val('');
             $('#orga_form option:eq(0)').prop('selected', true);
+            $('#orga_form').removeAttr('name');
+            $('#define_orga_form').removeAttr('name');
         }
 
         function resetOrgaFormMixte(){
             $('#orgaFormMixte').attr('hidden','hidden');
-            $('#orga_form_mixte').removeAttr('required');
             $('#defineOrgaFormMixte').attr('hidden','hidden');
-            $('#define_orga_form_mixte').removeAttr('required');
             $('#define_orga_form_mixte').val('');
             $('#orga_form_mixte option:eq(0)').prop('selected', true);
+            $('#orga_form_mixte').removeAttr('name');
+            $('#define_orga_form_mixte').removeAttr('name');
         }
 
         $('#orga_type').change(function(){
             if($(this).val() === $("#orga_type option:eq(2)").val()){
                 $('#orgaForm').removeAttr('hidden');
-                $('#orga_form').attr('required','required');
+                $('#orga_form').attr('name','orga_form');
 
                 // Reinitialize orgaFormMixte
                 resetOrgaFormMixte();
                 
             }else if($(this).val() === $("#orga_type option:eq(3)").val()){
                 $('#orgaFormMixte').removeAttr('hidden');
-                $('#orga_form_mixte').attr('required','required');
+                $('#orga_form_mixte').attr('name','orga_form');
 
                 // Reinitialize orgaForm
                 resetOrgaForm();
@@ -917,12 +1368,10 @@
             if($(this).val() === $("#orga_form option:eq(3)").val()){
                 $(this).removeAttr('name');
                 $('#defineOrgaForm').removeAttr('hidden');
-                $('#define_orga_form').attr('required','required');
                 $('#define_orga_form').attr('name','orga_form');
             }else{
                 $(this).attr('name','orga_form');
                 $('#defineOrgaForm').attr('hidden','hidden');
-                $('#define_orga_form').removeAttr('required');
                 $('#define_orga_form').removeAttr('name');
             }
         });
@@ -933,12 +1382,10 @@
             if($(this).val() === $("#orga_form_mixte option:eq(2)").val()){
                 $(this).removeAttr('name');
                 $('#defineOrgaFormMixte').removeAttr('hidden');
-                $('#define_orga_form_mixte').attr('required','required');
                 $('#define_orga_form_mixte').attr('name','orga_form');
             }else{
                 $(this).attr('name','orga_form');
                 $('#defineOrgaFormMixte').attr('hidden','hidden');
-                $('#define_orga_form_mixte').removeAttr('required');
                 $('#define_orga_form_mixte').removeAttr('name');
             }
         });
@@ -948,21 +1395,9 @@
             {
                 $('#shop-notification-2').prop('checked',false);
                 $('#postalAddress').attr('hidden','hidden');
-
-                // unset required input
-                $('#adrpost_postal_box').removeAttr('required');
-                $('#adrpost_locality').removeAttr('required');
-                $('#adrpost_postalCode').removeAttr('required');
-                $('#adrpost_country').removeAttr('required');
             }else{
                 $('#shop-notification-2').prop('checked',true);
                 $('#postalAddress').removeAttr('hidden');
-
-                // set required input
-                $('#adrpost_postal_box').attr('required','required');
-                $('#adrpost_locality').attr('required','required');
-                $('#adrpost_postalCode').attr('required','required');
-                $('#adrpost_country').attr('required','required');
             }
         });
 
@@ -971,21 +1406,9 @@
             {
                 $('#shop-notification-1').prop('checked',false);
                 $('#postalAddress').removeAttr('hidden');
-                
-                // set required input
-                $('#adrpost_postal_box').attr('required','required');
-                $('#adrpost_locality').attr('required','required');
-                $('#adrpost_postalCode').attr('required','required');
-                $('#adrpost_country').attr('required','required');
             }else{
                 $('#shop-notification-1').prop('checked',true);
                 $('#postalAddress').attr('hidden','hidden');
-
-                // unset required input
-                $('#adrpost_postal_box').removeAttr('required');
-                $('#adrpost_locality').removeAttr('required');
-                $('#adrpost_postalCode').removeAttr('required');
-                $('#adrpost_country').removeAttr('required');
             }
         });
     </script>

@@ -414,6 +414,457 @@
 
 @push('script')
 <script src="{{asset('js/myJs.js')}}"></script>
+<!-- Jquery Validate -->
+<script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
+<script>
+    $.validator.addMethod('le', function (value, element, param) {
+        return this.optional(element) || value !== $(param).val();
+    }, '@lang("app.txt.invalid_value")');
+
+    $.validator.addMethod('ge', function (value, element, param) {
+        return this.optional(element) || value !== $(param).val();
+    }, '@lang("app.txt.invalid_value")');
+
+    $.validator.addMethod('he', function (value, element, param) {
+        return this.optional(element) || value !== $(param).val();
+    }, '@lang("app.txt.invalid_value")');
+
+    $('#formSellerRegistrator').validate({
+        ignore: [],
+        rules: {
+            name: {
+            	required: true,
+            	remote: {
+            		url: "{{ route('ajaxCheckLogin') }}",
+            		type: "get",
+            		data: {
+            			name: function () {
+            				return $("input[name='name']").val();
+            			}
+            		}
+            	}
+            },
+            email: {
+            	required: true,
+                email:true,
+                he:'#email_adr_bs',
+            	remote: {
+            		url: "{{ route('ajaxCheckEmail') }}",
+            		type: "get",
+            		data: {
+            			email: function () {
+            				return $("input[name='email']").val();
+            			}
+            		}
+            	}
+            },
+            last_name: {
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsIndividual").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            first_name: {
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsIndividual").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            street_adr: {
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsIndividual").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            suburb: {
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsIndividual").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            city: {
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsIndividual").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            post_code: {
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsIndividual").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            country: {
+                required: true,
+            },
+            phone: {
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsIndividual").is(":visible")){
+                            return true;	
+                        }
+                    }
+                },
+                number:true,
+            },
+            mobile: {
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsIndividual").is(":visible")){
+                            return true;	
+                        }
+                    }
+                },
+                number:true,
+            },
+            email_adr: {
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsIndividual").is(":visible")){
+                            return true;	
+                        }
+                    }
+                },
+                email:true,
+            },
+            last_name_2: {
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsIndividual").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            first_name_2: {
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsIndividual").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            street_adr_2: {
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsIndividual").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            suburb_2: {
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsIndividual").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            city_2: {
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsIndividual").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            post_code_2: {
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsIndividual").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            country_2: {
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsIndividual").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            phone_2: {
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsIndividual").is(":visible")){
+                            return true;	
+                        }
+                    }
+                },
+                number: true,
+            },
+            mobile_2: {
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsIndividual").is(":visible")){
+                            return true;	
+                        }
+                    }
+                },
+                number: true,
+            },
+            email_adr_2: {
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsIndividual").is(":visible")){
+                            return true;	
+                        }
+                    }
+                },
+                email: true,
+            },
+            business_name: {
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsBusiness").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            street_adr_bs: {
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsBusiness").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            suburb_bs: {
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsBusiness").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            city_bs: {
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsBusiness").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            post_code_bs: {
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsBusiness").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            state_bs: {
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsBusiness").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            country_bs: {
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsBusiness").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            phone_bs: {
+                number:true,
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsBusiness").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            mobile_bs: {
+                number:true,
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsBusiness").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            email_adr_bs: {
+                email:true,
+                he: '#email',
+                required: {
+                    depends: function(element) {
+                        if($("#sellerDetailsBusiness").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+        },
+        messages: {
+            name: {
+            	required: "@lang('app.txt.champobligatoire')",
+            	remote: jQuery.validator.format("{0} @lang('app.txt.form.already_exist')")
+            },
+            email: {
+                required: "@lang('app.txt.champobligatoire')",
+            	remote: jQuery.validator.format("{0} @lang('app.txt.form.already_exist')"),
+                he: "@lang('app.txt.value_already_used')"
+            },
+            last_name: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            first_name: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            street_adr: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            suburb: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            city: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            post_code: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            country: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            phone: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            mobile: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            email_adr: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            last_name_2: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            first_name_2: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            street_adr_2: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            suburb_2: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            city_2: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            post_code_2: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            country_2: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            phone_2: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            mobile_2: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            email_adr_2: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            business_name: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            street_adr_bs: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            suburb_bs: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            city_bs: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            post_code_bs: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            state_bs: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            country_bs: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            phone_bs: {
+               required: "@lang('app.txt.champobligatoire')",
+            },
+            mobile_bs: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            email_adr_bs: {
+                required: "@lang('app.txt.champobligatoire')",
+                he: "@lang('app.txt.value_already_used')"
+            },
+        },
+        errorPlacement: function ( error, element ) {
+            if(element.parent().hasClass('input-group')){
+                error.insertBefore( element.parent() );
+            }else{
+                error.insertAfter( element );
+            }
+        },
+    });
+    
+    $('#formSellerRegistrator').submit(function() { // fires on every keyup & blur
+        if ($('#formSellerRegistrator').valid()) {                   // checks form for validity
+            sessionStorage.removeItem('class');
+            // set btn submit to loading btn
+            $('#btn_register').attr('disabled','disabled');
+            $('#btn_register').html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>@lang("app.txt.loading")');
+        } else {
+            $('btn_register').prop('disabled', false);   // enable button
+            $('#btn_register').html('@lang("app.btn.register")');
+        }
+    });
+    
+</script>
+<style>
+    .error {
+        color: #F00;
+        background-color: #FFF;
+    }
+</style>
+<!-- End Jquery Validate -->
+
 <script type="text/javascript">
     $(window).on('load',function(){
         $('#myModal').modal('show');
@@ -495,10 +946,6 @@
 
 
 {{-- Autocompletion google map --}}
-<script
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA&callback=initAutocomplete&libraries=places&v=weekly"
-defer
-></script>
 <script>
     // This sample uses the Autocomplete widget to help the user select a
     // place, then it retrieves the address components associated with that
@@ -537,7 +984,7 @@ defer
         ); 
     }
 
-    function initAutocomplete() {
+    function initMap() {
         var options = {
             types: ["(regions)"],
             componentRestrictions: {country: "au"},
@@ -621,12 +1068,17 @@ defer
 {{-- End google map autocomplete --}}
 
 <script>
-    $('#formSellerRegistrator').submit(function(){
-        sessionStorage.removeItem('class');
-        // set btn submit to loading btn
-        $('#btn_register').attr('disabled','disabled');
-        $('#btn_register').html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>@lang("app.txt.loading")');
-    })
+    // $('#formSellerRegistrator').submit(function(){
+    //     sessionStorage.removeItem('class');
+    //     // set btn submit to loading btn
+    //     $('#btn_register').attr('disabled','disabled');
+    //     $('#btn_register').html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>@lang("app.txt.loading")');
+    // });
+
+    // function resetButtonSubmit(){
+    //     $('#btn_register').removeAttr('disabled','disabled');
+    //     $('#btn_register').html("@lang('app.btn.register')");
+    // }
 </script>
 
 @endpush

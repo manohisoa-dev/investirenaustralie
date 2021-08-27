@@ -204,7 +204,7 @@
                           <div id="map"></div>
                       </div>
                   </div>
-                  <div class="m-35px-t">
+                  <div class="m-35px-tb">
                     <a href="{{ url()->previous() }}" class="m-btn m-btn-theme"><i class="fa fa-arrow-left"></i> @lang('app.btn.return')</a>
                   </div>
                 </div>
@@ -519,7 +519,6 @@
       };
 
   </script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA&callback=initMap"></script>
   <script>
     $('#btn_buy').click(function(){
       if('{{ Auth::check() }}'){

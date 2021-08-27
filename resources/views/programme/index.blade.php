@@ -374,9 +374,5 @@
         }
 
     </script>
-    <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRj7J_sOaCmFfSFNvUL7Z-NX3uUvG_FTA&callback=initMap&libraries=&v=weekly"
-    async
-    ></script>
 @endpush
 

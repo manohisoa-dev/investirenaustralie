@@ -72,25 +72,27 @@
                             <div class="vertical-timeline-content">
                                 <h2>@lang('app.txt.dossier.conjunction_agreement')</h2>
                                 <p>@lang('app.txt.dossier.conjunction_agreement.description')</p>
-                                @if (Auth::user()->afaHasSendCa(Auth::user()->id,Auth::user()->afa->id))
-                                    <div class="row col-lg-12">
-                                        {{-- <a href="#" class="m-btn m-btn-sm m-btn-theme2nd col-lg-6" onclick="showConjunctionAgreement({{ Auth::user()->conjunctionAgreement(Auth::user()->id,Auth::user()->afa->id) }})">@lang('app.btn.more_info')</a> --}}
-                                        <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-success white-color">@lang('app.txt.finalized')</i></small></span>
-                                    </div>
-                                @else
-                                    <div class="row col-lg-12">
-                                        <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-warning white-color">@lang('app.txt.sent_and_awaiting_finalization')</i></small></span>
-                                    </div>
-                                @endif
-                                @php
-                                    $ca = Auth::user()->conjunctionAgreement(Auth::user()->id,Auth::user()->afa->id);
-                                @endphp
+                                @if (Auth::user()->hasAfa())
+                                    @if (Auth::user()->afaHasSendCa(Auth::user()->id,Auth::user()->afa->id))
+                                        <div class="row col-lg-12">
+                                            {{-- <a href="#" class="m-btn m-btn-sm m-btn-theme2nd col-lg-6" onclick="showConjunctionAgreement({{ Auth::user()->conjunctionAgreement(Auth::user()->id,Auth::user()->afa->id) }})">@lang('app.btn.more_info')</a> --}}
+                                            <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-success white-color">@lang('app.txt.finalized')</i></small></span>
+                                        </div>
+                                    @else
+                                        <div class="row col-lg-12">
+                                            <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-warning white-color">@lang('app.txt.sent_and_awaiting_finalization')</i></small></span>
+                                        </div>
+                                    @endif
+                                    @php
+                                        $ca = Auth::user()->conjunctionAgreement(Auth::user()->id,Auth::user()->afa->id);
+                                    @endphp
 
-                                @if ($ca!=="")
-                                    <span class="vertical-date">        
-                                        {{Auth::user()->conjunctionAgreement(Auth::user()->id,Auth::user()->afa->id)->created_at->diffForHumans()}} <br/>
-                                        <small>{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', Auth::user()->conjunctionAgreement(Auth::user()->id,Auth::user()->afa->id)->created_at)->format('d F')}},{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', Auth::user()->conjunctionAgreement(Auth::user()->id,Auth::user()->afa->id)->created_at)->year }}</small>
-                                    </span>
+                                    @if ($ca!=="")
+                                        <span class="vertical-date">        
+                                            {{Auth::user()->conjunctionAgreement(Auth::user()->id,Auth::user()->afa->id)->created_at->diffForHumans()}} <br/>
+                                            <small>{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', Auth::user()->conjunctionAgreement(Auth::user()->id,Auth::user()->afa->id)->created_at)->format('d F')}},{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', Auth::user()->conjunctionAgreement(Auth::user()->id,Auth::user()->afa->id)->created_at)->year }}</small>
+                                        </span>
+                                    @endif
                                 @endif
                             </div>
                         </div>
@@ -102,27 +104,29 @@
                             <div class="vertical-timeline-content">
                                 <h2>@lang('app.txt.dossier.mandat_recherche.download')</h2>
                                 <p>@lang('app.txt.dossier.mandat_recherche.download.description')</p>
-                                @php
-                                    $mr = Auth::user()->mandatRecherche(1,Auth::user()->id,Auth::user()->afa->id);
-                                @endphp
+                                @if (Auth::user()->hasAfa())
+                                    @php
+                                        $mr = Auth::user()->mandatRecherche(1,Auth::user()->id,Auth::user()->afa->id);
+                                    @endphp
 
-                                @if ($mr!=="")
-                                    @if (!Auth::user()->memberHasSendMr(1,Auth::user()->id,Auth::user()->afa->id))
-                                        <div class="row col-lg-12">
-                                            <a href="{{ url($mr->path) }}" target="_blank" class="m-btn m-btn-sm m-btn-theme2nd col-lg-6">@lang('app.btn.download')</a>
-                                        </div>
+                                    @if ($mr!=="")
+                                        @if (!Auth::user()->memberHasSendMr(1,Auth::user()->id,Auth::user()->afa->id))
+                                            <div class="row col-lg-12">
+                                                <a href="{{ url($mr->path) }}" target="_blank" class="m-btn m-btn-sm m-btn-theme2nd col-lg-6">@lang('app.btn.download')</a>
+                                            </div>
+                                            <div class="row col-lg-12 m-15px-t">
+                                                <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-danger white-color">@lang('app.txt.to_download')</i></small></span>
+                                            </div>
+                                        @endif
+                                        <span class="vertical-date">        
+                                            {{Auth::user()->mandatRecherche(1,Auth::user()->id,Auth::user()->afa->id)->created_at->diffForHumans()}} <br/>
+                                            <small>{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', Auth::user()->mandatRecherche(1,Auth::user()->id,Auth::user()->afa->id)->created_at)->format('d F')}},{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', Auth::user()->mandatRecherche(1,Auth::user()->id,Auth::user()->afa->id)->created_at)->year }}</small>
+                                        </span>
+                                    @else
                                         <div class="row col-lg-12 m-15px-t">
-                                            <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-danger white-color">@lang('app.txt.to_download')</i></small></span>
+                                            <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-info white-color">@lang('app.txt.not_available')</i></small></span>
                                         </div>
                                     @endif
-                                    <span class="vertical-date">        
-                                        {{Auth::user()->mandatRecherche(1,Auth::user()->id,Auth::user()->afa->id)->created_at->diffForHumans()}} <br/>
-                                        <small>{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', Auth::user()->mandatRecherche(1,Auth::user()->id,Auth::user()->afa->id)->created_at)->format('d F')}},{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', Auth::user()->mandatRecherche(1,Auth::user()->id,Auth::user()->afa->id)->created_at)->year }}</small>
-                                    </span>
-                                @else
-                                    <div class="row col-lg-12 m-15px-t">
-                                        <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-info white-color">@lang('app.txt.not_available')</i></small></span>
-                                    </div>
                                 @endif
                             </div>
                         </div>
@@ -134,46 +138,49 @@
                             <div class="vertical-timeline-content">
                                 <h2>@lang('app.txt.dossier.mandat_recherche.finalized')</h2>
                                 <p>@lang('app.txt.dossier.mandat_recherche.finalized.description')</p>
-                                @if ($mr!=="")
-                                    @if (!Auth::user()->memberHasSendMr(1,Auth::user()->id,Auth::user()->afa->id))
-                                        <div class="col-lg-12">
-                                            <button href="javascript:void(0)" class="m-btn m-btn-sm m-btn-theme float-left" id="btnUploadFile" onclick="uploadFile({{$mr->id}})" value="{{ $mr->id }}">@lang('app.btn.upload')</button>
-                                        </div>
-                                        <div class="row col-lg-12">
-                                            <div class="col-lg-10">
-                                                <span id="spnFilePath"></span>
-                                                <form id="formSendMrFile">
-                                                    <input type="file" id="FileUpload1" onchange="fileUploadChange({{$mr->id}})" name="file_mr" style="display: none" />
-                                                    <input type="hidden" value="{{$mr->id}}" id="mr_id" name="mr_id"/>
-                                                </form>
+                                @if (Auth::user()->hasAfa())
+                                    @if ($mr!=="")
+                                        @if (!Auth::user()->memberHasSendMr(1,Auth::user()->id,Auth::user()->afa->id))
+                                            <div class="col-lg-12">
+                                                <button href="javascript:void(0)" class="m-btn m-btn-sm m-btn-theme float-left" id="btnUploadFile" onclick="uploadFile({{$mr->id}})" value="{{ $mr->id }}">@lang('app.btn.upload')</button>
                                             </div>
-                                            {{-- <a href="javascript:void(0)" class="m-btn m-btn-sm m-btn-theme col-lg-6">@lang('app.btn.upload')</a> --}}
-                                        </div>
-                                        <div class="row col-lg-12 m-15px-t">
-                                            <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-danger white-color">@lang('app.txt.to_upload')</i></small></span>
-                                        </div>
+                                            <div class="row col-lg-12">
+                                                <div class="col-lg-10">
+                                                    <span id="spnFilePath"></span>
+                                                    <form id="formSendMrFile">
+                                                        <input type="file" id="FileUpload1" onchange="fileUploadChange({{$mr->id}})" name="file_mr" style="display: none" />
+                                                        <input type="hidden" value="{{$mr->id}}" id="mr_id" name="mr_id"/>
+                                                    </form>
+                                                </div>
+                                                {{-- <a href="javascript:void(0)" class="m-btn m-btn-sm m-btn-theme col-lg-6">@lang('app.btn.upload')</a> --}}
+                                            </div>
+                                            <div class="row col-lg-12 m-15px-t">
+                                                <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-danger white-color">@lang('app.txt.to_upload')</i></small></span>
+                                            </div>
+                                        @else
+                                            <div class="row col-lg-12">
+                                                <div class="col-lg-10">
+                                                    <p><b>@lang('app.txt.reference') : </b> {{ explode('.pdf', $mr->file_name)[0] }}</p>
+                                                </div>
+                                                <div class="col-lg-2 m-25px-t">
+                                                    <a href="{!! url($mr->path) !!}" target="_blank" class="m-btn m-btn-sm m-btn-theme2nd">@lang('app.txt.detail')</a>       
+                                                </div>
+                                            </div>
+                                            <div class="row col-lg-12 m-15px-t">
+                                                <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-success white-color">@lang('app.txt.finalized')</i></small></span>
+                                            </div>
+                                            <span class="vertical-date">        
+                                                {{Auth::user()->mandatRecherche(1,Auth::user()->id,Auth::user()->afa->id)->updated_at->diffForHumans()}} <br/>
+                                                <small>{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', Auth::user()->mandatRecherche(1,Auth::user()->id,Auth::user()->afa->id)->updated_at)->format('d F')}},{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', Auth::user()->mandatRecherche(1,Auth::user()->id,Auth::user()->afa->id)->updated_at)->year }}</small>
+                                            </span>
+                                        @endif
                                     @else
-                                        <div class="row col-lg-12">
-                                            <div class="col-lg-10">
-                                                <p><b>@lang('app.txt.reference') : </b> {{ explode('.pdf', $mr->file_name)[0] }}</p>
-                                            </div>
-                                            <div class="col-lg-2 m-25px-t">
-                                                <a href="{!! url($mr->path) !!}" target="_blank" class="m-btn m-btn-sm m-btn-theme2nd">@lang('app.txt.detail')</a>       
-                                            </div>
-                                        </div>
                                         <div class="row col-lg-12 m-15px-t">
-                                            <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-success white-color">@lang('app.txt.finalized')</i></small></span>
+                                            <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-info white-color">@lang('app.txt.not_available')</i></small></span>
                                         </div>
-                                        <span class="vertical-date">        
-                                            {{Auth::user()->mandatRecherche(1,Auth::user()->id,Auth::user()->afa->id)->updated_at->diffForHumans()}} <br/>
-                                            <small>{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', Auth::user()->mandatRecherche(1,Auth::user()->id,Auth::user()->afa->id)->updated_at)->format('d F')}},{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', Auth::user()->mandatRecherche(1,Auth::user()->id,Auth::user()->afa->id)->updated_at)->year }}</small>
-                                        </span>
                                     @endif
-                                @else
-                                    <div class="row col-lg-12 m-15px-t">
-                                        <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-info white-color">@lang('app.txt.not_available')</i></small></span>
-                                    </div>
                                 @endif
+                                
                             </div>
                         </div>
 
@@ -185,7 +192,9 @@
                                 <h2>@lang('app.txt.dossier.i_would_like_to_buy_this')</h2>
                                 <p>@lang('app.txt.dossier.i_would_like_to_buy_this.description')</p>
                                 <div class="row col-lg-12 m-15px-t">
-                                    <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-info white-color">@lang('app.waiting')</i></small></span>
+                                    @if (Auth::user()->hasAfa())
+                                        @if (Auth::user()->memberHasSendMr(1,Auth::user()->id,Auth::user()->afa->id))<span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-info white-color">@lang('app.waiting')</i></small></span>@endif
+                                    @endif
                                 </div>
                             </div>
                         </div>
