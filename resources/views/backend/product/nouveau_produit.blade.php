@@ -813,6 +813,7 @@
 					
 					}else if(ancienneteBien == 'Neuf' && natureBien == 'Produit isolé'){
 						$('#info-date-isole').show();
+						$('#info_qte').show();
 						$('#chk_picine').show();
 						$('#jardin_info').show();
 						$('#price_simple').show();
@@ -1920,7 +1921,7 @@
 			if(category == 1){
 				//pour le categorie residentiel
 				$('#natureBien').empty().append($('<option />').text("@lang('app.form.choix_txt')").val(''),$('<option />').text('Programme immobilier').val('Programme immobilier'),$('<option />').text('Produit isolé').val('Produit isolé'));
-				$('#info_qte').hide();
+				$('#info_qte').show();
 				$('#info_prd_residentiel').show();
 				$('#info_prd_foncier').hide();
 				$('#info_prd_industriel').hide();
@@ -1930,7 +1931,7 @@
 			}else if(category == 2){
 				//pour categorie foncier 
 				$('#natureBien').empty().append($('<option />').text("@lang('app.form.choix_txt')").val(''),$('<option />').text('Produit isolé').val('Produit isolé'));
-				$('#info_qte').show();
+				$('#info_qte').hide();
 				$('#info-date-isole').hide();
 				$('#info_prd_residentiel').hide();
 				$('#info_prd_foncier').show();
