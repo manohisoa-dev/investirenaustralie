@@ -43,8 +43,18 @@
 								@endif		
 							</td>
 							<td>{{ $record->title }}<br />{{str_limit(strip_tags($record->excerpt()),"100","...")}}</td>
-							<td>{{ $record->currency }}&nbsp;{{ number_format($record->min_price, 0, '.', ' ') }}</td>
-							<td>{{ $record->currency }}&nbsp;{{ number_format($record->max_price, 0, '.', ' ') }}</td>
+							<td>
+								@if($record->category_id == 1 && $record->ancienneteBien == 'Neuf' && $record->natureBien == 'Programme immobilier')
+									{{ $record->currency }}&nbsp;{{ number_format($record->min_price, 0, '.', ' ') }}
+								@else
+									{{ $record->currency }}&nbsp;{{ number_format($record->price, 0, '.', ' ') }}
+								@endif
+							</td>
+							<td>
+								@if($record->category_id == 1 && $record->ancienneteBien == 'Neuf' && $record->natureBien == 'Programme immobilier')
+									{{ $record->currency }}&nbsp;{{ number_format($record->max_price, 0, '.', ' ') }}
+								@endif	
+							</td>
 							<td>
 							@if($record->status=='published')
 								@lang('app.'.$record->status)

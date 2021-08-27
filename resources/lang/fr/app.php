@@ -1451,7 +1451,15 @@ return
 	'txt.no_records_to_display' => 'Aucun dossier à afficher',
 	'txt.research_mandate' => 'Mandat de Recherche',
 	'txt.conjunction_agreement' => 'Accord de conjonction',
+<<<<<<< .mine
 	'txt.form.already_exist' => 'existe déjà',
 	'txt.value_already_used' => 'Valeur déjà utilisée',
 	'txt.invalid_value' => 'Valeur invalide',
+
+=======
+    'txt.avoir_bonus' => 'Bonus',
+    'txt.valeur_bonus' => 'Montant du bonus',
+    'txt.property_details' => 'Détails de la propriété',
+    'txt.condition_vente_programme' => 'Le Vendeur certifie sous sa seule responsabilité que ce bien peut être vendu à des étrangers non-résidents conformément à la loi australienne et aux règles applicables par le Foreign Investment Review Board (FIRB).',
+>>>>>>> .theirs
 ];

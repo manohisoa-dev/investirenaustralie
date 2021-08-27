@@ -23,8 +23,7 @@
 				</div>
 			</div>
 			<div class="card-body">
-				{{--{{ route('save-product') }}--}}
-				<form class="form-padding wizard-big" action="#" method="post" id="form" enctype="multipart/form-data">
+				<form class="form-padding wizard-big" action="{{ route('save-product') }}" method="post" id="form" enctype="multipart/form-data">
 					<h1>@lang('app.config')</h1>
 					<fieldset>
 						<h4>@lang('app.txt.info_programme')</h4>
@@ -47,8 +46,8 @@
 										<label for="title">@lang('app.form.programme_choix_anciennete') *</label>
 										<select class="form-control" name="ancienneteBien" id="ancienneteBien">
 											<option value="">@lang('app.form.choix_txt')</option>
-											<option value="Neuf">Neuf</option>
-											<option value="Ancien">Ancien</option>
+											<option value="Neuf">@lang('app.txt.new')</option>
+											<option value="Ancien">@lang('app.txt.old')</option>
 										</select>
 									</div>
 								</div>
@@ -158,7 +157,7 @@
 								</div>
 								<div class="col-lg-4">
 									<div class="form-group">
-										<label for="title">@lang('app.form.programme_suburb')</label>
+										<label for="title">@lang('app.form.programme_suburb') *</label>
 										<input name="suburb" id="suburb" class="form-control" type="text" value="">
 									</div>
 								</div>
@@ -166,7 +165,7 @@
 							<div class="row">
 								<div class="col-lg-3">
 									<div class="form-group">
-										<label for="title">@lang('app.form.programme_ville')</label>
+										<label for="title">@lang('app.form.programme_ville') *</label>
 										<input name="ville" id="ville" class="form-control" type="text">
 									</div>  
 								</div>
@@ -254,7 +253,7 @@
 						<div class="row">
 							<div class="col-lg-12">
 								<label class="chk_firb_programme"> 
-									<input type="checkbox" value="" name="chk_firb_programme" id="chk_firb_programme" required> The Seller certifies under their sole responsibilitythatthis property canbe sold to non-residentforeigners in accordance with Australian law and the rules applicable by the Foreign Investment Review Board (FIRB).
+									<input type="checkbox" value="" name="chk_firb_programme" id="chk_firb_programme" required> @lang('app.txt.condition_vente_programme')
 								</label>
 							</div>
 						</div>
@@ -282,6 +281,33 @@
 								</div>
 							</div>
 						</div>
+						
+						<div class="row" id="bloc_fond_doc_produit" style="display:none">
+							<div class="col-lg-12">
+								<h5>@lang('app.form.programme_fond_dossier')</h5>
+								<div class="dropzone" id="p_fond_dossier" multiple style="margin-bottom:25px">
+									<div id="template" class="file-row"></div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="row" id="bloc_eoi_doc" style="display:none">
+							<div class="col-lg-12">
+								<h5>@lang('app.table.eoi_dossier')</h5>
+								<div class="dropzone" id="p_eoi_dossier" multiple style="margin-bottom:25px">
+									<div id="template" class="file-row"></div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="row" id="bloc_lia_doc" style="display:none">
+							<div class="col-lg-12">
+								<h5>@lang('app.table.lia_dossier')</h5>
+								<div class="dropzone" id="p_lia_dossier" multiple style="margin-bottom:25px">
+									<div id="template" class="file-row"></div>
+								</div>
+							</div>
+						</div>
 							
 						<div class="row">
 							<div class="col-lg-6">
@@ -294,7 +320,7 @@
 							</div>
 							<div class="col-lg-6">
 								<div class="form-group">
-									<label for="title">@lang('app.form.programme_suburb')</label>
+									<label for="title">@lang('app.form.programme_suburb') *</label>
 									<input name="suburb_product" id="suburb_product" class="form-control" type="text" value="">
 								</div>
 							</div>
@@ -302,7 +328,7 @@
 						<div class="row">
 							<div class="col-lg-6">
 								<div class="form-group">
-									<label for="title">@lang('app.form.programme_ville')</label>
+									<label for="title">@lang('app.form.programme_ville') *</label>
 									<input name="ville_product" id="ville_product" class="form-control" type="text">
 								</div>  
 							</div>	
@@ -438,6 +464,29 @@
 								</div>
 							</div>			
 						</div>
+						<div class="row">
+							<div class="col-lg-6">
+								<div class="form-group" style="margin-bottom:.5rem;">
+									<label for="title">@lang('app.txt.avoir_bonus')</label>
+									<select class="form-control" name="bonus_vente" id="bonus_vente">
+										<option value="">Choisir...</option>
+										<option value="YES">@lang('app.txt.yes')</option>
+										<option value="NO">@lang('app.txt.no')</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div id="montant_bonus_vente" style="display:none">
+									<label for="title">@lang('app.txt.valeur_bonus') *</label>
+									<div class="input-group" style="margin-bottom: .5rem;">
+										<input type="number" class="form-control" name="bonus_amount" id="bonus_amount">
+										<div class="input-group-append">
+											<span class="input-group-text">AUD</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 						<!-- info date produit isolé-->
 						<div id="info-date-isole">
 							<div class="row">
@@ -457,20 +506,31 @@
 						</div>
 						<!-- fin info date produit isolé-->
 						<div class="row">
-							<div class="col-lg-6">
+							<div class="col-lg-4">
 								<div class="form-group">
 									<label for="title">@lang('app.table.produit_image')</label>
 									<input name="image" class="form-control" type="file" accept="image/png, image/jpeg">
 								</div>
 							</div>	
-							<div class="col-lg-6">
+							<div class="col-lg-4">
 								<div id="yearConstruct" style="display:none">								
 									<div class="form-group">
 										<label for="title">@lang('app.form.product_anneeConstruct') *</label>
 										<input name="year_built" id="year_built" class="form-control" type="number" value="0">
 									</div>
 								</div>
-							</div>						
+							</div>	
+							<div class="col-lg-4">
+								<div id="jardin_info" style="display:none">
+									<label for="title">@lang('app.form.product_jardin_space')</label>
+									<div class="input-group" style="margin-bottom: .5rem;">
+										<input type="number" class="form-control" name="superficie_jardin" id="superficie_jardin" value="0">
+										<div class="input-group-append">
+											<span class="input-group-text">.m2</span>
+										</div>
+									</div>
+								</div>
+							</div>					
 						</div>
 						
 						<!-- info pour le produit résidentiel -->
@@ -592,8 +652,10 @@
 						<div id="info_prd_industriel" style="display:none">
 							<div class="row">
 								<div class="col-md-12">
-									<label for="title">Property details *</label>
-									<textarea class="form-control" rows="4" name="property_detail"></textarea>
+									<div class="form-group" style="margin-bottom: .5rem;">
+										<label for="title">@lang('app.txt.property_details') *</label>
+										<textarea class="form-control" rows="4" name="property_detail"></textarea>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -615,13 +677,13 @@
 									<label for="title">Customer parking *</label>
 									<select class="form-control" name="type_cutomer_parking">
 										<option value="">Choisir...</option>
-										<option value="Oui">Oui</option>
-										<option value="Non">Non</option>
+										<option value="1">Oui</option>
+										<option value="0">Non</option>
 									</select>
 								</div>
 								<div class="col-md-4">
-									<label for="title">Number of parking spots *</label>
-									<input type="number" class="form-control" name="nb_cutomer_parking" />
+									<label for="title">Number of parking spots</label>
+									<input type="number" class="form-control" name="nombre_cutomer_parking" />
 								</div>
 							</div>
 						</div>
@@ -630,35 +692,33 @@
 						
 						<div class="row">
 							<div class="col-lg-12">
-								<div id="legal_prd_isole" style="display:none">
-									<label><strong>@lang('app.txt.declaration_annonceur')</strong></label>
-									<label>@lang('app.txt.type_annonceur')</label>
-									<label>@lang('app.txt.legal_owner')</label>
-									<label class="form-check"> 
-										<div class="form-check">
-											<input class="form-check-input" type="radio" name="certificat" id="certificat"/>
-											<label class="form-check-label" for="certificat"> @lang('app.txt.radio_legal_owner_choix_1')</label>
-										</div>
-										@If(Auth::user()->hasRole(2))
-										<div class="form-check" id="choix_seller">
-											<input class="form-check-input" type="radio" name="certificat" id="certificat1"/>
-											<label class="form-check-label" for="certificat1"> @lang('app.txt.radio_legal_owner_choix_2')</label>
-										</div>
-										@endif
-									</label>
-									
-									<label> 
-										<input type="checkbox" value="1" name="certicat2"> @lang('app.txt.certificat_loi_investissement')
-									</label>
-									
-									<label> 
-										<input type="checkbox" value="1" name="certicat3"> @lang('app.txt.certificat_responsabilite')
-									</label>
-									
-									<label> 
-										<input type="checkbox" value="1" name="certicat4"> @lang('app.txt.certificat_acceptation')
-									</label>
-								</div>
+								<label><strong>@lang('app.txt.declaration_annonceur')</strong></label>
+								<label>@lang('app.txt.type_annonceur')</label>
+								<label>@lang('app.txt.legal_owner')</label>
+								<label class="form-check"> 
+									<div class="form-check">
+										<input class="form-check-input" type="radio" name="certificat" id="certificat"/>
+										<label class="form-check-label" for="certificat"> @lang('app.txt.radio_legal_owner_choix_1')</label>
+									</div>
+									@If(Auth::user()->hasRole(2))
+									<div class="form-check" id="choix_seller">
+										<input class="form-check-input" type="radio" name="certificat" id="certificat1"/>
+										<label class="form-check-label" for="certificat1"> @lang('app.txt.radio_legal_owner_choix_2')</label>
+									</div>
+									@endif
+								</label>
+								
+								<label> 
+									<input type="checkbox" value="1" name="certicat2"> @lang('app.txt.certificat_loi_investissement')
+								</label>
+								
+								<label> 
+									<input type="checkbox" value="1" name="certicat3"> @lang('app.txt.certificat_responsabilite')
+								</label>
+								
+								<label> 
+									<input type="checkbox" value="1" name="certicat4"> @lang('app.txt.certificat_acceptation')
+								</label>
 							</div>
 							
 							<div class="col-lg-12">
@@ -718,71 +778,82 @@
 				var ancienneteBien = $('#ancienneteBien').val();
 				var natureBien = $('#natureBien').val();
 				var cat = $('#cat_programmme_id').val();
-				if(ancienneteBien == 'Neuf' && natureBien == 'Programme immobilier'){
-					var titre_programme = $('#title_programme').val();
-					$('[name="product_type_id"]').val($('#type_id').val());
-					$('[name="suburb_product"]').val($('#suburb').val()).prop("readonly", true);
-					$('[name="ville_product"]').val($('#ville').val()).prop("readonly", true);
-					$('[name="postalCode_product"]').val($('#postalCode').val()).prop("readonly", true);
-					$('[name="display_address_product"]').val($('#display_address').val()).prop("readonly", true);
-					$('[name="state_id_product"]').val($('#state_id').val());
-					$('[name="countryId_product"]').val($('#countryId').val()).prop("readonly", true);
-					<!-- commission produit lie avec commission programme -->
-					$('[name="commision_product"]').val($('#commision').val());
-					if($('#commision').val() == 'Sales commission rate (%)'){
-						$('[name="sales_rate_product"]').val($('#sales_rate').val());
-						$('#commission_rate_prd').show();
-						$('#fixed_commission_prd').hide();
-					}else if($('#commision').val() == 'Fixed commission ($)'){
-						$('[name="rate_commission_product"]').val($('#rate_commission').val());
-						$('#commission_rate_prd').hide();
-						$('#fixed_commission_prd').show();
-					}else{
-						$('#commission_rate_prd').hide();
-						$('#fixed_commission_prd').hide();
-					}
-						
-					$('#jardin_info').hide();
-					$('#chk_picine').hide();
-					$('#chk_firb').hide();
-					$('#yearConstruct').hide();
-					$('#commission_product').hide();
-					$('#info-date-isole').hide();
-					$("#progTitle").text(titre_programme);
-					$('#bloc_eoi_doc').hide();
-					$('#price_simple').hide();
-					$('#price_max_min').show();
-					$('#legal_prd_isole').hide();
-				}else if(ancienneteBien == 'Neuf' && natureBien == 'Produit isolé'){
-					$('#title_product').val('');
-					$('#jardin_info').show();
-					$('#chk_picine').show();
-					$('#chk_firb').show();
-					$('#yearConstruct').hide();
-					$('#commission_product').show();
-					if(cat == 1){
-						$('#info-date-isole').show();
-					}else{
+				if(cat == 1){
+					if(ancienneteBien == 'Neuf' && natureBien == 'Programme immobilier'){
+						var titre_programme = $('#title_programme').val();
+						$('[name="product_type_id"]').val($('#type_id').val());
+						$('[name="suburb_product"]').val($('#suburb').val()).prop("readonly", true);
+						$('[name="ville_product"]').val($('#ville').val()).prop("readonly", true);
+						$('[name="postalCode_product"]').val($('#postalCode').val()).prop("readonly", true);
+						$('[name="display_address_product"]').val($('#display_address').val()).prop("readonly", true);
+						$('[name="state_id_product"]').val($('#state_id').val());
+						$('[name="countryId_product"]').val($('#countryId').val()).prop("readonly", true);
+						$('[name="commision_product"]').val($('#commision').val());
+						if($('#commision').val() == 'Sales commission rate (%)'){
+							$('[name="sales_rate_product"]').val($('#sales_rate').val());
+							$('#commission_rate_prd').show();
+							$('#fixed_commission_prd').hide();
+						}else if($('#commision').val() == 'Fixed commission ($)'){
+							$('[name="rate_commission_product"]').val($('#rate_commission').val());
+							$('#commission_rate_prd').hide();
+							$('#fixed_commission_prd').show();
+						}else{
+							$('#commission_rate_prd').hide();
+							$('#fixed_commission_prd').hide();
+						}
+						$("#progTitle").text(titre_programme);
 						$('#info-date-isole').hide();
+						$('#price_simple').hide();
+						$('#price_max_min').show();
+						$('#chk_picine').hide();
+						
+						$('#bloc_fond_doc_produit').hide();
+						$('#bloc_eoi_doc').hide();
+						$('#bloc_lia_doc').hide();
+					
+					}else if(ancienneteBien == 'Neuf' && natureBien == 'Produit isolé'){
+						$('#info-date-isole').show();
+						$('#chk_picine').show();
+						$('#jardin_info').show();
+						$('#price_simple').show();
+						$('#price_max_min').hide();
+						
+						$('#bloc_fond_doc_produit').show();
+						$('#bloc_eoi_doc').show();
+						$('#bloc_lia_doc').show();
+						
+					}else if(ancienneteBien == 'Ancien'){
+						$('#title_product').val('');
+						$('[name="year_built"]').val($('#annee_const').val()).prop("readonly", true);
+						$('[name="postalCode_product"]').val($('#postal_code').val()).prop("readonly", true);
+						$('#yearConstruct').show();
+						$('#jardin_info').show();
+						$('#chk_picine').show();
+						$('#info-date-isole').hide();
+						$('#price_simple').show();
+						$('#price_max_min').hide();
+						
+						$('#bloc_fond_doc_produit').show();
+						$('#bloc_eoi_doc').show();
+						$('#bloc_lia_doc').show();
 					}
+				}else if(cat == 2){
+					$('#info_prd_foncier').show();
+					$('#price_simple').show();
+					
+					$('#bloc_fond_doc_produit').show();
 					$('#bloc_eoi_doc').show();
-					$('#price_simple').show();
-					$('#price_max_min').hide();
-					$('#legal_prd_isole').show();
-				}else if(ancienneteBien == 'Ancien'){
-					$('#title_product').val('');
-					$('[name="year_built"]').val($('#annee_const').val()).prop("readonly", true);
-					$('[name="postalCode_product"]').val($('#postal_code').val()).prop("readonly", true);
-					$('#yearConstruct').show();
-					$('#jardin_info').show();
-					$('#chk_picine').show();
-					$('#chk_firb').show();
-					$('#commission_product').show();
+					$('#bloc_lia_doc').show();
+				}else if(cat == 3){
+				    $('#info-date-isole').hide();
+					$('#bloc_fond_doc_produit').show();
+					$('#bloc_eoi_doc').show();
+					$('#bloc_lia_doc').show();
+				}else if(cat == 4){
 					$('#info-date-isole').hide();
-					$('#bloc_eoi_doc').hide();
-					$('#price_simple').show();
-					$('#price_max_min').hide();
-					$('#legal_prd_isole').hide();
+					$('#bloc_fond_doc_produit').show();
+					$('#bloc_eoi_doc').show();
+					$('#bloc_lia_doc').show();
 				}
 				// Always allow going backward even if the current step contains invalid fields!
 				if (currentIndex > newIndex)
@@ -851,7 +922,7 @@
 				if(element.parent().hasClass('input-group')){
 					error.insertAfter( element.parent() );
 				}else{
-					error.insertBefore( element );
+					error.insertAfter( element );
 				}
 			},
 			rules: {
@@ -1012,8 +1083,62 @@
 				postalCode_product: {
 					required: true
 				},
+				suburb_product: {
+					required: true
+				},
+				ville_product: {
+					required: true
+				},
 				display_address_product: {
 					required: true
+				},
+				display_address: {
+					required: {
+						depends: function(element) {
+							if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier'){
+								return true;	
+							}
+						}
+					}
+				},
+				postalCode: {
+					required: {
+						depends: function(element) {
+							if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier'){
+								return true;	
+							}
+						}
+					}
+				},
+				suburb: {
+					required: {
+						depends: function(element) {
+							if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier'){
+								return true;	
+							}
+						}
+					}
+				},
+				ville: {
+					required: {
+						depends: function(element) {
+							if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier'){
+								return true;	
+							}
+						}
+					}
+				},
+				state_id: {
+					required: {
+						depends: function(element) {
+							if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier'){
+								return true;	
+							}
+						}
+					}
+				},
+				state_id_product:{
+					required: true,
 				},
 				simple_price: {
 					required: {
@@ -1024,6 +1149,24 @@
 						}
 					},
 					number: true
+				},
+				dt_db_travaux:{
+					required: {
+						depends: function(element) {
+							if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Produit isolé'){
+								return true;	
+							}
+						}
+					}
+				},
+				dt_prevu_livraison:{
+					required: {
+						depends: function(element) {
+							if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Produit isolé'){
+								return true;	
+							}
+						}
+					}
 				},
 				price: {
 					required: {
@@ -1068,82 +1211,73 @@
 					min: function ()  { return parseInt($("#price").val())}
 				},
 				interior_area: {
-					required: true,
+					required: {
+						depends: function(element) {
+							if($("#cat_programmme_id").val() == 1){
+								return true;	
+							}
+						}
+					},
 					number: true,
 				},
 				exterior_area: {
-					required: true,
+					required: {
+						depends: function(element) {
+							if($("#cat_programmme_id").val() == 1){
+								return true;	
+							}
+						}
+					},
 					number: true,
 				},
 				total_area: {
-					required: true,
+					required: {
+						depends: function(element) {
+							if($("#cat_programmme_id").val() == 1){
+								return true;	
+							}
+						}
+					},
 					number: true,
-				},
-				display_address: {
+				},	
+				property_detail: {
 					required: {
 						depends: function(element) {
-							if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier'){
+							if($("#cat_programmme_id").val() == 3){
 								return true;	
 							}
 						}
 					}
-				},
-				postalCode: {
+				},	
+				surface_commercial: {
 					required: {
 						depends: function(element) {
-							if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier'){
+							if($("#cat_programmme_id").val() == 4){
 								return true;	
 							}
 						}
 					}
-				},
-				state_id: {
+				},		
+				type_cutomer_parking: {
 					required: {
 						depends: function(element) {
-							if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Programme immobilier'){
+							if($("#cat_programmme_id").val() == 4){
 								return true;	
 							}
 						}
 					}
-				},
-				state_id_product:{
-					required: true,
-				},
+				},			
 				certificat: {
-					required: {
-						depends: function(element) {
-							if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Produit isolé'){
-								return true;	
-							}
-						}
-					}
+					required: true
 				},
 				certicat2: {
-					required: {
-						depends: function(element) {
-							if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Produit isolé'){
-								return true;	
-							}
-						}
-					}
+					required: true
 				},
 				certicat3: {
-					required: {
-						depends: function(element) {
-							if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Produit isolé'){
-								return true;	
-							}
-						}
-					}
+					required: true
 				},
 				certicat4: {
-					required: {
-						depends: function(element) {
-							if($("#ancienneteBien").val() == 'Neuf' && $("#natureBien").val() == 'Produit isolé'){
-								return true;	
-							}
-						}
-					}
+					required: true
 				},
 				chk_firb: {
 					required: {
@@ -1166,6 +1300,12 @@
 					required: "@lang('app.txt.champobligatoire')"
 				},
 				simple_price:{
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				dt_db_travaux:{
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				dt_prevu_livraison:{
 					required: "@lang('app.txt.champobligatoire')"
 				},
 				prix_min: {
@@ -1195,6 +1335,12 @@
 				postalCode_product: {
 					required: "@lang('app.txt.champobligatoire')"
 				},
+				suburb_product: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				ville_product: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
 				display_address_product: {
 					required: "@lang('app.txt.champobligatoire')"
 				},
@@ -1216,6 +1362,12 @@
 				display_address: {
 					required: "@lang('app.txt.champobligatoire')"
 				},
+				suburb: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				ville: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
 				postalCode: {
 					required: "@lang('app.txt.champobligatoire')"
 				},
@@ -1230,6 +1382,15 @@
 					required: "@lang('app.txt.champobligatoire')"
 				},
 				state_id_product: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				property_detail: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				surface_commercial: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				type_cutomer_parking: {
 					required: "@lang('app.txt.champobligatoire')"
 				},
 				certificat: {
@@ -1251,6 +1412,15 @@
 			success: function(label,element) {
 				label.parent().removeClass('error');
 				label.remove(); 
+			}
+		});
+		
+		$('#bonus_vente').on('change', function() {
+			var type_bonus = this.value;
+			if(type_bonus == 'YES'){
+				$('#montant_bonus_vente').show();
+			}else{
+				$('#montant_bonus_vente').hide();
 			}
 		});
 		
@@ -1475,6 +1645,65 @@
 				file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'>"+response.success+"</label>");
 				file.previewElement.appendChild(file._captionBox);
 				$('#programmeForm').append('<input type="hidden" name="liaDossier[]" value="'+response.success +'">');
+				olddatadzname.innerHTML = response.success;
+            },
+            error: function(file, response)
+            {
+               if($.type(response) === "string")
+					var message = response; //dropzone sends it's own error messages in string
+				else
+					var message = response.message;
+				file.previewElement.classList.add("dz-error");
+				_ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+				_results = [];
+				for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+					node = _ref[_i];
+					_results.push(node.textContent = message);
+				}
+				return _results;
+            }
+		});
+		
+		$("#p_fond_dossier").dropzone({
+			maxFiles: 25, 
+            maxFilesize: 50,
+			dictDefaultMessage: "@lang('app.txt.fond_dossier')",
+			url: "{{ route('ajaxDropZone') }}",
+			params: {"_token": "{{ csrf_token() }}"},
+            acceptedFiles: ".jpeg,.jpg,.png,.gif,.doc,.docx,.xls,.xlsx,.pdf",
+            addRemoveLinks: true,
+            timeout: 50000,
+            init:function() {
+				// Get images
+				var myDropzone = this;
+			},
+            removedfile: function(file) 
+            {
+				if (this.options.dictRemoveFile) {
+				  return Dropzone.confirm("Are You Sure to "+this.options.dictRemoveFile, function() {
+					if(file.previewElement.id != ""){
+						var name = file.previewElement.id;
+					}else{
+						var name = file.name;
+					}
+					//console.log(name);
+					var fileRef;
+						return (fileRef = file.previewElement) != null ? 
+						fileRef.parentNode.removeChild(file.previewElement) : void 0;
+				  });
+			    }		
+            },
+       
+            success: function(file, response) 
+            {
+				file.previewElement.id = response.success;
+				//console.log(file.previewElement.id); 
+				// set new images names in dropzone’s preview box.
+                var olddatadzname = file.previewElement.querySelector("[data-dz-name]");   
+				file.previewElement.querySelector("img").alt = response.success;
+				file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'>"+response.success+"</label>");
+				file.previewElement.appendChild(file._captionBox);
+				$('#form').append('<input type="hidden" name="p_fondDossier[]" value="'+response.success +'">');
 				olddatadzname.innerHTML = response.success;
             },
             error: function(file, response)
