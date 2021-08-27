@@ -159,18 +159,6 @@
 				password: {
 					required: true
 				},
-				// title_programme: {
-				// 	required: true,
-				// 	remote: {
-				// 		url: "{{ route('admin.ajaxCheckTitreProgramme') }}",
-				// 		type: "get",
-				// 		data: {
-				// 			title_programme: function () {
-				// 				return $("input[name='title_programme']").val();
-				// 			}
-				// 		}
-				// 	}
-				// },
 			},
 			messages: {
 				name: {
@@ -185,10 +173,6 @@
 				password: {
 					required: "@lang('app.txt.champobligatoire')"
 				},
-				// title_programme: {
-				// 	required: "@lang('app.txt.champobligatoire')",
-				// 	remote: jQuery.validator.format("{0} @lang('app.form.programme_validate_titre')")
-				// },
 			},
 			errorPlacement: function ( error, element ) {
 				if(element.parent().hasClass('input-group')){
@@ -204,7 +188,6 @@
             color: #F00;
             background-color: #FFF;
         }
-
     </style>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -219,6 +202,7 @@
         // Submit afa login
         $("#btn_login").on('click', function() {
             $('#afaLoginForm').submit();
+            loadingPage();
             return false;
         });
 

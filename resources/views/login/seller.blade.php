@@ -165,7 +165,7 @@
                                                 <div class="form-group">
                                                     <label for="orga_website" class="col-sm-12 control-label">@lang('app.txt.websiteurl') *</label>
                                                     <div class="col-sm-12">
-                                                        <input type="text" class="form-control" id="orga_website" name="orga_website" placeholder="Ex: www.iea.com" value="{{ old('orga_website')?old('"orga_website'):'' }}" required>
+                                                        <input type="text" class="form-control" id="orga_website" name="orga_website" placeholder="Ex: http://www.iea.com" value="{{ old('orga_website')?old('"orga_website'):'' }}" required>
                                                         <span class="text-danger">{{ $errors->first('orga_website') }}</span>
                                                     </div>
                                                 </div>
@@ -367,7 +367,7 @@
                                                             <span class="input-group-text form-control">(+61)</span>
                                                         </div>
                                                         <div class="custom-file">
-                                                            <input type="text" pattern="[0-9]{1}[0-9]{7}" minlength="8" maxlength="8" placeholder="XXXXXXXX" class="form-control m-15px-t" id="contact_phone" name="contact_phone" value="{{ old('contact_phone')?old('contact_phone'):'' }}" required>
+                                                            <input type="text" pattern="[0-9]{1}[0-9]{8}" minlength="9" maxlength="9" placeholder="XXXXXXXX" class="form-control m-15px-t" id="contact_phone" name="contact_phone" value="{{ old('contact_phone')?old('contact_phone'):'' }}" required>
                                                         </div>
                                                     </div>
                                                     <span class="text-danger m-5px-l">{{ $errors->first('contact_phone') }}</span>
@@ -388,7 +388,7 @@
                                                         <label class="custom-control-label" for="checkbox-1"><b>@lang('app.form.register.politic') *</b></label>
                                                     </div>
                                                     <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" name="politic" id="checkbox-2" required>
+                                                        <input type="checkbox" class="custom-control-input" name="condition" id="checkbox-2" required>
                                                         <label class="custom-control-label" for="checkbox-2"><b>@lang('app.form.register.condition') *</b></label>
                                                     </div>
                                                 </div>
@@ -710,6 +710,606 @@
 
 @push('script')
 <script src="{{asset('js/myJs.js')}}"></script>
+<!-- Jquery Validate -->
+<script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
+<script>
+    $.validator.addMethod('le', function (value, element, param) {
+        return this.optional(element) || value !== $(param).val();
+    }, '@lang("app.txt.invalid_value")');
+
+    $.validator.addMethod('ge', function (value, element, param) {
+        return this.optional(element) || value !== $(param).val();
+    }, '@lang("app.txt.invalid_value")');
+
+    $('#formSeller1Registrator').validate({
+        ignore: [],
+        rules: {
+            name: {
+            	required: {
+                    depends: function(element) {
+                        if($("#formSeller1Registrator").is(":visible")){
+                            return true;	
+                        }
+                    }
+                },
+            	remote: {
+            		url: "{{ route('ajaxCheckLogin') }}",
+            		type: "get",
+            		data: {
+            			name: function () {
+            				return $("input[name='name']").val();
+            			}
+            		}
+            	}
+            },
+            email: {
+            	required: {
+                    depends: function(element) {
+                        if($("#formSeller1Registrator").is(":visible")){
+                            return true;	
+                        }
+                    }
+                },
+                email:true,
+                le:'#orga_email',
+            	remote: {
+            		url: "{{ route('ajaxCheckEmail') }}",
+            		type: "get",
+            		data: {
+            			email: function () {
+            				return $("input[name='email']").val();
+            			}
+            		}
+            	}
+            },
+
+            politic: {
+                required: {
+                    depends: function(element) {
+                        if($("#formSeller1Registrator").is(":visible")){
+                            return true;	
+                        }
+                    }
+                },
+            },
+            condition: {
+                required: {
+                    depends: function(element) {
+                        if($("#formSeller1Registrator").is(":visible")){
+                            return true;	
+                        }
+                    }
+                },
+            },
+
+            // REP && NLP
+            type: {
+                required: true,
+            },
+            orga_name: {
+                required: true,
+            },
+            orga_trading_name: {
+                required: true,
+            },
+            orga_abn: {
+                required: true,
+                number:true,
+                minlength:11,
+                maxlength:11
+            },
+            orga_acn: {
+                number:true,
+                minlength:9,
+                maxlength:9
+            },
+            orga_parent_name: {
+                required: true,
+            },
+            orga_email: {
+                required: true,
+                email:true,
+                le:'#email',
+                ge:'#contact_email',
+            },
+            orga_phone: {
+                required: true,
+                number:true,
+                minlength:8,
+                maxlength:9,
+                le:'#contact_phone',
+            },
+            orga_mobile_phone: {
+                required: true,
+                number:true,
+                minlength:9,
+                maxlength:9,
+            },
+            orga_website: {
+                required: true,
+                url:true
+            },
+            orga_presentation: {
+                required: true,
+                maxlength:1000
+            },
+            route: {
+                required: true,
+            },
+            route_number: {
+                required: true,
+            },
+            locality: {
+                required: true,
+            },
+            area_level_2: {
+                required: true,
+            },
+            postalCode: {
+                required: true,
+                number:true
+            },
+            area_level_1: {
+                required: true,
+            },
+            country: {
+                required: true,
+            },
+            adrpost_postal_box: {
+                required: {
+                    depends: function(element) {
+                        if($("#mailAddress").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            adrpost_locality: {
+                required: {
+                    depends: function(element) {
+                        if($("#mailAddress").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            adrpost_postalCode: {
+                number:true,
+                required: {
+                    depends: function(element) {
+                        if($("#mailAddress").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            adrpost_area_level_1: {
+                required: {
+                    depends: function(element) {
+                        if($("#mailAddress").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            adrpost_country: {
+                required: {
+                    depends: function(element) {
+                        if($("#mailAddress").is(":visible")){
+                            return true;	
+                        }
+                    }
+                }
+            },
+            contact_name: {
+                required: true,
+            },
+            contact_email: {
+                required: true,
+                email:true,
+                le:'#orga_email',
+            },
+            contact_phone: {
+                required: true,
+                number:true,
+                minlength: 9,
+                maxlength: 9,
+                le:'#orga_phone',
+            },
+        },
+        messages: {
+            name: {
+            	required: "@lang('app.txt.champobligatoire')",
+            	remote: jQuery.validator.format("{0} @lang('app.txt.form.already_exist')")
+            },
+            email: {
+                required: "@lang('app.txt.champobligatoire')",
+            	remote: jQuery.validator.format("{0} @lang('app.txt.form.already_exist')"),
+                le: '@lang("app.txt.value_already_used")'
+            },
+            politic: {
+                required: "@lang('app.txt.champobligatoire')"
+            },
+            condition: {
+                required: "@lang('app.txt.champobligatoire')"
+            },
+            // REP && NLP
+            type: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            orga_name: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            orga_trading_name: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            orga_abn: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            orga_parent_name: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            orga_phone: {
+                required: "@lang('app.txt.champobligatoire')",
+                le: '@lang("app.txt.value_already_used")'
+            },
+            orga_email: {
+                required: "@lang('app.txt.champobligatoire')",
+                le: '@lang("app.txt.value_already_used")',
+                ge: '@lang("app.txt.value_already_used")'
+            },
+            orga_mobile_phone: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            orga_website: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            orga_presentation: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            route: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            route_number: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            locality: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            area_level_2: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            postalCode: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            area_level_1: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            country: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            adrpost_postal_box: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            adrpost_locality: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            adrpost_postalCode: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            adrpost_area_level_1: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            adrpost_country: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            contact_name: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            contact_email: {
+                required: "@lang('app.txt.champobligatoire')",
+                le: '@lang("app.txt.value_already_used")',
+            },
+            contact_phone: {
+                required: "@lang('app.txt.champobligatoire')",
+                le: '@lang("app.txt.value_already_used")'
+            },
+        },
+        errorPlacement: function ( error, element ) {
+            if(element.parent().hasClass('input-group')){
+                error.insertBefore( element.parent() );
+            }else{
+                error.insertAfter( element );
+            }
+        },
+    });
+
+    $('#formSeller1Registrator').submit(function() { // fires on every keyup & blur
+        if ($('#formSeller1Registrator').valid()) {                   // checks form for validity
+            sessionStorage.removeItem('class');
+            // set btn submit to loading btn
+            $('#btn_register').attr('disabled','disabled');
+            $('#btn_register').html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>@lang("app.txt.loading")');
+        } else {
+            $('btn_register').prop('disabled', false);   // enable button
+            $('#btn_register').html('@lang("app.btn.register")');
+        }
+    });
+
+    $('#formSeller2Registrator').validate({
+        ignore: [],
+        rules: {
+            name: {
+            	required: {
+                    depends: function(element) {
+                        if($("#formSeller2Registrator").is(":visible")){
+                            return true;	
+                        }
+                    }
+                },
+            	remote: {
+            		url: "{{ route('ajaxCheckLogin') }}",
+            		type: "get",
+            		data: {
+            			name: function () {
+            				return $("input[id='name_s2']").val();
+            			}
+            		}
+            	}
+            },
+            email: {
+            	required: {
+                    depends: function(element) {
+                        if($("#formSeller2Registrator").is(":visible")){
+                            return true;	
+                        }
+                    }
+                },
+                email:true,
+            	remote: {
+            		url: "{{ route('ajaxCheckEmail') }}",
+            		type: "get",
+            		data: {
+            			email: function () {
+            				return $("input[id='email_s2']").val();
+            			}
+            		}
+            	},
+            },
+
+            politic: {
+                required: {
+                    depends: function(element) {
+                        if($("#formSeller2Registrator").is(":visible")){
+                            return true;	
+                        }
+                    }
+                },
+            },
+            condition: {
+                required: {
+                    depends: function(element) {
+                        if($("#formSeller2Registrator").is(":visible")){
+                            return true;	
+                        }
+                    }
+                },
+            },
+
+            // NNP
+            last_name: {
+                required: true,
+            },
+            first_name: {
+                required: true,
+            },
+            date_of_birth: {
+                required: true,
+                date:true
+            },
+            place_of_birth: {
+                required: true,
+            },
+            nationality: {
+                required: true,
+            },
+            street_adr: {
+                required: true,
+            },
+            suburb: {
+                required: true,
+            },
+            city: {
+                required: true,
+            },
+            post_code: {
+                required: true,
+                number:true
+            },
+            country: {
+                required: true,
+            },
+            phone: {
+                required: true,
+                number:true,
+            },
+            mobile: {
+                required: true,
+                number:true,
+            },
+            email_adr: {
+                required: true,
+                email:true,
+            },
+            last_name_2: {
+                required: true,
+            },
+            first_name_2: {
+                required: true,
+            },
+            date_of_birth_2: {
+                required: true,
+                date:true
+            },
+            place_of_birth_2: {
+                required: true,
+            },
+            nationality_2: {
+                required: true,
+            },
+            street_adr_2: {
+                required: true,
+            },
+            suburb_2: {
+                required: true,
+            },
+            city_2: {
+                required: true,
+            },
+            post_code_2: {
+                required: true,
+                number:true
+            },
+            country_2: {
+                required: true,
+            },
+            phone_2: {
+                required: true,
+                number: true,
+            },
+            mobile_2: {
+                required: true,
+                number: true,
+            },
+            email_adr_2: {
+                required: true,
+                email: true,
+            },
+        },
+        messages: {
+            name: {
+            	required: "@lang('app.txt.champobligatoire')",
+            	remote: jQuery.validator.format("{0} @lang('app.txt.form.already_exist')")
+            },
+            email: {
+                required: "@lang('app.txt.champobligatoire')",
+            	remote: jQuery.validator.format("{0} @lang('app.txt.form.already_exist')"),
+            },
+            politic: {
+                required: "@lang('app.txt.champobligatoire')"
+            },
+            condition: {
+                required: "@lang('app.txt.champobligatoire')"
+            },
+            
+            // NNP
+            last_name: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            first_name: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            date_of_birth: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            place_of_birth: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            nationality: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            street_adr: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            suburb: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            city: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            post_code: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            country: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            phone: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            mobile: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            email_adr: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            last_name_2: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            first_name_2: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            date_of_birth_2: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            place_of_birth_2: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            nationality_2: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            street_adr_2: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            suburb_2: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            city_2: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            post_code_2: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            country_2: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            phone_2: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            mobile_2: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            email_adr_2: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+        },
+        errorPlacement: function ( error, element ) {
+            if(element.parent().hasClass('input-group')){
+                error.insertBefore( element.parent() );
+            }else{
+                error.insertAfter( element );
+            }
+        },
+    });
+
+    $('#formSeller2Registrator').submit(function() { // fires on every keyup & blur
+        if ($('#formSeller2Registrator').valid()) {                   // checks form for validity
+            sessionStorage.removeItem('class');
+            // set btn submit to loading btn
+            $('#btn_register_s2').attr('disabled','disabled');
+            $('#btn_register_s2').html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>@lang("app.txt.loading")');
+        } else {
+            $('btn_register_s2').prop('disabled', false);   // enable button
+            $('#btn_register_s2').html('@lang("app.btn.register")');
+        }
+    });
+</script>
+<style>
+    .error {
+        color: #F00;
+        background-color: #FFF;
+    }
+</style>
+<!-- End Jquery Validate -->
 
 <!-- Include Bootstrap Datepicker -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
@@ -719,12 +1319,6 @@
         uiLibrary: 'bootstrap4'
     });
 </script>
-
-
-
-
-
-
 <script type="text/javascript">
     $(window).on('load',function(){
         $('#myModal').modal('show');
@@ -771,21 +1365,9 @@
         {
             $('#shop-notification-2').prop('checked',false);
             $('#mailAddress').attr('hidden','hidden');
-
-            // unset required input
-            $('#adrpost_postal_box').removeAttr('required');
-            $('#adrpost_area_level_2').removeAttr('required');
-            $('#adrpost_postalCode').removeAttr('required');
-            $('#adrpost_area_level_1').removeAttr('required');
         }else{
             $('#shop-notification-2').prop('checked',true);
             $('#mailAddress').removeAttr('hidden');
-            
-            // set required input
-            $('#adrpost_postal_box').attr('required','required');
-            $('#adrpost_area_level_2').attr('required','required');
-            $('#adrpost_postalCode').attr('required','required');
-            $('#adrpost_area_level_1').attr('required','required');
         }
     });
 
@@ -794,21 +1376,9 @@
         {
             $('#shop-notification-1').prop('checked',false);
             $('#mailAddress').removeAttr('hidden');
-            
-            // set required input
-            $('#adrpost_postal_box').attr('required','required');
-            $('#adrpost_area_level_2').attr('required','required');
-            $('#adrpost_postalCode').attr('required','required');
-            $('#adrpost_area_level_1').attr('required','required');
         }else{
             $('#shop-notification-1').prop('checked',true);
             $('#mailAddress').attr('hidden','hidden');
-
-            // unset required input
-            $('#adrpost_postal_box').removeAttr('required');
-            $('#adrpost_area_level_2').removeAttr('required');
-            $('#adrpost_postalCode').removeAttr('required');
-            $('#adrpost_area_level_1').removeAttr('required');
         }
     });
 </script>
@@ -960,21 +1530,5 @@ defer
     })
 </script>
 {{-- End google map autocomplete --}}
-
-<script>
-    $('#formSeller1Registrator').submit(function(){
-        sessionStorage.removeItem('class');
-        // set btn submit to loading btn
-        $('#btn_register').attr('disabled','disabled');
-        $('#btn_register').html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>@lang("app.txt.loading")');
-    });
-
-    $('#formSeller2Registrator').submit(function(){
-        sessionStorage.removeItem('class');
-        // set btn submit to loading btn
-        $('#btn_register_s2').attr('disabled','disabled');
-        $('#btn_register_s2').html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>@lang("app.txt.loading")');
-    })
-</script>
 
 @endpush

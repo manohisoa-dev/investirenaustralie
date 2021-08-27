@@ -417,7 +417,7 @@ class RegisterController extends Controller
                     
                     'contact_name'  => 'required|max:100',
                     'contact_email' => 'required|email|max:100',
-                    'contact_phone' => 'required|digits_between:8,8|numeric',
+                    'contact_phone' => 'required|digits_between:9,9|numeric',
                 ];
 
                 if($request->postal_address_below){
@@ -457,7 +457,7 @@ class RegisterController extends Controller
                     'country'      => 'required|max:100',
                     
                     'contact_name'  => 'required|max:100',
-                    'contact_phone' => 'required|max:100',
+                    'contact_phone' => 'required|digits_between:9,9|numeric',
                     'contact_email' => 'required|email|max:100',
 
                     'bank_name' => 'required|max:100',
@@ -519,7 +519,7 @@ class RegisterController extends Controller
 
                         'contact_name'  => 'required|max:100',
                         'contact_email' => 'required|email|max:100',
-                        'contact_phone' => 'required|max:100',
+                        'contact_phone' => 'required|digits_between:9,9|numeric',
     
                     ];
 
@@ -858,6 +858,35 @@ class RegisterController extends Controller
     }
 
     /*
+    * Check if user name is taken
+    *
+    */
+    public function ajaxCheckLogin(Request $request) {
+        $name = $request->name;
+        $name_exist = User::where('name', $name)->get();
+        if (count($name_exist) > 0) {
+            echo "false";
+        } else {
+            echo "true";
+        }
+    }
+
+    /*
+    * Check if user email is taken
+    *
+    */
+    public function ajaxCheckEmail(Request $request) {
+        $email = $request->email;
+        $email_exist = User::where('email', $email)->get();
+        if (count($email_exist) > 0) {
+            echo "false";
+        } else {
+            echo "true";
+        }
+    }
+
+
+    /*
     * Load tel code from csv file
     *
     */
@@ -877,4 +906,5 @@ class RegisterController extends Controller
         }
         return $listeContact;
     }
+
 }

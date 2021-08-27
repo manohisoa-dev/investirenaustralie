@@ -1451,4 +1451,7 @@ return
 	'txt.no_records_to_display' => 'Aucun dossier à afficher',
 	'txt.research_mandate' => 'Mandat de Recherche',
 	'txt.conjunction_agreement' => 'Accord de conjonction',
+	'txt.form.already_exist' => 'existe déjà',
+	'txt.value_already_used' => 'Valeur déjà utilisée',
+	'txt.invalid_value' => 'Valeur invalide',
 ];

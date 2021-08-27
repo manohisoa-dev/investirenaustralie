@@ -215,7 +215,7 @@ return
 	'btn.go_to_location' => 'I want to go there before ...',
 	'txt.go_to_location' => 'I want to go there before committing myself',
 	'btn.submit' => 'Submit',
-	'btn.abandonner' => 'To Abandon',
+	'btn.abandonner' => 'Abandon',
 	'btn.continuer' => 'Continue',
 	'btn.validerinscription' => 'Confirm my registration',
 	'btn.close' => 'Close',
@@ -1204,4 +1204,7 @@ return
 	'txt.no_records_to_display' => 'No records to display',
 	'txt.research_mandate' => 'Research Mandate',
 	'txt.conjunction_agreement' => 'Conjunction Agreement',
+	'txt.form.already_exist' => 'already exist',
+	'txt.value_already_used' => 'Value already used',
+	'txt.invalid_value' => 'Invalid value',
 ];
