@@ -1204,15 +1204,11 @@ return
 	'txt.no_records_to_display' => 'No records to display',
 	'txt.research_mandate' => 'Research Mandate',
 	'txt.conjunction_agreement' => 'Conjunction Agreement',
-<<<<<<< .mine
 	'txt.form.already_exist' => 'already exist',
 	'txt.value_already_used' => 'Value already used',
 	'txt.invalid_value' => 'Invalid value',
-
-=======
     'txt.avoir_bonus' => 'Bonus',
     'txt.valeur_bonus' => 'Bonus amount',
     'txt.property_details' => 'Property details',
     'txt.condition_vente_programme' => 'The Seller certifies under their sole responsibility that this property canbe sold to non-residentforeigners in accordance with Australian law and the rules applicable by the Foreign Investment Review Board (FIRB).',
->>>>>>> .theirs
 ];
