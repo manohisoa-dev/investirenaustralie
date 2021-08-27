@@ -1458,4 +1458,6 @@ return
     'txt.valeur_bonus' => 'Montant du bonus',
     'txt.property_details' => 'Détails de la propriété',
     'txt.condition_vente_programme' => 'Le Vendeur certifie sous sa seule responsabilité que ce bien peut être vendu à des étrangers non-résidents conformément à la loi australienne et aux règles applicables par le Foreign Investment Review Board (FIRB).',
+	'txt.real_estate_agency' =>'Agence Immobilière',
+	'txt.business_broker' =>'Agence d’affaires',
 ];

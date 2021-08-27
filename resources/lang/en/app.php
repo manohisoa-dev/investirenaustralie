@@ -1211,4 +1211,6 @@ return
     'txt.valeur_bonus' => 'Bonus amount',
     'txt.property_details' => 'Property details',
     'txt.condition_vente_programme' => 'The Seller certifies under their sole responsibility that this property canbe sold to non-residentforeigners in accordance with Australian law and the rules applicable by the Foreign Investment Review Board (FIRB).',
+	'txt.real_estate_agency' =>'Real Estate Agency',
+	'txt.business_broker' =>'Business Broker',
 ];

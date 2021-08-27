@@ -85,8 +85,8 @@
                                                 <div class="col-sm-12">
                                                     <select class="form-control" name="type" id="type" required>
                                                         <option value="" selected disabled>@lang('app.form.choix_txt')</option>
-                                                        <option value="Builder"> @lang('app.txt.builder')</option>
-                                                        <option value="Developer"> @lang('app.txt.developer')</option>
+                                                        <option value="Real Estate Agency"> @lang('app.txt.real_estate_agency')</option>
+                                                        <option value="Business Broker"> @lang('app.txt.business_broker')</option>
                                                     </select>
                                                 </div>
                                             </div>

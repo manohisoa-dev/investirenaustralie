@@ -810,7 +810,9 @@
     });
 
     $('#particulierForm').submit(function() { // fires on every keyup & blur
-        if ($('#particulierForm').valid()) {                   // checks form for validity
+        if ($('#particulierForm').valid()) {  // checks form for validity
+            sessionStorage.removeItem('member_type');
+
             // set btn submit to loading btn
             $('#btn_member_part_register').attr('disabled','disabled');
             $('#btn_member_part_register').html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>@lang("app.txt.loading")');
@@ -1086,7 +1088,8 @@
     });
 
     $('#organisationForm').submit(function() { // fires on every keyup & blur
-        if ($('#organisationForm').valid()) {                   // checks form for validity
+        if ($('#organisationForm').valid()) {                 // checks form for validity
+            sessionStorage.removeItem('member_type');
             // set btn submit to loading btn
             $('#btn_member_org_register').attr('disabled','disabled');
             $('#btn_member_org_register').html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>@lang("app.txt.loading")');
@@ -1132,16 +1135,35 @@
         });
     </script>
     <script>
+        // Show default form (particularForm or organizationForm)
+        $(function(){
+            showForm();
+        });
+
         $('#type').change(function(){
             var val = $(this).val();
             if(val!='person'){
+                sessionStorage.setItem('member_type','organization');
                 $('#organisationForm').removeAttr('hidden');
                 $('#particulierForm').attr('hidden','hidden');
             }else{
+                sessionStorage.setItem('member_type','person');
                 $('#organisationForm').attr('hidden','hidden');
                 $('#particulierForm').removeAttr('hidden');
             }            
         });
+
+        function showForm(){
+            if(sessionStorage.getItem('member_type')!=='person'){
+                $("#type option:eq(1)").prop('selected',true);
+                $('#organisationForm').removeAttr('hidden');
+                $('#particulierForm').attr('hidden','hidden');
+            }else{
+                $("#type option:eq(0)").prop('selected',true);
+                $('#organisationForm').attr('hidden','hidden');
+                $('#particulierForm').removeAttr('hidden');
+            }
+        }
     </script>
 
     {{-- Google map location --}}
