@@ -379,7 +379,7 @@ class ProductController extends Controller {
     }
 
     function save_location($country, $suburb, $postalCode, $locality, $route) {
-        $adresse = $route . ' ' . $suburb . ' ' . $locality . ' Australie';
+        $adresse = $route . ' ' . $suburb . ' ' . $locality;
         $coordonne_tab = set_coordooner($adresse);
         if ($coordonne_tab) {
             $latitude = $coordonne_tab['user_lat'];
@@ -679,11 +679,21 @@ class ProductController extends Controller {
 
     public function editProduit(Request $request, Product $product) {
         $localisation = Localisation::find($product->location_id);
+        $fonDossier = FondsDossier::where('products_fond_dossier.product_id', '=', $product->id)->join('images',
+            'products_fond_dossier.image_id', '=', 'images.id')->select('*',
+            'products_fond_dossier.id as prdFondId')->get();
+
         $eoiDossier = EoiDossier::where('product_eoi.product_id', '=', $product->id)->join('images',
             'product_eoi.image_id', '=', 'images.id')->select('*',
             'product_eoi.id as prdEoiId')->get();
+
+        $liaDossier = LiaDossier::where('product_lia.product_id', '=', $product->id)->join('images',
+            'product_lia.image_id', '=', 'images.id')->select('*',
+            'product_lia.id as prdLiaId')->get();
+
         return view('backend.product.edit_produit', ['product' => $product,
-            'localisation' => $localisation, 'eoidossier' => $eoiDossier, 'title' => __('afa.programme.title')]);
+            'localisation' => $localisation, 'eoidossier' => $eoiDossier, 'dossier' => $fonDossier,
+            'liadossier' => $liaDossier, 'title' => __('afa.programme.title')]);
     }
 
     public function updateProgramme(Request $request) {
@@ -738,13 +748,27 @@ class ProductController extends Controller {
     }
 
     public function updateProduit(Request $request) {
+        dd($request->type_cutomer_parking);
         $product = Product::find($request->id);
-        if ($request->location_Id != 0) {
-            Localisation::where('id', $request->location_Id)->update(['area_level_1' => $request->suburb_product,
-                'country' => $request->countryId_product, 'postalCode' => $request->postalCode_product,
-                'locality' => $request->ville_product, 'route' => $request->display_address,
-                'longitude' => $longitude, 'latitude' => $latitude]);
-            $id_location = $request->location_Id;
+        if ($request->location_id != 0) {
+            $localisation = Localisation::find($product->location_id);
+            if ($localisation->route != $request->display_address || $localisation->locality !=
+                $request->ville_product) {
+                $adresse = $request->display_address . ' ' . $request->suburb_product . ' ' . $request->ville_product;
+                $coordonne_tab = set_coordooner($adresse);
+                if ($coordonne_tab) {
+                    $latitude = $coordonne_tab['user_lat'];
+                    $longitude = $coordonne_tab['user_long'];
+                } else {
+                    $latitude = '';
+                    $longitude = '';
+                }
+                Localisation::where('id', $request->location_Id)->update(['area_level_1' => $request->suburb_product,
+                    'country' => $request->countryId_product, 'postalCode' => $request->postalCode_product,
+                    'locality' => $request->ville_product, 'route' => $request->display_address,
+                    'longitude' => $longitude, 'latitude' => $latitude]);
+                $id_location = $product->location_id;
+            }
         } else {
             $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
                 $request->postalCode_product, $request->ville_product, $request->display_address);
@@ -767,37 +791,59 @@ class ProductController extends Controller {
         $product->content = $request->desc_product;
         $product->type_id = $request->type_id;
         $product->display_address = $request->display_address;
+        $product->postalCode = $request->postalCode_product;
         $product->state_id = $request->state_id;
-        if ($product->natureBien == 'Produit isolé') {
-            $product->price = $request->simple_price;
-        } else {
-            $product->min_price = $request->min_price;
-            $product->max_price = $request->max_price;
-        }
 
-        $product->status = $request->status;
-        $product->quantity = $request->quantity;
-        $product->bedrooms = $request->bedrooms;
-        $product->ensuite = $request->ensuite;
-        $product->bathrooms = $request->bathrooms;
-        $product->interior_area = $request->interior_area;
-        $product->exterior_area = $request->exterior_area;
-        $product->location_id = $id_location;
         $product->commission_type = $request->commision_product;
         $product->commision = $taux_commision;
-        if ($product->ancienneteBien == 'Ancien') {
-            $product->year_built = $request->year_built;
-        }
-        if ($product->ancienneteBien == 'Neuf' && $product->natureBien ==
-            'Produit isolé') {
-            $product->superficie_jardin = $request->superficie_jardin;
-            $product->dt_db_travaux = $request->dt_db_travaux;
-            $product->dt_prevu_livraison = $request->dt_prevu_livraison;
-        }
-        $product->total_area = $request->total_area;
+        $product->avoir_bonus = $request->bonus_vente;
+        $product->amount_bonus = $request->bonus_amount;
 
-        $product->garage_spaces = $request->garage_spaces;
-        $product->carport_spaces = $request->carport_spaces;
+        if ($product->category_id == 1) {
+            $product->bedrooms = $request->bedrooms;
+            $product->ensuite = $request->ensuite;
+            $product->bathrooms = $request->bathrooms;
+            $product->interior_area = $request->interior_area;
+            $product->exterior_area = $request->exterior_area;
+            $product->location_id = $id_location;
+            $product->total_area = $request->total_area;
+            $product->garage_spaces = $request->garage_spaces;
+            $product->carport_spaces = $request->carport_spaces;
+            
+            if ($product->ancienneteBien == 'Neuf' && $product->natureBien ==
+                'Programme immobilier') {
+
+                $product->min_price = $request->min_price;
+                $product->max_price = $request->max_price;
+
+            } elseif ($product->ancienneteBien == 'Neuf' && $product->natureBien ==
+            'Produit isolé') {
+
+                $product->price = $request->simple_price;
+                $product->superficie_jardin = $request->superficie_jardin;
+                $product->dt_db_travaux = $request->dt_db_travaux;
+                $product->dt_prevu_livraison = $request->dt_prevu_livraison;
+
+            } elseif ($product->ancienneteBien == 'Ancien') {
+
+                $product->price = $request->simple_price;
+                $product->year_built = $request->year_built;
+                $product->superficie_jardin = $request->superficie_jardin;
+            }
+        } elseif ($product->category_id == 2) {
+            $product->price = $request->simple_price;
+            $product->area = $request->surface_foncier;
+            $product->unite_area = $request->unite_surface;
+        } elseif ($product->category_id == 3) {
+            $product->price = $request->simple_price;
+            $product->display_address = $request->property_detail;
+        } elseif ($product->category_id == 4) {
+            $product->price = $request->simple_price;
+            $product->area = $request->surface_commercial;
+            $product->avoir_parking_voie_public = $request->type_cutomer_parking;
+            $product->nb_parking_spots = $request->nombre_cutomer_parking;
+        }
+
 
         $product->save();
         return redirect()->route('mes-produits')->with('success',
@@ -1148,7 +1194,7 @@ class ProductController extends Controller {
                 }
 
                 $id_produit = $this->save_new_produit($anciennete, '', $request->title_product,
-                    $request->file('image'), $request->desc_product, $request->quantity, 0, 'm2', $request->interior_area,
+                    $request->file('image'), $request->desc_product, 1, 0, 'm2', $request->interior_area,
                     $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
                     $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
                     $request->simple_price, 0, 0, 'AUD', $request->status, $request->product_type_id,
@@ -1187,13 +1233,13 @@ class ProductController extends Controller {
             }
 
             $id_produit = $this->save_new_produit('', 'Produit isolé', $request->title_product,
-                $request->file('image'), $request->desc_product, $request->quantity, $request->surface_foncier,
-                $request->unite_surface, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, date('Y'), $request->display_address_product,
-                $request->simple_price, 0, 0, 'AUD', $request->status, $request->product_type_id,
-                $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
-                -1, $id_location, $request->superficie_jardin, 0, 0, $request->commision_product,
-                $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison, $request->bonus_vente,
-                $request->bonus_amount, '', 0);
+                $request->file('image'), $request->desc_product, 1, $request->surface_foncier, $request->unite_surface,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, date('Y'), $request->display_address_product, $request->simple_price,
+                0, 0, 'AUD', $request->status, $request->product_type_id, $request->cat_programmme_id,
+                $request->postalCode_product, $request->state_id_product, -1, $id_location, $request->superficie_jardin,
+                0, 0, $request->commision_product, $taux_commision_prd, $request->dt_db_travaux,
+                $request->dt_prevu_livraison, $request->bonus_vente, $request->bonus_amount, '',
+                0);
 
             //save fond dossier programme
             if ($request->p_fondDossier) {
@@ -1224,9 +1270,9 @@ class ProductController extends Controller {
             }
 
             $id_produit = $this->save_new_produit('', 'Produit isolé', $request->title_product,
-                $request->file('image'), $request->desc_product, $request->quantity, 0, '', 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, date('Y'), $request->display_address_product, $request->simple_price,
-                0, 0, 'AUD', $request->status, $request->product_type_id, $request->cat_programmme_id,
+                $request->file('image'), $request->desc_product, 1, 0, '', 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, date('Y'), $request->display_address_product, $request->simple_price, 0,
+                0, 'AUD', $request->status, $request->product_type_id, $request->cat_programmme_id,
                 $request->postalCode_product, $request->state_id_product, -1, $id_location, $request->superficie_jardin,
                 0, 0, $request->commision_product, $taux_commision_prd, $request->dt_db_travaux,
                 $request->dt_prevu_livraison, $request->bonus_vente, $request->bonus_amount, $request->property_detail,
@@ -1258,9 +1304,9 @@ class ProductController extends Controller {
             } else {
                 $taux_commision_prd = $request->rate_commission_product;
             }
-            
+
             $id_produit = $this->save_new_produit('', 'Produit isolé', $request->title_product,
-                $request->file('image'), $request->desc_product, $request->quantity, $request->surface_commercial,
+                $request->file('image'), $request->desc_product, 1, $request->surface_commercial,
                 'm2', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, date('Y'), $request->display_address_product,
                 $request->simple_price, 0, 0, 'AUD', $request->status, $request->product_type_id,
                 $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
