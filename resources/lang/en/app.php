@@ -69,7 +69,7 @@ return
 	'products' => 'Products',
 	'product' => 'Product',
 	'admin.products' => 'Products',
-	'admin.product.list' => 'List of Products',
+	'admin.product.list' => 'Standalone product list',
 	'admin.product.add' => 'Add a stand-alone product',
 	'admin.product.update' => 'Update a product',
 	'admin.program.list' => 'List of programs',

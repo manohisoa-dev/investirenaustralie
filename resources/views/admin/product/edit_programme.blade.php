@@ -1683,7 +1683,7 @@
 										<div class="input-group m-b">
 											<input type="number" class="form-control" name="bonus_amount" id="bonus_amount">
 											<div class="input-group-append">
-												<span class="input-group-text">AUD</span>
+												<span class="input-group-addon">AUD</span>
 											</div>
 										</div>
 									</div>

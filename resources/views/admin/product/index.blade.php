@@ -1,7 +1,7 @@
 @extends('admin.layouts.app') @section('title', 'Products - Listes ') @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-        <h2>@lang('app.txt.products')</h2>
+        <h2>@lang('app.admin.product.list')</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index') }}">@lang('app.txt.products')</a>
@@ -23,10 +23,6 @@
 <div class="row">
 	<div class="col-lg-12">
         <div class="tabs-container">
-			<ul class="nav nav-tabs" role="tablist">
-				<li><a class="nav-link {{$nature == 'Programme immobilier' ? 'active' : ''}}" href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}?nature=Programme immobilier"> Programme immobilier</a></li>
-				<li><a class="nav-link {{$nature == 'Produit isolé' ? 'active' : ''}}" href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}?nature=Produit isolé">Produit isolé</a></li>
-			</ul>
 			<div class="tab-content">
 				<div class="ibox-content">
 					<div class="table-responsive">
@@ -41,7 +37,7 @@
 								{!!\Nvd\Crud\Html::sortableTh('status','admin.product.index','Statut')!!}
 								{!!\Nvd\Crud\Html::sortableTh('seller_id','admin.product.index','Vendeur')!!}
 								{!!\Nvd\Crud\Html::sortableTh('author_id','admin.product.index','Auteur')!!}
-								<th>Programme</th>
+								{!!\Nvd\Crud\Html::sortableTh('category_id','admin.product.programme','Categorie')!!}
 								<th><a href="javascript:void(0)">@lang('app.table.actions')</a></th>
 								
 							</tr>
@@ -62,7 +58,7 @@
 									</td>
 									<td><input type="text" class="form-control" name="seller_id" value="{{Request::input("seller_id")}}"></td>
 									<td><input type="text" class="form-control" name="author_id" value="{{Request::input("author_id")}}"></td>
-									<td></td>
+									<td><input type="text" class="form-control" name="category_id" value="{{Request::input("category_id")}}"></td> 
 									<td style="min-width: 6em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>
 								</form>
 							</tr>
@@ -163,9 +159,18 @@
 									</span>
 								</td>
 								<td>
-									@if($record->parent_id != 0)
-										{{\App\Models\Product::where('id',$record->parent_id)->value('title') }}
-									@endif								
+									<span
+										class="editable"
+										data-type="text"
+										data-name="title"
+										data-value="{{ $record->category_id }}"
+										data-pk="{{ $record->{$record->getKeyName()} }}"
+										data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme')}}/{{ $record->{$record->getKeyName()} }}"
+									>
+										@if ($record->category) 
+										{{ $record->category->title }}
+										@endif
+									</span>                          
 								</td>
 								<td class="actions-cell text-center" width="12%">
 									<form class="form-inline" action="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{$record->id}}" method="POST">

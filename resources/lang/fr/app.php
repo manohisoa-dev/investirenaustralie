@@ -315,7 +315,7 @@ return
 	'products' => 'Produits',
 	'product' => 'Produit',
 	'admin.products' => 'Produits',
-	'admin.product.list' => 'Liste des produits',
+	'admin.product.list' => 'Liste des produits autonomes',
 	'admin.product.update' => 'Modifier un produit',
 	'admin.product.add' => 'Ajouter un produit Autonome',
 	'admin.program.list' => 'Liste des programmes',

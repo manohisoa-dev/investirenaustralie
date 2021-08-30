@@ -748,7 +748,6 @@ class ProductController extends Controller {
     }
 
     public function updateProduit(Request $request) {
-        dd($request->type_cutomer_parking);
         $product = Product::find($request->id);
         if ($request->location_id != 0) {
             $localisation = Localisation::find($product->location_id);
@@ -763,7 +762,7 @@ class ProductController extends Controller {
                     $latitude = '';
                     $longitude = '';
                 }
-                Localisation::where('id', $request->location_Id)->update(['area_level_1' => $request->suburb_product,
+                Localisation::where('id', $product->location_id)->update(['area_level_1' => $request->suburb_product,
                     'country' => $request->countryId_product, 'postalCode' => $request->postalCode_product,
                     'locality' => $request->ville_product, 'route' => $request->display_address,
                     'longitude' => $longitude, 'latitude' => $latitude]);

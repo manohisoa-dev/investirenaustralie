@@ -28,7 +28,6 @@
 							<th>@lang('app.form.programme_price_min')</th>
 							<th>@lang('app.form.programme_price_max')</th>
 							<th>@lang('app.form.product_status')</th>
-							<th>Catégorie</th>
 							<th>@lang('app.table.action')</th>
 						</tr>
 					</thead>
@@ -65,7 +64,6 @@
 								@lang('app.'.$record->status)
 							@endif
 							</td>
-							<td>{{ $record->category_id}} - {{$record->ancienneteBien}} - {{$record->natureBien}}</td>
 							<td align="center">
 							@if($record->status=='waiting')
 								<a href="{{route('edit.produit', $record->id)}}" class="" title="@lang('app.table.btn_title_modification')">
