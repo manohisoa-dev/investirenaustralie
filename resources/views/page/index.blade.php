@@ -150,8 +150,8 @@
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="p-70px-l lg-p-0px-l lg-m-30px-t">
-                                                        <h2 class="h1 m-25px-b" style="overflow-wrap: break-word;">{{ array_key_exists($i, $getTitle) ? $getTitle[$i]  : ''}}</h2>
-                                                        <p class="m-5px-b text-justify" style="overflow-wrap: break-word;">{{ $getContent[$i] }}</p>
+                                                        <h2 class="h1 m-25px-b" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getTitle)?$getTitle[$i]:'' !!}</h2>
+                                                        <p class="m-5px-b text-justify" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getContent)?$getContent[$i]:trans('app.txt.noinfo') !!}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -161,8 +161,8 @@
                                             <div class="row align-items-center p-25px-t lg-p-15px-t">
                                                 <div class="col-lg-6">
                                                     <div class="p-70px-r lg-p-0px-r lg-m-30px-t">
-                                                        <h2 class="h1 m-25px-b" style="overflow-wrap: break-word;">{{ $getTitle[$i] }}</u></h2>
-                                                        <p class="m-5px-b text-justify" style="overflow-wrap: break-word;">{{ $getContent[$i] }}</p>
+                                                        <h2 class="h1 m-25px-b" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getTitle)?$getTitle[$i]:'' !!}</u></h2>
+                                                        <p class="m-5px-b text-justify" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getContent)?$getContent[$i]:trans('app.txt.noinfo') !!}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6 order-lg-2 order-first text-center">
@@ -178,8 +178,8 @@
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="p-70px-l lg-p-0px-l lg-m-30px-t">
-                                                        <h2 class="h1 m-25px-b" style="overflow-wrap: break-word;">{{ $getTitle[$i] }}</h2>
-                                                        <p class="m-5px-b text-justify" style="overflow-wrap: break-word;">{{ $getContent[$i] }}</p>
+                                                        <h2 class="h1 m-25px-b" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getTitle)?$getTitle[$i]:'' !!}</h2>
+                                                        <p class="m-5px-b text-justify" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getContent)?$getContent[$i]:trans('app.txt.noinfo') !!}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -189,8 +189,8 @@
                                             <div class="row align-items-center p-25px-t lg-p-15px-t">
                                                 <div class="col-lg-6">
                                                     <div class="p-70px-r lg-p-0px-r lg-m-30px-t">
-                                                        <h2 class="h1 m-25px-b" style="overflow-wrap: break-word;">{{ $getTitle[$i] }}</h2>
-                                                        <p class="m-5px-b text-jusfify" style="overflow-wrap: break-word;">{{ $getContent[$i] }}</p>
+                                                        <h2 class="h1 m-25px-b" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getTitle)?$getTitle[$i]:'' !!}</h2>
+                                                        <p class="m-5px-b text-jusfify" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getContent)?$getContent[$i]:trans('app.txt.noinfo') !!}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6 order-lg-2 order-first text-center">

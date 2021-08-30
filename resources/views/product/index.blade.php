@@ -144,7 +144,7 @@
                     <div class="row m-15px-t">
                         <div class="col-sm-6">
                           {{-- @if(Auth::check() && Auth::user()->hasRole(5)) --}}
-                            <button type="button" id="btn_buy" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12"><i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')</button>
+                            <a href="{{route('member.buy.product', $item )}}" type="button" id="btn_buy" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12"><i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')</a>
                           {{-- @else
                             <button type="button" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12" disabled title="@lang('app.txt.logintocontinue')"><i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')</button>
                           @endif --}}
@@ -363,22 +363,33 @@
   </div>
 </div>
 
-<!-- Modal for particular member registration -->
-@if (Auth::check() && Auth::user()->hasRole(5))
-  <div id="registratorMemberFormModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="registratorMemberFormLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
-            <h4 class="modal-title white-color">@lang('app.txt.complete_registration')</h4>
-        </div>
-        <div class="modal-body">
-            @include('login.memberpart',['user'=>Auth::user()])
-        </div>
-        {{-- <div class="modal-footer"></div> --}}
+<!-- Modal for message to registration member -->
+<div id="registrationMemberMessageModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content white-bg">
+          <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
+              <h4 class="modal-title white-color">@lang('app.message')</h4>
+          </div>
+          <div class="modal-body">
+              {!! Session()->get('complete_registration_content') !!}
+              <div class="m-25px-b">
+                <a type="button" id="btnSelectAfa" class="m-btn m-btn-theme2nd col-md-12" href="{{ route("member.complete_registration", $item) }}" >{{ (trans('app.txt.complete_my_registration_form')) }}</a>
+              </div>
+              <div>
+                @lang('member.tobuy.complete_registration.footer', ['link'=>route('confidentialities')])
+              </div>
+              <div>
+                  <p>@lang('app.txt.with_our_most_cordial_greetings')</p>
+                  <p>@lang('app.app_name')</p>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <a type="button" class="pull-left m-btn m-btn-theme" id="btn_cancel" href="javascript:void(0)" data-dismiss="modal">@lang('app.btn.abandonner')</a>
+          </div>
       </div>
-    </div>
   </div>
-@endif
+</div>
+
 @endsection
     
 @push('script')
@@ -415,6 +426,11 @@
       // show has afa modal
       if(hasAfa !== '0'){
         $('#memberHasAfaModal').modal('show');
+      }
+
+      // show to complete registration message
+      if('{{ Session()->get("complete_registration_message") }}' == 1){
+        $('#registrationMemberMessageModal').modal('show');
       }
 
     });
@@ -521,23 +537,7 @@
   </script>
   <script>
     $('#btn_buy').click(function(){
-      if('{{ Auth::check() }}'){
-        var usrIsCplt = '{{  Auth::check()?Auth::user()->isComplete():''  }}';
-
-        if(usrIsCplt === ''){
-          // Show particular member registration Modal
-          $('#registratorMemberFormModal').modal('show');
-        }else{
-          if('{{ Auth::check() && Auth::user()->hasAfa() }}'){
-            alert('continue procecus');
-          }else{
-            location.href="{{ route('member.select.afa', $item->slug) }}";
-          }
-        }
-      }else{
-        location.href="{{route('member.buy.product', $item)}}";
-      }
-       
+      loadingPage();   
     });
   </script>
   <script>
