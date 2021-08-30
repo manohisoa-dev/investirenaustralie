@@ -768,7 +768,7 @@
 			labels: {
 				current: "current step:",
 				pagination: "Pagination",
-				finish: "@lang('app.form.steps_btn_finish')",
+				finish: "@lang('app.btn.submit')",
 				next: "@lang('app.form.steps_btn_saisir_product')",
 				previous: "@lang('app.form.steps_btn_precedent')",
 				loading: "@lang('app.form.steps_load')"

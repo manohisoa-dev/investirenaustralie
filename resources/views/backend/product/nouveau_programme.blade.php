@@ -235,7 +235,7 @@
 						</div>
 					</div>
 					<button type="submit" id="savePro" class="btn btn-primary btn-lg pull-right">
-						<i class="fa fa-save"></i> @lang('app.form.programme_btn_create')
+						<i class="fa fa-save"></i> @lang('app.form.steps_btn_finish')
 					</button>			
 				</form>
 			</div>

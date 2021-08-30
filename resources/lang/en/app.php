@@ -1215,5 +1215,4 @@ return
 	'txt.business_broker' =>'Business Broker',
 	'txt.with_our_most_cordial_greetings' =>'With our most cordial greetings',
 	'txt.complete_my_registration_form' =>'Complete my registration form',
-	
 ];
