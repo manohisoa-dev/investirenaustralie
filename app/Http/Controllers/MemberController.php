@@ -509,7 +509,7 @@ class MemberController extends Controller {
             $this->distances)->with('selected', json_encode($selected))->with('data',
             json_encode($data));
     }
-
+    
     /**
      * Update AFA
      *
@@ -707,6 +707,7 @@ class MemberController extends Controller {
         $this->middleware('auth');
         $this->middleware('role:5');
 
+        // abort(404);
         if($product){
             $prod_id = $product->id;
             $prodUrl = url('product/'.$product->slug);
@@ -714,15 +715,55 @@ class MemberController extends Controller {
             $dtDate = $dt->format('m-d-Y');
             $dtTime = $dt->format('H:i:m');
             $user= Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name;
-            
-            if (Auth::user()->hasAfa()) {
-                return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa.waiting_message', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'afa' => Auth::user()->afa->name]))->with('waiting',1);
-            } 
-                
-            return redirect()->route('member.select.afa', $product)->with('error', trans('app.txt.choose_an_afa'));
+
+            if(!Auth::user()->isComplete()){
+                if(!Auth::user()->isCheckedDossierTransaction($prod_id)){
+                    $this->creationDossierTransaction($product);
+                }
+
+                if (Auth::user()->hasAfa()) {
+                    if(Auth::user()->afaHasSendCa(Auth::user()->id,Auth::user()->afa->id)){
+                        Session::put('id_product',$prod_id);
+                        return redirect($prodUrl)->with('engagement', trans('member.gothere.notification.after_afa_send_finalized_ca'))->with('waiting',0);
+                    }else{
+                        return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa.waiting_message', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'afa' => Auth::user()->afa->name]))->with('waiting',1);
+                    }
+                } else {
+                    return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa', ['date'=>$dtDate, 'hour'=>$dtTime, 'name'=>$user]))->with('hasAfa',0);
+                }
+            }else{
+                return redirect($prodUrl)->with('complete_registration_content', trans('member.tobuy.complete_registration.header', ['date'=>$dtDate, 'hour'=>$dtTime, 'name'=>$user]))->with('complete_registration_message',1);
+            }
         }
 
+        
         abort(404);
+    }
+
+    /**
+     * Show complete registration form
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\User
+     * @param  \App\Models\Localisation
+     * @return \Illuminate\Http\Response
+     */
+    public function completeRegistration(Request $request,Product $product) {
+        $this->middleware('auth');
+        $this->middleware('role:5');
+
+        if($product){
+            $prodUrl = url('product/'.$product->slug);
+            session()->put('id_product',$product->id);
+            session()->put('link_product',$prodUrl);
+            $prod_id = $product->id;
+
+            if(!Auth::user()->isCheckedDossierTransaction($prod_id)){
+                $this->creationDossierTransaction($product);
+            }
+        }
+
+        return view('login.memberpart')->with('user', Auth::user());
     }
 
     /**
@@ -809,7 +850,7 @@ class MemberController extends Controller {
         $dossierMax = DossierTransaction::where('numero', 'like', '%'.$dossierPrefix.'%')->orderBy('numero','DESC')->first();
 
         if($dossierMax !== null){
-            $num = $dossierMax->immat;
+            $num = $dossierMax->numero;
             $explodeNum = explode('-',$num);
             $dossierNum = $explodeNum[1];
         }

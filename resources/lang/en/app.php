@@ -1213,4 +1213,7 @@ return
     'txt.condition_vente_programme' => 'The Seller certifies under their sole responsibility that this property canbe sold to non-residentforeigners in accordance with Australian law and the rules applicable by the Foreign Investment Review Board (FIRB).',
 	'txt.real_estate_agency' =>'Real Estate Agency',
 	'txt.business_broker' =>'Business Broker',
+	'txt.with_our_most_cordial_greetings' =>'With our most cordial greetings',
+	'txt.complete_my_registration_form' =>'Complete my registration form',
+	
 ];

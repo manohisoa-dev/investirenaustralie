@@ -1,3 +1,14 @@
+@extends('layouts.app')
+
+
+@section('content')
+
+<!-- Page Title -->
+@component('includes.breadcrumb')
+    @lang('inscriptionmembre')
+@endcomponent
+<!-- Section -->
+
 <style>
     #map{
         height: 25rem;
@@ -321,7 +332,7 @@
                                                     <span class="input-group-text form-control">(+61)</span>
                                                 </div>
                                                 <div class="custom-file">
-                                                    <input type="text" pattern="[0-9]{1}[0-9]{7}" minlength="8" maxlength="8" placeholder="XXXXXXXX" class="form-control m-15px-t" id="orga_phone" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):'' }}">
+                                                    <input type="text" pattern="[0-9]{1}[0-9]{8}" minlength="8" maxlength="9" placeholder="XXXXXXXX" class="form-control m-15px-t" id="orga_phone" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):'' }}">
                                                 </div>
                                             </div>
                                             <span class="text-danger m-5px-l">{{ $errors->first('orga_phone') }}</span>
@@ -333,7 +344,7 @@
                                                     <span class="input-group-text form-control">(+61)</span>
                                                 </div>
                                                 <div class="custom-file">
-                                                    <input type="text" pattern="[0-9]{1}[0-9]{7}" minlength="8" maxlength="8" placeholder="XXXXXXXX" class="form-control m-15px-t" id="orga_mobile_phone" name="orga_mobile_phone" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):'' }}">
+                                                    <input type="text" pattern="[0-9]{1}[0-9]{8}" minlength="9" maxlength="9" placeholder="XXXXXXXX" class="form-control m-15px-t" id="orga_mobile_phone" name="orga_mobile_phone" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):'' }}">
                                                 </div>
                                             </div>
                                             <span class="text-danger m-5px-l">{{ $errors->first('orga_mobile_phone') }}</span>
@@ -355,7 +366,7 @@
                                         <div class="form-group">
                                             <label for="orga_fb" class="col-sm-12 control-label">@lang('app.txt.fb_page')</label>
                                             <div class="col-sm-12">
-                                                <input type="text" class="form-control" id="orga_fb" name="orga_fb" placeholder="www.facebook.com/page" value="{{ old('orga_website')?old('"orga_website'):'' }}">
+                                                <input type="text" class="form-control" id="orga_fb" name="orga_fb" placeholder="https://www.facebook.com/iea" value="{{ old('orga_website')?old('"orga_website'):'' }}">
                                                 <span class="text-danger">{{ $errors->first('orga_fb') }}</span>
                                             </div>
                                         </div>
@@ -466,22 +477,78 @@
 				},
 
                 postalCode: {
-					required: true
+					required: true,
+                    number:true
 				},
 
                 adrphy_country: {
 					required: true
 				},
 
+                adrpost_postal_box: {
+                    required: {
+                        depends: function(element) {
+                            if($("#mailAddress").is(":visible")){
+                                return true;	
+                            }
+                        }
+                    }
+                },
+
+                adrpost_area_level_2: {
+                    required: {
+                        depends: function(element) {
+                            if($("#mailAddress").is(":visible")){
+                                return true;	
+                            }
+                        }
+                    }
+                },
+
+                adrpost_postalCode: {
+                    number:true,
+                    required: {
+                        depends: function(element) {
+                            if($("#mailAddress").is(":visible")){
+                                return true;	
+                            }
+                        }
+                    }
+                },
+
+                adrpost_country: {
+                    required: {
+                        depends: function(element) {
+                            if($("#mailAddress").is(":visible")){
+                                return true;	
+                            }
+                        }
+                    }
+                },
+
+                orga_phone: {
+                    minlength:8,
+                    maxlength:9,
+                    number:true,
+				},
+
                 orga_mobile_phone: {
-					required: true
+					required: true,
+                    minlength:9,
+                    maxlength:9,
+                    number:true,
 				},
 
                 orga_email: {
-					required: true
+					required: true,
+                    email:true
+				},
+                
+                orga_fb: {
+                    url:true
 				},
             };
-        var msg = {
+            var msg = {
 				name: {
 					required: "@lang('app.txt.champobligatoire')"
 				},
@@ -535,6 +602,22 @@
 					required: "@lang('app.txt.champobligatoire')"
 				},
 
+                adrpost_postal_box: {
+                    required: "@lang('app.txt.champobligatoire')"
+                },
+
+                adrpost_area_level_2: {
+                    required: "@lang('app.txt.champobligatoire')"
+                },
+                
+                adrpost_postalCode: {
+                    required: "@lang('app.txt.champobligatoire')"
+                },
+
+                adrpost_country: {
+                    required: "@lang('app.txt.champobligatoire')"
+                },
+
                 orga_mobile_phone: {
 					required: "@lang('app.txt.champobligatoire')"
 				},
@@ -566,7 +649,8 @@
                 condition: {
 					required: "@lang('app.txt.accept_condition')"
 				},
-			};        
+
+			};       
 
         $('#partForm').validate({
 			ignore: [],
@@ -580,6 +664,17 @@
 				}
 			},
 		});
+
+        $('#partForm').submit(function() { // fires on every keyup & blur
+            if ($('#partForm').valid()) {                   // checks form for validity
+                // set btn submit to loading btn
+                $('#btn_save').attr('disabled','disabled');
+                $('#btn_save').html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>@lang("app.txt.loading")');
+            } else {
+                $('btn_save').prop('disabled', false);   // enable button
+                $('#btn_save').html('@lang("app.btn.register")');
+            }
+        });
     </script>
     <style>
         .error {
@@ -594,21 +689,9 @@
             {
                 $('#shop-notification-2').prop('checked',false);
                 $('#mailAddress').attr('hidden','hidden');
-
-                // unset required input
-                $('#adrpost_postal_box').removeAttr('required');
-                $('#adrpost_area_level_2').removeAttr('required');
-                $('#adrpost_postal_code').removeAttr('required');
-                $('#adrpost_country').removeAttr('required');
             }else{
                 $('#shop-notification-2').prop('checked',true);
                 $('#mailAddress').removeAttr('hidden');
-                
-                // set required input
-                $('#adrpost_postal_box').attr('required','required');
-                $('#adrpost_area_level_2').attr('required','required');
-                $('#adrpost_postal_code').attr('required','required');
-                $('#adrpost_country').attr('required','required');
             }
         });
 
@@ -617,21 +700,9 @@
             {
                 $('#shop-notification-1').prop('checked',false);
                 $('#mailAddress').removeAttr('hidden');
-                
-                // set required input
-                $('#adrpost_postal_box').attr('required','required');
-                $('#adrpost_area_level_2').attr('required','required');
-                $('#adrpost_postal_code').attr('required','required');
-                $('#adrpost_country').attr('required','required');
             }else{
                 $('#shop-notification-1').prop('checked',true);
                 $('#mailAddress').attr('hidden','hidden');
-
-                // unset required input
-                $('#adrpost_postal_box').removeAttr('required');
-                $('#adrpost_area_level_2').removeAttr('required');
-                $('#adrpost_postal_code').removeAttr('required');
-                $('#adrpost_country').removeAttr('required');
             }
         });
 
@@ -646,3 +717,5 @@
     </script>
     
 @endpush
+
+@endsection

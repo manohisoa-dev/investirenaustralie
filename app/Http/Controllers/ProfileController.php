@@ -128,8 +128,8 @@ class ProfileController extends Controller
                         'area_level_2' => 'required|max:100',
                         'postalCode'   => 'required|integer',
                         'adrphy_country'      => 'required',
-                        'orga_phone'        => 'nullable|digits_between:8,8|numeric',
-                        'orga_mobile_phone'        => 'required|digits_between:8,8|numeric',
+                        'orga_phone'        => 'nullable|digits_between:8,9|numeric',
+                        'orga_mobile_phone'        => 'required|digits_between:9,9|numeric',
                         'orga_email'        => 'required|email|max:100',
                         'orga_fb'        => 'nullable|url',
                         'politic'    => 'required',
@@ -202,9 +202,6 @@ class ProfileController extends Controller
                     'contact_name'  => 'required|max:100',
                     'contact_email' => 'required|max:100',
                     'contact_phone' => 'required|max:100',
-
-//                    'crm_name'   => 'required|max:100',
-//                    'crm_email'  => 'required|max:100',
 
                 ];
                 break;
