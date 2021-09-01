@@ -656,7 +656,7 @@ return
     'table.btn_title_modification' => 'Edit',
     'table.btn_title_delete' => 'Deletion',
     'txt.new_programme' => 'New program',
-    'form.programme_choix_categorie' => 'What category does the property you want to seize belong to ?',
+    'form.programme_choix_categorie' => 'What category does the program you want to register belong to ?',
     'form.programme_choix_anciennete' => 'Age of the property',
     'form.programme_choix_nature' => 'Nature of Registration',
     'form.programme_title' => 'Program Name/Title',
@@ -1215,4 +1215,6 @@ return
 	'txt.business_broker' =>'Business Broker',
 	'txt.with_our_most_cordial_greetings' =>'With our most cordial greetings',
 	'txt.complete_my_registration_form' =>'Complete my registration form',
+    'table.produit_min_area' => 'Minimum area',
+    'table.produit_max_area' => 'Maximum area',
 ];

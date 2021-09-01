@@ -40,7 +40,7 @@
 									</select>
 								</div>
 							</div>
-							<div class="col-lg-7">
+							<div class="col-lg-12">
 								<div id="Age_of_Property" style="display:none">
 									<div class="form-group">
 										<label for="title">@lang('app.form.programme_choix_anciennete') *</label>
@@ -48,16 +48,6 @@
 											<option value="">@lang('app.form.choix_txt')</option>
 											<option value="Neuf">@lang('app.txt.new')</option>
 											<option value="Ancien">@lang('app.txt.old')</option>
-										</select>
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-5">
-								<div id="nature_enregistrement" style="display:none">
-									<div class="form-group">
-										<label for="title">@lang('app.form.programme_choix_nature') *</label>
-										<select class="form-control" name="natureBien" id="natureBien">
-											
 										</select>
 									</div>
 								</div>
@@ -180,7 +170,7 @@
 										<label for="title">@lang('app.form.programme_pays')</label>
 										<select class="form-control" name="countryId" id="countryId" style="width:100%">
 											@foreach(\App\Models\Country::whereIn('id',[12,152])->get() as $country)
-												<option value="{{$country->id}}">{{$country->content}}</option>
+												<option value="{{$country->code}}">{{$country->content}}</option>
 											@endforeach
 										</select>
 									</div>
@@ -264,11 +254,8 @@
 						<h2>@lang('app.txt.info_produit')</h2>
 						<div class="row">
 							<div class="col-lg-12">
-								<label for="title">@lang('app.form.product_title') *</label>
-								<div class="input-group" style="margin-bottom: .5rem;">
-									<div class="input-group-append">
-										<span class="input-group-text" id="progTitle"></span>
-									</div>
+								<div class="form-group">
+									<label for="title">@lang('app.form.product_title') *</label>
 									<input name="title_product" id="title_product" class="form-control" type="text" value="" title="@lang('app.form.product_title_input')">
 								</div>
 							</div>
@@ -365,7 +352,7 @@
 									<label for="title">@lang('app.form.programme_pays')</label>
 									<select class="form-control" name="countryId_product" id="countryId_product" style="width:100%">
 										@foreach(\App\Models\Country::where('id',12)->get() as $country)
-											<option value="{{$country->id}}">{{$country->content}}</option>
+											<option value="{{$country->code}}">{{$country->content}}</option>
 										@endforeach
 									</select>
 								</div>
@@ -776,7 +763,7 @@
 			onStepChanging: function (event, currentIndex, newIndex)
 			{
 				var ancienneteBien = $('#ancienneteBien').val();
-				var natureBien = $('#natureBien').val();
+				var natureBien = 'Produit isolé';
 				var cat = $('#cat_programmme_id').val();
 				if(cat == 1){
 					if(ancienneteBien == 'Neuf' && natureBien == 'Programme immobilier'){
@@ -822,6 +809,8 @@
 						$('#bloc_fond_doc_produit').show();
 						$('#bloc_eoi_doc').show();
 						$('#bloc_lia_doc').show();
+						$('[name="year_built"]').val('').prop("readonly", false);
+						$('[name="postalCode_product"]').val('').prop("readonly", false);
 						
 					}else if(ancienneteBien == 'Ancien'){
 						$('#title_product').val('');
@@ -845,16 +834,25 @@
 					$('#bloc_fond_doc_produit').show();
 					$('#bloc_eoi_doc').show();
 					$('#bloc_lia_doc').show();
+					$('#yearConstruct').hide();
+					$('#jardin_info').hide();
+					$('[name="postalCode_product"]').val('').prop("readonly", false);
 				}else if(cat == 3){
 				    $('#info-date-isole').hide();
 					$('#bloc_fond_doc_produit').show();
 					$('#bloc_eoi_doc').show();
 					$('#bloc_lia_doc').show();
+					$('#yearConstruct').hide();
+					$('#jardin_info').hide();
+					$('[name="postalCode_product"]').val('').prop("readonly", false);
 				}else if(cat == 4){
 					$('#info-date-isole').hide();
 					$('#bloc_fond_doc_produit').show();
 					$('#bloc_eoi_doc').show();
 					$('#bloc_lia_doc').show();
+					$('#yearConstruct').hide();
+					$('#jardin_info').hide();
+					$('[name="postalCode_product"]').val('').prop("readonly", false);
 				}
 				// Always allow going backward even if the current step contains invalid fields!
 				if (currentIndex > newIndex)
@@ -1911,7 +1909,6 @@
 		});
 		
 		$('#cat_programmme_id').on('change', function() {
-			$('#nature_enregistrement').hide();
 			$('#Age_of_Property').hide();
 			$('#info-programme').hide();	
 			$('#infoAdresse').hide();
@@ -1920,17 +1917,14 @@
 			var category = this.value;
 			if(category == 1){
 				//pour le categorie residentiel
-				$('#natureBien').empty().append($('<option />').text("@lang('app.form.choix_txt')").val(''),$('<option />').text('Programme immobilier').val('Programme immobilier'),$('<option />').text('Produit isolé').val('Produit isolé'));
 				$('#info_qte').show();
 				$('#info_prd_residentiel').show();
 				$('#info_prd_foncier').hide();
 				$('#info_prd_industriel').hide();
 				$('#info_prd_commercial').hide();
 				$('#Age_of_Property').show();
-				$('#nature_enregistrement').show();
 			}else if(category == 2){
 				//pour categorie foncier 
-				$('#natureBien').empty().append($('<option />').text("@lang('app.form.choix_txt')").val(''),$('<option />').text('Produit isolé').val('Produit isolé'));
 				$('#info_qte').hide();
 				$('#info-date-isole').hide();
 				$('#info_prd_residentiel').hide();
@@ -1938,27 +1932,22 @@
 				$('#info_prd_industriel').hide();
 				$('#info_prd_commercial').hide();
 				$('#Age_of_Property').hide();
-				$('#nature_enregistrement').hide();
 				$('#price_simple').show();
 			}else if(category == 3){
 				// pour categorie industriel
-				$('#natureBien').empty().append($('<option />').text("@lang('app.form.choix_txt')").val(''),$('<option />').text('Produit isolé').val('Produit isolé'));
 				$('#info_prd_residentiel').hide();
 				$('#info_prd_foncier').hide();
 				$('#info_prd_industriel').show();
 				$('#info_prd_commercial').hide();
 				$('#Age_of_Property').hide();
-				$('#nature_enregistrement').hide();
 				$('#price_simple').show();
 			}else if(category == 4){
 				//pour categorie commercial
-				$('#natureBien').empty().append($('<option />').text("@lang('app.form.choix_txt')").val(''),$('<option />').text('Produit isolé').val('Produit isolé'));
 				$('#info_prd_residentiel').hide();
 				$('#info_prd_foncier').hide();
 				$('#info_prd_industriel').hide();
 				$('#info_prd_commercial').show();
 				$('#Age_of_Property').hide();
-				$('#nature_enregistrement').hide();
 				$('#price_simple').show();
 			}
 			
@@ -1980,25 +1969,13 @@
 			var anciennete = this.value;
 			if(anciennete == 'Neuf'){
 				$('#infoAdresse').show();
-				$('#info_code_postal').hide();
-				$('#nature_enregistrement').show();
-				
-				$('#natureBien').on('change', function() {
-					var nature = this.value;
-					//console.log(nature);
-					if(nature == 'Programme immobilier'){
-						$('#info-programme').show();								
-					}else{
-						//pour le programme individuel
-						$('#info-programme').hide();	
-						$("#form").steps("next");
-					}
-				});
+				$('#info_code_postal').hide();				
+				$("#form").steps("next");
 			}else{
 				$('#info_code_postal').show();
 				$('#infoAdresse').hide();
-				$('#info-programme').hide();	
-				$('#nature_enregistrement').hide();
+				$("#form").steps("next");
+				$('#info-programme').hide();
 			}
 		});
 		

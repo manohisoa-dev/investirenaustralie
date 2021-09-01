@@ -3,6 +3,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Models\MailsTemplate;
 use Illuminate\Http\Request;
+use Auth;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;

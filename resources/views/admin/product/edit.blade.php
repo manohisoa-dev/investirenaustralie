@@ -109,9 +109,9 @@
 								<select class="form-control" name="countryId_product" id="countryId_product" style="width:100%">
 									@foreach(\App\Models\Country::where('id',12)->get() as $country)
 									    @if($localisation)
-											<option value="{{$country->id}}" {{$country->id == $localisation->country ? 'selected' : ''}}>{{$country->content}}</option>
+											<option value="{{$country->code}}" {{$country->code == $localisation->country ? 'selected' : ''}}>{{$country->content}}</option>
 										@else
-											<option value="{{$country->id}}">{{$country->content}}</option>
+											<option value="{{$country->code}}">{{$country->content}}</option>
 										@endif
 										
 									@endforeach

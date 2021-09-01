@@ -942,7 +942,7 @@ return
 	'txt.detail' => 'Détail',
 	'table.btn_title_modification' => 'Modification',
 	'table.btn_title_delete' => 'Suppression',
-	'form.programme_choix_categorie' => 'A quelle catégorie appartient le bien que vous voulez saisir ?',
+	'form.programme_choix_categorie' => 'A quelle catégorie appartient le programme auquel vous souhaitez vous inscrire ?',
 	'form.programme_choix_anciennete' => 'Ancienneté du bien',
 	'form.programme_choix_nature' => 'Nature de L&rsquo;Enregistrement',
 	'form.programme_title' => 'Nom/Titre du programme',
@@ -1461,4 +1461,6 @@ return
 	'txt.business_broker' =>'Agence d’affaires',
 	'txt.with_our_most_cordial_greetings' =>'Avec nos très cordiales salutations',
 	'txt.complete_my_registration_form' =>'Completer mon dossier d&rsquo;inscription',
+    'table.produit_min_area' => 'Superficie minimale',
+    'table.produit_max_area' => 'Superficie maximale',
 ];
