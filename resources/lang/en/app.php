@@ -829,6 +829,8 @@ return
 	'txt.managing_director' => 'Managing Director',
 	'txt.blog_admin' => 'Blog Admin',
 	'txt.send_user_notification' => 'Send User Notification',
+	'no_notification' => 'No notification',
+	'notifications' => 'Notifications',
 	'txt.send_new_user_an_email_about_their_account' => 'Send the new user an email about their account.',
 	'txt.show_password' => 'Show password',
 	'txt.hide_password' => 'Hide password',

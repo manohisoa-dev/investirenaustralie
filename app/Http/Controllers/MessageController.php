@@ -234,4 +234,12 @@ class MessageController extends Controller
 
         return response()->json($unreadCount);
     }
+
+    public function getUnreadMessageNotification(Request $request, $user_id){
+        
+        // $unreadCountNotification = Message::unreadCountNotification($user_id)->count;
+        $data = Message::unreadMessageNotification($user_id);
+            
+        return response()->json(['res'=>$data]);
+    }
 }

@@ -244,7 +244,7 @@
                                                 </div>
                                                 <div class="p-20px">
                                                     <label class="font-small">@lang('app.txt.postepar') : <a href="javascript:void(0)">{{$blog->author ? $blog->author->name : ''}}</a> – {{$blog->created_at ? $blog->created_at->diffForHumans() : ''}}</label>
-                                                    <h5 class="m-10px-b font-w-600"><a title="{{$blog->title}}" class="dark-color" href="{{route('blog.index',$blog->slug)}}" target="_blank">{{getGTranslateAutoDetect( App::getLocale() , str_limit($blogs->title, 50, '...'))}}</a></h5>
+                                                    <h5 class="m-10px-b font-w-600"><a title="{{$blog->title}}" class="dark-color" href="{{route('blog.index',$blog->slug)}}" target="_blank">{{getGTranslateAutoDetect( App::getLocale() , str_limit($blog->title, 50, '...'))}}</a></h5>
                                                     <div class="nav font-small border-top-1 border-color-dark-gray p-15px-t">
                                                         <a class="m-15px-r body-color font-w-500" href="javascript:void(0)"><i class="fas fa-calendar-alt "></i> {{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $blog->created_at)->format('d F')}},{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $blog->created_at)->year }}</a>
                                                         <a class="body-color font-w-500" href="javascript:void(0)"><i class="fas fa-comments"></i> {{$blog->comments_count}}</a>

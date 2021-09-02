@@ -63,13 +63,13 @@ class Config extends BaseModel
         return [
             'lia_name' => 'required|max:100',
             'lia_abn' => 'required|digits_between:11,11|numeric',
-            'lia_license'  => 'nullable|digits_between:9,9|numeric',
+            'lia_license'  => 'nullable',
             'lia_license_expire_date'  => 'required|min:10|max:10',
             'lia_address' => 'required|max:100',
             'lia_email' => 'max:100',
             'lia_mobile' => 'max:9',
             'lia_dir' => 'required|max:100',
-            'lia_dir_license'  => 'nullable|digits_between:9,9|numeric',
+            'lia_dir_license'  => 'nullable',
             'lia_dir_license_expire_date'  => 'required|min:10|max:10',
         ];
     }

@@ -24,7 +24,7 @@ class User extends Authenticatable {
      * @var array
      */
     protected $fillable = ['name', 'immat', 'email', 'password', 'image_id',
-        'location_id', 'status', 'type', 'role', 'activation_code',
+        'location_id', 'status', 'role', 'activation_code',
         'use_default_password', 'is_complete', 'trial_ends_at', 'type_users_id'];
 
     /**
@@ -187,7 +187,7 @@ class User extends Authenticatable {
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeOfType($query, $type) {
-        return $query->where('type', $type);
+        return $query->where('type_users_id', $type);
     }
 
     /**
@@ -360,7 +360,7 @@ class User extends Authenticatable {
      * @return Boolean
      */
     public function isPerson() {
-        return $this->hasRole(5) && ($this->type == 2);
+        return $this->hasRole(5) && ($this->type_users_id == 2);
     }
 
     /**

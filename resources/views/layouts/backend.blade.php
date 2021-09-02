@@ -489,7 +489,7 @@
             <div class="row align-items-start">
                 <div class="col-lg-4 col-xl-3">
                     <div class="profile-aside">
-                        <div class="card m-20px-b">
+                        <div class="card m-20px-b m-35px-t">
                             <div class="p-25px text-center">
                                 <div class="avatar-80 border-radius-50 d-inline-block">
                                     <img id="avatar" src="{{ \App\Models\User::find(Auth::id())->imageUrl() }}" title="" alt="">
