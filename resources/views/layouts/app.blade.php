@@ -887,40 +887,44 @@
             showUnreadCount();
 
             function showUnreadCount(){
-                $.ajax({
-                    url: '{{ route("get.unread.message.notification", ["user_id"=>Auth::user()->id]) }}',
-                    type: "GET",
-                    dataType: "json",
-                    success:function(data){
-                        var datas = data.res;
-                        var datasLength = datas.length;
+                if('{{ Auth::check() }}' !== ''){
+                    $.ajax({
+                        url: '{{  Auth::check()?route("get.unread.message.notification", ["user_id"=>Auth::user()->id]):"" }}',
+                        type: "GET",
+                        dataType: "json",
+                        success:function(data){
+                            var datas = data.res;
+                            var datasLength = datas.length;
 
-                        if(datasLength !== 0){
-                            // set count notification
-                            count = datasLength;
+                            if(datasLength !== 0){
+                                // set count notification
+                                count = datasLength;
 
-                            // set count notification content
-                            for(i=0;i<datasLength;i++){
-                                var txt = ((datas[i].body).split('</small></p><hr>'));
-                                var body = $(txt[1]).text();
-                                var dt = txt[0].split('<p><small>')[1];
-                                var userRole = '{{Auth::user()->roleUser->role_initial}}';
-                                var url = userRole+"/contact/role/"+datas[i].role_initial;
+                                // set count notification content
+                                for(i=0;i<datasLength;i++){
+                                    var txt = ((datas[i].body).split('</small></p><hr>'));
+                                    var body = $(txt[1]).text();
+                                    var dt = txt[0].split('<p><small>')[1];
+                                    var userRole = '{{Auth::check()?Auth::user()->roleUser->role_initial:""}}';
+                                    var url = userRole+"/contact/role/"+datas[i].role_initial;
 
-                                // push data in notifications array
-                                notifications.push({
-                                href: url,
-                                title: (datas[i].role_initial).toUpperCase(),
-                                texte: body.substring(0,70)+'...',
-                                date: dt
-                                });
+                                    // push data in notifications array
+                                    notifications.push({
+                                    href: url,
+                                    title: (datas[i].role_initial).toUpperCase(),
+                                    texte: body.substring(0,70)+'...',
+                                    date: dt
+                                    });
+                                }
                             }
+                        },
+                        error:function(e){
+                            console.log(e);
                         }
-                    },
-                    error:function(e){
-                        console.log(e);
-                    }
-                });
+                    });
+                }
+
+                return false;
             }            
 
             function makeBadge(texte) {
