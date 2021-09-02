@@ -38,7 +38,8 @@
 
                     {{ method_field("PUT") }}
 					<input type="hidden" name="type" value="{{$type}}" />   
-					<input type="hidden"  name="location_Id" value="{{$product->location_id}}" />                                                              
+					<input type="hidden"  name="location_Id" value="{{$product->location_id}}" />      
+					<input type="hidden"  name="programme_id" value="{{$product->id}}" />                                                              
                     <div class="row">
 						<div class="col-lg-4">
 							<div class="form-group">
@@ -197,7 +198,7 @@
 										}
 									@endphp
 									@foreach(\App\Models\Country::where('id',12)->get() as $country)
-										<option value="{{$country->id}}" {{$country->id == $id_country ? 'selected' : ''}}>{{$country->content}}</option>
+										<option value="{{$country->code}}" {{$country->code == $id_country ? 'selected' : ''}}>{{$country->content}}</option>
 									@endforeach
 								</select>
 							</div>
@@ -1356,6 +1357,8 @@
 					}else{
 						$("#chk_parking").removeAttr('disabled');
 					}
+					$('[name="min_area"]').val(data.product.min_area);
+					$('[name="max_area"]').val(data.product.max_area);
 					$('#modal_form_product').modal('show'); 
 					$('.modal-title').text("@lang('app.form.product_edit_title')"); 
 				},
@@ -1624,7 +1627,7 @@
 									<label for="title">@lang('app.form.programme_pays')</label>
 									<select class="form-control" name="countryId_product" id="countryId_product" style="width:100%">
 										@foreach(\App\Models\Country::where('id',12)->get() as $country)
-											<option value="{{$country->id}}">{{$country->content}}</option>
+											<option value="{{$country->code}}">{{$country->content}}</option>
 										@endforeach
 									</select>
 								</div>
@@ -1683,7 +1686,7 @@
 										<div class="input-group m-b">
 											<input type="number" class="form-control" name="bonus_amount" id="bonus_amount">
 											<div class="input-group-append">
-												<span class="input-group-text">AUD</span>
+												<span class="input-group-addon">AUD</span>
 											</div>
 										</div>
 									</div>
@@ -1732,6 +1735,8 @@
 								</div>
 							</div>
 						</div>
+						
+						@if($product->category_id == 1)
 						<div class="row">
 							<div class="col-lg-3">
 								<div class="form-group">
@@ -1853,6 +1858,35 @@
 								</div>
 							</div>
 						</div>
+						@endif
+						@if($product->category_id == 2)
+						<div class="row">							
+							<div class="col-lg-4">
+								<label for="title">@lang('app.table.produit_min_area') *</label>
+								<div class="input-group">
+									<input type="number" class="form-control" name="min_area" id="min_area">
+									<div class="input-group-append">
+										<span class="input-group-text">m2</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<label for="title">@lang('app.table.produit_max_area') *</label>
+								<div class="input-group">
+									<input type="number" class="form-control" name="max_area" id="max_area">
+									<div class="input-group-append">
+										<span class="input-group-text">m2</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label for="title">@lang('app.table.produit_image')</label>
+									<input name="image" class="form-control" type="file" accept="image/png, image/jpeg">
+								</div>
+							</div>
+						</div>
+						@endif
 						<div class="alert alert-danger alert-dismissable" id="info_error" style="display:none">
 							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 							<h4><i class="icon fa fa-ban"></i> @lang('app.form.product_error_title') !</h4>

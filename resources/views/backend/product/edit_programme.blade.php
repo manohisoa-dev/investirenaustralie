@@ -172,7 +172,7 @@
 											<label for="title">@lang('app.form.programme_pays')</label>
 											<select class="form-control" name="countryId" id="countryId" style="width:100%">
 												@foreach(\App\Models\Country::where('id',12)->get() as $country)
-													<option value="{{$country->id}}" {{$country->id == $localisation->country ? 'selected' : ''}}>{{$country->content}}</option>
+													<option value="{{$country->code}}" {{$country->code == $localisation->country ? 'selected' : ''}}>{{$country->content}}</option>
 												@endforeach
 											</select>
 										</div>
