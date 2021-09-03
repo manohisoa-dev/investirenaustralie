@@ -11,9 +11,11 @@ use Validator;
 use App\Models\Cart;
 use App\Models\Image;
 use App\Models\Localisation;
+use App\Models\Product;
 
 use App\Notifications\AccountCreated;
 use App\Models\User;
+use Carbon\Carbon;
 
 class ProfileController extends Controller
 {
@@ -259,6 +261,13 @@ class ProfileController extends Controller
                     'userinfos_id' => $userInfo->id,
                 ]);
                 $user->handles($request);
+            }
+
+            // redirect after complete registration for member
+            if(Session()->get('complete_registration')){
+                $idProd = Session()->get('id_product');
+                $item = Product::whereId($idProd)->first();
+                return redirect(route('member.buy.product', $item));
             }
  
         }catch (\Exception $exception) {

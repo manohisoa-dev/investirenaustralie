@@ -144,6 +144,12 @@ Route::middleware(["auth"])->group(function(){
     Route::post('search', 'SearchController@edit')->name('search.edit');
     Route::post('search/delete', 'SearchController@delete')->name('search.delete');
     Route::post('comment/store', 'BlogController@storeComment')->name('comment.store');
+    
+    // dossier controller
+    Route::get('ajaxSendMandatIeaToMember', 'DossierController@ajaxSendMandatIeaToMember')->name('ajaxSendMandatIeaToMember');
+
+    // message controller
+    Route::get('message/unread/notification/{user_id}', 'MessageController@getUnreadMessageNotification')->name('get.unread.message.notification');
 
 });
 
@@ -314,7 +320,6 @@ Route::middleware(["auth", "role:5"] || ["auth", "role:3"])->group(function(){
     Route::get('message/all/contact/unread/', 'MessageController@getUnreadCountMessageContact')->name('get.unread.count.message.contact');
     Route::get('message/show/{to_id}', 'MessageController@showContactMessage')->name('show.contact.message');
     Route::post('message/contact', 'MessageController@sendContactMessage')->name('send.contact.message');
-
 });
 
 

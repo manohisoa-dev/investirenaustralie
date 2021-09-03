@@ -10,6 +10,7 @@ use App\Notifications\NewMail;
 use App\Notifications\AplChanged;
 use App\Notifications\AfaChanged;
 use App\Notifications\AfaCourriel;
+use App\Notifications\MemberWaitingMessage;
 use App\Notifications\AfaConjunctionAgreementMessage;
 use App\Notifications\MemberMandateSearchMessage;
 
@@ -567,12 +568,21 @@ class MemberController extends Controller {
             session()->forget('link_product');
             $downloadCaLink = url("uploads/pdf/ca/CA-".Auth::user()->afa->immat."_".time().".pdf");
             $uploadCaLink = route('afa.dossier');
+            $txtContent = Session()->get('buy_this_product')?'member.waiting_message':'member.gothere.select_afa.waiting_message';
+            $content = trans($txtContent, ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'afa' => Auth::user()->afa->name]);
+
+            // send chat message to member from IEA (admin)
+            Message::create(['type'=>'admin','from_id'=>1,'to_id'=>Auth::user()->id,'body'=>$content]);
+            // send notification email to member from IEA
+            Auth::user()->notify(new MemberWaitingMessage(Auth::user()));
 
             // Declenche Conjuction Agreement Module
             App::setLocale('en');
             $this->sendConjuctionAgreementModule(Auth::user()->afa_id,Auth::user()->afa->email,trans('member.gothere.select_afa.ca.message_to_afa', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'immat'=>Auth::user()->immat,'agence' => 'IEA', 'download_ca'=>$downloadCaLink,'upload_ca'=>$uploadCaLink]), $downloadCaLink, $uploadCaLink);
-
-            return redirect($linkProduct)->with('engagement', trans('member.gothere.select_afa.waiting_message', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'afa' => Auth::user()->afa->name]))->with('waiting',1);
+            
+            // set language to default
+            App::setLocale(Auth::user()->language);
+            return redirect($linkProduct)->with('engagement', trans('member.waiting_message', ['user'=>$user,'date'=>$dtDate,'hour'=>$dtTime,'afa' => Auth::user()->afa->name]))->with('waiting',1);
         }
 
         return back()->with('success', trans('app.txt.info_saved'));
@@ -581,7 +591,8 @@ class MemberController extends Controller {
     // Declanche Conjunction Agreement (CA)
     public function sendConjuctionAgreementModule($afa_id,$afa_mail,$content,$downloadCaLink,$uploadCaLink){
         // Create CA pdf
-        $this->createCaPdf();
+        $pdfName=explode('/',$downloadCaLink);
+        $this->createCaPdf($pdfName[6]);
         
         // send chat message to afa from IEA (admin)
         Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$afa_id,'body'=>$content]);
@@ -590,7 +601,7 @@ class MemberController extends Controller {
         User::whereId($afa_id)->first()->notify(new AfaConjunctionAgreementMessage(Auth::user(),$downloadCaLink,$uploadCaLink));
     }
 
-    public function createCaPdf() {
+    public function createCaPdf($name) {
         $pdf_template = 'pdf.conjunction_agreement';
         $user = Auth::user();
         $lia = Config::lia();
@@ -606,8 +617,8 @@ class MemberController extends Controller {
         $lia_dir_license_expire_date = $lia->get_meta('lia_dir_license_expire_date')->value;
 
         $iea = ['name'=>$lia_name, 'abn'=>$lia_abn, 'license'=>$lia_license, 'licence_expire_date'=>$lia_license_expire_date, 'address'=>$lia_address, 'mobile'=>$lia_mobile, 'email'=>$lia_email, 'director'=>$lia_dir, 'director_license'=>$lia_dir_license, 'directore_licence_expire_date'=>$lia_dir_license_expire_date];
-        $pdfName = 'CA-'.$user->afa->immat."_".time().".pdf";
-        $path = 'uploads/pdf/ca/'.$pdfName.'.pdf';
+        $pdfName = $name;
+        $path = 'uploads/pdf/ca/'.$pdfName;
         $prod_id = session()->get('id_product');
 
         // Save conjunction agreement in 
@@ -635,7 +646,7 @@ class MemberController extends Controller {
         $prod_id = session()->get('id_product');
         $product = Product::whereId($prod_id)->first();
         $abort = trans('member.btn.abort', ['link'=>'#']);
-        $content = trans('member.gothere.select_afa.mr.message_to_member', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user_name,'immat'=>$user_immat,'etat'=>$product->location->area_level_1,'afa'=>$afa,'download_mr'=>$downloadForm6Link,'upload_mr'=>$uploadForm6Link, 'abort'=>$abort]);
+        $content = trans('member.mr.message_to_member', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user_name,'immat'=>$user_immat,'etat'=>$product->location->area_level_1,'afa'=>$afa,'download_mr'=>$downloadForm6Link,'upload_mr'=>$uploadForm6Link, 'abort'=>$abort]);
         session()->forget('id_product');
 
         // send chat message to Member from IEA (admin)
@@ -706,6 +717,7 @@ class MemberController extends Controller {
     public function buyThisProduct(Request $request,Product $product) {
         $this->middleware('auth');
         $this->middleware('role:5');
+        Session()->put('buy_this_product',true);
 
         // abort(404);
         if($product){
@@ -716,7 +728,7 @@ class MemberController extends Controller {
             $dtTime = $dt->format('H:i:m');
             $user= Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name;
 
-            if(!Auth::user()->isComplete()){
+            if(Auth::user()->isComplete()){
                 if(!Auth::user()->isCheckedDossierTransaction($prod_id)){
                     $this->creationDossierTransaction($product);
                 }
@@ -726,12 +738,13 @@ class MemberController extends Controller {
                         Session::put('id_product',$prod_id);
                         return redirect($prodUrl)->with('engagement', trans('member.gothere.notification.after_afa_send_finalized_ca'))->with('waiting',0);
                     }else{
-                        return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa.waiting_message', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'afa' => Auth::user()->afa->name]))->with('waiting',1);
+                        return redirect($prodUrl)->with('engagement', trans('member.waiting_message', ['date'=>$dtDate,'hour'=>$dtTime,'user'=>$user,'afa' => Auth::user()->afa->name]))->with('waiting',1);
                     }
                 } else {
-                    return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa', ['date'=>$dtDate, 'hour'=>$dtTime, 'name'=>$user]))->with('hasAfa',0);
+                    return redirect($prodUrl)->with('engagement', trans('member.tobuy.select_afa', ['date'=>$dtDate, 'hour'=>$dtTime, 'name'=>$user]))->with('hasAfa',0);
                 }
             }else{
+                Session()->put('complete_registration',true);
                 return redirect($prodUrl)->with('complete_registration_content', trans('member.tobuy.complete_registration.header', ['date'=>$dtDate, 'hour'=>$dtTime, 'name'=>$user]))->with('complete_registration_message',1);
             }
         }
@@ -757,10 +770,6 @@ class MemberController extends Controller {
             session()->put('id_product',$product->id);
             session()->put('link_product',$prodUrl);
             $prod_id = $product->id;
-
-            if(!Auth::user()->isCheckedDossierTransaction($prod_id)){
-                $this->creationDossierTransaction($product);
-            }
         }
 
         return view('login.memberpart')->with('user', Auth::user());

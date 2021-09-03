@@ -45,11 +45,11 @@
                                     <td>{{ App\Models\Product::whereId($record->product_id)->first()->title }}</td>
                                     <td>
                                         {{ sizeOf($record)!==0?'*'.trans('app.txt.conjunction_agreement'):'' }} <br>
-                                        {{ sizeOf($mandatesearch)!==0?'*'.trans('app.txt.research_mandate'):'' }}
+                                        {{ sizeOf($mandatesearch)!==0?($index<sizeOf($mandatesearch)?'*'.trans('app.txt.research_mandate'):''):'' }}
                                     </td>
                                     <td>
                                         {{ sizeOf($record)!==0?'*'.$record->file_name:'' }} <br>
-                                        {{ sizeOf($mandatesearch)!==0?'*'.$mandatesearch[$index]->file_name:'' }}
+                                        {{ sizeOf($mandatesearch)!==0?($index<sizeOf($mandatesearch)?'*'.$mandatesearch[$index]->file_name:''):'' }}
                                     </td>
                                     <td>
                                     {{-- @if($record->status=='0') --}}
@@ -61,7 +61,7 @@
                                     {{-- @endif --}}
                                     </td>
                                     <td align="center">
-                                        <a href="javascript:void(0)" onclick="showTimeline({{$record}},{{$mandatesearch[$index]}})" title="Show timeline for this product" class="">
+                                        <a href="javascript:void(0)" onclick="showTimeline({{App\Models\DossierTransaction::where('product_id','=',$record->product_id)->where('user_id','=',$record->from_id)->first()}},{{App\Models\Product::whereId($record->product_id)->first()}},{{$record}},{{$index<sizeOf($mandatesearch)?$mandatesearch[$index]:''}})" title="Show timeline for this product" class="">
                                             <i class="fa fa-eye"></i>
                                         </a>&nbsp;
                                     </td>
@@ -85,7 +85,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content white-bg">
                 <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
-                    <h4 class="modal-title white-color">Timeline</h4>
+                    <h4 class="modal-title white-color"></h4>
                 </div>
                 <div class="modal-body">
                 
@@ -104,11 +104,27 @@
 	<script src="{{ asset('/js/jquery-dateFormat.min.js') }}"></script>
     
     <script type="text/javascript">
-        function showTimeline(ca,mr){
+        var conjAgr = [];
+
+        function showTimeline(doss,prod,ca,mr){
             var content = $('#showTimelineModal .modal-body');
+            var title = 'N° Trans : '+doss.numero+' | '+prod.title+' ('+prod.reference+')';
+
             content.html();
+            conjAgr = ca;
+
+            // Set timeline title modal
+            $('#showTimelineModal .modal-title').html(title);
 
             // set timeline data
+            if(mr===undefined){
+                mr= [];
+                mr['created_at']='null',
+                mr['updated_at']='null',
+                mr['path']='null',
+                mr['status']='null',
+                mr['file_name']='';  
+            }
             content.html(timelineContent(ca,mr));
 
             // show timeline
@@ -116,17 +132,27 @@
         }
 
         function timelineContent(ca,mr){
+            var origin   = window.location.origin;
             var dayCreate = $.format.prettyDate(ca.created_at);
             var dateCreate = $.format.date(ca.created_at, 'yyyy MMM dd');
             var dayUpdate = $.format.prettyDate(ca.updated_at);
             var dateUpdate = $.format.date(ca.updated_at, 'yyyy MMM dd');
-            var origin   = window.location.origin;
             var downloadLink = origin+'/'+ca.path;
             var status = ca.status;
             var disabledLink = status!==0?'disabled':'';
             var stepStatus = status!==0?'<i class="badge badge-pill badge-success white-color">@lang("app.txt.finalized")</i>':'<i class="badge badge-pill badge-danger white-color">@lang("afa.folders.status.to_download")</i>';
             var textBtnUpload = status!==0?'File sent':'Upload file';
             var fileName = status!==0?ca.file_name:'';
+            var statusMr = mr.status;
+            var dayCreateMr = mr.created_at!=='null'? (statusMr===0?'':$.format.prettyDate(mr.created_at)) :'';
+            var dateCreateMr = mr.created_at!=='null'? (statusMr===0?'':$.format.date(mr.created_at, 'yyyy MMM dd')) :'';
+            var dayUpdateMr = mr.updated_at!=='null'? (statusMr===0?'':$.format.prettyDate(mr.updated_at)) :'';
+            var dateUpdateMr = mr.updated_at!=='null'? (statusMr===0?'':$.format.date(mr.updated_at, 'yyyy MMM dd')) :'';
+            var downloadLinkMr = origin+'/uploads/pdf/transaction/'+mr.file_name;
+            var disabledLinkMr = statusMr===0?'hidden':(statusMr==='null'?'disabled':'');
+            var stepStatusMr = statusMr!==0?(statusMr!=='null'?'<i class="badge badge-pill badge-success white-color">@lang("app.txt.finalized")</i>':'{{ trans("app.txt.not_available") }}'):'<i class="badge badge-pill badge-info white-color">@lang("app.waiting")</i>';
+            var textBtnUploadMr = statusMr!==0?'File sent':'Upload file';
+            var fileNameMr = statusMr!==0?mr.file_name:'';
             var content = '<div class="profile-content-area m-40px-tb">'+
                 '<div class="card m-40px-b">'+
                     '<div class="card-body">'+
@@ -177,14 +203,15 @@
                                         '<h2>RESERCH MANDATE</h2>'+
                                         '<p>Download the reseach mandate.'+
                                         '</p>'+
-                                        '<a href="'+downloadLink+'" class="m-btn m-btn-sm m-btn-theme2nd" '+disabledLink+'> Download</a>'+
+                                        '<a href="'+downloadLinkMr+'" class="m-btn m-btn-sm m-btn-theme2nd" '+disabledLinkMr+'> Download</a>'+
                                         '<span class="vertical-date">'+
-                                            dayCreate+'<br/>'+
-                                            '<small>'+dateCreate+'</small>'+
+                                            dayUpdateMr+'<br/>'+
+                                            '<small>'+dateUpdateMr+'</small>'+
                                         '</span>'+
-                                        '<span class="col-lg-12 text-right"><small><b>@lang("app.status") : </b>'+stepStatus+'</small></span>'+
+                                        '<span class="col-lg-12 text-right"><small><b>@lang("app.status") : </b>'+stepStatusMr+'</small></span>'+
                                     '</div>'+
                                 '</div>'+
+
                             '</div>'+
                         '</div>'+
                     '</div>'+
@@ -214,7 +241,7 @@
             var filePath = $("#spnFilePath");
             var button = $("#btnUploadFile");
             var folderId = button.val();
-            var buttonsend = '<button type="button" class="m-btn m-btn-sm m-btn-theme4rd" onclick="sendFile('+folderId+')" id="btnSendFile">Send</button>';
+            var buttonsend = '<button type="button" class="m-btn m-btn-sm m-btn-theme4rd" onclick="sendFile('+folderId+')" id="btnSendFile"><i class="fa fa-paper-plane"></button>';
 
             fileupload.click();
         }
@@ -223,12 +250,14 @@
             var fileName = $('#FileUpload1').val().split('\\')[$('#FileUpload1').val().split('\\').length - 1];
             var filePath = $("#spnFilePath");
             var button = $("#btnUploadFile");
-            var buttonsend = '<button type="button" class="m-btn m-btn-sm m-btn-theme4rd" onclick="sendFile('+folderId+')" id="btnSendFile">Send</button>';
+            var buttonsend = '<button type="button" class="m-btn m-btn-sm m-btn-theme4rd" onclick="sendFile('+folderId+')" id="btnSendFile"><i class="fa fa-paper-plane"></button>';
                 filePath.html("<b>Selected File: </b>" + fileName +" " +buttonsend);
         }
 
         function sendFile(caId){
             var fileToUpload = new FormData();
+            var mrToId = conjAgr.from_id;
+            var idProduct = conjAgr.product_id;
 
             // show loading icon
             loadingPage();
@@ -267,10 +296,23 @@
                             text: "Conjunction Agreement Sent", 
                             type: "success"
                             },
-                        function(){ 
-                            // reload page
-                            location.reload();
-                        }
+                            function(){ 
+                                if('{{ !Auth::user()->isMove() }}'){
+                                    // send mandate to member
+                                    $.ajax({
+                                        url:'{{ route("ajaxSendMandatIeaToMember") }}',
+                                        type:'get',
+                                        data:{'id_product':idProduct, 'to_id':mrToId},
+                                        dataType:'json',
+                                        success:function(data){
+                                            location.reload();
+                                        }
+                                    });
+                                }
+                                    
+                                // reload page
+                                location.reload();
+                            }
                         );
                     }
                 },

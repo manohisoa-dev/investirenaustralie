@@ -144,7 +144,7 @@
                     <div class="row m-15px-t">
                         <div class="col-sm-6">
                           {{-- @if(Auth::check() && Auth::user()->hasRole(5)) --}}
-                            <a href="{{route('member.buy.product', $item )}}" type="button" id="btn_buy" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12"><i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')</a>
+                            <a href="{{route('member.buy.product', $item )}}" type="button" id="btn_buy" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12"><i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')</a>
                           {{-- @else
                             <button type="button" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12" disabled title="@lang('app.txt.logintocontinue')"><i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')</button>
                           @endif --}}
@@ -415,11 +415,12 @@
   </style>
   <script>
     $(document).ready(function(){
-      var eng = $('#btn_go_there').attr('value');
+      var eng_go = $('#btn_go_there').attr('value');
+      var eng_buy = $('#btn_buy').attr('value');
       var hasAfa = $('#contact_afa').attr('value');
 
       // show engagement modal
-      if(eng !== '0'){
+      if(eng_go !== '0' || eng_buy !== '0'){
         $('#engagementModal').modal('show');
       }
 

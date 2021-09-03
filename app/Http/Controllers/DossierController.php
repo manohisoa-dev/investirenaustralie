@@ -9,13 +9,17 @@ use App\Models\Product;
 use App\Models\ConjunctionAgreement;
 use App\Models\MandatRecherche;
 use App\Models\Message;
+use App\Models\Config;
 use App\Notifications\AfaMandateSearchMessage;
+use App\Notifications\MemberMandateSearchMessage;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 use Carbon\Carbon;
 use Validator;
 use Auth;
 use App;
+use Session;
+use PDF;
 
 
 class DossierController extends Controller
@@ -134,6 +138,65 @@ class DossierController extends Controller
         MandatRecherche::where('id', $request->id)->update(['status' => 1]);
 
         return response()->json(['success' => 'true']);
+    }
+
+    // Declanche Mandat de Recherche
+    public function ajaxSendMandatIeaToMember(Request $request){
+        $prod_id = $request->get('id_product');
+        $to_id = $request->get('to_id');
+        $user = User::whereId($to_id)->first();
+
+        // Create Mandat de recherche form6 pdf
+        $mdRch = $this->createForm6Pdf($prod_id,$user);
+
+        $dt = Carbon::now();
+        $dtDate = $dt->format('m-d-Y');
+        $dtTime = $dt->format('H:i:m');
+        $downloadForm6Link = url($mdRch->path);
+        $uploadForm6Link = route('member.dossier');
+        $user_name= $user->isPerson()?$user->name:$user->userinfos()->first()->orga_name;
+        $user_immat = $user->immat;
+        $afa = $user->afa->name;
+        $product = Product::whereId($prod_id)->first();
+        $abort = trans('member.btn.abort', ['link'=>'#']);
+        $content = trans('member.mr.message_to_member', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user_name,'immat'=>$user_immat,'etat'=>$product->location->area_level_1,'afa'=>$afa,'download_mr'=>$downloadForm6Link,'upload_mr'=>$uploadForm6Link, 'abort'=>$abort]);
+        session()->forget('id_product');
+
+        // send chat message to Member from IEA (admin)
+        Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$user->id,'body'=>$content]);
+
+        // send notification email to afa from IEA
+        $user->notify(new MemberMandateSearchMessage($user,$product,$downloadForm6Link,$uploadForm6Link,$abort));
+
+
+        return response()->json(['success'=>'Success']);
+    }
+
+    public function createForm6Pdf($prod_id,$user) {
+        $pdf_template = 'pdf.form6';
+        $lia = Config::lia();
+        $lia_name = $lia->get_meta('lia_name')->value;
+        $lia_abn = $lia->get_meta('lia_abn')->value;
+        $lia_license = $lia->get_meta('lia_license')->value;
+        $lia_license_expire_date = $lia->get_meta('lia_license_expire_date')->value;
+        $lia_address = $lia->get_meta('lia_address')->value;
+        $lia_mobile = $lia->get_meta('lia_mobile')->value;
+        $lia_email = $lia->get_meta('lia_email')->value;
+        $lia_dir = $lia->get_meta('lia_dir')->value;
+        $lia_dir_license = $lia->get_meta('lia_dir_license')->value;
+        $lia_dir_license_expire_date = $lia->get_meta('lia_dir_license_expire_date')->value;
+
+        $iea = ['name'=>$lia_name, 'abn'=>$lia_abn, 'license'=>$lia_license, 'licence_expire_date'=>$lia_license_expire_date, 'address'=>$lia_address, 'mobile'=>$lia_mobile, 'email'=>$lia_email, 'director'=>$lia_dir, 'director_license'=>$lia_dir_license, 'directore_licence_expire_date'=>$lia_dir_license_expire_date];
+        $product = Product::whereId($prod_id)->first();
+
+        $pdfName = 'Form6_'.$product->location->area_level_1.'_'.$user->immat."_".time().".pdf";
+        $path = 'uploads/pdf/form6/'.$pdfName;
+
+        // Save form6 pdf in path
+        PDF::loadView($pdf_template,['user'=>$user, 'iea'=>$iea, 'product'=>$product])->save($path);
+
+        // Save Research Mandate
+        return MandatRecherche::create(['file_name'=>$pdfName,'path'=>$path,'product_id'=>$prod_id,'from_id'=>1,'to_id'=>$user->id,'afa_id'=>$user->afa->id]);
     }
 
 }

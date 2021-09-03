@@ -20,6 +20,7 @@ return
 	'shop' => 'Shop',
 	'login' => 'Connexion',
 	'no_notification' => 'Aucune notification',
+	'notifications' => 'Notifications',
 	'send_mail' => 'Envoyer Mail',
 	'login_info' => 'Login Information',
 	'user_info' => 'Information personnelle',
