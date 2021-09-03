@@ -18,6 +18,7 @@ use App\Models\ProductsImage;
 use App\Models\FondsDossier;
 use App\Models\EoiDossier;
 use App\Models\LiaDossier;
+use App\Models\State;
 use Auth;
 use App;
 use Carbon\Carbon;
@@ -250,15 +251,16 @@ class ProductController extends Controller {
     }
 
     function save_location($country, $suburb, $postalCode, $locality, $route) {
-        $adresse = $route . ' ' . $suburb . ' ' . $locality . ' Australie';
-        $coordonne_tab = set_coordooner($adresse);
+        $adresse = $route . ', ' . $locality . ' ' . $postalCode . ', ' . $country;
+        $coordonne_tab = geocodeAddress($adresse);
         if ($coordonne_tab) {
-            $latitude = $coordonne_tab['user_lat'];
-            $longitude = $coordonne_tab['user_long'];
+            $latitude = $coordonne_tab['lat'];
+            $longitude = $coordonne_tab['lng'];
         } else {
             $latitude = '';
             $longitude = '';
         }
+
         $location = new Localisation();
         $location->country = $country;
         $location->area_level_1 = $suburb;
@@ -449,19 +451,20 @@ class ProductController extends Controller {
                 $localisation = Localisation::find($product->location_id);
                 if ($localisation->route != $request->display_address || $localisation->locality !=
                     $request->ville) {
-                    $adresse = $request->display_address . ' ' . $request->suburb . ' ' . $request->ville;
-                    $coordonne_tab = set_coordooner($adresse);
+                    $adresse = $request->display_address . ', ' . $request->ville . ' ' . $request->postalCode .
+                        ', ' . $request->countryId;
+                    $coordonne_tab = geocodeAddress($adresse);
                     if ($coordonne_tab) {
-                        $latitude = $coordonne_tab['user_lat'];
-                        $longitude = $coordonne_tab['user_long'];
+                        $latitude = $coordonne_tab['lat'];
+                        $longitude = $coordonne_tab['lng'];
                     } else {
                         $latitude = '';
                         $longitude = '';
                     }
                     Localisation::where('id', $product->location_id)->update(['area_level_1' => $request->suburb,
                         'country' => $request->countryId, 'postalCode' => $request->postalCode,
-                        'locality' => $request->ville, 'route' => $request->display_address,
-                        'longitude' => $longitude, 'latitude' => $latitude]);
+                        'locality' => $request->ville, 'route' => $request->display_address, 'longitude' =>
+                        $longitude, 'latitude' => $latitude]);
                     $id_location = $product->location_id;
                 }
             } else {
@@ -509,11 +512,12 @@ class ProductController extends Controller {
                 $localisation = Localisation::find($product->location_id);
                 if ($localisation->route != $request->display_address || $localisation->locality !=
                     $request->ville_product) {
-                    $adresse = $request->display_address . ' ' . $request->suburb_product . ' ' . $request->ville_product;
-                    $coordonne_tab = set_coordooner($adresse);
+                    $adresse = $request->display_address . ', ' . $request->ville_product . ' ' . $request->postalCode_product .
+                        ', ' . $request->countryId_product;
+                    $coordonne_tab = geocodeAddress($adresse);
                     if ($coordonne_tab) {
-                        $latitude = $coordonne_tab['user_lat'];
-                        $longitude = $coordonne_tab['user_long'];
+                        $latitude = $coordonne_tab['lat'];
+                        $longitude = $coordonne_tab['lng'];
                     } else {
                         $latitude = '';
                         $longitude = '';

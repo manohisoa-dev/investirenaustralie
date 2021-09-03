@@ -20,6 +20,7 @@ class MailsTemplate extends Model {
         \Request::input('template_fr') and $query->where('template','like','%'.\Request::input('template').'%');
         \Request::input('sujet_en') and $query->where('sujet','like','%'.\Request::input('sujet').'%');
         \Request::input('template_en') and $query->where('template','like','%'.\Request::input('template').'%');
+        \Request::input('params') and $query->where('params','like','%'.\Request::input('params').'%');
         \Request::input('created_at') and $query->where('created_at',\Request::input('created_at'));
         \Request::input('updated_at') and $query->where('updated_at',\Request::input('updated_at'));
         
@@ -53,6 +54,12 @@ class MailsTemplate extends Model {
         foreach ( $attributes as $attr )
             $newRules[$attr] = $rules[$attr];
         return $newRules;
+    }
+    
+    public static function set_content_email($id_email)
+    {
+        $template = MailsTemplate::where('id', $id_email)->get();
+        return $template;
     }
 
 }

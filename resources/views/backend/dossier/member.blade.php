@@ -34,11 +34,11 @@
                                     <span class="vertical-date">
                                         {{Auth::user()->dossierTransaction()->first()->created_at->diffForHumans()}} <br/>
                                         <small>{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', Auth::user()->dossierTransaction()->first()->created_at)->format('d F')}},{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', Auth::user()->dossierTransaction()->first()->created_at)->year }}</small>
-                                    </span>  
+                                    </span>
                                 @endif
                             </div>
                         </div>
-                        
+
                         <div class="vertical-timeline-block">
                             <div class="vertical-timeline-icon grenate-bg">
                                 <i class="fa fa-building"></i>

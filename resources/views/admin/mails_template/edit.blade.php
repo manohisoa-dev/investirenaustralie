@@ -37,12 +37,20 @@
                     {{ csrf_field() }}
 
                     {{ method_field("PUT") }}
-                                                                                                
-                            {!! \Nvd\Crud\Form::input('titre','text')->model($mailsTemplate)->show() !!}                                                                        
-                            {!! \Nvd\Crud\Form::input('sujet_fr','text')->model($mailsTemplate)->show() !!}                                                                        
-                            {!! \Nvd\Crud\Form::textarea( 'template_fr' )->model($mailsTemplate)->show() !!}
-							{!! \Nvd\Crud\Form::input('sujet_en','text')->model($mailsTemplate)->show() !!}                                                                        
-                            {!! \Nvd\Crud\Form::textarea( 'template_en' )->model($mailsTemplate)->show() !!}
+                    <div class="form-group">
+						<label for="title">Titre</label>
+						<input type="text" class="form-control" name="titre" value="{{$mailsTemplate->titre}}" />
+					</div>  
+					<div class="form-group">
+						<label for="title">Sujet Fr</label>
+						<input type="text" class="form-control" name="sujet_fr" value="{{$mailsTemplate->sujet_fr}}" />
+					</div>                                                                 
+                    {!! \Nvd\Crud\Form::textarea( 'template_fr' )->model($mailsTemplate)->show() !!}
+					<div class="form-group">
+						<label for="title">Sujet En</label>
+						<input type="text" class="form-control" name="sujet_en" value="{{$mailsTemplate->sujet_en}}" />
+					</div>                                                                      
+                    {!! \Nvd\Crud\Form::textarea( 'template_en' )->model($mailsTemplate)->show() !!}
                                                                                                                                                 
                     <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> @lang('app.btn.save')</button>
 

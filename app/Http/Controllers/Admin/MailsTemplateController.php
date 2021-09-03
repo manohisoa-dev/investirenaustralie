@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\admin;
 
 use App\Models\MailsTemplate;
@@ -9,14 +10,12 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Jleon\LaravelPnotify\Notify;
 
-class MailsTemplateController extends Controller
-{
+class MailsTemplateController extends Controller {
     public $viewDir = "admin.mails_template";
 
-    public function index()
-    {
+    public function index() {
         $records = MailsTemplate::findRequested();
-        return $this->view( "index", ['records' => $records] );
+        return $this->view("index", ['records' => $records]);
     }
 
     /**
@@ -24,8 +23,7 @@ class MailsTemplateController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         return $this->view("create");
     }
 
@@ -35,12 +33,28 @@ class MailsTemplateController extends Controller
      * @param    \Illuminate\Http\Request  $request
      * @return  \Illuminate\Http\Response
      */
-    public function store( Request $request )
-    {
+    public function store(Request $request) {
         $this->validate($request, MailsTemplate::validationRules());
+        $search = '';
+        $search .= $request->sujet_fr;
+        $search .= $request->template_fr;
+        $valeur_var = '';
+        preg_match_all('#\{.*?\}#si', $search, $matches);
+        if ($matches) {
+            foreach ($matches as $val) {
+                $valeur_var .= implode(', ', array_unique($val));
+            }
 
-        MailsTemplate::create($request->all());
-
+        }
+        $template = new MailsTemplate();
+        $template->params = $valeur_var;
+        $template->titre = $request->titre;
+        $template->sujet_fr = $request->sujet_fr;
+        $template->template_fr = $request->template_fr;
+        $template->sujet_en = $request->sujet_en;
+        $template->template_en = $request->template_en;
+        $template->save();
+        //MailsTemplate::create($request->all());
         # notification
         Notify::success('Mails Template a été créer avec succès');
         return back();
@@ -51,9 +65,8 @@ class MailsTemplateController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function show(Request $request, MailsTemplate $mailsTemplate)
-    {
-        return $this->view("show",['mailsTemplate' => $mailsTemplate]);
+    public function show(Request $request, MailsTemplate $mailsTemplate) {
+        return $this->view("show", ['mailsTemplate' => $mailsTemplate]);
     }
 
     /**
@@ -61,9 +74,8 @@ class MailsTemplateController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function edit(Request $request, MailsTemplate $mailsTemplate)
-    {
-        return $this->view( "edit", ['mailsTemplate' => $mailsTemplate] );
+    public function edit(Request $request, MailsTemplate $mailsTemplate) {
+        return $this->view("edit", ['mailsTemplate' => $mailsTemplate]);
     }
 
     /**
@@ -72,25 +84,36 @@ class MailsTemplateController extends Controller
      * @param    \Illuminate\Http\Request  $request
      * @return  \Illuminate\Http\Response
      */
-    public function update(Request $request, MailsTemplate $mailsTemplate)
-    {
-        if( $request->isXmlHttpRequest() )
-        {
-            $data = [$request->name  => $request->value];
-            $validator = \Validator::make( $data, MailsTemplate::validationRules( $request->name ) );
-            if($validator->fails())
-                return response($validator->errors()->first( $request->name),403);
+    public function update(Request $request, MailsTemplate $mailsTemplate) {
+
+        $search = '';
+        $search .= $request->sujet_fr;
+        $search .= $request->template_fr;
+        $valeur_var = '';
+        preg_match_all('#\{.*?\}#si', $search, $matches);
+        if ($matches) {
+            foreach ($matches as $val) {
+                $valeur_var .= implode(', ', array_unique($val));
+            }
+
+        }
+        if ($request->isXmlHttpRequest()) {
+            $data = [$request->name => $request->value];
+            $validator = \Validator::make($data, MailsTemplate::validationRules($request->name));
+            if ($validator->fails())
+                return response($validator->errors()->first($request->name), 403);
             $mailsTemplate->update($data);
             return "Record updated";
         }
 
         $this->validate($request, MailsTemplate::validationRules());
-
-        $mailsTemplate->update($request->all());
-
+        $mailsTemplate->update($request->all());        
+        MailsTemplate::where('id', $mailsTemplate->id)->update(['params' => $valeur_var]);
+        
         # notification
         Notify::success('Mails Template a été mise à jour avec succès');
-        return redirect(Auth::user()->isAdmin()?route('admin.mails-template.index'):route('admin.collaborators.admin.mails-template.index'));
+        return redirect(Auth::user()->isAdmin() ? route('admin.mails-template.index') :
+            route('admin.collaborators.admin.mails-template.index'));
     }
 
     /**
@@ -98,8 +121,7 @@ class MailsTemplateController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function destroy(Request $request, MailsTemplate $mailsTemplate)
-    {
+    public function destroy(Request $request, MailsTemplate $mailsTemplate) {
         $mailsTemplate->delete();
 
         # notification
@@ -107,9 +129,8 @@ class MailsTemplateController extends Controller
         return back();
     }
 
-    protected function view($view, $data = [])
-    {
-        return view($this->viewDir.".".$view, $data);
+    protected function view($view, $data = []) {
+        return view($this->viewDir . "." . $view, $data);
     }
 
 }

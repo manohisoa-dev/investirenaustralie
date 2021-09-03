@@ -28,6 +28,7 @@ use App\Models\ProductsImage;
 use App\Mail\MailTemplate;
 use App\Models\MailsTemplate;
 use Mail;
+use App\Models\TemplateModel;
 
 class ProductController extends Controller {
 
@@ -318,6 +319,9 @@ class ProductController extends Controller {
     }
 
     public function nouveauProgrammes() {
+        /*$send = new TemplateModel();
+        $vars = array('{Nom AFA}'=>'Rakoto','{Ville}'=>'Ankadifotsy','{Etat}'=>'Mada','{Nom Programme}'=>'pro 897');
+        $send->sendMailNotification(2,$vars,'dev4.easydata@gmail.com');*/
         $lapls = Localisation::select('localizations.*')->join('users',
             'users.location_id', '=', 'localizations.id')->where('users.role', '=', '4')->groupBy('localizations.locality')->get();
 
@@ -384,6 +388,10 @@ class ProductController extends Controller {
 
     public function send_notification_creation($id_produit) {
         $product = Product::find($id_produit);
+        $localisation = Localisation::find($product->location_id);
+        $state = State::find($product->state_id);
+        $user = User::find($product->author_id);
+
 
         $template = MailsTemplate::where('id', 2)->get();
         $lang = App::getLocale();
@@ -391,37 +399,24 @@ class ProductController extends Controller {
         $vars = array(
             '{Date system}' => Carbon::now()->toFormattedDateString(),
             '{Heure system}' => Carbon::now()->toTimeString(),
-            '{Ville}' => 'Antananarivo',
-            '{Etat}' => 'Madagascar',
-            '{Nom Programme}' => 'My progromme',
-            '{Code Postal}' => '476');
-        echo strtr($template[0]->$body, $vars);
-        /*preg_match_all("!\{(\w+)\}!", $template[0]->$body, $matches);
-        foreach ($matches[1] as $val) {
-        echo $val . '<br>';
-        }*/
-        /*$body = '';
-        $body .= '<table class="table">';
-        $body .= '<tr><td width="30%">Categorie</td><td>' . $product->category->title .
-        '</td></tr>';
-        $body .= '<tr><td width="30%">Titre</td><td>' . $product->title . '</td></tr>';
-        $body .= '<tr><td width="30%">Auteur</td><td>' . $product->author->name .
-        '</td></tr>';
-        $body .= '</table><br><br>';
+            '{Ville}' => $localisation->locality,
+            '{Etat}' => $state->content,
+            '{Nom Programme}' => $product->title,
+            '{Code Postal}' => $localisation->postalCode);
+        $sujet = $user->name . ' - ' . $product->title;
+        $content = strtr($template[0]->$body, $vars);
 
-        $body .= 'Lorem ipsum represents a long-held tradition for designers, typographers and the like.';
-        $content = ['title' => 'Nouveau programme / produit', 'body' => $body];
-        $email_to = 'razafindraiber@gmail.com';
-        Mail::to($email_to)->send(new MailTemplate($content,
-        'Nouveau programme / produit'));*/
+        $content = ['title' => '', 'body' => $content];
+        $email_to = $user->email;
+        Mail::to($email_to)->send(new MailTemplate($content, $sujet));
     }
 
     function save_location($country, $suburb, $postalCode, $locality, $route) {
-        $adresse = $route . ' ' . $suburb . ' ' . $locality;
-        $coordonne_tab = set_coordooner($adresse);
+        $adresse = $route . ', ' . $locality . ' ' . $postalCode . ', ' . $country;
+        $coordonne_tab = geocodeAddress($adresse);
         if ($coordonne_tab) {
-            $latitude = $coordonne_tab['user_lat'];
-            $longitude = $coordonne_tab['user_long'];
+            $latitude = $coordonne_tab['lat'];
+            $longitude = $coordonne_tab['lng'];
         } else {
             $latitude = '';
             $longitude = '';
@@ -472,8 +467,9 @@ class ProductController extends Controller {
         $programme->save();
 
         // // save translation
-        // $detectLang = getGTranslateLangDetect($content);
-        // $detectLang==='fr'?setTranslate('fr','en',$content,'programme',$programme):setTranslate('en','fr',$content,'programme',$programme);
+        $detectLang = getGTranslateLangDetect($content);
+        $detectLang === 'fr' ? setTranslate('fr', 'en', $content, 'programme', $programme) :
+            setTranslate('en', 'fr', $content, 'programme', $programme);
 
         return $programme->id;
     }
@@ -552,8 +548,6 @@ class ProductController extends Controller {
     }
 
     public function saveProgramme(Request $request) {
-        //$this->send_notification_creation(23);
-        //dd('vita');
         $anciennete = $request->ancienneteBien;
         $nature = $request->natureBien;
 
@@ -603,6 +597,7 @@ class ProductController extends Controller {
                 $this->save_fond_dossier($value, $id_programme);
             }
         }
+        $this->send_notification_creation($id_programme);
 
         # notification
         return redirect()->route('mes-programmes')->with('success',
@@ -737,25 +732,28 @@ class ProductController extends Controller {
     }
 
     public function updateProgramme(Request $request) {
-        $adresse = $request->display_address . ' ' . $request->suburb . ' ' . $request->ville .
-            ' Australie';
-        $coordonne_tab = set_coordooner($adresse);
-        if ($coordonne_tab) {
-            $latitude = $coordonne_tab['user_lat'];
-            $longitude = $coordonne_tab['user_long'];
-        } else {
-            $latitude = '';
-            $longitude = '';
-        }
-
         $product = Product::find($request->id);
         //modification localisation
         if ($request->location_Id != 0) {
-            Localisation::where('id', $request->location_Id)->update(['area_level_1' => $request->suburb,
-                'country' => $request->countryId, 'postalCode' => $request->postalCode,
-                'locality' => $request->ville, 'route' => $request->display_address, 'longitude' =>
-                $longitude, 'latitude' => $latitude]);
-            $id_location = $request->location_Id;
+            $localisation = Localisation::find($product->location_id);
+            if ($localisation->route != $request->display_address || $localisation->locality !=
+                $request->ville) {
+                $adresse = $request->display_address . ', ' . $request->ville . ' ' . $request->postalCode .
+                    ', ' . $request->countryId;
+                $coordonne_tab = geocodeAddress($adresse);
+                if ($coordonne_tab) {
+                    $latitude = $coordonne_tab['lat'];
+                    $longitude = $coordonne_tab['lng'];
+                } else {
+                    $latitude = '';
+                    $longitude = '';
+                }
+                Localisation::where('id', $product->location_id)->update(['area_level_1' => $request->suburb,
+                    'country' => $request->countryId, 'postalCode' => $request->postalCode,
+                    'locality' => $request->ville, 'route' => $request->display_address, 'longitude' =>
+                    $longitude, 'latitude' => $latitude]);
+                $id_location = $product->location_id;
+            }
         } else {
             $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
                 $request->ville, $request->display_address);
@@ -793,15 +791,17 @@ class ProductController extends Controller {
             $localisation = Localisation::find($product->location_id);
             if ($localisation->route != $request->display_address || $localisation->locality !=
                 $request->ville_product) {
-                $adresse = $request->display_address . ' ' . $request->suburb_product . ' ' . $request->ville_product;
-                $coordonne_tab = set_coordooner($adresse);
+                $adresse = $request->display_address . ', ' . $request->ville_product . ' ' . $request->postalCode_product .
+                    ', ' . $request->countryId_product;
+                $coordonne_tab = geocodeAddress($adresse);
                 if ($coordonne_tab) {
-                    $latitude = $coordonne_tab['user_lat'];
-                    $longitude = $coordonne_tab['user_long'];
+                    $latitude = $coordonne_tab['lat'];
+                    $longitude = $coordonne_tab['lng'];
                 } else {
                     $latitude = '';
                     $longitude = '';
                 }
+
                 Localisation::where('id', $product->location_id)->update(['area_level_1' => $request->suburb_product,
                     'country' => $request->countryId_product, 'postalCode' => $request->postalCode_product,
                     'locality' => $request->ville_product, 'route' => $request->display_address,
@@ -1027,11 +1027,13 @@ class ProductController extends Controller {
             $localisation = Localisation::find($product->location_id);
             if ($localisation->route != $request->display_address_product || $localisation->locality !=
                 $request->ville_product) {
-                $adresse = $request->display_address_product . ' ' . $request->suburb_product . ' ' . $request->ville_product;
-                $coordonne_tab = set_coordooner($adresse);
+                $adresse = $request->display_address_product . ', ' . $request->ville_product .
+                    ' ' . $request->postalCode_product . ', ' . $request->countryId_product;
+
+                $coordonne_tab = geocodeAddress($adresse);
                 if ($coordonne_tab) {
-                    $latitude = $coordonne_tab['user_lat'];
-                    $longitude = $coordonne_tab['user_long'];
+                    $latitude = $coordonne_tab['lat'];
+                    $longitude = $coordonne_tab['lng'];
                 } else {
                     $latitude = '';
                     $longitude = '';
