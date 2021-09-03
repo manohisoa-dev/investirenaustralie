@@ -22,7 +22,7 @@
                         </span>
                     </div>
                 </div>
-                <div class="checkbox m-100px-l p-10px-l">
+                <div class="checkbox m-100px-lg p-10px-l">
                     <div class="custom-control custom-switch">
                         <input type="checkbox" name="sub_env" class="custom-control-input" id="shop-notification-1" checked="checked">
                         <label class="custom-control-label" for="shop-notification-1">@lang('app.input.surround_suburbs')</label>
