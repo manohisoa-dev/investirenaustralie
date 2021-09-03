@@ -39,7 +39,7 @@
                     {!! \Nvd\Crud\Form::input('titre','text')->show() !!}                                            
                     {!! \Nvd\Crud\Form::input('sujet_fr','text')->show() !!}                                            
                     {!! \Nvd\Crud\Form::textarea( 'template_fr' )->show() !!}
-					{!! \Nvd\Crud\Form::input('sujet_en','text')->show() !!}                                            
+					{!! \Nvd\Crud\Form::input('sujet_en','text')->show() !!}                                         
                     {!! \Nvd\Crud\Form::textarea( 'template_en' )->show() !!}
                                                                                     
                     <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> @lang('app.btn.create')</button>

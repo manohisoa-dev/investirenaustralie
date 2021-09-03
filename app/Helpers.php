@@ -545,7 +545,7 @@ if (!function_exists('set_coordooner')) {
 
 if (!function_exists('geocodeAddress')) {
     function geocodeAddress($address) {
-        $apikey = env('GMAP_API_KEY');
+        $apikey = 'AIzaSyD2izG_M7K3gP6pFUH5cyzmDjuGpOYfgc4';
         $data = array(
             'address' => '',
             'lat' => '',

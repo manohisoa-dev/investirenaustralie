@@ -43,6 +43,7 @@
 						{!!\Nvd\Crud\Html::sortableTh('template_fr','admin.mails-template.index','Template fr')!!}
 						{!!\Nvd\Crud\Html::sortableTh('sujet_en','admin.mails-template.index','Sujet en')!!}
 						{!!\Nvd\Crud\Html::sortableTh('template_en','admin.mails-template.index','Template en')!!}
+						{!!\Nvd\Crud\Html::sortableTh('params','admin.mails-template.index','Parametres')!!}
 						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.mails-template.index','Créer le')!!}
 						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.mails-template.index','Mis à jour le')!!}
 						<th><a href="javascript:void(0)">@lang('app.table.actions')</a></th>
@@ -55,6 +56,7 @@
 							<td><input type="text" class="form-control" name="template_fr" value="{{Request::input("template_fr")}}"></td>
 							<td><input type="text" class="form-control" name="sujet_en" value="{{Request::input("sujet_en")}}"></td>
 							<td><input type="text" class="form-control" name="template_en" value="{{Request::input("template_en")}}"></td>
+							<td><input type="text" class="form-control" name="params" value="{{Request::input("params")}}"></td>
 							<td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>
 							<td><input type="text" class="form-control" name="updated_at" value="{{Request::input("updated_at")}}"></td>
 							<td style="min-width: 6em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>
@@ -111,6 +113,15 @@
                                           data-url="{{ Auth::user()->isAdmin()?route('admin.mails-template.index'):route('admin.collaborators.admin.mails-template.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{str_limit(strip_tags($record->template_en),"100","...")}}</span>
                                    </td>
+								   <td>
+                                      <span class="editable"
+                                          data-type="text"
+                                          data-name="sujet_en"
+                                          data-value="{{ $record->params }}"
+                                          data-pk="{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ Auth::user()->isAdmin()?route('admin.mails-template.index'):route('admin.collaborators.admin.mails-template.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          >{{ $record->params }}</span>
+                                  </td>
                                    <td>{{$record->created_at ? $record->created_at->diffForHumans() : ""}}</td>
                                    <td>{{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}</td>
 								   <td class="actions-cell">
