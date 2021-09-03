@@ -91,6 +91,8 @@
     
     <script>
         $('#afa-form-modal').submit(function(event){
+            loadingPage();
+
             if(!$('#check-confirm-modal').is(":checked"))
             {
                 $('.row-confirm-modal').removeClass('hidden');
@@ -105,6 +107,7 @@
 					closeOnConfirm: true
 				},
 				function () {
+                    stopLoadingPage();
                     return false;
                 });
             }

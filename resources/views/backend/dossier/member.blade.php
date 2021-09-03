@@ -6,7 +6,7 @@
 
 @section('subcontent')
 
-	@if($aplActive->apl_id != 0)
+	{{-- @if($aplActive->apl_id != 0) --}}
     <div class="profile-content-area m-40px-tb">
 		<div class="card m-40px-b">
 			{{-- <div class="card-header">
@@ -184,27 +184,29 @@
                             </div>
                         </div>
 
-                        <div class="vertical-timeline-block">
-                            <div class="vertical-timeline-icon grenate-bg">
-                                <i class="fa fa-shopping-cart"></i>
-                            </div>
-                            <div class="vertical-timeline-content">
-                                <h2>@lang('app.txt.dossier.i_would_like_to_buy_this')</h2>
-                                <p>@lang('app.txt.dossier.i_would_like_to_buy_this.description')</p>
-                                <div class="row col-lg-12 m-15px-t">
-                                    @if (Auth::user()->hasAfa())
-                                        @if (Auth::user()->memberHasSendMr(1,Auth::user()->id,Auth::user()->afa->id))<span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-info white-color">@lang('app.waiting')</i></small></span>@endif
-                                    @endif
+                        @if (Auth::user()->isMove())
+                            <div class="vertical-timeline-block">
+                                <div class="vertical-timeline-icon grenate-bg">
+                                    <i class="fa fa-shopping-cart"></i>
+                                </div>
+                                <div class="vertical-timeline-content">
+                                    <h2>@lang('app.txt.dossier.i_would_like_to_buy_this')</h2>
+                                    <p>@lang('app.txt.dossier.i_would_like_to_buy_this.description')</p>
+                                    <div class="row col-lg-12 m-15px-t">
+                                        @if (Auth::user()->hasAfa())
+                                            @if (Auth::user()->memberHasSendMr(1,Auth::user()->id,Auth::user()->afa->id))<span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-info white-color">@lang('app.waiting')</i></small></span>@endif
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
 
                     </div>
                 </div>
 			</div>
 		</div>
 	</div>
-	@endif
+	{{-- @endif --}}
 
     <!-- Modal to show timeline each CA folder -->
     <div id="showInfoStepModal" class="modal fade" role="dialog">
@@ -333,7 +335,7 @@
                     stopLoadingPage();
 
                     if(data.response == 'false'){
-					swal("{{ trans('app.txt.upload_research_mandate') }}", "{{ trans('app.txt.pdf_upload_error') }}", "error");
+					    swal("{{ trans('app.txt.upload_research_mandate') }}", "{{ trans('app.txt.pdf_upload_error') }}", "error");
                     }else{
                         // Change ca status to 1: mandat recherche (mr) finalized
                         updateMrTable(mrId);

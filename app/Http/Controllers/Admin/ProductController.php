@@ -442,25 +442,28 @@ class ProductController extends Controller {
      * @return  \Illuminate\Http\Response
      */
     public function update(Request $request, Product $product) {
-        $adresse = $request->display_address . ' ' . $request->suburb . ' ' . $request->ville .
-            ' Australie';
-        $coordonne_tab = set_coordooner($adresse);
-        if ($coordonne_tab) {
-            $latitude = $coordonne_tab['user_lat'];
-            $longitude = $coordonne_tab['user_long'];
-        } else {
-            $latitude = '';
-            $longitude = '';
-        }
         if ($request->type == 'programme') {
-            dd($request->All());
             //modification localisation
+            $product = Product::find($request->programme_id);
             if ($request->location_Id != 0) {
-                Localisation::where('id', $request->location_Id)->update(['area_level_1' => $request->suburb,
-                    'country' => $request->countryId, 'postalCode' => $request->postalCode,
-                    'locality' => $request->ville, 'route' => $request->display_address, 'longitude' =>
-                    $longitude, 'latitude' => $latitude]);
-                $id_location = $request->location_Id;
+                $localisation = Localisation::find($product->location_id);
+                if ($localisation->route != $request->display_address || $localisation->locality !=
+                    $request->ville) {
+                    $adresse = $request->display_address . ' ' . $request->suburb . ' ' . $request->ville;
+                    $coordonne_tab = set_coordooner($adresse);
+                    if ($coordonne_tab) {
+                        $latitude = $coordonne_tab['user_lat'];
+                        $longitude = $coordonne_tab['user_long'];
+                    } else {
+                        $latitude = '';
+                        $longitude = '';
+                    }
+                    Localisation::where('id', $product->location_id)->update(['area_level_1' => $request->suburb,
+                        'country' => $request->countryId, 'postalCode' => $request->postalCode,
+                        'locality' => $request->ville, 'route' => $request->display_address,
+                        'longitude' => $longitude, 'latitude' => $latitude]);
+                    $id_location = $product->location_id;
+                }
             } else {
                 $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
                     $request->ville, $request->display_address);
@@ -596,7 +599,7 @@ class ProductController extends Controller {
                 $product->nb_parking_spots = $request->nombre_cutomer_parking;
             }
             $product->save();
-            
+
             // update translation
             updateTranslate('programme', $product, $request->content);
 

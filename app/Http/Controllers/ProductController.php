@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 use Auth;
+use App;
 
 use App\Models\Product;
 use App\Models\Category;
@@ -24,6 +25,9 @@ use App\Models\LiaDossier;
 use Jleon\LaravelPnotify\Notify;
 use Carbon\Carbon;
 use App\Models\ProductsImage;
+use App\Mail\MailTemplate;
+use App\Models\MailsTemplate;
+use Mail;
 
 class ProductController extends Controller {
 
@@ -378,6 +382,40 @@ class ProductController extends Controller {
         /**/
     }
 
+    public function send_notification_creation($id_produit) {
+        $product = Product::find($id_produit);
+
+        $template = MailsTemplate::where('id', 2)->get();
+        $lang = App::getLocale();
+        $body = 'template_' . $lang;
+        $vars = array(
+            '{Date system}' => Carbon::now()->toFormattedDateString(),
+            '{Heure system}' => Carbon::now()->toTimeString(),
+            '{Ville}' => 'Antananarivo',
+            '{Etat}' => 'Madagascar',
+            '{Nom Programme}' => 'My progromme',
+            '{Code Postal}' => '476');
+        echo strtr($template[0]->$body, $vars);
+        /*preg_match_all("!\{(\w+)\}!", $template[0]->$body, $matches);
+        foreach ($matches[1] as $val) {
+        echo $val . '<br>';
+        }*/
+        /*$body = '';
+        $body .= '<table class="table">';
+        $body .= '<tr><td width="30%">Categorie</td><td>' . $product->category->title .
+        '</td></tr>';
+        $body .= '<tr><td width="30%">Titre</td><td>' . $product->title . '</td></tr>';
+        $body .= '<tr><td width="30%">Auteur</td><td>' . $product->author->name .
+        '</td></tr>';
+        $body .= '</table><br><br>';
+
+        $body .= 'Lorem ipsum represents a long-held tradition for designers, typographers and the like.';
+        $content = ['title' => 'Nouveau programme / produit', 'body' => $body];
+        $email_to = 'razafindraiber@gmail.com';
+        Mail::to($email_to)->send(new MailTemplate($content,
+        'Nouveau programme / produit'));*/
+    }
+
     function save_location($country, $suburb, $postalCode, $locality, $route) {
         $adresse = $route . ' ' . $suburb . ' ' . $locality;
         $coordonne_tab = set_coordooner($adresse);
@@ -514,6 +552,8 @@ class ProductController extends Controller {
     }
 
     public function saveProgramme(Request $request) {
+        //$this->send_notification_creation(23);
+        //dd('vita');
         $anciennete = $request->ancienneteBien;
         $nature = $request->natureBien;
 
@@ -808,7 +848,7 @@ class ProductController extends Controller {
             $product->total_area = $request->total_area;
             $product->garage_spaces = $request->garage_spaces;
             $product->carport_spaces = $request->carport_spaces;
-            
+
             if ($product->ancienneteBien == 'Neuf' && $product->natureBien ==
                 'Programme immobilier') {
 
@@ -869,7 +909,7 @@ class ProductController extends Controller {
         $type_id, $cat_programmme_id, $postalCode, $state_id, $programme_id, $location_id,
         $superficie_jardin, $avoir_parking_voie_public, $avoir_piscine, $type_commission,
         $taux_commission, $dt_db_travaux, $dt_prevu_livraison, $avoir_bonus, $mt_bonus,
-        $property_detail, $nb_parking_spots) {
+        $property_detail, $nb_parking_spots, $min_area, $max_area) {
 
         $product = new Product();
         $lastId = Product::latest('id')->first();
@@ -927,6 +967,8 @@ class ProductController extends Controller {
         $product->dt_prevu_livraison = $dt_prevu_livraison;
         $product->property_detail = $property_detail;
         $product->nb_parking_spots = $nb_parking_spots;
+        $product->min_area = $min_area;
+        $product->max_area = $max_area;
         $product->validated_at = Carbon::now();
         $product->save();
 
@@ -953,15 +995,25 @@ class ProductController extends Controller {
         }
 
         if ($request->prg_anciennete && $request->prg_nature) {
-            $this->save_new_produit($request->prg_anciennete, $request->prg_nature, $titre_product,
-                $request->file('image'), $request->desc_product, 1, 0, $request->interior_area,
-                $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
-                $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
-                0, $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
-                $request->prg_cat_id, $request->postalCode_product, $request->state_id_product,
-                $request->id_programme, $id_location, 0, $avoir_parking, 0, $request->commision_product,
-                $taux_commission, $request->dt_db_travaux, $request->dt_prevu_livraison, $request->bonus_vente,
-                $request->bonus_amount, '', 0);
+            if ($request->prg_cat_id == 1) {
+                $this->save_new_produit($request->prg_anciennete, $request->prg_nature, $titre_product,
+                    $request->file('image'), $request->desc_product, 1, 0, '', $request->interior_area,
+                    $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
+                    $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
+                    0, $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
+                    $request->prg_cat_id, $request->postalCode_product, $request->state_id_product,
+                    $request->id_programme, $id_location, 0, $avoir_parking, 0, $request->commision_product,
+                    $taux_commission, $request->dt_db_travaux, $request->dt_prevu_livraison, $request->bonus_vente,
+                    $request->bonus_amount, '', 0, 0, 0);
+            } else {
+                $this->save_new_produit($request->prg_anciennete, $request->prg_nature, $titre_product,
+                    $request->file('image'), $request->desc_product, 1, 0, '', 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 1, date('Y'), $request->display_address_product, 0, $request->price, $request->price_max_prd,
+                    'AUD', $request->status, $request->product_type_id, $request->prg_cat_id, $request->postalCode_product,
+                    $request->state_id_product, $request->id_programme, $id_location, 0, $avoir_parking,
+                    0, $request->commision_product, $taux_commission, $request->dt_db_travaux, $request->dt_prevu_livraison,
+                    $request->bonus_vente, $request->bonus_amount, '', 0, $request->min_area, $request->max_area);
+            }
 
             return response()->json(['success' => 'true']);
         } else {
@@ -970,17 +1022,29 @@ class ProductController extends Controller {
     }
 
     public function ajaxModifProduct(Request $request) {
-        if ($request->id_location_product == 0) {
-            //create localisation
+        $product = Product::find($request->id_product);
+        if ($request->location_id != 0) {
+            $localisation = Localisation::find($product->location_id);
+            if ($localisation->route != $request->display_address_product || $localisation->locality !=
+                $request->ville_product) {
+                $adresse = $request->display_address_product . ' ' . $request->suburb_product . ' ' . $request->ville_product;
+                $coordonne_tab = set_coordooner($adresse);
+                if ($coordonne_tab) {
+                    $latitude = $coordonne_tab['user_lat'];
+                    $longitude = $coordonne_tab['user_long'];
+                } else {
+                    $latitude = '';
+                    $longitude = '';
+                }
+                Localisation::where('id', $product->location_id)->update(['area_level_1' => $request->suburb_product,
+                    'country' => $request->countryId_product, 'postalCode' => $request->postalCode_product,
+                    'locality' => $request->ville_product, 'route' => $request->display_address_product,
+                    'longitude' => $longitude, 'latitude' => $latitude]);
+                $id_location = $product->location_id;
+            }
+        } else {
             $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
                 $request->postalCode_product, $request->ville_product, $request->display_address_product);
-        } else {
-            $id_location = $request->id_location_product;
-            //modification localisation
-            Localisation::where('id', $request->id_location_product)->update(['area_level_1' =>
-                $request->suburb_product, 'country' => $request->countryId_product, 'postalCode' =>
-                $request->postalCode_product, 'locality' => $request->ville_product, 'route' =>
-                $request->display_address_product]);
         }
 
         $titre_product = $request->title_product;

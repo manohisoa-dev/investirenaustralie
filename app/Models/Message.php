@@ -18,7 +18,7 @@ class Message extends Model
         ->whereRaw('seen = 0')
         ->first();
     }
-
+    
     public static function unreadCountAfa(int $user_id){
         return Message::where('to_id', $user_id)
         ->selectRaw('from_id, COUNT(id) as count')
@@ -31,5 +31,12 @@ class Message extends Model
         ->whereRaw('seen = 0')
         ->get();
     }
-
+    
+    public static function unreadMessageNotification($user_id){
+        return Message::where('to_id', $user_id)
+        ->join('users','users.id','=','messages.from_id')
+        ->join('roles','roles.id','=','users.role')
+        ->whereRaw('seen = 0')
+        ->get(['messages.*','users.name','roles.id as from_role_id','roles.role_initial']);
+    }
 }

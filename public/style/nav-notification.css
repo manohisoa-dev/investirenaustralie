@@ -1,0 +1,67 @@
+.dropdown-item.dropdown-notification:active, .dropdown-item.dropdown-notification.active {
+color: #1d1e1f;
+text-decoration: none;
+background-color: #ffffff;
+}
+
+.dropdown-notification:hover .notification-read {
+color: #AE4435;
+}
+
+.dropdown-notification-all {
+text-align: center;
+padding-top: 2.5px;
+padding-bottom: 2.5px;
+font-style: oblique;
+background-color: #AE4435;
+color: white;
+}
+
+.dropdown-notification-all:hover {
+background-color: #AE4435;
+color: white;
+}
+
+.notifications-container {
+max-height: 300px;
+overflow: auto;
+}
+
+.notification-dropdown-menu {
+padding-bottom: 0;
+min-width: 528px;
+}
+
+.notification-img {
+display: inline-block;
+vertical-align: top;
+}
+
+.notifications-body {
+display: inline-block;
+}
+
+.notification-texte {
+text-align: left;
+margin: 0;
+}
+
+.notification-read {
+margin: 0;
+height: 48px;
+vertical-align: top;
+line-height: 48px;
+padding-left: 15px;
+color: white;
+float: right;
+}
+
+.notification-date {
+text-align: left;
+color: #2980b9;
+margin: 0;
+}
+
+.notification-solo {
+margin-top: 1rem;
+}
