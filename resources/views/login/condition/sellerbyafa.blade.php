@@ -53,7 +53,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="pull-left m-btn m-btn-theme" id="btn_abondon">@lang('app.btn.abandonner')</button>
-                <button type="button" class="m-btn m-btn-theme2nd" id="btn_login">@lang('app.btn.login')</button>
+                <button type="submit" class="m-btn m-btn-theme2nd" id="btn_login">@lang('app.btn.login')</button>
             </div>
         </div>
         </div>
@@ -182,6 +182,7 @@
 				}
 			},
 		});
+        
     </script>
     <style>
         .error {
@@ -201,8 +202,10 @@
 
         // Submit afa login
         $("#btn_login").on('click', function() {
-            $('#afaLoginForm').submit();
-            loadingPage();
+            if ($('#afaLoginForm').valid()) {
+                loadingPage();
+                $('#afaLoginForm').submit();
+            }
             return false;
         });
 

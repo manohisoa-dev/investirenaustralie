@@ -478,9 +478,8 @@ class MemberController extends Controller {
         $postCode = $product->location()->first()->postalCode;
 
         // if product is deposed with AFA (SBA)
-        if($product->seller()->first() !== null){
-            // $afas = User::ofRole(3)->isActive()->has('location')->where('id',$product->seller_id)->get();
-            $afas = $product->seller()->get();
+        if($product->isSellerByAfa()){
+            $afas = $product->afa();
         }else{
             $afas = User::ofRole(3)->isActive()->has('location')->hasPostalCode($postCode)->get(['users.*']);
         }
@@ -522,6 +521,9 @@ class MemberController extends Controller {
         $this->middleware('auth');
         $this->middleware('role:5');
 
+        $idProd = session('id_product');
+        $prod = Product::whereId($idProd)->first();
+
         $afa = null;
         $dt = Carbon::now();
         $dtDate = $dt->format('m-d-Y');
@@ -545,8 +547,10 @@ class MemberController extends Controller {
 
         // Update AFA
         Auth::user()->afa_id = $afa->id;
-        Auth::user()->afa_ends_at = \Carbon\Carbon::now()->addDays(option('payment.afa_ends_at',
+        if(!$prod->isSellerByAfa()){
+            Auth::user()->afa_ends_at = \Carbon\Carbon::now()->addDays(option('payment.afa_ends_at',
             Parameter::nbDayEndAfa()));
+        }
         Auth::user()->save();
 
         // Notify User

@@ -39,7 +39,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <a href="{{url('shop/search?state=&city=&suburb=&sub_env=on&prod=Tous') }}" class="close float-right btn-refresh" aria-label="refresh" title="@lang('app.txt.reset_search')">
-                                    <span aria-hidden="true" class="small"><i class="icon-refresh"></i></span>
+                                    <span aria-hidden="true" class="small"><i class="icon-refresh" style="background: #555658;padding:5px;font-weight: 900;"></i></span>
                                 </a>
                             </div>
                         </div>

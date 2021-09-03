@@ -41,19 +41,20 @@
                                             
                                             {{-- Registering AFA --}}
                                             <fieldset>
+                                                <input type="hidden" name="afa_id" value="{{ session('afa_id')?session('afa_id'):'' }}">
                                                 <legend>@lang('app.txt.registering_afa')</legend>
                                                 <div class="form-group">
                                                     <label class="col-sm-3 control-label" for="login">@lang('app.txt.afa_name') *</label>
                                                     <div class="col-sm-12">
                                                         <input type="text" class="form-control" id="login" name="login_afa" placeholder="@lang('app.txt.afa_name')" value="{{ session('afa_name')?session('afa_name'): (old('login')?old('login'):'') }}" readonly required>
-                                                        <span class="text-danger">{{ $errors->first('login') }}</span>
+                                                        <span class="text-danger">{{ $errors->first('login_afa') }}</span>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-sm-3 control-label" for="immat">@lang('app.txt.afa_id') *</label>
                                                     <div class="col-sm-12">
-                                                        <input type="text" class="form-control" id="immat" name="immat_afa" placeholder="AFA-XXXXX" value="{{ session('afa_id')?session('afa_id'): (old('email')?old('email'):'') }}" readonly required>
-                                                        <span class="text-danger">{{ $errors->first('immat') }}</span>
+                                                        <input type="text" class="form-control" id="immat" name="immat_afa" placeholder="AFA-XXXXX" value="{{ session('afa_immat')?session('afa_immat'): (old('immat_afa')?old('immat_afa'):'') }}" readonly required>
+                                                        <span class="text-danger">{{ $errors->first('immat_afa') }}</span>
                                                     </div>
                                                 </div>
                                             </fieldset>

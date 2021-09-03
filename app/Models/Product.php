@@ -540,5 +540,25 @@ class Product extends Model {
         return false;
     }
 
+    /**
+     * Check if product is save by Seller by afa.
+     */
+    public function isSellerByAfa()
+    {
+        if($this->author->afa_id !== 0){
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if product is save by Seller by afa.
+     */
+    public function afa()
+    {
+        return User::whereId($this->author->afa_id)->get();
+    }
+
 }
 
