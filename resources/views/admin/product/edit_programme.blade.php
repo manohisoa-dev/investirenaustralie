@@ -1588,19 +1588,19 @@
 							<div class="col-lg-3">
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_suburb')</label>
-									<input name="suburb_product" id="suburb_product" class="form-control" type="text" value="">
+									<input name="suburb_product" id="suburb_product" class="form-control" type="text" value="" readonly="">
 								</div>
 							</div>
 							<div class="col-lg-3">
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_ville')</label>
-									<input name="ville_product" id="ville_product" class="form-control" type="text">
+									<input name="ville_product" id="ville_product" class="form-control" type="text" readonly="">
 								</div>  
 							</div>
 							<div class="col-lg-3">
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_cp') *</label>
-									<input name="postalCode_product" id="postalCode_product" class="form-control" type="text" value="">
+									<input name="postalCode_product" id="postalCode_product" class="form-control" type="text" value="" readonly="">
 								</div>
 							</div>
 						</div>
@@ -1608,13 +1608,13 @@
 							<div class="col-lg-4">
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_adresse') *</label>
-									<input name="display_address_product" id="display_address_product" class="form-control" type="text" value="">
+									<input name="display_address_product" id="display_address_product" class="form-control" type="text" value="" readonly="">
 								</div>
 							</div>
 							<div class="col-lg-4">
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_etat') *</label>
-									<select class="form-control" name="state_id_product" id="state_id_product" style="width:100%">
+									<select class="form-control" name="state_id_product" id="state_id_product" style="width:100%" disabled="disabled">
 										<option value="">Sélectionner état...</option>
 										@foreach(\App\Models\State::all() as $state)
 											<option value="{{$state->id}}">{{$state->content}}</option>
@@ -1625,7 +1625,7 @@
 							<div class="col-lg-4">
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_pays')</label>
-									<select class="form-control" name="countryId_product" id="countryId_product" style="width:100%">
+									<select class="form-control" name="countryId_product" id="countryId_product" style="width:100%" disabled="disabled">
 										@foreach(\App\Models\Country::where('id',12)->get() as $country)
 											<option value="{{$country->code}}">{{$country->content}}</option>
 										@endforeach
