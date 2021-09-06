@@ -257,7 +257,7 @@
 
         function showAfa(afa){
             var immat = afa.immat;
-            var endRelation = '{{ Auth::user()->afa_ends_at }}';
+            var endRelation = '{{ Auth::user()->afa_ends_at?Auth::user()->afa_ends_at:"---" }}';
             var titleModal = "Info AFA";
             var content = "";
             

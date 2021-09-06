@@ -23,11 +23,7 @@
                         </div>
                     </div>
                 @empty
-                    <div id="ads" class="ads-section col-lg-12 p-15px-tb white-bg">
-                        <div class="p-5px-t p-10px-b border-top-1 border-color-gray">
-                            <p class="text-center">@lang('app.txt.no_ads')</p>
-                        </div>
-                    </div>
+                    <div class="border-top-1 border-color-gray p-15px-tb text-center">@lang('app.txt.no_ads')</div>
                 @endforelse
             </div>
         </div>
@@ -38,7 +34,7 @@
             <span class="h5 m-0px font-w-600 dark-color">@lang('app.recent.product')</span>
         </div>
         <div class="list-group list-group-flush">
-            @foreach($products as $product)
+            @forelse($products as $product)
             <a href="{{route('product.index',['product'=>$product->slug])}}" class="list-group-item list-group-item-action d-flex p15px-tb">
                 <div>
                     <div class="avatar-50 border-radius-5">
@@ -56,18 +52,20 @@
                 <a href="#"><i class="fa fa-bath"></i></a> @lang('app.num.bath', ['num'=>$product->bathrooms])
                 <a href="#"><i class="fa fa-car"></i></a> {{$product->garage_spaces?__('app.yes'):__('app.no')}}
             </div>
-            @endforeach
+            @empty
+                <div class="p-15px-tb text-center">@lang('app.txt.no_product_found')</div>
+            @endforelse
         </div>
     </div>
 
-    <div class="card m-35px-t">
-        @if(\Auth::check()&&\Auth::user()->hasRole('member'))
-        <section class="widget recent-properties clearfix">
-            <a href="{{route('member.contact', ['role'=>'admin'])}}" class="m-btn m-btn-theme col-sm-12"><i class="fa fa-envelope-open-o"></i> @lang('app.btn.contact_admin')</a>
-            <a href="{{route('member.contact', ['role'=>'apl'])}}" class="m-btn m-btn-theme4rd col-sm-12"><i class="fa fa-envelope-open-o"></i> @lang('app.btn.contact_apl')</a>
-        </section>
-        @endif
-    </div>
+    @if(\Auth::check()&&\Auth::user()->hasRole('member'))
+        <div class="card m-35px-t">
+            <section class="widget recent-properties clearfix">
+                <a href="{{route('member.contact', ['role'=>'admin'])}}" class="m-btn m-btn-theme col-sm-12"><i class="fa fa-envelope-open-o"></i> @lang('app.btn.contact_admin')</a>
+                <a href="{{route('member.contact', ['role'=>'apl'])}}" class="m-btn m-btn-theme4rd col-sm-12"><i class="fa fa-envelope-open-o"></i> @lang('app.btn.contact_apl')</a>
+            </section>
+        </div>
+    @endif
 
     <div class="card m-35px-t">
         <div class="card-header bg-transparent">
@@ -75,7 +73,7 @@
         </div>
 
         <div class="list-group list-group-flush">
-            @foreach($categories as $category)
+            @forelse($categories as $category)
             <a href="{{route('programme.all', \App\Models\Category::find($category->id))}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb">
                 <div>
                     <span class="theme2nd-bg p-5px-tb p-10px-lr border-radius-15 white-color small">{{$category->products_count}}</span> <span> {{ trans('app.txt.'.$category->title) }} </span>
@@ -93,7 +91,9 @@
                     </span>
                 </span>
             <span> {{ trans('app.txt.'.$category->title) }} </span><span class="theme2nd-bg p-5px-tb p-10px-lr border-radius-15 white-color small">{{$category->products_count}}<i class="fas fa-arrow-right small m-5px-l"></i></span> --}}
-            @endforeach
+            @empty
+                <div class="p-15px-tb col-lg-12 text-center"> @lang('app.txt.noinfo') </div>
+            @endforelse
         </div>
     </div>
 

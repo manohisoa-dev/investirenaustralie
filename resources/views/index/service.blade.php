@@ -95,7 +95,7 @@
                 </div>
             </div>
             <div class="row">
-                @foreach($categories as $category)
+                @forelse($categories as $category)
                     <div class="col-lg-3 col-sm-6 m-15px-tb">
                         <div class="p-20px p-50px-r border-all-1 border-color-white arrow-hover">
                             <a class="overlay-link" href="{{route('shop.index',$category)}}"></a>
@@ -103,7 +103,9 @@
                             <h5 class="font-1 font-w-600 white-color m-0px"><span class="theme2nd-bg p-5px-tb p-10px-lr border-radius-15 white-color small">{{$category->products_count}}</span> <span> {{ trans('app.txt.'.$category->title) }} </span></h5>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                <div class="col-lg-12 text-center"> @lang('app.txt.noinfo') </div>
+                @endforelse
             </div>
         </div>
     </section>
@@ -119,9 +121,11 @@
             </div>
 
             <div class="owl-carousel owl-no-overflow" data-items="3" data-nav-dots="true" data-md-items="2" data-sm-items="2" data-xs-items="1" data-xx-items="1" data-space="30" data-center="true" data-stage="50">
-                @foreach($products as $product)
+                @forelse($products as $product)
                     @include('product.single', ['item'=>$product, 'page_id'=>$item->id])
-                @endforeach
+                @empty
+                    <div class="text-center">@lang('app.txt.no_product_found')</div>
+                @endforelse
             </div>
         </div>
     </section>

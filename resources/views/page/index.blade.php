@@ -43,7 +43,7 @@
                                     </div>
                                     <div class="ads-content">
                                         {{-- size 714x298px --}}
-                                        <a href="{{$item->links}}" target="_blank"><img src="{{ asset($item->image->filepath) }}" alt="{{$item->title}}"></a>
+                                        <a href="{{$item->links}}" target="_blank"><img src="{{ $item->image?asset($item->image->filepath):'' }}" alt="{{$item->title}}"></a>
                                     </div>
                                     <div class="ads-footer p-15px-t">
                                         <div class="row col-lg-12">
@@ -304,9 +304,11 @@
             </div>
 
             <div class="owl-carousel owl-no-overflow" data-items="3" data-nav-dots="true" data-md-items="2" data-sm-items="2" data-xs-items="1" data-xx-items="1" data-space="30" data-center="true" data-stage="50">
-                @foreach($recentProducts as $product)
+                @forelse($recentProducts as $product)
                     @include('product.single', ['item'=>$product, 'page_id'=>$item->id])
-                @endforeach
+                @empty
+                    <div class="text-center">@lang('app.txt.no_product_found')</div>
+                @endforelse
             </div>
         </div>
     </section>
@@ -321,7 +323,7 @@
                 </div>
             </div>
             <div class="row">
-               @foreach($blogs as $blog)
+               @forelse($blogs as $blog)
                     <div class="col-lg-4 m-15px-tb">
                         <div class="hover-top transition blog-grid-overlay" style="background-image: url({{$blog->imageUrl()}}); ">
                             <div class="blog-gird-info">
@@ -335,7 +337,9 @@
                             </div>
                         </div>
                     </div>
-               @endforeach
+                @empty
+                    <div class="col-lg-12 text-center"> @lang('app.txt.noinfo') </div>
+               @endforelse
             </div>
         </div>
     </section>

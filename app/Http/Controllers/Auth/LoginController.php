@@ -274,8 +274,9 @@ class LoginController extends Controller
             App::setLocale('en');
             
             // set info afa in session
+            session()->put('afa_id',Auth::user()->id);
             session()->put('afa_name',Auth::user()->name);
-            session()->put('afa_id',Auth::user()->immat);
+            session()->put('afa_immat',Auth::user()->immat);
 
             // logout
             $this->guard()->logout();
