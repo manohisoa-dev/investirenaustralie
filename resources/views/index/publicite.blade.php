@@ -16,7 +16,7 @@
                         <span class="h2 dark-color font-w-600">{{ $item->title }}</span>
                     </div>
                     
-                    {!! $item->content !!}
+                    {!! $item->content?$item->content:trans('app.txt.noinfo') !!}
                     
                 </div>
                 <!-- Sidebar -->

@@ -478,12 +478,12 @@
         // price range slider
         var priceRange = document.getElementById('price-range1');
         noUiSlider.create(priceRange, {
-            start: [{{ $min_price_residentiel }}, {{ $max_price_residentiel }}],
+            start: [{{ $min_price_residentiel?($min_price_residentiel!==$max_price_residentiel?$min_price_residentiel:0):0 }}, {{ $max_price_residentiel?$max_price_residentiel:1 }}],
             connect: true,
             tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
             range: {
-                'min': {{ $min_price_residentiel }},
-                'max': {{ $max_price_residentiel }}
+                'min': {{ $min_price_residentiel?($min_price_residentiel!==$max_price_residentiel?$min_price_residentiel:0):0 }},
+                'max': {{ $max_price_residentiel?$max_price_residentiel:1 }}
             },
                 format: wNumb({
                 decimals: 0,
@@ -512,12 +512,12 @@
         // bedrooms range slider
         var bedrooms = document.getElementById('bedrooms');
         noUiSlider.create(bedrooms, {
-            start: [{{ $min_bedrooms_residentiel }}, {{ $max_bedrooms_residentiel }}],
+            start:  [{{ $min_bedrooms_residentiel?($min_bedrooms_residentiel!==$max_bedrooms_residentiel?$min_bedrooms_residentiel:0):0 }}, {{ $max_bedrooms_residentiel?$max_bedrooms_residentiel:1 }}],
             connect: true,
             tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
             range: {
-                'min': {{ $min_bedrooms_residentiel }},
-                'max': {{ $max_bedrooms_residentiel }}
+                'min': {{ $min_bedrooms_residentiel?($min_bedrooms_residentiel!==$max_bedrooms_residentiel?$min_bedrooms_residentiel:0):0 }},
+                'max': {{ $max_bedrooms_residentiel?$max_bedrooms_residentiel:1 }}
             },
                 format: wNumb({
                 decimals: 0,
@@ -668,12 +668,12 @@
         // prix slider
         var prix = document.getElementById('prix');
         noUiSlider.create(prix, {
-            start: [{{ $min_price_foncier }}, {{ $max_price_foncier }}],
+            start: [{{ $min_price_foncier?($min_price_foncier!==$max_price_foncier?$min_price_foncier:0):0 }}, {{ $max_price_foncier?$max_price_foncier:1 }}],
             connect: true,
             tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
             range: {
-                'min': {{ $min_price_foncier }},
-                'max': {{ $max_price_foncier }}
+                'min': {{ $min_price_foncier?($min_price_foncier!==$max_price_foncier?$min_price_foncier:0):0 }},
+                'max': {{ $max_price_foncier?$max_price_foncier:1 }}
             },
                 format: wNumb({
                 decimals: 0,
@@ -734,12 +734,12 @@
         // prix slider
         var prix = document.getElementById('prixInd');
         noUiSlider.create(prix, {
-            start: [{{ $min_price_industriel }}, {{ $max_price_industriel }}],
+            start: [{{ $min_price_industriel?($min_price_industriel!==$max_price_industriel?$min_price_industriel:0):0 }}, {{ $max_price_industriel?$max_price_industriel:1 }}],
             connect: true,
             tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
             range: {
-                'min': {{ $min_price_industriel }},
-                'max': {{ $max_price_industriel }}
+                'min': {{ $min_price_industriel?($min_price_industriel!==$max_price_industriel?$min_price_industriel:0):0 }},
+                'max': {{ $max_price_industriel?$max_price_industriel:1 }}
             },
                 format: wNumb({
                 decimals: 0,
@@ -770,12 +770,12 @@
         // prix slider
         var prix = document.getElementById('prixComm');
         noUiSlider.create(prix, {
-            start: [{{ $min_price_commercial }}, {{ $max_price_commercial }}],
+            start: [{{ $min_price_commercial?($min_price_commercial!==$max_price_commercial?$min_price_commercial:0):0 }}, {{ $max_price_commercial?$max_price_commercial:1 }}],
             connect: true,
             tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
             range: {
-                'min': {{ $min_price_commercial }},
-                'max': {{ $max_price_commercial }}
+                'min': {{ $min_price_commercial?($min_price_commercial!==$max_price_commercial?$min_price_commercial:0):0 }},
+                'max': {{ $max_price_commercial?$max_price_commercial:1 }}
             },
                 format: wNumb({
                 decimals: 0,
@@ -804,12 +804,12 @@
         // commercial area range slider
         var areaComm = document.getElementById('areaComm');
         noUiSlider.create(areaComm, {
-            start: [{{ $min_area_commercial }}, {{ $max_area_commercial }}],
+            start: [{{ $min_area_commercial?($min_area_commercial!==$max_area_commercial?$min_area_commercial:0):0 }}, {{ $max_area_commercial?$max_area_commercial:1 }}],
             connect: true,
             tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
             range: {
-                'min': {{ $min_area_commercial }},
-                'max': {{ $max_area_commercial }}
+                'min': {{ $min_area_commercial?($min_area_commercial!==$max_area_commercial?$min_area_commercial:0):0 }},
+                'max': {{ $max_area_commercial?$max_area_commercial:1 }}
             },
                 format: wNumb({
                 decimals: 0,
