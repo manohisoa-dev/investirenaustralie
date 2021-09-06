@@ -11,7 +11,7 @@
                 <a href="#">Types</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.type.index') }}">Listes</a>
+                <a href="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.type.index'):route('admin.type.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Edition</strong>
@@ -32,22 +32,24 @@
                 <h5>Mise à jour Type : {{$type->slug}}</h5>
             </div>
             <div class="ibox-content">
-                <form action="{{ route('admin.type.index')}}/{{$type->id}}" method="post">
+                <form action="{{ route('admin.type.index')}}/{{$type->id}}" method="post" id="formType">
 
                     {{ csrf_field() }}
 
                     {{ method_field("PUT") }}
-                                                                                                
-                            {!! \Nvd\Crud\Form::input('slug','text')->model($type)->show() !!}
-                                                                        
-                            {!! \Nvd\Crud\Form::input('title','text')->model($type)->show() !!}
-                                                                        
-                            {!! \Nvd\Crud\Form::input('content','text')->model($type)->show() !!}
-                                                                        
-                            {!! \Nvd\Crud\Form::input('object_type','text')->model($type)->show() !!}
-                                                                        
-                            {!! \Nvd\Crud\Form::input('author_id','text')->model($type)->show() !!}
-                                                                                                                                                
+                    <div class="form-group">
+						<label for="title">@lang('app.table.type') *</label>
+						<input name="title" id="title" class="form-control" type="text" value="{{$type->title}}">
+					</div>
+                    <div class="form-group">
+						<label>@lang('app.select_category') *</label> 
+						<select class="form-control" name="categories_id" id="categories_id">
+							<option value="">Choisir...</option>
+							@foreach($categories as $category)
+								<option value="{{$category->id}}" {{$type->categories_id == $category->id ?'selected="selected"':''}}> {{$category->title}}</option>
+							@endforeach
+						</select>
+					</div>                                                                                                                                                
                     <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Enregistrer</button>
 
                 </form>
@@ -56,3 +58,29 @@
     </div>
 </div>
 @endsection
+
+@section('custom-script')
+    <script>
+        $(document).ready(function(){			
+			$('#formType').validate({
+				rules: {
+					title: {
+						required: true
+					},
+					categories_id: {
+						required: true
+					}
+				},
+				messages: {
+					title: {
+						required: "@lang('app.txt.champobligatoire')"
+					},
+					categories_id: {
+						required: "@lang('app.txt.champobligatoire')"
+					}
+				}
+			});
+        }) ;
+    </script>
+@endsection
+

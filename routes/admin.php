@@ -249,6 +249,15 @@ Route::prefix('collaborators')->namespace('Admin')->as('admin.')->middleware(["a
     Route::put('/admin/category/{category}', 'CategoryController@update')->name('collaborators.admin.category.update');
     Route::delete('/admin/category/{category}', 'CategoryController@destroy')->name('collaborators.admin.category.destroy');
     Route::get('/admin/category/{category}/edit', 'CategoryController@edit')->name('collaborators.admin.category.edit');
+    
+    // route type
+    Route::get('/admin/type', 'TypeController@index')->name('collaborators.admin.type.index');
+    Route::post('/admin/type', 'TypeController@store')->name('collaborators.admin.type.store');
+    Route::get('/admin/type/create', 'TypeController@create')->name('collaborators.admin.type.create');
+    Route::get('/admin/type/{category}', 'TypeController@show')->name('collaborators.admin.type.show');
+    Route::put('/admin/type/{category}', 'TypeController@update')->name('collaborators.admin.type.update');
+    Route::delete('/admin/type/{category}', 'TypeController@destroy')->name('collaborators.admin.type.destroy');
+    Route::get('/admin/type/{category}/edit', 'TypeController@edit')->name('collaborators.admin.type.edit');
 
     // Route::resource('pub','PubController');
     Route::get('/admin/pub', 'PubController@index')->name('collaborators.admin.pub.index');

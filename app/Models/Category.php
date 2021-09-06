@@ -99,6 +99,11 @@ class Category extends Model {
         return $this->belongsToMany(Product::class, 'objects_categories', 'category_id', 'object_id')
             ->wherePivot('object_type', Blog::class);
     }
+    
+    public function types()
+    {
+        return $this->hasOne(Type::class, 'id', 'categories_id');
+    }
 
 }
 

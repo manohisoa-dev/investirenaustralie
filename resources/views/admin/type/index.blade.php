@@ -8,7 +8,7 @@
         <h2>Types</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.type.index') }}">Types</a>
+                <a href="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.type.index'):route('admin.type.index') }}">Types</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Listes</strong>
@@ -17,8 +17,9 @@
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
-            <a href="{{ route('v2.type.create') }}" type="button" class="btn btn-primary btn-block">
-                <i class="fa fa-plus"></i> Ajouter un nouveau Type            </a>
+            <a href="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.type.create'):route('admin.type.create') }}" type="button" class="btn btn-primary btn-block">
+                <i class="fa fa-plus"></i> Ajouter un nouveau Type            
+			</a>
         </div>
     </div>
 </div>
@@ -38,10 +39,8 @@
                 <thead>
                     <tr class="header-row">
 						{!!\Nvd\Crud\Html::sortableTh('id','admin.type.index','Id')!!}
-						{!!\Nvd\Crud\Html::sortableTh('slug','admin.type.index','Slug')!!}
 						{!!\Nvd\Crud\Html::sortableTh('title','admin.type.index','Title')!!}
-						{!!\Nvd\Crud\Html::sortableTh('content','admin.type.index','Content')!!}
-						{!!\Nvd\Crud\Html::sortableTh('object_type','admin.type.index','Object Type')!!}
+						{!!\Nvd\Crud\Html::sortableTh('categories_id','admin.type.index','Catégorie')!!}
 						{!!\Nvd\Crud\Html::sortableTh('author_id','admin.type.index','Author Id')!!}
 						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.type.index','Créer le')!!}
 						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.type.index','Mise à jour le')!!}
@@ -50,10 +49,15 @@
                     <tr class="search-row">
                         <form class="search-form">
 							<td><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
-							<td><input type="text" class="form-control" name="slug" value="{{Request::input("slug")}}"></td>
 							<td><input type="text" class="form-control" name="title" value="{{Request::input("title")}}"></td>
-							<td><input type="text" class="form-control" name="content" value="{{Request::input("content")}}"></td>
-							<td><input type="text" class="form-control" name="object_type" value="{{Request::input("object_type")}}"></td>
+							<td>
+								<select class="form-control" name="categories_id">
+									<option value="">Choisir categorie</option>
+									@foreach($categories as $category)
+										<option value="{{$category->id}}" {{@$_GET['categories_id']==$category->id?'selected':''}}> {{$category->title}}</option>
+									@endforeach
+								</select>
+							</td>
 							<td><input type="text" class="form-control" name="author_id" value="{{Request::input("author_id")}}"></td>
 							<td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>
 							<td><input type="text" class="form-control" name="updated_at" value="{{Request::input("updated_at")}}"></td>
@@ -63,63 +67,50 @@
                     </thead>
 
                     <tbody>
-                        @forelse ( $records as $record )
+                        @forelse ( $records as $index =>$record )
                             <tr>
-                                                                <td>
-                                                                            {{ $record->id }}
-                                                                    </td>
-                                                                <td>
-                                                                        <span class="editable"
-                                          data-type="text"
-                                          data-name="slug"
-                                          data-value="{{ $record->slug }}"
-                                          data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.type.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->slug }}</span>
-                                                                    </td>
-                                                                <td>
-                                                                        <span class="editable"
+								<td>{{ $index + $records->firstItem() }}</td>
+                            	<td>
+                                	<span class="editable"
                                           data-type="text"
                                           data-name="title"
                                           data-value="{{ $record->title }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
                                           data-url="{{ route('admin.type.index')}}/{{ $record->{$record->getKeyName()} }}"
                                           >{{ $record->title }}</span>
-                                                                    </td>
-                                                                <td>
-                                                                        <span class="editable"
+                                </td>
+                                                                
+                                <td>
+                                     <span class="editable"
                                           data-type="text"
-                                          data-name="content"
-                                          data-value="{{ $record->content }}"
+                                          data-name="categories_id"
+                                          data-value="{{ $record->categories_id }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
                                           data-url="{{ route('admin.type.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->content }}</span>
-                                                                    </td>
-                                                                <td>
-                                                                        <span class="editable"
-                                          data-type="text"
-                                          data-name="object_type"
-                                          data-value="{{ $record->object_type }}"
-                                          data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.type.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->object_type }}</span>
-                                                                    </td>
-                                                                <td>
-                                                                        <span class="editable"
+                                          >{{ $record->categorie->title }}</span>
+                                 </td>
+                                 <td>
+                                     <span class="editable"
                                           data-type="text"
                                           data-name="author_id"
-                                          data-value="{{ $record->author_id }}"
+                                          data-value="{{ $record->author->name }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
                                           data-url="{{ route('admin.type.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->author_id }}</span>
-                                                                    </td>
-                                                                <td>
-                                                                            {{ $record->created_at ? $record->created_at->diffForHumans() : '' }}
-                                                                    </td>
-                                                                <td>
-                                                                            {{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}
-                                                                    </td>
-                                                                @include( 'vendor.crud.single-page-templates.common.actions', [ 'url' => route('admin.type.index'), 'record' => $record ] )
+                                          >{{ $record->author->name }}</span>
+                                 </td>
+                                 <td>{{ $record->created_at ? $record->created_at->diffForHumans() : '' }}</td>
+                                 <td> {{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}</td>
+								 <td class="actions-cell text-center" width="12%">
+									<form class="form-inline" action="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.type.destroy',$record):route('admin.type.destroy',$record)}}" method="POST">
+										<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.type.edit', $record):route('admin.type.edit', $record)}}" title="Modification" class="btn btn-default btn-circle">
+											<i class="fa fa-pencil-square-o"></i>
+										</a>&nbsp;&nbsp;								
+										{{ csrf_field() }}
+										{{ method_field('DELETE') }}
+										<button type="button" class="btn btn-default btn-circle" title="Suppression" id="delRecord"><i class="fa fa-times text-danger"></i>
+										</button>
+									</form>
+								</td>
                             </tr>
                         @empty
                             @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 9])
@@ -129,13 +120,31 @@
                 </table>
 
                 @include('vendor.crud.single-page-templates.common.pagination', [ 'records' => $records ] )
-
-				<script>
-					$(".editable").editable({ajaxOptions:{method:'PUT'}});
-				</script>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+@endsection
+
+@section('custom-script')
+	<script src="{{ asset('administrator/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
+	<script>
+		$(document.body).on('click', '#delRecord', function (event) {
+        	event.preventDefault();
+        	var $form = $(this).closest('form');
+				swal({
+					title: "@lang('app.table.confirm_delete')",
+					type: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#DD6B55",
+					confirmButtonText: "@lang('app.yes')",
+					cancelButtonText: "@lang('app.btn.cancel')",
+					closeOnConfirm: true
+				},
+				function () {
+                    $form.submit();
+                });
+      });
+	</script>
 @endsection
