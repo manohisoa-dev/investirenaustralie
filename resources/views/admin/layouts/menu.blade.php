@@ -139,6 +139,13 @@
             <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.category.index'):route('admin.category.index')}}">@lang('app.txt.list_categories')</a></li>
         </ul>
     </li>
+	<li class="{{Request::is('*/type/*') || Request::is('*/type') ? 'active' : ''}}">
+        <a href="#"><i class="fa fa-table" title="Catégories"></i> <span class="nav-label">Types</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse">
+            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.type.create'):route('admin.type.create')}}">Ajouter type</a></li>
+            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.type.index'):route('admin.type.index')}}">Liste des types</a></li>
+        </ul>
+    </li>
     <li class="{{Request::is('*/pub/*') || Request::is('*/pub') ? 'active' : ''}}">
         <a href="#"><i class="fa fa-money" title="Publicités"></i> <span class="nav-label">@lang('app.admin.pubs')</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">

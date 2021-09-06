@@ -11,7 +11,7 @@
                 <a href="#">Types</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.type.index') }}">Listes</a>
+                <a href="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.type.index'):route('admin.type.index') }}">Listes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Ajout</strong>
@@ -32,20 +32,22 @@
                 <h5>Ajouter un nouveau Type</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-validation form-padding" action="{{ route('admin.type.store') }}" method="post">
+                <form class="form-validation form-padding" action="{{ route('admin.type.store') }}" method="post" id="formType">
 
-                    {{ csrf_field() }}
-                                                        
-                    {!! \Nvd\Crud\Form::input('slug','text')->show() !!}
-                                            
-                    {!! \Nvd\Crud\Form::input('title','text')->show() !!}
-                                            
-                    {!! \Nvd\Crud\Form::input('content','text')->show() !!}
-                                            
-                    {!! \Nvd\Crud\Form::input('object_type','text')->show() !!}
-                                            
-                    {!! \Nvd\Crud\Form::input('author_id','text')->show() !!}
-                                                                                    
+                    {{ csrf_field() }}                               
+                    <div class="form-group">
+						<label for="title">@lang('app.table.type') *</label>
+						<input name="title" id="title" class="form-control" type="text" value="">
+					</div>
+                    <div class="form-group">
+						<label>@lang('app.select_category') *</label> 
+						<select class="form-control" name="categories_id" id="categories_id">
+							<option value="">Choisir...</option>
+							@foreach($categories as $category)
+								<option value="{{$category->id}}"> {{$category->title}}</option>
+							@endforeach
+						</select>
+					</div>                                                                                    
                     <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Créer</button>
 
                 </form>
@@ -55,3 +57,37 @@
 </div>
 
 @endsection
+
+@section('custom-script')
+    <script>
+        $(document).ready(function(){
+			$('#formType').validate({
+			    ignore: [],
+				rules: {
+					title: {
+						required: true
+					},
+					categories_id: {
+						required: true
+					}
+				},
+				messages: {
+					title: {
+						required: "@lang('app.txt.champobligatoire')"
+					},
+					categories_id: {
+						required: "@lang('app.txt.champobligatoire')"
+					}
+				},
+				errorPlacement: function ( error, element ) {
+					if(element.parent().hasClass('input-group')){
+						error.insertBefore( element.parent() );
+					}else{
+						error.insertAfter( element );
+					}
+				},
+			});
+        });
+    </script>
+@endsection
+
