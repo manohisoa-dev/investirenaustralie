@@ -161,7 +161,7 @@
                                 @if (sizeOf($items)!==0)
                                     @include('programme.all',['items'=>$items])
                                 @else
-                                    <h4>@lang('app.txt.no_program')</h4>
+                                    <p class="text-center m-100px-l p-100px-l">@lang('app.txt.no_program')</p>
                                 @endif
                             </div>
                             <div class="row">

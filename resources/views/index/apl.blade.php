@@ -23,13 +23,13 @@
                             @forelse (App\Models\User::where('location_id','=',$item->id)->get() as $apl)
                             <p><a href="{{ route('show.apl',['id'=>$apl->id]) }}" target="_blank"><i class="fa fa-map-marker"></i> {{ $apl->name }}</a></p>
                             @empty
-                                <p>@lang('app.txt.noinfo')</p>
+                                <div class="p-15px-tb p-5px-lr text-center">@lang('app.txt.noinfo')</div>
                             @endforelse
                         </div>
                     </div>
                     @empty
                     <div class="acco-group white-bg">
-                        <p><i class="fa fa-map-marker"></i> @lang('app.txt.noinfo')</p>
+                      <div class="p-100px-tb p-5px-lr text-center">@lang('app.txt.no_apl')</div>
                     </div>
                     @endforelse
                   </div>

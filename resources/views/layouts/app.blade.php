@@ -254,7 +254,7 @@
                                                                 </ul>
                                                             </div>
                                                         @empty
-                                                            <span>@lang('app.txt.noinfo')</span>
+                                                            <div class="text-center p-15px-tb">@lang('app.txt.noinfo')</div>
                                                         @endforelse
                                                     @endif
                                                 </div>
@@ -485,7 +485,7 @@
                         <h4 class="modal-title white-color text-center">{{ strtoupper(trans('member.message.transaction.title')) }} </h4>
                     </div>
                     <div class="modal-body">
-                    {!! trans('member.message.transaction.content', ['name'=> Auth::user()->isPerson()?(Auth::user()->userinfos()->first()->last_name.' '.Auth::user()->userinfos()->first()->first_name):Auth::user()->userinfos()->first()->orga_name, 'url'=>url(Auth::user()->roleUser->role_initial), 'id'=>'btnDashboard' ]) !!}
+                    {!! trans('member.message.transaction.content', ['name'=> Auth::user()->isPerson()?(Auth::user()->userinfos()->first()?Auth::user()->userinfos()->first()->last_name.' '.Auth::user()->userinfos()->first()->first_name:''):(Auth::user()->userinfos()->first()?Auth::user()->userinfos()->first()->orga_name:''), 'url'=>url(Auth::user()->roleUser->role_initial), 'id'=>'btnDashboard' ]) !!}
                     </div>
                     <div class="modal-footer">
                         <a type="button" class="m-btn m-btn-theme2nd" href="javascript:void(0)" data-dismiss="modal" id="btnOkNotifTrans">@lang('app.btn.ok')</a>
