@@ -64,8 +64,7 @@
     </div>
 
     <div class="profile-content-area m-40px-tb card card-body">
-        <div class="row col-lg-12">
-        <div class="col-lg-6">
+        <div class="col-lg-12">
             <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
                 <h3>@lang('app.favorites')</h3>
                 <div class="row">
@@ -78,21 +77,6 @@
                     @endif
                 </div>
             </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
-                <h3>@lang('app.pins')</h3>
-                <div class="row">
-                    @if(sizeOf($recent['pins']) != 0)
-                        @foreach($recent['pins'] as $product)
-                            @include('backend.product.item', ['product'=>$product], ['type'=>'pins'])
-                        @endforeach
-                    @else
-                        <p class="m-20px-lr p-25px-t">@lang('app.txt.noinfo')</p>
-                    @endif
-                </div>
-            </div>
-        </div>
         </div>
     </div>
 
