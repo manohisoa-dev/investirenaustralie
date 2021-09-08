@@ -25,24 +25,28 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td>
-								@if (@getimagesize($aplActive->apl->imageUrl()))
-									<img class="img-responsive" src="{{$aplActive->apl->imageUrl()}}" width="50">
-								@else
-									<img class="img-responsive" src="{{asset('img/500x500.jpg')}}" width="50">
-								@endif
-							</td>
-							<td>{{ $aplActive->apl->name }}</td>
-							<td>{{ $aplActive->apl->email }}</td>
-							<td>{{\Carbon\Carbon::parse($aplActive->apl_ends_at)->formatLocalized('%d %b %Y')}}</td>
-							<td align="center">
-								<a href="javascript:void(0)" onclick="renew_relation({{$aplActive->id}})" class="btn btn-default btn-circle" title="@lang('app.txt.renew_relationship')">
-									<i class="icon-refresh text-success"></i>
-								</a>
-								{{--<a href="javascript:void(0)" onclick="annuler_relation({{$aplActive->id}})" class="btn btn-default btn-circle" title="@lang('app.txt.end_relationship')">
-									<i class="fa fa-times text-danger"></i>
-								</a>--}}
-							</td>
+							@if ($aplActive->apl)
+								<td>
+									@if ($aplActive->apl?@getimagesize($aplActive->apl->imageUrl()):'')
+										<img class="img-responsive" src="{{$aplActive->apl?$aplActive->apl->imageUrl():''}}" width="50">
+									@else
+										<img class="img-responsive" src="{{asset('img/500x500.jpg')}}" width="50">
+									@endif
+								</td>
+								<td>{{ $aplActive->apl->name }}</td>
+								<td>{{ $aplActive->apl->email }}</td>
+								<td>{{\Carbon\Carbon::parse($aplActive->apl_ends_at)->formatLocalized('%d %b %Y')}}</td>
+								<td align="center">
+									<a href="javascript:void(0)" onclick="renew_relation({{$aplActive->id}})" class="btn btn-default btn-circle" title="@lang('app.txt.renew_relationship')">
+										<i class="icon-refresh text-success"></i>
+									</a>
+									{{--<a href="javascript:void(0)" onclick="annuler_relation({{$aplActive->id}})" class="btn btn-default btn-circle" title="@lang('app.txt.end_relationship')">
+										<i class="fa fa-times text-danger"></i>
+									</a>--}}
+								</td>
+							@else
+								<td colspan="5" class="text-center">@lang('app.txt.no_apl')</td>
+							@endif
 						</tr>
 					</tbody>
 				</table>
@@ -82,6 +86,8 @@
 					@endforeach
 					</tbody>
 				</table>
+				@else
+					<div class="text-center">@lang('app.txt.noinfo')</div>
 				@endif
 			</div>
 		</div>
