@@ -43,25 +43,60 @@
 
                                 <div class="row">
                                     <div class="col-sm-6 col-lg-6">
-                                        <div class="form-group"><label>@lang('app.txt.lia_name')</label> <input type="text" placeholder="@lang('app.txt.name')" class="form-control" value="{{old('lia_name')?old('lia_name'):($item->get_meta('lia_name')?$item->get_meta('lia_name')->value:'')}}" name="lia_name"></div>
-                                        <div class="form-group"><label>@lang('app.txt.lia_address')</label> <textarea placeholder="@lang('app.txt.address')" class="form-control" name="lia_address">{!! old('lia_address')?old('lia_address'):($item->get_meta('lia_address')?$item->get_meta('lia_address')->value:'') !!}</textarea></div>
-                                        <div class="form-group"><label>@lang('app.txt.lia_mobile')</label> <input type="text" placeholder="@lang('app.txt.mobile')" class="form-control" value="{{old('lia_mobile')?old('lia_mobile'):($item->get_meta('lia_mobile')?$item->get_meta('lia_mobile')->value:'')}}" name="lia_mobile"></div>
-                                        <div class="form-group"><label>@lang('app.txt.lia_email')</label> <input type="text" placeholder="@lang('app.txt.email')" class="form-control" value="{{ ($item->get_meta('lia_email')?$item->get_meta('lia_email')->value:'') }}" name="lia_email"></div>
+                                        <div class="form-group">
+											<label>@lang('app.txt.lia_name')</label> 
+											<input type="text" placeholder="@lang('app.txt.name')" class="form-control" value="{{old('lia_name')?old('lia_name'):($item->get_meta('lia_name')?$item->get_meta('lia_name')->value:'')}}" name="lia_name">
+										</div>
+                                        <div class="form-group">
+											<label>@lang('app.txt.lia_address')</label> 
+											<textarea placeholder="@lang('app.txt.address')" class="form-control" name="lia_address">{!! old('lia_address')?old('lia_address'):($item->get_meta('lia_address')?$item->get_meta('lia_address')->value:'') !!}</textarea>
+										</div>
+                                        <div class="form-group">
+											<label>@lang('app.txt.lia_mobile')</label> 
+											<div class="input-group m-b">
+												<div class="input-group-append">
+													<span class="input-group-addon">+61</span>
+												</div>
+												<input type="text" placeholder="@lang('app.txt.mobile')" class="form-control" name="lia_mobile" value="{{old('lia_mobile')?old('lia_mobile'):($item->get_meta('lia_mobile')?$item->get_meta('lia_mobile')->value:'')}}" minlength="11" maxlength="11" pattern="[0-9]{1}[0-9]{10}" required>
+											</div>
+										</div>
+                                        <div class="form-group">
+											<label>@lang('app.txt.lia_email')</label> 
+											<input type="email" placeholder="@lang('app.txt.email')" class="form-control" value="{{ ($item->get_meta('lia_email')?$item->get_meta('lia_email')->value:'') }}" name="lia_email">
+										</div>
                                         <hr>
                                     </div>
                                     
                                     <div class="col-sm-6 col-lg-6">
-                                        <div class="form-group"><label>@lang('app.txt.lia_abn')</label> <input type="text" minlength="11" maxlength="11" pattern="[0-9]{1}[0-9]{10}" class="form-control" id="lia_abn" name="lia_abn" placeholder="@lang('app.txt.abn_number')" value="{{old('lia_abn')?old('lia_abn'):($item->get_meta('lia_abn')?$item->get_meta('lia_abn')->value:'')}}"></div>
-                                        <div class="form-group"><label>@lang('app.txt.lia_license')</label><input type="text" class="form-control" id="lia_license" name="lia_license" placeholder="@lang('app.txt.license_number')" value="{{old('lia_license')?old('lia_license'):($item->get_meta('lia_license')?$item->get_meta('lia_license')->value:'')}}"></div>
-                                        <div class="form-group"><label>@lang('app.txt.lia_license_expire_date')</label> <input type="text" placeholder="@lang('app.txt.license_expire_date')" class="form-control" value="{{old('lia_license_expire_date')?old('lia_license_expire_date'):($item->get_meta('lia_license_expire_date')?$item->get_meta('lia_license_expire_date')->value:'')}}" name="lia_license_expire_date"></div>
+                                        <div class="form-group">
+											<label>@lang('app.txt.lia_abn')</label> 
+											<input type="text" minlength="11" maxlength="11" pattern="[0-9]{1}[0-9]{10}" class="form-control" id="lia_abn" name="lia_abn" placeholder="@lang('app.txt.abn_number')" value="{{old('lia_abn')?old('lia_abn'):($item->get_meta('lia_abn')?$item->get_meta('lia_abn')->value:'')}}">
+										</div>
+                                        <div class="form-group">
+											<label>@lang('app.txt.lia_license')</label>
+											<input type="text" class="form-control" id="lia_license" name="lia_license" placeholder="@lang('app.txt.license_number')" value="{{old('lia_license')?old('lia_license'):($item->get_meta('lia_license')?$item->get_meta('lia_license')->value:'')}}">
+										</div>
+                                        <div class="form-group">
+											<label>@lang('app.txt.lia_license_expire_date')</label> 
+											<input type="date" placeholder="@lang('app.txt.license_expire_date')" class="form-control" value="{{old('lia_license_expire_date')?old('lia_license_expire_date'):($item->get_meta('lia_license_expire_date')?$item->get_meta('lia_license_expire_date')->value:'')}}" name="lia_license_expire_date">
+										</div>
                                         <div style="padding-bottom: 83px;"></div>
                                         <hr>
                                     </div>
 
                                     <div class="col-sm-6 col-lg-6">
-                                        <div class="form-group"><label>@lang('app.txt.dir_name')</label> <input type="text" placeholder="@lang('app.txt.dir_name')" class="form-control" value="{{old('lia_dir')?old('lia_dir'):($item->get_meta('lia_dir')?$item->get_meta('lia_dir')->value:'')}}" name="lia_dir"></div>
-                                        <div class="form-group"><label>@lang('app.txt.dir_license')</label><input type="text" class="form-control" id="lia_dir_license" name="lia_dir_license" placeholder="@lang('app.txt.license_number')" value="{{old('lia_dir_license')?old('lia_dir_license'):($item->get_meta('lia_dir_license')?$item->get_meta('lia_dir_license')->value:'')}}"></div>
-                                        <div class="form-group"><label>@lang('app.txt.dir_license_expire_date')</label> <input type="text" placeholder="@lang('app.txt.license_expire_date')" class="form-control" value="{{old('lia_dir_license_expire_date')?old('lia_dir_license_expire_date'):($item->get_meta('lia_dir_license_expire_date')?$item->get_meta('lia_dir_license_expire_date')->value:'')}}" name="lia_dir_license_expire_date"></div>
+                                        <div class="form-group">
+											<label>@lang('app.txt.dir_name')</label> 
+											<input type="text" placeholder="@lang('app.txt.dir_name')" class="form-control" value="{{old('lia_dir')?old('lia_dir'):($item->get_meta('lia_dir')?$item->get_meta('lia_dir')->value:'')}}" name="lia_dir">
+										</div>
+                                        <div class="form-group">
+											<label>@lang('app.txt.dir_license')</label>
+											<input type="text" class="form-control" id="lia_dir_license" name="lia_dir_license" placeholder="@lang('app.txt.license_number')" value="{{old('lia_dir_license')?old('lia_dir_license'):($item->get_meta('lia_dir_license')?$item->get_meta('lia_dir_license')->value:'')}}">
+										</div>
+                                        <div class="form-group">
+											<label>@lang('app.txt.dir_license_expire_date')</label> 
+											<input type="date" placeholder="@lang('app.txt.license_expire_date')" class="form-control" value="{{old('lia_dir_license_expire_date')?old('lia_dir_license_expire_date'):($item->get_meta('lia_dir_license_expire_date')?$item->get_meta('lia_dir_license_expire_date')->value:'')}}" name="lia_dir_license_expire_date">
+										</div>
                                     </div>
 
                                     <div class="col-sm-6 col-lg-6" style="margin-top: 280px;">

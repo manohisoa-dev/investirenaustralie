@@ -64,13 +64,13 @@ class Config extends BaseModel
             'lia_name' => 'required|max:100',
             'lia_abn' => 'required|digits_between:11,11|numeric',
             'lia_license'  => 'nullable',
-            'lia_license_expire_date'  => 'required|min:10|max:10',
+            'lia_license_expire_date'  => 'required',
             'lia_address' => 'required|max:100',
             'lia_email' => 'max:100',
-            'lia_mobile' => 'max:9',
+            'lia_mobile' => 'max:12',
             'lia_dir' => 'required|max:100',
             'lia_dir_license'  => 'nullable',
-            'lia_dir_license_expire_date'  => 'required|min:10|max:10',
+            'lia_dir_license_expire_date'  => 'required',
         ];
     }
 
@@ -83,7 +83,7 @@ class Config extends BaseModel
             'iicc_name' => 'required|max:100',
             'iicc_address' => 'required|max:100',
             'iicc_email' => 'max:100',
-            'iicc_mobile' => 'max:9',
+            'iicc_mobile' => 'max:12',
         ];
     }
     

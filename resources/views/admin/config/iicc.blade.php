@@ -43,10 +43,27 @@
 
                                 <div class="row">
                                     <div class="col-sm-12 col-lg-12">
-                                        <div class="form-group"><label>@lang('app.txt.iicc_name')</label> <input type="text" placeholder="@lang('app.txt.name')" class="form-control" value="{{old('iicc_name')?old('iicc_name'):($item->get_meta('iicc_name')?$item->get_meta('iicc_name')->value:'')}}" name="iicc_name"></div>
-                                        <div class="form-group"><label>@lang('app.txt.iicc_address')</label> <textarea placeholder="@lang('app.txt.address')" class="form-control" name="iicc_address">{!! old('iicc_address')?old('iicc_address'):($item->get_meta('iicc_address')?$item->get_meta('iicc_address')->value:'') !!}</textarea></div>
-                                        <div class="form-group"><label>@lang('app.txt.iicc_mobile')</label> <input type="text" placeholder="@lang('app.txt.mobile')" class="form-control" value="{{old('iicc_mobile')?old('iicc_mobile'):($item->get_meta('iicc_mobile')?$item->get_meta('iicc_mobile')->value:'')}}" name="iicc_mobile"></div>
-                                        <div class="form-group"><label>@lang('app.txt.iicc_email')</label> <input type="text" placeholder="@lang('app.txt.email')" class="form-control" value="{{ ($item->get_meta('iicc_email')?$item->get_meta('iicc_email')->value:'') }}" name="iicc_email"></div>
+                                        <div class="form-group">
+											<label>@lang('app.txt.iicc_name')</label> 
+											<input type="text" placeholder="@lang('app.txt.name')" class="form-control" value="{{old('iicc_name')?old('iicc_name'):($item->get_meta('iicc_name')?$item->get_meta('iicc_name')->value:'')}}" name="iicc_name">
+										</div>
+                                        <div class="form-group">
+											<label>@lang('app.txt.iicc_address')</label> 
+											<textarea placeholder="@lang('app.txt.address')" class="form-control" name="iicc_address">{!! old('iicc_address')?old('iicc_address'):($item->get_meta('iicc_address')?$item->get_meta('iicc_address')->value:'') !!}</textarea>
+										</div>
+                                        <div class="form-group">
+											<label>@lang('app.txt.iicc_mobile')</label> 
+											<div class="input-group m-b">
+												<div class="input-group-append">
+													<span class="input-group-addon">+61</span>
+												</div>
+												<input type="text" placeholder="@lang('app.txt.mobile')" class="form-control" name="iicc_mobile" value="{{old('iicc_mobile')?old('iicc_mobile'):($item->get_meta('iicc_mobile')?$item->get_meta('iicc_mobile')->value:'')}}" minlength="11" maxlength="11" pattern="[0-9]{1}[0-9]{10}" required>
+											</div>
+										</div>
+                                        <div class="form-group">
+											<label>@lang('app.txt.iicc_email')</label> 
+											<input type="text" placeholder="@lang('app.txt.email')" class="form-control" value="{{ ($item->get_meta('iicc_email')?$item->get_meta('iicc_email')->value:'') }}" name="iicc_email">
+										</div>
                                         <hr>
 
                                         <div>
