@@ -1132,7 +1132,7 @@ return
 	'txt.country' => 'Pays',
 	'txt.your_login' => 'Votre login',
 	'txt.define' => 'Définir',
-	'txt.fond_dossier' => 'Télécharger divers fichiers d&rsquo;informations concernant le programme d&rsquo;accompagnement du<b> « Réseau Local d\'Agences Partenaires »</b>',
+	'txt.fond_dossier' => 'Télécharger divers fichiers d&rsquo;informations concernant le programme d&rsquo;accompagnement du<b> « Réseau Local d&rsquo;Agences Partenaires »</b>',
 	'txt.photo_programme' => 'Photos programme',
 	'Agence_Francophone_Australienne' => 'Agence Francophone Australienne',
 	'Agence_Partenaire_Locale' => 'Agence Partenaire Locale',
