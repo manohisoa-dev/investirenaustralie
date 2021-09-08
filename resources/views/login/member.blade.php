@@ -31,10 +31,10 @@
   <div class="modal-dialog">
       <div class="modal-content white-bg">
           <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
-              <h4 class="modal-title white-color">{{$page->title}}</h4>
+              <h4 class="modal-title white-color">{{$page?$page->title:''}}</h4>
           </div>
           <div class="modal-body">
-              <p class="text-justify">{{$page->content}}</p>
+              <p class="text-justify">{{$page?$page->content:''}}</p>
           </div>
           <div class="modal-footer">
               <a type="button" class="pull-left m-btn m-btn-theme" href="{{ route('home') }}">@lang('app.btn.abandonner')</a>

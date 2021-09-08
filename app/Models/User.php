@@ -911,6 +911,26 @@ class User extends Authenticatable {
         return false;
     }
 
+    public function dossierTransactionIsComplete($prod_id){
+        $dosTransUser = DossierTransaction::where('user_id',$this->id)->where('product_id',$prod_id)->first();
+        $isComplete = "";
+        
+        switch ($dosTransUser->is_complete) {
+            case 1:
+                $isComplete='to_be_completed';
+                break;
+            case 2:
+                $isComplete='complete';
+                break;
+            
+            default:
+                $isComplete='not_completed';
+                break;
+        }
+
+        return $isComplete;
+    }
+
     public function hasCurrentTransaction(){
         $dosTransUser = DossierTransaction::where('user_id',$this->id)->where('status','current')->get();
 
@@ -974,5 +994,6 @@ class User extends Authenticatable {
 
         return '';
     }
+    
 
 }

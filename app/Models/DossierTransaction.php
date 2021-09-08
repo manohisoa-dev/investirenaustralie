@@ -23,4 +23,8 @@ class DossierTransaction extends Model
     public function products(){
         return $this->belongsToMany(Product::class, 'id', 'product_id');
     }   
+
+    public static function updateDossierTransaction($user_id,$prod_id,$is_complete){
+        return DossierTransaction::where('user_id','=',$user_id)->where('product_id','=',$prod_id)->update(['is_complete' => 1]);
+    }
 }

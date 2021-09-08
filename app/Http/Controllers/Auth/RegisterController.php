@@ -503,9 +503,9 @@ class RegisterController extends Controller
                         'orga_abn'         => 'required|digits_between:11,11|numeric',
                         'orga_acn'         => 'nullable|digits_between:9,9|numeric',
                         'orga_email'        => 'required|email|max:100',
-                        'orga_phone'        => 'required|digits_between:8,8|numeric',
+                        'orga_phone'        => 'required|digits_between:8,9|numeric',
                         'orga_fax'        => 'nullable|max:100',
-                        'orga_mobile_phone'        => 'required|digits_between:8,8|numeric',
+                        'orga_mobile_phone'        => 'required|digits_between:9,9|numeric',
                         'orga_website'      => 'required|url|max:100',
                         'orga_presentation' => 'max:1000',
 

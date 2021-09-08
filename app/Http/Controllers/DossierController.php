@@ -103,8 +103,16 @@ class DossierController extends Controller
         $user_name= $user->isPerson()?$user->name:$user->userinfos()->first()->orga_name;
         $mr_id=$request->mr_id;
         $mandatesearch= url(MandatRecherche::whereId($mr_id)->first()->path);
+        $country = $userAuth->location->country;
         $city=$user->afa->location->locality;
-        $content=trans('member.gothere.mr.message_to_afa', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user_name,'immat'=>$user->immat,'city'=>$city,'afa' =>$user->afa->name,'mandatesearch'=>$mandatesearch]);
+
+        if(Auth::user()->isMove()){
+            // Message from IEA to AFA if Member moving
+            $content=trans('member.gothere.mr.message_to_afa', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user_name,'immat'=>$user->immat,'city'=>$city,'afa' =>$user->afa->name,'mandatesearch'=>$mandatesearch]);
+        }else{
+            // Message from IEA to AFA if Member buy product not moving
+            $content=trans('member.tobuy.mr.message_to_afa', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'country'=>$country,'city'=>$city,'afa' =>$user->afa->name,'mandatesearch'=>$mandatesearch]);
+        }
         // send message
         Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$user->afa->id,'body'=>$content]);
         // send email
