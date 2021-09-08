@@ -38,7 +38,7 @@
                 <div class="ibox-content">
                     <div class="row">
                         <div class="col-sm-12 col-lg-12">
-                            <form role="form" method="post" action="{{Auth::user()->isAdmin()?route('admin.config.lia.update'):route('admin.collaborators.config.lia.update')}}">
+                            <form role="form" method="post" action="{{Auth::user()->isAdmin()?route('admin.config.lia.update'):route('admin.collaborators.config.lia.update')}}" id="liaForm">
                                 <input type="hidden" name="_token" value="{{csrf_token()}}">
 
                                 <div class="row">
@@ -53,12 +53,7 @@
 										</div>
                                         <div class="form-group">
 											<label>@lang('app.txt.lia_mobile')</label> 
-											<div class="input-group m-b">
-												<div class="input-group-append">
-													<span class="input-group-addon">+61</span>
-												</div>
-												<input type="text" placeholder="@lang('app.txt.mobile')" class="form-control" name="lia_mobile" value="{{old('lia_mobile')?old('lia_mobile'):($item->get_meta('lia_mobile')?$item->get_meta('lia_mobile')->value:'')}}" minlength="11" maxlength="11" pattern="[0-9]{1}[0-9]{10}" required>
-											</div>
+											<input type="text" placeholder="@lang('app.txt.mobile')" class="form-control" name="lia_mobile" value="{{old('lia_mobile')?old('lia_mobile'):($item->get_meta('lia_mobile')?$item->get_meta('lia_mobile')->value:'')}}">
 										</div>
                                         <div class="form-group">
 											<label>@lang('app.txt.lia_email')</label> 
@@ -113,4 +108,93 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('custom-script')
+<script>
+$(document).ready(function(){
+	jQuery.validator.addMethod("phoneAUS", function (lia_mobile, element) {
+        lia_mobile = lia_mobile.replace(/\s+/g, "");
+        return this.optional(element) || lia_mobile.length > 9 && lia_mobile.match(/^(?:\+?61|\(?0)[2378]\)?(?:[ -]?[0-9]){8}$/);
+    }, "Enter a valid number please (Ex: 61 7 05 060 768 OR +61 7 35 642 234 OR 0735 642 342)");
+	
+	$('#liaForm').validate({
+		ignore: [],
+		rules: {
+			lia_name: {
+				required: true
+			},
+			lia_address: {
+				required: true
+			},
+			lia_mobile: {
+				required: true,
+				phoneAUS: true
+			},
+			lia_email: {
+				required: true,
+				email: true
+			},
+			lia_abn: {
+				required: true
+			},
+			lia_license: {
+				required: true
+			},
+			lia_license_expire_date: {
+				required: true
+			},
+			lia_dir: {
+				required: true
+			},
+			lia_dir_license: {
+				required: true
+			},
+			lia_dir_license_expire_date: {
+				required: true
+			}
+		},
+		messages: {
+			lia_name: {
+				required: "@lang('app.txt.champobligatoire')"
+			},
+			lia_address: {
+				required: "@lang('app.txt.champobligatoire')"
+			},
+			lia_mobile: {
+				required: "@lang('app.txt.champobligatoire')"
+			},
+			lia_email: {
+				required: "@lang('app.txt.champobligatoire')",
+				email: "Enter valid email please"
+			},
+			lia_abn: {
+				required: "@lang('app.txt.champobligatoire')",
+			},
+			lia_license: {
+				required: "@lang('app.txt.champobligatoire')",
+			},
+			lia_license_expire_date: {
+				required: "@lang('app.txt.champobligatoire')",
+			},
+			lia_dir: {
+				required: "@lang('app.txt.champobligatoire')",
+			},
+			lia_dir_license: {
+				required: "@lang('app.txt.champobligatoire')",
+			},
+			lia_dir_license_expire_date: {
+				required: "@lang('app.txt.champobligatoire')",
+			}
+		},
+		errorPlacement: function ( error, element ) {
+			if(element.parent().hasClass('input-group')){
+				error.insertBefore( element.parent() );
+			}else{
+				error.insertAfter( element );
+			}
+		}
+	});
+});
+</script>
 @endsection

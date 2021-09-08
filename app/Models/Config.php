@@ -67,7 +67,7 @@ class Config extends BaseModel
             'lia_license_expire_date'  => 'required',
             'lia_address' => 'required|max:100',
             'lia_email' => 'max:100',
-            'lia_mobile' => 'max:12',
+            'lia_mobile' => 'max:16',
             'lia_dir' => 'required|max:100',
             'lia_dir_license'  => 'nullable',
             'lia_dir_license_expire_date'  => 'required',
