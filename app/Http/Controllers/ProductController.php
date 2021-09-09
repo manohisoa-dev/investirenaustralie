@@ -899,7 +899,11 @@ class ProductController extends Controller {
     public function ajaxGetProductById(Request $request) {
         $product = Product::find($request->id_produit);
         $localisation = Localisation::find($product->location_id);
-        return response()->json(['product' => $product, 'localisation' => $localisation]);
+        $photo = ProductsImage::where('products_images.product_id', '=', $request->id_produit)->join('images',
+            'products_images.image_id', '=', 'images.id')->select('*',
+            'products_images.id as prdImageId')->get();
+        return response()->json(['product' => $product, 'localisation' => $localisation,
+            'photo' => $photo]);
     }
 
     function save_new_produit($anciennete, $nature, $title, $photo, $content, $qty,
@@ -996,8 +1000,8 @@ class ProductController extends Controller {
 
         if ($request->prg_anciennete && $request->prg_nature) {
             if ($request->prg_cat_id == 1) {
-                $this->save_new_produit($request->prg_anciennete, $request->prg_nature, $titre_product,
-                    $request->file('image'), $request->desc_product, 1, 0, '', $request->interior_area,
+                $id_produit = $this->save_new_produit($request->prg_anciennete, $request->prg_nature,
+                    $titre_product, $request->file('image'), $request->desc_product, 1, 0, '', $request->interior_area,
                     $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
                     $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
                     0, $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
@@ -1006,13 +1010,29 @@ class ProductController extends Controller {
                     $taux_commission, $request->dt_db_travaux, $request->dt_prevu_livraison, $request->bonus_vente,
                     $request->bonus_amount, '', 0, 0, 0);
             } else {
-                $this->save_new_produit($request->prg_anciennete, $request->prg_nature, $titre_product,
-                    $request->file('image'), $request->desc_product, 1, 0, '', 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 1, date('Y'), $request->display_address_product, 0, $request->price, $request->price_max_prd,
-                    'AUD', $request->status, $request->product_type_id, $request->prg_cat_id, $request->postalCode_product,
-                    $request->state_id_product, $request->id_programme, $id_location, 0, $avoir_parking,
-                    0, $request->commision_product, $taux_commission, $request->dt_db_travaux, $request->dt_prevu_livraison,
-                    $request->bonus_vente, $request->bonus_amount, '', 0, $request->min_area, $request->max_area);
+                $id_produit = $this->save_new_produit($request->prg_anciennete, $request->prg_nature,
+                    $titre_product, $request->file('image'), $request->desc_product, 1, 0, '', 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 1, date('Y'), $request->display_address_product, 0, $request->price,
+                    $request->price_max_prd, 'AUD', $request->status, $request->product_type_id, $request->prg_cat_id,
+                    $request->postalCode_product, $request->state_id_product, $request->id_programme,
+                    $id_location, 0, $avoir_parking, 0, $request->commision_product, $taux_commission,
+                    $request->dt_db_travaux, $request->dt_prevu_livraison, $request->bonus_vente, $request->bonus_amount,
+                    '', 0, $request->min_area, $request->max_area);
+            }
+
+            if ($request->dropPhoto) {
+                foreach ($request->dropPhoto as $key => $value) {
+                    if ($request->radioDrop) {
+                        if ($request->radioDrop == $value) {
+                            $is_principal = 1;
+                        } else {
+                            $is_principal = 0;
+                        }
+                    } else {
+                        $is_principal = 0;
+                    }
+                    $this->save_photo_programme($value, $id_produit, $is_principal);
+                }
             }
 
             return response()->json(['success' => 'true']);
@@ -1083,10 +1103,16 @@ class ProductController extends Controller {
             'amount_bonus' => $request->bonus_amount]);
 
 
-        if ($request->file('image')) {
-            $photo = $request->file('image');
-            $image_prod = Image::storeAndSave($photo, 'product');
-            Product::where('id', $request->id_product)->update(['image_id' => $image_prod->id]);
+        if ($request->dropPhoto) {
+            foreach ($request->dropPhoto as $key => $value) {
+                $this->save_photo_programme($value, $request->id_product, 0);
+            }
+        }
+        
+        if ($request->photo_trash) {
+            foreach ($request->photo_trash as $key => $value) {
+                Image::where('id', $value)->delete();
+            }
         }
 
         // // update translation

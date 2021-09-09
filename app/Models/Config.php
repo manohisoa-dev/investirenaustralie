@@ -83,7 +83,7 @@ class Config extends BaseModel
             'iicc_name' => 'required|max:100',
             'iicc_address' => 'required|max:100',
             'iicc_email' => 'max:100',
-            'iicc_mobile' => 'max:12',
+            'iicc_mobile' => 'max:16',
         ];
     }
     

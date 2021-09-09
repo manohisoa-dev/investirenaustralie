@@ -38,7 +38,7 @@
                 <div class="ibox-content">
                     <div class="row">
                         <div class="col-sm-12 col-lg-12">
-                            <form role="form" method="post" action="{{Auth::user()->isAdmin()?route('admin.config.iicc.update'):route('admin.collaborators.config.iicc.update')}}">
+                            <form role="form" method="post" action="{{Auth::user()->isAdmin()?route('admin.config.iicc.update'):route('admin.collaborators.config.iicc.update')}}" id="iiccForm">
                                 <input type="hidden" name="_token" value="{{csrf_token()}}">
 
                                 <div class="row">
@@ -53,12 +53,7 @@
 										</div>
                                         <div class="form-group">
 											<label>@lang('app.txt.iicc_mobile')</label> 
-											<div class="input-group m-b">
-												<div class="input-group-append">
-													<span class="input-group-addon">+61</span>
-												</div>
-												<input type="text" placeholder="@lang('app.txt.mobile')" class="form-control" name="iicc_mobile" value="{{old('iicc_mobile')?old('iicc_mobile'):($item->get_meta('iicc_mobile')?$item->get_meta('iicc_mobile')->value:'')}}" minlength="11" maxlength="11" pattern="[0-9]{1}[0-9]{10}" required>
-											</div>
+											<input type="text" placeholder="@lang('app.txt.mobile')" class="form-control" name="iicc_mobile" value="{{old('iicc_mobile')?old('iicc_mobile'):($item->get_meta('iicc_mobile')?$item->get_meta('iicc_mobile')->value:'')}}">
 										</div>
                                         <div class="form-group">
 											<label>@lang('app.txt.iicc_email')</label> 
@@ -79,4 +74,57 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('custom-script')
+<script>
+$(document).ready(function(){
+	jQuery.validator.addMethod("phoneAUS", function (iicc_mobile, element) {
+        iicc_mobile = iicc_mobile.replace(/\s+/g, "");
+        return this.optional(element) || iicc_mobile.length > 9 && iicc_mobile.match(/^(?:\+?61|\(?0)[2378]\)?(?:[ -]?[0-9]){8}$/);
+    }, "Enter a valid number please (Ex: 61 7 05 060 768 OR +61 7 35 642 234 OR 0735 642 342)");
+	
+	$('#iiccForm').validate({
+		ignore: [],
+		rules: {
+			iicc_name: {
+				required: true
+			},
+			iicc_address: {
+				required: true
+			},
+			iicc_mobile: {
+				required: true,
+				phoneAUS: true
+			},
+			iicc_email: {
+				required: true,
+				email: true
+			}
+		},
+		messages: {
+			iicc_name: {
+				required: "@lang('app.txt.champobligatoire')"
+			},
+			iicc_address: {
+				required: "@lang('app.txt.champobligatoire')"
+			},
+			iicc_mobile: {
+				required: "@lang('app.txt.champobligatoire')"
+			},
+			iicc_email: {
+				required: "@lang('app.txt.champobligatoire')",
+				email: "Enter valid email please"
+			}
+		},
+		errorPlacement: function ( error, element ) {
+			if(element.parent().hasClass('input-group')){
+				error.insertBefore( element.parent() );
+			}else{
+				error.insertAfter( element );
+			}
+		}
+	});
+});
+</script>
 @endsection

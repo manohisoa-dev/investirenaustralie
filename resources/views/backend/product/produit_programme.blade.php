@@ -49,10 +49,22 @@
 									<tr>
 										<td>{{$key + 1}}</td>
 										<td>
-											@if (@getimagesize($product_lie->imageUrl()))
-												<img src="{{$product_lie->imageUrl()}}" class="img-responsive" style="height:50px" />
+											@php
+												$photo_principal = \App\Models\ProductsImage::where('products_images.product_id', '=', $product_lie->id)->where('products_images.is_principal', '=', 1)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+												$first_photo = \App\Models\ProductsImage::where('products_images.product_id', '=', $product_lie->id)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+												
+											@endphp
+											@if($first_photo)
+												@if($photo_principal)
+												<!-- Programme sans principal -->
+												<img src="{{asset($photo_principal->filepath)}}" class="img-responsive" style="height:50px" />
+												@else
+												<!-- Programme principal -->
+												<img src="{{asset($first_photo->filepath)}}" class="img-responsive" style="height:50px" />
+												@endif
 											@else
-												<img class="img-responsive" src="{{asset('img/500x500.jpg')}}" style="height:50px" >
+												<!-- Programme aucun photo -->
+												<img class="img-responsive" src="{{asset('images/product.png')}}" style="height:50px">
 											@endif
 										</td>
 										<td><b>{{ $product_lie->title }}</b><br />{!! $product_lie->excerpt() !!}</td>
@@ -108,6 +120,7 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 <script src="{{ asset('administrator/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
 <script>
+	Dropzone.autoDiscover = false;
 	$(document).ready(function(){
 		$("#interior_area").keyup(function(){
 			var interior = parseInt($("#interior_area").val());
@@ -194,6 +207,64 @@
 		}
 		$('#modal_form_product').modal('show'); 
 		CKEDITOR.replace( 'desc_product' );
+		$("#image_upload").dropzone({
+			maxFiles: 25, 
+			maxFilesize: 25,
+			dictDefaultMessage: "@lang('app.dropzone.libelle')",
+			url: "{{ route('ajaxDropZone') }}",
+			params: {"_token": "{{ csrf_token() }}"},
+			acceptedFiles: ".jpeg,.jpg,.png,.gif",
+			addRemoveLinks: true,
+			timeout: 50000,
+			init:function() {
+				// Get images
+				var myDropzone = this;
+			},
+			removedfile: function(file) 
+			{
+				if (this.options.dictRemoveFile) {
+				  return Dropzone.confirm("Are You Sure to "+this.options.dictRemoveFile, function() {
+					if(file.previewElement.id != ""){
+						var name = file.previewElement.id;
+					}else{
+						var name = file.name;
+					}
+					//console.log(name);
+					var fileRef;
+						return (fileRef = file.previewElement) != null ? 
+						fileRef.parentNode.removeChild(file.previewElement) : void 0;
+				  });
+				}		
+			},
+	   
+			success: function(file, response) 
+			{
+				file.previewElement.id = response.success;
+				//console.log(file.previewElement.id); 
+				// set new images names in dropzone�s preview box.
+				var olddatadzname = file.previewElement.querySelector("[data-dz-name]");   
+				file.previewElement.querySelector("img").alt = response.success;
+				file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'><input value='"+response.success+"' type='radio' name='radioDrop' style='display:inline-block'> @lang('app.dropzone.photoIcon_tex')</label>");
+				file.previewElement.appendChild(file._captionBox);
+				$('#form_product').append('<input type="hidden" name="dropPhoto[]" value="'+response.success +'">');
+				olddatadzname.innerHTML = response.success;
+			},
+			error: function(file, response)
+			{
+			   if($.type(response) === "string")
+					var message = response; //dropzone sends it's own error messages in string
+				else
+					var message = response.message;
+				file.previewElement.classList.add("dz-error");
+				_ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+				_results = [];
+				for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+					node = _ref[_i];
+					_results.push(node.textContent = message);
+				}
+				return _results;
+			}
+		});
 		$('.modal-title').text("@lang('app.form.product_add_ajax')");
 	}
 	
@@ -213,6 +284,13 @@
 			data:{"_token": "{{ csrf_token() }}",'id_produit':id_produit},
 			success: function(data)
 			{
+			    //console.log(data.photo);
+				var base_url = "{{asset('/')}}";
+				$.each(data.photo, function( index, value ) {
+					console.log(value.filepath);
+				    var photo_p = base_url + value.filepath;
+					$('#photoProduit').append('<div class="file-box"><div class="file"><div class="image"><img alt="image" class="img-fluid" src="'+photo_p+'"></div><div class="file-name"><input type="checkbox" name="photo_trash[]" value="'+value.id+'" /> Supprimer</div></div></div>');
+				});
 				$('#title_new_programme').val($('#title_programme').val());
 				$("#progTitle").text($('#title_programme').val());
 				$('[name="title_product"]').val(data.product.title);
@@ -267,6 +345,64 @@
 				$('[name="max_area"]').val(data.product.max_area);
 				
 				set_type_programme({{$product->category_id}},data.product.type_id);
+				$("#image_upload").dropzone({
+					maxFiles: 25, 
+					maxFilesize: 25,
+					dictDefaultMessage: "@lang('app.dropzone.libelle')",
+					url: "{{ route('ajaxDropZone') }}",
+					params: {"_token": "{{ csrf_token() }}"},
+					acceptedFiles: ".jpeg,.jpg,.png,.gif",
+					addRemoveLinks: true,
+					timeout: 50000,
+					init:function() {
+						// Get images
+						var myDropzone = this;
+					},
+					removedfile: function(file) 
+					{
+						if (this.options.dictRemoveFile) {
+						  return Dropzone.confirm("Are You Sure to "+this.options.dictRemoveFile, function() {
+							if(file.previewElement.id != ""){
+								var name = file.previewElement.id;
+							}else{
+								var name = file.name;
+							}
+							//console.log(name);
+							var fileRef;
+								return (fileRef = file.previewElement) != null ? 
+								fileRef.parentNode.removeChild(file.previewElement) : void 0;
+						  });
+						}		
+					},
+			   
+					success: function(file, response) 
+					{
+						file.previewElement.id = response.success;
+						//console.log(file.previewElement.id); 
+						// set new images names in dropzone�s preview box.
+						var olddatadzname = file.previewElement.querySelector("[data-dz-name]");   
+						file.previewElement.querySelector("img").alt = response.success;
+						file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'><input value='"+response.success+"' type='radio' name='radioDrop' style='display:inline-block'> @lang('app.dropzone.photoIcon_tex')</label>");
+						file.previewElement.appendChild(file._captionBox);
+						$('#form_product').append('<input type="hidden" name="dropPhoto[]" value="'+response.success +'">');
+						olddatadzname.innerHTML = response.success;
+					},
+					error: function(file, response)
+					{
+					   if($.type(response) === "string")
+							var message = response; //dropzone sends it's own error messages in string
+						else
+							var message = response.message;
+						file.previewElement.classList.add("dz-error");
+						_ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+						_results = [];
+						for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+							node = _ref[_i];
+							_results.push(node.textContent = message);
+						}
+						return _results;
+					}
+				});
 				$('#modal_form_product').modal('show'); 
 				$('.modal-title').text("@lang('app.form.product_edit_title')"); 
 			},
@@ -599,7 +735,7 @@
 							<div class="col-lg-4">
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_etat') *</label>
-									<select class="form-control" name="state_id_product" id="state_id_product" style="width:100%" disabled="disabled">
+									<select class="form-control" name="state_id_product" id="state_id_product" style="width:100%">
 										<option value="">Sélectionner état...</option>
 										@foreach(\App\Models\State::all() as $state)
 											<option value="{{$state->id}}" {{$state->id == $product->state_id ? 'selected' : ''}}>{{$state->content}}</option>
@@ -610,7 +746,7 @@
 							<div class="col-lg-4">
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_pays')</label>
-									<select class="form-control" name="countryId_product" id="countryId_product" style="width:100%" disabled="disabled">
+									<select class="form-control" name="countryId_product" id="countryId_product" style="width:100%">
 										@foreach(\App\Models\Country::where('id',12)->get() as $country)
 											<option value="{{$country->code}}">{{$country->content}}</option>
 										@endforeach
@@ -859,6 +995,19 @@
 							</div>
 						</div>
 						@endif
+						<div class="row">
+							<div class="col-lg-12">
+								<div id="photoProduit"></div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12">
+								<label for="title">@lang('app.table.photos')</label>
+								<div class="dropzone" id="image_upload" multiple style="margin-bottom:25px">
+									<div id="template" class="file-row"></div>
+								</div>
+							</div>
+						</div>	
 						<div class="alert alert-danger alert-dismissable" id="info_error" style="display:none">
 							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 							<h4><i class="icon fa fa-ban"></i> @lang('app.form.product_error_title') !</h4>
