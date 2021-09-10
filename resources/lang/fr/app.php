@@ -1420,7 +1420,7 @@ return
 	'table.lia_dossier' => 'Mandat de vente',
 	'txt.lia_dossier' => 'Choisir le mandat de vente du vendeur à l&rsquo;agence interne de IEA',
 	'config.lia' => 'Agence Interne IEA (LIA)',
-	'config.iicc' => 'Gestionnaire du plateforme (IICC)',
+	'config.iicc' => 'Gestionnaire du portail (IICC)',
 	'txt.lia' => 'LIA',
 	'txt.iicc' => 'IICC',
 	'txt.license_expire_date' => 'Date d&rsquo;expiration de la licence',
