@@ -16,6 +16,7 @@ class AfaMandateSearchFinalisedMessage extends Notification
     private $dt;
     private $hr;
     private $country;
+    private $linkcompletetrans;
     private $mandatesearch;
 
     /**
@@ -23,12 +24,13 @@ class AfaMandateSearchFinalisedMessage extends Notification
      *
      * @return void
      */
-    public function __construct($user,$mandatesearch)
+    public function __construct($user,$linkcompletetrans,$mandatesearch)
     {
         $this->user = $user;
         $this->dt = Carbon::now()->format('m-d-Y');
         $this->hr = Carbon::now()->format('H:i:m');
         $this->country = $country = Country::where('code',$this->user->location->country)->pluck('content')[0];;
+        $this->linkcompletetrans = $linkcompletetrans;
         $this->mandatesearch = $mandatesearch;
     }
 
@@ -57,13 +59,14 @@ class AfaMandateSearchFinalisedMessage extends Notification
         $city = $user->afa->location->locality;
         $country = $this->country;
         $mandatesearch = $this->mandatesearch;
-        $linkcompletetrans = '#';
+        $linkcompletetrans = $this->linkcompletetrans;
+        $userName = $user->isPerson()?$user->name:$user->userinfos()->first()->orga_name;
 
         return (new MailMessage)
             ->from(env('ADMIN_MAIL'))
             ->subject(__('app.message'))
-            ->subject(__('mail.created.subject', ['app'=>app_name()]))
-            ->line(__('member.tobuy.mr.message_to_afa', ['date'=>$dt,'hour'=>$hr,'name'=>$user,'country'=>$country,'city'=>$city,'afa' =>$user->afa->name,'linkcompletetrans'=>$linkcompletetrans,'mandatesearch'=>$mandatesearch]));
+            ->subject(__('mail.message_from_iea.subject', ['app'=>app_name()]))
+            ->line(__('member.tobuy.mr.message_to_afa', ['date'=>$dt,'hour'=>$hr,'name'=>$userName,'country'=>$country,'city'=>$city,'afa' =>$user->afa->name,'linkcompletetrans'=>$linkcompletetrans,'mandatesearch'=>$mandatesearch]));
     }
 
     /**

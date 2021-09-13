@@ -77,5 +77,5 @@ return [
     'txt.contact_admin' => 'For the recovery of your account, please contact the admin by the e-mail address <b>&ldquo; :mail &rdquo; </b>.',
     'activated.login.info' => 'Below are your login details: <br /> - Login: <b> :login </b> <br /> - Password: <b> :password </b>',
     'txt.end_exclusive_relationship_with_member' => 'End of the exclusive relationship with the member <b>&ldquo; :user &rdquo;</b>, registration number <b>&ldquo; :immat &rdquo;</b> in :day days.',
-
+    'message_from_iea.subject' => '[:app] Message from IEA',
 ];

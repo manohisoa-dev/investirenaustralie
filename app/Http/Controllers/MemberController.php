@@ -14,6 +14,7 @@ use App\Notifications\MemberWaitingMessage;
 use App\Notifications\AfaConjunctionAgreementMessage;
 use App\Notifications\MemberMandateSearchMessage;
 use App\Notifications\AfaMandateSearchFinalisedMessage;
+use App\Notifications\MemberMandateSearchFinalisedMessage;
 
 use App\Models\Order;
 use App\Models\User;
@@ -737,8 +738,7 @@ class MemberController extends Controller {
             $country = Country::where('code',$userAuth->location->country)->pluck('content')[0];
             $city=$userAuth->afa->location->locality;
             $mandatesearch = url(MandatRecherche::where('product_id','=',$prod_id)->where('to_id','=',$userAuth->id)->where('afa_id','=',$userAuth->afa->id)->first()->path);
-            $linkcompletetrans = '#';
-
+            $linkcompletetrans = url('afa/dossier?action=complete_dossier_transaction_info&ID='.DossierTransaction::getDossierTransactionId($prod_id,$userAuth->id));
 
             if($userAuth->isComplete()){
                 if(!$userAuth->isCheckedDossierTransaction($prod_id)){
@@ -762,11 +762,20 @@ class MemberController extends Controller {
                                     $content=trans('member.tobuy.mr.message_to_afa', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'country'=>$country,'city'=>$city,'afa' =>$userAuth->afa->name,'linkcompletetrans'=>$linkcompletetrans,'mandatesearch'=>$mandatesearch]);
                                     Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$userAuth->afa->id,'body'=>$content]);
                                     // send email
-                                    $userAuth->afa->notify(new AfaMandateSearchFinalisedMessage($userAuth,$mandatesearch));
-
-                                    return redirect($prodUrl)->with('engagement', $content)->with('waiting',1);
+                                    $userAuth->afa->notify(new AfaMandateSearchFinalisedMessage($userAuth,$linkcompletetrans,$mandatesearch));
+                                    
+                                    // Message and notification email to Member
+                                    App::setLocale($userAuth->language);
+                                    // Message
+                                    $contentToMember=trans('member.tobuy.mr.message_to_member', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user]);
+                                    Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$userAuth->id,'body'=>$contentToMember]);
+                                    // Email
+                                    $userAuth->notify(new MemberMandateSearchFinalisedMessage($userAuth));
+                                    
+                                    return redirect($prodUrl)->with('engagement', $contentToMember)->with('waiting',1);
+                                    
                                 }elseif($userAuth->dossierTransactionIsComplete($prod_id)==='to_be_completed'){
-                                    return dd('En attente de completion du dossier transaction par AFA');
+                                    return redirect($prodUrl)->with('engagement', trans('member.tobuy.mr.message_to_member', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user]))->with('waiting',1);
                                 }else{
                                     return dd('Dossier transaction completer');
                                 }

@@ -922,7 +922,9 @@ class User extends Authenticatable {
             case 2:
                 $isComplete='complete';
                 break;
-            
+            case 3:
+                $isComplete='validate';
+                break;
             default:
                 $isComplete='not_completed';
                 break;

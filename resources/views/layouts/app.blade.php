@@ -299,7 +299,7 @@
                             
                                     <!-- CHARGEMENT -->
                                     <a id="notificationsLoader" class="dropdown-item dropdown-notification" href="#">
-                                        <p class="notification-solo text-center"><i id="notificationsIcon" class="fa fa-spinner fa-pulse fa-fw" aria-hidden="true"></i> Chargement des dernières notifications...</p>
+                                        <p class="notification-solo text-center"><i id="notificationsIcon" class="fa fa-spinner fa-pulse fa-fw" aria-hidden="true"></i>@lang('app.txt.loading_the_latest_notifications')</p>
                                     </a>
                             
                                     <div id="notificationsContainer" class="notifications-container"></div>
@@ -895,6 +895,7 @@
                         success:function(data){
                             var datas = data.res;
                             var datasLength = datas.length;
+                            var origin   = window.location.origin;
 
                             if(datasLength !== 0){
                                 // set count notification
@@ -906,7 +907,7 @@
                                     var body = $(txt[1]).text();
                                     var dt = txt[0].split('<p><small>')[1];
                                     var userRole = '{{Auth::check()?Auth::user()->roleUser->role_initial:""}}';
-                                    var url = userRole+"/contact/role/"+datas[i].role_initial;
+                                    var url = origin+'/'+userRole+"/contact/role/"+datas[i].role_initial;
 
                                     // push data in notifications array
                                     notifications.push({

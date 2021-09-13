@@ -55,7 +55,7 @@ class MemberWaitingMessage extends Notification
         return (new MailMessage)
             ->from(env('ADMIN_MAIL'))
             ->subject(__('app.message'))
-            ->subject(__('mail.created.subject', ['app'=>app_name()]))
+            ->subject(__('mail.message_from_iea.subject', ['app'=>app_name()]))
             ->line(__('member.waiting_message', ['user'=>$userName,'date'=>$dt,'hour'=>$hr,'afa'=>$user->afa->name]));
     }
 

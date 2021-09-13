@@ -66,7 +66,7 @@ class MemberMandateSearchMessage extends Notification
         return (new MailMessage)
             ->from(env('ADMIN_MAIL'))
             ->subject(__('app.message'))
-            ->subject(__('mail.created.subject', ['app'=>app_name()]))
+            ->subject(__('mail.message_from_iea.subject', ['app'=>app_name()]))
             ->line(__('member.mr.message_to_member', ['date'=>$dt,'hour'=>$hr,'name'=>$user->name,'immat'=>$user->immat,'etat'=>$product->location->area_level_1,'afa'=>$user->afa->name,'download_mr'=>$downloadForm6,'upload_mr'=>$uploadForm6,'abort'=>$abort]));
     }
 

@@ -7,30 +7,24 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Carbon\Carbon;
-use App\Models\User;
 
-class AfaConjunctionAgreementMessage extends Notification
+class MemberMandateSearchFinalisedMessage extends Notification
 {
     use Queueable;
-
     private $user;
     private $dt;
     private $hr;
-    private $uploadCa;
-    private $downloadCa;
-        
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(User $user,$downloadCa,$uploadCa)
+    public function __construct($user)
     {
         $this->user = $user;
         $this->dt = Carbon::now()->format('m-d-Y');
         $this->hr = Carbon::now()->format('H:i:m');
-        $this->uploadCa = $uploadCa;
-        $this->downloadCa = $downloadCa;
     }
 
     /**
@@ -55,14 +49,13 @@ class AfaConjunctionAgreementMessage extends Notification
         $user = $this->user;
         $dt = $this->dt;
         $hr = $this->hr;
-        $downloadCa = $this->downloadCa;
-        $uploadCa = $this->uploadCa;
+        $userName = $user->isPerson()?$user->name:$user->userinfos()->first()->orga_name;
 
         return (new MailMessage)
             ->from(env('ADMIN_MAIL'))
             ->subject(__('app.message'))
             ->subject(__('mail.message_from_iea.subject', ['app'=>app_name()]))
-            ->line(__('member.gothere.select_afa.ca.message_to_afa', ['date'=>$dt,'hour'=>$hr,'name'=>$user->name,'immat'=>$user->immat,'agence' => 'IEA', 'download_ca'=>$downloadCa, 'upload_ca'=>$uploadCa]));
+            ->line(__('member.tobuy.mr.message_to_member', ['date'=>$dt,'hour'=>$hr,'name'=>$userName]));
     }
 
     /**

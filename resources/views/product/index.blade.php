@@ -144,7 +144,7 @@
                     <div class="row m-15px-t">
                         <div class="col-sm-6">
                           {{-- @if(Auth::check() && Auth::user()->hasRole(5)) --}}
-                            <a href="{{route('member.buy.product', $item )}}" type="button" id="btn_buy" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12" {{ Auth::user()->isMove()?(Auth::user()->memberHasSendMr(1,Auth::user()->id,Auth::user()->afa->id)?'':'disabled'):''  }}><i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')</a>
+                            <a href="{{route('member.buy.product', $item )}}" type="button" id="btn_buy" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12" {{ Auth::check()&&Auth::user()->isMove()?(Auth::user()->memberHasSendMr(1,Auth::user()->id,Auth::user()->afa->id)?'':'disabled'):''  }}><i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')</a>
                           {{-- @else
                             <button type="button" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12" disabled title="@lang('app.txt.logintocontinue')"><i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')</button>
                           @endif --}}

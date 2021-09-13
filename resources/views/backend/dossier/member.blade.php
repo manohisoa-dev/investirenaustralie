@@ -194,12 +194,56 @@
                                     <p>@lang('app.txt.dossier.i_would_like_to_buy_this.description')</p>
                                     <div class="row col-lg-12 m-15px-t">
                                         @if (Auth::user()->hasAfa())
-                                            @if (Auth::user()->memberHasSendMr(1,Auth::user()->id,Auth::user()->afa->id))<span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-info white-color">@lang('app.waiting')</i></small></span>@endif
+                                            @if (Auth::user()->isCheckedDossierTransaction($prod_id = Auth::user()->dossierTransaction()->first()->product_id))
+                                                <div class="row col-lg-12 m-15px-t">
+                                                    @if ($status = Auth::user()->dossierTransactionIsComplete(Auth::user()->dossierTransaction()->first()->product_id) === 'to_be_completed')
+                                                        <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-info white-color">@lang("app.txt.file.current")</i></small></span>
+                                                    @else
+                                                        <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-info white-color">@lang('app.waiting')</i></small></span>
+                                                    @endif
+                                                </div>
+                                            @else
+                                                <div class="row col-lg-12 m-15px-t">
+                                                    <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-info white-color">@lang('app.waiting')</i></small></span>
+                                                </div>
+                                            @endif
                                         @endif
                                     </div>
                                 </div>
                             </div>
                         @endif
+
+                        <div class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon grenate-bg">
+                                <i class="fa fa-file"></i>
+                            </div>
+                            <div class="vertical-timeline-content">
+                                <h2>@lang('app.txt.complete_transaction_file_info')</h2>
+                                <p>Les informations essentielles pour sécuriser votre achat concernent:</p>
+                                <p>- le nom du programme immobilier<br/>- le type d'unité (exemple : "B3 type unit")<br/>- l'étage où se situe le bien (exemple : "level 8")<br/>- l'identité du lot (numéro du lot - exemple : "unit 804")<br/>- Prix de vente définitif hors taxes (AUD)</p>
+
+                                @if (Auth::user()->hasAfa())
+                                    @if (Auth::user()->isCheckedDossierTransaction($prod_id = Auth::user()->dossierTransaction()->first()->product_id))
+                                        @if ($status = Auth::user()->dossierTransactionIsComplete(Auth::user()->dossierTransaction()->first()->product_id))
+                                            @if ($status === 'complete'|| $status === 'validate')
+                                                <button onclick="showDossierTransaction({{ Auth::user()->dossierTransaction()->first() }},{{ App\Models\Product::whereId(Auth::user()->dossierTransaction()->first()->product_id)->with('location')->first() }} )" class="m-btn m-btn-sm m-btn-theme2nd">{{ trans("app.btn.more_info") }}</button>
+                                                <span class="vertical-date">        
+                                                    {{App\Models\DossierTransaction::getDossierTransactionInfo($prod_id,Auth::user()->id)->updated_at->diffForHumans()}} <br/>
+                                                    <small>{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', App\Models\DossierTransaction::getDossierTransactionInfo($prod_id,Auth::user()->id)->updated_at)->format('d F')}},{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', App\Models\DossierTransaction::getDossierTransactionInfo($prod_id,Auth::user()->id)->updated_at)->year }}</small>
+                                                </span>
+                                            @endif
+                                            <div class="row col-lg-12 m-15px-t">
+                                                <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b>  {!! $status==='complete'?'<i class="badge badge-pill badge-success white-color">'.trans("app.txt.finalized").'</i>': ($status==='to_be_completed'?'<i class="badge badge-pill badge-info white-color">'.trans("app.waiting").'</i>':'<i class="badge badge-pill white-color">'.trans("app.txt.not_available").'</i>') !!} </small></span>
+                                            </div>
+                                        @endif
+                                    @else
+                                        <div class="row col-lg-12 m-15px-t">
+                                            <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-info white-color">@lang('app.txt.not_available')</i></small></span>
+                                        </div>
+                                    @endif
+                                @endif
+                            </div>
+                        </div>
 
                     </div>
                 </div>
@@ -222,16 +266,62 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal to confirm purchase -->
+    <div id="confirmPurchaseModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content white-bg">
+                <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
+                    <h4 class="modal-title white-color"> @lang('app.txt.confirm_purchase') | N° : <span></span></h4>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route("afa.dossier.update_dt") }}" id="confirmPurchaseForm" method="POST">
+                        {{ csrf_field() }}
+                        {!! trans('member.tobuy.dt.message_to_member_after_info_complete.confirm',['date'=>Carbon\Carbon::now()->format('m-d-Y'),'hour'=>Carbon\Carbon::now()->format('H:i:m'),'name'=>Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name,'afa'=>Auth::user()->afa->name,'city'=>App\Models\Product::whereId($prod_id)->first()->location->locality,'etat'=>App\Models\Product::whereId($prod_id)->first()->location->area_level_1]) !!}
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="float-right m-15px-t">
+                        <button type="reset" class="m-btn m-btn-theme" data-dismiss="modal" id="btn_cancel">@lang("app.btn.close")</button> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal to download EOI -->
+    <div id="downloadEoiModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content white-bg">
+                <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
+                    <h4 class="modal-title white-color"> @lang('app.txt.message')<span></span></h4>
+                </div>
+                <div class="modal-body">
+                    {{-- {!! trans('member.tobuy.dt.message_to_member_after_info_complete.confirm',['date'=>Carbon\Carbon::now()->format('m-d-Y'),'hour'=>Carbon\Carbon::now()->format('H:i:m'),'name'=>Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name,'afa'=>Auth::user()->afa->name,'city'=>App\Models\Product::whereId($prod_id)->first()->location->locality,'etat'=>App\Models\Product::whereId($prod_id)->first()->location->area_level_1]) !!} --}}
+                </div>
+                <div class="modal-footer">
+                    <div class="float-right m-15px-t">
+                        <button type="reset" class="m-btn m-btn-theme" data-dismiss="modal" id="btn_cancel">@lang("app.btn.close")</button> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('script')
 	<script src="{{ asset('administrator/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
     <script src="{{ asset('/js/jquery-dateFormat.min.js') }}"></script>
+    <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
     <script>
         function showDossierTransaction(dossierTransaction,product){
             var numero = dossierTransaction.numero;
             var productRef = product.reference;
             var productName = product.title;
+            var lotType = dossierTransaction.lot_type?dossierTransaction.lot_type:'-';
+            var lotLevel = dossierTransaction.lot_level?dossierTransaction.lot_level:'-';
+            var lotId = dossierTransaction.lot_id?dossierTransaction.lot_id:'-';
+            var finalSalesPrice = dossierTransaction.final_sales_price?dossierTransaction.final_sales_price.toLocaleString():'-';
             var state = product.location.area_level_1;
             var city = product.location.locality;
             var status = dossierTransaction.status;
@@ -246,7 +336,12 @@
                     '<p><b>Statut : </b>'+status+'</p>'+
                     '<p><b>Date de création : </b>'+$.format.date(createdAt, "dd MMMM yyyy")+'</p>'+
                     '<p><b>Etat : </b>'+state+'</p>'+
-                    '<p><b>Ville : </b>'+city+'</p>'+
+                    '<p><b>Ville : </b>'+city+'</p><hr>'+
+                    '<p><b class="theme2nd-color">INFORMATIONS ESSENTIELLES POUR SECURISER VOTRE ACHAT</b></p>'+
+                    '<p><b>Type d&rsquo;unité : </b>'+lotType+'</p>'+
+                    '<p><b>Etage où se situe le bien : </b>'+lotLevel+'</p>'+
+                    '<p><b>Identité du lot : </b>'+lotId+'</p>'+
+                    '<p><b>Prix de vente définitif hors taxes (AUD) : </b>'+finalSalesPrice+'</p>'+
                 '</div>';
 
             $('#showInfoStepModal .modal-title').html(titleModal);
@@ -380,6 +475,134 @@
                 }
             });  
         }
+
+        $(function(){
+            if('{{Request::get("action") && Request::get("ID")}}'){
+                var doss = $.parseJSON('{!! Request::get("ID")?App\Models\DossierTransaction::whereId(Request::get("ID"))->first():"" !!}');
+                var prod = $.parseJSON('{!! Request::get("ID")?App\Models\Product::whereId(App\Models\DossierTransaction::whereId(Request::get("ID"))->first()->product_id)->first():"" !!}');
+
+
+                // set default data
+                var template = $('#confirmPurchaseForm').html();
+                template.replace(':title',prod.title);
+                template.replace(':lottype',doss.lot_type);
+                template.replace(':lotlevel',doss.lot_level);
+                template.replace(':lotid',doss.lot_id);
+                template.replace(':price',doss.final_sales_price.toLocaleString());
+
+                // show modal
+                $('#confirmPurchaseModal .modal-header span').html(doss.numero);
+                $('#confirmPurchaseModal').modal('show');
+            };
+        });
+
+        // function confirmPurchase(){
+            // jquery validate form
+            $('#confirmPurchaseForm').validate({
+                ignore: [],
+                rules: {
+                    title_programme: {
+                        required: true
+                    },
+                    lot_type: {
+                        required: true
+                    },
+                    lot_level: {
+                        required: true
+                    },
+                    lot_id: {
+                        required: true,
+                    },
+                    price: {
+                        required: true,
+                    },
+                    confirm_purchase: {
+                        required: true
+                    },
+                },
+                messages: {
+                    title_programme: {
+                        required: "@lang('app.txt.champobligatoire')"
+                    },
+                    lot_type: {
+                        required: "@lang('app.txt.champobligatoire')"
+                    },
+                    lot_level: {
+                        required: "@lang('app.txt.champobligatoire')"
+                    },
+                    lot_id: {
+                        required: "@lang('app.txt.champobligatoire')",
+                    },
+                    price: {
+                        required: "@lang('app.txt.champobligatoire')"
+                    },
+                    confirm_purchase: {
+                        required: "@lang('app.txt.champobligatoire')"
+                    },
+                },
+                errorPlacement: function ( error, element ) {
+                    if(element.parent().hasClass('input-group')){
+                        error.insertAfter( element.parent() );
+                    }else{
+                        error.insertAfter( element );
+                    }
+                },
+            });
+
+            $('#confirmPurchaseForm').submit(function(event) { // fires on every keyup & 
+                event.preventDefault();
+                if ($('#confirmPurchaseForm').valid()) {                   // checks form for validity
+                    loadingPage();
+
+                    var dtid = '{{ Request::get("ID") }}';
+                    var datas = {'dt_id':dtid, 'is_complete':3};
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({               
+                        url: '{{ route("member.dossier.updateIsCompleteDt") }}',
+                        data: datas,
+                        type: 'POST',
+                        dataType:'json',
+                        success: function( data ){
+                            // hide loading icon
+                            stopLoadingPage();
+                            
+                            swal({
+                                    title: "{!! trans('app.txt.confirm_purchase') !!}", 
+                                    text: "{!! trans('app.txt.purchase_confirmed') !!}", 
+                                    type: "success",
+                                    confirmButtonText: "@lang('app.btn.ok')",
+                                },
+                                function(){ 
+                                    // close modal confirm purchase modal
+                                    $('#confirmPurchaseModal').modal('hide');
+
+                                    // show modal EOI
+                                    stopLoadingPage();
+                                    $('#downloadEoiModal').modal('show');
+                                }
+                            );
+                        },
+                        error:function(){
+                            // hide loading icon
+                            stopLoadingPage();
+                            swal("{{ trans('app.txt.error') }}", "{{ trans('app.txt.error_confirmation') }}", "error");
+                        }
+                    });  
+                }
+            });
+        // }
     </script>
+    <style>
+        .error {
+        color: #F00;
+        background-color: #FFF;
+        }
+    </style>
 	
 @endpush
