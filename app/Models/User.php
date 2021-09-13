@@ -53,7 +53,7 @@ class User extends Authenticatable {
 
     public static function findRequested() {
         $query = User::query();
-
+        $query->join('localizations', 'localizations.id', '=', 'users.location_id');
         // search results based on user input
         \Request::input('id') and $query->where('id', \Request::input('id'));
         \Request::input('name') and $query->where('name', 'like', '%' . \Request::input

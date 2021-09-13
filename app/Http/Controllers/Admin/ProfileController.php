@@ -30,7 +30,6 @@ class ProfileController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        //var_dump(Auth::user()->location);
         if (Auth::user()->isAdmin() || Auth::user()->isAdminBlog() || Auth::user()->isAdminDelegate()) {
             $view = view('admin.user.profile');
         }else {
