@@ -81,8 +81,11 @@ trait ImageResizer{
             }
         }else{
             $tmImage = $this->image()->first();
-            if( $tmImage->count() ){
+            if( count($tmImage) ){
                 $zPhoto = $tmImage->filename ;
+            }else{
+                $imageSize = self::$aImageSize[$name];
+                return "http://placehold.it/" . $imageSize[0] . "x" . $imageSize[1];
             }
         }
 

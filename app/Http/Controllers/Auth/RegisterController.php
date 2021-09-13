@@ -351,7 +351,7 @@ class RegisterController extends Controller
                         'orga_registration_number'         => 'required|max:100',
                         'orga_rep_official_registration'         => 'required|max:100',
                         'orga_type'         => 'required',
-                        'orga_presentation' => 'nullable|max:1000',
+                        'orga_presentation' => 'nullable|max:2000',
                         'route'        => 'required|max:100',
                         'route_number'        => 'required',
                         'locality'     => 'required|max:100',
@@ -402,7 +402,7 @@ class RegisterController extends Controller
                     'orga_fax'        => 'nullable|max:100',
                     'orga_mobile_phone'        => 'required|digits_between:9,9|numeric',
                     'orga_website'      => 'required|url|max:100',
-                    'orga_presentation' => 'max:1000',
+                    'orga_presentation' => 'max:2000',
                     'orga_operation_state' => 'required',
                     'orga_operation_range' => 'required',
 
@@ -447,7 +447,7 @@ class RegisterController extends Controller
                     'orga_type'         => 'required',
                     'orga_license_number'         => 'required|max:100',
                     'orga_operation_range' => 'required',
-                    'orga_presentation' => 'nullable|max:1000',
+                    'orga_presentation' => 'nullable|max:2000',
                     
                     'route'        => 'required|max:100',
                     'route_number'        => 'required',
@@ -507,7 +507,7 @@ class RegisterController extends Controller
                         'orga_fax'        => 'nullable|max:100',
                         'orga_mobile_phone'        => 'required|digits_between:9,9|numeric',
                         'orga_website'      => 'required|url|max:100',
-                        'orga_presentation' => 'max:1000',
+                        'orga_presentation' => 'max:2000',
 
                         'route_number'        => 'required',
                         'route'        => 'required|max:100',

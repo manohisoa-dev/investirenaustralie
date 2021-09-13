@@ -93,12 +93,12 @@ class ProfileController extends Controller {
                     $rules = ['first_name' => 'required|max:100', 'last_name' => 'required|max:100', ];
                 } else {
                     $rules = ['prefixPhone' => 'required|max:100', 'phone' => 'required|max:100',
-                        'orga_name' => 'required|max:100', 'orga_presentation' => 'required|max:100', ];
+                        'orga_name' => 'required|max:100', 'orga_presentation' => 'required|max:2000', ];
                 }
                 break;
             case 4:
                 $rules = ['orga_name' => 'required|max:100', 'orga_presentation' =>
-                    'required|max:100', 'orga_email' => 'required|unique:users,email,' . $user->id .
+                    'required|max:2000', 'orga_email' => 'required|unique:users,email,' . $user->id .
                     '|max:100', 'orga_phone' => 'required|max:100', 'orga_website' =>
                     'required|url|max:100', 'orga_operation_range' => 'required|max:100',
                     'contact_name' => 'required|max:100', 'contact_email' =>
@@ -107,7 +107,7 @@ class ProfileController extends Controller {
                 break;
             case 3:
                 $rules = ['orga_name' => 'required|max:100', 'orga_presentation' =>
-                    'required|max:100', 'orga_email' => 'required|unique:users,email,' . $user->id .
+                    'required|max:2000', 'orga_email' => 'required|unique:users,email,' . $user->id .
                     '|max:100', 'orga_phone' => 'required|max:100', 'orga_website' =>
                     'required|url|max:100', 'orga_operation_state' => 'required|max:100',
                     'orga_operation_range' => 'required|max:100', 'contact_name' =>
@@ -117,7 +117,7 @@ class ProfileController extends Controller {
                 break;
             case 2:
                 $rules = ['orga_name' => 'required|max:100', 'orga_presentation' =>
-                    'required|max:100', 'orga_email' => 'required|unique:users,email,' . $user->id .
+                    'required|max:2000', 'orga_email' => 'required|unique:users,email,' . $user->id .
                     '|max:100', 'orga_phone' => 'required|max:100', 'orga_website' =>
                     'required|url|max:100', 'contact_name' => 'required|max:100', 'contact_email' =>
                     'required|max:100', 'contact_phone' => 'required|max:100', 'crm_name' =>

@@ -100,7 +100,6 @@ class ConfigController extends Controller
         $keys = Config::liaRules();
 
         if ($request->isMethod('post')) {
-
             // Validate request
             $datas = $request->all();
             $validator = Validator::make($datas, $keys);
@@ -153,7 +152,6 @@ class ConfigController extends Controller
         $keys = Config::iiccRules();
 
         if ($request->isMethod('post')) {
-
             // Validate request
             $datas = $request->all();
             $validator = Validator::make($datas, $keys);
@@ -171,20 +169,20 @@ class ConfigController extends Controller
                     if($request->input('iicc_email') === null){
                         $item->update_meta('iicc_email', "");
                     }else{
-                        if($value = $request->input($key)) $item->update_meta('iicc_email', $value);    
+                        if($value = $request->input($key)) $item->update_meta('iicc_email', $value); 
                     }
                 }elseif($key == 'iicc_mobile'){
                     if($request->input('iicc_mobile') === null){
                         $item->update_meta('iicc_mobile', "");
                     }else{
-                        if($value = $request->input($key)) $item->update_meta('iicc_mobile', $value);    
+                        if($value = $request->input($key)) $item->update_meta('iicc_mobile', $value); 
+                        echo $request->input($key).'<br>';   
                     }
                 }else{
                     if($value = $request->input($key)) $item->update_meta($key, $value);
                 }
 
             }
-
             # notification
             Notify::success('La configuration a été modifiée avec succés ! ');
             return back() ;
