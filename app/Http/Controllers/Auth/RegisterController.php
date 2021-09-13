@@ -457,7 +457,7 @@ class RegisterController extends Controller
                     'country'      => 'required|max:100',
                     
                     'contact_name'  => 'required|max:100',
-                    'contact_phone' => 'required|digits_between:9,9|numeric',
+                    'contact_phone' => 'required|digits_between:6,9|numeric',
                     'contact_email' => 'required|email|max:100',
 
                     'bank_name' => 'required|max:100',
@@ -690,6 +690,16 @@ class RegisterController extends Controller
 
             // Create user info
             if($role !== 'seller' || session('seller_class')!=='non_professional_natural_persons' && session('seller_class')!=='seller_by_afa'){
+                if(isset($datas['contact_phone'])){
+                    $datas['contact_phone'] = $datas['indicatif'].$datas['contact_phone'];
+                }
+                if(isset($datas['orga_mobile_phone'])){
+                    $datas['orga_mobile_phone'] = $datas['indicatif'].$datas['orga_mobile_phone'];
+                }
+                if(isset($datas['orga_phone'])){
+                    $datas['orga_phone'] = $datas['indicatif'].$datas['orga_phone'];
+                }
+
                 if($userInfo = Userinfo::create($datas)){
                     unset($datas['user_id']);
                 }
