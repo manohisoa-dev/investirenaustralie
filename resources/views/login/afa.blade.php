@@ -178,7 +178,7 @@
                                             <div class="form-group">
                                                 <label for="orga_presentation" class="col-sm-12 control-label">@lang('app.txt.businesspresentation')</label>
                                                 <div class="col-sm-12">
-                                                    <textarea class="form-control" id="orga_presentation" name="orga_presentation" maxlength="1000" rows="5">{{ old('orga_presentation')?old('"orga_presentation'):'' }}</textarea>
+                                                    <textarea class="form-control" id="orga_presentation" name="orga_presentation" maxlength="2000" rows="10">{{ old('orga_presentation')?old('"orga_presentation'):'' }}</textarea>
                                                     <span class="text-danger">{{ $errors->first('orga_presentation') }}</span>
                                                 </div>
                                             </div>
