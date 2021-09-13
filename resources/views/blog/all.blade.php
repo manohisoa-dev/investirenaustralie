@@ -82,12 +82,12 @@
                                         <img src="{{ asset('images/ads-logo.png') }}" alt="logo_iea">
                                     </div>
                                     <div class="col-lg-6">
-                                        <p class="text-right">{{getGTranslateAutoDetect( App::getLocale() ,$item->title)}}</p>
+                                        <p class="text-right">{{getGTranslateAutoDetect( App::getLocale() ,$item->title?$item->title:'')}}</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="ads-content">
-                                <a href="{{ $item->links?$item->links:'#' }}" target="_blank"><img src="{{ asset($item->image->filepath) }}" alt=""></a>
+                                <a href="{{ $item->links?$item->links:'#' }}" target="_blank"><img src="{{ asset($item->image?$item->image->filepath:'') }}" alt=""></a>
                             </div>
                         </div>
                     @empty

@@ -31,10 +31,10 @@
   <div class="modal-dialog">
       <div class="modal-content white-bg">
           <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
-              <h4 class="modal-title white-color">{{$page->title}}</h4>
+              <h4 class="modal-title white-color">{{$page?$page->title:''}}</h4>
           </div>
           <div class="modal-body">
-              <p class="text-justify">{{$page->content}}</p>
+              <p class="text-justify">{{$page?$page->content:''}}</p>
           </div>
           <div class="modal-footer">
               <a type="button" class="pull-left m-btn m-btn-theme" href="{{ route('home') }}">@lang('app.btn.abandonner')</a>
@@ -399,7 +399,7 @@
                                         <div class="form-group">
                                             <label for="orga_presentation" class="col-sm-12 control-label">@lang('app.txt.presentation.organisation')</label>
                                             <div class="col-sm-12">
-                                                <textarea class="form-control" maxlength="1000" id="orga_presentation" name="orga_presentation" placeholder="@lang('app.txt.agencypresentation')" rows="5">{{ old('orga_presentation')?old('orga_presentation'):'' }}</textarea>
+                                                <textarea class="form-control" maxlength="2000" id="orga_presentation" name="orga_presentation" placeholder="@lang('app.txt.agencypresentation')" rows="10">{{ old('orga_presentation')?old('orga_presentation'):'' }}</textarea>
                                                 <span class="text-danger">{{ $errors->first('orga_presentation') }}</span>
                                             </div>
                                         </div>

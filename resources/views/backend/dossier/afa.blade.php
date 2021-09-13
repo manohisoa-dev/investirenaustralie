@@ -5,7 +5,7 @@
 @endsection
 
 @section('subcontent')
-
+    @include('includes.alerts')
     <div class="profile-content-area m-40px-tb">
         <div class="card m-40px-b">
             <div class="card-header">
@@ -19,6 +19,7 @@
                 <table class="table table-bordered" style="font-size:12px">
                     <thead>
                         <tr>
+                            <th>N°</th>
                             <th>Image</th>
                             <th>Title</th>
                             <th>Type</th>
@@ -31,6 +32,9 @@
                         @if (sizeOf($records)!==0)
                             @foreach($records as $index =>$record)
                                 <tr>
+                                    <td>
+                                        {{App\Models\DossierTransaction::where('product_id','=',$record->product_id)->where('user_id','=',$record->from_id)->first()->numero}}
+                                    </td>
                                     <td>
                                         @if (@getimagesize(App\Models\Product::whereId($record->product_id)->first()->imageUrl()))
                                             <a href="{{route('admin.product.index')}}/{{$record->id}}">
@@ -60,10 +64,17 @@
                                         {{-- <span class="badge badge-pill badge-success white-color">@lang('afa.folders.status.finalized')</span> --}}
                                     {{-- @endif --}}
                                     </td>
+
                                     <td align="center">
                                         <a href="javascript:void(0)" onclick="showTimeline({{App\Models\DossierTransaction::where('product_id','=',$record->product_id)->where('user_id','=',$record->from_id)->first()}},{{App\Models\Product::whereId($record->product_id)->first()}},{{$record}},{{$index<sizeOf($mandatesearch)?$mandatesearch[$index]:''}})" title="Show timeline for this product" class="">
                                             <i class="fa fa-eye"></i>
                                         </a>&nbsp;
+
+                                        @if (App\Models\DossierTransaction::toBeCompleted($record->product_id,$record->from_id))
+                                            <a href="{{ url('afa/dossier?action=complete_dossier_transaction_info&ID='.App\Models\DossierTransaction::where('product_id','=',$record->product_id)->where('user_id','=',$record->from_id)->first()->id) }}" title="{{ trans('app.txt.complete_transaction_file_info') }}" class="">
+                                                <i class="fa fa-edit text-info"></i>
+                                            </a>&nbsp;                                            
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -97,18 +108,181 @@
         </div>
     </div>
 
+    <!-- Modal to show info -->
+    <div id="showInfoModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content white-bg">
+                <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
+                    <h4 class="modal-title white-color"></h4>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <a type="button" class="m-btn m-btn-theme" href="javascript:void(0)" id="btnCancelShowDtInfo" data-dismiss="modal">@lang('app.btn.ok')</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal to complete dossier transaction information -->
+    <div id="completeDossierTransactionModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content white-bg">
+                <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
+                    <h4 class="modal-title white-color"> @lang('app.txt.complete_transaction_file_info') | N° : <span></span></h4>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route("afa.dossier.update_dt") }}" id="completeDossierTransactionInformationForm" method="POST">
+                        {{ csrf_field() }}
+                        <div class="form-group"><label class="col-sm-12 control-label" for="numero">N° : </label>
+                            <div class="col-sm-12">
+                                <input type="hidden" class="form-control" id="doss_id" name="doss_id" value="{{ old('doss_id')?old('doss_id'):'' }}">
+                                <input type="hidden" class="form-control" id="doss_user_id" name="doss_user_id" value="{{ old('doss_user_id')?old('doss_user_id'):'' }}">
+                                <input type="hidden" class="form-control" id="prod_id" name="prod_id" value="{{ old('prod_id')?old('prod_id'):'' }}">
+                                <input type="text" class="form-control" id="numero" name="numero" value="{{ old('numero')?old('numero'):'' }}" readonly>
+                                    <span class="text-danger">{{ $errors->first("numero") }}</span>
+                            </div>
+                        </div>
+                        <div class="form-group"><label class="col-sm-12 control-label" for="name">Ref : </label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="prod_ref" name="prod_ref" value="{{ old('prod_ref')?old('prod_ref'):'' }}" readonly>
+                                    <span class="text-danger">{{ $errors->first("prod_ref") }}</span>
+                            </div>
+                        </div>
+                        <div class="form-group"><label class="col-sm-12 control-label" for="prod_name">Program/Product name : </label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="prod_name" name="prod_name" value="{{ old('prod_name')?old('prod_name'):'' }}" readonly>
+                                    <span class="text-danger">{{ $errors->first("prod_name") }}</span>
+                            </div>
+                        </div>
+                        <div class="form-group"><label class="col-sm-12 control-label" for="lot_type">Lot Type : *</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="lot_type" name="lot_type" placeholder="Ex: B3 type unit" value="{{ old('lot_type')?old('lot_type'):'' }}">
+                                    <span class="text-danger">{{ $errors->first("lot_type") }}</span>
+                            </div>
+                        </div>
+                        <div class="form-group"><label class="col-sm-12 control-label" for="lot_level">Lot Level : *</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="lot_level" name="lot_level" placeholder="Ex: level 8" value="{{ old('lot_level')?old('lot_level'):'' }}">
+                                    <span class="text-danger">{{ $errors->first("lot_level") }}</span>
+                            </div>
+                        </div>
+                        <div class="form-group"><label class="col-sm-12 control-label" for="lot_id">Lot ID : *</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="lot_id" name="lot_id" placeholder="Ex: unit 804" value="{{ old('lot_id')?old('lot_id'):'' }}">
+                                    <span class="text-danger">{{ $errors->first("lot_id") }}</span>
+                            </div>
+                        </div>
+                        <div class="form-group"><label class="col-sm-12 control-label" for="final_sales_price">Final sales price : *</label>
+                            <div class="col-sm-12">
+                                <input type="number" class="form-control" id="final_sales_price" name="final_sales_price" placeholder="AUD" value="{{ old('final_sales_price')?old('final_sales_price'):'' }}">
+                                    <span class="text-danger">{{ $errors->first("final_sales_price") }}</span>
+                            </div>
+                        </div>
+
+                        <div class="float-right m-15px-t">
+                            <button type="reset" class="m-btn m-btn-theme" data-dismiss="modal" id="btn_cancel">@lang("app.btn.cancel")</button> 
+                            <button type="submit" class="m-btn m-btn-theme2nd"  id="btn_save">@lang("app.btn.save")</button></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    @lang('app.form.required')
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('script')
 	<script src="{{ asset('administrator/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
 	<script src="{{ asset('/js/jquery-dateFormat.min.js') }}"></script>
+    <!-- Jquery Validate -->
+    <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
+    <style>
+        .error {
+            color: #F00;
+            background-color: #FFF;
+        }
+    </style>
+    <script>
+        $(function(){
+            if('{{Request::get("action") && Request::get("ID")}}'){
+                var doss = $.parseJSON('{!! Request::get("ID")?App\Models\DossierTransaction::whereId(Request::get("ID"))->first():"" !!}');
+                var prod = $.parseJSON('{!! Request::get("ID")?App\Models\Product::whereId(App\Models\DossierTransaction::whereId(Request::get("ID"))->first()->product_id)->first():"" !!}');
+
+                // set default data
+                $('#doss_id').val(doss.id);
+                $('#doss_user_id').val(doss.user_id);
+                $('#prod_id').val(prod.id);
+                $('#numero').val(doss.numero);
+                $('#prod_ref').val(prod.reference);
+                $('#prod_name').val(prod.title);
+
+                // show modal
+                $('#completeDossierTransactionModal .modal-header span').html(doss.numero);
+                $('#completeDossierTransactionModal').modal('show');
+            };
+
+            
+            // jquery validate form
+            $('#completeDossierTransactionInformationForm').validate({
+                ignore: [],
+                rules: {
+                    lot_type: {
+                        required: true
+                    },
+                    lot_level: {
+                        required: true
+                    },
+                    lot_id: {
+                        required: true,
+                    },
+                    final_sales_price: {
+                        required: true,
+                        number: true
+                    },
+                },
+                messages: {
+                    lot_type: {
+                        required: "@lang('app.txt.champobligatoire')"
+                    },
+                    lot_level: {
+                        required: "@lang('app.txt.champobligatoire')"
+                    },
+                    lot_id: {
+                        required: "@lang('app.txt.champobligatoire')",
+                    },
+                    final_sales_price: {
+                        required: "@lang('app.txt.champobligatoire')"
+                    },
+                },
+                errorPlacement: function ( error, element ) {
+                    if(element.parent().hasClass('input-group')){
+                        error.insertBefore( element.parent() );
+                    }else{
+                        error.insertAfter( element );
+                    }
+                },
+            });
+
+            $('#completeDossierTransactionInformationForm').submit(function() { // fires on every keyup & blur
+                if ($('#completeDossierTransactionInformationForm').valid()) {                   // checks form for validity
+                    loadingPage();
+                }
+            });
+        });
+
+    </script>
     
     <script type="text/javascript">
         var conjAgr = [];
+        var dossTrans = [];
 
         function showTimeline(doss,prod,ca,mr){
             var content = $('#showTimelineModal .modal-body');
             var title = 'N° Trans : '+doss.numero+' | '+prod.title+' ('+prod.reference+')';
+            dossTrans = doss;
 
             content.html();
             conjAgr = ca;
@@ -125,13 +299,13 @@
                 mr['status']='null',
                 mr['file_name']='';  
             }
-            content.html(timelineContent(ca,mr));
+            content.html(timelineContent(doss,ca,mr));
 
             // show timeline
             $('#showTimelineModal').modal('show');
         }
 
-        function timelineContent(ca,mr){
+        function timelineContent(dt,ca,mr){
             var origin   = window.location.origin;
             var dayCreate = $.format.prettyDate(ca.created_at);
             var dateCreate = $.format.date(ca.created_at, 'yyyy MMM dd');
@@ -153,6 +327,14 @@
             var stepStatusMr = statusMr!==0?(statusMr!=='null'?'<i class="badge badge-pill badge-success white-color">@lang("app.txt.finalized")</i>':'{{ trans("app.txt.not_available") }}'):'<i class="badge badge-pill badge-info white-color">@lang("app.waiting")</i>';
             var textBtnUploadMr = statusMr!==0?'File sent':'Upload file';
             var fileNameMr = statusMr!==0?mr.file_name:'';
+            var completeDossierTransactionInfo = origin+'/afa/dossier?action=complete_dossier_transaction_info&ID='+dt.id;
+            var statusDt = dt.is_complete;
+            var disabledBtn = statusDt!==1?'hidden':'';
+            var disabledBtnShowDt = statusDt!==2?'hidden':'';
+            var stepStatusDt = statusDt!==1?(statusDt===2?'<i class="badge badge-pill badge-success white-color">@lang("app.txt.finalized")</i>':'{{ trans("app.txt.not_available") }}'):'<i class="badge badge-pill badge-info white-color">@lang("app.txt.to_complete")</i>';
+            var dayUpdateDt = statusDt===2?(dt.updated_at!=='null'? $.format.prettyDate(dt.updated_at):''):'';
+            var dateUpdateDt = statusDt===2?(dt.updated_at!=='null'? $.format.date(dt.updated_at, 'yyyy MMM dd'):''):'';
+            
             var content = '<div class="profile-content-area m-40px-tb">'+
                 '<div class="card m-40px-b">'+
                     '<div class="card-body">'+
@@ -212,6 +394,24 @@
                                     '</div>'+
                                 '</div>'+
 
+                                '<div class="vertical-timeline-block">'+
+                                    '<div class="vertical-timeline-icon black-bg">'+
+                                        '<i class="fa fa-edit"></i>'+
+                                    '</div>'+
+                                    '<div class="vertical-timeline-content">'+
+                                        '<h2>{{ trans("app.txt.complete_transaction_file_info") }}</h2>'+
+                                        '<p>- Program/Product name<br/>- Lot Type<br/>- Lot Level<br/>- Lot ID<br/>- Final sales price'+
+                                        '</p>'+
+                                        '<a href="'+completeDossierTransactionInfo+'" class="m-btn m-btn-sm m-btn-theme2nd" '+disabledBtn+'> {{ trans("app.btn.to_complete") }} </a>'+
+                                        '<button onclick="showDossierTransactionInfo()" class="m-btn m-btn-sm m-btn-theme2nd" '+disabledBtnShowDt+'>{{ trans("app.btn.more_info") }}</button>'+
+                                        '<span class="vertical-date">'+
+                                            dayUpdateDt+'<br/>'+
+                                            '<small>'+dateUpdateDt+'</small>'+
+                                        '</span>'+
+                                        '<span class="col-lg-12 text-right"><small><b>@lang("app.status") : </b>'+stepStatusDt+'</small></span>'+
+                                    '</div>'+
+                                '</div>'+
+
                             '</div>'+
                         '</div>'+
                     '</div>'+
@@ -219,7 +419,30 @@
             '</div>';
 
             return content;
-        }
+        };
+
+        function showDossierTransactionInfo(){
+            var dt = dossTrans;
+
+            $('#showTimelineModal').modal('hide');
+
+            // set data in modal
+            $('#showInfoModal .modal-title').html('Transaction Information');
+            $('#showInfoModal .modal-body').html('');
+            $('#showInfoModal .modal-body').append('<p><b>Lot Type : </b>'+dt.lot_type+'</p>');
+            $('#showInfoModal .modal-body').append('<p><b>Lot Level : </b>'+dt.lot_level+'</p>');
+            $('#showInfoModal .modal-body').append('<p><b>Lot ID : </b>'+dt.lot_id+'</p>');
+            $('#showInfoModal .modal-body').append('<p><b>Final sales price : </b>'+(dt.final_sales_price).toLocaleString()+' AUD</p>');
+            
+            // show modal
+            $('#showInfoModal').modal('show');
+        };
+
+        $('#btnCancelShowDtInfo').click(function(){
+            setTimeout(() => {
+                $('#showTimelineModal').modal('show');
+            }, 350);
+        });
 
         $(function () {
             var fileupload = $("#FileUpload1");

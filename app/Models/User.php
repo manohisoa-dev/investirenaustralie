@@ -701,8 +701,10 @@ class User extends Authenticatable {
                         $userinfos->update(["contact_name" => $value]);
                     if ($value = $request->input('contact_email'))
                         $userinfos->update(["contact_email" => $value]);
-                    if ($value = $request->input('contact_phone'))
-                        $userinfos->update(["contact_phone" => $value]);
+                    if ($value = $request->input('contact_phone')){
+                        $ct_phone = $request->input('indicatif').$value;
+                        $userinfos->update(["contact_phone" => $ct_phone]);
+                    }
                     // Create CRM MetaData
                     if ($value = $request->input('crm_name'))
                         $userinfos->update(["crm_name" => $value]);
@@ -732,8 +734,10 @@ class User extends Authenticatable {
                     $userinfos->update(["contact_name" => $value]);
                 if ($value = $request->input('contact_email'))
                     $userinfos->update(["contact_email" => $value]);
-                if ($value = $request->input('contact_phone'))
-                    $userinfos->update(["contact_phone" => $value]);
+                if ($value = $request->input('contact_phone')){
+                    $ct_phone = $request->input('indicatif').$value;
+                    $userinfos->update(["contact_phone" => $ct_phone]);
+                }
 
                 // CRM Prodvider data
                 if ($value = $request->input('crm_name'))
@@ -761,8 +765,10 @@ class User extends Authenticatable {
                     $userinfos->update(["contact_name" => $value]);
                 if ($value = $request->input('contact_email'))
                     $userinfos->update(["contact_email" => $value]);
-                if ($value = $request->input('contact_phone'))
-                    $userinfos->update(["contact_phone" => $value]);
+                if ($value = $request->input('contact_phone')){
+                    $ct_phone = $request->input('indicatif').$value;
+                    $userinfos->update(["contact_phone" => $ct_phone]);
+                }
 
                 // Bank data
                 if ($value = $request->input('bank_iban'))
@@ -794,8 +800,10 @@ class User extends Authenticatable {
                     $userinfos->update(["contact_name" => $value]);
                 if ($value = $request->input('contact_email'))
                     $userinfos->update(["contact_email" => $value]);
-                if ($value = $request->input('contact_phone'))
-                    $userinfos->update(["contact_phone" => $value]);
+                if ($value = $request->input('contact_phone')){
+                    $ct_phone = $request->input('indicatif').$value;
+                    $userinfos->update(["contact_phone" => $ct_phone]);
+                }
 
                 // CRM Prodvider data
                 if ($value = $request->input('crm_name'))
@@ -911,6 +919,28 @@ class User extends Authenticatable {
         return false;
     }
 
+    public function dossierTransactionIsComplete($prod_id){
+        $dosTransUser = DossierTransaction::where('user_id',$this->id)->where('product_id',$prod_id)->first();
+        $isComplete = "";
+        
+        switch ($dosTransUser->is_complete) {
+            case 1:
+                $isComplete='to_be_completed';
+                break;
+            case 2:
+                $isComplete='complete';
+                break;
+            case 3:
+                $isComplete='validate';
+                break;
+            default:
+                $isComplete='not_completed';
+                break;
+        }
+
+        return $isComplete;
+    }
+
     public function hasCurrentTransaction(){
         $dosTransUser = DossierTransaction::where('user_id',$this->id)->where('status','current')->get();
 
@@ -974,5 +1004,6 @@ class User extends Authenticatable {
 
         return '';
     }
+    
 
 }

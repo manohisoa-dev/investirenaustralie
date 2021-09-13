@@ -50,7 +50,7 @@ class AfaCourriel extends Notification
         return (new MailMessage)
             ->from(env('ADMIN_MAIL'))
             ->cc('iea.dev.v2@gmail.com')
-            ->subject(__('mail.created.subject', ['app'=>app_name()]))
+            ->subject(__('mail.message_from_iea.subject', ['app'=>app_name()]))
             ->greeting(__('mail.greeting', ['name'=>$this->user->name]))
             ->subject(__('mail.document.sent'))
             ->line(__("mail.document.sent"))

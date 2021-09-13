@@ -112,7 +112,7 @@
             </div>
             @endif
     
-            @if($item->hasRole(5) && $item->type == 'person')
+            @if($item->hasRole(5) && $item->isPerson())
             <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
             <h5>@lang('app.txt.persondetail')</h5>
                 <div class="row">

@@ -57,7 +57,7 @@ class AfaMandateSearchMessage extends Notification
         return (new MailMessage)
             ->from(env('ADMIN_MAIL'))
             ->subject(__('app.message'))
-            ->subject(__('mail.created.subject', ['app'=>app_name()]))
+            ->subject(__('mail.message_from_iea.subject', ['app'=>app_name()]))
             ->line(__('member.gothere.mr.message_to_afa', ['date'=>$dt,'hour'=>$hr,'name'=>$user->name,'immat'=>$user->immat,'city'=>$city,'afa' =>$user->afa->name,'mandatesearch'=>$mandatesearch]));
     }
 

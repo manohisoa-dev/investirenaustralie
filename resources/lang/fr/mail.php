@@ -76,5 +76,5 @@ return [
     'txt.contact_admin' => 'Pour la récupération de votre compte, Veuillez contacter l&lsquo;admin par l&lsquo;adresse e-mail <b>&ldquo; :mail &rdquo;</b>.',
     'activated.login.info' => 'Ci-dessous vos informations de connexion : <br /> - Login: <b> :login </b> <br /> - Password: <b> :password </b>',
     'txt.end_exclusive_relationship_with_member' => 'Fin de la relation exclusive avec le membre <b>&ldquo; :user &rdquo;</b>, matricule <b>&ldquo; :immat &rdquo;</b> dans :day jours.',
-
+    'message_from_iea.subject' => '[:app] Message venant de IEA',
 ];

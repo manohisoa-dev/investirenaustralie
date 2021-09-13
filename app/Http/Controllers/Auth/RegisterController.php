@@ -351,7 +351,7 @@ class RegisterController extends Controller
                         'orga_registration_number'         => 'required|max:100',
                         'orga_rep_official_registration'         => 'required|max:100',
                         'orga_type'         => 'required',
-                        'orga_presentation' => 'nullable|max:1000',
+                        'orga_presentation' => 'nullable|max:2000',
                         'route'        => 'required|max:100',
                         'route_number'        => 'required',
                         'locality'     => 'required|max:100',
@@ -402,7 +402,7 @@ class RegisterController extends Controller
                     'orga_fax'        => 'nullable|max:100',
                     'orga_mobile_phone'        => 'required|digits_between:9,9|numeric',
                     'orga_website'      => 'required|url|max:100',
-                    'orga_presentation' => 'max:1000',
+                    'orga_presentation' => 'max:2000',
                     'orga_operation_state' => 'required',
                     'orga_operation_range' => 'required',
 
@@ -447,7 +447,7 @@ class RegisterController extends Controller
                     'orga_type'         => 'required',
                     'orga_license_number'         => 'required|max:100',
                     'orga_operation_range' => 'required',
-                    'orga_presentation' => 'nullable|max:1000',
+                    'orga_presentation' => 'nullable|max:2000',
                     
                     'route'        => 'required|max:100',
                     'route_number'        => 'required',
@@ -457,7 +457,7 @@ class RegisterController extends Controller
                     'country'      => 'required|max:100',
                     
                     'contact_name'  => 'required|max:100',
-                    'contact_phone' => 'required|digits_between:9,9|numeric',
+                    'contact_phone' => 'required|digits_between:6,9|numeric',
                     'contact_email' => 'required|email|max:100',
 
                     'bank_name' => 'required|max:100',
@@ -503,11 +503,11 @@ class RegisterController extends Controller
                         'orga_abn'         => 'required|digits_between:11,11|numeric',
                         'orga_acn'         => 'nullable|digits_between:9,9|numeric',
                         'orga_email'        => 'required|email|max:100',
-                        'orga_phone'        => 'required|digits_between:8,8|numeric',
+                        'orga_phone'        => 'required|digits_between:8,9|numeric',
                         'orga_fax'        => 'nullable|max:100',
-                        'orga_mobile_phone'        => 'required|digits_between:8,8|numeric',
+                        'orga_mobile_phone'        => 'required|digits_between:9,9|numeric',
                         'orga_website'      => 'required|url|max:100',
-                        'orga_presentation' => 'max:1000',
+                        'orga_presentation' => 'max:2000',
 
                         'route_number'        => 'required',
                         'route'        => 'required|max:100',
@@ -690,6 +690,16 @@ class RegisterController extends Controller
 
             // Create user info
             if($role !== 'seller' || session('seller_class')!=='non_professional_natural_persons' && session('seller_class')!=='seller_by_afa'){
+                if(isset($datas['contact_phone'])){
+                    $datas['contact_phone'] = $datas['indicatif'].$datas['contact_phone'];
+                }
+                if(isset($datas['orga_mobile_phone'])){
+                    $datas['orga_mobile_phone'] = $datas['indicatif'].$datas['orga_mobile_phone'];
+                }
+                if(isset($datas['orga_phone'])){
+                    $datas['orga_phone'] = $datas['indicatif'].$datas['orga_phone'];
+                }
+
                 if($userInfo = Userinfo::create($datas)){
                     unset($datas['user_id']);
                 }

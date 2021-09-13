@@ -8,10 +8,14 @@ use App\Models\RelationMembreApl;
 use App\Models\Product;
 use App\Models\ConjunctionAgreement;
 use App\Models\MandatRecherche;
+use App\Models\DossierTransaction;
 use App\Models\Message;
 use App\Models\Config;
 use App\Notifications\AfaMandateSearchMessage;
+use App\Notifications\AfaMandateSearchFinalisedMessage;
+use App\Notifications\MemberMandateSearchFinalisedMessage;
 use App\Notifications\MemberMandateSearchMessage;
+use App\Notifications\MemberDossierTransactionCompleteMessage;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 use Carbon\Carbon;
@@ -102,13 +106,32 @@ class DossierController extends Controller
         $dtTime = $dt->format('H:i:m');
         $user_name= $user->isPerson()?$user->name:$user->userinfos()->first()->orga_name;
         $mr_id=$request->mr_id;
-        $mandatesearch= url(MandatRecherche::whereId($mr_id)->first()->path);
+        $mandatesearch= MandatRecherche::whereId($mr_id)->first();
+        $mandatesearchLink= url($mandatesearch->path);
+        $country = $userAuth->location->country;
         $city=$user->afa->location->locality;
-        $content=trans('member.gothere.mr.message_to_afa', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user_name,'immat'=>$user->immat,'city'=>$city,'afa' =>$user->afa->name,'mandatesearch'=>$mandatesearch]);
-        // send message
+        $linkcompletetrans = url('afa/dossier?action=complete_dossier_transaction_info&ID='.DossierTransaction::getDossierTransactionId($mandatesearch->product_id,$user->id));
+
+        if(Auth::user()->isMove()){
+            // Message from IEA to AFA if Member moving
+            $content=trans('member.gothere.mr.message_to_afa', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user_name,'immat'=>$user->immat,'city'=>$city,'afa' =>$user->afa->name,'mandatesearch'=>$mandatesearchLink]);
+            // send email
+            $user->afa->notify(new AfaMandateSearchMessage($user,$mandatesearchLink));
+        }else{
+            // Message from IEA to AFA if Member buy product not moving
+            $content=trans('member.tobuy.mr.message_to_afa', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'country'=>$country,'city'=>$city,'afa' =>$user->afa->name,'mandatesearch'=>$mandatesearchLink]);
+            // send email to afa
+            $user->afa->notify(new AfaMandateSearchFinalisedMessage($user,$linkcompletetrans,$mandatesearchLink));
+            // send email to member
+            App::setLocale($user->language);
+            $user->notify(new MemberMandateSearchFinalisedMessage($user));
+            // send message to member
+            Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$user->id,'body'=>$content]);
+        }
+
+        // send message to afa
         Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$user->afa->id,'body'=>$content]);
-        // send email
-        $user->afa->notify(new AfaMandateSearchMessage($user,$mandatesearch));
+        
         
         return response()->json(['response'=>'true']);
     }
@@ -128,16 +151,85 @@ class DossierController extends Controller
         return false;
     }
 
+    // update conjunction agreement
     public function updateCa(Request $request){
         ConjunctionAgreement::where('id', $request->id)->update(['status' => 1]);
 
         return response()->json(['success' => 'true']);
     }
 
+    // update mandat research
     public function updateMr(Request $request){
         MandatRecherche::where('id', $request->id)->update(['status' => 1]);
 
         return response()->json(['success' => 'true']);
+    }
+
+    // update dossier transaction
+    public function updateDt(Request $request){
+        $datas = $request->all();
+        $validator = Validator::make($datas, ['lot_type' => 'required','lot_level' => 'required','lot_id'=>'required','final_sales_price'=>'required']);
+
+        // Validate file
+        if (!$validator->fails()) {
+            $dt = Carbon::now();
+            $dtDate = $dt->format('m-d-Y');
+            $dtTime = $dt->format('H:i:m');
+            $member = User::whereId($request->doss_user_id)->first();
+            $user_name= $member->isPerson()?$member->name:$member->userinfos()->first()->orga_name;
+            $afa = $member->afa->name;
+            $product = Product::whereId($request->prod_id)->first();
+            $city = $product->location->locality;
+            $etat = $product->location->area_level_1;
+            $title = $product->title;
+            $lotLevel = $request->lot_level;
+            $lotType = $request->lot_type;
+            $lotId = $request->lot_id;
+            $finalSalesPrice = $request->final_sales_price;
+            $confirmationlink = url('member/dossier?action=confirm_decision&ID='.$request->doss_id);
+
+            // udpate dossier transaction information
+            DossierTransaction::where('id', $request->doss_id)->update(['lot_type'=>$lotType,'lot_level'=>$lotLevel,'lot_id'=>$lotId,'final_sales_price'=>$finalSalesPrice,'is_complete'=>2]);
+            
+            // Send message and notif email to membre after transaction information sent
+            $content = trans('member.tobuy.dt.message_to_member_after_info_complete', [
+                'date'=>$dtDate,
+                'hour'=>$dtTime,
+                'name'=>$user_name,
+                'afa'=>$afa,
+                'city'=>$city,
+                'etat'=>$etat,
+                'title'=>$title,
+                'lottype'=>$lotType,
+                'lotid'=>$lotId,
+                'lotlevel'=>$lotLevel,
+                'price'=>$finalSalesPrice,
+                'confirmationlink'=>$confirmationlink,
+            ]);
+            // message
+            Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$request->doss_user_id,'body'=>$content]);
+            // email
+            // $member->notify(new MemberDossierTransactionCompleteMessage($dtDate,$dtTime,$user_name,$afa,$city,$etat,$title,$lotType,$lotId,$lotLevel,$finalSalesPrice,$confirmationlink));
+            $member->notify(new MemberDossierTransactionCompleteMessage($content));
+
+
+            
+            return redirect()->route('afa.dossier')->with('success', trans('app.txt.dossier_transaction_information_complete', ['num'=>$request->numero]));
+        }
+
+
+        return back()->withErrors($validator)->withInput();
+    }
+
+    // update dossier transaction
+    public function updateIsCompleteDt(Request $request){
+        $isComplete = $request->is_complete;
+        $dtId = $request->dt_id;
+
+        // udpate dossier transaction information
+        DossierTransaction::where('id', $dtId)->update(['is_complete'=>$isComplete]);
+            
+        return response()->json(['success'=>'Success']);
     }
 
     // Declanche Mandat de Recherche

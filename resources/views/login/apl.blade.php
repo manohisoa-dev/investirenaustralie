@@ -117,7 +117,7 @@
                                             <div class="form-group">
                                                 <label for="orga_presentation" class="col-sm-12 control-label">@lang('app.txt.agencypresentation')</label>
                                                 <div class="col-sm-12">
-                                                    <textarea class="form-control" maxlength="1000" id="orga_presentation" name="orga_presentation" placeholder="@lang('app.txt.agencypresentation')" rows="5">{{ old('orga_presentation')?old('orga_presentation'):'' }}</textarea>
+                                                    <textarea class="form-control" maxlength="2000" id="orga_presentation" name="orga_presentation" placeholder="@lang('app.txt.agencypresentation')" rows="10">{{ old('orga_presentation')?old('orga_presentation'):'' }}</textarea>
                                                     <span class="text-danger">{{ $errors->first('orga_presentation') }}</span>
                                                 </div>
                                             </div>
@@ -312,12 +312,29 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
+                                                <label for="orga_phone" class="col-sm-12 control-label">@lang('app.txt.contactmobile') *</label>
+                                                <div class="input-group mb-3 col-sm-12">
+                                                    <div class="input-group-prepend">
+                                                        <select class="form-control" name="indicatif" id="indicatif">
+                                                            @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                                <option value="+{{ $indicatif->code }}" {{ $indicatif->code=='61'?'selected':'' }}>(+ {{ $indicatif->code }}) </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="custom-file">
+                                                        <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="6" maxlength="9" placeholder="XXXXXXXX" class="form-control m-15px-t" id="contact_phone" name="contact_phone" value="{{ old('contact_phone')?old('contact_phone'):'' }}" required>
+                                                    </div>
+                                                </div>
+                                                <span class="text-danger m-5px-l">{{ $errors->first('contact_phone') }}</span>
+                                            </div>
+
+                                            {{-- <div class="form-group">
                                                 <label for="contact_phone" class="col-sm-12 control-label">@lang('app.txt.contactmobile') *</label>
                                                 <div class="col-sm-12">
                                                     <input type="text" class="form-control" minlength="9" maxlength="9" id="contact_phone" name="contact_phone" placeholder="@lang('app.txt.contactmobile')" value="{{ old('contact_phone')?old('contact_phone'):'' }}" required>
                                                     <span class="text-danger">{{ $errors->first('contact_phone') }}</span>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                             <div class="form-group">
                                                 <label for="contact_email" class="col-sm-12 control-label">@lang('app.txt.contactemailaddress') *</label>
                                                 <div class="col-sm-12">
@@ -558,7 +575,7 @@
             contact_phone: {
                 required: true,
                 number:true,
-                minlength: 9,
+                minlength: 6,
                 maxlength: 9,
             },
             bank_name: {
@@ -681,7 +698,7 @@
         },
         errorPlacement: function ( error, element ) {
             if(element.parent().hasClass('input-group')){
-                error.insertBefore( element.parent() );
+                error.insertAfter( element.parent() );
             }else{
                 error.insertAfter( element );
             }

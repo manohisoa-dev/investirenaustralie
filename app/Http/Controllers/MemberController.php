@@ -13,6 +13,8 @@ use App\Notifications\AfaCourriel;
 use App\Notifications\MemberWaitingMessage;
 use App\Notifications\AfaConjunctionAgreementMessage;
 use App\Notifications\MemberMandateSearchMessage;
+use App\Notifications\AfaMandateSearchFinalisedMessage;
+use App\Notifications\MemberMandateSearchFinalisedMessage;
 
 use App\Models\Order;
 use App\Models\User;
@@ -28,6 +30,7 @@ use App\Models\Product;
 use App\Models\ConjunctionAgreement;
 use App\Models\MandatRecherche;
 use App\Models\Config;
+use App\Models\Country;
 use Session;
 use Carbon\Carbon;
 use App;
@@ -731,16 +734,57 @@ class MemberController extends Controller {
             $dtDate = $dt->format('m-d-Y');
             $dtTime = $dt->format('H:i:m');
             $user= Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name;
+            $userAuth= Auth::user();
+            $country = Country::where('code',$userAuth->location->country)->pluck('content')[0];
+            $city=$userAuth->afa->location->locality;
+            $mandatesearch = url(MandatRecherche::where('product_id','=',$prod_id)->where('to_id','=',$userAuth->id)->where('afa_id','=',$userAuth->afa->id)->first()->path);
+            $linkcompletetrans = url('afa/dossier?action=complete_dossier_transaction_info&ID='.DossierTransaction::getDossierTransactionId($prod_id,$userAuth->id));
 
-            if(Auth::user()->isComplete()){
-                if(!Auth::user()->isCheckedDossierTransaction($prod_id)){
+            if($userAuth->isComplete()){
+                if(!$userAuth->isCheckedDossierTransaction($prod_id)){
                     $this->creationDossierTransaction($product);
                 }
 
-                if (Auth::user()->hasAfa()) {
-                    if(Auth::user()->afaHasSendCa(Auth::user()->id,Auth::user()->afa->id)){
+                if ($userAuth->hasAfa()) {
+                    if($userAuth->afaHasSendCa($userAuth->id,$userAuth->afa->id)){
                         Session::put('id_product',$prod_id);
-                        return redirect($prodUrl)->with('engagement', trans('member.gothere.notification.after_afa_send_finalized_ca'))->with('waiting',0);
+
+                        if ($userAuth->memberHasSendMr(1,$userAuth->id,$userAuth->afa->id)){
+                            if($userAuth->isMove()){
+                                if($userAuth->dossierTransactionIsComplete($prod_id)==='not_completed'){
+                                    
+                                    // Update dossier transaction to be completed
+                                    DossierTransaction::updateDossierTransaction($userAuth->id,$prod_id,1);
+
+                                    // Message from IEA to AFA if Member buy product not moving
+                                    // send message
+                                    App::setLocale('en');
+                                    $content=trans('member.tobuy.mr.message_to_afa', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'country'=>$country,'city'=>$city,'afa' =>$userAuth->afa->name,'linkcompletetrans'=>$linkcompletetrans,'mandatesearch'=>$mandatesearch]);
+                                    Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$userAuth->afa->id,'body'=>$content]);
+                                    // send email
+                                    $userAuth->afa->notify(new AfaMandateSearchFinalisedMessage($userAuth,$linkcompletetrans,$mandatesearch));
+                                    
+                                    // Message and notification email to Member
+                                    App::setLocale($userAuth->language);
+                                    // Message
+                                    $contentToMember=trans('member.tobuy.mr.message_to_member', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user]);
+                                    Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$userAuth->id,'body'=>$contentToMember]);
+                                    // Email
+                                    $userAuth->notify(new MemberMandateSearchFinalisedMessage($userAuth));
+                                    
+                                    return redirect($prodUrl)->with('engagement', $contentToMember)->with('waiting',1);
+                                    
+                                }elseif($userAuth->dossierTransactionIsComplete($prod_id)==='to_be_completed'){
+                                    return redirect($prodUrl)->with('engagement', trans('member.tobuy.mr.message_to_member', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user]))->with('waiting',1);
+                                }else{
+                                    return dd('Dossier transaction completer');
+                                }
+                            }else{
+                                return dd('Message from IEA to AFA sent');
+                            }
+                            
+                        }
+                        return redirect($prodUrl)->with('engagement', trans('member.notification.after_afa_send_finalized_ca'))->with('waiting',1);
                     }else{
                         return redirect($prodUrl)->with('engagement', trans('member.waiting_message', ['date'=>$dtDate,'hour'=>$dtTime,'user'=>$user,'afa' => Auth::user()->afa->name]))->with('waiting',1);
                     }
@@ -801,12 +845,16 @@ class MemberController extends Controller {
 
             if(!Auth::user()->isCheckedDossierTransaction($prod_id)){
                 $this->creationDossierTransaction($product);
+
+                // Update info member
+                Auth::user()->is_move = 1;
+                Auth::user()->save();
             }
 
             if (Auth::user()->hasAfa()) {
                 if(Auth::user()->afaHasSendCa(Auth::user()->id,Auth::user()->afa->id)){
                     Session::put('id_product',$prod_id);
-                    return redirect($prodUrl)->with('engagement', trans('member.gothere.notification.after_afa_send_finalized_ca'))->with('waiting',0);
+                    return redirect($prodUrl)->with('engagement', trans('member.notification.after_afa_send_finalized_ca'))->with('waiting',1);
                 }else{
                     return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa.waiting_message', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'afa' => Auth::user()->afa->name]))->with('waiting',1);
                 }
@@ -948,5 +996,14 @@ class MemberController extends Controller {
 
         return response()->json(['success' => 'true']);
     }
+    
+    public function setMemberIsMove(Request $request) {
+        Auth::user()->is_move = 1;
+        Auth::user()->save();
+
+        return response()->json(['success' => 'true']);
+    }
+
+
 
 }

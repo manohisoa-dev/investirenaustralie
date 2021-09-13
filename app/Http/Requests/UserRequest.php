@@ -104,7 +104,7 @@ class UserRequest extends FormRequest
     {
         return [
             'orga_name'         => 'required|max:100',
-            'orga_presentation' => 'required|max:100',
+            'orga_presentation' => 'required|max:2000',
             'orga_email'        => 'required|email|max:100',
             'orga_phone'        => 'required|max:100',
             'orga_website'      => 'required|url|max:100',
