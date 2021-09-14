@@ -50,6 +50,7 @@ Route::get('nouveau-programmes', 'ProductController@nouveauProgrammes')->name('n
 Route::post('ajaxGetTypeProduitCategorie', 'ProductController@ajaxGetTypeProduitCategorie')->name('ajaxGetTypeProduitCategorie');
 Route::post('ajaxDropZone', 'ProductController@ajaxDropZone')->name('ajaxDropZone'); 
 Route::get('ajaxCheckTitreProgramme', 'ProductController@ajaxCheckTitreProgramme')->name('ajaxCheckTitreProgramme');
+Route::get('ajaxCheckAdresse', 'ProductController@ajaxCheckAdresse')->name('ajaxCheckAdresse');
 Route::post('ajaxDropZoneEdit', 'ProductController@ajaxDropZoneEdit')->name('ajaxDropZoneEdit');  
 Route::post('AjaxFonDossierEdit', 'ProductController@AjaxFonDossierEdit')->name('AjaxFonDossierEdit'); 
 Route::post('AjaxEoiDossierEdit', 'ProductController@AjaxEoiDossierEdit')->name('AjaxEoiDossierEdit'); 

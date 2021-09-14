@@ -235,7 +235,7 @@
 						</div>
 					</div>
 					<button type="submit" id="savePro" class="btn btn-primary btn-lg pull-right">
-						<i class="fa fa-save"></i> @lang('app.form.steps_btn_finish')
+						<i class="fa fa-save"></i> @lang('app.btn.submit')
 					</button>			
 				</form>
 			</div>
@@ -582,7 +582,16 @@
 					required: true
 				},
 				display_address: {
-					required: true
+					required: true,
+					remote: {
+						url: "{{ route('ajaxCheckAdresse') }}",
+						type: "get",
+						data: {
+							display_address: function () {
+								return $("input[name='display_address']").val();
+							}
+						}
+					}
 				},
 				postalCode: {
 					required: true
@@ -639,7 +648,8 @@
 					required: "@lang('app.txt.champobligatoire')"
 				},
 				display_address: {
-					required: "@lang('app.txt.champobligatoire')"
+					required: "@lang('app.txt.champobligatoire')",
+					remote: "@lang('app.txt.adress_exist_error')"
 				},
 				postalCode: {
 					required: "@lang('app.txt.champobligatoire')"

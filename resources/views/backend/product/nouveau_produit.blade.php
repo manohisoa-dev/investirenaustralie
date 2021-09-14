@@ -1089,7 +1089,16 @@
 					required: true
 				},
 				display_address_product: {
-					required: true
+					required: true,
+					remote: {
+						url: "{{ route('ajaxCheckAdresse') }}",
+						type: "get",
+						data: {
+							display_address: function () {
+								return $("input[name='display_address_product']").val();
+							}
+						}
+					}
 				},
 				display_address: {
 					required: {
@@ -1341,7 +1350,8 @@
 					required: "@lang('app.txt.champobligatoire')"
 				},
 				display_address_product: {
-					required: "@lang('app.txt.champobligatoire')"
+					required: "@lang('app.txt.champobligatoire')",
+					remote: "@lang('app.txt.adress_exist_error')"
 				},
 				price: {
 					required: "@lang('app.txt.champobligatoire')"
