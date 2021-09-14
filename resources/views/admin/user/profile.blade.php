@@ -170,7 +170,7 @@
 								<option value="0">@lang('app.select_country')</option>
 								@if (Auth::user()->isAdmin())
 									@foreach(\App\Models\Country::all() as $country)
-										<option value="{{$country->id}}" {{ ( $country->content == $location->country) ? 'selected' : '' }}> {{$country->content}}</option>
+										<option value="{{$country->id}}" {{ $country->content == $location->country ? 'selected' : '' }}> {{$country->content}}</option>
 									@endforeach
 								@endif
 							</select>
@@ -181,7 +181,7 @@
 								<option value="0">@lang('app.select_country')</option>
 								@if (Auth::user()->isAdmin())
 									@foreach(\App\Models\State::all() as $state)
-										<option value="{{$state->id}}" {{ ( $country->states == $location->state) ? 'selected' : '' }}> {{$state->content}}</option>
+										<option value="{{$state->id}}" {{ ( $state->states == $location->state) ? 'selected' : '' }}> {{$state->content}}</option>
 									@endforeach
 								@endif
 							</select>

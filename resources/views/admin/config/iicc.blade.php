@@ -81,7 +81,7 @@
 $(document).ready(function(){
 	jQuery.validator.addMethod("phoneAUS", function (iicc_mobile, element) {
         iicc_mobile = iicc_mobile.replace(/\s+/g, "");
-        return this.optional(element) || iicc_mobile.length > 9 && iicc_mobile.match(/^(?:\+?61|\(?0)[2378]\)?(?:[ -]?[0-9]){8}$/);
+        return this.optional(element) || iicc_mobile.length > 9 && iicc_mobile.match(/^(?:\+?(61))? ?(?:\((?=.*\)))?(0?[2-57-8])\)? ?(\d\d(?:[- ](?=\d{3})|(?!\d\d[- ]?\d[- ]))\d\d[- ]?\d[- ]?\d{3})$/);
     }, "Enter a valid number please (Ex: 61 7 05 060 768 OR +61 7 35 642 234 OR 0735 642 342)");
 	
 	$('#iiccForm').validate({

@@ -53,6 +53,7 @@ class UserController extends Controller {
         $typeUser = TypeUser::where('type_user_name', '!=', 'Admin blog')->where('type_user_name',
             '!=', 'Admin delegate')->where('type_user_name', '!=', 'Super Admin')->get();
         $userRole = 'seller';
+        $link = 'admin.user.show.seller';
 
         if (isset($request->country_id) || isset($request->state_id) || isset($request->name) ||
             isset($request->type_users_id) || isset($request->status)) {
@@ -60,14 +61,14 @@ class UserController extends Controller {
             $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path' =>
                 url('admin/user/show/seller')]);
         } else {
-            $users_array = User::where('role', 2)->get();
+            //$users_array = User::where('role', 2)->get();
+            $users_array = User::findRequested()->where('role', 2);
             $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path' =>
                 url('admin/user/show/seller')]);
         }
-
         return $this->view("showUser", ['records' => $records, 'roles' => $role,
             'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
-            'statuts' => $statuts, 'userRole' => $userRole]);
+            'statuts' => $statuts, 'userRole' => $userRole, 'link' => $link]);
     }
 
     public function showAfa() {
@@ -81,6 +82,7 @@ class UserController extends Controller {
         $typeUser = TypeUser::where('type_user_name', '!=', 'Admin blog')->where('type_user_name',
             '!=', 'Admin delegate')->where('type_user_name', '!=', 'Super Admin')->get();
         $userRole = 'afa';
+        $link = 'admin.user.show.afa';
 
         if (isset($request->country_id) || isset($request->state_id) || isset($request->name) ||
             isset($request->type_users_id) || isset($request->status)) {
@@ -95,7 +97,7 @@ class UserController extends Controller {
 
         return $this->view("showUser", ['records' => $records, 'roles' => $role,
             'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
-            'statuts' => $statuts, 'userRole' => $userRole]);
+            'statuts' => $statuts, 'userRole' => $userRole, 'link' => $link]);
     }
 
     public function showApl() {
@@ -109,21 +111,22 @@ class UserController extends Controller {
         $typeUser = TypeUser::where('type_user_name', '!=', 'Admin blog')->where('type_user_name',
             '!=', 'Admin delegate')->where('type_user_name', '!=', 'Super Admin')->get();
         $userRole = 'apl';
+        $link = 'admin.user.show.apl';
 
-        if (isset($request->country_id) || isset($request->state_id) || isset($request->name) ||
-            isset($request->type_users_id) || isset($request->status)) {
+        if (isset($_GET['country_id']) || isset($_GET['state_id']) || isset($_GET['name']) ||
+            isset($_GET['type_users_id']) || isset($_GET['status'])) {
             $users_array = User::findRequested()->where('role', 4);
             $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path' =>
                 url('admin/user/show/apl')]);
         } else {
-            $users_array = User::where('role', 4)->get();
+            //$users_array = User::where('role', 4)->get();
+            $users_array = User::findRequested()->where('role', 4);
             $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path' =>
                 url('admin/user/show/apl')]);
         }
-
         return $this->view("showUser", ['records' => $records, 'roles' => $role,
             'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
-            'statuts' => $statuts, 'userRole' => $userRole]);
+            'statuts' => $statuts, 'userRole' => $userRole, 'link' => $link]);
     }
 
     public function showMember() {
@@ -137,6 +140,7 @@ class UserController extends Controller {
         $typeUser = TypeUser::where('type_user_name', '!=', 'Admin blog')->where('type_user_name',
             '!=', 'Admin delegate')->where('type_user_name', '!=', 'Super Admin')->get();
         $userRole = 'member';
+        $link = 'admin.user.show.member';
 
         if (isset($request->country_id) || isset($request->state_id) || isset($request->name) ||
             isset($request->type_users_id) || isset($request->status)) {
@@ -151,7 +155,7 @@ class UserController extends Controller {
 
         return $this->view("showUser", ['records' => $records, 'roles' => $role,
             'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
-            'statuts' => $statuts, 'userRole' => $userRole]);
+            'statuts' => $statuts, 'userRole' => $userRole, 'link' => $link]);
     }
 
     public function showMemberParticulier() {
@@ -165,7 +169,7 @@ class UserController extends Controller {
         $typeUser = TypeUser::where('type_user_name', '!=', 'Admin blog')->where('type_user_name',
             '!=', 'Admin delegate')->where('type_user_name', '!=', 'Super Admin')->get();
         $userRole = 'member.particulier';
-
+        $link = 'admin.user.show.member.particulier';
         // $records = User::findRequested();
 
         if (isset($request->country_id) || isset($request->state_id) || isset($request->name) ||
@@ -181,7 +185,7 @@ class UserController extends Controller {
 
         return $this->view("showUser", ['records' => $records, 'roles' => $role,
             'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
-            'statuts' => $statuts, 'userRole' => $userRole]);
+            'statuts' => $statuts, 'userRole' => $userRole, 'link' => $link]);
     }
 
     public function showMemberOrganisation() {
@@ -195,6 +199,7 @@ class UserController extends Controller {
         $typeUser = TypeUser::where('type_user_name', '!=', 'Admin blog')->where('type_user_name',
             '!=', 'Admin delegate')->where('type_user_name', '!=', 'Super Admin')->get();
         $userRole = 'member.organisation';
+        $link = 'admin.user.show.member.organisation';
 
         if (isset($request->country_id) || isset($request->state_id) || isset($request->name) ||
             isset($request->type_users_id) || isset($request->status)) {
@@ -209,7 +214,7 @@ class UserController extends Controller {
 
         return $this->view("showUser", ['records' => $records, 'roles' => $role,
             'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
-            'statuts' => $statuts, 'userRole' => $userRole]);
+            'statuts' => $statuts, 'userRole' => $userRole, 'link' => $link]);
     }
 
     public function showCollaborator() {
@@ -223,6 +228,7 @@ class UserController extends Controller {
         $typeUser = TypeUser::whereIn('type_user_name', ['Admin blog', 'Admin delegate',
             'Show Admin'])->get();
         $userRole = 'collaborator';
+        $link = 'admin.user.show.collaborator';
 
         if (isset($request->country_id) || isset($request->state_id) || isset($request->name) ||
             isset($request->type_users_id) || isset($request->status)) {
@@ -237,7 +243,7 @@ class UserController extends Controller {
 
         return $this->view("showUser", ['records' => $records, 'roles' => $role,
             'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
-            'statuts' => $statuts, 'userRole' => $userRole]);
+            'statuts' => $statuts, 'userRole' => $userRole, 'link' => $link]);
     }
 
     /**
@@ -490,17 +496,17 @@ class UserController extends Controller {
     public function aplRelation(Request $request, User $user) {
         //$aplActive = User::find(Auth::user()->id);
         $allApl = RelationMembreApl::where('membre_id', $user->id)->get();
-        
+
         $apl = User::findRequested()->where('id', $user->apl_id);
-        $records = new LengthAwarePaginator($apl, count($apl), 10, 1, ['path' =>
-                url('admin/user/relation-apl/'.$user->id)]);
-        return $this->view("apl_member", ['records' => $records, 'member' => $user, 'userRole' =>
-            'member','history'=>$allApl]);
+        $records = new LengthAwarePaginator($apl, count($apl), 10, 1, ['path' => url('admin/user/relation-apl/' .
+            $user->id)]);
+        return $this->view("apl_member", ['records' => $records, 'member' => $user,
+            'userRole' => 'member', 'history' => $allApl]);
     }
-    
+
     public function ajaxDropRelation(Request $request) {
-        User::where('id', $request->id_membre)->update(['apl_id' => 0,
-                'apl_ends_at' => '']);
+        User::where('id', $request->id_membre)->update(['apl_id' => 0, 'apl_ends_at' =>
+            '']);
         return response()->json(['success' => 'true']);
     }
 

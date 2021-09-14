@@ -111,6 +111,8 @@
 						{!!\Nvd\Crud\Html::sortableTh('id','admin.user.index','Id')!!}
 						{!!\Nvd\Crud\Html::sortableTh('image_id','admin.user.index','Photo')!!}
 						{!!\Nvd\Crud\Html::sortableTh('name','admin.user.index','Nom')!!}
+						{!!\Nvd\Crud\Html::sortableTh('country','admin.user.index','Country')!!}
+						{!!\Nvd\Crud\Html::sortableTh('locality','admin.user.index','City')!!}
                         {!!\Nvd\Crud\Html::sortableTh('email','admin.user.index','Email')!!}
 						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.user.index','Date')!!}
 						{!!\Nvd\Crud\Html::sortableTh('role','admin.user.index','Rôle')!!}
@@ -145,6 +147,25 @@
 								data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
 								>{{ $record->name }}</span>
 							</td>
+							<td>
+								<span class="editable"
+								data-type="text"
+								data-name="country"
+								data-value="{{ $record->country }}"
+								data-pk="{{ $record->{$record->getKeyName()} }}"
+								data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
+								>{{$record->country}}</span>
+							</td>
+							<td>
+								<span class="editable"
+								data-type="text"
+								data-name="locality"
+								data-value="{{ $record->locality }}"
+								data-pk="{{ $record->{$record->getKeyName()} }}"
+								data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
+								>{{$record->locality}}</span>
+							</td>
+							
 							<td>
 								<span class="editable"
 								data-type="email"

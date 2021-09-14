@@ -20,9 +20,11 @@
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
+		@if($userRole == 'collaborator')
             <a href="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.create.collaborator'):route('admin.user.create.collaborator') }}" type="button" class="btn btn-primary btn-block">
                 <i class="fa fa-plus"></i>@lang('app.txt.add_collaborator')            
 			</a>
+		@endif
         </div>
     </div>
 </div>
@@ -100,14 +102,16 @@
                 <table class="table table-striped grid-view-tbl">
                 <thead>
                     <tr class="header-row">
-						{!!\Nvd\Crud\Html::sortableTh('id','admin.user.index','Id')!!}
-						{!!\Nvd\Crud\Html::sortableTh('image_id','admin.user.index','Photo')!!}
-						{!!\Nvd\Crud\Html::sortableTh('name','admin.user.index','Nom')!!}
-                        {!!\Nvd\Crud\Html::sortableTh('email','admin.user.index','Email')!!}
-						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.user.index','Date')!!}
-						{!!\Nvd\Crud\Html::sortableTh('role','admin.user.index','Rôle')!!}
-						{!!\Nvd\Crud\Html::sortableTh('type_users_id','admin.user.index','Type')!!}
-						{!!\Nvd\Crud\Html::sortableTh('status','admin.user.index','Statuts')!!}
+						{!!\Nvd\Crud\Html::sortableTh('id',$link,'Id')!!}
+						{!!\Nvd\Crud\Html::sortableTh('image_id',$link,'Photo')!!}
+						{!!\Nvd\Crud\Html::sortableTh('name',$link,'Nom')!!}
+						{!!\Nvd\Crud\Html::sortableTh('country',$link,'Country')!!}
+						{!!\Nvd\Crud\Html::sortableTh('locality',$link,'City')!!}
+                        {!!\Nvd\Crud\Html::sortableTh('email',$link,'Email')!!}						
+						{!!\Nvd\Crud\Html::sortableTh('created_at',$link,'Date')!!}
+						{!!\Nvd\Crud\Html::sortableTh('role',$link,'Rôle')!!}
+						{!!\Nvd\Crud\Html::sortableTh('type_users_id',$link,'Type')!!}
+						{!!\Nvd\Crud\Html::sortableTh('status',$link,'Statuts')!!}
 						<th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     </thead>
@@ -134,8 +138,26 @@
 								data-name="name"
 								data-value="{{ $record->name }}"
 								data-pk="{{ $record->{$record->getKeyName()} }}"
-								data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
+								data-url="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show.'.$userRole):route('admin.user.show.'.$userRole)}}"
 								>{{ $record->name }}</span>
+							</td>
+							<td>
+								<span class="editable"
+								data-type="text"
+								data-name="country"
+								data-value="{{ $record->country }}"
+								data-pk="{{ $record->{$record->getKeyName()} }}"
+								data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
+								>{{$record->country}}</span>
+							</td>
+							<td>
+								<span class="editable"
+								data-type="text"
+								data-name="locality"
+								data-value="{{ $record->locality }}"
+								data-pk="{{ $record->{$record->getKeyName()} }}"
+								data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
+								>{{$record->locality}}</span>
 							</td>
 							<td>
 								<span class="editable"
@@ -166,11 +188,11 @@
 								>
 								@if($record->type_users_id == 5)
 								<a href="">
-									<span class="label label-success">{{ trans('app.txt.'.str_replace(' ','_',$record->typeUser['type_user_name'])) }}</span>
+									<span class="label label-success">{{$record->typeUser['type_user_name']}}</span>
 								</a>
 								@else
 								<a href="">
-									<span class="label label-primary">{{ trans('app.txt.'.str_replace(' ','_',$record->typeUser['type_user_name'])) }}</span>
+									<span class="label label-primary">{{$record->typeUser['type_user_name']}}</span>
 								</a>
 								@endif
 								</span>
@@ -235,9 +257,7 @@
 
                 @include('vendor.crud.single-page-templates.common.pagination', [ 'records' => $records ] )
 
-				<script>
-					$(".editable").editable({ajaxOptions:{method:'PUT'}});
-				</script>
+				
 			</div>
 		</div>
 	</div>
