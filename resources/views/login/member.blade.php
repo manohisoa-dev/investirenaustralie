@@ -292,11 +292,20 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="orga_phone" class="col-sm-12 control-label"> @lang('app.txt.businessphone') *</label>
-                                            <div class="col-sm-12">
-                                                <input type="text" minlength="8" maxlength="9" class="form-control" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):'' }}" required>
-                                                <span class="text-danger">{{ $errors->first('orga_phone') }}</span>
+                                            <label for="orga_phone" class="col-sm-12 control-label">@lang('app.txt.businessphone') *</label>
+                                            <div class="input-group mb-3 col-sm-12">
+                                                <div class="input-group-prepend">
+                                                    <select class="form-control" name="indicatif" id="indicatif">
+                                                        @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                            <option value="+{{ $indicatif->code }}" {{ $indicatif->code=='61'?'selected':'' }}>(+ {{ $indicatif->code }}) </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="custom-file">
+                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="6" maxlength="9" placeholder="XXXXXXXX" class="form-control m-15px-t" id="orga_phone" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):'' }}" required>
+                                                </div>
                                             </div>
+                                            <span class="text-danger m-5px-l">{{ $errors->first('orga_phone') }}</span>
                                         </div>
                                         <div class="form-group">
                                             <label for="orga_fax" class="col-sm-12 control-label"> @lang('app.txt.businessfax') </label>
@@ -306,11 +315,20 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="orga_mobile_phone" class="col-sm-12 control-label"> @lang('app.txt.businessmobile') *</label>
-                                            <div class="col-sm-12">
-                                                <input type="text" class="form-control" minlength="9" maxlength="9" name="orga_mobile_phone" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):'' }}" required>
-                                                <span class="text-danger">{{ $errors->first('orga_mobile_phone') }}</span>
+                                            <label for="orga_mobile_phone" class="col-sm-12 control-label">@lang('app.txt.businessmobile') *</label>
+                                            <div class="input-group mb-3 col-sm-12">
+                                                <div class="input-group-prepend">
+                                                    <select class="form-control" name="indicatif" id="indicatif">
+                                                        @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                            <option value="+{{ $indicatif->code }}" {{ $indicatif->code=='61'?'selected':'' }}>(+ {{ $indicatif->code }}) </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="custom-file">
+                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="6" maxlength="9" placeholder="XXXXXXXX" class="form-control m-15px-t" id="orga_mobile_phone" name="orga_mobile_phone" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):'' }}" required>
+                                                </div>
                                             </div>
+                                            <span class="text-danger m-5px-l">{{ $errors->first('orga_mobile_phone') }}</span>
                                         </div>
                                         <div class="form-group">
                                             <label for="language" class="col-sm-12 control-label" for="language">@lang('app.txt.langage') *</label>
@@ -574,10 +592,19 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="contact_phone" class="col-sm-12 control-label">@lang('app.txt.contactmobile') *</label>
-                                            <div class="col-sm-12">
-                                                <input type="text" class="form-control" id="contact_phone" name="contact_phone" placeholder="@lang('app.txt.contactmobile')" value="{{ old('contact_phone')?old('contact_phone'):'' }}" required>
-                                                <span class="text-danger">{{ $errors->first('contact_phone') }}</span>
+                                            <div class="input-group mb-3 col-sm-12">
+                                                <div class="input-group-prepend">
+                                                    <select class="form-control" name="indicatif" id="indicatif">
+                                                        @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                            <option value="+{{ $indicatif->code }}" {{ $indicatif->code=='61'?'selected':'' }}>(+ {{ $indicatif->code }}) </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="custom-file">
+                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="6" maxlength="9" placeholder="XXXXXXXX" class="form-control m-15px-t" id="contact_phone" name="contact_phone" value="{{ old('contact_phone')?old('contact_phone'):'' }}" required>
+                                                </div>
                                             </div>
+                                            <span class="text-danger m-5px-l">{{ $errors->first('contact_phone') }}</span>
                                         </div>
                                         <div class="form-group">
                                             <label for="contact_email" class="col-sm-12 control-label">@lang('app.txt.contactemailaddress') *</label>
@@ -865,13 +892,13 @@
             orga_phone: {
                 required: true,
                 number:true,
-                minlength:8,
+                minlength:6,
                 maxlength:9,
             },
             orga_mobile_phone: {
                 required: true,
                 number:true,
-                minlength:9,
+                minlength:6,
                 maxlength:9,
             },
             orga_name: {
@@ -955,7 +982,7 @@
             contact_phone: {
                 required: true,
                 number:true,
-                minlength: 9,
+                minlength: 6,
                 maxlength: 9,
             },
             contact_email: {

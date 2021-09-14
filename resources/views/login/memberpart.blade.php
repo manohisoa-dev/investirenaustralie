@@ -326,13 +326,17 @@
                                     <fieldset class="m-25px-t">
                                         <legend>@lang('app.txt.member_contacts')</legend>
                                         <div class="form-group">
-                                            <label for="orga_phone" class="col-sm-12 control-label">@lang('app.orga.fix_phone')</label>
+                                            <label for="orga_phone" class="col-sm-12 control-label">@lang('app.orga.fix_phone') *</label>
                                             <div class="input-group mb-3 col-sm-12">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text form-control">(+61)</span>
+                                                    <select class="form-control" name="indicatif" id="indicatif">
+                                                        @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                            <option value="+{{ $indicatif->code }}" {{ $indicatif->code=='61'?'selected':'' }}>(+ {{ $indicatif->code }}) </option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                                 <div class="custom-file">
-                                                    <input type="text" pattern="[0-9]{1}[0-9]{8}" minlength="8" maxlength="9" placeholder="XXXXXXXX" class="form-control m-15px-t" id="orga_phone" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):'' }}">
+                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="6" maxlength="9" placeholder="XXXXXXXX" class="form-control m-15px-t" id="orga_phone" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):'' }}" required>
                                                 </div>
                                             </div>
                                             <span class="text-danger m-5px-l">{{ $errors->first('orga_phone') }}</span>
@@ -341,10 +345,14 @@
                                             <label for="orga_mobile_phone" class="col-sm-12 control-label">@lang('app.txt.mobile') *</label>
                                             <div class="input-group mb-3 col-sm-12">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text form-control">(+61)</span>
+                                                    <select class="form-control" name="indicatif" id="indicatif">
+                                                        @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                            <option value="+{{ $indicatif->code }}" {{ $indicatif->code=='61'?'selected':'' }}>(+ {{ $indicatif->code }}) </option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                                 <div class="custom-file">
-                                                    <input type="text" pattern="[0-9]{1}[0-9]{8}" minlength="9" maxlength="9" placeholder="XXXXXXXX" class="form-control m-15px-t" id="orga_mobile_phone" name="orga_mobile_phone" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):'' }}">
+                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="6" maxlength="9" placeholder="XXXXXXXX" class="form-control m-15px-t" id="orga_mobile_phone" name="orga_mobile_phone" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):'' }}" required>
                                                 </div>
                                             </div>
                                             <span class="text-danger m-5px-l">{{ $errors->first('orga_mobile_phone') }}</span>
@@ -527,14 +535,14 @@
                 },
 
                 orga_phone: {
-                    minlength:8,
+                    minlength:6,
                     maxlength:9,
                     number:true,
 				},
 
                 orga_mobile_phone: {
 					required: true,
-                    minlength:9,
+                    minlength:6,
                     maxlength:9,
                     number:true,
 				},

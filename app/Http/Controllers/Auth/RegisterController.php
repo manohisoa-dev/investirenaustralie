@@ -346,7 +346,7 @@ class RegisterController extends Controller
                 }else{
                     $rules = [
                         'orga_phone' => 'required|max:100',
-                        'orga_mobile_phone' => 'required|max:100',
+                        'orga_mobile_phone' => 'required|digits_between:6,9|numeric',
                         'orga_name'         => 'required|max:100',
                         'orga_registration_number'         => 'required|max:100',
                         'orga_rep_official_registration'         => 'required|max:100',
@@ -359,7 +359,7 @@ class RegisterController extends Controller
                         'area_level_1' => 'nullable|max:100',
                         'country'      => 'required|max:100',
                         'contact_name'       => 'required|max:100',
-                        'contact_phone'       => 'required|max:100',
+                        'contact_phone'       => 'required|digits_between:6,9|numeric',
                         'contact_email'        => 'required|email|max:100',
                     ];
 
@@ -566,20 +566,20 @@ class RegisterController extends Controller
                             'email_adr' => 'required|email|max:100',
 
                             // Seller #2
-                            'last_name_2'  => 'required|max:100',
-                            'first_name_2' => 'required|max:100',
-                            'date_of_birth_2' => 'required|max:100',
-                            'place_of_birth_2' => 'required|max:100',
-                            'nationality_2' => 'required|max:100',
-                            'street_adr_2' => 'required|max:100',
-                            'suburb_2' => 'required|max:100',
-                            'city_2' => 'required|max:100',
-                            'post_code_2' => 'required|max:100',
+                            'last_name_2'  => 'nullable|max:100',
+                            'first_name_2' => 'nullable|max:100',
+                            'date_of_birth_2' => 'nullable|max:100',
+                            'place_of_birth_2' => 'nullable|max:100',
+                            'nationality_2' => 'nullable|max:100',
+                            'street_adr_2' => 'nullable|max:100',
+                            'suburb_2' => 'nullable|max:100',
+                            'city_2' => 'nullable|max:100',
+                            'post_code_2' => 'nullable|max:100',
                             'state_2' => 'nullable|max:100',
-                            'country_2' => 'required|max:100',
-                            'phone_2' => 'required|max:15',
-                            'mobile_2' => 'required|max:15',
-                            'email_adr_2' => 'required|email|max:100',
+                            'country_2' => 'nullable|max:100',
+                            'phone_2' => 'nullable|max:15',
+                            'mobile_2' => 'nullable|max:15',
+                            'email_adr_2' => 'nullable|email|max:100',
 
                         ];
                     }else{
@@ -722,29 +722,33 @@ class RegisterController extends Controller
                         $sfx = $i!=1?'':'_2';
 
                         if(session('seller_class')!=='seller_by_afa'){
-                            $dtOfbirth = $datas['date_of_birth'.$sfx];
-                            $dt = new Carbon($dtOfbirth);
-                            $dt = $dt->toDateString();
+                            if(isset($datas['date_of_birth'.$sfx])){
+                                $dtOfbirth = $datas['date_of_birth'.$sfx];
+                                $dt = new Carbon($dtOfbirth);
+                                $dt = $dt->toDateString();
+                            }else{
+                                $dt="";
+                            }
                         }else{
                             $dt ="";
                         }
             
                         $si= SellerIndividual::create([
                             'user_id'=>$user->id, 
-                            'last_name'=>$datas['last_name'.$sfx], 
-                            'first_name'=>$datas['first_name'.$sfx], 
+                            'last_name'=>isset($datas['last_name'.$sfx])?$datas['last_name'.$sfx]:'', 
+                            'first_name'=>isset($datas['first_name'.$sfx])?$datas['first_name'.$sfx]:'', 
                             'date_of_birth'=>$dt, 
-                            'place_of_birth'=>session('seller_class')!=='seller_by_afa'?$datas['place_of_birth'.$sfx]:'', 
-                            'nationality'=>session('seller_class')!=='seller_by_afa'?$datas['nationality'.$sfx]:'', 
-                            'street_adr'=>$datas['street_adr'.$sfx], 
-                            'suburb'=>$datas['suburb'.$sfx], 
-                            'city'=>$datas['city'.$sfx], 
-                            'post_code'=>$datas['post_code'.$sfx], 
-                            'state'=>$datas['state'.$sfx], 
-                            'country'=>$datas['country'.$sfx], 
-                            'phone'=>$datas['phone'.$sfx], 
-                            'mobile'=>$datas['mobile'.$sfx], 
-                            'email_adr'=>$datas['email_adr'.$sfx]
+                            'place_of_birth'=>session('seller_class')!=='seller_by_afa'?(isset($datas['place_of_birth'.$sfx])?$datas['place_of_birth'.$sfx]:''):'', 
+                            'nationality'=>session('seller_class')!=='seller_by_afa'?(isset($datas['nationality'.$sfx])?$datas['nationality'.$sfx]:''):'', 
+                            'street_adr'=>isset($datas['street_adr'.$sfx])?$datas['street_adr'.$sfx]:'', 
+                            'suburb'=>isset($datas['suburb'.$sfx])?$datas['suburb'.$sfx]:'', 
+                            'city'=>isset($datas['city'.$sfx])?$datas['city'.$sfx]:'', 
+                            'post_code'=>isset($datas['post_code'.$sfx])?$datas['post_code'.$sfx]:'', 
+                            'state'=>isset($datas['state'.$sfx])?$datas['state'.$sfx]:'', 
+                            'country'=>isset($datas['country'.$sfx])?$datas['country'.$sfx]:'', 
+                            'phone'=>isset($datas['phone'.$sfx])?$datas['phone'.$sfx]:'', 
+                            'mobile'=>isset($datas['mobile'.$sfx])?$datas['mobile'.$sfx]:'', 
+                            'email_adr'=>isset($datas['email_adr'.$sfx])?$datas['email_adr'.$sfx]:''
                         ]);
                     }
                 }else{

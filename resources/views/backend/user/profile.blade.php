@@ -53,8 +53,8 @@
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.langage') </div>
                                 <select name="language" class="form-control" id="language">
-                                    <option value="fr" {{$item->language=='fr'?'selected':''}}>Français</option>
-                                    <option value="en" {{$item->language=='en'?'selected':''}}>English</option>
+                                    <option value="fr" {{$item->language=='fr'?'selected':''}}>@lang('app.txt.fr')</option>
+                                    <option value="en" {{$item->language=='en'?'selected':''}}>@lang('app.txt.en')</option>
                                 </select>
                                 <span></span>
                             </div>
@@ -69,7 +69,8 @@
                     </div>
                 </div>
             </div>
-    
+            
+            {{-- Member only --}}
             @if($item->apl && $item->hasRole(5))
             <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
             <h5>@lang('app.txt.aplinformation')</h5>
@@ -174,7 +175,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessemail') </div>
-                                    <input type="text" class="form-control" name="orga_email" id="orga_email" placeholder="@lang('app.txt.businessemail')" value="{{$item->userinfos ?$item->userinfos->orga_email:old('orga_email')}}" >
+                                    <input type="text" class="form-control" name="orga_email" id="orga_email" placeholder="@lang('app.txt.businessemail')" value="{{ old('orga_email')?old('orga_email'):($item->userinfos ?$item->userinfos->orga_email:$item->email) }}" readonly >
                                     <span class="text-danger">{{ $errors->first('orga_email') }}</span>
                                 </div>
                             </div>
@@ -257,6 +258,7 @@
                     </div>
                 </div>
             @endif
+            {{-- end Membre only --}}
     
             <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
                 <h5>@lang('app.locality')</h5>
@@ -350,6 +352,7 @@
                 </div>
             </div>
             
+            {{-- APL --}}
             @if($item->hasRole(4))
                 <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
                     <h5>@lang('app.txt.banking_information')</h5>
@@ -361,7 +364,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.iban_bank_account') </div>
-                                    <input type="text" class="form-control" name="crm_name" id="crm_name" placeholder="@lang('app.txt.iban_bank_account')" value="{{$item->userinfos ?$item->userinfos->bank_iban:''}}">
+                                    <input type="text" class="form-control" name="bank_iban" id="bank_iban" placeholder="@lang('app.txt.iban_bank_account')" value="{{$item->userinfos ?$item->userinfos->bank_iban:''}}">
                                 </div>
                             </div>
                         </div>
@@ -372,7 +375,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.bic_code') </div>
-                                    <input type="text" name="crm_email" id="crm_email" placeholder="@lang('app.txt.bic_code')" value="{{$item->userinfos ?$item->userinfos->bank_bic:''}}" class="form-control">
+                                    <input type="text" name="bank_bic" id="bank_bic" placeholder="@lang('app.txt.bic_code')" value="{{$item->userinfos ?$item->userinfos->bank_bic:''}}" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -401,6 +404,320 @@
 
 @push('script')
     <script src="{{ asset('/js/sweetalert2.js') }}"></script>
+    <!-- Jquery Validate -->
+    <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
+    {{-- <script>
+        $.validator.addMethod('le', function (value, element, param) {
+            return this.optional(element) || value !== $(param).val();
+        }, '@lang("app.txt.invalid_value")');
+
+        $.validator.addMethod('ge', function (value, element, param) {
+            return this.optional(element) || value !== $(param).val();
+        }, '@lang("app.txt.invalid_value")');
+
+        $('#formAfaRegistrator').validate({
+            ignore: [],
+            rules: {
+                name: {
+                    required: true,
+                    remote: {
+                        url: "{{ route('ajaxCheckLogin') }}",
+                        type: "get",
+                        data: {
+                            name: function () {
+                                return $("input[name='name']").val();
+                            }
+                        }
+                    }
+                },
+                email: {
+                    required: true,
+                    email:true,
+                    le:'#orga_email',
+                    remote: {
+                        url: "{{ route('ajaxCheckEmail') }}",
+                        type: "get",
+                        data: {
+                            email: function () {
+                                return $("input[name='email']").val();
+                            }
+                        }
+                    }
+                },
+                politic: {
+                    required: true,
+                },
+                condition: {
+                    required: true,
+                },
+                type: {
+                    required: true,
+                },
+                orga_name: {
+                    required: true,
+                },
+                orga_trading_name: {
+                    required: true,
+                },
+                orga_abn: {
+                    required: true,
+                    number:true,
+                    minlength:11,
+                    maxlength:11
+                },
+                orga_acn: {
+                    number:true,
+                    minlength:9,
+                    maxlength:9
+                },
+                orga_license_number: {
+                    required: true,
+                    minlength:7,
+                    maxlength:7
+                },
+                orga_email: {
+                    required: true,
+                    email:true,
+                    le:'#email',
+                    ge:'#contact_email',
+                },
+                orga_phone: {
+                    required: true,
+                    number:true,
+                    minlength:8,
+                    maxlength:9,
+                    le:'#contact_phone',
+                },
+                orga_mobile_phone: {
+                    required: true,
+                    number:true,
+                    minlength:9,
+                    maxlength:9,
+                },
+                orga_website: {
+                    required: true,
+                    url:true
+                },
+                orga_presentation: {
+                    maxlength: 1000,
+                },
+                // image: {
+                //     accept: "image/jpeg, image/pjpeg"
+                // },
+                orga_operation_state: {
+                    required:true,
+                },
+                orga_operation_range: {
+                    required:true,
+                },
+                route: {
+                    required: true,
+                },
+                route_number: {
+                    required: true,
+                },
+                locality: {
+                    required: true,
+                },
+                area_level_2: {
+                    required: true,
+                },
+                postalCode: {
+                    required: true,
+                    number:true
+                },
+                area_level_1: {
+                    required: true,
+                },
+                country: {
+                    required: true,
+                },
+                adrpost_postal_box: {
+                    required: {
+                        depends: function(element) {
+                            if($("#mailAddress").is(":visible")){
+                                return true;	
+                            }
+                        }
+                    }
+                },
+                adrpost_locality: {
+                    required: {
+                        depends: function(element) {
+                            if($("#mailAddress").is(":visible")){
+                                return true;	
+                            }
+                        }
+                    }
+                },
+                adrpost_postalCode: {
+                    number:true,
+                    required: {
+                        depends: function(element) {
+                            if($("#mailAddress").is(":visible")){
+                                return true;	
+                            }
+                        }
+                    }
+                },
+                adrpost_area_level_1: {
+                    required: {
+                        depends: function(element) {
+                            if($("#mailAddress").is(":visible")){
+                                return true;	
+                            }
+                        }
+                    }
+                },
+                adrpost_country: {
+                    required: {
+                        depends: function(element) {
+                            if($("#mailAddress").is(":visible")){
+                                return true;	
+                            }
+                        }
+                    }
+                },
+                contact_name: {
+                    required: true,
+                },
+                contact_email: {
+                    required: true,
+                    email:true,
+                    le:'#orga_email',
+                },
+                contact_phone: {
+                    required: true,
+                    number:true,
+                    minlength: 9,
+                    maxlength: 9,
+                    le:'#orga_phone',
+                },
+            },
+            messages: {
+                name: {
+                    required: "@lang('app.txt.champobligatoire')",
+                    remote: jQuery.validator.format("{0} @lang('app.txt.form.already_exist')")
+                },
+                email: {
+                    required: "@lang('app.txt.champobligatoire')",
+                    remote: jQuery.validator.format("{0} @lang('app.txt.form.already_exist')"),
+                    le: '@lang("app.txt.value_already_used")'
+                },
+                politic: {
+                    required: "@lang('app.txt.champobligatoire')"
+                },
+                condition: {
+                    required: "@lang('app.txt.champobligatoire')"
+                },
+                type: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                orga_name: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                orga_trading_name: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                orga_abn: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                orga_email: {
+                    required: "@lang('app.txt.champobligatoire')",
+                    le: '@lang("app.txt.value_already_used")',
+                    ge: '@lang("app.txt.value_already_used")'
+                },
+                orga_phone: {
+                    required: "@lang('app.txt.champobligatoire')",
+                    le: '@lang("app.txt.value_already_used")'
+                },
+                orga_mobile_phone: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                orga_website: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                orga_operation_state: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                orga_operation_range: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                route: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                route_number: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                locality: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                area_level_2: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                postalCode: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                area_level_1: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                country: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                adrpost_postal_box: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                adrpost_locality: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                adrpost_postalCode: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                adrpost_area_level_1: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                adrpost_country: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                contact_name: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                contact_email: {
+                    required: "@lang('app.txt.champobligatoire')",
+                    le: '@lang("app.txt.value_already_used")',
+                },
+                contact_phone: {
+                    required: "@lang('app.txt.champobligatoire')",
+                    le: '@lang("app.txt.value_already_used")'
+                },
+            },
+            errorPlacement: function ( error, element ) {
+                if(element.parent().hasClass('input-group')){
+                    error.insertBefore( element.parent() );
+                }else{
+                    error.insertAfter( element );
+                }
+            },
+        });
+
+        $('#form_profil').submit(function() { // fires on every keyup & blur
+            if ($('#form_profil').valid()) {                   // checks form for validity
+                // set btn submit to loading btn
+                $('#btn_save').attr('disabled','disabled');
+                $('#btn_save').html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>@lang("app.txt.loading")');
+            } else {
+                $('btn_save').prop('disabled', false);   // enable button
+                $('#btn_save').html('@lang("app.btn.register")');
+            }
+        });
+    </script> --}}
+    <style>
+        .error {
+            color: #F00;
+            background-color: #FFF;
+        }
+    </style>
+    <!-- End Jquery Validate -->
     <script>
         $('#btn_save').click(function(){
             $('#form_profil').submit();
