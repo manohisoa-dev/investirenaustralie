@@ -312,7 +312,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="orga_phone" class="col-sm-12 control-label">@lang('app.txt.contactmobile') *</label>
+                                                <label for="contact_phone" class="col-sm-12 control-label">@lang('app.txt.contactmobile') *</label>
                                                 <div class="input-group mb-3 col-sm-12">
                                                     <div class="input-group-prepend">
                                                         <select class="form-control" name="indicatif" id="indicatif">

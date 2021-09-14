@@ -294,7 +294,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content white-bg">
                 <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
-                    <h4 class="modal-title white-color"> @lang('app.txt.message')<span></span></h4>
+                    <h4 class="modal-title white-color"> @lang('app.message')<span></span></h4>
                 </div>
                 <div class="modal-body">
                     {{-- {!! trans('member.tobuy.dt.message_to_member_after_info_complete.confirm',['date'=>Carbon\Carbon::now()->format('m-d-Y'),'hour'=>Carbon\Carbon::now()->format('H:i:m'),'name'=>Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name,'afa'=>Auth::user()->afa->name,'city'=>App\Models\Product::whereId($prod_id)->first()->location->locality,'etat'=>App\Models\Product::whereId($prod_id)->first()->location->area_level_1]) !!} --}}
