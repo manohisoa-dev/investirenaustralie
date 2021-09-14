@@ -170,17 +170,27 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="phone" class="col-sm-12 control-label">@lang('app.txt.phone') *</label>
-                                                            <div class="col-sm-12">
-                                                                <input type="text" class="form-control" id="phone" name="phone" placeholder="@lang('app.txt.contactmobile')" value="{{ old('phone')?old('phone'):'' }}" required>
-                                                                <span class="text-danger">{{ $errors->first('phone') }}</span>
+                                                            <div class="input-group mb-3 col-sm-12">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text form-control">(+61)</span>
+                                                                </div>
+                                                                <div class="custom-file">
+                                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="6" maxlength="9" placeholder="XXXXXXXX" class="form-control m-15px-t" id="phone" name="phone" value="{{ old('phone')?old('phone'):'' }}" required>
+                                                                </div>
                                                             </div>
+                                                            <span class="text-danger m-5px-l">{{ $errors->first('phone') }}</span>
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="mobile" class="col-sm-12 control-label">@lang('app.txt.mobile') *</label>
-                                                            <div class="col-sm-12">
-                                                                <input type="text" class="form-control" id="mobile" name="mobile" placeholder="@lang('app.txt.contactmobile')" value="{{ old('mobile')?old('mobile'):'' }}" required>
-                                                                <span class="text-danger">{{ $errors->first('mobile') }}</span>
+                                                            <div class="input-group mb-3 col-sm-12">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text form-control">(+61)</span>
+                                                                </div>
+                                                                <div class="custom-file">
+                                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="6" maxlength="9" placeholder="XXXXXXXX" class="form-control m-15px-t" id="mobile" name="mobile" value="{{ old('mobile')?old('mobile'):'' }}" required>
+                                                                </div>
                                                             </div>
+                                                            <span class="text-danger m-5px-l">{{ $errors->first('mobile') }}</span>
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="email_adr" class="col-sm-12 control-label">@lang('app.txt.email') *</label>
@@ -195,44 +205,44 @@
                                                     <div class="m-25px-t">
                                                         <h5>Seller #2</h5>
                                                         <div class="form-group">
-                                                            <label class="col-sm-3 control-label" for="last_name_2">@lang('app.txt.last_name') *</label>
+                                                            <label class="col-sm-3 control-label" for="last_name_2">@lang('app.txt.last_name')</label>
                                                             <div class="col-sm-12">
-                                                                <input type="text" class="form-control"  id="last_name_2" name="last_name_2" value="{{ old('last_name_2')?old('last_name_2'):'' }}" required>
+                                                                <input type="text" class="form-control"  id="last_name_2" name="last_name_2" value="{{ old('last_name_2')?old('last_name_2'):'' }}">
                                                                 <span class="text-danger">{{ $errors->first('last_name_2') }}</span>
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="first_name_2" class="col-sm-3 control-label">@lang('app.txt.first_name') *</label>
+                                                            <label for="first_name_2" class="col-sm-3 control-label">@lang('app.txt.first_name')</label>
                                                             <div class="col-sm-12">
-                                                                <input type="text" class="form-control" id="first_name_2" name="first_name_2" value="{{ old('first_name_2')?old('first_name_2'):'' }}" required>
+                                                                <input type="text" class="form-control" id="first_name_2" name="first_name_2" value="{{ old('first_name_2')?old('first_name_2'):'' }}">
                                                                 <span class="text-danger">{{ $errors->first('first_name_2') }}</span>
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="street_adr_2" class="col-sm-12 control-label">@lang('app.txt.streetaddress') *</label>
+                                                            <label for="street_adr_2" class="col-sm-12 control-label">@lang('app.txt.streetaddress')</label>
                                                             <div class="col-sm-12">
-                                                                <input type="text" class="form-control" id="street_adr_2" name="street_adr_2" placeholder="@lang('app.txt.streetaddress')" value="{{ old('street_adr_2')?old('street_adr_2'):'' }}" required>
+                                                                <input type="text" class="form-control" id="street_adr_2" name="street_adr_2" placeholder="@lang('app.txt.streetaddress')" value="{{ old('street_adr_2')?old('street_adr_2'):'' }}">
                                                                 <span class="text-danger">{{ $errors->first('street_adr_2') }}</span>
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="suburb_2" class="col-sm-12 control-label">@lang('app.txt.suburb') *</label>
+                                                            <label for="suburb_2" class="col-sm-12 control-label">@lang('app.txt.suburb')</label>
                                                             <div class="col-sm-12">
-                                                                <input type="text" class="form-control" id="suburb_2" name="suburb_2" placeholder="@lang('app.txt.suburb')" value="{{ old('suburb_2')?old('suburb_2'):'' }}" required>
+                                                                <input type="text" class="form-control" id="suburb_2" name="suburb_2" placeholder="@lang('app.txt.suburb')" value="{{ old('suburb_2')?old('suburb_2'):'' }}" >
                                                                 <span class="text-danger">{{ $errors->first('suburb_2') }}</span>
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="city_2" class="col-sm-12 control-label">@lang('app.txt.city') *</label>
+                                                            <label for="city_2" class="col-sm-12 control-label">@lang('app.txt.city')</label>
                                                             <div class="col-sm-12">
-                                                                <input type="text" class="form-control" id="city_2" name="city_2" placeholder="@lang('app.txt.city')" value="{{ old('city_2')?old('city_2'):'' }}" required>
+                                                                <input type="text" class="form-control" id="city_2" name="city_2" placeholder="@lang('app.txt.city')" value="{{ old('city_2')?old('city_2'):'' }}" >
                                                                 <span class="text-danger">{{ $errors->first('city_2') }}</span>
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="post_code_2" class="col-sm-12 control-label">@lang('app.txt.codepostal') *</label>
+                                                            <label for="post_code_2" class="col-sm-12 control-label">@lang('app.txt.codepostal')</label>
                                                             <div class="col-sm-12">
-                                                                <input type="text" class="form-control" id="post_code_2" name="post_code_2" placeholder="@lang('app.txt.codepostal')" value="{{ old('post_code_2')?old('post_code_2'):'' }}" required>
+                                                                <input type="text" class="form-control" id="post_code_2" name="post_code_2" placeholder="@lang('app.txt.codepostal')" value="{{ old('post_code_2')?old('post_code_2'):'' }}" >
                                                                 <span class="text-danger">{{ $errors->first('post_code_2') }}</span>
                                                             </div>
                                                         </div>
@@ -244,9 +254,9 @@
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="country_2" class="col-sm-12 control-label">@lang('app.txt.country') *</label>
+                                                            <label for="country_2" class="col-sm-12 control-label">@lang('app.txt.country')</label>
                                                             <div class="col-md-12">
-                                                                <select class="form-control" id="country_2" name="country_2" required>
+                                                                <select class="form-control" id="country_2" name="country_2" >
                                                                     <option value="" selected disabled>@lang('app.select_country')</option>
                                                                     @foreach($countries as $country)
                                                                         @if($country->prefixPhone)
@@ -258,23 +268,33 @@
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="phone_2" class="col-sm-12 control-label">@lang('app.txt.phone') *</label>
-                                                            <div class="col-sm-12">
-                                                                <input type="text" class="form-control" id="phone_2" name="phone_2" placeholder="@lang('app.txt.contactmobile')" value="{{ old('phone_2')?old('phone_2'):'' }}" required>
-                                                                <span class="text-danger">{{ $errors->first('phone_2') }}</span>
+                                                            <label for="phone_2" class="col-sm-12 control-label">@lang('app.txt.phone')</label>
+                                                            <div class="input-group mb-3 col-sm-12">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text form-control">(+61)</span>
+                                                                </div>
+                                                                <div class="custom-file">
+                                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="6" maxlength="9" placeholder="XXXXXXXX" class="form-control m-15px-t" id="phone_2" name="phone_2" value="{{ old('phone_2')?old('phone_2'):'' }}">
+                                                                </div>
                                                             </div>
+                                                            <span class="text-danger m-5px-l">{{ $errors->first('phone_2') }}</span>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="mobile_2" class="col-sm-12 control-label">@lang('app.txt.mobile') *</label>
-                                                            <div class="col-sm-12">
-                                                                <input type="text" class="form-control" id="mobile_2" name="mobile_2" placeholder="@lang('app.txt.contactmobile')" value="{{ old('mobile_2')?old('mobile_2'):'' }}" required>
-                                                                <span class="text-danger">{{ $errors->first('mobile_2') }}</span>
+                                                            <label for="mobile_2" class="col-sm-12 control-label">@lang('app.txt.mobile')</label>
+                                                            <div class="input-group mb-3 col-sm-12">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text form-control">(+61)</span>
+                                                                </div>
+                                                                <div class="custom-file">
+                                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="6" maxlength="9" placeholder="XXXXXXXX" class="form-control m-15px-t" id="mobile_2" name="mobile_2" value="{{ old('mobile_2')?old('mobile_2'):'' }}">
+                                                                </div>
                                                             </div>
+                                                            <span class="text-danger m-5px-l">{{ $errors->first('mobile_2') }}</span>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="email_adr_2" class="col-sm-12 control-label">@lang('app.txt.email') *</label>
+                                                            <label for="email_adr_2" class="col-sm-12 control-label">@lang('app.txt.email')</label>
                                                             <div class="col-sm-12">
-                                                                <input type="text" class="form-control" id="email_adr_2" name="email_adr_2" placeholder="@lang('app.txt.email')" value="{{ old('email_adr_2')?old('email_adr_2'):'' }}" required>
+                                                                <input type="text" class="form-control" id="email_adr_2" name="email_adr_2" placeholder="@lang('app.txt.email')" value="{{ old('email_adr_2')?old('email_adr_2'):'' }}">
                                                                 <span class="text-danger">{{ $errors->first('email_adr_2') }}</span>
                                                             </div>
                                                         </div>
@@ -346,7 +366,7 @@
                                                                 <span class="input-group-text form-control">(+61)</span>
                                                             </div>
                                                             <div class="custom-file">
-                                                                <input type="text" pattern="[0-9]{1}[0-9]{7}" minlength="8" maxlength="8" placeholder="XXXXXXXX" class="form-control m-15px-t" id="phone_bs" name="phone_bs" value="{{ old('phone_bs')?old('phone_bs'):'' }}">
+                                                                <input type="text" pattern="[0-9]{1}[0-9]{8}" minlength="6" maxlength="9" placeholder="XXXXXXXX" class="form-control m-15px-t" id="phone_bs" name="phone_bs" value="{{ old('phone_bs')?old('phone_bs'):'' }}">
                                                             </div>
                                                             <span class="text-danger m-5px-l">{{ $errors->first('phone_bs') }}</span>
                                                         </div>
@@ -358,7 +378,7 @@
                                                                 <span class="input-group-text form-control">(+61)</span>
                                                             </div>
                                                             <div class="custom-file">
-                                                                <input type="text" pattern="[0-9]{1}[0-9]{7}" minlength="8" maxlength="8" placeholder="XXXXXXXX" class="form-control m-15px-t" id="mobile_bs" name="mobile_bs" value="{{ old('mobile_bs')?old('mobile_bs'):'' }}">
+                                                                <input type="text" pattern="[0-9]{1}[0-9]{8}" minlength="6" maxlength="9" placeholder="XXXXXXXX" class="form-control m-15px-t" id="mobile_bs" name="mobile_bs" value="{{ old('mobile_bs')?old('mobile_bs'):'' }}">
                                                             </div>
                                                             <span class="text-danger m-5px-l">{{ $errors->first('mobile_bs') }}</span>
                                                         </div>
@@ -525,6 +545,8 @@
                     }
                 },
                 number:true,
+                minlength:6,
+                maxlength:9,
             },
             mobile: {
                 required: {
@@ -535,6 +557,8 @@
                     }
                 },
                 number:true,
+                minlength:6,
+                maxlength:9,
             },
             email_adr: {
                 required: {
@@ -546,97 +570,101 @@
                 },
                 email:true,
             },
-            last_name_2: {
-                required: {
-                    depends: function(element) {
-                        if($("#sellerDetailsIndividual").is(":visible")){
-                            return true;	
-                        }
-                    }
-                }
-            },
-            first_name_2: {
-                required: {
-                    depends: function(element) {
-                        if($("#sellerDetailsIndividual").is(":visible")){
-                            return true;	
-                        }
-                    }
-                }
-            },
-            street_adr_2: {
-                required: {
-                    depends: function(element) {
-                        if($("#sellerDetailsIndividual").is(":visible")){
-                            return true;	
-                        }
-                    }
-                }
-            },
-            suburb_2: {
-                required: {
-                    depends: function(element) {
-                        if($("#sellerDetailsIndividual").is(":visible")){
-                            return true;	
-                        }
-                    }
-                }
-            },
-            city_2: {
-                required: {
-                    depends: function(element) {
-                        if($("#sellerDetailsIndividual").is(":visible")){
-                            return true;	
-                        }
-                    }
-                }
-            },
-            post_code_2: {
-                required: {
-                    depends: function(element) {
-                        if($("#sellerDetailsIndividual").is(":visible")){
-                            return true;	
-                        }
-                    }
-                }
-            },
-            country_2: {
-                required: {
-                    depends: function(element) {
-                        if($("#sellerDetailsIndividual").is(":visible")){
-                            return true;	
-                        }
-                    }
-                }
-            },
+            // last_name_2: {
+            //     required: {
+            //         depends: function(element) {
+            //             if($("#sellerDetailsIndividual").is(":visible")){
+            //                 return true;	
+            //             }
+            //         }
+            //     }
+            // },
+            // first_name_2: {
+            //     required: {
+            //         depends: function(element) {
+            //             if($("#sellerDetailsIndividual").is(":visible")){
+            //                 return true;	
+            //             }
+            //         }
+            //     }
+            // },
+            // street_adr_2: {
+            //     required: {
+            //         depends: function(element) {
+            //             if($("#sellerDetailsIndividual").is(":visible")){
+            //                 return true;	
+            //             }
+            //         }
+            //     }
+            // },
+            // suburb_2: {
+            //     required: {
+            //         depends: function(element) {
+            //             if($("#sellerDetailsIndividual").is(":visible")){
+            //                 return true;	
+            //             }
+            //         }
+            //     }
+            // },
+            // city_2: {
+            //     required: {
+            //         depends: function(element) {
+            //             if($("#sellerDetailsIndividual").is(":visible")){
+            //                 return true;	
+            //             }
+            //         }
+            //     }
+            // },
+            // post_code_2: {
+            //     required: {
+            //         depends: function(element) {
+            //             if($("#sellerDetailsIndividual").is(":visible")){
+            //                 return true;	
+            //             }
+            //         }
+            //     }
+            // },
+            // country_2: {
+            //     required: {
+            //         depends: function(element) {
+            //             if($("#sellerDetailsIndividual").is(":visible")){
+            //                 return true;	
+            //             }
+            //         }
+            //     }
+            // },
             phone_2: {
-                required: {
-                    depends: function(element) {
-                        if($("#sellerDetailsIndividual").is(":visible")){
-                            return true;	
-                        }
-                    }
-                },
+                // required: {
+                //     depends: function(element) {
+                //         if($("#sellerDetailsIndividual").is(":visible")){
+                //             return true;	
+                //         }
+                //     }
+                // },
                 number: true,
+                minlength:6,
+                maxlength:9,
             },
             mobile_2: {
-                required: {
-                    depends: function(element) {
-                        if($("#sellerDetailsIndividual").is(":visible")){
-                            return true;	
-                        }
-                    }
-                },
+                // required: {
+                //     depends: function(element) {
+                //         if($("#sellerDetailsIndividual").is(":visible")){
+                //             return true;	
+                //         }
+                //     }
+                // },
                 number: true,
+                minlength:6,
+                maxlength:9,
             },
             email_adr_2: {
-                required: {
-                    depends: function(element) {
-                        if($("#sellerDetailsIndividual").is(":visible")){
-                            return true;	
-                        }
-                    }
-                },
+                // required: {
+                //     depends: function(element) {
+                //         if($("#sellerDetailsIndividual").is(":visible")){
+                //             return true;	
+                //         }
+                //     }
+                // },
                 email: true,
             },
             business_name: {
@@ -704,6 +732,8 @@
             },
             phone_bs: {
                 number:true,
+                minlength:6,
+                maxlength:9,
                 required: {
                     depends: function(element) {
                         if($("#sellerDetailsBusiness").is(":visible")){
@@ -714,6 +744,8 @@
             },
             mobile_bs: {
                 number:true,
+                minlength:6,
+                maxlength:9,
                 required: {
                     depends: function(element) {
                         if($("#sellerDetailsBusiness").is(":visible")){
@@ -774,36 +806,36 @@
             email_adr: {
                 required: "@lang('app.txt.champobligatoire')",
             },
-            last_name_2: {
-                required: "@lang('app.txt.champobligatoire')",
-            },
-            first_name_2: {
-                required: "@lang('app.txt.champobligatoire')",
-            },
-            street_adr_2: {
-                required: "@lang('app.txt.champobligatoire')",
-            },
-            suburb_2: {
-                required: "@lang('app.txt.champobligatoire')",
-            },
-            city_2: {
-                required: "@lang('app.txt.champobligatoire')",
-            },
-            post_code_2: {
-                required: "@lang('app.txt.champobligatoire')",
-            },
-            country_2: {
-                required: "@lang('app.txt.champobligatoire')",
-            },
-            phone_2: {
-                required: "@lang('app.txt.champobligatoire')",
-            },
-            mobile_2: {
-                required: "@lang('app.txt.champobligatoire')",
-            },
-            email_adr_2: {
-                required: "@lang('app.txt.champobligatoire')",
-            },
+            // last_name_2: {
+            //     required: "@lang('app.txt.champobligatoire')",
+            // },
+            // first_name_2: {
+            //     required: "@lang('app.txt.champobligatoire')",
+            // },
+            // street_adr_2: {
+            //     required: "@lang('app.txt.champobligatoire')",
+            // },
+            // suburb_2: {
+            //     required: "@lang('app.txt.champobligatoire')",
+            // },
+            // city_2: {
+            //     required: "@lang('app.txt.champobligatoire')",
+            // },
+            // post_code_2: {
+            //     required: "@lang('app.txt.champobligatoire')",
+            // },
+            // country_2: {
+            //     required: "@lang('app.txt.champobligatoire')",
+            // },
+            // phone_2: {
+            //     required: "@lang('app.txt.champobligatoire')",
+            // },
+            // mobile_2: {
+            //     required: "@lang('app.txt.champobligatoire')",
+            // },
+            // email_adr_2: {
+            //     required: "@lang('app.txt.champobligatoire')",
+            // },
             business_name: {
                 required: "@lang('app.txt.champobligatoire')",
             },

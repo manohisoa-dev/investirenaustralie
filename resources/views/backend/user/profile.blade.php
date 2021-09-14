@@ -163,7 +163,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessname') </div>
-                                    <input type="text" class="form-control" placeholder="@lang('app.txt.businessname')" name="orga_name" id="orga_name" value="{{ $item->userinfos ?$item->userinfos->orga_name:old('orga_name')}}">
+                                    <input type="text" class="form-control" placeholder="@lang('app.txt.businessname')" name="orga_name" id="orga_name" value="{{ old('orga_name')?old('orga_name'):($item->userinfos ?$item->userinfos->orga_name:'')}}">
                                     <span class="text-danger">{{ $errors->first('orga_name') }}</span>
                                 </div>
                             </div>
@@ -175,7 +175,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessemail') </div>
-                                    <input type="text" class="form-control" name="orga_email" id="orga_email" placeholder="@lang('app.txt.businessemail')" value="{{ old('orga_email')?old('orga_email'):($item->userinfos ?$item->userinfos->orga_email:$item->email) }}" readonly >
+                                    <input type="text" class="form-control" name="orga_email" id="orga_email" placeholder="@lang('app.txt.businessemail')" value="{{ old('orga_email')?old('orga_email'):(isset($item->userinfos->orga_email)?$item->userinfos->orga_email:$item->email) }}" readonly >
                                     <span class="text-danger">{{ $errors->first('orga_email') }}</span>
                                 </div>
                             </div>
@@ -187,8 +187,14 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessphone')</div>
-                                    <input type="text" class="form-control" name="orga_phone" id="orga_phone" placeholder="@lang('app.txt.businessphone')" value="{{$item->userinfos ?$item->userinfos->orga_phone:old('orga_phone')}}">
-                                    <span class="text-danger">{{ $errors->first('orga_phone') }}</span>
+                                    <div class="input-group mb-3 col-sm-12">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text form-control">+</span>
+                                        </div>
+                                        <div class="custom-file">
+                                            <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="15" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="orga_phone" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):($item->userinfos?$item->userinfos->orga_phone:'') }}">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -199,7 +205,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businesswebsite')</div>
-                                    <input type="text" class="form-control" name="orga_website" placeholder="@lang('app.txt.businesswebsite')" value="{{$item->userinfos ?$item->userinfos->orga_website:old('orga_website')}}">
+                                    <input type="text" class="form-control" name="orga_website" placeholder="@lang('app.txt.businesswebsite')" value="{{ old('orga_website')?old('orga_website'):($item->userinfos ?$item->userinfos->orga_website:'')}}">
                                     <span class="text-danger">{{ $errors->first('orga_website') }}</span>
                                 </div>
                             </div>
@@ -222,7 +228,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businesspresentation')</div>
-                                    <textarea class="form-control" placeholder="@lang('app.txt.businesspresentation')" name="orga_presentation" id="orga_presentation" cols="30" rows="5">{{$item->userinfos ?$item->userinfos->orga_presentation:old('orga_presentation')}}</textarea>
+                                    <textarea class="form-control" placeholder="@lang('app.txt.businesspresentation')" name="orga_presentation" id="orga_presentation" cols="30" rows="5">{{old('orga_presentation')?old('orga_presentation'):($item->userinfos ?$item->userinfos->orga_presentation:'')}}</textarea>
                                     <span class="text-danger">{{ $errors->first('orga_presentation') }}</span>
                                 </div>
                             </div>
@@ -232,11 +238,11 @@
                         <div class="col-md-4 m-10px-tb">
                             <div class="media">
                                 <div class="only-icon-20">
-                                    <i class="fas fa-phone"></i>
+                                    <i class="fas fa-building"></i>
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.stateoflegaloperation')</div>
-                                    <input type="text" class="form-control" placeholder="@lang('app.txt.stateoflegaloperation')" value="{{$item->userinfos ?$item->userinfos->orga_operation_state:''}}" name="orga_operation_state">
+                                    <input type="text" class="form-control" placeholder="@lang('app.txt.stateoflegaloperation')" value="{{old('orga_operation_state')?old('orga_operation_state'):($item->userinfos?$item->userinfos->orga_operation_state:'')}}" name="orga_operation_state">
                                     <span class="text-danger">{{ $errors->first('orga_operation_state') }}</span>
                                 </div>
                             </div>
@@ -244,7 +250,7 @@
                         <div class="col-md-4 m-10px-tb">
                             <div class="media">
                                 <div class="only-icon-20">
-                                    <i class="fas fa-phone"></i>
+                                    <i class="fas fa-building"></i>
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.rangeofoperation')</div>
@@ -320,7 +326,7 @@
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.contactname') </div>
-                                <input type="text" class="form-control" name="contact_name" id="contact_name" placeholder="@lang('app.txt.contactname')" value="{{$item->userinfos ?$item->userinfos->contact_name : old('contact_name') }}">
+                                <input type="text" class="form-control" name="contact_name" id="contact_name" placeholder="@lang('app.txt.contactname')" value="{{old('contact_name')?old('contact_name'):($item->userinfos ?$item->userinfos->contact_name : '') }}">
                                 <span class="text-danger">{{ $errors->first('contact_name') }}</span>
                             </div>
                         </div>
@@ -332,7 +338,7 @@
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.contactemail') </div>
-                                <input type="text" class="form-control" name="contact_email" id="contact_email" placeholder="@lang('app.txt.contactemail')" value="{{$item->userinfos ?$item->userinfos->contact_email : old('contact_email') }}">
+                                <input type="text" class="form-control" name="contact_email" id="contact_email" placeholder="@lang('app.txt.contactemail')" value="{{ old('contact_email')?old('contact_email'):($item->userinfos ?$item->userinfos->contact_email:'') }}">
                                 <span class="text-danger">{{ $errors->first('contact_email') }}</span>
                             </div>
                         </div>
@@ -344,8 +350,14 @@
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.contactphone')</div>
-                                <input type="text" name="contact_phone" id="contact_phone" placeholder="@lang('app.txt.contactphone')" value="{{$item->userinfos ?$item->userinfos->contact_phone : old('contact_phone')}}" class="form-control">
-                                <span class="text-danger">{{ $errors->first('contact_phone') }}</span>
+                                <div class="input-group mb-3 col-sm-12">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text form-control">+</span>
+                                    </div>
+                                    <div class="custom-file">
+                                        <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="15" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="contact_phone" name="contact_phone" value="{{ old('contact_phone')?old('contact_phone'):($item->userinfos?$item->userinfos->contact_phone:'') }}">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -364,7 +376,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.iban_bank_account') </div>
-                                    <input type="text" class="form-control" name="bank_iban" id="bank_iban" placeholder="@lang('app.txt.iban_bank_account')" value="{{$item->userinfos ?$item->userinfos->bank_iban:''}}">
+                                    <input type="text" class="form-control" name="bank_iban" id="bank_iban" placeholder="@lang('app.txt.iban_bank_account')" value="{{old('bank_iban')?old('bank_iban'):($item->userinfos ?$item->userinfos->bank_iban:'')}}">
                                 </div>
                             </div>
                         </div>
@@ -375,7 +387,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.bic_code') </div>
-                                    <input type="text" name="bank_bic" id="bank_bic" placeholder="@lang('app.txt.bic_code')" value="{{$item->userinfos ?$item->userinfos->bank_bic:''}}" class="form-control">
+                                    <input type="text" name="bank_bic" id="bank_bic" placeholder="@lang('app.txt.bic_code')" value="{{ old('bank_bic')?old('bank_bic'):($item->userinfos ?$item->userinfos->bank_bic:'')}}" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -396,7 +408,7 @@
 
 
             <div>
-                <button type="button" class="m-btn m-btn-theme4rd pull-right" id="btn_save">@lang('app.btn.save')</button>
+                <button type="submit" class="m-btn m-btn-theme4rd pull-right" id="btn_save">@lang('app.btn.save')</button>
             </div>
         </form>
     </div>
@@ -406,7 +418,7 @@
     <script src="{{ asset('/js/sweetalert2.js') }}"></script>
     <!-- Jquery Validate -->
     <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
-    {{-- <script>
+    <script>
         $.validator.addMethod('le', function (value, element, param) {
             return this.optional(element) || value !== $(param).val();
         }, '@lang("app.txt.invalid_value")');
@@ -415,168 +427,24 @@
             return this.optional(element) || value !== $(param).val();
         }, '@lang("app.txt.invalid_value")');
 
-        $('#formAfaRegistrator').validate({
+        $('#form_profil').validate({
             ignore: [],
             rules: {
-                name: {
-                    required: true,
-                    remote: {
-                        url: "{{ route('ajaxCheckLogin') }}",
-                        type: "get",
-                        data: {
-                            name: function () {
-                                return $("input[name='name']").val();
-                            }
-                        }
-                    }
-                },
-                email: {
-                    required: true,
-                    email:true,
-                    le:'#orga_email',
-                    remote: {
-                        url: "{{ route('ajaxCheckEmail') }}",
-                        type: "get",
-                        data: {
-                            email: function () {
-                                return $("input[name='email']").val();
-                            }
-                        }
-                    }
-                },
-                politic: {
-                    required: true,
-                },
-                condition: {
-                    required: true,
-                },
-                type: {
-                    required: true,
-                },
                 orga_name: {
                     required: true,
-                },
-                orga_trading_name: {
-                    required: true,
-                },
-                orga_abn: {
-                    required: true,
-                    number:true,
-                    minlength:11,
-                    maxlength:11
-                },
-                orga_acn: {
-                    number:true,
-                    minlength:9,
-                    maxlength:9
-                },
-                orga_license_number: {
-                    required: true,
-                    minlength:7,
-                    maxlength:7
-                },
-                orga_email: {
-                    required: true,
-                    email:true,
-                    le:'#email',
-                    ge:'#contact_email',
                 },
                 orga_phone: {
                     required: true,
                     number:true,
-                    minlength:8,
-                    maxlength:9,
-                    le:'#contact_phone',
-                },
-                orga_mobile_phone: {
-                    required: true,
-                    number:true,
-                    minlength:9,
-                    maxlength:9,
+                    minlength:6,
+                    maxlength:15,
                 },
                 orga_website: {
                     required: true,
                     url:true
                 },
                 orga_presentation: {
-                    maxlength: 1000,
-                },
-                // image: {
-                //     accept: "image/jpeg, image/pjpeg"
-                // },
-                orga_operation_state: {
-                    required:true,
-                },
-                orga_operation_range: {
-                    required:true,
-                },
-                route: {
-                    required: true,
-                },
-                route_number: {
-                    required: true,
-                },
-                locality: {
-                    required: true,
-                },
-                area_level_2: {
-                    required: true,
-                },
-                postalCode: {
-                    required: true,
-                    number:true
-                },
-                area_level_1: {
-                    required: true,
-                },
-                country: {
-                    required: true,
-                },
-                adrpost_postal_box: {
-                    required: {
-                        depends: function(element) {
-                            if($("#mailAddress").is(":visible")){
-                                return true;	
-                            }
-                        }
-                    }
-                },
-                adrpost_locality: {
-                    required: {
-                        depends: function(element) {
-                            if($("#mailAddress").is(":visible")){
-                                return true;	
-                            }
-                        }
-                    }
-                },
-                adrpost_postalCode: {
-                    number:true,
-                    required: {
-                        depends: function(element) {
-                            if($("#mailAddress").is(":visible")){
-                                return true;	
-                            }
-                        }
-                    }
-                },
-                adrpost_area_level_1: {
-                    required: {
-                        depends: function(element) {
-                            if($("#mailAddress").is(":visible")){
-                                return true;	
-                            }
-                        }
-                    }
-                },
-                adrpost_country: {
-                    required: {
-                        depends: function(element) {
-                            if($("#mailAddress").is(":visible")){
-                                return true;	
-                            }
-                        }
-                    }
+                    maxlength: 2000,
                 },
                 contact_name: {
                     required: true,
@@ -584,99 +452,36 @@
                 contact_email: {
                     required: true,
                     email:true,
-                    le:'#orga_email',
                 },
                 contact_phone: {
                     required: true,
                     number:true,
-                    minlength: 9,
-                    maxlength: 9,
-                    le:'#orga_phone',
+                    minlength: 6,
+                    maxlength: 15,
                 },
+                bank_iban: {
+                    required: true,
+                },
+                bank_bic: {
+                    required: true,
+                },
+                // afa
+                orga_operation_range: {
+                    required: true,
+                },
+                orga_operation_state: {
+                    required: true,
+                },
+                
             },
             messages: {
-                name: {
-                    required: "@lang('app.txt.champobligatoire')",
-                    remote: jQuery.validator.format("{0} @lang('app.txt.form.already_exist')")
-                },
-                email: {
-                    required: "@lang('app.txt.champobligatoire')",
-                    remote: jQuery.validator.format("{0} @lang('app.txt.form.already_exist')"),
-                    le: '@lang("app.txt.value_already_used")'
-                },
-                politic: {
-                    required: "@lang('app.txt.champobligatoire')"
-                },
-                condition: {
-                    required: "@lang('app.txt.champobligatoire')"
-                },
-                type: {
-                    required: "@lang('app.txt.champobligatoire')",
-                },
                 orga_name: {
                     required: "@lang('app.txt.champobligatoire')",
                 },
-                orga_trading_name: {
-                    required: "@lang('app.txt.champobligatoire')",
-                },
-                orga_abn: {
-                    required: "@lang('app.txt.champobligatoire')",
-                },
-                orga_email: {
-                    required: "@lang('app.txt.champobligatoire')",
-                    le: '@lang("app.txt.value_already_used")',
-                    ge: '@lang("app.txt.value_already_used")'
-                },
                 orga_phone: {
-                    required: "@lang('app.txt.champobligatoire')",
-                    le: '@lang("app.txt.value_already_used")'
-                },
-                orga_mobile_phone: {
                     required: "@lang('app.txt.champobligatoire')",
                 },
                 orga_website: {
-                    required: "@lang('app.txt.champobligatoire')",
-                },
-                orga_operation_state: {
-                    required: "@lang('app.txt.champobligatoire')",
-                },
-                orga_operation_range: {
-                    required: "@lang('app.txt.champobligatoire')",
-                },
-                route: {
-                    required: "@lang('app.txt.champobligatoire')",
-                },
-                route_number: {
-                    required: "@lang('app.txt.champobligatoire')",
-                },
-                locality: {
-                    required: "@lang('app.txt.champobligatoire')",
-                },
-                area_level_2: {
-                    required: "@lang('app.txt.champobligatoire')",
-                },
-                postalCode: {
-                    required: "@lang('app.txt.champobligatoire')",
-                },
-                area_level_1: {
-                    required: "@lang('app.txt.champobligatoire')",
-                },
-                country: {
-                    required: "@lang('app.txt.champobligatoire')",
-                },
-                adrpost_postal_box: {
-                    required: "@lang('app.txt.champobligatoire')",
-                },
-                adrpost_locality: {
-                    required: "@lang('app.txt.champobligatoire')",
-                },
-                adrpost_postalCode: {
-                    required: "@lang('app.txt.champobligatoire')",
-                },
-                adrpost_area_level_1: {
-                    required: "@lang('app.txt.champobligatoire')",
-                },
-                adrpost_country: {
                     required: "@lang('app.txt.champobligatoire')",
                 },
                 contact_name: {
@@ -684,11 +489,21 @@
                 },
                 contact_email: {
                     required: "@lang('app.txt.champobligatoire')",
-                    le: '@lang("app.txt.value_already_used")',
                 },
                 contact_phone: {
                     required: "@lang('app.txt.champobligatoire')",
-                    le: '@lang("app.txt.value_already_used")'
+                },
+                bank_bic: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                bank_iban: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                orga_operation_range: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                orga_operation_state: {
+                    required: "@lang('app.txt.champobligatoire')",
                 },
             },
             errorPlacement: function ( error, element ) {
@@ -707,10 +522,10 @@
                 $('#btn_save').html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>@lang("app.txt.loading")');
             } else {
                 $('btn_save').prop('disabled', false);   // enable button
-                $('#btn_save').html('@lang("app.btn.register")');
+                $('#btn_save').html('@lang("app.btn.save")');
             }
         });
-    </script> --}}
+    </script>
     <style>
         .error {
             color: #F00;
@@ -719,9 +534,9 @@
     </style>
     <!-- End Jquery Validate -->
     <script>
-        $('#btn_save').click(function(){
-            $('#form_profil').submit();
-        })
+        // $('#btn_save').click(function(){
+        //     $('#form_profil').submit();
+        // })
 
         function cancel_registration(user_id)
         {

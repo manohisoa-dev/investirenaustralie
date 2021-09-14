@@ -112,7 +112,7 @@ class ProfileController extends Controller
         
         switch($role){
             case 5:  //Membre
-                $type=$request->input('type');
+                $type=strtolower($request->input('type'));
                 if($type=='person'){
                     $rules = [
                         'first_name' => 'required|max:100',
@@ -151,7 +151,7 @@ class ProfileController extends Controller
                         'orga_name'         => 'required|max:100',
                         'orga_email'         => 'required|email|max:100',
                         'orga_phone' => 'required|min:6|max:14',
-                        'orga_presentation' => 'required|max:2000',
+                        'orga_presentation' => 'nullable|max:2000',
                         'orga_website'      => 'required|url|max:100'
                     ];
                 }
@@ -159,9 +159,9 @@ class ProfileController extends Controller
             case 3:  //AFA
                 $rules = [
                     'orga_name'         => 'required|max:100',
-                    'orga_presentation' => 'required|max:2000',
+                    'orga_presentation' => 'nullable|max:2000',
                     'orga_email'        => 'required|email|max:100',
-                    'orga_phone'        => 'required|digits_between:8,9|numeric',
+                    'orga_phone'        => 'required|digits_between:9,15|numeric',
                     'orga_website'      => 'required|url|max:100',
                     
                     'orga_operation_state' => 'required|max:100',
@@ -169,7 +169,7 @@ class ProfileController extends Controller
 
                     'contact_name'  => 'required|max:100',
                     'contact_email' => 'required|max:100',
-                    'contact_phone' => 'required||digits_between:9,9|numeric',
+                    'contact_phone' => 'required||digits_between:9,15|numeric',
 
 //                    'crm_name'   => 'required|max:100',
 //                    'crm_email'  => 'required|max:100',
@@ -178,7 +178,7 @@ class ProfileController extends Controller
             case 4:  // APL
                 $rules = [
                     'orga_name'         => 'required|max:100',
-                    'orga_presentation' => 'required|max:2000',
+                    'orga_presentation' => 'nullable|max:2000',
                     'orga_email'        => 'required|email|max:100',
                     'orga_phone'        => 'required|min:6|max:14',
                     'orga_website'      => 'required|url|max:100',
@@ -196,14 +196,14 @@ class ProfileController extends Controller
             case 2:  // Vendeur
                 $rules = [
                     'orga_name'         => 'required|max:100',
-                    'orga_presentation' => 'required|max:2000',
+                    'orga_presentation' => 'nullable|max:2000',
                     'orga_email'        => 'required|email|max:100',
-                    'orga_phone'        => 'required|digits_between:8,9|numeric',
+                    'orga_phone'        => 'required|digits_between:9,15|numeric',
                     'orga_website'      => 'required|url|max:100',
 
                     'contact_name'  => 'required|max:100',
                     'contact_email' => 'required|max:100',
-                    'contact_phone' => 'required|digits_between:9,9|numeric',
+                    'contact_phone' => 'required|digits_between:9,15|numeric',
 
                 ];
                 break;
