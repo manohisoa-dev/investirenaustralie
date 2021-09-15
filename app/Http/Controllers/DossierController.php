@@ -16,6 +16,7 @@ use App\Notifications\AfaMandateSearchFinalisedMessage;
 use App\Notifications\MemberMandateSearchFinalisedMessage;
 use App\Notifications\MemberMandateSearchMessage;
 use App\Notifications\MemberDossierTransactionCompleteMessage;
+use App\Notifications\MemberDownloadEoiMessage;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 use Carbon\Carbon;
@@ -225,10 +226,23 @@ class DossierController extends Controller
     public function updateIsCompleteDt(Request $request){
         $isComplete = $request->is_complete;
         $dtId = $request->dt_id;
+        $user = Auth::user();
 
         // udpate dossier transaction information
         DossierTransaction::where('id', $dtId)->update(['is_complete'=>$isComplete]);
-            
+
+        // send message and email to member for download eoi
+        $dt = DossierTransaction::whereId($dtId)->first();
+        $prod = Product::whereId($dt->product_id)->first();
+        $seller = "Nom du vendeur";
+        $downloadeoilink = url($prod->productEoi->first()->image->first()->filepath);
+        $uploadeoilink = route('member.dossier');
+        $content = trans('member.tobuy.eoi.message_to_member_for_download_eoi',['date'=>Carbon::now()->format('m-d-Y'),'hour'=>Carbon::now()->format('H:i:m'),'name'=>Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name,'prodtitle'=>$prod->title,'lottype'=>$dt->lot_type,'lotlevel'=>$dt->lot_level,'lotid'=>$dt->lot_id,'price'=>$dt->final_sales_price,'seller'=>$seller,'afa'=>Auth::user()->afa->name,'downloadeoilink'=>$downloadeoilink,'uploadeoilink'=>$uploadeoilink]);
+        // message
+        Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$user->id,'body'=>$content]);
+        // // email
+        $user->notify(new MemberDownloadEoiMessage($content));
+        
         return response()->json(['success'=>'Success']);
     }
 

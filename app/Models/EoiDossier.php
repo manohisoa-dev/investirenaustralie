@@ -15,4 +15,9 @@ class EoiDossier extends Model
     {
         return $this->belongsToMany(Image::class, 'product_eoi', 'product_id', 'image_id');
     }
+
+    public function image()
+    {
+        return $this->belongsToMany(Image::class, 'product_eoi', 'id', 'image_id');
+    }
 }

@@ -277,7 +277,11 @@
                 <div class="modal-body">
                     <form action="{{ route("afa.dossier.update_dt") }}" id="confirmPurchaseForm" method="POST">
                         {{ csrf_field() }}
-                        {!! trans('member.tobuy.dt.message_to_member_after_info_complete.confirm',['date'=>Carbon\Carbon::now()->format('m-d-Y'),'hour'=>Carbon\Carbon::now()->format('H:i:m'),'name'=>Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name,'afa'=>Auth::user()->afa->name,'city'=>App\Models\Product::whereId($prod_id)->first()->location->locality,'etat'=>App\Models\Product::whereId($prod_id)->first()->location->area_level_1]) !!}
+                        @php
+                            $dt = App\Models\DossierTransaction::getDossierTransactionInfo($prod_id,Auth::id());
+                            $prod = App\Models\Product::whereId($prod_id)->first();
+                        @endphp
+                        {!! trans('member.tobuy.dt.message_to_member_after_info_complete.confirm',['date'=>Carbon\Carbon::now()->format('m-d-Y'),'hour'=>Carbon\Carbon::now()->format('H:i:m'),'name'=>Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name,'title'=>$prod->title,'lottype'=>$dt->lot_type,'lotlevel'=>$dt->lot_level,'lotid'=>$dt->lot_id,'price'=>$dt->final_sales_price]) !!}
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -297,7 +301,14 @@
                     <h4 class="modal-title white-color"> @lang('app.message')<span></span></h4>
                 </div>
                 <div class="modal-body">
-                    {{-- {!! trans('member.tobuy.dt.message_to_member_after_info_complete.confirm',['date'=>Carbon\Carbon::now()->format('m-d-Y'),'hour'=>Carbon\Carbon::now()->format('H:i:m'),'name'=>Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name,'afa'=>Auth::user()->afa->name,'city'=>App\Models\Product::whereId($prod_id)->first()->location->locality,'etat'=>App\Models\Product::whereId($prod_id)->first()->location->area_level_1]) !!} --}}
+                    @php
+                        $dt = App\Models\DossierTransaction::getDossierTransactionInfo($prod_id,Auth::id());
+                        $prod = App\Models\Product::whereId($prod_id)->first();
+                        $seller = "Nom du vendeur";
+                        $downloadeoilink = url($prod->productEoi->first()->image->first()->filepath);
+                        $uploadeoilink = route('member.dossier');
+                    @endphp
+                    {!! trans('member.tobuy.eoi.message_to_member_for_download_eoi',['date'=>Carbon\Carbon::now()->format('m-d-Y'),'hour'=>Carbon\Carbon::now()->format('H:i:m'),'name'=>Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name,'prodtitle'=>$prod->title,'lottype'=>$dt->lot_type,'lotlevel'=>$dt->lot_level,'lotid'=>$dt->lot_id,'price'=>$dt->final_sales_price,'seller'=>$seller,'afa'=>Auth::user()->afa->name,'downloadeoilink'=>$downloadeoilink,'uploadeoilink'=>$uploadeoilink]) !!}
                 </div>
                 <div class="modal-footer">
                     <div class="float-right m-15px-t">
@@ -477,23 +488,29 @@
         }
 
         $(function(){
-            if('{{Request::get("action") && Request::get("ID")}}'){
-                var doss = $.parseJSON('{!! Request::get("ID")?App\Models\DossierTransaction::whereId(Request::get("ID"))->first():"" !!}');
-                var prod = $.parseJSON('{!! Request::get("ID")?App\Models\Product::whereId(App\Models\DossierTransaction::whereId(Request::get("ID"))->first()->product_id)->first():"" !!}');
+            // show modal confirm purchase or download EOI
+            if("{{ Request::get('action')!==null && Request::get('ID')!==null }}"){
+                if("{{ (Request::get('ID')!==null?Auth::user()->dossierTransactionIsComplete( App\Models\DossierTransaction::whereId(Request::get('ID'))->first()->product_id ):'')==='complete' }}"){
+                    var doss = $.parseJSON('{!! Request::get("ID")?App\Models\DossierTransaction::whereId(Request::get("ID"))->first():"" !!}');
+                    var prod = $.parseJSON('{!! Request::get("ID")?App\Models\Product::whereId(App\Models\DossierTransaction::whereId(Request::get("ID"))->first()->product_id)->first():"" !!}');
+                    
+                    // set default data
+                    // var template = $('#confirmPurchaseModal').html();
+                    // template.replace(':title',prod.title);
+                    // template.replace(':lottype',doss.lot_type);
+                    // template.replace(':lotlevel',doss.lot_level);
+                    // template.replace(':lotid',doss.lot_id);
+                    // template.replace(':price',doss.final_sales_price.toLocaleString());
 
-
-                // set default data
-                var template = $('#confirmPurchaseForm').html();
-                template.replace(':title',prod.title);
-                template.replace(':lottype',doss.lot_type);
-                template.replace(':lotlevel',doss.lot_level);
-                template.replace(':lotid',doss.lot_id);
-                template.replace(':price',doss.final_sales_price.toLocaleString());
-
-                // show modal
-                $('#confirmPurchaseModal .modal-header span').html(doss.numero);
-                $('#confirmPurchaseModal').modal('show');
-            };
+                    // show modal
+                    $('#confirmPurchaseModal .modal-header span').html(doss.numero);
+                    setTimeout(() => {
+                        $('#confirmPurchaseModal').modal('show');
+                    }, 400);
+                }else{
+                    $('#downloadEoiModal').modal('show');
+                }
+            }
         });
 
         // function confirmPurchase(){
@@ -583,8 +600,10 @@
                                     $('#confirmPurchaseModal').modal('hide');
 
                                     // show modal EOI
-                                    stopLoadingPage();
-                                    $('#downloadEoiModal').modal('show');
+                                    setTimeout(() => {
+                                        stopLoadingPage();
+                                        $('#downloadEoiModal').modal('show');
+                                    }, 750);
                                 }
                             );
                         },
