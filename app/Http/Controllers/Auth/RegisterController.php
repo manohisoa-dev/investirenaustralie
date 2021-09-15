@@ -346,7 +346,7 @@ class RegisterController extends Controller
                 }else{
                     $rules = [
                         'orga_phone' => 'required|max:100',
-                        'orga_mobile_phone' => 'required|digits_between:6,9|numeric',
+                        'orga_mobile_phone' => 'required|max:100',
                         'orga_name'         => 'required|max:100',
                         'orga_registration_number'         => 'required|max:100',
                         'orga_rep_official_registration'         => 'required|max:100',
@@ -359,7 +359,7 @@ class RegisterController extends Controller
                         'area_level_1' => 'nullable|max:100',
                         'country'      => 'required|max:100',
                         'contact_name'       => 'required|max:100',
-                        'contact_phone'       => 'required|digits_between:6,9|numeric',
+                        'contact_phone'       => 'required|max:100',
                         'contact_email'        => 'required|email|max:100',
                     ];
 
@@ -566,20 +566,20 @@ class RegisterController extends Controller
                             'email_adr' => 'required|email|max:100',
 
                             // Seller #2
-                            'last_name_2'  => 'nullable|max:100',
-                            'first_name_2' => 'nullable|max:100',
-                            'date_of_birth_2' => 'nullable|max:100',
-                            'place_of_birth_2' => 'nullable|max:100',
-                            'nationality_2' => 'nullable|max:100',
-                            'street_adr_2' => 'nullable|max:100',
-                            'suburb_2' => 'nullable|max:100',
-                            'city_2' => 'nullable|max:100',
-                            'post_code_2' => 'nullable|max:100',
+                            'last_name_2'  => 'required|max:100',
+                            'first_name_2' => 'required|max:100',
+                            'date_of_birth_2' => 'required|max:100',
+                            'place_of_birth_2' => 'required|max:100',
+                            'nationality_2' => 'required|max:100',
+                            'street_adr_2' => 'required|max:100',
+                            'suburb_2' => 'required|max:100',
+                            'city_2' => 'required|max:100',
+                            'post_code_2' => 'required|max:100',
                             'state_2' => 'nullable|max:100',
-                            'country_2' => 'nullable|max:100',
-                            'phone_2' => 'nullable|max:15',
-                            'mobile_2' => 'nullable|max:15',
-                            'email_adr_2' => 'nullable|email|max:100',
+                            'country_2' => 'required|max:100',
+                            'phone_2' => 'required|max:15',
+                            'mobile_2' => 'required|max:15',
+                            'email_adr_2' => 'required|email|max:100',
 
                         ];
                     }else{
@@ -597,8 +597,8 @@ class RegisterController extends Controller
                                 'post_code_bs' => 'required|max:100',
                                 'state_bs' => 'required|max:100',
                                 'country_bs' => 'required|max:100',
-                                'phone_bs' => 'required|digits_between:6,9|numeric',
-                                'mobile_bs' => 'required|digits_between:6,9|numeric',
+                                'phone_bs' => 'required|max:15',
+                                'mobile_bs' => 'required|max:15',
                                 'email_adr_bs' => 'required|email|max:100',
                             ];
                         }else{
@@ -613,22 +613,22 @@ class RegisterController extends Controller
                                 'post_code' => 'required|max:100',
                                 'state' => 'nullable|max:100',
                                 'country' => 'required|max:100',
-                                'phone' => 'required|digits_between:6,9|numeric',
-                                'mobile' => 'required|digits_between:6,9|numeric',
+                                'phone' => 'required|max:15',
+                                'mobile' => 'required|max:15',
                                 'email_adr' => 'required|email|max:100',
 
                                 // Seller #2
-                                'last_name_2'  => 'nullable|max:100',
-                                'first_name_2' => 'nullable|max:100',
-                                'street_adr_2' => 'nullable|max:100',
-                                'suburb_2' => 'nullable|max:100',
-                                'city_2' => 'nullable|max:100',
-                                'post_code_2' => 'nullable|max:100',
+                                'last_name_2'  => 'required|max:100',
+                                'first_name_2' => 'required|max:100',
+                                'street_adr_2' => 'required|max:100',
+                                'suburb_2' => 'required|max:100',
+                                'city_2' => 'required|max:100',
+                                'post_code_2' => 'required|max:100',
                                 'state_2' => 'nullable|max:100',
-                                'country_2' => 'nullable|max:100',
-                                'phone_2' => 'nullable|digits_between:6,9|numeric',
-                                'mobile_2' => 'nullable|digits_between:6,9|numeric',
-                                'email_adr_2' => 'nullable|email|max:100',
+                                'country_2' => 'required|max:100',
+                                'phone_2' => 'required|max:15',
+                                'mobile_2' => 'required|max:15',
+                                'email_adr_2' => 'required|email|max:100',
                             ];
                         }
                     }
@@ -691,13 +691,13 @@ class RegisterController extends Controller
             // Create user info
             if($role !== 'seller' || session('seller_class')!=='non_professional_natural_persons' && session('seller_class')!=='seller_by_afa'){
                 if(isset($datas['contact_phone'])){
-                    $datas['contact_phone'] = explode('+',$datas['indicatif'])[1].$datas['contact_phone'];
+                    $datas['contact_phone'] = $datas['indicatif'].$datas['contact_phone'];
                 }
                 if(isset($datas['orga_mobile_phone'])){
-                    $datas['orga_mobile_phone'] = explode('+',$datas['indicatif'])[1].$datas['orga_mobile_phone'];
+                    $datas['orga_mobile_phone'] = $datas['indicatif'].$datas['orga_mobile_phone'];
                 }
                 if(isset($datas['orga_phone'])){
-                    $datas['orga_phone'] = explode('+',$datas['indicatif'])[1].$datas['orga_phone'];
+                    $datas['orga_phone'] = $datas['indicatif'].$datas['orga_phone'];
                 }
 
                 if($userInfo = Userinfo::create($datas)){
@@ -722,33 +722,29 @@ class RegisterController extends Controller
                         $sfx = $i!=1?'':'_2';
 
                         if(session('seller_class')!=='seller_by_afa'){
-                            if(isset($datas['date_of_birth'.$sfx])){
-                                $dtOfbirth = $datas['date_of_birth'.$sfx];
-                                $dt = new Carbon($dtOfbirth);
-                                $dt = $dt->toDateString();
-                            }else{
-                                $dt="";
-                            }
+                            $dtOfbirth = $datas['date_of_birth'.$sfx];
+                            $dt = new Carbon($dtOfbirth);
+                            $dt = $dt->toDateString();
                         }else{
                             $dt ="";
                         }
             
                         $si= SellerIndividual::create([
                             'user_id'=>$user->id, 
-                            'last_name'=>isset($datas['last_name'.$sfx])?$datas['last_name'.$sfx]:'', 
-                            'first_name'=>isset($datas['first_name'.$sfx])?$datas['first_name'.$sfx]:'', 
+                            'last_name'=>$datas['last_name'.$sfx], 
+                            'first_name'=>$datas['first_name'.$sfx], 
                             'date_of_birth'=>$dt, 
-                            'place_of_birth'=>session('seller_class')!=='seller_by_afa'?(isset($datas['place_of_birth'.$sfx])?$datas['place_of_birth'.$sfx]:''):'', 
-                            'nationality'=>session('seller_class')!=='seller_by_afa'?(isset($datas['nationality'.$sfx])?$datas['nationality'.$sfx]:''):'', 
-                            'street_adr'=>isset($datas['street_adr'.$sfx])?$datas['street_adr'.$sfx]:'', 
-                            'suburb'=>isset($datas['suburb'.$sfx])?$datas['suburb'.$sfx]:'', 
-                            'city'=>isset($datas['city'.$sfx])?$datas['city'.$sfx]:'', 
-                            'post_code'=>isset($datas['post_code'.$sfx])?$datas['post_code'.$sfx]:'', 
-                            'state'=>isset($datas['state'.$sfx])?$datas['state'.$sfx]:'', 
-                            'country'=>isset($datas['country'.$sfx])?$datas['country'.$sfx]:'', 
-                            'phone'=>isset($datas['phone'.$sfx])?'61'.$datas['phone'.$sfx]:'', 
-                            'mobile'=>isset($datas['mobile'.$sfx])?'61'.$datas['mobile'.$sfx]:'', 
-                            'email_adr'=>isset($datas['email_adr'.$sfx])?$datas['email_adr'.$sfx]:''
+                            'place_of_birth'=>session('seller_class')!=='seller_by_afa'?$datas['place_of_birth'.$sfx]:'', 
+                            'nationality'=>session('seller_class')!=='seller_by_afa'?$datas['nationality'.$sfx]:'', 
+                            'street_adr'=>$datas['street_adr'.$sfx], 
+                            'suburb'=>$datas['suburb'.$sfx], 
+                            'city'=>$datas['city'.$sfx], 
+                            'post_code'=>$datas['post_code'.$sfx], 
+                            'state'=>$datas['state'.$sfx], 
+                            'country'=>$datas['country'.$sfx], 
+                            'phone'=>$datas['phone'.$sfx], 
+                            'mobile'=>$datas['mobile'.$sfx], 
+                            'email_adr'=>$datas['email_adr'.$sfx]
                         ]);
                     }
                 }else{
@@ -762,8 +758,8 @@ class RegisterController extends Controller
                             'post_code'=>$datas['post_code_bs'], 
                             'state'=>$datas['state_bs'], 
                             'country'=>$datas['country_bs'], 
-                            'phone'=>'61'.$datas['phone_bs'], 
-                            'mobile'=>'61'.$datas['mobile_bs'], 
+                            'phone'=>$datas['phone_bs'], 
+                            'mobile'=>$datas['mobile_bs'], 
                             'email_adr'=>$datas['email_adr_bs']
                         ]);
                     }

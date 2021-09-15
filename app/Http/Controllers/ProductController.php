@@ -386,6 +386,17 @@ class ProductController extends Controller {
         /**/
     }
 
+    public function ajaxCheckAdresse(Request $request) {
+        if ($request->display_address) {
+            $adresse_exist = Product::where('display_address', $request->display_address)->get();
+            if (count($adresse_exist) > 0) {
+                echo "false";
+            } else {
+                echo "true";
+            }
+        }
+    }
+
     public function send_notification_creation($id_produit) {
         $product = Product::find($id_produit);
         $localisation = Localisation::find($product->location_id);
@@ -1108,7 +1119,7 @@ class ProductController extends Controller {
                 $this->save_photo_programme($value, $request->id_product, 0);
             }
         }
-        
+
         if ($request->photo_trash) {
             foreach ($request->photo_trash as $key => $value) {
                 Image::where('id', $value)->delete();

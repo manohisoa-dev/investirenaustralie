@@ -1230,4 +1230,5 @@ return
 	'txt.confirm_purchase' => 'Confirm purchase',
 	'txt.purchase_confirmed' => 'Purchase confirmed with success',
 	'txt.error' => 'Error',
+    'txt.adress_exist_error' => 'Adresse déjà utilisé',
 ];
