@@ -4,6 +4,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\EoiDossier;
 
 
 class Product extends Model {
@@ -558,6 +559,11 @@ class Product extends Model {
     public function afa()
     {
         return User::whereId($this->author->afa_id)->get();
+    }
+
+    public function productEoi()
+    {
+        return $this->hasMany(EoiDossier::class);
     }
 
 }
