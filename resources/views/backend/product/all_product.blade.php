@@ -25,8 +25,7 @@
 							<th>ID</th>
 							<th>@lang('app.table.produit_image')</th>
 							<th>@lang('app.table.produit_titre')</th>
-							<th>@lang('app.form.programme_price_min')</th>
-							<th>@lang('app.form.programme_price_max')</th>
+							<th>@lang('app.table.price')</th>
 							<th>@lang('app.form.product_status')</th>
 							<th>@lang('app.table.action')</th>
 						</tr>
@@ -44,16 +43,7 @@
 							</td>
 							<td>{{ $record->title }}<br />{{str_limit(strip_tags($record->excerpt()),"100","...")}}</td>
 							<td>
-								@if($record->category_id == 1 && $record->ancienneteBien == 'Neuf' && $record->natureBien == 'Programme immobilier')
-									{{ $record->currency }}&nbsp;{{ number_format($record->min_price, 0, '.', ' ') }}
-								@else
-									{{ $record->currency }}&nbsp;{{ number_format($record->price, 0, '.', ' ') }}
-								@endif
-							</td>
-							<td>
-								@if($record->category_id == 1 && $record->ancienneteBien == 'Neuf' && $record->natureBien == 'Programme immobilier')
-									{{ $record->currency }}&nbsp;{{ number_format($record->max_price, 0, '.', ' ') }}
-								@endif	
+								{{ $record->currency }}&nbsp;{{ number_format($record->price, 0, '.', ' ') }}
 							</td>
 							<td>
 							@if($record->status=='published')

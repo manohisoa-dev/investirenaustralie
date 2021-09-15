@@ -121,7 +121,7 @@ class Product extends Model {
     public static function allProductUser()
     {
         $query = Product::query();
-        $query->where('parent_id','!=',0);
+        $query->where('parent_id','=',-1);
         $query->where('author_id', Auth::id());
         // search results based on user input
         \Request::input('id') and $query->where('id',\Request::input('id'));
@@ -172,10 +172,11 @@ class Product extends Model {
         return $query->paginate(15);
     }
     
-    public static function allProgramme()
+    public static function allProgramme($status)
     {
         $query = Product::query();
         $query->where('parent_id',0);
+        $query->where('status',$status);
         // search results based on user input
         \Request::input('id') and $query->where('id',\Request::input('id'));
         \Request::input('reference') and $query->where('reference','like','%'.\Request::input('reference').'%');
@@ -418,8 +419,7 @@ class Product extends Model {
      */
     public function type()
     {
-        return $this->belongsTo(Type::class, 'type_id', 'id')
-            ->ofObject('type');
+        return $this->belongsTo(Type::class, 'type_id', 'id');
     }
 
     /**

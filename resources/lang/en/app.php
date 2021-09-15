@@ -677,6 +677,7 @@ return
     'form.programme_btn_create' => 'Create',
     'form.programme_btn_edit' => 'Save change',
     'dropzone.libelle' => 'Choose several photos for the representation of the program',
+    'dropzone.libelle_product' => 'Choose several photos for the representation of the product',
     'dropzone.photoIcon_tex' => 'Photo icon',
     'form.programme_validate_prix_max' => 'Maximum price must be greater than',
     'form.programme_validate_titre' => 'Already exists',
@@ -1231,4 +1232,8 @@ return
 	'txt.purchase_confirmed' => 'Purchase confirmed with success',
 	'txt.error' => 'Error',
     'txt.adress_exist_error' => 'Adresse déjà utilisé',
+    'admin.program.list_valid' => 'List of programs to validate',
+    'admin.program.list_no_valid' => 'List of published programs',
+    'admin.btn_approbation' => 'APPROBATION',
+    'admin.btn_rejet' => 'REJET',
 ];

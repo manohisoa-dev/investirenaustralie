@@ -37,9 +37,15 @@ class ProductController extends Controller {
     }
 
     public function programme() {
-        $records = Product::allProgramme();
+        if (isset($_GET['status'])) {
+            $status_pro = $_GET['status'];
+        } else {
+            $status_pro = 'published';
+        }
+        $records = Product::allProgramme($status_pro);
         $status = Product::groupBy('status')->pluck('status', 'status');
-        return $this->view("programme", ['records' => $records, 'status' => $status]);
+        return $this->view("programme", ['records' => $records, 'status' => $status,
+            'statusPro' => $status_pro]);
     }
 
     /**
@@ -385,7 +391,26 @@ class ProductController extends Controller {
      * @return  \Illuminate\Http\Response
      */
     public function show(Request $request, Product $product) {
-        return $this->view("show", ['product' => $product]);
+        $fonDossier = FondsDossier::where('products_fond_dossier.product_id', '=', $product->id)->join('images',
+            'products_fond_dossier.image_id', '=', 'images.id')->select('*',
+            'products_fond_dossier.id as prdFondId')->get();
+
+        $eoiDossier = EoiDossier::where('product_eoi.product_id', '=', $product->id)->join('images',
+            'product_eoi.image_id', '=', 'images.id')->select('*',
+            'product_eoi.id as prdEoiId')->get();
+
+        $liaDossier = LiaDossier::where('product_lia.product_id', '=', $product->id)->join('images',
+            'product_lia.image_id', '=', 'images.id')->select('*',
+            'product_lia.id as prdLiaId')->get();
+
+        $produit_lie = Product::where('parent_id', $product->id)->get();
+        $photo = ProductsImage::where('products_images.product_id', '=', $product->id)->join('images',
+            'products_images.image_id', '=', 'images.id')->select('*',
+            'products_images.id as prdImageId')->get();
+
+        return $this->view("show", ['product' => $product, 'dossier' => $fonDossier,
+            'eoidossier' => $eoiDossier, 'photos' => $photo, 'liadossier' => $liaDossier,
+            'product_lies' => $produit_lie]);
     }
 
     /**
@@ -859,6 +884,13 @@ class ProductController extends Controller {
 
     public function ajaxDropProduit(Request $request) {
         Product::where('id', $request->id_produit)->delete();
+        return response()->json(['success' => 'true']);
+    }
+
+    public function ajaxRejetProduit(Request $request) {
+        $product = Product::find($request->id_produit);
+        Product::where('parent_id', $product->id)->delete(); //suppression programme
+        $product->delete();
         return response()->json(['success' => 'true']);
     }
 

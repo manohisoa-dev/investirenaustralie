@@ -116,239 +116,8 @@
 										</div>
 									</div>
 								</div>
-								<!-- categorie residentiel / neuf / immobilier -->
-								@if($product->category_id == 1 && $product->ancienneteBien == 'Neuf' && $product->natureBien == 'Programme immobilier')
-									<div class="row">							
-										<div class="col-lg-6">
-											<div class="form-group">
-												<label for="title">@lang('app.form.product_prix_min') *</label>
-												<div class="input-group m-b">
-													<input type="number" class="form-control" name="min_price" id="min_price" value="{{$product->min_price}}">
-													<div class="input-group-append">
-														<span class="input-group-text">AUD</span>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="col-lg-6">
-											<div class="form-group">
-												<label for="title">@lang('app.form.product_prix_max') *</label>
-												<div class="input-group m-b">
-													<input type="number" class="form-control" name="max_price" id="max_price" value="{{$product->max_price}}">
-													<div class="input-group-append">
-														<span class="input-group-text">AUD</span>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-lg-6">
-											<div class="form-group">
-												<label for="title">@lang('app.form.programme_commission_type')</label>
-												<select class="form-control" name="commision_product" id="commision_product">
-													<option value="">Choisir...</option>
-													<option value="Sales commission rate (%)" {{$product->commission_type == 'Sales commission rate (%)' ? 'selected' : ''}}>
-														@lang('app.form.programme_commission_option1') (%)
-													</option>
-													<option value="Fixed commission ($)" {{$product->commission_type == 'Fixed commission ($)' ? 'selected' : ''}}>
-														@lang('app.form.programme_commission_option2') ($)
-													</option>
-												</select>
-											</div>
-										</div>
-										<div class="col-lg-6">
-											<div id="commission_rate_prd" style="display:none">
-												<div class="form-group">
-													<label for="title">@lang('app.form.programme_taux_commission')</label>
-													<div class="input-group m-b">
-														<input type="number" class="form-control" name="sales_rate_product" id="sales_rate_product">
-														<div class="input-group-append">
-															<span class="input-group-text">%</span>
-														</div>
-													</div>
-												</div>
-											</div>
-											<div id="fixed_commission_prd" style="display:none">
-												<div class="form-group">
-													<label for="title">@lang('app.form.programme_mt_commission')</label>
-													<div class="input-group m-b">
-														<input type="number" class="form-control" name="rate_commission_product" id="rate_commission_product">
-														<div class="input-group-append">
-															<span class="input-group-text">AUD</span>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									
-									<div class="row">
-										<div class="col-lg-6">
-											<div class="form-group" style="margin-bottom:.5rem;">
-												<label for="title">@lang('app.txt.avoir_bonus')</label>
-												<select class="form-control" name="bonus_vente" id="bonus_vente">
-													<option value="">Choisir...</option>
-													<option value="YES" {{$product->avoir_bonus == 'YES' ? 'selected' : ''}}>@lang('app.txt.yes')</option>
-													<option value="NO" {{$product->avoir_bonus == 'NO' ? 'selected' : ''}}>@lang('app.txt.no')</option>
-												</select>
-											</div>
-										</div>
-										<div class="col-lg-6">
-											<div id="montant_bonus_vente" style="display:none">
-												<label for="title">@lang('app.txt.valeur_bonus') *</label>
-												<div class="input-group" style="margin-bottom: .5rem;">
-													<input type="number" class="form-control" value="{{$product->amount_bonus}}" name="bonus_amount" id="bonus_amount">
-													<div class="input-group-append">
-														<span class="input-group-text">AUD</span>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.input.nbchambre')</label>
-												<input name="bedrooms" id="bedrooms" class="form-control" type="number" value="{{$product->bedrooms}}">
-											</div>  
-										</div>
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.input.nbchambresuite')</label>
-												<input name="ensuite" id="ensuite" class="form-control" type="number" value="{{$product->ensuite}}">
-											</div>
-										</div>
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.input.nbsalledebain')</label>
-												<input name="bathrooms" id="bathrooms" class="form-control" type="number" value="{{$product->bathrooms}}">
-											</div> 
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.form.product_area_interior') *</label>
-												<div class="input-group m-b">
-													<input type="text" name="interior_area" id="interior_area" class="form-control" value="{{$product->interior_area}}">
-													<div class="input-group-append">
-														<span class="input-group-text">.m2</span>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.form.product_area_exterior') *</label>
-												<div class="input-group m-b">
-													<input type="text" name="exterior_area" id="exterior_area" class="form-control" value="{{$product->exterior_area}}">
-													<div class="input-group-append">
-														<span class="input-group-text">.m2</span>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.form.product_area_total') *</label>
-												<div class="input-group m-b">
-													<input type="text" name="total_area" id="total_area" class="form-control" value="{{$product->total_area}}" readonly="">
-													<div class="input-group-append">
-														<span class="input-group-text">.m2</span>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.form.product_parking_ferme')</label>
-												<input name="garage_spaces" id="garage_spaces" class="form-control" type="number" value="{{$product->garage_spaces}}">
-											</div>
-										</div>
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.form.product_parking_carpot')</label>
-												<input name="carport_spaces" id="carport_spaces" class="form-control" type="number" value="{{$product->carport_spaces}}">
-											</div>
-										</div>
-									</div>
-									<!-- photo produit -->
-									<div class="row">
-										@if($product->image_id != 0)
-										<div class="col-lg-4">
-											<div class="file-box" style="width:100% !important">
-												<div class="file">
-													<a href="{{asset($product->imageUrl())}}" target="_blank" class="fancyboxLink">
-														<span class="corner"></span>	
-														@if (@getimagesize($product->imageUrl()))					
-														<div class="image">
-															<img alt="image" class="img-fluid" src="{{$product->imageUrl()}}">
-														</div>
-														@else
-														<div class="image">
-															<img alt="image" class="img-fluid" src="{{asset('img/500x500.jpg')}}">
-														</div>
-														@endif
-													</a>
-												</div>
-												<div class="file-name">
-													<label>@lang('app.table.produit_image')</label>
-												</div>
-											</div>
-										</div>
-										@endif
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.table.produit_image')</label>
-												<input name="image" class="form-control" type="file" accept="image/png, image/jpeg">
-											</div>
-										</div>
-									</div>
-									<!-- fin photo produit -->
-									<div class="row">
-										<div class="col-lg-12">
-											<label class="chk_parking"> 
-												<input type="checkbox" value="1" id="chk_parking" name="chk_parking" {{$product->avoir_parking_voie_public == 1 ? 'checked="checked"' : ''}}> @lang('app.form.product_parking_vPublic')
-											</label>
-										</div>
-										<div class="col-lg-12">
-											<div id="chk_firb">
-												<label class="chk_firb"> 
-													<input type="checkbox" value="" name="chk_firb" checked="checked"> The Seller certifies under their sole responsibilitythatthis property canbe sold to non-residentforeigners in accordance with Australian law and the rules applicable by the Foreign Investment Review Board (FIRB).
-												</label>
-											</div>
-										</div>
-									</div>
-								@endif
-								<!-- fin categorie residentiel / neuf / immobilier -->
-								<!-- categorie residentiel / neuf / isolé -->
-								@if($product->category_id == 1 && $product->ancienneteBien == 'Neuf' && $product->natureBien == 'Produit isolé')
-									<div class="row">
-										<div class="col-lg-4">
-											<label for="title">Price *</label>
-											<div class="input-group" style="margin-bottom: .5rem;">
-												<input type="number" class="form-control" name="simple_price" id="simple_price" value="{{$product->price}}">
-												<div class="input-group-append">
-													<span class="input-group-text">AUD</span>
-												</div>
-											</div>
-										</div>										
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.form.produit_dt_db_travaux')</label>
-												<input type="text" class="form-control" name="dt_db_travaux" value="{{$product->dt_db_travaux}}" id="dt_db_travaux" />
-											</div>
-										</div>
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.form.produit_dt_prevu_livraison')</label>
-												<input type="date" class="form-control" value="{{$product->dt_prevu_livraison}}" name="dt_prevu_livraison" id="dt_prevu_livraison" />
-											</div>
-										</div>
-									</div>
+								<!-- pour les catégorie résidentiel -->
+								@if($product->category_id == 1)
 									<div class="row">
 										<div class="col-lg-6">
 											<div class="form-group">
@@ -391,421 +160,17 @@
 									</div>
 									<div class="row">
 										<div class="col-lg-6">
-											<div class="form-group" style="margin-bottom:.5rem;">
-												<label for="title">@lang('app.txt.avoir_bonus')</label>
-												<select class="form-control" name="bonus_vente" id="bonus_vente">
-													<option value="">Choisir...</option>
-													<option value="YES" {{$product->avoir_bonus == 'YES' ? 'selected' : ''}}>@lang('app.txt.yes')</option>
-													<option value="NO" {{$product->avoir_bonus == 'NO' ? 'selected' : ''}}>@lang('app.txt.no')</option>
-												</select>
-											</div>
-										</div>
-										<div class="col-lg-6">
-											<div id="montant_bonus_vente" style="display:none">
-												<label for="title">@lang('app.txt.valeur_bonus') *</label>
-												<div class="input-group" style="margin-bottom: .5rem;">
-													<input type="number" class="form-control" value="{{$product->amount_bonus}}" name="bonus_amount" id="bonus_amount">
-													<div class="input-group-append">
-														<span class="input-group-text">AUD</span>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.input.nbchambre')</label>
-												<input name="bedrooms" id="bedrooms" class="form-control" type="number" value="{{$product->bedrooms}}">
-											</div>  
-										</div>
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.input.nbchambresuite')</label>
-												<input name="ensuite" id="ensuite" class="form-control" type="number" value="{{$product->ensuite}}">
-											</div>
-										</div>
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.input.nbsalledebain')</label>
-												<input name="bathrooms" id="bathrooms" class="form-control" type="number" value="{{$product->bathrooms}}">
-											</div> 
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.form.product_area_interior') *</label>
-												<div class="input-group m-b">
-													<input type="text" name="interior_area" id="interior_area" class="form-control" value="{{$product->interior_area}}">
-													<div class="input-group-append">
-														<span class="input-group-text">.m2</span>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.form.product_area_exterior') *</label>
-												<div class="input-group m-b">
-													<input type="text" name="exterior_area" id="exterior_area" class="form-control" value="{{$product->exterior_area}}">
-													<div class="input-group-append">
-														<span class="input-group-text">.m2</span>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.form.product_area_total') *</label>
-												<div class="input-group m-b">
-													<input type="text" name="total_area" id="total_area" class="form-control" value="{{$product->total_area}}" readonly="">
-													<div class="input-group-append">
-														<span class="input-group-text">.m2</span>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.form.product_parking_ferme')</label>
-												<input name="garage_spaces" id="garage_spaces" class="form-control" type="number" value="{{$product->garage_spaces}}">
-											</div>
-										</div>
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.form.product_parking_carpot')</label>
-												<input name="carport_spaces" id="carport_spaces" class="form-control" type="number" value="{{$product->carport_spaces}}">
-											</div>
-										</div>
-										
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.form.product_jardin_space')</label>
-												<div class="input-group m-b">
-													<input type="number" class="form-control" name="superficie_jardin" id="superficie_jardin" value="{{$product->superficie_jardin}}">
-													<div class="input-group-append">
-														<span class="input-group-text">.m2</span>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									
-									<!-- si fond dossier existe -->
-									@if (count($dossier) > 0)
-									<div class="row">
-										 <div class="col-lg-12">
-											 <h5 style="font-weight:normal; font-size:17px; color:#718096">@lang('app.form.programme_fond_dossier')</h5>
-											 @foreach ( $dossier as $dossie )						 	
-												 <div class="file-box">
-													<div class="file">
-														@if(setIconFile($dossie->filepath) == 'images')
-															<a href="{{asset($dossie->filepath)}}" class="fancyboxLink">
-														@elseif(setIconFile($dossie->filepath) == 'pdf')
-															<a class="fancybox-pdf" data-fancybox-type="iframe" href="http://docs.google.com/viewer?embedded=true&url={{asset(urlencode($dossie->filepath))}}">
-														@else
-															<a href="https://docs.google.com/viewer?url={{asset(urlencode($dossie->filepath))}}&embedded=true" class="fancyboxLinkDoc" data-fancybox-type="iframe">
-														@endif	
-															<span class="corner"></span>	
-															@if(setIconFile($dossie->filepath) == 'images')
-																<div class="image">
-																	<img alt="image" class="img-fluid" src="{{asset($dossie->filepath)}}">
-																</div>
-															@endif	
-															@if(setIconFile($dossie->filepath) == 'pdf')
-																<div class="icon">
-																	<i class="fa fa-file-pdf"></i>
-																</div>
-															@endif	
-															@if(setIconFile($dossie->filepath) == 'doc')
-																<div class="icon">
-																	<i class="fa fa-file-word"></i>
-																</div>
-															@endif
-															@if(setIconFile($dossie->filepath) == 'excel')
-																<div class="icon">
-																	<i class="fa fa-file-excel"></i>
-																</div>
-															@endif	
-															@if(setIconFile($dossie->filepath) == 'file')
-																<div class="icon">
-																	<i class="fa fa-file"></i>
-																</div>
-															@endif									
-															<div class="file-name">
-																@php
-																	$filename = $dossie->filename;
-																	$filename = preg_replace('/^(.*)\-\d{8,}\.(gif|jpg|png|pdf)$/', '$1.$2', $filename);
-																@endphp
-																<label style="text-transform:lowercase">{{str_limit($filename, 15)}}</label>
-																<a class="pull-right" href="javascript:void(0)" onclick="delete_fond_dossier({{$dossie->prdFondId}})">
-																	<i class="fa fa-trash"></i>
-																</a>
-																<br>
-																<small>{{$dossie->created_at ? $dossie->created_at->diffForHumans() : ""}}</small>
-															</div>
-														</a>
-													</div>
-												</div>
-											@endforeach		
-										 </div>
-									</div>  
-									@endif 									
-									<div class="row">
-										<div class="col-lg-12">
-											<label for="title">@lang('app.form.programme_fond_dossier')</label>
-											<div class="dropzone" id="fond_dossier" multiple style="margin-bottom:25px">
-												<div id="template" class="file-row"></div>
-											</div>
-										</div>
-									</div>
-									<!-- fin fond dossier -->
-									
-									<!-- si eoi dossier existe -->
-									@if (count($eoidossier)>0)
-									<div class="row">
-										 <div class="col-lg-12">
-											 <h5 style="font-weight:normal; font-size:17px; color:#718096">@lang('app.table.eoi_dossier')</h5>
-											 @foreach ( $eoidossier as $dos )
-												 <div class="file-box">
-													<div class="file">
-														@if(setIconFile($dos->filepath) == 'images')
-															<a href="{{asset($dos->filepath)}}" class="fancyboxLink">
-														@elseif(setIconFile($dos->filepath) == 'pdf')
-															<a class="fancybox-pdf" data-fancybox-type="iframe" href="http://docs.google.com/viewer?embedded=true&url={{asset(urlencode($dos->filepath))}}">
-														@else
-															<a href="https://docs.google.com/viewer?url={{asset(urlencode($dos->filepath))}}&embedded=true" class="fancyboxLinkDoc" data-fancybox-type="iframe">
-														@endif								
-															<span class="corner"></span>						
-															@if(setIconFile($dos->filepath) == 'images')
-																<div class="image">
-																	<img alt="image" class="img-fluid" src="{{asset($dos->filepath)}}">
-																</div>
-															@endif	
-															@if(setIconFile($dos->filepath) == 'pdf')
-																<div class="icon">
-																	<i class="fa fa-file-pdf"></i>
-																</div>
-															@endif	
-															@if(setIconFile($dos->filepath) == 'doc')
-																<div class="icon">
-																	<i class="fa fa-file-word-o"></i>
-																</div>
-															@endif
-															@if(setIconFile($dos->filepath) == 'excel')
-																<div class="icon">
-																	<i class="fa fa-file-excel-o"></i>
-																</div>
-															@endif	
-															@if(setIconFile($dos->filepath) == 'file')
-																<div class="icon">
-																	<i class="fa fa-file"></i>
-																</div>
-															@endif		
-															<div class="file-name">
-																@php
-																	$filename_eoi = $dos->filename;
-																	$filename_eoi = preg_replace('/^(.*)\-\d{8,}\.(gif|jpg|png|pdf)$/', '$1.$2', $filename_eoi);
-																@endphp
-																<label style="text-transform:lowercase">{{str_limit($filename_eoi, 15)}}</label>
-																<a class="pull-right" href="javascript:void(0)" onclick="delete_eoi_dossier({{$dos->prdEoiId}})">
-																	<i class="fa fa-trash"></i>
-																</a>
-																<br>
-																<small>{{$dos->created_at ? $dos->created_at->diffForHumans() : ""}}</small>
-															</div>
-														</a>
-													</div>
-												 </div>
-											 @endforeach		
-										 </div>
-									</div>  
-									@endif 
-									<div class="row" style="margin-bottom:15px">
-										<div class="col-lg-12">
-											<label for="title">@lang('app.table.eoi_dossier')</label>
-											<div class="dropzone" id="eoi_dossier" multiple style="margin-bottom:25px">
-												<div id="template" class="file-row"></div>
-											</div>
-										</div>
-									</div>  
-									<!-- fin eoi dossier -->
-									<!-- lia dossier -->
-									@if (count($liadossier) > 0)
-									<div class="row">
-										 <div class="col-lg-12">
-											 <h5 style="font-weight:normal; font-size:17px; color:#718096">@lang('app.table.lia_dossier')</h5>
-											 @foreach ( $liadossier as $dos )
-											 <div class="file-box">
-												<div class="file">
-													@if(setIconFile($dos->filepath) == 'images')
-														<a href="{{asset($dos->filepath)}}" class="fancyboxLink">
-													@elseif(setIconFile($dos->filepath) == 'pdf')
-														<a class="fancybox-pdf" target="_blank" data-fancybox-type="iframe" href="http://docs.google.com/viewer?embedded=true&url={{asset(urlencode($dos->filepath))}}">
-													@else
-														<a href="https://docs.google.com/viewer?url={{asset(urlencode($dos->filepath))}}&embedded=true" class="fancyboxLinkDoc" data-fancybox-type="iframe">
-													@endif								
-														<span class="corner"></span>						
-														@if(setIconFile($dos->filepath) == 'images')
-															<div class="image">
-																<img alt="image" class="img-fluid" src="{{asset($dos->filepath)}}">
-															</div>
-														@endif	
-														@if(setIconFile($dos->filepath) == 'pdf')
-															<div class="icon">
-																<i class="fa fa-file-pdf"></i>
-															</div>
-														@endif	
-														@if(setIconFile($dos->filepath) == 'doc')
-															<div class="icon">
-																<i class="fa fa-file-word-o"></i>
-															</div>
-														@endif
-														@if(setIconFile($dos->filepath) == 'excel')
-															<div class="icon">
-																<i class="fa fa-file-excel-o"></i>
-															</div>
-														@endif	
-														@if(setIconFile($dos->filepath) == 'file')
-															<div class="icon">
-																<i class="fa fa-file"></i>
-															</div>
-														@endif		
-														<div class="file-name">
-															@php
-																$filename_eoi = $dos->filename;
-																$filename_eoi = preg_replace('/^(.*)\-\d{8,}\.(gif|jpg|png|pdf)$/', '$1.$2', $filename_eoi);
-															@endphp
-															<label style="text-transform:lowercase">{{str_limit($filename_eoi, 15)}}</label>
-															<a class="pull-right" href="javascript:void(0)" onclick="delete_lia_dossier({{$dos->prdLiaId}})">
-																<i class="fa fa-trash"></i>
-															</a>
-															<br>
-															<small>{{$dos->created_at ? $dos->created_at->diffForHumans() : ""}}</small>
-														</div>
-													</a>
-												</div>
-											 </div>
-											 @endforeach		
-										 </div>
-									</div>  
-									@endif 
-									<div class="row" style="margin-bottom:15px">
-										<div class="col-lg-12">
-											<label for="title">@lang('app.table.lia_dossier')</label>
-											<div class="dropzone" id="lia_dossier" multiple style="margin-bottom:25px">
-												<div id="template" class="file-row"></div>
-											</div>
-										</div>
-									</div>
-									<!-- fin lia dossier -->
-									
-									<!-- photo produit -->
-									<div class="row">
-										@if($product->image_id != 0)
-										<div class="col-lg-4">
-											<div class="file-box" style="width:100% !important">
-												<div class="file">
-													<a href="{{asset($product->imageUrl())}}" target="_blank" class="fancyboxLink">
-														<span class="corner"></span>	
-														@if (@getimagesize($product->imageUrl()))					
-														<div class="image">
-															<img alt="image" class="img-fluid" src="{{$product->imageUrl()}}">
-														</div>
-														@else
-														<div class="image">
-															<img alt="image" class="img-fluid" src="{{asset('img/500x500.jpg')}}">
-														</div>
-														@endif
-													</a>
-												</div>
-												<div class="file-name">
-													<label>@lang('app.table.produit_image')</label>
-												</div>
-											</div>
-										</div>
-										@endif
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.table.produit_image')</label>
-												<input name="image" class="form-control" type="file" accept="image/png, image/jpeg">
-											</div>
-										</div>
-									</div>
-									<!-- fin photo produit -->
-									
-									<div class="row">
-										<div class="col-lg-12">
-											<label class="chk_parking"> 
-												<input type="checkbox" value="1" id="chk_parking" name="chk_parking" {{$product->avoir_parking_voie_public == 1 ? 'checked="checked"' : ''}}> @lang('app.form.product_parking_vPublic')
-											</label>
-										</div>
-										<div class="col-lg-12">
-											<div id="chk_picine">
-												<label class="chk_picine"> 
-													<input type="checkbox" value="1" name="chk_picine" {{$product->avoir_piscine == 1 ? 'checked="checked"' : ''}}> @lang('app.form.product_piscine')
-												</label>
-											</div>
-										</div>
-									</div>
-								@endif
-								<!-- fin categorie residentiel / neuf / isolé -->		                                
-								<!-- categorie residentiel / ancien -->
-								@if($product->category_id == 1 && $product->ancienneteBien == 'Ancien')	
-									<div class="row">
-										<div class="col-lg-4">
 											<label for="title">@lang('app.input.prix') *</label>
-											<div class="input-group" style="margin-bottom: .5rem;">
+											<div class="input-group" style="margin-bottom: 1.5rem;">
 												<input type="number" class="form-control" name="simple_price" id="simple_price" value="{{$product->price}}">
 												<div class="input-group-append">
 													<span class="input-group-text">AUD</span>
 												</div>
 											</div>
 										</div>
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.form.programme_commission_type')</label>
-												<select class="form-control" name="commision_product" id="commision_product">
-													<option value="">Choisir...</option>
-													<option value="Sales commission rate (%)" {{$product->commission_type == 'Sales commission rate (%)' ? 'selected' : ''}}>
-														@lang('app.form.programme_commission_option1') (%)
-													</option>
-													<option value="Fixed commission ($)" {{$product->commission_type == 'Fixed commission ($)' ? 'selected' : ''}}>
-														@lang('app.form.programme_commission_option2') ($)
-													</option>
-												</select>
-											</div>
-										</div>
-										<div class="col-lg-4">
-											<div id="commission_rate_prd" style="display:none">
-												<div class="form-group">
-													<label for="title">@lang('app.form.programme_taux_commission')</label>
-													<div class="input-group m-b">
-														<input type="number" class="form-control" name="sales_rate_product" id="sales_rate_product">
-														<div class="input-group-append">
-															<span class="input-group-text">%</span>
-														</div>
-													</div>
-												</div>
-											</div>
-											<div id="fixed_commission_prd" style="display:none">
-												<div class="form-group">
-													<label for="title">@lang('app.form.programme_mt_commission')</label>
-													<div class="input-group m-b">
-														<input type="number" class="form-control" name="rate_commission_product" id="rate_commission_product">
-														<div class="input-group-append">
-															<span class="input-group-text">AUD</span>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
 									</div>
 									<div class="row">
-										<div class="col-lg-4">
+										<div class="col-lg-6">
 											<div class="form-group" style="margin-bottom:.5rem;">
 												<label for="title">@lang('app.txt.avoir_bonus')</label>
 												<select class="form-control" name="bonus_vente" id="bonus_vente">
@@ -815,7 +180,7 @@
 												</select>
 											</div>
 										</div>
-										<div class="col-lg-4">
+										<div class="col-lg-6">
 											<div id="montant_bonus_vente">
 												<label for="title">@lang('app.txt.valeur_bonus') *</label>
 												<div class="input-group" style="margin-bottom: .5rem;">
@@ -826,32 +191,69 @@
 												</div>
 											</div>
 										</div>
-										<div class="col-lg-4">
+									</div>
+									@if($product->ancienneteBien == 'Neuf')
+										<div class="row">
+											<div class="col-lg-6">
+												<div class="form-group">
+													<label for="title">@lang('app.form.produit_dt_db_travaux')</label>
+													<input type="text" class="form-control" name="dt_db_travaux" value="{{$product->dt_db_travaux}}" id="dt_db_travaux" />
+												</div>
+											</div>
+											<div class="col-lg-6">
+												<div class="form-group">
+													<label for="title">@lang('app.form.produit_dt_prevu_livraison')</label>
+													<input type="date" class="form-control" name="dt_prevu_livraison" value="{{$product->dt_prevu_livraison}}" />
+												</div>
+											</div>
+										</div>
+									@endif
+									<div class="row">
+										<div class="col-lg-6">
+											<label for="title">@lang('app.form.product_jardin_space')</label>
+											<div class="input-group" style="margin-bottom: .5rem;">
+												<input type="number" class="form-control" name="superficie_jardin" id="superficie_jardin" value="{{$product->superficie_jardin}}">
+												<div class="input-group-append">
+													<span class="input-group-text">.m2</span>
+												</div>
+											</div>
+										</div>	
+										@if($product->ancienneteBien == 'Ancien')							
+										<div class="col-lg-6">							
 											<div class="form-group">
 												<label for="title">@lang('app.form.product_anneeConstruct') *</label>
 												<input name="year_built" id="year_built" class="form-control" type="number" value="{{$product->year_built}}">
 											</div>
-										</div>
+										</div>	
+										@endif										
 									</div>
 									<div class="row">
-										<div class="col-lg-4">
+										<div class="col-lg-6">
 											<div class="form-group">
 												<label for="title">@lang('app.input.nbchambre')</label>
 												<input name="bedrooms" id="bedrooms" class="form-control" type="number" value="{{$product->bedrooms}}">
 											</div>  
 										</div>
-										<div class="col-lg-4">
+										<div class="col-lg-6">
 											<div class="form-group">
 												<label for="title">@lang('app.input.nbchambresuite')</label>
 												<input name="ensuite" id="ensuite" class="form-control" type="number" value="{{$product->ensuite}}">
 											</div>
 										</div>
-										<div class="col-lg-4">
+									</div>
+									<div class="row">
+										<div class="col-lg-6">
 											<div class="form-group">
 												<label for="title">@lang('app.input.nbsalledebain')</label>
 												<input name="bathrooms" id="bathrooms" class="form-control" type="number" value="{{$product->bathrooms}}">
 											</div> 
 										</div>
+										<div class="col-lg-6">
+											<div class="form-group">
+												<label for="title">@lang('app.form.product_qte')</label>
+												<input name="quantity" id="quantity" class="form-control" type="number" value="{{$product->quantity}}" min="1">
+											</div>
+										</div>	
 									</div>
 									<div class="row">
 										<div class="col-lg-4">
@@ -889,28 +291,31 @@
 										</div>
 									</div>
 									<div class="row">
-										<div class="col-lg-4">
+										<div class="col-lg-6">
 											<div class="form-group">
 												<label for="title">@lang('app.form.product_parking_ferme')</label>
 												<input name="garage_spaces" id="garage_spaces" class="form-control" type="number" value="{{$product->garage_spaces}}">
 											</div>
 										</div>
-										<div class="col-lg-4">
+										<div class="col-lg-6">
 											<div class="form-group">
 												<label for="title">@lang('app.form.product_parking_carpot')</label>
 												<input name="carport_spaces" id="carport_spaces" class="form-control" type="number" value="{{$product->carport_spaces}}">
 											</div>
 										</div>
+									</div>
+									<div class="row">
+										<div class="col-lg-12">
+											<label class="chk_parking"> 
+												<input type="checkbox" value="1" id="chk_parking" name="chk_parking" {{$product->avoir_parking_voie_public == 1 ? 'checked="checked"' : ''}}> @lang('app.form.product_parking_vPublic')
+											</label>
+										</div>
 										
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.form.product_jardin_space')</label>
-												<div class="input-group m-b">
-													<input type="number" class="form-control" name="superficie_jardin" id="superficie_jardin" value="{{$product->superficie_jardin}}">
-													<div class="input-group-append">
-														<span class="input-group-text">.m2</span>
-													</div>
-												</div>
+										<div class="col-lg-12">
+											<div id="chk_picine">
+												<label class="chk_picine"> 
+													<input type="checkbox" value="1" name="chk_picine" {{$product->avoir_piscine == 1 ? 'checked="checked"' : ''}}> @lang('app.form.product_piscine')
+												</label>
 											</div>
 										</div>
 									</div>
@@ -983,7 +388,6 @@
 										</div>
 									</div>
 									<!-- fin fond dossier -->
-									
 									<!-- si eoi dossier existe -->
 									@if (count($eoidossier)>0)
 									<div class="row">
@@ -1122,56 +526,49 @@
 										</div>
 									</div>
 									<!-- fin lia dossier -->
-									
 									<!-- photo produit -->
+									@if (count($photos) > 0)
 									<div class="row">
-										@if($product->image_id != 0)
-										<div class="col-lg-4">
-											<div class="file-box" style="width:100% !important">
-												<div class="file">
-													<a href="{{asset($product->imageUrl())}}" target="_blank" class="fancyboxLink">
-														<span class="corner"></span>	
-														@if (@getimagesize($product->imageUrl()))					
-														<div class="image">
-															<img alt="image" class="img-fluid" src="{{$product->imageUrl()}}">
-														</div>
-														@else
-														<div class="image">
-															<img alt="image" class="img-fluid" src="{{asset('img/500x500.jpg')}}">
-														</div>
-														@endif
+										<div class="col-lg-12">
+										<h5>@lang('app.table.produit_image')</h5>
+										@foreach ( $photos as $photo )					
+										<div class="file-box">
+											<div class="file">
+												<span class="corner"></span>						
+												<div class="image">
+													<a href="{{asset($photo->filepath)}}" class="fancyboxLink">
+													<img alt="image" class="img-fluid" src="{{asset($photo->filepath)}}">
 													</a>
 												</div>
 												<div class="file-name">
-													<label>@lang('app.table.produit_image')</label>
-												</div>
+													<label> 
+														@if($photo->is_principal == 1)
+														<input type="radio" checked="" value="{{$photo->prdImageId}}" name="radioDrop"> @lang('app.dropzone.photoIcon_tex')
+														@else
+														<input type="radio" value="{{$photo->prdImageId}}" name="radioDrop"> @lang('app.dropzone.photoIcon_tex')
+														@endif
+													</label>
+													<a class="pull-right" href="javascript:void(0)" onclick="delete_photo({{$photo->prdImageId}})">
+														<i class="fa fa-trash"></i>
+													</a>
+													<br>
+													<small>{{$photo->created_at ? $photo->created_at->diffForHumans() : ""}}</small>
+												</div>				
 											</div>
 										</div>
-										@endif
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.table.produit_image')</label>
-												<input name="image" class="form-control" type="file" accept="image/png, image/jpeg">
-											</div>
+										@endforeach
 										</div>
 									</div>
+									@endif
+									<div class="row" style="margin-bottom:15px">
+										<div class="col-lg-12">
+											<label for="title">@lang('app.table.produit_image')</label>
+											<div class="dropzone" id="pictures_upload"></div>
+										</div>
+									</div>  
 									<!-- fin photo produit -->
-									<div class="row">
-										<div class="col-lg-12">
-											<label class="chk_parking"> 
-												<input type="checkbox" value="1" id="chk_parking" name="chk_parking" {{$product->avoir_parking_voie_public == 1 ? 'checked="checked"' : ''}}> @lang('app.form.product_parking_vPublic')
-											</label>
-										</div>
-										<div class="col-lg-12">
-											<div id="chk_picine">
-												<label class="chk_picine"> 
-													<input type="checkbox" value="1" name="chk_picine" {{$product->avoir_piscine == 1 ? 'checked="checked"' : ''}}> @lang('app.form.product_piscine')
-												</label>
-											</div>
-										</div>
-									</div>
 								@endif
-								<!-- fin categorie residentiel / ancien -->
+								<!-- fin pour les catégorie résidentiel -->
 								<!-- categorie foncier -->
 								@if($product->category_id == 2)
 									<div class="row">
@@ -2383,6 +1780,70 @@
 				}
 			}
 		});
+		
+		$("#pictures_upload").dropzone({
+			maxFiles: 20, 
+			maxFilesize: 20,
+			dictDefaultMessage: "@lang('app.dropzone.libelle_product')",
+			url: "{{ route('ajaxDropZoneEdit') }}",
+			params: {"_token": "{{ csrf_token() }}","id_programme": "{{ $product->id }}"},
+			acceptedFiles: ".jpeg,.jpg,.png,.gif",
+			addRemoveLinks: true,
+			timeout: 50000,
+			init:function() {
+				// Get images
+				var myDropzone = this;
+			},
+			removedfile: function(file) 
+			{
+				if (this.options.dictRemoveFile) {
+				  return Dropzone.confirm("Are You Sure to "+this.options.dictRemoveFile, function() {
+					if(file.previewElement.id != ""){
+						var name = file.previewElement.id;
+					}else{
+						var name = file.name;
+					}
+					//console.log(name);
+					var fileRef;
+						return (fileRef = file.previewElement) != null ? 
+						fileRef.parentNode.removeChild(file.previewElement) : void 0;
+				  });
+				}		
+			},
+	   
+			success: function(file, response) 
+			{
+				location.reload();	
+			},
+			error: function(file, response)
+			{
+			   if($.type(response) === "string")
+					var message = response; //dropzone sends it's own error messages in string
+				else
+					var message = response.message;
+				file.previewElement.classList.add("dz-error");
+				_ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+				_results = [];
+				for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+					node = _ref[_i];
+					_results.push(node.textContent = message);
+				}
+				return _results;
+			}
+		});
+		
+		$('input[type=radio][name=radioDrop]').change(function() {
+			$.ajax({
+			   type:'POST',
+			   url:"{{ route('ajaxChangeIconPhotoActive') }}",
+			   data: {"_token": "{{ csrf_token() }}","id_photo_prd": this.value, "id_prd": {{$product->id}}},
+			   success:function(data) {
+				  
+				  
+			   }
+			})
+		});
+			
 		var type_commission = '{{$product->commission_type}}';
 		var nature_produit = '{{$product->natureBien}}';
 		
@@ -2649,6 +2110,43 @@
 				}); 
 			} else {
 				swal("@lang('app.table.lia_dossier')", "@lang('app.jquery.delete_cancel')", "error");
+			}
+		 });
+	}
+	
+	function delete_photo(id_photo_prd_image)
+	{
+		swal({
+			title: "@lang('app.table.produit_image')",
+			text: "@lang('app.dropzone.delete_photo_confirme')",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: '#ff3547',
+			confirmButtonText: "@lang('app.yes')",
+			cancelButtonText: "@lang('app.no')",
+			closeOnConfirm: false,
+			closeOnCancel: false
+		 },
+		 function(isConfirm){	
+		   if (isConfirm){
+				 $.ajax({
+					url : "{{ route('ajaxDropPhotoIcon') }}",
+					type: "POST",
+					dataType: "JSON",
+					data:{"_token": "{{ csrf_token() }}",'id_photo_prd_image':id_photo_prd_image},
+					success: function(data)
+					{
+						swal("@lang('app.table.produit_image')", "@lang('app.dropzone.delete_photo_yes')", "success");
+						location.reload();	
+					},
+					error: function (jqXHR, textStatus, errorThrown)
+					{
+						swal("@lang('app.table.produit_image')", "@lang('app.jquery.error_delete')", "error");
+						location.reload();	
+					}
+				}); 
+			} else {
+				swal("@lang('app.table.produit_image')", "@lang('app.jquery.delete_cancel')", "error");
 			}
 		 });
 	}
