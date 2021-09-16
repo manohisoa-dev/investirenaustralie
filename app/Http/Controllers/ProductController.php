@@ -737,9 +737,13 @@ class ProductController extends Controller {
             'product_lia.image_id', '=', 'images.id')->select('*',
             'product_lia.id as prdLiaId')->get();
 
+        $photo = ProductsImage::where('products_images.product_id', '=', $product->id)->join('images',
+            'products_images.image_id', '=', 'images.id')->select('*',
+            'products_images.id as prdImageId')->get();
+
         return view('backend.product.edit_produit', ['product' => $product,
             'localisation' => $localisation, 'eoidossier' => $eoiDossier, 'dossier' => $fonDossier,
-            'liadossier' => $liaDossier, 'title' => __('afa.programme.title')]);
+            'liadossier' => $liaDossier, 'photos' => $photo, 'title' => __('afa.programme.title')]);
     }
 
     public function updateProgramme(Request $request) {
@@ -798,7 +802,7 @@ class ProductController extends Controller {
 
     public function updateProduit(Request $request) {
         $product = Product::find($request->id);
-        if ($request->location_id != 0) {
+        if ($product->location_id != 0) {
             $localisation = Localisation::find($product->location_id);
             if ($localisation->route != $request->display_address || $localisation->locality !=
                 $request->ville_product) {
@@ -818,12 +822,14 @@ class ProductController extends Controller {
                     'locality' => $request->ville_product, 'route' => $request->display_address,
                     'longitude' => $longitude, 'latitude' => $latitude]);
                 $id_location = $product->location_id;
+            }else{
+                $id_location = $product->location_id;
             }
         } else {
             $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
                 $request->postalCode_product, $request->ville_product, $request->display_address);
         }
-
+        
         if ($request->commision_product == 'Sales commission rate (%)') {
             $taux_commision = $request->sales_rate_product;
         } else {
@@ -917,7 +923,7 @@ class ProductController extends Controller {
             'photo' => $photo]);
     }
 
-    function save_new_produit($anciennete, $nature, $title, $photo, $content, $qty,
+    function save_new_produit($anciennete, $nature = '', $title, $photo, $content, $qty,
         $area, $unite_area, $interior_area, $exterior_area, $total_area, $carport_spaces,
         $garage_spaces, $bathrooms, $bedrooms, $sweet, $number_of_floors, $new_construction,
         $year_built, $display_address, $price, $min_price, $max_price, $currency, $status,
@@ -1165,7 +1171,7 @@ class ProductController extends Controller {
     public function saveProduct(Request $request) {
         $categorie = $request->cat_programmme_id;
         $anciennete = $request->ancienneteBien;
-        $nature = $request->natureBien;
+        $nature = '';
 
         if (isset($request->chk_parking)) {
             $avoir_parking = 1;
@@ -1247,7 +1253,7 @@ class ProductController extends Controller {
                         $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                         $id_programme, $id_location, 0, $avoir_parking, 0, $request->commision_product,
                         $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison, $request->bonus_vente,
-                        $request->bonus_amount, '', 0);
+                        $request->bonus_amount, '', 0, 0, 0);
                 } else {
                     //produit isolé
                     $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
@@ -1266,7 +1272,7 @@ class ProductController extends Controller {
                         $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                         -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine, $request->commision_product,
                         $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison, $request->bonus_vente,
-                        $request->bonus_amount, '', 0);
+                        $request->bonus_amount, '', 0, 0, 0);
 
                     //save fond dossier programme
                     if ($request->p_fondDossier) {
@@ -1303,7 +1309,7 @@ class ProductController extends Controller {
                     $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                     -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine, $request->commision_product,
                     $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison, $request->bonus_vente,
-                    $request->bonus_amount, '', 0);
+                    $request->bonus_amount, '', 0, 0, 0);
 
                 //save fond dossier programme
                 if ($request->p_fondDossier) {
@@ -1341,7 +1347,7 @@ class ProductController extends Controller {
                 $request->postalCode_product, $request->state_id_product, -1, $id_location, $request->superficie_jardin,
                 0, 0, $request->commision_product, $taux_commision_prd, $request->dt_db_travaux,
                 $request->dt_prevu_livraison, $request->bonus_vente, $request->bonus_amount, '',
-                0);
+                0, 0, 0);
 
             //save fond dossier programme
             if ($request->p_fondDossier) {
@@ -1378,7 +1384,7 @@ class ProductController extends Controller {
                 $request->postalCode_product, $request->state_id_product, -1, $id_location, $request->superficie_jardin,
                 0, 0, $request->commision_product, $taux_commision_prd, $request->dt_db_travaux,
                 $request->dt_prevu_livraison, $request->bonus_vente, $request->bonus_amount, $request->property_detail,
-                0);
+                0, 0, 0);
 
             //save fond dossier programme
             if ($request->p_fondDossier) {
@@ -1414,7 +1420,8 @@ class ProductController extends Controller {
                 $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                 -1, $id_location, $request->superficie_jardin, $request->type_cutomer_parking, 0,
                 $request->commision_product, $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison,
-                $request->bonus_vente, $request->bonus_amount, $request->property_detail, $request->nombre_cutomer_parking);
+                $request->bonus_vente, $request->bonus_amount, $request->property_detail, $request->nombre_cutomer_parking,
+                0, 0);
 
             //save fond dossier programme
             if ($request->p_fondDossier) {

@@ -492,14 +492,14 @@
 							</div>
 						</div>
 						<!-- fin info date produit isolé-->
-						<div class="row">
-							<div class="col-lg-4">
-								<div class="form-group">
-									<label for="title">@lang('app.table.produit_image')</label>
-									<input name="image" class="form-control" type="file" accept="image/png, image/jpeg">
-								</div>
-							</div>	
-							<div class="col-lg-4">
+						<div class="row mb-2">
+							<div class="col-lg-12">
+								<label for="title">@lang('app.table.produit_image')</label>
+								<div class="dropzone" id="pictures_upload"></div>
+							</div>
+						</div>
+						<div class="row">							
+							<div class="col-lg-6">
 								<div id="yearConstruct" style="display:none">								
 									<div class="form-group">
 										<label for="title">@lang('app.form.product_anneeConstruct') *</label>
@@ -507,7 +507,7 @@
 									</div>
 								</div>
 							</div>	
-							<div class="col-lg-4">
+							<div class="col-lg-6">
 								<div id="jardin_info" style="display:none">
 									<label for="title">@lang('app.form.product_jardin_space')</label>
 									<div class="input-group" style="margin-bottom: .5rem;">
@@ -517,7 +517,7 @@
 										</div>
 									</div>
 								</div>
-							</div>					
+							</div>			
 						</div>
 						
 						<!-- info pour le produit résidentiel -->
@@ -547,7 +547,7 @@
 									<div id="info_qte">
 										<div class="form-group">
 											<label for="title">@lang('app.form.product_qte')</label>
-											<input name="quantity" id="quantity" class="form-control" type="number" value="1">
+											<input name="quantity" id="quantity" class="form-control" type="number" value="1" min="1">
 										</div>
 									</div>
 								</div>						
@@ -1848,6 +1848,65 @@
 				}
 				return _results;
             }
+		});
+		
+		$("#pictures_upload").dropzone({
+			maxFiles: 25, 
+			maxFilesize: 50,
+			dictDefaultMessage: "@lang('app.dropzone.libelle_product')",
+			url: "{{ route('ajaxDropZone') }}",
+			params: {"_token": "{{ csrf_token() }}"},
+			acceptedFiles: ".jpeg,.jpg,.png,.gif",
+			addRemoveLinks: true,
+			timeout: 50000,
+			init:function() {
+				// Get images
+				var myDropzone = this;
+			},
+			removedfile: function(file) 
+			{
+				if (this.options.dictRemoveFile) {
+				  return Dropzone.confirm("Are You Sure to "+this.options.dictRemoveFile, function() {
+					if(file.previewElement.id != ""){
+						var name = file.previewElement.id;
+					}else{
+						var name = file.name;
+					}
+					//console.log(name);
+					var fileRef;
+						return (fileRef = file.previewElement) != null ? 
+						fileRef.parentNode.removeChild(file.previewElement) : void 0;
+				  });
+				}		
+			},
+	   
+			success: function(file, response) 
+			{
+				file.previewElement.id = response.success;
+				//console.log(file.previewElement.id); 
+				// set new images names in dropzone’s preview box.
+				var olddatadzname = file.previewElement.querySelector("[data-dz-name]");   
+				file.previewElement.querySelector("img").alt = response.success;
+				file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'><input value='"+response.success+"' type='radio' name='radioDrop' style='display:inline-block'> @lang('app.dropzone.photoIcon_tex')</label>");
+				file.previewElement.appendChild(file._captionBox);
+				$('#form').append('<input type="hidden" name="dropPhoto[]" value="'+response.success +'">');
+				olddatadzname.innerHTML = response.success;
+			},
+			error: function(file, response)
+			{
+			   if($.type(response) === "string")
+					var message = response; //dropzone sends it's own error messages in string
+				else
+					var message = response.message;
+				file.previewElement.classList.add("dz-error");
+				_ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+				_results = [];
+				for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+					node = _ref[_i];
+					_results.push(node.textContent = message);
+				}
+				return _results;
+			}
 		});
 		
 		$("#image_upload").dropzone({

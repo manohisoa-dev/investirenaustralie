@@ -25,8 +25,7 @@
 							<th>ID</th>
 							<th>@lang('app.table.produit_image')</th>
 							<th>@lang('app.table.produit_titre')</th>
-							<th>@lang('app.form.programme_price_min')</th>
-							<th>@lang('app.form.programme_price_max')</th>
+							<th>@lang('app.table.price')</th>
 							<th>@lang('app.form.product_status')</th>
 							<th>@lang('app.table.action')</th>
 						</tr>
@@ -36,24 +35,27 @@
 						<tr>
 							<td>{{$index + $records->firstItem()}}</td>
 							<td>
-								@if (@getimagesize($record->imageUrl()))
-									<img src="{{$record->imageUrl()}}" class="img-responsive" style="height:50px" />
+								@php
+									$photo_principal = \App\Models\ProductsImage::where('products_images.product_id', '=', $record->id)->where('products_images.is_principal', '=', 1)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+									$first_photo = \App\Models\ProductsImage::where('products_images.product_id', '=', $record->id)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+									
+								@endphp
+								@if($first_photo)
+									@if($photo_principal)
+									<!-- Programme sans principal -->
+									<img src="{{asset($photo_principal->filepath)}}" class="img-responsive" style="height:80px" />
+									@else
+									<!-- Programme principal -->
+									<img src="{{asset($first_photo->filepath)}}" class="img-responsive" style="height:80px" />
+									@endif
 								@else
-									<img class="img-responsive" src="{{asset('img/500x500.jpg')}}" style="height:50px">
+									<!-- Programme aucun photo -->
+									<img class="img-responsive" src="{{asset('images/product.png')}}" width="80">
 								@endif		
 							</td>
 							<td>{{ $record->title }}<br />{{str_limit(strip_tags($record->excerpt()),"100","...")}}</td>
 							<td>
-								@if($record->category_id == 1 && $record->ancienneteBien == 'Neuf' && $record->natureBien == 'Programme immobilier')
-									{{ $record->currency }}&nbsp;{{ number_format($record->min_price, 0, '.', ' ') }}
-								@else
-									{{ $record->currency }}&nbsp;{{ number_format($record->price, 0, '.', ' ') }}
-								@endif
-							</td>
-							<td>
-								@if($record->category_id == 1 && $record->ancienneteBien == 'Neuf' && $record->natureBien == 'Programme immobilier')
-									{{ $record->currency }}&nbsp;{{ number_format($record->max_price, 0, '.', ' ') }}
-								@endif	
+								{{ $record->currency }}&nbsp;{{ number_format($record->price, 0, '.', ' ') }}
 							</td>
 							<td>
 							@if($record->status=='published')

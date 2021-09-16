@@ -65,7 +65,8 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::post('ajaxDropFondDossier', 'ProductController@ajaxDropFondDossier')->name('ajaxDropFondDossier');  
     Route::post('ajaxDropEoiDossier', 'ProductController@ajaxDropEoiDossier')->name('ajaxDropEoiDossier');
     Route::post('ajaxDropLiaDossier', 'ProductController@ajaxDropLiaDossier')->name('ajaxDropLiaDossier');   
-    Route::post('ajaxDropProduit', 'ProductController@ajaxDropProduit')->name('ajaxDropProduit');  
+    Route::post('ajaxDropProduit', 'ProductController@ajaxDropProduit')->name('ajaxDropProduit'); 
+    Route::post('ajaxRejetProduit', 'ProductController@ajaxRejetProduit')->name('ajaxRejetProduit'); 
     Route::post('ajaxChangeIconPhotoActive', 'ProductController@ajaxChangeIconPhotoActive')->name('ajaxChangeIconPhotoActive');
     Route::post('ajaxSaveProduct', 'ProductController@ajaxSaveProduct')->name('ajaxSaveProduct');
     Route::post('ajaxModifProduct', 'ProductController@ajaxModifProduct')->name('ajaxModifProduct');
@@ -344,6 +345,7 @@ Route::prefix('collaborators')->namespace('Admin')->as('admin.')->middleware(["a
     Route::post('/admin/ajaxDropFondDossier', 'ProductController@ajaxDropFondDossier')->name('collaborators.admin.ajaxDropFondDossier');
     Route::post('/admin/ajaxDropEoiDossier', 'ProductController@ajaxDropEoiDossier')->name('collaborators.admin.ajaxDropEoiDossier');      
     Route::post('/admin/ajaxDropProduit', 'ProductController@ajaxDropProduit')->name('collaborators.admin.ajaxDropProduit');  
+    Route::post('/admin/ajaxRejetProduit', 'ProductController@ajaxRejetProduit')->name('collaborators.admin.ajaxRejetProduit');
     Route::post('/admin/ajaxChangeIconPhotoActive', 'ProductController@ajaxChangeIconPhotoActive')->name('collaborators.admin.ajaxChangeIconPhotoActive');
     Route::post('/admin/ajaxSaveProduct', 'ProductController@ajaxSaveProduct')->name('collaborators.admin.ajaxSaveProduct');
     Route::post('/admin/ajaxModifProduct', 'ProductController@ajaxModifProduct')->name('collaborators.admin.ajaxModifProduct');
