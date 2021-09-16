@@ -331,9 +331,9 @@
             var statusDt = dt.is_complete;
             var disabledBtn = statusDt!==1?'hidden':'';
             var disabledBtnShowDt = statusDt!==2?'hidden':'';
-            var stepStatusDt = statusDt!==1?(statusDt===2?'<i class="badge badge-pill badge-success white-color">@lang("app.txt.finalized")</i>':'{{ trans("app.txt.not_available") }}'):'<i class="badge badge-pill badge-info white-color">@lang("app.txt.to_complete")</i>';
-            var dayUpdateDt = statusDt===2?(dt.updated_at!=='null'? $.format.prettyDate(dt.updated_at):''):'';
-            var dateUpdateDt = statusDt===2?(dt.updated_at!=='null'? $.format.date(dt.updated_at, 'yyyy MMM dd'):''):'';
+            var stepStatusDt = statusDt!==1?(statusDt===2||statusDt===3?'<i class="badge badge-pill badge-success white-color">@lang("app.txt.finalized")</i>':'{{ trans("app.txt.not_available") }}'):'<i class="badge badge-pill badge-info white-color">@lang("app.txt.to_complete")</i>';
+            var dayUpdateDt = statusDt===2||statusDt===3?(dt.updated_at!=='null'? $.format.prettyDate(dt.updated_at):''):'';
+            var dateUpdateDt = statusDt===2||statusDt===3?(dt.updated_at!=='null'? $.format.date(dt.updated_at, 'yyyy MMM dd'):''):'';
             
             var content = '<div class="profile-content-area m-40px-tb">'+
                 '<div class="card m-40px-b">'+
@@ -402,6 +402,23 @@
                                         '<h2>{{ trans("app.txt.complete_transaction_file_info") }}</h2>'+
                                         '<p>- Program/Product name<br/>- Lot Type<br/>- Lot Level<br/>- Lot ID<br/>- Final sales price'+
                                         '</p>'+
+                                        '<a href="'+completeDossierTransactionInfo+'" class="m-btn m-btn-sm m-btn-theme2nd" '+disabledBtn+'> {{ trans("app.btn.to_complete") }} </a>'+
+                                        '<button onclick="showDossierTransactionInfo()" class="m-btn m-btn-sm m-btn-theme2nd" '+disabledBtnShowDt+'>{{ trans("app.btn.more_info") }}</button>'+
+                                        '<span class="vertical-date">'+
+                                            dayUpdateDt+'<br/>'+
+                                            '<small>'+dateUpdateDt+'</small>'+
+                                        '</span>'+
+                                        '<span class="col-lg-12 text-right"><small><b>@lang("app.status") : </b>'+stepStatusDt+'</small></span>'+
+                                    '</div>'+
+                                '</div>'+
+
+                                '<div class="vertical-timeline-block">'+
+                                    '<div class="vertical-timeline-icon grenate-bg">'+
+                                        '<i class="fa fa-file"></i>'+
+                                    '</div>'+
+                                    '<div class="vertical-timeline-content">'+
+                                        '<h2>{{ trans("app.txt.dossier.eoi.finalized") }}</h2>'+
+                                        '<p>{{ trans("app.txt.dossier.eoi.finalized.description") }}</p>'+
                                         '<a href="'+completeDossierTransactionInfo+'" class="m-btn m-btn-sm m-btn-theme2nd" '+disabledBtn+'> {{ trans("app.btn.to_complete") }} </a>'+
                                         '<button onclick="showDossierTransactionInfo()" class="m-btn m-btn-sm m-btn-theme2nd" '+disabledBtnShowDt+'>{{ trans("app.btn.more_info") }}</button>'+
                                         '<span class="vertical-date">'+

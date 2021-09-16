@@ -137,6 +137,65 @@ class DossierController extends Controller
         return response()->json(['response'=>'true']);
     }
 
+    /*
+    * Store eoi for afa in transaction folders storage file
+    *
+    * @param  Illuminate\Http\Request  $request
+    * @return \Illuminate\Http\Response
+    */
+    public function uploadMemberDossierEoi(Request $request)
+    {    
+        $datas = $request->all();
+        $validator = Validator::make($datas, ['file_eoi' => 'required|mimes:pdf']);
+
+        // Validate file
+        if ($validator->fails()) {
+            return response()->json(['response'=>'false']);
+        }
+
+        // Handle file Upload to uploads/pdf/transaction path
+        $file = $request->file('file_eoi');
+        $path = public_path('uploads/pdf/transaction');
+        $this->storeFile($file,$path);
+
+        // // Send message and email to afa from IEA
+        // App::setLocale('en'); //change lang to en
+        // $user=Auth::user();
+        // $dt = Carbon::now();
+        // $dtDate = $dt->format('m-d-Y');
+        // $dtTime = $dt->format('H:i:m');
+        // $user_name= $user->isPerson()?$user->name:$user->userinfos()->first()->orga_name;
+        // $mr_id=$request->mr_id;
+        // $mandatesearch= MandatRecherche::whereId($mr_id)->first();
+        // $mandatesearchLink= url($mandatesearch->path);
+        // $country = $userAuth->location->country;
+        // $city=$user->afa->location->locality;
+        // $linkcompletetrans = url('afa/dossier?action=complete_dossier_transaction_info&ID='.DossierTransaction::getDossierTransactionId($mandatesearch->product_id,$user->id));
+
+        // if(Auth::user()->isMove()){
+        //     // Message from IEA to AFA if Member moving
+        //     $content=trans('member.gothere.mr.message_to_afa', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user_name,'immat'=>$user->immat,'city'=>$city,'afa' =>$user->afa->name,'mandatesearch'=>$mandatesearchLink]);
+        //     // send email
+        //     $user->afa->notify(new AfaMandateSearchMessage($user,$mandatesearchLink));
+        // }else{
+        //     // Message from IEA to AFA if Member buy product not moving
+        //     $content=trans('member.tobuy.mr.message_to_afa', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'country'=>$country,'city'=>$city,'afa' =>$user->afa->name,'mandatesearch'=>$mandatesearchLink]);
+        //     // send email to afa
+        //     $user->afa->notify(new AfaMandateSearchFinalisedMessage($user,$linkcompletetrans,$mandatesearchLink));
+        //     // send email to member
+        //     App::setLocale($user->language);
+        //     $user->notify(new MemberMandateSearchFinalisedMessage($user));
+        //     // send message to member
+        //     Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$user->id,'body'=>$content]);
+        // }
+
+        // // send message to afa
+        // Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$user->afa->id,'body'=>$content]);
+        
+        
+        return response()->json(['response'=>'true']);
+    }
+
     private function storeFile($file,$path){
         // Get filename with the extension
         $filenameWithExt = $file->getClientOriginalName();

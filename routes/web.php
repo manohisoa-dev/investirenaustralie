@@ -227,6 +227,7 @@ Route::middleware(["auth", "role:5"])->group(function(){
         Route::post('dossier/upload_mr', 'DossierController@uploadMemberDossierMr')->name('member.dossier.upload_mr');
         Route::post('dossier/update_mr', 'DossierController@updateMr')->name('member.dossier.update_mr');
         Route::post('dossier/updateIsCompleteDt', 'DossierController@updateIsCompleteDt')->name('member.dossier.updateIsCompleteDt');
+        Route::post('dossier/upload_eoi', 'DossierController@uploadMemberDossierEoi')->name('member.dossier.upload_eoi');
     });
 
 });

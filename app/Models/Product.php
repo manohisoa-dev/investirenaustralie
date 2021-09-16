@@ -566,5 +566,13 @@ class Product extends Model {
         return $this->hasMany(EoiDossier::class);
     }
 
+    /**
+     * Check if IEO product is finalized
+     * boolean
+     */
+    public function eoiIsFinalized(){
+        return file_exists(public_path('uploads/pdf/transaction/'.$this->productEoi->first()->image->first()->filename));
+    }
+
 }
 
