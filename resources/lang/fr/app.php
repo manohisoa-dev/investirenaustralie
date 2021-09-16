@@ -1372,7 +1372,7 @@ return
 	'txt.eoi_dossier' => 'Téléchargez la manifestation d&lsquo;intérêt pour cette propriété',
 	'table.eoi_dossier' => 'Manifestation d&rsquo;intérêt',
 	'tab.title_programme' => 'Mes programmes',
-	'tab.title_produits' => 'Mes produits',
+	'tab.title_produits' => 'Mes produits autonome',
 	'btn.more_info' => 'Plus d&lsquo;info',
 	'txt.dossier.select_afa.description' => 'Cette sélection de l&lsquo;AFA établit une liaison de 90 jours entre le Membre et l&lsquo;AFA pour la ville où est situé le produit particulier à partir duquel la procédure a été lancée.',
 	'txt.dossier.transaction' => 'Dossier de transaction',
@@ -1473,4 +1473,6 @@ return
     'admin.program.list_no_valid' => 'Liste des programmes publiés',
     'admin.btn_approbation' => 'APPROBATION',
     'admin.btn_rejet' => 'REJETER',
+    'admin.product_isole.list_valid' => 'Liste des produits autonomes à valider',
+    'admin.product_isole.list_no_valid' => 'Liste des produits autonomes publiés',
 ];

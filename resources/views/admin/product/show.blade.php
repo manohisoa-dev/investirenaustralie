@@ -11,7 +11,11 @@
                 <a href="#">@lang('app.txt.products')</a>
             </li>
             <li class="breadcrumb-item">
+			@if($product->parent_id == 0)
                 <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme')}}?status=waiting">@lang('app.txt.lists')</a>
+			@else
+				<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}?status=waiting">@lang('app.txt.lists')</a>
+			@endif
             </li>
             <li class="breadcrumb-item active">
                 <strong>@lang('app.txt.detail')</strong>
@@ -44,11 +48,11 @@
 						@if (count($photos) > 0)
 						<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
 							<div class="carousel-inner">
-								@foreach ( $photos as $photo )
-								<div class="carousel-item active">
-									<img class="d-block w-100" src="{{asset($photo->filepath)}}" alt="">
+								@for ($i = 0; $i < count($photos); $i++)
+								<div class="carousel-item {{$i == 0?'active':''}}">
+									<img class="d-block w-100" src="{{asset($photos[$i]->filepath)}}" alt="">
 								</div>
-								@endforeach
+								@endfor
 							</div>
 							<a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
 								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -109,6 +113,7 @@
 							</div>
 						</dl>
 						<div class="hr-line-dashed"></div>
+						@if($product->parent_id == 0)
 						<dl class="row mb-0">
 							<div class="col-sm-4 text-sm">
 								<dt>@lang('app.form.programme_price_min'):</dt>
@@ -125,6 +130,16 @@
 								<dd class="mb-1">AUD {{ number_format($product->max_price, 0, '.', ' ') }}</dd>
 							</div>
 						</dl>
+						@else
+						<dl class="row mb-0">
+							<div class="col-sm-4 text-sm">
+								<dt>@lang('app.table.price'):</dt>
+							</div>
+							<div class="col-sm-8 text-sm-left">
+								<dd class="mb-1">AUD {{ number_format($product->price, 0, '.', ' ') }}</dd>
+							</div>
+						</dl>
+						@endif
 						<dl class="row mb-0">
 							<div class="col-sm-4 text-sm">
 								<dt>@lang('app.form.programme_commission_type'):</dt>
@@ -207,7 +222,11 @@
 							<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.publish', $record->id):route('admin.product.publish', $product->id)}}" class="btn btn-flat btn-primary">@lang('app.admin.btn_approbation')</a>
 							<a href="javascript:void(0)" onclick="rejet_programme({{$product->id}})" class="btn btn-flat btn-danger">@lang('app.admin.btn_rejet')</a>
 						@else
+							@if($product->parent_id == 0)
 							<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme')}}?status=waiting" class="btn btn-default">@lang('app.btn.return')</a>
+							@else
+							<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}?status=waiting" class="btn btn-default">@lang('app.btn.return')</a>
+							@endif
 						@endif
 						</div>
 					</div>
@@ -402,7 +421,7 @@
 				@endforeach
 			</div>
 		</div>
-		
+		@if($product->parent_id == 0)
 		<div class="ibox float-e-margins">
             <div class="ibox-title">
                 <h5>@lang('app.table.product_programme_title')</h5>
@@ -465,6 +484,7 @@
 				</table>
 			</div>
 		</div>
+		@endif
     </div>
 </div>
 

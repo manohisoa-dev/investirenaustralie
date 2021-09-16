@@ -66,10 +66,11 @@ class Product extends Model {
         return $query->paginate(15);
     }
     
-    public static function allProduitIsole()
+    public static function allProduitIsole($status)
     {
         $query = Product::query();
         $query->where('parent_id','=',-1);
+        $query->where('status',$status);
         // search results based on user input
         \Request::input('id') and $query->where('id',\Request::input('id'));
         \Request::input('reference') and $query->where('reference','like','%'.\Request::input('reference').'%');

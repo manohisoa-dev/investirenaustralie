@@ -51,6 +51,7 @@ class CategoryController extends Controller
         $category->slug = $slug;
         $category->title = $request->title;
         $category->content = $request->content;
+        $category->is_programm = 1;
         $category->author_id = Auth::user()->id;
         $category->save();
 

@@ -23,6 +23,10 @@
 <div class="row">
 	<div class="col-lg-12">
         <div class="tabs-container">
+			<ul class="nav nav-tabs" role="tablist">
+				<li><a class="nav-link {{$statusPrd == 'waiting'?'active':''}}" href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}?status=waiting"><span class="label label-warning float-left" style="margin-right:15px">{{ App\Models\Product::where('parent_id', '=', -1)->where('status', '=', 'waiting')->count() }}</span> @lang('app.admin.product_isole.list_valid')</a></li>
+				<li><a class="nav-link {{$statusPrd == 'published'?'active':''}}" href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}?status=published"><span class="label label-warning float-left" style="margin-right:15px">{{ App\Models\Product::where('parent_id', '=', -1)->where('status', '=', 'published')->count() }}</span> @lang('app.admin.product_isole.list_no_valid')</a></li>
+			</ul>
 			<div class="tab-content">
 				<div class="ibox-content">
 					<div class="table-responsive">
@@ -72,14 +76,22 @@
 									{{ $index + $records->firstItem() }}
 								</td>
 								<td>
-									@if (@getimagesize($record->imageUrl()))
-										<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{$record->id}}">
-											<img src="{{$record->imageUrl()}}" class="img-responsive" style="height:80px" />
-										</a>
+									@php
+										$photo_principal = \App\Models\ProductsImage::where('products_images.product_id', '=', $record->id)->where('products_images.is_principal', '=', 1)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+										$first_photo = \App\Models\ProductsImage::where('products_images.product_id', '=', $record->id)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+										
+									@endphp
+									@if($first_photo)
+										@if($photo_principal)
+										<!-- Programme sans principal -->
+										<img src="{{asset($photo_principal->filepath)}}" class="img-responsive" style="height:80px" />
+										@else
+										<!-- Programme principal -->
+										<img src="{{asset($first_photo->filepath)}}" class="img-responsive" style="height:80px" />
+										@endif
 									@else
-										<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{$record->id}}">
-											<img class="img-responsive" src="{{asset('img/500x500.jpg')}}" width="80">
-										</a>
+										<!-- Programme aucun photo -->
+										<img class="img-responsive" src="{{asset('images/product.png')}}" width="80">
 									@endif
 									
 								</td>
@@ -173,6 +185,7 @@
 									</span>                          
 								</td>
 								<td class="actions-cell text-center" width="12%">
+								@if($statusPrd == 'published')
 									<form class="form-inline" action="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{$record->id}}" method="POST">
 										{{-- <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.'):route('admin.product.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="Détail">
 											<i class="fa fa-eye"></i>
@@ -213,6 +226,9 @@
 										<button type="button" class="btn btn-default btn-circle" title="Suppression" id="delRecord"><i class="fa fa-times text-danger"></i>
 										</button>
 									</form>
+								@else
+										<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{$record->id}}" class="btn btn-default btn-circle"><i class="fa fa-eye text-info"></i></a>
+								@endif
 								</td>
 							</tr>
 							@empty @include ('vendor.crud.single-page-templates.common.not-found-tr',['colspan' => 40]) @endforelse

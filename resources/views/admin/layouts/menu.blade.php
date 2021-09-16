@@ -97,7 +97,7 @@
         <ul class="nav nav-second-level collapse">
             <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme')}}?status=waiting">@lang('app.admin.program.list')</a></li>
             {{--<li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.create'):route('admin.product.create') }}?type=programme">@lang('app.admin.program.add')</a></li>--}}
-            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}">@lang('app.admin.product.list')</a></li>
+            <li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}?status=waiting">@lang('app.admin.product.list')</a></li>
             {{--<li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.create'):route('admin.product.create') }}?type=produit">@lang('app.admin.product.add')</a></li>--}}
         </ul>
     </li>

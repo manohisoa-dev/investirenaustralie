@@ -31,9 +31,15 @@ class ProductController extends Controller {
     public $viewDir = "admin.product";
 
     public function index() {
-        $records = Product::allProduitIsole();
+        if (isset($_GET['status'])) {
+            $status_prd = $_GET['status'];
+        } else {
+            $status_prd = 'published';
+        }
+        $records = Product::allProduitIsole($status_prd);
         $status = Product::groupBy('status')->pluck('status', 'status');
-        return $this->view("index", ['records' => $records, 'status' => $status]);
+        return $this->view("index", ['records' => $records, 'status' => $status,
+            'statusPrd' => $status_prd]);
     }
 
     public function programme() {
@@ -455,10 +461,13 @@ class ProductController extends Controller {
             $liaDossier = LiaDossier::where('product_lia.product_id', '=', $product->id)->join('images',
                 'product_lia.image_id', '=', 'images.id')->select('*',
                 'product_lia.id as prdLiaId')->get();
+            $photo = ProductsImage::where('products_images.product_id', '=', $product->id)->join('images',
+                'products_images.image_id', '=', 'images.id')->select('*',
+                'products_images.id as prdImageId')->get();
 
             return $this->view("edit", ['product' => $product, 'type' => 'produit',
                 'localisation' => $localisation, 'dossier' => $fonDossier, 'eoidossier' => $eoiDossier,
-                'liadossier' => $liaDossier]);
+                'liadossier' => $liaDossier, 'photos' => $photo]);
         }
     }
 
@@ -552,6 +561,8 @@ class ProductController extends Controller {
                         'locality' => $request->ville_product, 'route' => $request->display_address,
                         'longitude' => $longitude, 'latitude' => $latitude]);
                     $id_location = $product->location_id;
+                } else {
+                    $id_location = $product->location_id;
                 }
             } else {
                 $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
@@ -627,6 +638,8 @@ class ProductController extends Controller {
                 $product->avoir_parking_voie_public = $request->type_cutomer_parking;
                 $product->nb_parking_spots = $request->nombre_cutomer_parking;
             }
+
+
             $product->save();
 
             // update translation
@@ -809,7 +822,6 @@ class ProductController extends Controller {
     public function ajaxDropZoneEdit(Request $request) {
         $id_programme = $request->id_programme;
         $image = $request->file('file');
-
         $fileInfo = $image->getClientOriginalName();
         $filename = pathinfo($fileInfo, PATHINFO_FILENAME);
         $extension = pathinfo($fileInfo, PATHINFO_EXTENSION);

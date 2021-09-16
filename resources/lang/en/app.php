@@ -1137,7 +1137,7 @@ return
     'txt.eoi_dossier' => 'Upload the Expression Of Interest for this property',
     'table.eoi_dossier' => 'Expression Of Interest',
     'tab.title_programme' => 'My programs',
-    'tab.title_produits' => 'My products',
+    'tab.title_produits' => 'My stand-alone products',
 	'btn.more_info' =>'More info',
 	'txt.dossier.select_afa.description' => 'This AFA selection establishes a 90-day link between the Member and the AFA for the city where the particular product is located from which the procedure was initiated.',
 	'txt.dossier.transaction' => 'Transaction record',
@@ -1236,4 +1236,6 @@ return
     'admin.program.list_no_valid' => 'List of published programs',
     'admin.btn_approbation' => 'APPROBATION',
     'admin.btn_rejet' => 'REJET',
+    'admin.product_isole.list_valid' => 'List of stand-alone products to validate',
+    'admin.product_isole.list_no_valid' => 'List of stand-alone products published',
 ];
