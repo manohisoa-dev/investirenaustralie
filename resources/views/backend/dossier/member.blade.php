@@ -399,11 +399,13 @@
                 <div class="modal-body">
                     <form action="{{ route("afa.dossier.update_dt") }}" id="confirmPurchaseForm" method="POST">
                         {{ csrf_field() }}
-                        @php
-                            $dt = App\Models\DossierTransaction::getDossierTransactionInfo($prod_id,Auth::id());
-                            $prod = App\Models\Product::whereId($prod_id)->first();
-                        @endphp
-                        {!! trans('member.tobuy.dt.message_to_member_after_info_complete.confirm',['date'=>Carbon\Carbon::now()->format('m-d-Y'),'hour'=>Carbon\Carbon::now()->format('H:i:m'),'name'=>Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name,'title'=>$prod->title,'lottype'=>$dt->lot_type,'lotlevel'=>$dt->lot_level,'lotid'=>$dt->lot_id,'price'=>$dt->final_sales_price]) !!}
+                        @if(Auth::user()->hasCurrentTransaction())
+	                        @php
+	                            $dt = App\Models\DossierTransaction::getDossierTransactionInfo($prod_id,Auth::id());
+	                            $prod = App\Models\Product::whereId($prod_id)->first();
+	                        @endphp
+	                        {!! trans('member.tobuy.dt.message_to_member_after_info_complete.confirm',['date'=>Carbon\Carbon::now()->format('m-d-Y'),'hour'=>Carbon\Carbon::now()->format('H:i:m'),'name'=>Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name,'title'=>$prod->title,'lottype'=>$dt->lot_type,'lotlevel'=>$dt->lot_level,'lotid'=>$dt->lot_id,'price'=>$dt->final_sales_price]) !!}
+	                    @endif
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -423,6 +425,7 @@
                     <h4 class="modal-title white-color"> @lang('app.message')<span></span></h4>
                 </div>
                 <div class="modal-body">
+                @if(Auth::user()->hasCurrentTransaction())
                     @php
                         $dt = App\Models\DossierTransaction::getDossierTransactionInfo($prod_id,Auth::id());
                         $prod = App\Models\Product::whereId($prod_id)->first();
@@ -431,6 +434,7 @@
                         $uploadeoilink = route('member.dossier');
                     @endphp
                     {!! trans('member.tobuy.eoi.message_to_member_for_download_eoi',['date'=>Carbon\Carbon::now()->format('m-d-Y'),'hour'=>Carbon\Carbon::now()->format('H:i:m'),'name'=>Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name,'prodtitle'=>$prod->title,'lottype'=>$dt->lot_type,'lotlevel'=>$dt->lot_level,'lotid'=>$dt->lot_id,'price'=>$dt->final_sales_price,'seller'=>$seller,'afa'=>Auth::user()->afa->name,'downloadeoilink'=>$downloadeoilink,'uploadeoilink'=>$uploadeoilink]) !!}
+                @endif
                 </div>
                 <div class="modal-footer">
                     <div class="float-right m-15px-t">
