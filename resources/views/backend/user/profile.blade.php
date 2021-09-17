@@ -183,30 +183,40 @@
                         <div class="col-md-4 m-10px-tb">
                             <div class="media">
                                 <div class="only-icon-20">
-                                    <i class="fas fa-phone"></i>
-                                </div>
-                                <div class="media-body p-15px-l lh-normal">
-                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessphone')</div>
-                                    <div class="input-group mb-3 col-sm-12">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text form-control">+</span>
-                                        </div>
-                                        <div class="custom-file">
-                                            <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="15" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="orga_phone" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):($item->userinfos?$item->userinfos->orga_phone:'') }}">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 m-10px-tb">
-                            <div class="media">
-                                <div class="only-icon-20">
                                     <i class="fas fa-globe"></i>
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businesswebsite')</div>
                                     <input type="text" class="form-control" name="orga_website" placeholder="@lang('app.txt.businesswebsite')" value="{{ old('orga_website')?old('orga_website'):($item->userinfos ?$item->userinfos->orga_website:'')}}">
                                     <span class="text-danger">{{ $errors->first('orga_website') }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 m-10px-tb">
+                            <div class="media">
+                                <div class="only-icon-20">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div class="media-body p-15px-l lh-normal">
+                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessphone')</div>
+                                    <div class="input-group mb-3 col-sm-12">
+                                        <div class="input-group-prepend">
+                                            <select class="form-control" name="indicatif" id="indicatif">
+                                                @php
+                                                    $codetamps = preg_match('#\((.*?)\)#', $item->userinfos->orga_phone, $match);
+                                                    $code = $match[1];
+                                                    $allCode = $match[0];
+                                                    $num = $item->userinfos?explode(')',$item->userinfos->orga_phone)[1]:'';
+                                                @endphp
+                                                @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                    <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code?'selected':'' }}>{{ $allCode }} </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="custom-file">
+                                            <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="15" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="orga_phone" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):($num) }}">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -352,10 +362,20 @@
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.contactphone')</div>
                                 <div class="input-group mb-3 col-sm-12">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text form-control">+</span>
+                                        <select class="form-control" name="indicatif2" id="indicatif2">
+                                            @php
+                                                $codetamps2 = preg_match('#\((.*?)\)#', $item->userinfos->contact_phone, $match2);
+                                                $code2 = $match2[1];
+                                                $allCode2 = $match2[0];
+                                                $num2 = $item->userinfos?explode(')',$item->userinfos->contact_phone)[1]:'';
+                                            @endphp
+                                            @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code2?'selected':'' }}>{{ $allCode2 }} </option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                     <div class="custom-file">
-                                        <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="15" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="contact_phone" name="contact_phone" value="{{ old('contact_phone')?old('contact_phone'):($item->userinfos?$item->userinfos->contact_phone:'') }}">
+                                        <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="15" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="contact_phone" name="contact_phone" value="{{ old('contact_phone')?old('contact_phone'):($item->userinfos?$num2:'') }}">
                                     </div>
                                 </div>
                             </div>

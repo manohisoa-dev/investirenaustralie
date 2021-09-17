@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Auth;
 use Event;
 use App;
+use DB;
 
 use App\Notifications\AccountCreated;
 use Illuminate\Support\Facades\Hash;
@@ -686,6 +687,7 @@ class RegisterController extends Controller
 
             unset($datas['type']);
             $user = User::create($datas);
+            $user->save();
             $datas['user_id'] = $user->id;
 
             // Create user info
@@ -776,6 +778,8 @@ class RegisterController extends Controller
             
         }catch (\Exception $exception) {
             logger()->error($exception);
+            // remove user created if error
+            DB::table('users')->where('id', $user->id)->delete();
             return back()->with('info', trans('app.txt.errorcreateuser'));
         }
 

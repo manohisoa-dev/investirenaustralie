@@ -130,8 +130,8 @@ class ProfileController extends Controller
                         'area_level_2' => 'required|max:100',
                         'postalCode'   => 'required|integer',
                         'adrphy_country'      => 'required',
-                        'orga_phone'        => 'nullable|digits_between:6,9|numeric',
-                        'orga_mobile_phone'        => 'required|digits_between:6,9|numeric',
+                        'orga_phone'        => 'nullable|digits_between:6,15|numeric',
+                        'orga_mobile_phone'        => 'required|digits_between:6,15|numeric',
                         'orga_email'        => 'required|email|max:100',
                         'orga_fb'        => 'nullable|url',
                         'politic'    => 'required',
@@ -150,7 +150,7 @@ class ProfileController extends Controller
                     $rules = [
                         'orga_name'         => 'required|max:100',
                         'orga_email'         => 'required|email|max:100',
-                        'orga_phone' => 'required|min:6|max:14',
+                        'orga_phone' => 'required|digits_between:6,15|numeric',
                         'orga_presentation' => 'nullable|max:2000',
                         'orga_website'      => 'required|url|max:100'
                     ];
@@ -161,7 +161,7 @@ class ProfileController extends Controller
                     'orga_name'         => 'required|max:100',
                     'orga_presentation' => 'nullable|max:2000',
                     'orga_email'        => 'required|email|max:100',
-                    'orga_phone'        => 'required|digits_between:9,15|numeric',
+                    'orga_phone'        => 'required|digits_between:6,15|numeric',
                     'orga_website'      => 'required|url|max:100',
                     
                     'orga_operation_state' => 'required|max:100',
@@ -169,7 +169,7 @@ class ProfileController extends Controller
 
                     'contact_name'  => 'required|max:100',
                     'contact_email' => 'required|max:100',
-                    'contact_phone' => 'required||digits_between:9,15|numeric',
+                    'contact_phone' => 'required||digits_between:6,15|numeric',
 
 //                    'crm_name'   => 'required|max:100',
 //                    'crm_email'  => 'required|max:100',
@@ -180,14 +180,14 @@ class ProfileController extends Controller
                     'orga_name'         => 'required|max:100',
                     'orga_presentation' => 'nullable|max:2000',
                     'orga_email'        => 'required|email|max:100',
-                    'orga_phone'        => 'required|min:6|max:14',
+                    'orga_phone'        => 'required|digits_between:9,15|numeric',
                     'orga_website'      => 'required|url|max:100',
                     
 //                    'orga_operation_range' => 'required|max:100',
 
                     'contact_name'  => 'required|max:100',
                     'contact_email' => 'required|email|max:100',
-                    'contact_phone' => 'required|min:6|max:14',
+                    'contact_phone' => 'required|digits_between:6,15|numeric',
 
                     'bank_iban' => 'max:100',
                     'bank_bic' => 'max:100',
@@ -198,12 +198,12 @@ class ProfileController extends Controller
                     'orga_name'         => 'required|max:100',
                     'orga_presentation' => 'nullable|max:2000',
                     'orga_email'        => 'required|email|max:100',
-                    'orga_phone'        => 'required|digits_between:9,15|numeric',
+                    'orga_phone'        => 'required|digits_between:6,15|numeric',
                     'orga_website'      => 'required|url|max:100',
 
                     'contact_name'  => 'required|max:100',
                     'contact_email' => 'required|max:100',
-                    'contact_phone' => 'required|digits_between:9,15|numeric',
+                    'contact_phone' => 'required|digits_between:6,15|numeric',
 
                 ];
                 break;
@@ -251,6 +251,22 @@ class ProfileController extends Controller
             
             // Create OR Update MetaData
             $userInfo = Userinfo::where('user_id' , Auth::id())->first() ;
+
+            // format phone number userinfos
+            if(isset($datas['contact_phone'])){
+                $datas['contact_phone'] = '('.$datas['indicatif2'].')'.$datas['contact_phone'];
+            }
+            if(isset($datas['orga_mobile_phone'])){
+                $datas['orga_mobile_phone'] = '('.$datas['indicatif3'].')'.$datas['orga_mobile_phone'];
+            }
+            if(isset($datas['orga_phone'])){
+                $datas['orga_phone'] = '('.$datas['indicatif'].')'.$datas['orga_phone'];
+            }
+
+            if($userInfo = Userinfo::create($datas)){
+                unset($datas['user_id']);
+            }
+
             if(isset($userInfo)){
                 $user->handles($request);
             }
