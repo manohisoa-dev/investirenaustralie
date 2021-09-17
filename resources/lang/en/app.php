@@ -1250,5 +1250,6 @@ return
     'admin.btn_rejet' => 'REJET',
     'admin.product_isole.list_valid' => 'List of stand-alone products to validate',
     'admin.product_isole.list_no_valid' => 'List of stand-alone products published',
+	'btn.show_detail' => 'Show detail',
 
 ];

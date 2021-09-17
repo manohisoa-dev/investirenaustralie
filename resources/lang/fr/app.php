@@ -1487,4 +1487,5 @@ return
     'admin.btn_rejet' => 'REJETER',
     'admin.product_isole.list_valid' => 'Liste des produits autonomes à valider',
     'admin.product_isole.list_no_valid' => 'Liste des produits autonomes publiés',
+    'btn.show_detail' => 'Afficher détail',
 ];

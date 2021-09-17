@@ -66,7 +66,7 @@
                                     </td>
 
                                     <td align="center">
-                                        <a href="javascript:void(0)" onclick="showTimeline({{App\Models\DossierTransaction::where('product_id','=',$record->product_id)->where('user_id','=',$record->from_id)->first()}},{{App\Models\Product::whereId($record->product_id)->first()}},{{$record}},{{$index<sizeOf($mandatesearch)?$mandatesearch[$index]:''}})" title="Show timeline for this product" class="">
+                                        <a href="javascript:void(0)" onclick="showTimeline({{App\Models\DossierTransaction::where('product_id','=',$record->product_id)->where('user_id','=',$record->from_id)->first()}},{{App\Models\Product::whereId($record->product_id)->first()}},{{$record}},{{$index<sizeOf($mandatesearch)?$mandatesearch[$index]:''}},{{App\Models\Product::whereId($record->product_id)->first()->productEoi->first()->image->first()}})" title="Show timeline for this product" class="">
                                             <i class="fa fa-eye"></i>
                                         </a>&nbsp;
 
@@ -279,7 +279,7 @@
         var conjAgr = [];
         var dossTrans = [];
 
-        function showTimeline(doss,prod,ca,mr){
+        function showTimeline(doss,prod,ca,mr,eoi){
             var content = $('#showTimelineModal .modal-body');
             var title = 'N° Trans : '+doss.numero+' | '+prod.title+' ('+prod.reference+')';
             dossTrans = doss;
@@ -299,13 +299,13 @@
                 mr['status']='null',
                 mr['file_name']='';  
             }
-            content.html(timelineContent(doss,ca,mr));
+            content.html(timelineContent(doss,ca,mr,eoi));
 
             // show timeline
             $('#showTimelineModal').modal('show');
         }
 
-        function timelineContent(dt,ca,mr){
+        function timelineContent(dt,ca,mr,eoi){
             var origin   = window.location.origin;
             var dayCreate = $.format.prettyDate(ca.created_at);
             var dateCreate = $.format.date(ca.created_at, 'yyyy MMM dd');
@@ -334,6 +334,15 @@
             var stepStatusDt = statusDt!==1?(statusDt===2||statusDt===3?'<i class="badge badge-pill badge-success white-color">@lang("app.txt.finalized")</i>':'{{ trans("app.txt.not_available") }}'):'<i class="badge badge-pill badge-info white-color">@lang("app.txt.to_complete")</i>';
             var dayUpdateDt = statusDt===2||statusDt===3?(dt.updated_at!=='null'? $.format.prettyDate(dt.updated_at):''):'';
             var dateUpdateDt = statusDt===2||statusDt===3?(dt.updated_at!=='null'? $.format.date(dt.updated_at, 'yyyy MMM dd'):''):'';
+
+            console.log(eoi);
+            
+            var statusEoi = mr.status;
+            var downloadLinkEoi = origin+'/uploads/pdf/transaction/'+mr.file_name;
+            var disabledLinkEoi = statusMr===0?'hidden':(statusMr==='null'?'disabled':'');
+            var stepStatusEoi = statusMr!==0?(statusMr!=='null'?'<i class="badge badge-pill badge-success white-color">@lang("app.txt.finalized")</i>':'{{ trans("app.txt.not_available") }}'):'<i class="badge badge-pill badge-info white-color">@lang("app.waiting")</i>';
+            var dayUpdateEoi = mr.updated_at!=='null'? (statusMr===0?'':$.format.prettyDate(mr.updated_at)) :'';
+            var dateUpdateEoi = mr.updated_at!=='null'? (statusMr===0?'':$.format.date(mr.updated_at, 'yyyy MMM dd')) :'';
             
             var content = '<div class="profile-content-area m-40px-tb">'+
                 '<div class="card m-40px-b">'+
@@ -419,13 +428,12 @@
                                     '<div class="vertical-timeline-content">'+
                                         '<h2>{{ trans("app.txt.dossier.eoi.finalized") }}</h2>'+
                                         '<p>{{ trans("app.txt.dossier.eoi.finalized.description") }}</p>'+
-                                        '<a href="'+completeDossierTransactionInfo+'" class="m-btn m-btn-sm m-btn-theme2nd" '+disabledBtn+'> {{ trans("app.btn.to_complete") }} </a>'+
-                                        '<button onclick="showDossierTransactionInfo()" class="m-btn m-btn-sm m-btn-theme2nd" '+disabledBtnShowDt+'>{{ trans("app.btn.more_info") }}</button>'+
+                                        '<a href="'+downloadLinkMr+'" class="m-btn m-btn-sm m-btn-theme2nd" '+disabledLinkMr+'> {{ trans("app.btn.show_detail") }}</a>'+
                                         '<span class="vertical-date">'+
-                                            dayUpdateDt+'<br/>'+
-                                            '<small>'+dateUpdateDt+'</small>'+
+                                            dayUpdateMr+'<br/>'+
+                                            '<small>'+dateUpdateMr+'</small>'+
                                         '</span>'+
-                                        '<span class="col-lg-12 text-right"><small><b>@lang("app.status") : </b>'+stepStatusDt+'</small></span>'+
+                                        '<span class="col-lg-12 text-right"><small><b>@lang("app.status") : </b>'+stepStatusMr+'</small></span>'+
                                     '</div>'+
                                 '</div>'+
 

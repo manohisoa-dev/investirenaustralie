@@ -429,7 +429,7 @@
                     @php
                         $dt = App\Models\DossierTransaction::getDossierTransactionInfo($prod_id,Auth::id());
                         $prod = App\Models\Product::whereId($prod_id)->first();
-                        $seller = "Nom du vendeur";
+                        $seller = $prod->author->name;
                         $downloadeoilink = url($prod->productEoi->first()->image->first()->filepath);
                         $uploadeoilink = route('member.dossier');
                     @endphp
