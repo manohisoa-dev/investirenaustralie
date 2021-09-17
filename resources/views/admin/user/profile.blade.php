@@ -41,7 +41,8 @@
 					</div>
 					<div class="col-sm-9">
 						<h3 class="m-t-none m-b">@lang('app.login_info')</h3>
-						<form role="form" action="{{route('admin.profile.info')}}" method="post" enctype="multipart/form-data">
+						<form role="form" action="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.profile.info'):route('admin.profile.infos')}}" method="post" enctype="multipart/form-data">
+						
 							<div class="row">
 								<div class="col-sm-6">
 									<div class="form-group">
@@ -63,12 +64,6 @@
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label>@lang('app.form.first_name')</label> 
-										<input class="form-control" value="{{old('first_name', $item->meta('first_name', ''))}}" name="first_name" placeholder="@lang('app.form.first_name')">
-									</div>
-									<div class="form-group">
-										<label>@lang('app.form.last_name')</label> 
-										<input class="form-control" value="{{old('last_name', $item->meta('last_name', ''))}}" name="last_name" placeholder="@lang('app.form.last_name')">
-										<label>@lang('app.form.first_name')</label>
 										<input class="form-control" value="{{old('first_name', $item->meta('first_name', ''))}}" name="first_name" placeholder="@lang('app.form.first_name')">
 									</div>
 									<div class="form-group">

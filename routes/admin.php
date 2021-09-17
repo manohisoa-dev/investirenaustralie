@@ -25,7 +25,7 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     
     //profil
     Route::get('profile', 'ProfileController@index')->name('profile');
-    Route::post('info', 'ProfileController@editProfile')->name('profile.info');
+    Route::post('info', 'ProfileController@editProfile')->name('profile.infos');
     Route::post('update', 'ProfileController@updateLocation')->name('location.edit');
     Route::post('password', 'ProfileController@updatePassword')->name('password');
     

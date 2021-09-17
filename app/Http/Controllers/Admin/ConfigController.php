@@ -45,7 +45,6 @@ class ConfigController extends Controller
             // Validate request
             $datas = $request->all();
             $validator = Validator::make($datas, $keys);
-
             // Check validation
             if ($validator->fails()) {
                 #notification
@@ -65,13 +64,13 @@ class ConfigController extends Controller
                     if($request->input('admin_phone') === null){
                         $item->update_meta('admin_phone', "");
                     }else{
-                        if($value = $request->input($key)) $item->update_meta('admin_phone', $value);    
+                        if($value = '('.$request->input('indicatif1').')'.$request->input($key)) $item->update_meta('admin_phone', $value);    
                     }
                 }elseif($key == 'admin_fax'){
                     if($request->input('admin_fax') === null){
                         $item->update_meta('admin_fax', "");
                     }else{
-                        if($value = $request->input($key)) $item->update_meta('admin_fax', $value);    
+                        if($value = '('.$request->input('indicatif').')'.$request->input($key)) $item->update_meta('admin_fax', $value);    
                     }
                 }else{
                     if($value = $request->input($key)) $item->update_meta($key, $value);
@@ -123,7 +122,7 @@ class ConfigController extends Controller
                     if($request->input('lia_mobile') === null){
                         $item->update_meta('lia_mobile', "");
                     }else{
-                        if($value = $request->input($key)) $item->update_meta('lia_mobile', $value);    
+                        if($value = '('.$request->input('indicatif').')'.$request->input($key)) $item->update_meta('lia_mobile', $value);    
                     }
                 }else{
                     if($value = $request->input($key)) $item->update_meta($key, $value);
@@ -162,7 +161,7 @@ class ConfigController extends Controller
                 Notify::error($validator);
                 return back()->withErrors($validator)->withInput() ;
             }
-
+            
             // Save Config into MetaData By Validator rules key
             foreach($keys as $key=>$val){
                 if($key == 'iicc_email'){
@@ -175,14 +174,14 @@ class ConfigController extends Controller
                     if($request->input('iicc_mobile') === null){
                         $item->update_meta('iicc_mobile', "");
                     }else{
-                        if($value = $request->input($key)) $item->update_meta('iicc_mobile', $value); 
-                        echo $request->input($key).'<br>';   
+                        if($value = '('.$request->input('indicatif').')'.$request->input($key)) $item->update_meta('iicc_mobile', $value); 
                     }
                 }else{
                     if($value = $request->input($key)) $item->update_meta($key, $value);
                 }
 
             }
+            
             # notification
             Notify::success('La configuration a été modifiée avec succés ! ');
             return back() ;
