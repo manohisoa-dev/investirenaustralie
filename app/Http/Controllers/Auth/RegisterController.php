@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Auth;
 use Event;
 use App;
+use DB;
 
 use App\Notifications\AccountCreated;
 use Illuminate\Support\Facades\Hash;
@@ -686,18 +687,26 @@ class RegisterController extends Controller
 
             unset($datas['type']);
             $user = User::create($datas);
+            $user->save();
             $datas['user_id'] = $user->id;
 
             // Create user info
             if($role !== 'seller' || session('seller_class')!=='non_professional_natural_persons' && session('seller_class')!=='seller_by_afa'){
+
+                if(session('seller_class')!=='real_estate_professionals'){
+                    $indicatif = '('.$datas['indicatif'].')';
+                }else{
+                    $indicatif = '(+61)';
+                }
+                
                 if(isset($datas['contact_phone'])){
-                    $datas['contact_phone'] = $datas['indicatif'].$datas['contact_phone'];
+                    $datas['contact_phone'] = $indicatif.$datas['contact_phone'];
                 }
                 if(isset($datas['orga_mobile_phone'])){
-                    $datas['orga_mobile_phone'] = $datas['indicatif'].$datas['orga_mobile_phone'];
+                    $datas['orga_mobile_phone'] = $indicatif.$datas['orga_mobile_phone'];
                 }
                 if(isset($datas['orga_phone'])){
-                    $datas['orga_phone'] = $datas['indicatif'].$datas['orga_phone'];
+                    $datas['orga_phone'] = $indicatif.$datas['orga_phone'];
                 }
 
                 if($userInfo = Userinfo::create($datas)){
@@ -718,6 +727,7 @@ class RegisterController extends Controller
             // Save info in seller_individual or seller_business table where registrator is seller non professional natural persons or seller by afa
             if($role == 'seller'){
                 if(session('seller_class') == 'non_professional_natural_persons' || (session('seller_class') == 'seller_by_afa' && $type == 'individual' )){
+                    
                     for($i=0;$i<2;$i++){
                         $sfx = $i!=1?'':'_2';
 
@@ -768,6 +778,8 @@ class RegisterController extends Controller
             
         }catch (\Exception $exception) {
             logger()->error($exception);
+            // remove user created if error
+            DB::table('users')->where('id', $user->id)->delete();
             return back()->with('info', trans('app.txt.errorcreateuser'));
         }
 

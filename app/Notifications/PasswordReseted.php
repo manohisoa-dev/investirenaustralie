@@ -57,7 +57,8 @@ class PasswordReseted extends Notification
             ->subject(__('mail.reseted.subject', ['app'=>app_name()]))
             ->greeting(__('mail.greeting', ['name'=>$user->name]))
             ->line(__('mail.reseted.content'))
-            ->action(trans('mail.btn.reset.password'), url(config('app.url').route('password.reset', $this->token, false)));
+            ->action(trans('mail.btn.reset.password'), url(route('password.reset', $this->token, false)));
+            // ->action(trans('mail.btn.reset.password'), url(config('app.url').route('password.reset', $this->token, false)));
     }
 
     /**

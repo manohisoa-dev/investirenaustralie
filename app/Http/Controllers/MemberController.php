@@ -777,12 +777,12 @@ class MemberController extends Controller {
                                 }elseif($userAuth->dossierTransactionIsComplete($prod_id)==='to_be_completed'){
                                     return redirect($prodUrl)->with('engagement', trans('member.tobuy.mr.message_to_member', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user]))->with('waiting',1);
                                 }
-                                // elseif($userAuth->dossierTransactionIsComplete($prod_id)==='complete'){
-                                //     return redirect(url('member/dossier?action=confirm_decision&ID='.DossierTransaction::getDossierTransactionId($prod_id,$userAuth->id)));
-                                // }
+                                elseif($userAuth->dossierTransactionIsComplete($prod_id)==='complete'){
+                                    return redirect(url('member/dossier?action=confirm_decision&ID='.DossierTransaction::getDossierTransactionId($prod_id,$userAuth->id)));
+                                }
                                 else{
                                     // If purchase is complete or validate
-                                    return redirect(url('member/dossier?action=confirm_decision&ID='.DossierTransaction::getDossierTransactionId($prod_id,$userAuth->id)));
+                                    return redirect(url('member/dossier?action=download_eoi&ID='.DossierTransaction::getDossierTransactionId($prod_id,$userAuth->id)));
                                 }
                             }else{
                                 return dd('Message from IEA to AFA sent');

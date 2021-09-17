@@ -196,7 +196,7 @@
                                         @if (Auth::user()->hasAfa())
                                             @if (Auth::user()->isCheckedDossierTransaction($prod_id = Auth::user()->dossierTransaction()->first()->product_id))
                                                 <div class="row col-lg-12 m-15px-t">
-                                                    @if ($status = Auth::user()->dossierTransactionIsComplete(Auth::user()->dossierTransaction()->first()->product_id) === 'to_be_completed')
+                                                    @if ($status = Auth::user()->dossierTransactionIsComplete(Auth::user()->dossierTransaction()->first()->product_id) !== 'not_completed')
                                                         <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-info white-color">@lang("app.txt.file.current")</i></small></span>
                                                     @else
                                                         <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-info white-color">@lang('app.waiting')</i></small></span>
@@ -233,7 +233,7 @@
                                                 </span>
                                             @endif
                                             <div class="row col-lg-12 m-15px-t">
-                                                <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b>  {!! $status==='complete'?'<i class="badge badge-pill badge-success white-color">'.trans("app.txt.finalized").'</i>': ($status==='to_be_completed'?'<i class="badge badge-pill badge-info white-color">'.trans("app.waiting").'</i>':'<i class="badge badge-pill white-color">'.trans("app.txt.not_available").'</i>') !!} </small></span>
+                                                <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b>  {!! ($status==='complete'||$status==='validate')?'<i class="badge badge-pill badge-success white-color">'.trans("app.txt.finalized").'</i>': ($status==='to_be_completed'?'<i class="badge badge-pill badge-info white-color">'.trans("app.waiting").'</i>':'<i class="badge badge-pill white-color">'.trans("app.txt.not_available").'</i>') !!} </small></span>
                                             </div>
                                         @endif
                                     @else
@@ -242,6 +242,128 @@
                                         </div>
                                     @endif
                                 @endif
+                            </div>
+                        </div>
+
+                        <div class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon grenate-bg">
+                                <i class="fa fa-check"></i>
+                            </div>
+                            <div class="vertical-timeline-content">
+                                <h2>@lang('app.txt.confirm_purchase')</h2>
+                                <p>@lang('app.txt.dossier.confirm_purchase.description')</p>
+                                @if (Auth::user()->hasAfa())
+                                    @php
+                                        $dt = Auth::user()->dossierTransactionIsComplete($prod_id);
+                                    @endphp
+                                    @if ($dt!=='validate')
+                                        <div class="row col-lg-12">
+                                            <a href="javascript:void(0)" class="m-btn m-btn-sm m-btn-theme2nd col-lg-12" onclick="showAfa({{ Auth::user()->afa }})">@lang('app.btn.confirm_purchase')</a>
+                                        </div>
+                                    @endif
+                                    <div class="row col-lg-12 m-15px-t">
+                                        <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b>  {!! $dt==='validate'?'<i class="badge badge-pill badge-success white-color">'.trans("app.txt.confirmed").'</i>':'<i class="badge badge-pill badge-info white-color">'.trans("app.waiting").'</i>' !!} </small></span>
+                                    </div>
+                                    @if ($dt==="validate")
+                                        <span class="vertical-date">        
+                                            {{App\Models\DossierTransaction::getDossierTransactionInfo($prod_id,Auth::user()->id)->updated_at->diffForHumans()}} <br/>
+                                            <small>{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', App\Models\DossierTransaction::getDossierTransactionInfo($prod_id,Auth::user()->id)->updated_at)->format('d F')}},{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', App\Models\DossierTransaction::getDossierTransactionInfo($prod_id,Auth::user()->id)->updated_at)->year }}</small>
+                                        </span>
+                                    @endif
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon grenate-bg">
+                                <i class="fa fa-download"></i>
+                            </div>
+                            <div class="vertical-timeline-content">
+                                <h2>@lang('app.txt.dossier.eoi.download')</h2>
+                                <p>@lang('app.txt.dossier.eoi.download.description')</p>
+                                @if (Auth::user()->hasAfa())
+                                    @if ($dt==="validate")
+                                        @php
+                                            $prod = App\Models\Product::whereId($prod_id)->first();
+                                        @endphp
+                                        @if ($prod->eoiIsFinalized())
+                                            <div class="row col-lg-12 m-15px-t">
+                                                <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-success white-color">@lang('app.txt.downloaded')</i></small></span>
+                                            </div>
+                                            <span class="vertical-date">        
+                                                {{App\Models\DossierTransaction::getDossierTransactionInfo($prod_id,Auth::user()->id)->updated_at->diffForHumans()}} <br/>
+                                                <small>{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', App\Models\DossierTransaction::getDossierTransactionInfo($prod_id,Auth::user()->id)->updated_at)->format('d F')}},{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', App\Models\DossierTransaction::getDossierTransactionInfo($prod_id,Auth::user()->id)->updated_at)->year }}</small>
+                                            </span>
+                                        @else
+                                            <div class="row col-lg-12">
+                                                <a href="{{ url($prod->productEoi->first()->image->first()->filepath) }}" target="_blank" class="m-btn m-btn-sm m-btn-theme2nd col-lg-6">@lang('app.btn.download')</a>
+                                            </div>
+                                            <div class="row col-lg-12 m-15px-t">
+                                                <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-danger white-color">@lang('app.txt.to_download')</i></small></span>
+                                            </div>
+                                        @endif
+                                    @else
+                                        <div class="row col-lg-12 m-15px-t">
+                                            <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-info white-color">@lang('app.txt.not_available')</i></small></span>
+                                        </div>
+                                    @endif
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon grenate-bg">
+                                <i class="fa fa-paper-plane"></i>
+                            </div>
+                            <div class="vertical-timeline-content">
+                                <h2>@lang('app.txt.dossier.eoi.finalized')</h2>
+                                <p>@lang('app.txt.dossier.eoi.finalized.description')</p>
+                                @if (Auth::user()->hasAfa())
+                                    @if ($dt==="validate")
+                                        @if (!$prod->eoiIsFinalized())
+                                            <div class="col-lg-12">
+                                                <button href="javascript:void(0)" class="m-btn m-btn-sm m-btn-theme float-left" id="btnUploadFileEoi" onclick="uploadFileEoi({{$prod->productEoi->first()->image->first()->id}})" value="{{ $prod->productEoi->first()->image->first()->id }}">@lang('app.btn.upload')</button>
+                                            </div>
+                                            <div class="row col-lg-12">
+                                                <div class="col-lg-10">
+                                                    <span id="spnFilePathEoi"></span>
+                                                    <form id="formSendEoiFile">
+                                                        <input type="file" id="FileUploadEoi" onchange="fileUploadChangeEoi({{$prod->productEoi->first()->image->first()->id}})" name="file_eoi" style="display: none" />
+                                                        <input type="hidden" value="{{$prod->productEoi->first()->image->first()->id}}" id="eoi_id" name="eoi_id"/>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <div class="row col-lg-12 m-15px-t">
+                                                <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-danger white-color">@lang('app.txt.to_upload')</i></small></span>
+                                            </div>
+                                        @else
+                                            <div class="row col-lg-12">
+                                                <div class="col-lg-10">
+                                                    <p><b>@lang('app.txt.reference') : </b> {{ $prod->productEoi->first()->image->first()->filename }}</p>
+                                                </div>
+                                                <div class="col-lg-2 m-25px-t">
+                                                    <a href="{!! url('uploads/pdf/transaction/'.$prod->productEoi->first()->image->first()->filename) !!}" target="_blank" class="m-btn m-btn-sm m-btn-theme2nd">@lang('app.txt.detail')</a>       
+                                                </div>
+                                            </div>
+                                            <div class="row col-lg-12 m-15px-t">
+                                                <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-success white-color">@lang('app.txt.finalized')</i></small></span>
+                                            </div>
+                                            <span class="vertical-date">
+                                                @php
+                                                    $dateEoiFile = File::lastModified(public_path('/uploads/pdf/transaction/'.$prod->productEoi->first()->image->first()->filename));
+                                                    $timestampToCarbon = Carbon\Carbon::createFromTimestamp($dateEoiFile);                                                    
+                                                @endphp     
+                                                {{$timestampToCarbon->diffForHumans()}} <br/>
+                                                <small>{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $timestampToCarbon)->format('d F')}},{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $timestampToCarbon)->year }}</small>
+                                            </span>
+                                        @endif
+                                    @else
+                                        <div class="row col-lg-12 m-15px-t">
+                                            <span class="col-lg-12 text-right"><small><b>@lang('app.status') : </b> <i class="badge badge-pill badge-info white-color">@lang('app.txt.not_available')</i></small></span>
+                                        </div>
+                                    @endif
+                                @endif
+                                
                             </div>
                         </div>
 
@@ -277,11 +399,13 @@
                 <div class="modal-body">
                     <form action="{{ route("afa.dossier.update_dt") }}" id="confirmPurchaseForm" method="POST">
                         {{ csrf_field() }}
-                        @php
-                            $dt = App\Models\DossierTransaction::getDossierTransactionInfo($prod_id,Auth::id());
-                            $prod = App\Models\Product::whereId($prod_id)->first();
-                        @endphp
-                        {!! trans('member.tobuy.dt.message_to_member_after_info_complete.confirm',['date'=>Carbon\Carbon::now()->format('m-d-Y'),'hour'=>Carbon\Carbon::now()->format('H:i:m'),'name'=>Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name,'title'=>$prod->title,'lottype'=>$dt->lot_type,'lotlevel'=>$dt->lot_level,'lotid'=>$dt->lot_id,'price'=>$dt->final_sales_price]) !!}
+                        @if(Auth::user()->hasCurrentTransaction())
+	                        @php
+	                            $dt = App\Models\DossierTransaction::getDossierTransactionInfo($prod_id,Auth::id());
+	                            $prod = App\Models\Product::whereId($prod_id)->first();
+	                        @endphp
+	                        {!! trans('member.tobuy.dt.message_to_member_after_info_complete.confirm',['date'=>Carbon\Carbon::now()->format('m-d-Y'),'hour'=>Carbon\Carbon::now()->format('H:i:m'),'name'=>Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name,'title'=>$prod->title,'lottype'=>$dt->lot_type,'lotlevel'=>$dt->lot_level,'lotid'=>$dt->lot_id,'price'=>$dt->final_sales_price]) !!}
+	                    @endif
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -301,14 +425,16 @@
                     <h4 class="modal-title white-color"> @lang('app.message')<span></span></h4>
                 </div>
                 <div class="modal-body">
+                @if(Auth::user()->hasCurrentTransaction())
                     @php
                         $dt = App\Models\DossierTransaction::getDossierTransactionInfo($prod_id,Auth::id());
                         $prod = App\Models\Product::whereId($prod_id)->first();
-                        $seller = "Nom du vendeur";
+                        $seller = $prod->author->name;
                         $downloadeoilink = url($prod->productEoi->first()->image->first()->filepath);
                         $uploadeoilink = route('member.dossier');
                     @endphp
                     {!! trans('member.tobuy.eoi.message_to_member_for_download_eoi',['date'=>Carbon\Carbon::now()->format('m-d-Y'),'hour'=>Carbon\Carbon::now()->format('H:i:m'),'name'=>Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name,'prodtitle'=>$prod->title,'lottype'=>$dt->lot_type,'lotlevel'=>$dt->lot_level,'lotid'=>$dt->lot_id,'price'=>$dt->final_sales_price,'seller'=>$seller,'afa'=>Auth::user()->afa->name,'downloadeoilink'=>$downloadeoilink,'uploadeoilink'=>$uploadeoilink]) !!}
+                @endif
                 </div>
                 <div class="modal-footer">
                     <div class="float-right m-15px-t">
@@ -429,7 +555,7 @@
             });
 
             $.ajax({               
-                url: '{{ route("member.dossier.upload_mr") }}',
+                url: '{{ route("member.dossier.upload_eoi") }}',
                 data: fileToUpload,
                 processData: false,
                 contentType: false,
@@ -487,6 +613,94 @@
             });  
         }
 
+        // Expression of Interest script
+        $(function () {
+            var fileuploadEoi = $("#FileUploadEoi");
+            var filePathEoi = $("#spnFilePathEoi");
+            var buttonEoi = $("#btnUploadFileEoi");
+            var folderIdEoi = buttonEoi.val();
+            var buttonsendEoi = '<button type="button" class="m-btn m-btn-sm m-btn-theme4rd m-15px-l" onclick="sendFileEoi('+folderIdEoi+')" title={{trans("app.btn.send")}} id="btnSendFileEoi"><i class="fa fa-paper-plane"></i></button>';
+
+            buttonEoi.click(function () {
+                // fileupload.click();
+                fileuploadEoi.change(function () {
+                    var fileNameEoi = $(this).val().split('\\')[$(this).val().split('\\').length - 1];
+                    filePathEoi.html("<b>Selected File: </b>" + fileNameEoi +" " +buttonsendEoi);
+                });
+            });
+        });
+
+        function uploadFileEoi(){
+            var fileuploadEoi = $("#FileUploadEoi");
+            var filePathEoi = $("#spnFilePathEoi");
+            var buttonEoi = $("#btnUploadFileEoi");
+            var folderIdEoi = buttonEoi.val();
+            var buttonsend = '<button type="button" class="m-btn m-btn-sm m-btn-theme4rd" onclick="sendFileEoi('+folderIdEoi+')" id="btnSendFileEoi">Send</button>';
+
+            fileuploadEoi.click();
+        }
+
+        function fileUploadChangeEoi(folderIdEoi){
+            var fileNameEoi = $('#FileUploadEoi').val().split('\\')[$('#FileUpload1').val().split('\\').length - 1];
+            var filePathEoi = $("#spnFilePathEoi");
+            var buttonEoi = $("#btnUploadFileEoi");
+            var buttonsendEoi = '<button type="button" class="m-btn m-btn-sm m-btn-theme4rd" onclick="sendFileEoi('+folderIdEoi+')" id="btnSendFileEoi">Send</button>';
+                filePathEoi.html("<b>Selected File: </b>" + fileNameEoi +" " +buttonsendEoi);
+        }
+
+        function sendFileEoi(eoiId){
+            var fileToUploadEoi = new FormData();
+
+            // show loading icon
+            loadingPage();
+
+            fileToUploadEoi.append('file_eoi', $( '#FileUploadEoi' )[0].files[0] );
+            fileToUploadEoi.append('eoi_id', $( '#eoi_id' ).val() );
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({               
+                url: '{{ route("member.dossier.upload_eoi") }}',
+                data: fileToUploadEoi,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                dataType:'json',
+                enctype: 'multipart/form-data',
+                success: function( data ){
+                    // hide loading icon
+                    stopLoadingPage();
+
+                    if(data.response == 'false'){
+					    swal("{{ trans('app.txt.upload_eoi') }}", "{{ trans('app.txt.file_upload_error') }}", "error");
+                    }else{
+                        // show loading icon
+                        loadingPage();
+
+                        swal({
+                            title: "{{ trans('app.txt.finalized_eoi') }}", 
+                            text: "{{ trans('app.txt.eoi_sent') }}", 
+                            type: "success"
+                            },
+                        function(){ 
+                            // reload page
+                            location.reload();
+                        }
+                        );
+                    }
+                },
+                error:function(){
+                    // hide loading icon
+                    stopLoadingPage();
+                    swal("{{ trans('app.txt.upload_eoi') }}", "{{ trans('app.txt.upload_error') }}", "error");
+                }
+            });  
+        }
+
         $(function(){
             // show modal confirm purchase or download EOI
             if("{{ Request::get('action')!==null && Request::get('ID')!==null }}"){
@@ -508,7 +722,10 @@
                         $('#confirmPurchaseModal').modal('show');
                     }, 400);
                 }else{
-                    $('#downloadEoiModal').modal('show');
+                    var checkEoi = ("{{ Request::get('ID')?App\Models\Product::whereId(App\Models\DossierTransaction::whereId(Request::get('ID'))->first()->product_id)->first()->eoiIsFinalized():"" }}");
+                    if(!checkEoi){
+                        $('#downloadEoiModal').modal('show');
+                    }
                 }
             }
         });
