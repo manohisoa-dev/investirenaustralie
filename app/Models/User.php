@@ -57,7 +57,8 @@ class User extends Authenticatable {
         $query->select('users.id AS uid', 'users.name AS name',
             'users.image_id AS image_id', 'users.email as email',
             'users.created_at as created_at', 'users.role as role', 'users.status as status',
-            'users.author_id as author_id','localizations.country as country','localizations.locality as locality','users.type_users_id as type_users_id');
+            'users.author_id as author_id', 'localizations.country as country',
+            'localizations.locality as locality', 'users.type_users_id as type_users_id');
         // search results based on user input
         \Request::input('id') and $query->where('users.id', \Request::input('id'));
         \Request::input('name') and $query->where('users.name', 'like', '%' . \Request::input
@@ -669,12 +670,13 @@ class User extends Authenticatable {
                     }
                     if ($value = $request->input('orga_mobile_phone')) {
                         $ct_phone = $request->input('indicatif') . $value;
-                    if ($value = $request->input('orga_phone')){
-                        $ct_phone = '('.$request->input('indicatif').')'.$value;
+                    }
+                    if ($value = $request->input('orga_phone')) {
+                        $ct_phone = '(' . $request->input('indicatif') . ')' . $value;
                         $userinfos->update(["orga_phone" => $ct_phone]);
                     }
-                    if ($value = $request->input('orga_mobile_phone')){
-                        $ct_phone = '('.$request->input('indicatif3').')'.$value;
+                    if ($value = $request->input('orga_mobile_phone')) {
+                        $ct_phone = '(' . $request->input('indicatif3') . ')' . $value;
                         $userinfos->update(["orga_mobile_phone" => $ct_phone]);
                     }
                     if ($value = $request->input('orga_email'))
@@ -715,8 +717,9 @@ class User extends Authenticatable {
                         $userinfos->update(["orga_email" => $value]);
                     if ($value = $request->input('orga_phone')) {
                         $ct_phone = $request->input('indicatif') . $value;
-                    if ($value = $request->input('orga_phone')){
-                        $ct_phone = '('.$request->input('indicatif').')'.$value;
+                    }
+                    if ($value = $request->input('orga_phone')) {
+                        $ct_phone = '(' . $request->input('indicatif') . ')' . $value;
                         $userinfos->update(["orga_phone" => $ct_phone]);
                     }
                     if ($value = $request->input('orga_website'))
@@ -730,8 +733,9 @@ class User extends Authenticatable {
                         $userinfos->update(["contact_email" => $value]);
                     if ($value = $request->input('contact_phone')) {
                         $ct_phone = $request->input('indicatif') . $value;
-                    if ($value = $request->input('contact_phone')){
-                        $ct_phone = '('.$request->input('indicatif2').')'.$value;
+                    }
+                    if ($value = $request->input('contact_phone')) {
+                        $ct_phone = '(' . $request->input('indicatif2') . ')' . $value;
                         $userinfos->update(["contact_phone" => $ct_phone]);
                     }
                     // Create CRM MetaData
@@ -767,6 +771,7 @@ class User extends Authenticatable {
                     $userinfos->update(["contact_email" => $value]);
                 if ($value = $request->input('contact_phone')) {
                     $userinfos->update(["contact_phone" => $value]);
+                }
                 if ($value = $request->input('contact_phone')){
                     $ct_phone = '('.$request->input('indicatif2').')'.$value;
                     $userinfos->update(["contact_phone" => $ct_phone]);
@@ -788,6 +793,8 @@ class User extends Authenticatable {
                     $userinfos->update(["orga_email" => $value]);
                 if ($value = $request->input('orga_phone')) {
                     $ct_phone = $request->input('indicatif') . $value;
+                }
+                
                 if ($value = $request->input('orga_phone')){
                     $ct_phone = '('.$request->input('indicatif').')'.$value;
                     $userinfos->update(["orga_phone" => $ct_phone]);
@@ -796,30 +803,22 @@ class User extends Authenticatable {
                     $userinfos->update(["orga_website" => $value]);
                 if ($value = $request->input('orga_operation_range'))
                     $userinfos->update(["orga_operation_range" => $value]);
-
-                // Create Contact MetaData
                 if ($value = $request->input('contact_name'))
                     $userinfos->update(["contact_name" => $value]);
                 if ($value = $request->input('contact_email'))
                     $userinfos->update(["contact_email" => $value]);
                 if ($value = $request->input('contact_phone')) {
                     $ct_phone = $request->input('indicatif') . $value;
+                }
                 if ($value = $request->input('contact_phone')){
                     $ct_phone = '('.$request->input('indicatif2').')'.$value;
                     $userinfos->update(["contact_phone" => $ct_phone]);
                 }
-
-                // Bank data
                 if ($value = $request->input('bank_iban'))
                     $userinfos->update(["bank_iban" => $value]);
                 if ($value = $request->input('bank_bic'))
                     $userinfos->update(["bank_bic" => $value]);
-
-                // CRM Prodvider data
-                // if ($value = $request->input('crm_name'))
-                //     $userinfos->update(["crm_name" => $value]);
-                // if ($value = $request->input('crm_email'))
-                //     $userinfos->update(["crm_email" => $value]);
+                
                 break;
             case 2:
                 // Create Organisation MetaData
@@ -838,7 +837,6 @@ class User extends Authenticatable {
                 }
                 if ($value = $request->input('orga_website'))
                     $userinfos->update(["orga_website" => $value]);
-
                 // Create Contact MetaData
                 if ($value = $request->input('contact_name'))
                     $userinfos->update(["contact_name" => $value]);
@@ -846,6 +844,7 @@ class User extends Authenticatable {
                     $userinfos->update(["contact_email" => $value]);
                 if ($value = $request->input('contact_phone')) {
                     $userinfos->update(["contact_phone" => $value]);
+                }
                 if ($value = $request->input('contact_phone')){
                     $ct_phone = '('.$request->input('indicatif2').')'.$value;
                     $userinfos->update(["contact_phone" => $ct_phone]);
