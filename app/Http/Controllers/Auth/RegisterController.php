@@ -694,9 +694,9 @@ class RegisterController extends Controller
             if($role !== 'seller' || session('seller_class')!=='non_professional_natural_persons' && session('seller_class')!=='seller_by_afa'){
 
                 if(session('seller_class')!=='real_estate_professionals'){
-                    $indicatif = $datas['indicatif'];
+                    $indicatif = '('.$datas['indicatif'].')';
                 }else{
-                    $indicatif = '+61';
+                    $indicatif = '(+61)';
                 }
                 
                 if(isset($datas['contact_phone'])){
