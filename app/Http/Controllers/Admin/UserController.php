@@ -500,7 +500,7 @@ class UserController extends Controller {
         }
         $user->status = 'active';
         $user->save();
-        Notify::success("L'utilsateur a Ã©tÃ© activÃ© avec succÃ©s");
+        Notify::success("L'utilsateur a été activé avec succès");
         return redirect(route('admin.user.index'));
     }
 
@@ -511,6 +511,17 @@ class UserController extends Controller {
         if ($value = $request->old('content'))
             $mail->content = $value;
         return $this->view("contact", ['user' => $user, 'mail' => $mail]);
+    }
+    
+    public function contacterUser(Request $request)
+    {
+        $mail = new Mail();
+        $mail->subject = $request->subject;
+        $mail->content = $request->content;
+        $mail->status = $request->method;
+        $mail->sender_id = Auth::user()->id;
+        $mail->save();
+        return back()->with('success', "La message a été bien envoyé");
     }
 
     public function aplRelation(Request $request, User $user) {

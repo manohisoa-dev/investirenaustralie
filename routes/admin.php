@@ -97,6 +97,7 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::get('user/show/{role}/{user}', 'UserController@showPart')->name('user.part.show');
     Route::get('user/relation-apl/{user}', 'UserController@aplRelation')->name('user.relation');
     Route::post('ajaxDropRelation', 'UserController@ajaxDropRelation')->name('ajaxDropRelation');  
+    Route::post('contacterUser', 'UserController@contacterUser')->name('contacterUser');  
     
     Route::get('user/show/seller', 'UserController@showSeller')->name('user.show.seller');
     Route::get('user/show/afa', 'UserController@showAfa')->name('user.show.afa');
@@ -368,6 +369,7 @@ Route::prefix('collaborators')->namespace('Admin')->as('admin.')->middleware(["a
     Route::get('desactiver/{user}', 'UserController@desactiver')->name('collaborators.admin.user.desactiver');
     Route::get('active/{user}', 'UserController@active')->name('collaborators.admin.user.active');
     Route::get('contact/{user}' , 'UserController@contact')->name('collaborators.admin.user.contact');
+    Route::post('contacterUser', 'UserController@contacterUser')->name('collaborators.admin.contacterUser');     
     Route::get('show/{user}', 'UserController@show')->name('collaborators.admin.user.show');
     Route::get('user/show/{role}/{user}', 'UserController@showPart')->name('collaborators.admin.user.part.show');
     Route::get('user/show/seller', 'UserController@showSeller')->name('collaborators.admin.user.show.seller');

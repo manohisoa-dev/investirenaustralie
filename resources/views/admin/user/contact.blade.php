@@ -32,7 +32,7 @@
                 <h5>Contacter {{$user->name}} ({{$user->email}})</h5>
             </div>
             <div class="ibox-content">
-				<form action="{{route('admin.user.contact', $user)}}" method="post" id="commentform" class="contact-form" >
+				<form action="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.contacterUser'):route('admin.contacterUser')}}" method="post" id="commentform" class="contact-form" >
 					{{ csrf_field() }}
 					<div class="form-group">
 						<label for="title">@lang('app.subject')</label>
@@ -53,4 +53,37 @@
 		</div>
 	</div>
 </div>
+@endsection
+
+@section('custom-script')
+<script>
+	$(document).ready(function(){		
+		$('#commentform').validate({
+			ignore: [],
+			rules: {
+				subject: {
+					required: true
+				},
+				content: {
+					required: true
+				}
+			},
+			messages: {
+				subject: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				content: {
+					required: "@lang('app.txt.champobligatoire')"
+				}
+			},
+			errorPlacement: function ( error, element ) {
+				if(element.parent().hasClass('input-group')){
+					error.insertBefore( element.parent() );
+				}else{
+					error.insertAfter( element );
+				}
+			},
+		});
+	});
+</script>
 @endsection
