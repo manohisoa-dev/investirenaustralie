@@ -7,12 +7,15 @@ use Auth;
 use Validator;
 
 use App\Models\User;
-use App\Models\Mail;
+use App\Models\Email;
 use App\Models\MailUser;
 use App\Notifications\NewMail;
 use App\Models\Localisation;
 use App\Models\Role;
 use App\Models\Newsletter;
+
+use App\Mail\MailTemplate;
+use Mail;
 
 class MailController extends Controller {
     /**
@@ -93,7 +96,7 @@ class MailController extends Controller {
      * @param  App\Models\Mail $mail
      * @return Illuminate\Http\Response
      */
-    public function view(Request $request, Mail $mail) {
+    public function view(Request $request, Email $mail) {
         $this->middleware('auth');
 
         $mail->load('sender')->load('receiver');
@@ -113,7 +116,6 @@ class MailController extends Controller {
      */
     public function all(Request $request, $filter = 'all') {
         $user = Auth::user();
-
         $title = __('app.admin.mail.list');
 
         switch ($filter) {
@@ -132,16 +134,16 @@ class MailController extends Controller {
                 $items = $user->mails()->wherePivot('read', 0);
                 break;
             case "outbox":
-                $items = Mail::orderBy('created_at', 'desc');
+                $items = Email::orderBy('created_at', 'desc');
                 $items = $items->where('sender_id', $user->id);
                 break;
             case "draft":
             case "model":
-                $items = Mail::orderBy('created_at', 'desc');
+                $items = Email::orderBy('created_at', 'desc');
                 $items = $items->where('status', $filter);
                 break;
             case "all":
-                $items = Mail::orderBy('created_at', 'desc');
+                $items = Email::orderBy('created_at', 'desc');
                 $this->middleware('role:admin');
                 break;
         }
@@ -256,7 +258,7 @@ class MailController extends Controller {
 
     public function ajaxSendEmail(Request $request) {
         //save email
-        $item = new Mail();
+        $item = new Email();
         $item->subject = $request->subject;
         $item->content = $request->content;
         $item->sender_id = $request->sender_id;
@@ -272,9 +274,15 @@ class MailController extends Controller {
         $mailItem->save();
         
         //envoyer un email
-        $email_send = $request->sender_email;
-        $receiverAddress = 'dev4.easydata@gmail.com';
-        //Mail::to($email_send)->send(new MailTemplate($request->content, $request->subject));
+        $email_to = 'iea.dev.v2@gmail.com';
+        $content = ['title' => '', 'body' => $request->content];
+        Mail::to($email_to)->send(new MailTemplate($content, $request->subject));                     
+        return response()->json(['success' => 'true']);
+    }
+    
+    public function ajaxDeleteEmail(Request $request)
+    {
+        Email::where('id', $request->id_email)->delete();
         return response()->json(['success' => 'true']);
     }
 

@@ -10,7 +10,7 @@ use App\Notifications\AccountActivated;
 use App\Notifications\AccountDisabled;
 
 use App\Models\User;
-use App\Models\Mail;
+use App\Models\Email;
 use App\Models\MailUser;
 use App\Models\Country;
 use App\Models\State;
@@ -37,7 +37,7 @@ class UserController extends Controller
         $this->middleware('auth');
         $this->middleware('auth:admin');
         
-        $mail = new Mail();
+        $mail = new Email();
         if($value = $request->old('subject'))    $mail->subject = $value;
         if($value = $request->old('content'))    $mail->content = $value;
         
@@ -68,7 +68,7 @@ class UserController extends Controller
                         ->withInput();
         }
         
-        $item = new Mail();
+        $item = new Email();
         $item->subject = $request->subject;
         $item->content = $request->content;
         

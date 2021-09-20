@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\Message;
 use App\Models\Order;
 use App\Models\User;
-use App\Models\Mail;
+use App\Models\Email;
 use App\Models\MailUser;
 use App\Models\Localisation;
 use App\Models\Role;

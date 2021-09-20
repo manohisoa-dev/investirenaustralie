@@ -1,0 +1,169 @@
+<?php
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Email extends Model {
+
+    use SoftDeletes;
+    public $guarded = ["id","created_at","updated_at"];
+    protected $dates = ['deleted_at'];
+
+    public static function findRequested()
+    {
+        $query = Email::query();
+        // search results based on user input
+        \Request::input('id') and $query->where('id',\Request::input('id'));
+        \Request::input('subject') and $query->where('subject','like','%'.\Request::input('subject').'%');
+        \Request::input('content') and $query->where('content','like','%'.\Request::input('content').'%');
+        \Request::input('copied_from') and $query->where('copied_from',\Request::input('copied_from'));
+        \Request::input('status') and $query->where('status','like','%'.\Request::input('status').'%');
+        \Request::input('sender_id') and $query->where('sender_id',\Request::input('sender_id'));
+        \Request::input('created_at') and $query->where('created_at',\Request::input('created_at'));
+        \Request::input('updated_at') and $query->where('updated_at',\Request::input('updated_at'));
+        
+        // sort results
+        \Request::input("sort") and $query->orderBy(\Request::input("sort"),\Request::input("sortType","asc"));
+
+        // paginate results
+        return $query->paginate(15);
+    }
+    
+    public static function allEmail()
+    {
+        $query = Email::query();        
+        $query->join('mails_users','mails_users.mail_id','=','emails.id');
+        //$query->join('users','users.id','=','mails_users.user_id');
+        //$query->join('roles','roles.id','=','users.role');
+        \Request::input('id') and $query->where('id',\Request::input('id'));
+        \Request::input('subject') and $query->where('subject','like','%'.\Request::input('subject').'%');
+        \Request::input('content') and $query->where('content','like','%'.\Request::input('content').'%');
+        \Request::input('copied_from') and $query->where('copied_from',\Request::input('copied_from'));
+        \Request::input('status') and $query->where('status','like','%'.\Request::input('status').'%');
+        \Request::input('sender_id') and $query->where('sender_id',\Request::input('sender_id'));
+        \Request::input('created_at') and $query->where('created_at',\Request::input('created_at'));
+        \Request::input('updated_at') and $query->where('updated_at',\Request::input('updated_at'));
+        
+        // sort results
+        \Request::input("sort") and $query->orderBy(\Request::input("sort"),\Request::input("sortType","asc"));
+        // paginate results
+        return $query->paginate(15);
+    }
+    
+    public static function listeEmailByStatuts($status,$id_user)
+    {
+        $query = Email::query();
+        if($status == 'outbox'){
+            $query->where("sender_id","$id_user");
+        }elseif($status == 'inbox'){
+            $query->join('mails_users','emails.id','=','mails_users.mail_id');
+            $query->where("mails_users.user_id","$id_user")->get(['emails.*','mails_users.user_id','mails_users.mail_id']);
+        }elseif($status == 'model'){
+            $query->where("status",'model');
+        }elseif($status == 'draft'){
+            $query->where("status",'draft');
+            $query->where("sender_id","$id_user");
+        }elseif($status == 'spam'){
+            $query->join('mails_users','emails.id','=','mails_users.mail_id');
+            $query->where("mails_users.user_id","$id_user");
+            $query->where("mails_users.is_spam",1);
+        }
+        
+        \Request::input('id') and $query->where('id',\Request::input('id'));
+        \Request::input('subject') and $query->where('subject','like','%'.\Request::input('subject').'%');
+        \Request::input('content') and $query->where('content','like','%'.\Request::input('content').'%');
+        return $query->paginate(15);
+    }
+    
+    public static function inboxcount($id_user)
+    {
+        $query = Email::query();
+        $query->join('mails_users','emails.id','=','mails_users.mail_id');
+        $query->where("mails_users.user_id","$id_user");
+        $query->where("mails_users.read",0);
+        return $query->count();
+    }
+    
+    public static function draftCount($id_user)
+    {
+        $query = Email::query();
+        $query->where("status",'draft');
+        $query->where("sender_id","$id_user");
+        return $query->count();
+    }
+    
+    public static function inboxlist($id_user)
+    {
+        $query = Email::query();
+        $query->join('mails_users','emails.id','=','mails_users.mail_id');
+        $query->where("mails_users.user_id","$id_user");
+        $query->where("mails_users.read",0);
+        $query->orderBy('mails_users.created_at','DESC');
+        return $query->paginate(5);
+    }
+
+    public static function validationRules( $attributes = null )
+    {
+        $rules = [
+            'subject' => 'string',
+            'content' => 'string',
+            'copied_from' => 'required',
+            'status' => 'required|string|max:20',
+            'sender_id' => 'required',
+        ];
+
+        // no list is provided
+        if(!$attributes)
+            return $rules;
+
+        // a single attribute is provided
+        if(!is_array($attributes))
+            return [ $attributes => $rules[$attributes] ];
+
+        // a list of attributes is provided
+        $newRules = [];
+        foreach ( $attributes as $attr )
+            $newRules[$attr] = $rules[$attr];
+        return $newRules;
+    }
+
+    /**
+     * Excerpt
+     *
+     * @param int $length
+     * @return String
+     */
+    public function excerpt($length = 100)
+    {
+        return substr($this->content, 0, $length);
+    }
+
+    /**
+     * Get the sender associated with the mail.
+     */
+    public function sender()
+    {
+        return $this->belongsTo(User::class, 'sender_id', 'id');
+    }
+
+    /**
+     * Get the receiver associated with the mail.
+     */
+    public function receiver()
+    {
+        return $this->belongsTo(User::class, 'receiver_id', 'id');
+    }
+
+    /**
+     * An user can have many mails with mails_users pivot table
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\ManyToMany
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'mails_users', 'mail_id', 'user_id');
+    }
+
+}
+

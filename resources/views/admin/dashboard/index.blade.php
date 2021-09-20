@@ -86,8 +86,8 @@
                     <h3><i class="fa fa-envelope-o"></i> Nouveaux messages</h3>
                     <small>
 						<i class="fa fa-tim"></i> 
-						Vous avez {{\App\Models\Mail::inboxcount(Auth::user()->id)}} 
-						nouveaux messages et {{\App\Models\Mail::draftCount(Auth::user()->id)}} en attente dans le dossier brouillon.
+						Vous avez {{\App\Models\Email::inboxcount(Auth::user()->id)}} 
+						nouveaux messages et {{\App\Models\Email::draftCount(Auth::user()->id)}} en attente dans le dossier brouillon.
 					</small>
                 </div>
                 <div class="ibox-content">

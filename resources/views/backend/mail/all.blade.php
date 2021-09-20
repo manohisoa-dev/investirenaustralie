@@ -130,6 +130,42 @@ function send_new_email()
 		$(this).addClass('input-error');
 	}
 }
+
+function delete_email(id_email)
+{
+	swal({
+		title: "@lang('app.table.confirm_delete')",
+		type: "warning",
+		showCancelButton: true,
+		confirmButtonColor: '#ff3547',
+		confirmButtonText: "@lang('app.yes')",
+		cancelButtonText: "@lang('app.no')",
+		closeOnConfirm: false,
+		closeOnCancel: false
+	 },
+	 function(isConfirm){	
+	   if (isConfirm){
+			 $.ajax({
+				url : "{{ route('ajaxDeleteEmail') }}",
+				type: "POST",
+				dataType: "JSON",
+				data:{"_token": "{{ csrf_token() }}",'id_email':id_email},
+				success: function(data)
+				{
+					swal("", "@lang('app.dropzone.delete_fonds_yes')", "success");
+					location.reload();
+				},
+				error: function (jqXHR, textStatus, errorThrown)
+				{
+					swal("", "@lang('app.jquery.error_delete')", "error");
+					location.reload();
+				}
+			}); 
+		} else {
+			swal("", "@lang('app.jquery.delete_cancel')", "error");
+		}
+	 });
+}
 </script>
 
 <div class="modal inmodal fade" id="modal_form_new_email" role="dialog" data-keyboard="false" data-backdrop="static">

@@ -9,7 +9,7 @@ use Validator;
 
 use App\Models\Product;
 use App\Models\User;
-use App\Models\Mail;
+use App\Models\Email;
 use App\Models\MailUser;
 use App\Models\Blog;
 use App\Role;
@@ -18,6 +18,9 @@ use App\Notifications\NewMail;
 use Jleon\LaravelPnotify\Notify;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
+
+use App\Mail\MailTemplate;
+use Mail;
 
 class AdminController extends Controller {
     /**
@@ -54,7 +57,7 @@ class AdminController extends Controller {
         $recent['products'] = Product::orderBy('created_at', 'desc')->ofStatus('published')->take($this->recentSize)->get();
         $recent['sales'] = Product::orderBy('created_at', 'desc')->ofStatus('paid')->take($this->recentSize)->get();
         $recent['orders'] = Product::orderBy('created_at', 'desc')->ofStatus('ordered')->take($this->recentSize)->get();
-        $recent['mails'] = Mail::orderBy('created_at', 'desc')->take($this->recentSize)->get();
+        $recent['mails'] = Email::orderBy('created_at', 'desc')->take($this->recentSize)->get();
 
         $info = \DB::table('users')->select(\DB::raw('DATE(created_at) as date'), \DB::raw
             ('count(*) as count'))->groupBy('date')->get();
@@ -89,12 +92,12 @@ class AdminController extends Controller {
     *
     *
     */
-    public function compose(Request $request, Mail $mail = null) {
+    public function compose(Request $request, Email $mail = null) {
         $this->middleware('auth');
         $this->middleware('auth:admin');
 
         if (!$mail || !$mail->id) {
-            $mail = new Mail();
+            $mail = new Email();
         }
         //$users = User::isActive()->where('id', '<>', \Auth::user()->id)->get();
         $users = User::where('id', '<>', \Auth::user()->id)->where('status', 'active')->get();
@@ -104,11 +107,9 @@ class AdminController extends Controller {
     /*
     *
     */
-    public function sendMail(Request $request, Mail $mail = null) {
+    public function sendMail(Request $request, Email $mail = null) {
         $this->middleware('auth');
         $this->middleware('auth:admin');
-        //echo var_dump($request->request);
-        //exit;
 
         // Validate request
         $datas = $request->all();
@@ -120,12 +121,12 @@ class AdminController extends Controller {
         }
 
         if (!$mail || !$mail->id) {
-            $item = new Mail();
+            $item = new Email();
         } else {
             if (($mail->subject == $request->subject) && ($mail->content == $request->content)) {
                 $item = $mail;
             } else {
-                $item = new Mail();
+                $item = new Email();
                 $item->copied_from = $mail->id;
             }
         }
@@ -169,16 +170,22 @@ class AdminController extends Controller {
                 $mailItem->save();
 
                 $sent = true;
-                try {
-                    $data = array('name' => "Virat Gandhi");
-                    \Mail::send('mail', $data, function ($message)use ($mailItem, $user, $item) {
+                if ($request->method == 'send') {
+                    try {
+                        $content = ['title' => '', 'body' => $request->content];
+                        $email_to = $user->email;
+                        Mail::to($email_to)->send(new MailTemplate($content, $request->subject));
+
+                        /*$data = array('name' => "Virat Gandhi");
+                        \Mail::send('mail', $data, function ($message)use ($mailItem, $user, $item) {
                         $message->to($user->email, $user->name)->subject($item->subject)->from($user->email,
-                            $user->name); }
-                    );
-                }
-                catch (\Exception $e) {
-                    $mailItem->is_sent = 0;
-                    $mailItem->save();
+                        $user->name); }
+                        );*/
+                    }
+                    catch (\Exception $e) {
+                        $mailItem->is_sent = 0;
+                        $mailItem->save();
+                    }
                 }
             }
         }
@@ -203,16 +210,21 @@ class AdminController extends Controller {
                 $mailItem->read = 0;
                 $mailItem->save();
 
-                try {
-                    $data = array('name' => "Virat Gandhi");
-                    \Mail::send('mail', $data, function ($message)use ($mailItem, $user, $item) {
+                if ($request->method == 'send') {
+                    try {
+                        $content = ['title' => '', 'body' => $request->content];
+                        $email_to = $user->email;
+                        Mail::to($email_to)->send(new MailTemplate($content, $request->subject));
+                        /*$data = array('name' => "Virat Gandhi");
+                        \Mail::send('mail', $data, function ($message)use ($mailItem, $user, $item) {
                         $message->to($user->email, $user->name)->subject($item->subject)->from($user->email,
-                            $user->name); }
-                    );
-                }
-                catch (\Exception $e) {
-                    $mailItem->is_sent = 0;
-                    $mailItem->save();
+                        $user->name); }
+                        );*/
+                    }
+                    catch (\Exception $e) {
+                        $mailItem->is_sent = 0;
+                        $mailItem->save();
+                    }
                 }
             }
         }

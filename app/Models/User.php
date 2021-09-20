@@ -599,7 +599,7 @@ class User extends Authenticatable {
      * @return \Illuminate\Database\Eloquent\Relations\ManyToMany
      */
     public function mails() {
-        return $this->belongsToMany(Mail::class, 'mails_users', 'user_id', 'mail_id');
+        return $this->belongsToMany(Email::class, 'mails_users', 'user_id', 'mail_id');
     }
 
     /*
