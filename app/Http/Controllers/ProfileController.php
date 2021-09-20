@@ -115,6 +115,7 @@ class ProfileController extends Controller
                 $type=strtolower($request->input('type'));
                 if($type=='person'){
                     $rules = [
+                        'nationality' => 'required|max:100',
                         'first_name' => 'required|max:100',
                         'last_name'  => 'required|max:100',
                     ];
@@ -263,9 +264,9 @@ class ProfileController extends Controller
                 $datas['orga_phone'] = '('.$datas['indicatif'].')'.$datas['orga_phone'];
             }
 
-            if($userInfo = Userinfo::create($datas)){
-                unset($datas['user_id']);
-            }
+            // if($userInfo = Userinfo::create($datas)){
+            //     unset($datas['user_id']);
+            // }
 
             if(isset($userInfo)){
                 $user->handles($request);
@@ -278,6 +279,9 @@ class ProfileController extends Controller
                 ]);
                 $user->handles($request);
             }
+
+            // update Localisation
+            Localisation::updateLocalisation($user->location_id,$datas);
 
             // redirect after complete registration for member
             if(Session()->get('complete_registration')){

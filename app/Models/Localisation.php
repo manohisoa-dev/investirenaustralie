@@ -110,4 +110,63 @@ class Localisation extends Model
     {
       return $this->hasMany(User::class, 'location_id', 'id');
     }
+
+    public static function updateLocalisation($id,$datas){
+        $localisation = Localisation::whereId($id);
+
+        if (isset($datas['country']))
+            $localisation->update(["country" => $datas['country']]);
+        if (isset($datas['area_level_1']))
+            $localisation->update(["area_level_1" => $datas['area_level_1']]);
+        if (isset($datas['area_level_2']))
+            $localisation->update(["area_level_2" => $datas['area_level_2']]);
+        if (isset($datas['locality'])){
+            $localisation->update(["locality" => $datas['locality']]);
+            $localisation->update(["formatted" => $datas['locality']]);
+        }
+        if (isset($datas['route']))
+            $localisation->update(["route" => $datas['route']]);
+        if (isset($datas['postalCode']))
+            $localisation->update(["postalCode" => $datas['postalCode']]);
+        if (isset($datas['longitude']))
+            $localisation->update(["longitude" => $datas['longitude']]);
+        if (isset($datas['latitude']))
+            $localisation->update(["latitude" => $datas['route']]);
+        if (isset($datas['altitude']))
+            $localisation->update(["altitude" => $datas['altitude']]);
+        if (isset($datas['building_name']))
+            $localisation->update(["building_name" => $datas['building_name']]);
+        if (isset($datas['route_number']))
+            $localisation->update(["route_number" => $datas['route_number']]);
+        if (isset($datas['num_rooms']))
+            $localisation->update(["num_rooms" => $datas['num_rooms']]);
+        if (isset($datas['num_floor']))
+            $localisation->update(["num_floor" => $datas['num_floor']]);
+        if (isset($datas['neighborhood']))
+            $localisation->update(["neighborhood" => $datas['neighborhood']]);
+        if (isset($datas['adrphy_country']))
+            $localisation->update(["adrphy_country" => $datas['adrphy_country']]);
+        if (isset($datas['adrpost_postal_box']))
+            $localisation->update(["adrpost_postal_box" => $datas['adrpost_postal_box']]);
+        if (isset($datas['adrpost_postal_locality']))
+            $localisation->update(["adrpost_postal_locality" => $datas['adrpost_postal_locality']]);
+        if (isset($datas['adrpost_postalCode']))
+            $localisation->update(["adrpost_postalCode" => $datas['adrpost_postalCode']]);
+        if (isset($datas['adrpost_area_level_1']))
+            $localisation->update(["adrpost_area_level_1" => $datas['adrpost_area_level_1']]);
+        if (isset($datas['adrpost_area_level_2']))
+            $localisation->update(["adrpost_area_level_2" => $datas['adrpost_area_level_2']]);
+        if (isset($datas['adrpost_country']))
+            $localisation->update(["adrpost_country" => $datas['adrpost_country']]);
+        if (isset($datas['bank_postal_box']))
+            $localisation->update(["bank_postal_box" => $datas['bank_postal_box']]);
+        if (isset($datas['bank_locality']))
+            $localisation->update(["bank_locality" => $datas['bank_locality']]);
+        if (isset($datas['bank_postalCode']))
+            $localisation->update(["bank_postalCode" => $datas['bank_postalCode']]);
+        if (isset($datas['bank_area_level_1']))
+            $localisation->update(["bank_area_level_1" => $datas['bank_area_level_1']]);
+        if (isset($datas['bank_country']))
+            $localisation->update(["bank_country" => $datas['bank_country']]);
+    }
 }

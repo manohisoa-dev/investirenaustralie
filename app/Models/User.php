@@ -630,7 +630,6 @@ class User extends Authenticatable {
             User::whereId($user->id)->update(["language" => $lang]);
             Session::put('locale', $lang);
         }
-
         switch ($this->role) {
             case 1:
                 if ($value = $request->input('first_name'))
@@ -640,15 +639,19 @@ class User extends Authenticatable {
                 break;
             case 5:
                 $type = $request->input('type');
-                if ($type == 'person') {
+                if (strtolower($type) == 'person') {
                     // Update MetaData
                     if ($value = $request->input('first_name'))
                         $userinfos->update(["first_name" => $value]);
                     if ($value = $request->input('last_name'))
                         $userinfos->update(["last_name" => $value]);
+                    if ($value = $request->input('nationality'))
+                        $userinfos->update(["nationality" => $value]);
+                    if ($value = $request->input('civility'))
+                        $userinfos->update(["civility" => $value]);
                     if ($value = $request->input('sexe'))
                         $userinfos->update(["sexe" => $value]);
-                } elseif ($type == 'person_complete') {
+                } elseif (strtolower($type) == 'person_complete') {
                     $userloc = Localisation::whereId($user->location_id);
 
                     // Update userinfo
