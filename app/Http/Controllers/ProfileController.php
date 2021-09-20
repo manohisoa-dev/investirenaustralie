@@ -264,9 +264,9 @@ class ProfileController extends Controller
                 $datas['orga_phone'] = '('.$datas['indicatif'].')'.$datas['orga_phone'];
             }
 
-            if($userInfo = Userinfo::create($datas)){
-                unset($datas['user_id']);
-            }
+            // if($userInfo = Userinfo::create($datas)){
+            //     unset($datas['user_id']);
+            // }
 
             if(isset($userInfo)){
                 $user->handles($request);
