@@ -122,11 +122,11 @@
 							<td>{{ $index + $records->firstItem() }}</td>
 							<td>
 							@if (@getimagesize($record->imageUrl()))
-								<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show', $record):route('admin.user.show', $record)}}">
+								<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show', $record):route('admin.user.show', $record->uid)}}">
 									<img class="img-responsive" src="{{$record->imageUrl()}}" width="50">
 								</a>
 							@else
-								<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show', $record):route('admin.user.show', $record)}}">
+								<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show', $record):route('admin.user.show', $record->uid)}}">
 									<img class="img-responsive" src="{{asset('img/500x500.jpg')}}" width="50">
 								</a>
 							@endif
@@ -219,25 +219,25 @@
 								</span>
 							</td>
 							<td align="center">
-							<form class="form-inline" action="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}/{{$record->id}}" method="POST">
+							<form class="form-inline" action="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}/{{$record->uid}}" method="POST">
 								@if($record->role == 5)
-								<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.relation',['user_id' => $record->id]):route('admin.user.relation', ['user_id' => $record->id])}}" class="btn btn-default btn-circle" title="Relation avec son APL ">
+								<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.relation',['user_id' => $record->uid]):route('admin.user.relation', ['user_id' => $record->uid])}}" class="btn btn-default btn-circle" title="Relation avec son APL ">
 									<i class="fa fa-chain text-success"></i>
 								</a>&nbsp;&nbsp;
 								@endif
-								<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.part.show', ['user_role' => App\Models\Role::where('id',$record->role)->first()->role_initial,'user_id' => $record->id]):route('admin.user.part.show', ['user_role' => App\Models\Role::where('id',$record->role)->first()->role_initial,'user_id' => $record->id])}}" class="btn btn-default btn-circle" title="@lang('app.btn.view')">
+								<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.part.show', ['user_role' => App\Models\Role::where('id',$record->role)->first()->role_initial,'user_id' => $record->uid]):route('admin.user.part.show', ['user_role' => App\Models\Role::where('id',$record->role)->first()->role_initial,'user_id' => $record->uid])}}" class="btn btn-default btn-circle" title="@lang('app.btn.view')">
 									<i class="fa fa-info text-success"></i>
 								</a>&nbsp;&nbsp;
 								@if($record->status=='active')
-								<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.desactiver', ['user_id' => $record->id]):route('admin.user.desactiver', ['user_id' => $record->id])}}" class="btn btn-default btn-circle" title="@lang('app.btn.disable')">
+								<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.desactiver', ['user_id' => $record->uid]):route('admin.user.desactiver', ['user_id' => $record->uid])}}" class="btn btn-default btn-circle" title="@lang('app.btn.disable')">
 									<i class="fa fa-eye-slash"></i>
 								</a>&nbsp;&nbsp;
 								@else
-								<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.active', ['user_id' => $record->id]):route('admin.user.active', ['user_id' => $record->id])}}" class="btn btn-default btn-circle" title="@lang('app.btn.active')">
+								<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.active', ['user_id' => $record->uid]):route('admin.user.active', ['user_id' => $record->uid])}}" class="btn btn-default btn-circle" title="@lang('app.btn.active')">
 									<i class="fa fa-eye text-info"></i>
 								</a>&nbsp;&nbsp;
 								@endif
-								<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.contact', ['user_id' => $record->id]):route('admin.user.contact', ['user_id' => $record->id])}}" class="btn btn-default btn-circle" title="@lang('app.btn.contact')">
+								<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.contact', ['user_id' => $record->uid]):route('admin.user.contact', ['user_id' => $record->uid])}}" class="btn btn-default btn-circle" title="@lang('app.btn.contact')">
 									<i class="fa fa-address-book-o" aria-hidden="true"></i>
 								</a>&nbsp;&nbsp;
 								{{ csrf_field() }}

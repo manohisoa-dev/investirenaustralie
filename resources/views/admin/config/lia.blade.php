@@ -51,9 +51,38 @@
 											<label>@lang('app.txt.lia_address')</label> 
 											<textarea placeholder="@lang('app.txt.address')" class="form-control" name="lia_address">{!! old('lia_address')?old('lia_address'):($item->get_meta('lia_address')?$item->get_meta('lia_address')->value:'') !!}</textarea>
 										</div>
+										@php
+											$mobile_base = old('lia_mobile')?old('lia_mobile'):($item->get_meta('lia_mobile')?$item->get_meta('lia_mobile')->value:'');
+											if($mobile_base != ''){
+												$pattern = '!\(([^\)]+)\)!';
+												$replace = '';
+												preg_match($pattern, $mobile_base, $match);
+												if($match){
+													$val_indicatif = str_replace("+", $replace, $match[1]);
+													$numero = preg_replace($pattern, $replace, $mobile_base);
+												}else{
+													$val_indicatif = '';
+													$numero = $mobile_base;
+												}
+											}else{
+												$val_indicatif = 61;
+												$numero = $mobile_base;
+											}
+										@endphp
                                         <div class="form-group">
 											<label>@lang('app.txt.lia_mobile')</label> 
-											<input type="text" placeholder="@lang('app.txt.mobile')" class="form-control" name="lia_mobile" value="{{old('lia_mobile')?old('lia_mobile'):($item->get_meta('lia_mobile')?$item->get_meta('lia_mobile')->value:'')}}">
+											<div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <select class="form-control" name="indicatif" id="indicatif">
+                                                        @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                            <option value="+{{ $indicatif->code }}" {{ str_replace(' ', '', $indicatif->code)==$val_indicatif?'selected':'' }}>(+ {{ $indicatif->code }}) </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="custom-file">
+                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="6" maxlength="9" placeholder="XXXXXXXX" class="form-control" id="lia_mobile" name="lia_mobile" value="{{$numero}}" required>
+                                                </div>
+                                            </div>
 										</div>
                                         <div class="form-group">
 											<label>@lang('app.txt.lia_email')</label> 
@@ -113,11 +142,6 @@
 @section('custom-script')
 <script>
 $(document).ready(function(){
-	jQuery.validator.addMethod("phoneAUS", function (lia_mobile, element) {
-        lia_mobile = lia_mobile.replace(/\s+/g, "");
-        return this.optional(element) || lia_mobile.length > 9 && lia_mobile.match(/^(?:\+?61|\(?0)[2378]\)?(?:[ -]?[0-9]){8}$/);
-    }, "Enter a valid number please (Ex: 61 7 05 060 768 OR +61 7 35 642 234 OR 0735 642 342)");
-	
 	$('#liaForm').validate({
 		ignore: [],
 		rules: {
@@ -129,7 +153,9 @@ $(document).ready(function(){
 			},
 			lia_mobile: {
 				required: true,
-				phoneAUS: true
+				digits: true,
+				maxlength:9,
+				minlength:6
 			},
 			lia_email: {
 				required: true,

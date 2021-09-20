@@ -24,7 +24,7 @@ class User extends Authenticatable {
      * @var array
      */
     protected $fillable = ['name', 'immat', 'email', 'password', 'image_id',
-        'location_id', 'status', 'role', 'activation_code','afa_id',
+        'location_id', 'status', 'role', 'activation_code', 'afa_id',
         'use_default_password', 'is_complete', 'trial_ends_at', 'type_users_id'];
 
     /**
@@ -54,59 +54,72 @@ class User extends Authenticatable {
     public static function findRequested() {
         $query = User::query();
         $query->join('localizations', 'localizations.id', '=', 'users.location_id');
+        $query->select('users.id AS uid', 'users.name AS name',
+            'users.image_id AS image_id', 'users.email as email',
+            'users.created_at as created_at', 'users.role as role', 'users.status as status',
+            'users.author_id as author_id', 'localizations.country as country',
+            'localizations.locality as locality', 'users.type_users_id as type_users_id');
         // search results based on user input
-        \Request::input('id') and $query->where('id', \Request::input('id'));
-        \Request::input('name') and $query->where('name', 'like', '%' . \Request::input
+        \Request::input('id') and $query->where('users.id', \Request::input('id'));
+        \Request::input('name') and $query->where('users.name', 'like', '%' . \Request::input
             ('name') . '%');
-        \Request::input('email') and $query->where('email', 'like', '%' . \Request::input
+        \Request::input('email') and $query->where('users.email', 'like', '%' . \Request::input
             ('email') . '%');
-        \Request::input('password') and $query->where('password', 'like', '%' . \Request::input
+        \Request::input('password') and $query->where('users.password', 'like', '%' . \Request::input
             ('password') . '%');
-        \Request::input('role') and $query->where('role', 'like', '%' . \Request::input
+        \Request::input('role') and $query->where('users.role', 'like', '%' . \Request::input
             ('role') . '%');
-        \Request::input('type_users_id') and $query->where('type_users_id', 'like', '%' . \Request::input
-            ('type_users_id') . '%');
-        \Request::input('language') and $query->where('language', 'like', '%' . \Request::input
+        \Request::input('type_users_id') and $query->where('users.type_users_id', 'like',
+            '%' . \Request::input('type_users_id') . '%');
+        \Request::input('language') and $query->where('users.language', 'like', '%' . \Request::input
             ('language') . '%');
-        \Request::input('status') and $query->where('status', 'like', '%' . \Request::input
+        \Request::input('status') and $query->where('users.status', 'like', '%' . \Request::input
             ('status') . '%');
-        \Request::input('percent') and $query->where('percent', \Request::input('percent'));
-        \Request::input('enabled_at') and $query->where('enabled_at', \Request::input('enabled_at'));
-        \Request::input('disabled_at') and $query->where('disabled_at', \Request::input
+        \Request::input('percent') and $query->where('users.percent', \Request::input('percent'));
+        \Request::input('enabled_at') and $query->where('users.enabled_at', \Request::input
+            ('enabled_at'));
+        \Request::input('disabled_at') and $query->where('users.disabled_at', \Request::input
             ('disabled_at'));
-        \Request::input('use_default_password') and $query->where('use_default_password', \Request::input
+        \Request::input('use_default_password') and $query->where('users.use_default_password', \Request::input
             ('use_default_password'));
-        \Request::input('is_seller') and $query->where('is_seller', \Request::input('is_seller'));
-        \Request::input('apl_id') and $query->where('apl_id', \Request::input('apl_id'));
-        \Request::input('apl_ends_at') and $query->where('apl_ends_at', \Request::input
+        \Request::input('is_seller') and $query->where('users.is_seller', \Request::input
+            ('is_seller'));
+        \Request::input('apl_id') and $query->where('users.apl_id', \Request::input('apl_id'));
+        \Request::input('apl_ends_at') and $query->where('users.apl_ends_at', \Request::input
             ('apl_ends_at'));
-        \Request::input('image_id') and $query->where('image_id', \Request::input('image_id'));
-        \Request::input('author_id') and $query->where('author_id', \Request::input('author_id'));
-        \Request::input('location_id') and $query->where('location_id', \Request::input
+        \Request::input('image_id') and $query->where('users.image_id', \Request::input
+            ('image_id'));
+        \Request::input('author_id') and $query->where('users.author_id', \Request::input
+            ('author_id'));
+        \Request::input('location_id') and $query->where('users.location_id', \Request::input
             ('location_id'));
-        \Request::input('country_id') and $query->where('country_id', \Request::input('country_id'));
-        \Request::input('operation_range') and $query->where('operation_range', \Request::input
+        \Request::input('country_id') and $query->where('users.country_id', \Request::input
+            ('country_id'));
+        \Request::input('operation_range') and $query->where('users.operation_range', \Request::input
             ('operation_range'));
-        \Request::input('state_id') and $query->where('state_id', \Request::input('state_id'));
-        \Request::input('activation_code') and $query->where('activation_code', 'like',
-            '%' . \Request::input('activation_code') . '%');
-        \Request::input('remember_token') and $query->where('remember_token', 'like',
-            '%' . \Request::input('remember_token') . '%');
-        \Request::input('created_at') and $query->where('created_at', \Request::input('created_at'));
-        \Request::input('updated_at') and $query->where('updated_at', \Request::input('updated_at'));
-        \Request::input('braintree_id') and $query->where('braintree_id', 'like', '%' . \Request::input
-            ('braintree_id') . '%');
-        \Request::input('paypal_email') and $query->where('paypal_email', 'like', '%' . \Request::input
-            ('paypal_email') . '%');
-        \Request::input('stripe_id') and $query->where('stripe_id', 'like', '%' . \Request::input
+        \Request::input('state_id') and $query->where('users.state_id', \Request::input
+            ('state_id'));
+        \Request::input('activation_code') and $query->where('users.activation_code',
+            'like', '%' . \Request::input('activation_code') . '%');
+        \Request::input('remember_token') and $query->where('users.remember_token',
+            'like', '%' . \Request::input('remember_token') . '%');
+        \Request::input('created_at') and $query->where('users.created_at', \Request::input
+            ('created_at'));
+        \Request::input('updated_at') and $query->where('users.updated_at', \Request::input
+            ('updated_at'));
+        \Request::input('braintree_id') and $query->where('users.braintree_id', 'like',
+            '%' . \Request::input('braintree_id') . '%');
+        \Request::input('paypal_email') and $query->where('users.paypal_email', 'like',
+            '%' . \Request::input('paypal_email') . '%');
+        \Request::input('stripe_id') and $query->where('users.stripe_id', 'like', '%' . \Request::input
             ('stripe_id') . '%');
-        \Request::input('card_brand') and $query->where('card_brand', 'like', '%' . \Request::input
+        \Request::input('card_brand') and $query->where('users.card_brand', 'like', '%' . \Request::input
             ('card_brand') . '%');
-        \Request::input('card_last_four') and $query->where('card_last_four', 'like',
-            '%' . \Request::input('card_last_four') . '%');
-        \Request::input('trial_ends_at') and $query->where('trial_ends_at', \Request::input
+        \Request::input('card_last_four') and $query->where('users.card_last_four',
+            'like', '%' . \Request::input('card_last_four') . '%');
+        \Request::input('trial_ends_at') and $query->where('users.trial_ends_at', \Request::input
             ('trial_ends_at'));
-        \Request::input('subscription_ends_at') and $query->where('subscription_ends_at', \Request::input
+        \Request::input('subscription_ends_at') and $query->where('users.subscription_ends_at', \Request::input
             ('subscription_ends_at'));
 
         // sort results
@@ -217,9 +230,10 @@ class User extends Authenticatable {
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeHasPostalCode($query,$postal_code) {
-        
-        return $query->join('localizations','users.location_id','=','localizations.id')->where('localizations.postalCode',$postal_code);
+    public function scopeHasPostalCode($query, $postal_code) {
+
+        return $query->join('localizations', 'users.location_id', '=',
+            'localizations.id')->where('localizations.postalCode', $postal_code);
     }
 
     // /**
@@ -653,12 +667,19 @@ class User extends Authenticatable {
                         $userinfos->update(["date_of_birth" => (new Carbon($value))->toDateString()]);
                     if ($value = $request->input('place_of_birth'))
                         $userinfos->update(["place_of_birth" => $value]);
-                    if ($value = $request->input('orga_phone')){
-                        $ct_phone = '('.$request->input('indicatif').')'.$value;
+                    if ($value = $request->input('orga_phone')) {
+                        $ct_phone = $request->input('indicatif') . $value;
                         $userinfos->update(["orga_phone" => $ct_phone]);
                     }
-                    if ($value = $request->input('orga_mobile_phone')){
-                        $ct_phone = '('.$request->input('indicatif3').')'.$value;
+                    if ($value = $request->input('orga_mobile_phone')) {
+                        $ct_phone = $request->input('indicatif') . $value;
+                    }
+                    if ($value = $request->input('orga_phone')) {
+                        $ct_phone = '(' . $request->input('indicatif') . ')' . $value;
+                        $userinfos->update(["orga_phone" => $ct_phone]);
+                    }
+                    if ($value = $request->input('orga_mobile_phone')) {
+                        $ct_phone = '(' . $request->input('indicatif3') . ')' . $value;
                         $userinfos->update(["orga_mobile_phone" => $ct_phone]);
                     }
                     if ($value = $request->input('orga_email'))
@@ -697,8 +718,11 @@ class User extends Authenticatable {
                         $userinfos->update(["orga_name" => $value]);
                     if ($value = $request->input('orga_email'))
                         $userinfos->update(["orga_email" => $value]);
-                    if ($value = $request->input('orga_phone')){
-                        $ct_phone = '('.$request->input('indicatif').')'.$value;
+                    if ($value = $request->input('orga_phone')) {
+                        $ct_phone = $request->input('indicatif') . $value;
+                    }
+                    if ($value = $request->input('orga_phone')) {
+                        $ct_phone = '(' . $request->input('indicatif') . ')' . $value;
                         $userinfos->update(["orga_phone" => $ct_phone]);
                     }
                     if ($value = $request->input('orga_website'))
@@ -710,8 +734,11 @@ class User extends Authenticatable {
                         $userinfos->update(["contact_name" => $value]);
                     if ($value = $request->input('contact_email'))
                         $userinfos->update(["contact_email" => $value]);
-                    if ($value = $request->input('contact_phone')){
-                        $ct_phone = '('.$request->input('indicatif2').')'.$value;
+                    if ($value = $request->input('contact_phone')) {
+                        $ct_phone = $request->input('indicatif') . $value;
+                    }
+                    if ($value = $request->input('contact_phone')) {
+                        $ct_phone = '(' . $request->input('indicatif2') . ')' . $value;
                         $userinfos->update(["contact_phone" => $ct_phone]);
                     }
                     // Create CRM MetaData
@@ -745,6 +772,9 @@ class User extends Authenticatable {
                     $userinfos->update(["contact_name" => $value]);
                 if ($value = $request->input('contact_email'))
                     $userinfos->update(["contact_email" => $value]);
+                if ($value = $request->input('contact_phone')) {
+                    $userinfos->update(["contact_phone" => $value]);
+                }
                 if ($value = $request->input('contact_phone')){
                     $ct_phone = '('.$request->input('indicatif2').')'.$value;
                     $userinfos->update(["contact_phone" => $ct_phone]);
@@ -764,6 +794,10 @@ class User extends Authenticatable {
                     $userinfos->update(["orga_presentation" => $value]);
                 if ($value = $request->input('orga_email'))
                     $userinfos->update(["orga_email" => $value]);
+                if ($value = $request->input('orga_phone')) {
+                    $ct_phone = $request->input('indicatif') . $value;
+                }
+                
                 if ($value = $request->input('orga_phone')){
                     $ct_phone = '('.$request->input('indicatif').')'.$value;
                     $userinfos->update(["orga_phone" => $ct_phone]);
@@ -772,28 +806,22 @@ class User extends Authenticatable {
                     $userinfos->update(["orga_website" => $value]);
                 if ($value = $request->input('orga_operation_range'))
                     $userinfos->update(["orga_operation_range" => $value]);
-
-                // Create Contact MetaData
                 if ($value = $request->input('contact_name'))
                     $userinfos->update(["contact_name" => $value]);
                 if ($value = $request->input('contact_email'))
                     $userinfos->update(["contact_email" => $value]);
+                if ($value = $request->input('contact_phone')) {
+                    $ct_phone = $request->input('indicatif') . $value;
+                }
                 if ($value = $request->input('contact_phone')){
                     $ct_phone = '('.$request->input('indicatif2').')'.$value;
                     $userinfos->update(["contact_phone" => $ct_phone]);
                 }
-
-                // Bank data
                 if ($value = $request->input('bank_iban'))
                     $userinfos->update(["bank_iban" => $value]);
                 if ($value = $request->input('bank_bic'))
                     $userinfos->update(["bank_bic" => $value]);
-
-                // CRM Prodvider data
-                // if ($value = $request->input('crm_name'))
-                //     $userinfos->update(["crm_name" => $value]);
-                // if ($value = $request->input('crm_email'))
-                //     $userinfos->update(["crm_email" => $value]);
+                
                 break;
             case 2:
                 // Create Organisation MetaData
@@ -803,18 +831,23 @@ class User extends Authenticatable {
                     $userinfos->update(["orga_presentation" => $value]);
                 if ($value = $request->input('orga_email'))
                     $userinfos->update(["orga_email" => $value]);
+                if ($value = $request->input('orga_phone')) {
+                }
+                $userinfos->update(["orga_phone" => $value]);
                 if ($value = $request->input('orga_phone')){
                     $ct_phone = '('.$request->input('indicatif').')'.$value;
                     $userinfos->update(["orga_phone" => $ct_phone]);
                 }
                 if ($value = $request->input('orga_website'))
                     $userinfos->update(["orga_website" => $value]);
-
                 // Create Contact MetaData
                 if ($value = $request->input('contact_name'))
                     $userinfos->update(["contact_name" => $value]);
                 if ($value = $request->input('contact_email'))
                     $userinfos->update(["contact_email" => $value]);
+                if ($value = $request->input('contact_phone')) {
+                    $userinfos->update(["contact_phone" => $value]);
+                }
                 if ($value = $request->input('contact_phone')){
                     $ct_phone = '('.$request->input('indicatif2').')'.$value;
                     $userinfos->update(["contact_phone" => $ct_phone]);
@@ -914,71 +947,74 @@ class User extends Authenticatable {
     }
 
     public function historiques() {
-        return $this->hasMany(RelationMembreApl::class,'apl_id','id');
+        return $this->hasMany(RelationMembreApl::class, 'apl_id', 'id');
     }
 
-    public function  scopeHasAplActiveRelation(){
-        return $this->where('role','=','5')
-                    ->where('apl_id','!=','0')
-                    ->where('apl_ends_at','>=',Carbon::now())
-                    ->get();
+    public function scopeHasAplActiveRelation() {
+        return $this->where('role', '=', '5')->where('apl_id', '!=', '0')->where('apl_ends_at',
+            '>=', Carbon::now())->get();
     }
 
-    public function isCheckedDossierTransaction($prod_id){
-        $dosTransUser = DossierTransaction::where('user_id',$this->id)->where('product_id',$prod_id)->first();
-        
-        if($dosTransUser !== null){
+    public function isCheckedDossierTransaction($prod_id) {
+        $dosTransUser = DossierTransaction::where('user_id', $this->id)->where('product_id',
+            $prod_id)->first();
+
+        if ($dosTransUser !== null) {
             return true;
         }
 
         return false;
     }
 
-    public function dossierTransactionIsComplete($prod_id){
-        $dosTransUser = DossierTransaction::where('user_id',$this->id)->where('product_id',$prod_id)->first();
+    public function dossierTransactionIsComplete($prod_id) {
+        $dosTransUser = DossierTransaction::where('user_id', $this->id)->where('product_id',
+            $prod_id)->first();
         $isComplete = "";
-        
+
         switch ($dosTransUser->is_complete) {
             case 1:
-                $isComplete='to_be_completed';
+                $isComplete = 'to_be_completed';
                 break;
             case 2:
-                $isComplete='complete';
+                $isComplete = 'complete';
                 break;
             case 3:
-                $isComplete='validate';
+                $isComplete = 'validate';
                 break;
             default:
-                $isComplete='not_completed';
+                $isComplete = 'not_completed';
                 break;
         }
 
         return $isComplete;
     }
 
-    public function hasCurrentTransaction(){
-        $dosTransUser = DossierTransaction::where('user_id',$this->id)->where('status','current')->get();
+    public function hasCurrentTransaction() {
+        $dosTransUser = DossierTransaction::where('user_id', $this->id)->where('status',
+            'current')->get();
 
-        if(sizeof($dosTransUser) !== 0){
+        if (sizeof($dosTransUser) !== 0) {
             return true;
         }
 
         return false;
     }
 
-    public function dossierTransaction(){
-        $dossierTrans = DossierTransaction::where('user_id',$this->id)->where('status','current');
+    public function dossierTransaction() {
+        $dossierTrans = DossierTransaction::where('user_id', $this->id)->where('status',
+            'current');
 
         return $dossierTrans;
     }
 
-    public function afaHasSendCa($from_id,$to_id){
-        $ca = Product::conjunctionAgreement()->where('from_id','=',$from_id)->where('to_id','=',$to_id)->first();
+    public function afaHasSendCa($from_id, $to_id) {
+        $ca = Product::conjunctionAgreement()->where('from_id', '=', $from_id)->where('to_id',
+            '=', $to_id)->first();
 
-        if(sizeof($ca)!==0){
-            if($ca->status === 0){
+        if (sizeof($ca) !== 0) {
+            if ($ca->status === 0) {
                 return false;
-            }else{
+            } else {
                 return true;
             }
         }
@@ -986,23 +1022,25 @@ class User extends Authenticatable {
         return true;
     }
 
-    public function conjunctionAgreement($from_id,$to_id){
-        $ca = Product::conjunctionAgreement()->where('from_id','=',$from_id)->where('to_id','=',$to_id)->first();
+    public function conjunctionAgreement($from_id, $to_id) {
+        $ca = Product::conjunctionAgreement()->where('from_id', '=', $from_id)->where('to_id',
+            '=', $to_id)->first();
 
-        if(sizeof($ca)!==0){
+        if (sizeof($ca) !== 0) {
             return $ca;
         }
 
         return '';
     }
 
-    public function memberHasSendMr($from_id,$to_id,$afa_id){
-        $mr = Product::mandatRecherche()->where('from_id','=',$from_id)->where('to_id','=',$to_id)->where('afa_id','=',$afa_id)->first();
+    public function memberHasSendMr($from_id, $to_id, $afa_id) {
+        $mr = Product::mandatRecherche()->where('from_id', '=', $from_id)->where('to_id',
+            '=', $to_id)->where('afa_id', '=', $afa_id)->first();
 
-        if(sizeof($mr)!==0){
-            if($mr->status === 0){
+        if (sizeof($mr) !== 0) {
+            if ($mr->status === 0) {
                 return false;
-            }else{
+            } else {
                 return true;
             }
         }
@@ -1010,15 +1048,16 @@ class User extends Authenticatable {
         return true;
     }
 
-    public function mandatRecherche($from_id,$to_id,$afa_id){
-        $mr = Product::mandatRecherche()->where('from_id','=',$from_id)->where('to_id','=',$to_id)->where('afa_id','=',$afa_id)->first();
+    public function mandatRecherche($from_id, $to_id, $afa_id) {
+        $mr = Product::mandatRecherche()->where('from_id', '=', $from_id)->where('to_id',
+            '=', $to_id)->where('afa_id', '=', $afa_id)->first();
 
-        if(sizeof($mr)!==0){
+        if (sizeof($mr) !== 0) {
             return $mr;
         }
 
         return '';
     }
-    
+
 
 }

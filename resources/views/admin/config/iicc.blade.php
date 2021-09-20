@@ -52,8 +52,37 @@
 											<textarea placeholder="@lang('app.txt.address')" class="form-control" name="iicc_address">{!! old('iicc_address')?old('iicc_address'):($item->get_meta('iicc_address')?$item->get_meta('iicc_address')->value:'') !!}</textarea>
 										</div>
                                         <div class="form-group">
+											@php
+												$tel_base = old('iicc_mobile')?old('iicc_mobile'):($item->get_meta('iicc_mobile')?$item->get_meta('iicc_mobile')->value:'');
+												if($tel_base != ''){
+													$pattern = '!\(([^\)]+)\)!';
+													$replace = '';
+													preg_match($pattern, $tel_base, $match);
+													if($match){
+														$val_indicatif = str_replace("+", $replace, $match[1]);
+														$numero = preg_replace($pattern, $replace, $tel_base);
+													}else{
+														$val_indicatif = '';
+														$numero = $tel_base;
+													}
+												}else{
+													$val_indicatif = 61;
+													$numero = $tel_base;
+												}
+											@endphp
 											<label>@lang('app.txt.iicc_mobile')</label> 
-											<input type="text" placeholder="@lang('app.txt.mobile')" class="form-control" name="iicc_mobile" value="{{old('iicc_mobile')?old('iicc_mobile'):($item->get_meta('iicc_mobile')?$item->get_meta('iicc_mobile')->value:'')}}">
+											<div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <select class="form-control" name="indicatif" id="indicatif">
+                                                        @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                            <option value="+{{ $indicatif->code }}" {{ str_replace(' ', '', $indicatif->code)==$val_indicatif?'selected':'' }}>(+ {{ $indicatif->code }}) </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="custom-file">
+                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="6" maxlength="9" placeholder="XXXXXXXX" class="form-control" id="iicc_mobile" name="iicc_mobile" value="{{$numero}}" required>
+                                                </div>
+                                            </div>
 										</div>
                                         <div class="form-group">
 											<label>@lang('app.txt.iicc_email')</label> 
@@ -78,12 +107,7 @@
 
 @section('custom-script')
 <script>
-$(document).ready(function(){
-	jQuery.validator.addMethod("phoneAUS", function (iicc_mobile, element) {
-        iicc_mobile = iicc_mobile.replace(/\s+/g, "");
-        return this.optional(element) || iicc_mobile.length > 9 && iicc_mobile.match(/^(?:\+?(61))? ?(?:\((?=.*\)))?(0?[2-57-8])\)? ?(\d\d(?:[- ](?=\d{3})|(?!\d\d[- ]?\d[- ]))\d\d[- ]?\d[- ]?\d{3})$/);
-    }, "Enter a valid number please (Ex: 61 7 05 060 768 OR +61 7 35 642 234 OR 0735 642 342)");
-	
+$(document).ready(function(){	
 	$('#iiccForm').validate({
 		ignore: [],
 		rules: {
@@ -95,7 +119,9 @@ $(document).ready(function(){
 			},
 			iicc_mobile: {
 				required: true,
-				phoneAUS: true
+				digits: true,
+				maxlength:9,
+				minlength:6
 			},
 			iicc_email: {
 				required: true,

@@ -70,7 +70,6 @@ class ProfileController extends Controller {
     public function editProfile(Request $request) {
         $user = Auth::user();
         $role = $user->role;
-
         // Get post datas
         $datas = $request->all();
         // Validate type Only

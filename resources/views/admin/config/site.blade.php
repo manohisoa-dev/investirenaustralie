@@ -84,13 +84,71 @@
 											<label>@lang('app.txt.admin_email')</label> 
 											<input type="text" placeholder="Enter email" class="form-control" value="{{ ($item->get_meta('admin_email')?$item->get_meta('admin_email')->value:'') }}" name="admin_email">
 										</div>
+										@php
+											$mobile_admin = old('admin_phone')?old('admin_phone'):($item->get_meta('admin_phone')?$item->get_meta('admin_phone')->value:'');
+											if($mobile_admin != ''){
+												$pattern = '!\(([^\)]+)\)!';
+												$replace = '';
+												preg_match($pattern, $mobile_admin, $match);
+												if($match){
+													$val_indicatif_mobile = str_replace("+", $replace, $match[1]);
+													$numero_mobile = preg_replace($pattern, $replace, $mobile_admin);
+												}else{
+													$val_indicatif_mobile = '';
+													$numero_mobile = $mobile_admin;
+												}
+											}else{
+												$val_indicatif_mobile = 61;
+												$numero_mobile = $mobile_admin;
+											}
+										@endphp
                                         <div class="form-group">
 											<label>@lang('app.txt.admin_phone')</label> 
-											<input type="text" placeholder="Enter Phone" class="form-control" value="{{old('admin_phone')?old('admin_phone'):($item->get_meta('admin_phone')?$item->get_meta('admin_phone')->value:'')}}" name="admin_phone">
+											<div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <select class="form-control" name="indicatif1">
+                                                        @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                            <option value="+{{ $indicatif->code }}" {{ str_replace(' ', '', $indicatif->code)==$val_indicatif_mobile?'selected':'' }}>(+ {{ $indicatif->code }}) </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="custom-file">
+                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="6" maxlength="9" placeholder="XXXXXXXX" class="form-control" id="admin_phone" name="admin_phone" value="{{$numero_mobile}}">
+                                                </div>
+                                            </div>
 										</div>
+										@php
+											$fax_base = old('admin_fax')?old('admin_fax'):($item->get_meta('admin_fax')?$item->get_meta('admin_fax')->value:'');
+											if($fax_base != ''){
+												$pattern = '!\(([^\)]+)\)!';
+												$replace = '';
+												preg_match($pattern, $fax_base, $match);
+												if($match){
+													$val_indicatif = str_replace("+", $replace, $match[1]);
+													$numero = preg_replace($pattern, $replace, $fax_base);
+												}else{
+													$val_indicatif = '';
+													$numero = $tel_base;
+												}
+											}else{
+												$val_indicatif = 61;
+												$numero = $fax_base;
+											}
+										@endphp
                                         <div class="form-group">
-											<label>@lang('app.txt.admin_fax')</label> 
-											<input type="text" placeholder="Enter Phone" class="form-control" value="{{old('admin_fax')?old('admin_fax'):($item->get_meta('admin_fax')?$item->get_meta('admin_fax')->value:'')}}" name="admin_fax">
+											<label>@lang('app.txt.admin_fax')</label>
+											<div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <select class="form-control" name="indicatif" id="indicatif">
+                                                        @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                            <option value="+{{ $indicatif->code }}" {{ str_replace(' ', '', $indicatif->code)==$val_indicatif?'selected':'' }}>(+ {{ $indicatif->code }}) </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="custom-file">
+                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="6" maxlength="9" placeholder="XXXXXXXX" class="form-control" id="admin_fax" name="admin_fax" value="{{$numero}}" required>
+                                                </div>
+                                            </div>
 										</div>
                                         <div class="form-group">
 											<label>@lang('app.txt.admin_address')</label> 
@@ -116,12 +174,7 @@
 
 @section('custom-script')
 <script>
-$(document).ready(function(){
-	jQuery.validator.addMethod("phoneAUS", function (admin_phone, element) {
-        admin_phone = admin_phone.replace(/\s+/g, "");
-        return this.optional(element) || admin_phone.length > 9 && admin_phone.match(/^(?:\+?61|\(?0)[2378]\)?(?:[ -]?[0-9]){8}$/);
-    }, "Enter a valid number please (Ex: 61 7 05 060 768 OR +61 7 35 642 234 OR 0735 642 342)");
-	
+$(document).ready(function(){	
 	$('#formSite').validate({
 		ignore: [],
 		rules: {
@@ -147,14 +200,17 @@ $(document).ready(function(){
 				required: true
 			},
 			admin_fax: {
-				required: true
+				required: true,
+				digits: true,
+				maxlength:9,
+				minlength:6
 			},
 			admin_phone: {
-				required: true,
-				phoneAUS: true
+				digits: true,
+				maxlength:9,
+				minlength:6
 			},
 			admin_email: {
-				required: true,
 				email: true
 			},
 			admin_address: {

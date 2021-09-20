@@ -32,8 +32,10 @@
                 <h5>Contacter {{$user->name}} ({{$user->email}})</h5>
             </div>
             <div class="ibox-content">
-				<form action="{{route('admin.user.contact', $user)}}" method="post" id="commentform" class="contact-form" >
+				<form action="{{Auth::user()->isAdmin()?route('admin.mail.compose'):route('admin.collaborators.admin.mail.compose')}}" method="post" id="commentform" class="contact-form" >
 					{{ csrf_field() }}
+					<input type="hidden" name="sender_id" value="{{Auth::id()}}">
+					<input type="hidden" name="users[]" value="{{$user->id}}" />
 					<div class="form-group">
 						<label for="title">@lang('app.subject')</label>
 						<input id="subject" class="form-control" name="subject" type="text" placeholder="@lang('app.subject') *" aria-required="true" required="required" value="{{$mail->subject}}">
@@ -53,4 +55,36 @@
 		</div>
 	</div>
 </div>
+@endsection
+
+@section('custom-script')
+<script src="{{asset('administrator/plugins/ckeditor/ckeditor.js')}}"></script>
+<script>
+	$(document).ready(function(){	
+		if (CKEDITOR.instances['content']) {
+			CKEDITOR.instances['content'].destroy(true);
+		}
+		CKEDITOR.replace('content');	
+		$('#commentform').validate({
+			ignore: [],
+			rules: {
+				subject: {
+					required: true
+				}
+			},
+			messages: {
+				subject: {
+					required: "@lang('app.txt.champobligatoire')"
+				}
+			},
+			errorPlacement: function ( error, element ) {
+				if(element.parent().hasClass('input-group')){
+					error.insertBefore( element.parent() );
+				}else{
+					error.insertAfter( element );
+				}
+			},
+		});
+	});
+</script>
 @endsection

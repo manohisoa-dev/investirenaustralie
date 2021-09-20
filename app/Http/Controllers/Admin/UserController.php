@@ -148,7 +148,12 @@ class UserController extends Controller {
             $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path' =>
                 url('admin/user/show/member')]);
         } else {
-            $users_array = User::where('role', 5)->get();
+            $users_array = User::where('users.role', 5)->join('localizations',
+                'localizations.id', '=', 'users.location_id')->select('users.id AS uid',
+                'users.name AS name', 'users.image_id AS image_id', 'users.email as email',
+                'users.created_at as created_at', 'users.role as role', 'users.status as status',
+                'users.author_id as author_id', 'localizations.country as country',
+                'localizations.locality as locality', 'users.type_users_id as type_users_id')->get();
             $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path' =>
                 url('admin/user/show/member')]);
         }
@@ -178,7 +183,12 @@ class UserController extends Controller {
             $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path' =>
                 url('admin/user/show/member/type/particulier')]);
         } else {
-            $users_array = User::where('role', 5)->where('type_users_id', 2)->get();
+            $users_array = User::where('role', 5)->where('type_users_id', 2)->join('localizations',
+                'localizations.id', '=', 'users.location_id')->select('users.id AS uid',
+                'users.name AS name', 'users.image_id AS image_id', 'users.email as email',
+                'users.created_at as created_at', 'users.role as role', 'users.status as status',
+                'users.author_id as author_id', 'localizations.country as country',
+                'localizations.locality as locality', 'users.type_users_id as type_users_id')->get();
             $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path' =>
                 url('admin/user/show/member/type/particulier')]);
         }
@@ -207,7 +217,12 @@ class UserController extends Controller {
             $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path' =>
                 url('admin/user/show/member/type/organisation')]);
         } else {
-            $users_array = User::where('role', 5)->where('type_users_id', 1)->get();
+            $users_array = User::where('users.role', 5)->where('users.type_users_id', 1)->join('localizations',
+                'localizations.id', '=', 'users.location_id')->select('users.id AS uid',
+                'users.name AS name', 'users.image_id AS image_id', 'users.email as email',
+                'users.created_at as created_at', 'users.role as role', 'users.status as status',
+                'users.author_id as author_id', 'localizations.country as country',
+                'localizations.locality as locality', 'users.type_users_id as type_users_id')->get();
             $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path' =>
                 url('admin/user/show/member/type/organisation')]);
         }
@@ -236,7 +251,12 @@ class UserController extends Controller {
             $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path' =>
                 url('admin/user/show/collaborator')]);
         } else {
-            $users_array = User::where('role', 6)->get();
+            $users_array = User::where('role', 6)->join('localizations',
+                'localizations.id', '=', 'users.location_id')->select('users.id AS uid',
+                'users.name AS name', 'users.image_id AS image_id', 'users.email as email',
+                'users.created_at as created_at', 'users.role as role', 'users.status as status',
+                'users.author_id as author_id', 'localizations.country as country',
+                'localizations.locality as locality', 'users.type_users_id as type_users_id')->get();
             $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path' =>
                 url('admin/user/show/collaborator')]);
         }
@@ -357,9 +377,9 @@ class UserController extends Controller {
      * @return  \Illuminate\Http\Response
      */
     public function show(Request $request, User $user) {
-        if (Auth::user()->id == $user->id) {
-            return redirect()->route('admin.profile');
-        }
+        /*if (Auth::user()->id == $user->id) {
+        return redirect()->route('admin.profile');
+        }*/
         return $this->view("info", ['user' => $user]);
     }
 
@@ -480,7 +500,7 @@ class UserController extends Controller {
         }
         $user->status = 'active';
         $user->save();
-        Notify::success("L'utilsateur a Ã©tÃ© activÃ© avec succÃ©s");
+        Notify::success("L'utilsateur a été activé avec succès");
         return redirect(route('admin.user.index'));
     }
 
@@ -491,6 +511,17 @@ class UserController extends Controller {
         if ($value = $request->old('content'))
             $mail->content = $value;
         return $this->view("contact", ['user' => $user, 'mail' => $mail]);
+    }
+    
+    public function contacterUser(Request $request)
+    {
+        $mail = new Mail();
+        $mail->subject = $request->subject;
+        $mail->content = $request->content;
+        $mail->status = $request->method;
+        $mail->sender_id = Auth::user()->id;
+        $mail->save();
+        return back()->with('success', "La message a été bien envoyé");
     }
 
     public function aplRelation(Request $request, User $user) {
