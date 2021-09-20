@@ -181,7 +181,7 @@
                                     <fieldset class="m-25px-t">
                                         <legend> @lang('member.member_identity') </legend>
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label" for="name">@lang('app.txt.civility') *</label>
+                                            <label class="col-sm-3 control-label" for="civility">@lang('app.txt.civility') *</label>
                                             <div class="col-sm-12">
                                                 <select class="form-control" name="civility" required>
                                                     <option value="" selected disabled>@lang('app.txt.choose_civility')</option>
@@ -214,8 +214,8 @@
                                                     <div class="col-lg-2">
                                                         <select name="newsletter" class="form-control">
                                                             <option value="" selected disabled>@lang('app.txt.select')</option>
-                                                            <option value="yes" {{ old('allow_sharing')=='yes'?'selected':'' }}>@lang('app.txt.yes')</option>
-                                                            <option value="no" {{ old('allow_sharing')=='no'?'selected':'' }}>@lang('app.txt.no')</option>
+                                                            <option value="yes" {{ old('newsletter')=='yes'?'selected':'' }}>@lang('app.txt.yes')</option>
+                                                            <option value="no" {{ old('newsletter')=='no'?'selected':'' }}>@lang('app.txt.no')</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-lg-10">
