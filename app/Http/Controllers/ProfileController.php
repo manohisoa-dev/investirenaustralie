@@ -139,7 +139,7 @@ class ProfileController extends Controller
                         'politic'    => 'required',
                     ];
 
-                    if($request->postal_address_below){
+                    if($request->postal_address_below || $request->adrpost_postal_box){
                         $rules += [
                          'adrpost_postal_box'     => 'required|max:100',
                          'adrpost_area_level_2' => 'nullable|max:100',

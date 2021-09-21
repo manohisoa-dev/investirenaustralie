@@ -651,6 +651,34 @@ class User extends Authenticatable {
                         $userinfos->update(["civility" => $value]);
                     if ($value = $request->input('sexe'))
                         $userinfos->update(["sexe" => $value]);
+
+                    // User is complete
+                    if ($value = $request->input('date_of_birth'))
+                        $userinfos->update(["date_of_birth" => (new Carbon($value))->toDateString()]);
+                    if ($value = $request->input('place_of_birth'))
+                        $userinfos->update(["place_of_birth" => $value]);
+                    if ($value = $request->input('orga_phone')) {
+                        $ct_phone = $request->input('indicatif') . $value;
+                        $userinfos->update(["orga_phone" => $ct_phone]);
+                    }
+                    if ($value = $request->input('orga_mobile_phone')) {
+                        $ct_phone = $request->input('indicatif') . $value;
+                    }
+                    if ($value = $request->input('orga_phone')) {
+                        $ct_phone = '(' . $request->input('indicatif') . ')' . $value;
+                        $userinfos->update(["orga_phone" => $ct_phone]);
+                    }
+                    if ($value = $request->input('orga_mobile_phone')) {
+                        $ct_phone = '(' . $request->input('indicatif3') . ')' . $value;
+                        $userinfos->update(["orga_mobile_phone" => $ct_phone]);
+                    }
+                    if ($value = $request->input('orga_email'))
+                        $userinfos->update(["orga_email" => $value]);
+                    if ($value = $request->input('orga_skype'))
+                        $userinfos->update(["orga_skype" => $value]);
+                    if ($value = $request->input('orga_fb'))
+                        $userinfos->update(["orga_fb" => $value]);
+
                 } elseif (strtolower($type) == 'person_complete') {
                     $userloc = Localisation::whereId($user->location_id);
 
