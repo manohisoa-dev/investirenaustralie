@@ -229,20 +229,41 @@ class ProfileController extends Controller
             case 4:  // APL
                 $rules = [
                     'orga_name'         => 'required|max:100',
+                    'orga_registration_number'         => 'required|max:100',
+                    // 'orga_type'         => 'required',
+                    'orga_license_number'         => 'required|max:100',
+                    'orga_operation_range' => 'required',
                     'orga_presentation' => 'nullable|max:2000',
-                    'orga_email'        => 'required|email|max:100',
-                    'orga_phone'        => 'required|digits_between:9,15|numeric',
-                    'orga_website'      => 'required|url|max:100',
                     
-//                    'orga_operation_range' => 'required|max:100',
-
+                    'route'        => 'required|max:100',
+                    'route_number'        => 'required',
+                    'locality'     => 'required|max:100',
+                    'postalCode'   => 'required|max:100',
+                    'area_level_1' => 'nullable|max:100',
+                    'country'      => 'required|max:100',
+                    
                     'contact_name'  => 'required|max:100',
-                    'contact_email' => 'required|email|max:100',
                     'contact_phone' => 'required|digits_between:6,15|numeric',
+                    'contact_email' => 'required|email|max:100',
 
-                    'bank_iban' => 'max:100',
-                    'bank_bic' => 'max:100',
+                    'bank_name' => 'required|max:100',
+                    'bank_agency' => 'required|max:100',
+                    'bank_postal_box' => 'required|max:100',
+                    'bank_locality' => 'required|max:100',
+                    'bank_postalCode' => 'required|max:100',
+                    'bank_country' => 'required|max:100',
+                    'bank_iban' => 'required|alpha_num|min:27|max:27',
+                    'bank_bic' => 'required|alpha_num|min:8|max:11',
                 ];
+                if($request->adrpost_postal_box){
+                    $rules += [
+                        'adrpost_postal_box'     => 'required|max:100',
+                        'adrpost_locality'     => 'required|max:100',
+                        'adrpost_postalCode'   => 'required|max:100',
+                        'adrpost_area_level_1' => 'required|max:100',
+                        'adrpost_country'      => 'required|max:100',
+                    ];
+                }
                 break;
             case 2:  // Vendeur
                 $rules = [

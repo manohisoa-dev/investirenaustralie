@@ -857,20 +857,16 @@ class User extends Authenticatable {
                 // Update MetaData
                 if ($value = $request->input('orga_name'))
                     $userinfos->update(["orga_name" => $value]);
+                if ($value = $request->input('orga_registration_number'))
+                    $userinfos->update(["orga_registration_number" => $value]);
+                if ($value = $request->input('orga_license_number'))
+                    $userinfos->update(["orga_license_number" => $value]);
+                if ($value = $request->input('orga_type'))
+                    $userinfos->update(["orga_type" => $value]);
+                if ($value = $request->input('orga_form'))
+                    $userinfos->update(["orga_form" => $value]);
                 if ($value = $request->input('orga_presentation'))
                     $userinfos->update(["orga_presentation" => $value]);
-                if ($value = $request->input('orga_email'))
-                    $userinfos->update(["orga_email" => $value]);
-                if ($value = $request->input('orga_phone')) {
-                    $ct_phone = $request->input('indicatif') . $value;
-                }
-                
-                if ($value = $request->input('orga_phone')){
-                    $ct_phone = '('.$request->input('indicatif').')'.$value;
-                    $userinfos->update(["orga_phone" => $ct_phone]);
-                }
-                if ($value = $request->input('orga_website'))
-                    $userinfos->update(["orga_website" => $value]);
                 if ($value = $request->input('orga_operation_range'))
                     $userinfos->update(["orga_operation_range" => $value]);
                 if ($value = $request->input('contact_name'))
@@ -880,10 +876,11 @@ class User extends Authenticatable {
                 if ($value = $request->input('contact_phone')) {
                     $ct_phone = $request->input('indicatif') . $value;
                 }
-                if ($value = $request->input('contact_phone')){
-                    $ct_phone = '('.$request->input('indicatif2').')'.$value;
-                    $userinfos->update(["contact_phone" => $ct_phone]);
-                }
+                
+                if ($value = $request->input('bank_name'))
+                    $userinfos->update(["bank_name" => $value]);
+                if ($value = $request->input('bank_agency'))
+                    $userinfos->update(["bank_agency" => $value]);
                 if ($value = $request->input('bank_iban'))
                     $userinfos->update(["bank_iban" => $value]);
                 if ($value = $request->input('bank_bic'))

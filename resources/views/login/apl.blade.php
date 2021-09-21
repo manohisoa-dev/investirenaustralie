@@ -605,7 +605,7 @@
             bank_bic: {
                 required: true,
                 minlength:8,
-                maxlength:8,
+                maxlength:11,
             },
         },
         messages: {

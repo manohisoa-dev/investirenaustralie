@@ -468,7 +468,7 @@ class RegisterController extends Controller
                     'bank_postalCode' => 'required|max:100',
                     'bank_country' => 'required|max:100',
                     'bank_iban' => 'required|alpha_num|min:27|max:27',
-                    'bank_bic' => 'required|alpha|min:8|max:8',
+                    'bank_bic' => 'required|alpha_num|min:8|max:11',
                 ];
 
                 if($request->orga_type == 'society'){
