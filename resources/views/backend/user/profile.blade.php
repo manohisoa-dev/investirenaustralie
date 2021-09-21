@@ -619,7 +619,8 @@
                     </div>
                 @endif
                 
-                @if (!$item->hasRole(3))
+                {{-- not AFA and APL --}}
+                @if (!$item->hasRole(3) && !$item->hasRole(4))
                     <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
                         <h5>@lang('app.txt.businessdetail')</h5>
                         <div class="row">
