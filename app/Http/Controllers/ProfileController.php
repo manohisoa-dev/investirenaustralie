@@ -12,6 +12,7 @@ use App\Models\Cart;
 use App\Models\Image;
 use App\Models\Localisation;
 use App\Models\Product;
+use App\Models\Newsletter;
 
 use App\Notifications\AccountCreated;
 use App\Models\User;
@@ -149,12 +150,37 @@ class ProfileController extends Controller
 
                 }else{
                     $rules = [
+                        'orga_phone' => 'required|max:100',
+                        'orga_fax' => 'nullable|max:100',
+                        'orga_mobile_phone' => 'required|max:100',
                         'orga_name'         => 'required|max:100',
-                        'orga_email'         => 'required|email|max:100',
-                        'orga_phone' => 'required|digits_between:6,15|numeric',
+                        'orga_registration_number'         => 'required|max:100',
+                        'orga_rep_official_registration'         => 'required|max:100',
+                        // 'orga_type'         => 'required',
                         'orga_presentation' => 'nullable|max:2000',
-                        'orga_website'      => 'required|url|max:100'
+                        'building_name' => 'nullable',
+                        'route'        => 'required|max:100',
+                        'route_number'        => 'required',
+                        'locality'     => 'required|max:100',
+                        'postalCode'   => 'required|max:100',
+                        'num_rooms' => 'nullable',
+                        'num_floor' => 'nullable',
+                        'area_level_1' => 'nullable|max:100',
+                        'country'      => 'required|max:100',
+                        'contact_name'       => 'required|max:100',
+                        'contact_phone'       => 'required|max:100',
+                        'contact_email'        => 'required|email|max:100',
                     ];
+
+                    if($request->adrpost_postal_box){
+                        $rules += [
+                         'adrpost_postal_box'     => 'required|max:100',
+                         'adrpost_locality'     => 'required|max:100',
+                         'adrpost_postalCode'   => 'required|max:100',
+                         'adrpost_area_level_1' => 'nullable|max:100',
+                         'adrpost_country'      => 'required|max:100',
+                        ];
+                     }
                 }
                 break;
             case 3:  //AFA

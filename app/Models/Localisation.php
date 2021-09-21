@@ -152,6 +152,8 @@ class Localisation extends Model
             $localisation->update(["adrpost_postal_locality" => $datas['adrpost_postal_locality']]);
         if (isset($datas['adrpost_postalCode']))
             $localisation->update(["adrpost_postalCode" => $datas['adrpost_postalCode']]);
+        if (isset($datas['adrpost_locality']))
+            $localisation->update(["adrpost_locality" => $datas['adrpost_locality']]);
         if (isset($datas['adrpost_area_level_1']))
             $localisation->update(["adrpost_area_level_1" => $datas['adrpost_area_level_1']]);
         if (isset($datas['adrpost_area_level_2']))

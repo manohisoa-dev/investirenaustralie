@@ -193,7 +193,7 @@
                                                     $num = $item->userinfos?explode(')',$item->userinfos->orga_phone)[1]:'';
                                                 @endphp
                                                 @foreach (App\Models\Indicatif::all() as $indicatif)
-                                                    <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code?'selected':'' }}>{{ $allCode }} </option>
+                                                    <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -222,10 +222,10 @@
                                     <i class="fas fa-phone"></i>
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
-                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessphone')</div>
+                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessmobile')</div>
                                     <div class="input-group mb-3 col-sm-12">
                                         <div class="input-group-prepend">
-                                            <select class="form-control" name="indicatif" id="indicatif">
+                                            <select class="form-control" name="indicatif3" id="indicatif3">
                                                 @php
                                                     $codetamps = preg_match('#\((.*?)\)#', $item->userinfos->orga_mobile_phone, $match);
                                                     $code = $match[1];
@@ -233,7 +233,7 @@
                                                     $num = $item->userinfos?explode(')',$item->userinfos->orga_mobile_phone)[1]:'';
                                                 @endphp
                                                 @foreach (App\Models\Indicatif::all() as $indicatif)
-                                                    <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code?'selected':'' }}>{{ $allCode }} </option>
+                                                    <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -398,22 +398,22 @@
                         <div class="col-md-4 m-10px-tb">
                             <div class="media">
                                 <div class="only-icon-20">
-                                    <i class="fas fa-road"></i>
+                                    <i class="fas fa-city"></i>
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
-                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.streetaddress') </div>
-                                    <input type="text" class="form-control" value="{{$item->location?$item->location->route:trans('app.txt.noinfo')}}" disabled>
+                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.name_building') </div>
+                                    <input type="text" name="building_name" placeholder="@lang('app.txt.name_building')" class="form-control" value="{{$item->location?$item->location->building_name:trans('app.txt.noinfo')}}">
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4 m-10px-tb">
                             <div class="media">
                                 <div class="only-icon-20">
-                                    <i class="fas fa-city"></i>
+                                    <i class="fas fa-road"></i>
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
-                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.suburb') </div>
-                                    <input type="text" value="{{$item->location?$item->location->locality:trans('app.txt.noinfo')}}" class="form-control" disabled>
+                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.name_of_the_road') </div>
+                                    <input type="text" name="route" value="{{$item->location?$item->location->route:trans('app.txt.noinfo')}}" class="form-control" readonly>
                                 </div>
                             </div>
                         </div>
@@ -423,8 +423,41 @@
                                     <i class="fas fa-flag"></i>
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
-                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.etat')</div>
-                                    <input type="text" value="{{$item->location?$item->location->area_level_1:trans('app.txt.noinfo')}}" class="form-control" disabled>
+                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.number_of_the_road')</div>
+                                    <input type="text" name="route_number" value="{{$item->location?$item->location->route_number:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 m-10px-tb">
+                            <div class="media">
+                                <div class="only-icon-20">
+                                    <i class="fas fa-info"></i>
+                                </div>
+                                <div class="media-body p-15px-l lh-normal">
+                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.number_of_rooms')</div>
+                                    <input type="text" name="num_rooms" placeholder="@lang('app.txt.number_of_rooms')" value="{{$item->location?$item->location->num_rooms:trans('app.txt.noinfo')}}" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 m-10px-tb">
+                            <div class="media">
+                                <div class="only-icon-20">
+                                    <i class="fas fa-info"></i>
+                                </div>
+                                <div class="media-body p-15px-l lh-normal">
+                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.floor')</div>
+                                    <input type="text" name="num_floor" placeholder="@lang('app.txt.floor')" value="{{$item->location?$item->location->num_floor:trans('app.txt.noinfo')}}" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 m-10px-tb">
+                            <div class="media">
+                                <div class="only-icon-20">
+                                    <i class="fas fa-info"></i>
+                                </div>
+                                <div class="media-body p-15px-l lh-normal">
+                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.city')</div>
+                                    <input type="text" name="locality" value="{{$item->location?$item->location->locality:trans('app.txt.noinfo')}}" class="form-control" readonly>
                                 </div>
                             </div>
                         </div>
@@ -435,16 +468,122 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.codepostal')</div>
-                                    <input type="text" value="{{$item->location?$item->location->postalCode:trans('app.txt.noinfo')}}" class="form-control" disabled>
+                                    <input type="text" name="postalCode" value="{{$item->location?$item->location->postalCode:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 m-10px-tb">
+                            <div class="media">
+                                <div class="only-icon-20">
+                                    <i class="fas fa-info"></i>
+                                </div>
+                                <div class="media-body p-15px-l lh-normal">
+                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.etat') (@lang('app.txt.etat.libelle'))</div>
+                                    <input type="text" name="area_level_1" placeholder="@lang('app.txt.etat')" value="{{$item->location?$item->location->area_level_1:trans('app.txt.noinfo')}}" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 m-10px-tb">
+                            <div class="media">
+                                <div class="only-icon-20">
+                                    <i class="fas fa-info"></i>
+                                </div>
+                                <div class="media-body p-15px-l lh-normal">
+                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.country')</div>
+                                    <select class="form-control" name="country" readonly>
+                                        <option value="" selected disabled>@lang('app.select_country')</option>
+                                        @foreach(App\Models\Country::all() as $country)
+                                            @if($country->prefixPhone)
+                                                <option value="{{$country->code}}" {{ $item->location->country==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                {{-- Postal Address --}}
+                <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
+                    <h5>@lang('app.txt.postal_address')</h5>
+                    <div class="row">
+                        @if (isset($item->location) && $item->location->adrpost_postal_box=='')
+                            <div class="col-md-4 m-10px-tb">
+                                <div class="media">
+                                    @lang('app.txt.as_above')
+                                </div>
+                            </div>
+                        @else
+                            <div class="col-md-4 m-10px-tb">
+                                <div class="media">
+                                    <div class="only-icon-20">
+                                        <i class="fas fa-city"></i>
+                                    </div>
+                                    <div class="media-body p-15px-l lh-normal">
+                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.postal_box') </div>
+                                        <input type="text" name="adrpost_postal_box" placeholder="@lang('app.txt.postal_box')" class="form-control" value="{{$item->location?$item->location->adrpost_postal_box:trans('app.txt.noinfo')}}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 m-10px-tb">
+                                <div class="media">
+                                    <div class="only-icon-20">
+                                        <i class="fas fa-road"></i>
+                                    </div>
+                                    <div class="media-body p-15px-l lh-normal">
+                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.city') </div>
+                                        <input type="text" name="adrpost_locality" value="{{$item->location?$item->location->adrpost_locality:trans('app.txt.noinfo')}}" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 m-10px-tb">
+                                <div class="media">
+                                    <div class="only-icon-20">
+                                        <i class="fas fa-flag"></i>
+                                    </div>
+                                    <div class="media-body p-15px-l lh-normal">
+                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.codepostal')</div>
+                                        <input type="text" name="adrpost_postalCode" value="{{$item->location?$item->location->adrpost_postalCode:trans('app.txt.noinfo')}}" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 m-10px-tb">
+                                <div class="media">
+                                    <div class="only-icon-20">
+                                        <i class="fas fa-info"></i>
+                                    </div>
+                                    <div class="media-body p-15px-l lh-normal">
+                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.etat') (@lang('app.txt.etat.libelle'))</div>
+                                        <input type="text" name="adrpost_area_level_1" placeholder="@lang('app.txt.etat')" value="{{$item->location?$item->location->adrpost_area_level_1:trans('app.txt.noinfo')}}" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 m-10px-tb">
+                                <div class="media">
+                                    <div class="only-icon-20">
+                                        <i class="fas fa-info"></i>
+                                    </div>
+                                    <div class="media-body p-15px-l lh-normal">
+                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.country')</div>
+                                        <select class="form-control" name="adrpost_country" readonly>
+                                            <option value="" selected disabled>@lang('app.select_country')</option>
+                                            @foreach(App\Models\Country::all() as $country)
+                                                @if($country->prefixPhone)
+                                                    <option value="{{$country->code}}" {{ $item->location->adrpost_country==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                </div>
             @endif
 
             @if($item->isComplete())
-                <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
+                {{-- <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
                     <h5>@lang('app.locality')</h5>
                     <div class="row">
                         <div class="col-md-4 m-10px-tb">
@@ -492,7 +631,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
     
                 <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
                     <h5>@lang('app.txt.contactinfo')</h5>
@@ -506,18 +645,6 @@
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.contactname') </div>
                                     <input type="text" class="form-control" name="contact_name" id="contact_name" placeholder="@lang('app.txt.contactname')" value="{{old('contact_name')?old('contact_name'):($item->userinfos ?$item->userinfos->contact_name : '') }}">
                                     <span class="text-danger">{{ $errors->first('contact_name') }}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 m-10px-tb">
-                            <div class="media">
-                                <div class="only-icon-20">
-                                    <i class="fas fa-envelope"></i>
-                                </div>
-                                <div class="media-body p-15px-l lh-normal">
-                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.contactemail') </div>
-                                    <input type="text" class="form-control" name="contact_email" id="contact_email" placeholder="@lang('app.txt.contactemail')" value="{{ old('contact_email')?old('contact_email'):($item->userinfos ?$item->userinfos->contact_email:'') }}">
-                                    <span class="text-danger">{{ $errors->first('contact_email') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -538,7 +665,7 @@
                                                     $num2 = $item->userinfos?explode(')',$item->userinfos->contact_phone)[1]:'';
                                                 @endphp
                                                 @foreach (App\Models\Indicatif::all() as $indicatif)
-                                                    <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code2?'selected':'' }}>{{ $allCode2 }} </option>
+                                                    <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code2?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -549,12 +676,24 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-4 m-10px-tb">
+                            <div class="media">
+                                <div class="only-icon-20">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="media-body p-15px-l lh-normal">
+                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.contactemail') </div>
+                                    <input type="text" class="form-control" name="contact_email" id="contact_email" placeholder="@lang('app.txt.contactemail')" value="{{ old('contact_email')?old('contact_email'):($item->userinfos ?$item->userinfos->contact_email:'') }}">
+                                    <span class="text-danger">{{ $errors->first('contact_email') }}</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             @endif
 
-            {{-- Member only --}}
-            @if($item->apl && $item->hasRole(5) && $item->isComplete())
+            {{-- Member only (information APL) --}}
+            {{-- @if($item->apl && $item->hasRole(5) && $item->isComplete())
             <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
             <h5>@lang('app.txt.aplinformation')</h5>
                 <div class="row">
@@ -594,7 +733,7 @@
                     </div>
                 </div>
             </div>
-            @endif
+            @endif --}}
 
             @if ($item->hasRole(5))
                 <div class="form-group m-25px-tb">
@@ -714,6 +853,8 @@
                 orga_presentation: {
                     maxlength: 2000,
                 },
+
+                // member person && member organization && 
                 contact_name: {
                     required: true,
                 },
@@ -727,17 +868,18 @@
                     minlength: 6,
                     maxlength: 15,
                 },
-                bank_iban: {
-                    required: true,
-                },
-                bank_bic: {
-                    required: true,
-                },
+
                 // afa
                 orga_operation_range: {
                     required: true,
                 },
                 orga_operation_state: {
+                    required: true,
+                },
+                bank_iban: {
+                    required: true,
+                },
+                bank_bic: {
                     required: true,
                 },
 
@@ -751,6 +893,49 @@
                 first_name: {
                     required: true,
                 },
+
+                // member organization
+                orga_mobile_phone: {
+                    required: true,
+                    number:true,
+                    minlength:6,
+                    maxlength:15,
+                },
+                orga_registration_number: {
+                    required: true,
+                },
+                orga_rep_official_registration: {
+                    required: true,
+                },
+                orga_type: {
+                    required: true,
+                },
+                orga_form: {
+                    required: true,
+                },
+                route: {
+                    required: true,
+                },
+                route_number: {
+                    required: true,
+                },
+                locality: {
+                    required: true,
+                },
+                postalCode: {
+                    required: true,
+                },
+                adrpost_postal_box: {
+                    required: true,
+                },
+                adrpost_locality: {
+                    required: true,
+                },
+                adrpost_postalCode: {
+                    required: true,
+                },
+                
+                
                 
             },
             messages: {
@@ -792,6 +977,43 @@
                     required: "@lang('app.txt.champobligatoire')",
                 },
                 first_name: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                // member organization
+                orga_mobile_phone: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                orga_registration_number: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                orga_rep_official_registration: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                orga_type: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                orga_form: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                route: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                route_number: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                locality: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                postalCode: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                adrpost_postal_box: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                adrpost_locality: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                adrpost_postalCode: {
                     required: "@lang('app.txt.champobligatoire')",
                 },
             },
