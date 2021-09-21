@@ -10,7 +10,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Jleon\LaravelPnotify\Notify;
 
-use App\Models\Mail;
+use App\Models\Email;
 use App\Models\MailUser;
 use App\Models\Country;
 use App\Models\State;
@@ -505,7 +505,7 @@ class UserController extends Controller {
     }
 
     public function contact(Request $request, User $user) {
-        $mail = new Mail();
+        $mail = new Email();
         if ($value = $request->old('subject'))
             $mail->subject = $value;
         if ($value = $request->old('content'))
@@ -515,7 +515,7 @@ class UserController extends Controller {
     
     public function contacterUser(Request $request)
     {
-        $mail = new Mail();
+        $mail = new Email();
         $mail->subject = $request->subject;
         $mail->content = $request->content;
         $mail->status = $request->method;

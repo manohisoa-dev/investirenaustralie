@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Mail;
+use App\Models\Email;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\MailUser;
@@ -16,7 +16,7 @@ class MailController extends Controller {
     public $viewDir = "admin.mail";
 
     public function index() {
-        $records = Mail::findRequested();
+        $records = Email::findRequested();
         return $this->view("index", ['records' => $records,'filter'=>'']);
     }
 
@@ -28,7 +28,7 @@ class MailController extends Controller {
      */
     public function all(Request $request, $filter) {
         $user = Auth::user();
-        $records = Mail::listeEmailByStatuts($filter, $user->id);
+        $records = Email::listeEmailByStatuts($filter, $user->id);
         if ($filter == '') {
             $title = __('app.admin.mail.list');
         } else {
@@ -57,9 +57,9 @@ class MailController extends Controller {
      * @return  \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        $this->validate($request, Mail::validationRules());
+        $this->validate($request, Email::validationRules());
 
-        Mail::create($request->all());
+        Email::create($request->all());
 
         # notification
         Notify::success('Mail a été créer avec succès');
@@ -71,7 +71,7 @@ class MailController extends Controller {
      *
      * @return  \Illuminate\Http\Response
      */
-    public function show(Request $request, Mail $mail) {
+    public function show(Request $request, Email $mail) {
         $mail_user = MailUser::where(['user_id' => Auth::id(), 'mail_id' => $mail->id])->first();
         if ($mail_user) {
             $mail_user->read = 1;
@@ -98,14 +98,14 @@ class MailController extends Controller {
     public function update(Request $request, Mail $mail) {
         if ($request->isXmlHttpRequest()) {
             $data = [$request->name => $request->value];
-            $validator = \Validator::make($data, Mail::validationRules($request->name));
+            $validator = \Validator::make($data, Email::validationRules($request->name));
             if ($validator->fails())
                 return response($validator->errors()->first($request->name), 403);
             $mail->update($data);
             return "Record updated";
         }
 
-        $this->validate($request, Mail::validationRules());
+        $this->validate($request, Email::validationRules());
 
         $mail->update($request->all());
 
@@ -119,7 +119,7 @@ class MailController extends Controller {
      *
      * @return  \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Mail $mail) {
+    public function destroy(Request $request, Email $mail) {
         $mail->delete();
 
         # notification

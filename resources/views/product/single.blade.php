@@ -1,14 +1,25 @@
 <div class="col-sm-12 col-lg-12 m-15px-tb">
     <div class="box-shadow-hover hover-top white-bg our-team-hover-icon border-radius-3">
         <div class="p-10px team-img">
-            @php
-                    if(@getimagesize($item->imageUrl())) {
-                        $img=$item->imageUrl();
-                    } else {
-                        $img=asset('images/iea.png');
-                    }
-                @endphp
-                <img src="{{$img}}" alt="{{$item->title}}">
+			@php
+				$photo_principal = \App\Models\ProductsImage::where('products_images.product_id', '=', $item->id)->where('products_images.is_principal', '=', 1)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+				$first_photo = \App\Models\ProductsImage::where('products_images.product_id', '=', $item->id)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+				
+			@endphp
+			@if($first_photo)
+				@if($photo_principal)
+				<!-- Programme sans principal -->
+				<img src="{{asset($photo_principal->filepath)}}" alt="{{$item->title}}" />
+				@else
+				<!-- Programme principal -->
+				<img src="{{asset($first_photo->filepath)}}" alt="{{$item->title}}" />
+				@endif
+			@else
+				<!-- Programme aucun photo -->
+				<img class="img-responsive" src="{{asset('images/product.png')}}">
+			@endif
+									
+            
         </div>
         <div class="p-5px-t p-20px-b text-center">
             <small><i class="fa fa-map-marker"></i> 
