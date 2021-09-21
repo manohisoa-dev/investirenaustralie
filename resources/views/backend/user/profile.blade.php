@@ -12,17 +12,19 @@
             <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
                 <h5>@lang('app.txt.logininfo')</h5>
                 <div class="row">
-                    <div class="col-md-4 m-10px-tb">
-                        <div class="media">
-                            <div class="only-icon-20">
-                                <i class="fas fa-building"></i>
-                            </div>
-                            <div class="media-body p-15px-l lh-normal">
-                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.typemembre')</div>
-                                <input type="text" name="type" id="type" class="form-control" value="{{$item->type_users_id?App\Models\TypeUser::find($item->type_users_id)->type_user_name:trans('app.txt.noinfo')}}" readonly>
+                    @if ($item->hasRole(5))
+                        <div class="col-md-4 m-10px-tb">
+                            <div class="media">
+                                <div class="only-icon-20">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                                <div class="media-body p-15px-l lh-normal">
+                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.typemembre')</div>
+                                    <input type="text" name="type" id="type" class="form-control" value="{{$item->type_users_id?App\Models\TypeUser::find($item->type_users_id)->type_user_name:trans('app.txt.noinfo')}}" readonly>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
                     <div class="col-md-4 m-10px-tb">
                         <div class="media">
                             <div class="only-icon-20">
@@ -315,7 +317,7 @@
                                             $orga_type = '';
                                         @endphp
                                     @endif
-                                    <input type="text" class="form-control" name="orga_type" placeholder="@lang('app.txt.type_of_organization')" value="{{ old('orga_type')?old('orga_type'):$orga_type}}" readonly>
+                                    <input type="text" class="form-control" placeholder="@lang('app.txt.type_of_organization')" value="{{ old('orga_type')?old('orga_type'):$orga_type}}" readonly>
                                     <span class="text-danger">{{ $errors->first('orga_type') }}</span>
                                 </div>
                             </div>
