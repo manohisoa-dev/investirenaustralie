@@ -186,21 +186,45 @@ class ProfileController extends Controller
             case 3:  //AFA
                 $rules = [
                     'orga_name'         => 'required|max:100',
-                    'orga_presentation' => 'nullable|max:2000',
+                    'orga_trading_name'         => 'required|max:100',
+                    'orga_abn'         => 'required|digits_between:11,11|numeric',
+                    'orga_acn'         => 'nullable|digits_between:9,9|numeric',
+                    'orga_license_number'  => 'required|max:100',
                     'orga_email'        => 'required|email|max:100',
                     'orga_phone'        => 'required|digits_between:6,15|numeric',
+                    'orga_fax'        => 'nullable|max:100',
+                    'orga_mobile_phone'        => 'required|digits_between:6,15|numeric',
                     'orga_website'      => 'required|url|max:100',
-                    
-                    'orga_operation_state' => 'required|max:100',
-                    'orga_operation_range' => 'required|max:100',
+                    'orga_presentation' => 'max:2000',
+                    'orga_operation_state' => 'required',
+                    'orga_operation_range' => 'required',
 
+                    'route'        => 'required|max:100',
+                    'route_number'        => 'required',
+
+                    'area_level_2' => 'required|max:100',
+                    'locality'     => 'required|max:100',
+                    'postalCode'   => 'required|integer',
+                    'area_level_1' => 'required|max:100',
+                    'country'      => 'required',
+                    
                     'contact_name'  => 'required|max:100',
-                    'contact_email' => 'required|max:100',
-                    'contact_phone' => 'required||digits_between:6,15|numeric',
+                    'contact_email' => 'required|email|max:100',
+                    'contact_phone' => 'required|digits_between:6,15|numeric',
 
 //                    'crm_name'   => 'required|max:100',
 //                    'crm_email'  => 'required|max:100',
                 ];
+
+                if($request->adrpost_postal_box){
+                    $rules += [
+                     'adrpost_postal_box'     => 'required|max:100',
+                     'adrpost_locality'     => 'required|max:100',
+                     'adrpost_postalCode'   => 'required|max:100',
+                     'adrpost_area_level_1' => 'required|max:100',
+                     'adrpost_country'      => 'required|max:100',
+                    ];
+                 }
                 break;
             case 4:  // APL
                 $rules = [

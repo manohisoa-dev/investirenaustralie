@@ -216,7 +216,7 @@
                                                 <label for="orga_operation_range" class="col-sm-12 control-label">@lang('app.txt.rangeofoperation') *</label>
                                                 <div class="col-sm-12">
                                                     <select class="form-control" name="orga_operation_range" id="orga_operation_range">
-                                                        <option value="10" {{ old('orga_operation_range')=='5'?'selected':'' }}> 5 Km</option>
+                                                        <option value="5" {{ old('orga_operation_range')=='5'?'selected':'' }}> 5 Km</option>
                                                         <option value="10" {{ old('orga_operation_range')=='10'?'selected':'' }}> 10 Km</option>
                                                         <option value="25" {{ old('orga_operation_range')=='25'?'selected':'' }}> 25 Km</option>
                                                         <option value="50" {{ old('orga_operation_range')=='50'?'selected':'' }}> 50 Km</option>
@@ -261,7 +261,7 @@
                                             <div class="form-group">
                                                 <label for="level" class="col-sm-12 control-label">@lang('app.txt.level')</label>
                                                 <div class="col-sm-12">
-                                                    <input type="text" class="form-control" id="level" name="level" placeholder="@lang('app.txt.level')" value="{{ old('level')?old('level'):'' }}">
+                                                    <input type="text" class="form-control" id="level" name="num_floor" placeholder="@lang('app.txt.level')" value="{{ old('level')?old('level'):'' }}">
                                                     <span class="text-danger">{{ $errors->first('level') }}</span>
                                                 </div>
                                             </div>
@@ -546,7 +546,7 @@
                     url:true
                 },
                 orga_presentation: {
-                    maxlength: 1000,
+                    maxlength: 2000,
                 },
                 // image: {
                 //     accept: "image/jpeg, image/pjpeg"
