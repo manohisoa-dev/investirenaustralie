@@ -1849,7 +1849,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.postal_box') </div>
-                                    <input type="text" class="form-control" name="bank_postal_box" id="bank_postal_box" placeholder="@lang('app.txt.postal_box')" value="{{old('bank_postal_box')?old('bank_postal_box'):($item->userinfos ?$item->userinfos->bank_postal_box:'')}}">
+                                    <input type="text" class="form-control" name="bank_postal_box" id="bank_postal_box" placeholder="@lang('app.txt.postal_box')" value="{{old('bank_postal_box')?old('bank_postal_box'):($item->location ?$item->location->bank_postal_box:'')}}">
                                 </div>
                             </div>
                         </div>
@@ -1860,7 +1860,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.city') </div>
-                                    <input type="text" class="form-control" name="bank_locality" id="bank_locality" placeholder="@lang('app.txt.postal_box')" value="{{old('bank_locality')?old('bank_locality'):($item->userinfos ?$item->userinfos->bank_locality:'')}}">
+                                    <input type="text" class="form-control" name="bank_locality" id="bank_locality" placeholder="@lang('app.txt.postal_box')" value="{{old('bank_locality')?old('bank_locality'):($item->location ?$item->location->bank_locality:'')}}">
                                 </div>
                             </div>
                         </div>
@@ -1871,7 +1871,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.codepostal') </div>
-                                    <input type="text" class="form-control" name="bank_postalCode" id="bank_postalCode" placeholder="@lang('app.txt.postal_box')" value="{{old('bank_postalCode')?old('bank_postalCode'):($item->userinfos ?$item->userinfos->bank_postalCode:'')}}">
+                                    <input type="text" class="form-control" name="bank_postalCode" id="bank_postalCode" placeholder="@lang('app.txt.postal_box')" value="{{old('bank_postalCode')?old('bank_postalCode'):($item->location ?$item->location->bank_postalCode:'')}}">
                                 </div>
                             </div>
                         </div>
