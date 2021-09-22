@@ -266,6 +266,136 @@ class ProfileController extends Controller
                 }
                 break;
             case 2:  // Vendeur
+                if($user->TypeUser->type_user_name=='Builder' || $user->TypeUser->type_user_name=='Developer'){
+                    $rules = [
+                        'orga_name'         => 'required|max:100',
+                        'orga_trading_name'         => 'required|max:100',
+                        'orga_abn'         => 'required|digits_between:11,11|numeric',
+                        'orga_acn'         => 'nullable|digits_between:9,9|numeric',
+                        'orga_email'        => 'required|email|max:100',
+                        'orga_phone'        => 'required|digits_between:8,9|numeric',
+                        'orga_fax'        => 'nullable|max:100',
+                        'orga_mobile_phone'        => 'required|digits_between:9,9|numeric',
+                        'orga_website'      => 'required|url|max:100',
+                        'orga_presentation' => 'max:2000',
+
+                        'route'        => 'required|max:100',
+                        'route_number'        => 'required',
+                        'locality'     => 'required|max:100',
+                        'area_level_2' => 'required|max:100',
+                        'postalCode'   => 'required|integer',
+                        'area_level_1' => 'required|max:100',
+                        'country'      => 'required',
+
+                        'contact_name'  => 'required|max:100',
+                        'contact_email' => 'required|email|max:100',
+                        'contact_phone' => 'required|digits_between:9,9|numeric',
+    
+                    ];
+
+                    if(isset($request->orga_parent_name)){
+                        $rules += [
+                            'orga_parent_name'         => 'required|max:100',
+                        ];
+                    }
+    
+                    if(isset($request->adrpost_postal_box)){
+                        $rules += [
+                         'adrpost_postal_box'     => 'required|max:100',
+                         'adrpost_locality'     => 'required|max:100',
+                         'adrpost_postalCode'   => 'required|max:100',
+                         'adrpost_area_level_1' => 'nullable|max:100',
+                         'adrpost_country'      => 'required|max:100',
+                        ];
+                     }
+                }else{
+                    if(session('seller_class')!=='seller_by_afa'){
+                        $rules = [
+                            // Seller #1
+                            'last_name'  => 'required|max:100',
+                            'first_name' => 'required|max:100',
+                            'date_of_birth' => 'required|max:100',
+                            'place_of_birth' => 'required|max:100',
+                            'nationality' => 'required|max:100',
+                            'street_adr' => 'required|max:100',
+                            'suburb' => 'required|max:100',
+                            'city' => 'required|max:100',
+                            'post_code' => 'required|max:100',
+                            'state' => 'nullable|max:100',
+                            'country' => 'required|max:100',
+                            'phone' => 'required|max:15',
+                            'mobile' => 'required|max:15',
+                            'email_adr' => 'required|email|max:100',
+
+                            // Seller #2
+                            'last_name_2'  => 'required|max:100',
+                            'first_name_2' => 'required|max:100',
+                            'date_of_birth_2' => 'required|max:100',
+                            'place_of_birth_2' => 'required|max:100',
+                            'nationality_2' => 'required|max:100',
+                            'street_adr_2' => 'required|max:100',
+                            'suburb_2' => 'required|max:100',
+                            'city_2' => 'required|max:100',
+                            'post_code_2' => 'required|max:100',
+                            'state_2' => 'nullable|max:100',
+                            'country_2' => 'required|max:100',
+                            'phone_2' => 'required|max:15',
+                            'mobile_2' => 'required|max:15',
+                            'email_adr_2' => 'required|email|max:100',
+
+                        ];
+                    }else{
+                        $rules = [
+                            'login_afa'  => 'required',
+                            'immat_afa' => 'required',
+                        ];
+
+                        if($request->type == 'business'){
+                            $rules += [
+                                'business_name' => 'required|max:100',
+                                'street_adr_bs'        => 'required|max:100',
+                                'suburb_bs'        => 'required|max:100',
+                                'city_bs'        => 'required|max:100',
+                                'post_code_bs' => 'required|max:100',
+                                'state_bs' => 'required|max:100',
+                                'country_bs' => 'required|max:100',
+                                'phone_bs' => 'required|max:15',
+                                'mobile_bs' => 'required|max:15',
+                                'email_adr_bs' => 'required|email|max:100',
+                            ];
+                        }else{
+                            
+                            $rules += [
+                                // Seller #1
+                                'last_name'  => 'required|max:100',
+                                'first_name' => 'required|max:100',
+                                'street_adr' => 'required|max:100',
+                                'suburb' => 'required|max:100',
+                                'city' => 'required|max:100',
+                                'post_code' => 'required|max:100',
+                                'state' => 'nullable|max:100',
+                                'country' => 'required|max:100',
+                                'phone' => 'required|max:15',
+                                'mobile' => 'required|max:15',
+                                'email_adr' => 'required|email|max:100',
+
+                                // Seller #2
+                                'last_name_2'  => 'required|max:100',
+                                'first_name_2' => 'required|max:100',
+                                'street_adr_2' => 'required|max:100',
+                                'suburb_2' => 'required|max:100',
+                                'city_2' => 'required|max:100',
+                                'post_code_2' => 'required|max:100',
+                                'state_2' => 'nullable|max:100',
+                                'country_2' => 'required|max:100',
+                                'phone_2' => 'required|max:15',
+                                'mobile_2' => 'required|max:15',
+                                'email_adr_2' => 'required|email|max:100',
+                            ];
+                        }
+                    }
+                }
+
                 $rules = [
                     'orga_name'         => 'required|max:100',
                     'orga_presentation' => 'nullable|max:2000',

@@ -225,8 +225,8 @@
                                                 <div class="form-group">
                                                     <label for="level" class="col-sm-12 control-label">@lang('app.txt.level')</label>
                                                     <div class="col-sm-12">
-                                                        <input type="text" class="form-control" id="level" name="level" placeholder="@lang('app.txt.level')" value="{{ old('level')?old('level'):'' }}">
-                                                        <span class="text-danger">{{ $errors->first('level') }}</span>
+                                                        <input type="text" class="form-control" id="num_floor" name="num_floor" placeholder="@lang('app.txt.level')" value="{{ old('num_floor')?old('num_floor'):'' }}">
+                                                        <span class="text-danger">{{ $errors->first('num_floor') }}</span>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -273,7 +273,7 @@
                                                 </div>
                                             </fieldset>
 
-                                            {{-- Mail Address --}}
+                                            {{-- Postal Address --}}
                                             <fieldset class="m-25px-t">
                                                 <legend>@lang('app.txt.postal_address')</legend>
                                                 <div class="form-group">
