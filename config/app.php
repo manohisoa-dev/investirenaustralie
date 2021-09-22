@@ -199,6 +199,7 @@ return [
 
         Dedicated\GoogleTranslate\GoogleTranslateProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
     ],
 
     /*
@@ -257,6 +258,7 @@ return [
         'Notify' => Jleon\LaravelPnotify\Notify::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'user' => App\Http\Middleware\CheckUser::class,
+        'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
     ],
 
 ];
