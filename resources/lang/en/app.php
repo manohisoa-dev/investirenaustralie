@@ -877,7 +877,7 @@ return
 	'txt.neighborhood_district_borough' => 'Neighborhood, District, Borough',
 	'txt.city' => 'City',
 	'txt.postal_address' => 'Postal Address',
-	'txt.as_above' => 'Ad above',
+	'txt.as_above' => 'As above',
 	'txt.detail_below' => 'Detail below',
 	'txt.postal_box' => 'Postal Box',
 	'txt.contact_information' => 'Contact Information',
