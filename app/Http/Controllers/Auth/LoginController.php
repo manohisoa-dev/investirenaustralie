@@ -311,6 +311,6 @@ class LoginController extends Controller
         Session::put('locale',$page_locale);
         Session::save();
         
-        return back();
+        return redirect(route('home'));
     }
 }
