@@ -155,12 +155,12 @@ class ProfileController extends Controller
                         'orga_mobile_phone' => 'required|max:100',
                         'orga_name'         => 'required|max:100',
                         'orga_registration_number'         => 'required|max:100',
-                        'orga_rep_official_registration'         => 'required|max:100',
+                        'orga_rep_official_registration'         => 'nullable|max:100',
                         // 'orga_type'         => 'required',
                         'orga_presentation' => 'nullable|max:2000',
                         'building_name' => 'nullable',
-                        'route'        => 'required|max:100',
-                        'route_number'        => 'required',
+                        // 'route'        => 'required',
+                        // 'route_number'        => 'required',
                         'locality'     => 'required|max:100',
                         'postalCode'   => 'required|max:100',
                         'num_rooms' => 'nullable',
@@ -524,9 +524,9 @@ class ProfileController extends Controller
     {
         // Validate request
         $validator = Validator::make($request->all(),[
-                            'old_password' => 'required|max:100',
-                            'password' => 'required|min:6|max:100',
-                            'password_confirmation' => 'required|max:100|same:password',
+                            'old_password' => 'required|min:8',
+                            'password' => 'required|min:8',
+                            'password_confirmation' => 'required|min:8|same:password',
                         ]);
         
         if ($validator->fails()) {

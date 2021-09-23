@@ -62,27 +62,6 @@
                             </div>
                         </div>
                     </div>
-
-                    @if ($item->hasRole(5) && $item->isPerson())
-                        <div class="col-md-4 m-10px-tb">
-                            <div class="media">
-                                <div class="only-icon-20">
-                                    <i class="fas fa-globe"></i>
-                                </div>
-                                <div class="media-body p-15px-l lh-normal">
-                                    <div class="dark-color m-5px-b font-w-600">@lang('app.country') </div>
-                                    <select class="form-control" name="country" required>
-                                        <option value="" selected disabled>@lang('app.select_country')</option>
-                                        @foreach(App\Models\Country::all() as $country)
-                                        <option value="{{$country->code}}" {{ $item->location->country==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
-                                        @endforeach
-                                    </select>
-                                    <span></span>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-
                     <div class="col-md-8 m-10px-tb">
                         <div class="media">
                             <div class="media-body p-15px-l lh-normal p-40px-t">
@@ -141,7 +120,7 @@
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.nationality') </div>
-                                <input type="text" name="nationality" id="nationality" placeholder="@lang('app.txt.nationality')" class="form-control" value="{{isset($item->userinfos->nationality)?$item->userinfos->nationality:''}}">
+                                <input type="text" name="nationality" id="nationality" placeholder="@lang('app.txt.nationality')" class="form-control" value="{{isset($item->userinfos->nationality)?$item->userinfos->nationality:''}}" readonly>
                                 <span></span>
                             </div>
                         </div>
@@ -153,9 +132,8 @@
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.sexe') </div>
-                                <select name="sexe" class="form-control" id="sexe">
-                                    <option value="fr" {{$item->userinfos->sexe=='M'?'selected':''}}>@lang('app.txt.male')</option>
-                                    <option value="en" {{$item->userinfos->sexe=='F'?'selected':''}}>@lang('app.txt.female')</option>
+                                <select name="sexe" class="form-control" id="sexe" readonly>
+                                    <option value="{{ $item->userinfos->sexe }}" selected>{{ $item->userinfos->sexe=='M'?trans('app.txt.male'):trans('app.txt.female') }}</option>
                                 </select>
                                 <span></span>
                             </div>
@@ -185,6 +163,20 @@
                             </div>
                         </div>
                     @endif
+                    <div class="col-md-4 m-10px-tb">
+                        <div class="media">
+                            <div class="only-icon-20">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <div class="media-body p-15px-l lh-normal">
+                                <div class="dark-color m-5px-b font-w-600">@lang('app.country') </div>
+                                <select class="form-control" name="country" readonly>
+                                    <option value="{{$item->location->country}}" selected> {{ App\Models\Country::where('code',$item->location->country)->pluck('content')[0] }} ({{$item->location->country}})</option>
+                                </select>
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             @else
@@ -2004,7 +1996,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 m-10px-tb">
+                            <div class="col-md-6 m-10px-tb">
                                 <div class="media">
                                     <div class="only-icon-20">
                                         <i class="fas fa-envelope"></i>
@@ -2053,7 +2045,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 m-10px-tb">
+                            <div class="col-md-6 m-10px-tb">
                                 <div class="media">
                                     <div class="only-icon-20">
                                         <i class="fas fa-building"></i>
@@ -2065,19 +2057,19 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 m-10px-tb">
+                            <div class="col-md-6 m-10px-tb">
                                 <div class="media">
                                     <div class="only-icon-20">
                                         <i class="fas fa-info"></i>
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.organizationregistrationnumber') </div>
-                                        <input type="text" class="form-control" name="orga_registration_number" id="orga_registration_number" placeholder="@lang('app.txt.organizationregistrationnumber')" value="{{ old('orga_registration_number')?old('orga_registration_number'):(isset($item->userinfos->orga_registration_number)?$item->userinfos->orga_registration_number:'') }}">
+                                        <input type="text" class="form-control" name="orga_registration_number" id="orga_registration_number" placeholder="@lang('app.txt.organizationregistrationnumber.input')" value="{{ old('orga_registration_number')?old('orga_registration_number'):(isset($item->userinfos->orga_registration_number)?$item->userinfos->orga_registration_number:'') }}">
                                         <span class="text-danger">{{ $errors->first('orga_registration_number') }}</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 m-10px-tb">
+                            <div class="col-md-6 m-10px-tb">
                                 <div class="media">
                                     <div class="only-icon-20">
                                         <i class="fas fa-info"></i>
@@ -2089,7 +2081,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 m-10px-tb">
+                            <div class="col-md-6 m-10px-tb">
                                 <div class="media">
                                     <div class="only-icon-20">
                                         <i class="fas fa-building"></i>
@@ -2117,7 +2109,7 @@
                                 </div>
                             </div>
                             @if ($item->userinfos->orga_type!=='public')
-                                <div class="col-md-4 m-10px-tb">
+                                <div class="col-md-6 m-10px-tb">
                                     <div class="media">
                                         <div class="only-icon-20">
                                             <i class="fas fa-info"></i>
@@ -2485,7 +2477,7 @@
                 <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
                     <h5>@lang('app.txt.physical_address')</h5>
                     <div class="row">
-                        <div class="col-md-4 m-10px-tb">
+                        <div class="col-md-6 m-10px-tb">
                             <div class="media">
                                 <div class="only-icon-20">
                                     <i class="fas fa-city"></i>
@@ -2496,18 +2488,19 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 m-10px-tb">
+
+                        <div class="col-md-6 m-10px-tb">
                             <div class="media">
                                 <div class="only-icon-20">
                                     <i class="fas fa-road"></i>
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
-                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.name_of_the_road') </div>
-                                    <input type="text" name="route" value="{{$item->location?$item->location->route:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.name_num_of_the_road') </div>
+                                    <input type="text" value="{{$item->location?$item->location->route:trans('app.txt.noinfo')}}, {{$item->location?$item->location->route_number:trans('app.txt.noinfo')}}" class="form-control" readonly>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 m-10px-tb">
+                        {{-- <div class="col-md-4 m-10px-tb">
                             <div class="media">
                                 <div class="only-icon-20">
                                     <i class="fas fa-flag"></i>
@@ -2517,7 +2510,7 @@
                                     <input type="text" name="route_number" value="{{$item->location?$item->location->route_number:trans('app.txt.noinfo')}}" class="form-control" readonly>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="col-md-4 m-10px-tb">
                             <div class="media">
                                 <div class="only-icon-20">
@@ -3154,7 +3147,7 @@
                     required: true,
                 },
                 orga_rep_official_registration: {
-                    required: true,
+                    required: false,
                 },
                 orga_type: {
                     required: true,

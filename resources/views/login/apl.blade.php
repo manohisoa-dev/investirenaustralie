@@ -75,7 +75,7 @@
                                             <div class="form-group">
                                                 <label for="orga_registration_number" class="col-sm-12 control-label">@lang('app.txt.agencyregistrationnumber') *</label>
                                                 <div class="col-sm-12">
-                                                    <input type="text" class="form-control" id="orga_registration_number" name="orga_registration_number" placeholder="RCS XXX XXX XXX XXX" value="{{ old('orga_registration_number')?old('orga_registration_number'):'' }}" required>
+                                                    <input type="text" class="form-control" id="orga_registration_number" name="orga_registration_number" placeholder="@lang('app.txt.organizationregistrationnumber.input')" value="{{ old('orga_registration_number')?old('orga_registration_number'):'' }}" required>
                                                     <span class="text-danger">{{ $errors->first('orga_registration_number') }}</span>
                                                 </div>
                                             </div>

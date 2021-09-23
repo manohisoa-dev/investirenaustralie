@@ -58,7 +58,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('guest' || 'auth');
     }
 
     /**
@@ -350,7 +350,7 @@ class RegisterController extends Controller
                         'orga_mobile_phone' => 'required|max:100',
                         'orga_name'         => 'required|max:100',
                         'orga_registration_number'         => 'required|max:100',
-                        'orga_rep_official_registration'         => 'required|max:100',
+                        'orga_rep_official_registration'         => 'nullable|max:100',
                         'orga_type'         => 'required',
                         'orga_presentation' => 'nullable|max:2000',
                         'route'        => 'required|max:100',
@@ -902,6 +902,23 @@ class RegisterController extends Controller
             echo "false";
         } else {
             echo "true";
+        }
+    }
+
+    /*
+    * Check if user password is correct
+    *
+    */
+    public function ajaxCheckPassword(Request $request) {
+        $pwd = $request->pwd;
+        $userId = $request->user_id;
+        $user = User::whereId($userId)->first();
+        $hash = Hash::check($pwd, $user->password, []);
+
+        if ($hash) {
+            echo "true";
+        } else {
+            echo "false";
         }
     }
 

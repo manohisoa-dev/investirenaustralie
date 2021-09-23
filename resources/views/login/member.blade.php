@@ -354,14 +354,14 @@
                                         <div class="form-group">
                                             <label for="orga_registration_number" class="col-sm-12 control-label">@lang('app.txt.organizationregistrationnumber') *</label>
                                             <div class="col-sm-12">
-                                                <input type="text" class="form-control" id="orga_registration_number" name="orga_registration_number" placeholder="RCS XXX XXX XXX XXX" value="{{ old('orga_registration_number')?old('orga_registration_number'):'' }}" required>
+                                                <input type="text" class="form-control" id="orga_registration_number" name="orga_registration_number" placeholder="@lang('app.txt.organizationregistrationnumber.input')" value="{{ old('orga_registration_number')?old('orga_registration_number'):'' }}" required>
                                                 <span class="text-danger">{{ $errors->first('orga_registration_number') }}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="orga_rep_official_registration" class="col-sm-12 control-label">@lang('app.txt.organizationrepregistrationofficial') *</label>
+                                            <label for="orga_rep_official_registration" class="col-sm-12 control-label">@lang('app.txt.organizationrepregistrationofficial')</label>
                                             <div class="col-sm-12">
-                                                <input type="text" class="form-control" id="orga_rep_official_registration" name="orga_rep_official_registration" placeholder="RCS" value="{{ old('orga_rep_official_registration')?old('orga_rep_official_registration'):'' }}" required>
+                                                <input type="text" class="form-control" id="orga_rep_official_registration" name="orga_rep_official_registration" placeholder="@lang('app.txt.organizationrepregistrationofficial')" value="{{ old('orga_rep_official_registration')?old('orga_rep_official_registration'):'' }}">
                                                 <span class="text-danger">{{ $errors->first('orga_rep_official_registration') }}</span>
                                             </div>
                                         </div>
@@ -417,7 +417,7 @@
                                         <div class="form-group">
                                             <label for="orga_presentation" class="col-sm-12 control-label">@lang('app.txt.presentation.organisation')</label>
                                             <div class="col-sm-12">
-                                                <textarea class="form-control" maxlength="2000" id="orga_presentation" name="orga_presentation" placeholder="@lang('app.txt.agencypresentation')" rows="10">{{ old('orga_presentation')?old('orga_presentation'):'' }}</textarea>
+                                                <textarea class="form-control" maxlength="2000" id="orga_presentation" name="orga_presentation" placeholder="@lang('app.txt.presentation.organisation')" rows="10">{{ old('orga_presentation')?old('orga_presentation'):'' }}</textarea>
                                                 <span class="text-danger">{{ $errors->first('orga_presentation') }}</span>
                                             </div>
                                         </div>

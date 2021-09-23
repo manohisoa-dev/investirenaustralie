@@ -855,8 +855,9 @@ return
 	'txt.result_for_ads' => 'Result for ads',
 	'txt.agencydetail' => 'Agency details',
 	'txt.agencyregistrationnumber' => 'Registration number of the Agency in the Trade and Companies Register',
-	'txt.organizationregistrationnumber' => 'Official registration number of the organization',
-	'txt.organizationrepregistrationofficial' => 'Name of official registration directory',
+	'txt.organizationregistrationnumber' => 'Official registration number of the organization (RCS)',
+	'txt.organizationregistrationnumber.input' => 'Registration number (RCS)',
+	'txt.organizationrepregistrationofficial' => 'Registration number in the official business directory',
 	'txt.agencyname' => 'Name of the Agency',
 	'txt.type_of_company' => 'Type of company',
 	'txt.individual' => 'Individual',
@@ -1251,5 +1252,8 @@ return
     'admin.product_isole.list_valid' => 'List of stand-alone products to validate',
     'admin.product_isole.list_no_valid' => 'List of stand-alone products published',
 	'btn.show_detail' => 'Show detail',
-
+	'txt.password_do_not_match' => 'Passwords do not match!',
+	'txt.regex_mdp' => 'Password must be at least eight characters long, at least one uppercase letter, one lowercase letter, one number and one special character',
+	'txt.password_error' => 'Password error !',
+	'txt.name_num_of_the_road' => 'Name and n° of road',
 ];

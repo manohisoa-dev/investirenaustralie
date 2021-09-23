@@ -152,7 +152,8 @@ Route::middleware(["auth"])->group(function(){
 
     // message controller
     Route::get('message/unread/notification/{user_id}', 'MessageController@getUnreadMessageNotification')->name('get.unread.message.notification');
-
+    
+    Route::get('ajaxCheckPassword', 'Auth\RegisterController@ajaxCheckPassword')->name('ajaxCheckPassword');
 });
 
 
