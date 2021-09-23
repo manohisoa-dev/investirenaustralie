@@ -291,14 +291,23 @@
                                         <div class="input-group mb-3 col-sm-12">
                                             <div class="input-group-prepend">
                                                 <select class="form-control" name="indicatif" id="indicatif">
-                                                    @php
-                                                        $codetamps = preg_match('#\((.*?)\)#', $item->userinfos->orga_phone, $match);
-                                                        $code = $match[1];
-                                                        $num = $item->userinfos?explode(')',$item->userinfos->orga_phone)[1]:'';
-                                                    @endphp
-                                                    @foreach (App\Models\Indicatif::all() as $indicatif)
-                                                        <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
-                                                    @endforeach
+                                                    @if (isset($item->userinfos->orga_phone) && $item->userinfos->orga_phone)
+                                                        @php
+                                                            $codetamps = preg_match('#\((.*?)\)#', $item->userinfos->orga_phone, $match);
+                                                            $code = $match[1];
+                                                            $num = $item->userinfos?explode(')',$item->userinfos->orga_phone)[1]:'';
+                                                        @endphp
+                                                        @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                            <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
+                                                        @endforeach
+                                                    @else
+                                                        @php
+                                                            $num="";
+                                                        @endphp
+                                                        @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                            <option value="+{{ $indicatif->code }}" {{ $indicatif->code=='61'?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
+                                                        @endforeach
+                                                    @endif
                                                 </select>
                                             </div>
                                             <div class="custom-file">
@@ -330,14 +339,23 @@
                                         <div class="input-group mb-3 col-sm-12">
                                             <div class="input-group-prepend">
                                                 <select class="form-control" name="indicatif3" id="indicatif3">
-                                                    @php
-                                                        $codetamps = preg_match('#\((.*?)\)#', $item->userinfos->orga_mobile_phone, $match);
-                                                        $code = $match[1];
-                                                        $num = $item->userinfos?explode(')',$item->userinfos->orga_mobile_phone)[1]:'';
-                                                    @endphp
-                                                    @foreach (App\Models\Indicatif::all() as $indicatif)
-                                                        <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
-                                                    @endforeach
+                                                    @if (isset($item->userinfos->orga_mobile_phone) && $item->userinfos->orga_mobile_phone)
+                                                        @php
+                                                            $codetamps = preg_match('#\((.*?)\)#', $item->userinfos->orga_mobile_phone, $match);
+                                                            $code = $match[1];
+                                                            $num = $item->userinfos?explode(')',$item->userinfos->orga_mobile_phone)[1]:'';
+                                                        @endphp
+                                                        @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                            <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
+                                                        @endforeach
+                                                    @else
+                                                        @php
+                                                            $num="";
+                                                        @endphp
+                                                        @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                            <option value="+{{ $indicatif->code }}" {{ $indicatif->code=='61'?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
+                                                        @endforeach
+                                                    @endif
                                                 </select>
                                             </div>
                                             <div class="custom-file">
@@ -953,348 +971,291 @@
                 {{-- If user is SELLER --}}
                 @if ($item->hasRole(2))
                     {{-- Real Estate Professionals AND Non-profesionnal Legal Persons  --}}
-                    <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
-                        <h5>@lang('app.txt.businessdetail')</h5>
-                        <div class="row">
-                            <div class="col-md-4 m-10px-tb">
-                                <div class="media">
-                                    <div class="only-icon-20">
-                                        <i class="fas fa-globe"></i>
-                                    </div>
-                                    <div class="media-body p-15px-l lh-normal">
-                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.type_of_business') </div>
-                                        <input type="text" class="form-control" placeholder="@lang('app.txt.type_of_business')" name="type" id="type" value="{{ old('type')?old('type'):($item->TypeUser ?$item->TypeUser->type_user_name:'')}}" readonly>
-                                        {{-- <select name="type" class="form-control" id="type">
-                                            <option value="Builder" {{$item->TypeUser->type_user_name=='Builder'?'selected':''}}>@lang('app.txt.builder')</option>
-                                            <option value="Developer" {{$item->TypeUser->type_user_name=='Developer'?'selected':''}}>@lang('app.txt.developer')</option>
-                                        </select> --}}
-                                        <span></span>
+                    @if($item->TypeUser->type_user_name=='Builder' || $item->TypeUser->type_user_name=='Developer')
+                        <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
+                            <h5>@lang('app.txt.businessdetail')</h5>
+                            <div class="row">
+                                <div class="col-md-4 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-globe"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.type_of_business') </div>
+                                            <input type="text" class="form-control" placeholder="@lang('app.txt.type_of_business')" name="type" id="type" value="{{ old('type')?old('type'):($item->TypeUser ?$item->TypeUser->type_user_name:'')}}" readonly>
+                                            {{-- <select name="type" class="form-control" id="type">
+                                                <option value="Builder" {{$item->TypeUser->type_user_name=='Builder'?'selected':''}}>@lang('app.txt.builder')</option>
+                                                <option value="Developer" {{$item->TypeUser->type_user_name=='Developer'?'selected':''}}>@lang('app.txt.developer')</option>
+                                            </select> --}}
+                                            <span></span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="col-md-4 m-10px-tb">
-                                <div class="media">
-                                    <div class="only-icon-20">
-                                        <i class="fas fa-building"></i>
-                                    </div>
-                                    <div class="media-body p-15px-l lh-normal">
-                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessname') </div>
-                                        <input type="text" class="form-control" placeholder="@lang('app.txt.businessname')" name="orga_name" id="orga_name" value="{{ old('orga_name')?old('orga_name'):($item->userinfos ?$item->userinfos->orga_name:'')}}">
-                                        <span class="text-danger">{{ $errors->first('orga_name') }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 m-10px-tb">
-                                <div class="media">
-                                    <div class="only-icon-20">
-                                        <i class="fas fa-building"></i>
-                                    </div>
-                                    <div class="media-body p-15px-l lh-normal">
-                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businesstradingname') </div>
-                                        <input type="text" class="form-control" placeholder="@lang('app.txt.businesstradingname')" name="orga_trading_name" id="orga_trading_name" value="{{ old('orga_trading_name')?old('orga_trading_name'):($item->userinfos ?$item->userinfos->orga_trading_name:'')}}">
-                                        <span class="text-danger">{{ $errors->first('orga_trading_name') }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 m-10px-tb">
-                                <div class="media">
-                                    <div class="only-icon-20">
-                                        <i class="fas fa-building"></i>
-                                    </div>
-                                    <div class="media-body p-15px-l lh-normal">
-                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.business_abn') </div>
-                                        <input type="text" minlength="11" maxlength="11" pattern="[0-9]{1}[0-9]{10}" class="form-control" id="orga_abn" name="orga_abn" placeholder="@lang('app.txt.abn_number')" value="{{ old('orga_abn')?old('orga_abn'):($item->userinfos ?$item->userinfos->orga_abn:'') }}">
-                                        <span class="text-danger">{{ $errors->first('orga_abn') }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 m-10px-tb">
-                                <div class="media">
-                                    <div class="only-icon-20">
-                                        <i class="fas fa-building"></i>
-                                    </div>
-                                    <div class="media-body p-15px-l lh-normal">
-                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.business_acn') </div>
-                                        <input type="text" minlength="9" maxlength="9" pattern="[0-9]{1}[0-9]{8}" class="form-control" id="orga_acn" name="orga_acn" placeholder="@lang('app.txt.acn_number')" value="{{ old('orga_acn')?old('orga_acn'):($item->userinfos ?$item->userinfos->orga_acn:'') }}" >
-                                        <span class="text-danger">{{ $errors->first('orga_acn') }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            @if (isset($item->userinfos->orga_parent_name) && $item->userinfos->orga_parent_name)
                                 <div class="col-md-4 m-10px-tb">
                                     <div class="media">
                                         <div class="only-icon-20">
                                             <i class="fas fa-building"></i>
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
-                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessparentname') </div>
-                                            <input type="text" class="form-control" placeholder="@lang('app.txt.businessparentname')" name="orga_parent_name" id="orga_parent_name" value="{{ old('orga_parent_name')?old('orga_parent_name'):($item->userinfos ?$item->userinfos->orga_parent_name:'')}}">
-                                            <span class="text-danger">{{ $errors->first('orga_parent_name') }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-                            <div class="col-md-6 m-10px-tb">
-                                <div class="media">
-                                    <div class="only-icon-20">
-                                        <i class="fas fa-envelope"></i>
-                                    </div>
-                                    <div class="media-body p-15px-l lh-normal">
-                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessemail') </div>
-                                        <input type="email" class="form-control" placeholder="email@iea.com" name="orga_email" id="orga_email" value="{{ old('orga_email')?old('orga_email'):($item->userinfos ?$item->userinfos->orga_email:'')}}">
-                                        <span class="text-danger">{{ $errors->first('orga_email') }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 m-10px-tb">
-                                <div class="media">
-                                    <div class="only-icon-20">
-                                        <i class="fas fa-phone"></i>
-                                    </div>
-                                    <div class="media-body p-15px-l lh-normal">
-                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessphone')</div>
-                                        <div class="input-group mb-3 col-sm-12">
-                                            <div class="input-group-prepend">
-                                                <select class="form-control" name="indicatif" id="indicatif">
-                                                    @php
-                                                        $codetamps = preg_match('#\((.*?)\)#', $item->userinfos->orga_phone, $match);
-                                                        $code = $match[1];
-                                                        $allCode = $match[0];
-                                                        $num = $item->userinfos?explode(')',$item->userinfos->orga_phone)[1]:'';
-                                                    @endphp
-                                                    @foreach (App\Models\Indicatif::all() as $indicatif)
-                                                        <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="custom-file">
-                                                <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="15" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="orga_phone" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):($num) }}">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 m-10px-tb">
-                                <div class="media">
-                                    <div class="only-icon-20">
-                                        <i class="fas fa-envelope"></i>
-                                    </div>
-                                    <div class="media-body p-15px-l lh-normal">
-                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessfax') </div>
-                                        <input type="text" class="form-control" placeholder="@lang('app.txt.businessfax')" name="orga_fax" id="orga_fax" value="{{ old('orga_fax')?old('orga_fax'):($item->userinfos ?$item->userinfos->orga_fax:'')}}">
-                                        <span class="text-danger">{{ $errors->first('orga_fax') }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 m-10px-tb">
-                                <div class="media">
-                                    <div class="only-icon-20">
-                                        <i class="fas fa-phone"></i>
-                                    </div>
-                                    <div class="media-body p-15px-l lh-normal">
-                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessmobile')</div>
-                                        <div class="input-group mb-3 col-sm-12">
-                                            <div class="input-group-prepend">
-                                                <select class="form-control" name="indicatif3" id="indicatif3">
-                                                    @php
-                                                        $codetamps = preg_match('#\((.*?)\)#', $item->userinfos->orga_mobile_phone, $match);
-                                                        $code = $match[1];
-                                                        $num = $item->userinfos?explode(')',$item->userinfos->orga_mobile_phone)[1]:'';
-                                                    @endphp
-                                                    @foreach (App\Models\Indicatif::all() as $indicatif)
-                                                        <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="custom-file">
-                                                <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="15" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="orga_mobile_phone" name="orga_mobile_phone" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):($num) }}">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 m-10px-tb">
-                                <div class="media">
-                                    <div class="only-icon-20">
-                                        <i class="fas fa-envelope"></i>
-                                    </div>
-                                    <div class="media-body p-15px-l lh-normal">
-                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.websiteurl') </div>
-                                        <input type="text" class="form-control" placeholder="@lang('app.txt.websiteurl')" name="orga_website" id="orga_website" value="{{ old('orga_website')?old('orga_website'):($item->userinfos ?$item->userinfos->orga_website:'')}}">
-                                        <span class="text-danger">{{ $errors->first('orga_website') }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 m-10px-tb">
-                                <div class="media">
-                                    <div class="only-icon-20">
-                                        <i class="fas fa-item"></i>
-                                    </div>
-                                    <div class="media-body p-15px-l lh-normal">
-                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businesspresentation')</div>
-                                        <textarea class="form-control" placeholder="@lang('app.txt.businesspresentation')" name="orga_presentation" id="orga_presentation" cols="30" rows="5">{{old('orga_presentation')?old('orga_presentation'):($item->userinfos ?$item->userinfos->orga_presentation:'')}}</textarea>
-                                        <span class="text-danger">{{ $errors->first('orga_presentation') }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {{-- Office Address --}}
-                    <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
-                        <h5>@lang('app.txt.office_address')</h5>
-                        <div class="row">
-                            <div class="col-md-4 m-10px-tb">
-                                <div class="media">
-                                    <div class="only-icon-20">
-                                        <i class="fas fa-city"></i>
-                                    </div>
-                                    <div class="media-body p-15px-l lh-normal">
-                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.name_building') </div>
-                                        <input type="text" name="building_name" placeholder="@lang('app.txt.name_building')" class="form-control" value="{{$item->location?$item->location->building_name:trans('app.txt.noinfo')}}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 m-10px-tb">
-                                <div class="media">
-                                    <div class="only-icon-20">
-                                        <i class="fas fa-road"></i>
-                                    </div>
-                                    <div class="media-body p-15px-l lh-normal">
-                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.name_of_the_road') </div>
-                                        <input type="text" name="route" value="{{$item->location?$item->location->route:trans('app.txt.noinfo')}}" class="form-control" readonly>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 m-10px-tb">
-                                <div class="media">
-                                    <div class="only-icon-20">
-                                        <i class="fas fa-flag"></i>
-                                    </div>
-                                    <div class="media-body p-15px-l lh-normal">
-                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.number_of_the_road')</div>
-                                        <input type="text" name="route_number" value="{{$item->location?$item->location->route_number:trans('app.txt.noinfo')}}" class="form-control" readonly>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 m-10px-tb">
-                                <div class="media">
-                                    <div class="only-icon-20">
-                                        <i class="fas fa-info"></i>
-                                    </div>
-                                    <div class="media-body p-15px-l lh-normal">
-                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.number_of_rooms')</div>
-                                        <input type="text" name="num_rooms" placeholder="@lang('app.txt.number_of_rooms')" value="{{$item->location?$item->location->num_rooms:trans('app.txt.noinfo')}}" class="form-control">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 m-10px-tb">
-                                <div class="media">
-                                    <div class="only-icon-20">
-                                        <i class="fas fa-info"></i>
-                                    </div>
-                                    <div class="media-body p-15px-l lh-normal">
-                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.level')</div>
-                                        <input type="text" name="num_floor" placeholder="@lang('app.txt.floor')" value="{{$item->location?$item->location->num_floor:trans('app.txt.noinfo')}}" class="form-control">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 m-10px-tb">
-                                <div class="media">
-                                    <div class="only-icon-20">
-                                        <i class="fas fa-info"></i>
-                                    </div>
-                                    <div class="media-body p-15px-l lh-normal">
-                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.suburb')</div>
-                                        <input type="text" name="locality" value="{{$item->location?$item->location->locality:trans('app.txt.noinfo')}}" class="form-control" readonly>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 m-10px-tb">
-                                <div class="media">
-                                    <div class="only-icon-20">
-                                        <i class="fas fa-info"></i>
-                                    </div>
-                                    <div class="media-body p-15px-l lh-normal">
-                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.city')</div>
-                                        <input type="text" name="area_level_2" value="{{$item->location?$item->location->area_level_2:trans('app.txt.noinfo')}}" class="form-control" readonly>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 m-10px-tb">
-                                <div class="media">
-                                    <div class="only-icon-20">
-                                        <i class="fas fa-envelope"></i>
-                                    </div>
-                                    <div class="media-body p-15px-l lh-normal">
-                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.codepostal')</div>
-                                        <input type="text" name="postalCode" value="{{$item->location?$item->location->postalCode:trans('app.txt.noinfo')}}" class="form-control" readonly>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 m-10px-tb">
-                                <div class="media">
-                                    <div class="only-icon-20">
-                                        <i class="fas fa-flag"></i>
-                                    </div>
-                                    <div class="media-body p-15px-l lh-normal">
-                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.etat')</div>
-                                        <select id="administrative_area_level_1" class="form-control" name="area_level_1">
-                                            <option selected disabled>@lang('app.select_state')</option>
-                                            @foreach(App\Models\State::all() as $state)
-                                                <option value="{{ $state->content }}" {{ $item->location?$item->location->area_level_1:''==$state->content?'selected':'' }}>{{ trans('app.txt.'.$state->content) }} ({{ $state->content }})</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 m-10px-tb">
-                                <div class="media">
-                                    <div class="only-icon-20">
-                                        <i class="fas fa-info"></i>
-                                    </div>
-                                    <div class="media-body p-15px-l lh-normal">
-                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.country')</div>
-                                        <select class="form-control" name="country">
-                                            <option value="AUS" {{ $item->location->country=='AUS'?'selected':'' }}> @lang('app.txt.aus') (AUS)</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {{-- Postal Address --}}
-                    <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
-                        <h5>@lang('app.txt.postal_address')</h5>
-                        <div class="row">
-                            @if (isset($item->location) && $item->location->adrpost_postal_box=='')
-                                <div class="col-md-4 m-10px-tb">
-                                    <div class="media">
-                                        @lang('app.txt.as_above')
-                                    </div>
-                                </div>
-                            @else
-                                <div class="col-md-4 m-10px-tb">
-                                    <div class="media">
-                                        <div class="only-icon-20">
-                                            <i class="fas fa-city"></i>
-                                        </div>
-                                        <div class="media-body p-15px-l lh-normal">
-                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.postal_box') </div>
-                                            <input type="text" name="adrpost_postal_box" placeholder="@lang('app.txt.postal_box')" class="form-control" value="{{$item->location?$item->location->adrpost_postal_box:trans('app.txt.noinfo')}}">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessname') </div>
+                                            <input type="text" class="form-control" placeholder="@lang('app.txt.businessname')" name="orga_name" id="orga_name" value="{{ old('orga_name')?old('orga_name'):($item->userinfos ?$item->userinfos->orga_name:'')}}">
+                                            <span class="text-danger">{{ $errors->first('orga_name') }}</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4 m-10px-tb">
                                     <div class="media">
                                         <div class="only-icon-20">
+                                            <i class="fas fa-building"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businesstradingname') </div>
+                                            <input type="text" class="form-control" placeholder="@lang('app.txt.businesstradingname')" name="orga_trading_name" id="orga_trading_name" value="{{ old('orga_trading_name')?old('orga_trading_name'):($item->userinfos ?$item->userinfos->orga_trading_name:'')}}">
+                                            <span class="text-danger">{{ $errors->first('orga_trading_name') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-building"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.business_abn') </div>
+                                            <input type="text" minlength="11" maxlength="11" pattern="[0-9]{1}[0-9]{10}" class="form-control" id="orga_abn" name="orga_abn" placeholder="@lang('app.txt.abn_number')" value="{{ old('orga_abn')?old('orga_abn'):($item->userinfos ?$item->userinfos->orga_abn:'') }}">
+                                            <span class="text-danger">{{ $errors->first('orga_abn') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-building"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.business_acn') </div>
+                                            <input type="text" minlength="9" maxlength="9" pattern="[0-9]{1}[0-9]{8}" class="form-control" id="orga_acn" name="orga_acn" placeholder="@lang('app.txt.acn_number')" value="{{ old('orga_acn')?old('orga_acn'):($item->userinfos ?$item->userinfos->orga_acn:'') }}" >
+                                            <span class="text-danger">{{ $errors->first('orga_acn') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                @if (isset($item->userinfos->orga_parent_name) && $item->userinfos->orga_parent_name)
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-building"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessparentname') </div>
+                                                <input type="text" class="form-control" placeholder="@lang('app.txt.businessparentname')" name="orga_parent_name" id="orga_parent_name" value="{{ old('orga_parent_name')?old('orga_parent_name'):($item->userinfos ?$item->userinfos->orga_parent_name:'')}}">
+                                                <span class="text-danger">{{ $errors->first('orga_parent_name') }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                                <div class="col-md-6 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-envelope"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessemail') </div>
+                                            <input type="email" class="form-control" placeholder="email@iea.com" name="orga_email" id="orga_email" value="{{ old('orga_email')?old('orga_email'):($item->userinfos ?$item->userinfos->orga_email:'')}}">
+                                            <span class="text-danger">{{ $errors->first('orga_email') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-phone"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessphone')</div>
+                                            <div class="input-group mb-3 col-sm-12">
+                                                <div class="input-group-prepend">
+                                                    <select class="form-control" name="indicatif" id="indicatif">
+                                                        @if (isset($item->userinfos->orga_phone) && $item->userinfos->orga_phone)
+                                                            @php
+                                                                $codetamps = preg_match('#\((.*?)\)#', $item->userinfos->orga_phone, $match);
+                                                                $code = $match[1];
+                                                                $allCode = $match[0];
+                                                                $num = $item->userinfos?explode(')',$item->userinfos->orga_phone)[1]:'';
+                                                            @endphp
+                                                            @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                                <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
+                                                            @endforeach
+                                                        @else
+                                                            @php
+                                                                $num="";
+                                                            @endphp
+                                                            @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                                <option value="+{{ $indicatif->code }}" {{ $indicatif->code=='61'?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                                <div class="custom-file">
+                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="15" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="orga_phone" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):($num) }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-envelope"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessfax') </div>
+                                            <input type="text" class="form-control" placeholder="@lang('app.txt.businessfax')" name="orga_fax" id="orga_fax" value="{{ old('orga_fax')?old('orga_fax'):($item->userinfos ?$item->userinfos->orga_fax:'')}}">
+                                            <span class="text-danger">{{ $errors->first('orga_fax') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-phone"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessmobile')</div>
+                                            <div class="input-group mb-3 col-sm-12">
+                                                <div class="input-group-prepend">
+                                                    <select class="form-control" name="indicatif3" id="indicatif3">
+                                                        @if (isset($item->userinfos->orga_mobile_phone) && $item->userinfos->orga_mobile_phone)
+                                                            @php
+                                                                $codetamps = preg_match('#\((.*?)\)#', $item->userinfos->orga_mobile_phone, $match);
+                                                                $code = $match[1];
+                                                                $num = $item->userinfos?explode(')',$item->userinfos->orga_mobile_phone)[1]:'';
+                                                            @endphp
+                                                            @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                                <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
+                                                            @endforeach
+                                                        @else
+                                                            @php
+                                                                $num="";
+                                                            @endphp
+                                                            @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                                <option value="+{{ $indicatif->code }}" {{ $indicatif->code=='61'?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                                <div class="custom-file">
+                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="15" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="orga_mobile_phone" name="orga_mobile_phone" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):($num) }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-envelope"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.websiteurl') </div>
+                                            <input type="text" class="form-control" placeholder="@lang('app.txt.websiteurl')" name="orga_website" id="orga_website" value="{{ old('orga_website')?old('orga_website'):($item->userinfos ?$item->userinfos->orga_website:'')}}">
+                                            <span class="text-danger">{{ $errors->first('orga_website') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-item"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businesspresentation')</div>
+                                            <textarea class="form-control" placeholder="@lang('app.txt.businesspresentation')" name="orga_presentation" id="orga_presentation" cols="30" rows="5">{{old('orga_presentation')?old('orga_presentation'):($item->userinfos ?$item->userinfos->orga_presentation:'')}}</textarea>
+                                            <span class="text-danger">{{ $errors->first('orga_presentation') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Office Address --}}
+                        <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
+                            <h5>@lang('app.txt.office_address')</h5>
+                            <div class="row">
+                                <div class="col-md-4 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
                                             <i class="fas fa-city"></i>
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
-                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.suburb') </div>
-                                            <input type="text" name="adrpost_locality" placeholder="@lang('app.txt.suburb')" class="form-control" value="{{$item->location?$item->location->adrpost_locality:trans('app.txt.noinfo')}}">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.name_building') </div>
+                                            <input type="text" name="building_name" placeholder="@lang('app.txt.name_building')" class="form-control" value="{{$item->location?$item->location->building_name:trans('app.txt.noinfo')}}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-road"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.name_of_the_road') </div>
+                                            <input type="text" name="route" value="{{$item->location?$item->location->route:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-flag"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.number_of_the_road')</div>
+                                            <input type="text" name="route_number" value="{{$item->location?$item->location->route_number:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-info"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.number_of_rooms')</div>
+                                            <input type="text" name="num_rooms" placeholder="@lang('app.txt.number_of_rooms')" value="{{$item->location?$item->location->num_rooms:trans('app.txt.noinfo')}}" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-info"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.level')</div>
+                                            <input type="text" name="num_floor" placeholder="@lang('app.txt.floor')" value="{{$item->location?$item->location->num_floor:trans('app.txt.noinfo')}}" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-info"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.suburb')</div>
+                                            <input type="text" name="locality" value="{{$item->location?$item->location->locality:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-info"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.city')</div>
+                                            <input type="text" name="area_level_2" value="{{$item->location?$item->location->area_level_2:trans('app.txt.noinfo')}}" class="form-control" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -1305,7 +1266,7 @@
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.codepostal')</div>
-                                            <input type="text" name="adrpost_postalCode" value="{{$item->location?$item->location->adrpost_postalCode:trans('app.txt.noinfo')}}" class="form-control">
+                                            <input type="text" name="postalCode" value="{{$item->location?$item->location->postalCode:trans('app.txt.noinfo')}}" class="form-control" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -1316,10 +1277,10 @@
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.etat')</div>
-                                            <select id="administrative_area_level_1" class="form-control" name="adrpost_area_level_1">
+                                            <select id="administrative_area_level_1" class="form-control" name="area_level_1">
                                                 <option selected disabled>@lang('app.select_state')</option>
-                                                @foreach (App\Models\State::all() as $state)
-                                                    <option value="{{ $state->content }}" {{ $item->location?$item->location->adrpost_area_level_1:''==$state->content?'selected':'' }}>{{ trans('app.txt.'.$state->content) }} ({{ $state->content }})</option>
+                                                @foreach(App\Models\State::all() as $state)
+                                                    <option value="{{ $state->content }}" {{ $item->location?$item->location->area_level_1:''==$state->content?'selected':'' }}>{{ trans('app.txt.'.$state->content) }} ({{ $state->content }})</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -1332,15 +1293,673 @@
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.country')</div>
-                                            <select class="form-control" name="adrpost_country">
-                                                <option value="AUS" {{ $item->location->adrpost_country=='AUS'?'selected':'' }}> @lang('app.txt.aus') (AUS)</option>
+                                            <select class="form-control" name="country">
+                                                <option value="AUS" {{ $item->location->country=='AUS'?'selected':'' }}> @lang('app.txt.aus') (AUS)</option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
-                            @endif
+                            </div>
                         </div>
-                    </div>
+
+                        {{-- Postal Address --}}
+                        <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
+                            <h5>@lang('app.txt.postal_address')</h5>
+                            <div class="row">
+                                @if (isset($item->location) && $item->location->adrpost_postal_box=='')
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            @lang('app.txt.as_above')
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-city"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.postal_box') </div>
+                                                <input type="text" name="adrpost_postal_box" placeholder="@lang('app.txt.postal_box')" class="form-control" value="{{$item->location?$item->location->adrpost_postal_box:trans('app.txt.noinfo')}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-city"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.suburb') </div>
+                                                <input type="text" name="adrpost_locality" placeholder="@lang('app.txt.suburb')" class="form-control" value="{{$item->location?$item->location->adrpost_locality:trans('app.txt.noinfo')}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-envelope"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.codepostal')</div>
+                                                <input type="text" name="adrpost_postalCode" value="{{$item->location?$item->location->adrpost_postalCode:trans('app.txt.noinfo')}}" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-flag"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.etat')</div>
+                                                <select id="administrative_area_level_1" class="form-control" name="adrpost_area_level_1">
+                                                    <option selected disabled>@lang('app.select_state')</option>
+                                                    @foreach (App\Models\State::all() as $state)
+                                                        <option value="{{ $state->content }}" {{ $item->location?$item->location->adrpost_area_level_1:''==$state->content?'selected':'' }}>{{ trans('app.txt.'.$state->content) }} ({{ $state->content }})</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-info"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.country')</div>
+                                                <select class="form-control" name="adrpost_country">
+                                                    <option value="AUS" {{ $item->location->adrpost_country=='AUS'?'selected':'' }}> @lang('app.txt.aus') (AUS)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
+                    
+                    {{-- Non-profesionnal Natural Persons --}}
+                    @if($item->isSnp())
+                        <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
+                            <h3>@lang('app.txt.seller_details')</h3>
+                            @foreach ($item->sellerIndividual() as $key=>$snp)
+                                @php
+                                    $tot = $key+1;
+                                    $sfx = $key!==0?'_'.$tot:'';
+                                @endphp
+                                @if($loop->last) <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b"></div> @endif
+                                <p class="m-15px-t"><b>Seller #{{$key+1}}</b></p>
+                                <div class="row">
+                                    <input type="hidden" name="id_seller{{$sfx}}" value="{{ $snp->id }}">
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.nom') </div>
+                                                <input type="text" class="form-control" id="last_name{{$sfx}}" name="last_name{{$sfx}}" value="{{old('last_name'.$sfx)?old('last_name'.$sfx):$snp->last_name}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.prenom') </div>
+                                                <input type="text" class="form-control" name="first_name{{$sfx}}" id="first_name{{$sfx}}" value="{{old('first_name'.$sfx)?old('first_name'.$sfx):$snp->first_name}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-calendar"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.date_of_birth') </div>
+                                                <input type="text" class="form-control datepickerfrom" placeholder="MM/DD/YYYY" name="date_of_birth{{$sfx}}" value="{{ old('date_of_birth'.$sfx)?old('date_of_birth'.$sfx):($snp->date_of_birth!=='0000-00-00'?$snp->date_of_birth:'') }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-map-marker"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.place_of_birth') </div>
+                                                <input type="text" class="form-control" placeholder="@lang('app.txt.place_of_birth')" name="place_of_birth{{$sfx}}" value="{{ old('place_of_birth'.$sfx)?old('place_of_birth'.$sfx):$snp->place_of_birth }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-globe"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.nationality') </div>
+                                                <input type="text" name="nationality{{$sfx}}" id="nationality{{$sfx}}" placeholder="@lang('app.txt.nationality')" class="form-control" value="{{old('nationality'.$sfx)?old('nationality'.$sfx):$snp->nationality}}">
+                                                <span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-road"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.streetaddress') </div>
+                                                <input type="text" name="street_adr{{$sfx}}" value="{{old('street_adr'.$sfx)?old('street_adr'.$sfx):$snp->street_adr}}" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-info"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.suburb')</div>
+                                                <input type="text" name="suburb{{$sfx}}" value="{{old('suburb'.$sfx)?old('suburb'.$sfx):$snp->suburb}}" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-info"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.city')</div>
+                                                <input type="text" name="city{{$sfx}}" value="{{old('city'.$sfx)?old('city'.$sfx):$snp->city}}" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-envelope"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.codepostal')</div>
+                                                <input type="text" name="post_code{{$sfx}}" value="{{old('post_code'.$sfx)?old('post_code'.$sfx):$snp->post_code}}" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-flag"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.etat')</div>
+                                                <input type="text" name="state{{$sfx}}" value="{{old('state'.$sfx)?old('state'.$sfx):$snp->state}}" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-info"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.country')</div>
+                                                <select class="form-control" name="country{{$sfx}}">
+                                                    <option value="" selected disabled>@lang('app.select_country')</option>
+                                                    @foreach(App\Models\Country::all() as $country)
+                                                        @if($country->prefixPhone)
+                                                            <option value="{{$country->code}}" {{ $snp->country==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-phone"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.orga.fix_phone')</div>
+                                                <div class="input-group mb-3 col-sm-12">
+                                                    <div class="input-group-prepend">
+                                                        <select class="form-control" name="indicatif{{$sfx}}" id="indicatif{{$sfx}}">
+                                                            @if (isset($snp->phone) && $snp->phone)
+                                                                @php
+                                                                    $codetamps = preg_match('#\((.*?)\)#', $snp->phone, $match);
+                                                                    $code = $match[1];
+                                                                    $num = $snp->phone?explode(')',$snp->phone)[1]:'';
+                                                                @endphp
+                                                            @else
+                                                                @php
+                                                                    $num = "";
+                                                                @endphp
+                                                            @endif
+                                                            <option value="+61">(+61)</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="custom-file">
+                                                        <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="9" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="phone{{$sfx}}" name="phone{{$sfx}}" value="{{ old('phone'.$sfx)?old('phone'.$sfx):($num) }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-phone"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.mobile')</div>
+                                                <div class="input-group mb-3 col-sm-12">
+                                                    <div class="input-group-prepend">
+                                                        <select class="form-control" name="indicatif3{{$sfx}}" id="indicatif3{{$sfx}}">
+                                                            @if (isset($snp->phone) && $snp->mobile)
+                                                                @php
+                                                                    $codetamps = preg_match('#\((.*?)\)#', $snp->mobile, $match);
+                                                                    $code = $match[1];
+                                                                    $num = $snp->mobile?explode(')',$snp->mobile)[1]:'';
+                                                                @endphp
+                                                            @else
+                                                                @php
+                                                                    $num = "";
+                                                                @endphp
+                                                            @endif
+                                                            <option value="+61">(+61)</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="custom-file">
+                                                        <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="9" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="mobile{{$sfx}}" name="mobile{{$sfx}}" value="{{ old('mobile'.$sfx)?old('mobile'.$sfx):($num) }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-envelope"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.email') </div>
+                                                <input type="email" class="form-control" placeholder="email@iea.com" name="email_adr{{$sfx}}" id="email_adr{{$sfx}}" value="{{ old('email_adr'.$sfx)?old('email_adr'.$sfx):$snp->email_adr}}">
+                                                <span class="text-danger">{{ $errors->first('email_adr'.$sfx) }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+
+                    {{-- Seller by afa individual --}}
+                    @if($item->isSbaIndividual())
+                    <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
+                        <h3>@lang('app.txt.seller_details')</h3>
+                        @foreach ($item->sellerIndividual() as $key=>$snp)
+                            @php
+                                $tot = $key+1;
+                                $sfx = $key!==0?'_'.$tot:'';
+                            @endphp
+                            @if($loop->last) <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b"></div> @endif
+                                <p class="m-15px-t"><b>Seller #{{$key+1}}</b></p>
+                                <div class="row">
+                                    <input type="hidden" name="id_seller{{$sfx}}" value="{{ $snp->id }}">
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.nom') </div>
+                                                <input type="text" class="form-control" id="last_name{{$sfx}}" name="last_name{{$sfx}}" value="{{old('last_name'.$sfx)?old('last_name'.$sfx):$snp->last_name}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.prenom') </div>
+                                                <input type="text" class="form-control" name="first_name{{$sfx}}" id="first_name{{$sfx}}" value="{{old('first_name'.$sfx)?old('first_name'.$sfx):$snp->first_name}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-road"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.streetaddress') </div>
+                                                <input type="text" name="street_adr{{$sfx}}" value="{{old('street_adr'.$sfx)?old('street_adr'.$sfx):$snp->street_adr}}" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-info"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.suburb')</div>
+                                                <input type="text" name="suburb{{$sfx}}" value="{{old('suburb'.$sfx)?old('suburb'.$sfx):$snp->suburb}}" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-info"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.city')</div>
+                                                <input type="text" name="city{{$sfx}}" value="{{old('city'.$sfx)?old('city'.$sfx):$snp->city}}" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-envelope"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.codepostal')</div>
+                                                <input type="text" name="post_code{{$sfx}}" value="{{old('post_code'.$sfx)?old('post_code'.$sfx):$snp->post_code}}" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-flag"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.etat')</div>
+                                                <input type="text" name="state{{$sfx}}" value="{{old('state'.$sfx)?old('state'.$sfx):$snp->state}}" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-info"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.country')</div>
+                                                <select class="form-control" name="country{{$sfx}}">
+                                                    <option value="" selected disabled>@lang('app.select_country')</option>
+                                                    @foreach(App\Models\Country::all() as $country)
+                                                        @if($country->prefixPhone)
+                                                            <option value="{{$country->code}}" {{ $snp->country==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-phone"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.orga.fix_phone')</div>
+                                                <div class="input-group mb-3 col-sm-12">
+                                                    <div class="input-group-prepend">
+                                                        <select class="form-control" name="indicatif{{$sfx}}" id="indicatif{{$sfx}}">
+                                                            @if (isset($snp->phone) && $snp->phone)
+                                                                @php
+                                                                    $codetamps = preg_match('#\((.*?)\)#', $snp->phone, $match);
+                                                                    $code = $match[1];
+                                                                    $num = $snp->phone?explode(')',$snp->phone)[1]:'';
+                                                                @endphp
+                                                            @else
+                                                                @php
+                                                                    $num = "";
+                                                                @endphp
+                                                            @endif
+                                                            <option value="+61">(+61)</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="custom-file">
+                                                        <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="9" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="phone{{$sfx}}" name="phone{{$sfx}}" value="{{ old('phone'.$sfx)?old('phone'.$sfx):($num) }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-phone"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.mobile')</div>
+                                                <div class="input-group mb-3 col-sm-12">
+                                                    <div class="input-group-prepend">
+                                                        <select class="form-control" name="indicatif3{{$sfx}}" id="indicatif3{{$sfx}}">
+                                                            @if (isset($snp->phone) && $snp->mobile)
+                                                                @php
+                                                                    $codetamps = preg_match('#\((.*?)\)#', $snp->mobile, $match);
+                                                                    $code = $match[1];
+                                                                    $num = $snp->mobile?explode(')',$snp->mobile)[1]:'';
+                                                                @endphp
+                                                            @else
+                                                                @php
+                                                                    $num = "";
+                                                                @endphp
+                                                            @endif
+                                                            <option value="+61">(+61)</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="custom-file">
+                                                        <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="9" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="mobile{{$sfx}}" name="mobile{{$sfx}}" value="{{ old('mobile'.$sfx)?old('mobile'.$sfx):($num) }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 m-10px-tb">
+                                        <div class="media">
+                                            <div class="only-icon-20">
+                                                <i class="fas fa-envelope"></i>
+                                            </div>
+                                            <div class="media-body p-15px-l lh-normal">
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.email') </div>
+                                                <input type="email" class="form-control" placeholder="email@iea.com" name="email_adr{{$sfx}}" id="email_adr{{$sfx}}" value="{{ old('email_adr'.$sfx)?old('email_adr'.$sfx):$snp->email_adr}}">
+                                                <span class="text-danger">{{ $errors->first('email_adr'.$sfx) }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                    
+                    {{-- Seller by afa business --}}
+                    @if($item->isSbaBusiness())
+                        @php
+                            $sbaBus = $item->sellerBusiness();
+                        @endphp
+                        <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
+                            <h3>@lang('app.txt.seller_details')</h3>
+                            <div class="row">
+                                <input type="hidden" name="id_seller" value="{{ $sbaBus->id }}">
+                                <div class="col-md-4 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-building"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessname') </div>
+                                            <input type="text" class="form-control" placeholder="@lang('app.txt.businessname')" name="business_name" id="business_name" value="{{ old('business_name')?old('business_name'):($sbaBus->business_name)}}">
+                                            <span class="text-danger">{{ $errors->first('business_name') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-road"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.streetaddress') </div>
+                                            <input type="text" name="street_adr" value="{{old('street_adr')?old('street_adr'):$sbaBus->street_adr}}" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-info"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.suburb')</div>
+                                            <input type="text" name="suburb" value="{{old('suburb')?old('suburb'):$sbaBus->suburb}}" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-info"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.city')</div>
+                                            <input type="text" name="city" value="{{old('city')?old('city'):$sbaBus->city}}" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-envelope"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.codepostal')</div>
+                                            <input type="text" name="post_code" value="{{old('post_code')?old('post_code'):$sbaBus->post_code}}" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-flag"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.etat')</div>
+                                            <input type="text" name="state" value="{{old('state')?old('state'):$sbaBus->state}}" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-info"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.country')</div>
+                                            <select class="form-control" name="country">
+                                                <option value="" selected disabled>@lang('app.select_country')</option>
+                                                @foreach(App\Models\Country::all() as $country)
+                                                    @if($country->prefixPhone)
+                                                        <option value="{{$country->code}}" {{ $sbaBus->country==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-phone"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.orga.fix_phone')</div>
+                                            <div class="input-group mb-3 col-sm-12">
+                                                <div class="input-group-prepend">
+                                                    <select class="form-control" name="indicatif" id="indicatif">
+                                                        @if (isset($sbaBus->phone) && $sbaBus->phone)
+                                                            @php
+                                                                $codetamps = preg_match('#\((.*?)\)#', $sbaBus->phone, $match);
+                                                                $code = $match[1];
+                                                                $num = $sbaBus->phone?explode(')',$sbaBus->phone)[1]:'';
+                                                            @endphp
+                                                        @else
+                                                            @php
+                                                                $num = "";
+                                                            @endphp
+                                                        @endif
+                                                        <option value="+61">(+61)</option>
+                                                    </select>
+                                                </div>
+                                                <div class="custom-file">
+                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="9" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="phone" name="phone" value="{{ old('phone')?old('phone'):($num) }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-phone"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.mobile')</div>
+                                            <div class="input-group mb-3 col-sm-12">
+                                                <div class="input-group-prepend">
+                                                    <select class="form-control" name="indicatif3" id="indicatif3">
+                                                        @if (isset($sbaBus->phone) && $sbaBus->mobile)
+                                                            @php
+                                                                $codetamps = preg_match('#\((.*?)\)#', $sbaBus->mobile, $match);
+                                                                $code = $match[1];
+                                                                $num = $sbaBus->mobile?explode(')',$sbaBus->mobile)[1]:'';
+                                                            @endphp
+                                                        @else
+                                                            @php
+                                                                $num = "";
+                                                            @endphp
+                                                        @endif
+                                                        <option value="+61">(+61)</option>
+                                                    </select>
+                                                </div>
+                                                <div class="custom-file">
+                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="9" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="mobile" name="mobile" value="{{ old('mobile')?old('mobile'):($num) }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-envelope"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.email') </div>
+                                            <input type="email" class="form-control" placeholder="email@iea.com" name="email_adr" id="email_adr" value="{{ old('email_adr')?old('email_adr'):$sbaBus->email_adr}}">
+                                            <span class="text-danger">{{ $errors->first('email_adr') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 @endif
 
                 {{-- not AFA and APL and Seller --}}
@@ -1358,15 +1977,24 @@
                                         <div class="input-group mb-3 col-sm-12">
                                             <div class="input-group-prepend">
                                                 <select class="form-control" name="indicatif" id="indicatif">
-                                                    @php
-                                                        $codetamps = preg_match('#\((.*?)\)#', $item->userinfos->orga_phone, $match);
-                                                        $code = $match[1];
-                                                        $allCode = $match[0];
-                                                        $num = $item->userinfos?explode(')',$item->userinfos->orga_phone)[1]:'';
-                                                    @endphp
-                                                    @foreach (App\Models\Indicatif::all() as $indicatif)
-                                                        <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
-                                                    @endforeach
+                                                    @if (isset($item->userinfos->orga_phone) && $item->userinfos->orga_phone)
+                                                        @php
+                                                            $codetamps = preg_match('#\((.*?)\)#', $item->userinfos->orga_phone, $match);
+                                                            $code = $match[1];
+                                                            $allCode = $match[0];
+                                                            $num = $item->userinfos?explode(')',$item->userinfos->orga_phone)[1]:'';
+                                                        @endphp
+                                                        @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                            <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
+                                                        @endforeach
+                                                    @else
+                                                        @php
+                                                            $num="";
+                                                        @endphp
+                                                        @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                            <option value="+{{ $indicatif->code }}" {{ $indicatif->code=='61'?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
+                                                        @endforeach
+                                                    @endif
                                                 </select>
                                             </div>
                                             <div class="custom-file">
@@ -1398,15 +2026,24 @@
                                         <div class="input-group mb-3 col-sm-12">
                                             <div class="input-group-prepend">
                                                 <select class="form-control" name="indicatif3" id="indicatif3">
-                                                    @php
-                                                        $codetamps = preg_match('#\((.*?)\)#', $item->userinfos->orga_mobile_phone, $match);
-                                                        $code = $match[1];
-                                                        $allCode = $match[0];
-                                                        $num = $item->userinfos?explode(')',$item->userinfos->orga_mobile_phone)[1]:'';
-                                                    @endphp
-                                                    @foreach (App\Models\Indicatif::all() as $indicatif)
-                                                        <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
-                                                    @endforeach
+                                                    @if (isset($item->userinfos->orga_mobile_phone) && $item->userinfos->orga_mobile_phone)
+                                                        @php
+                                                            $codetamps = preg_match('#\((.*?)\)#', $item->userinfos->orga_mobile_phone, $match);
+                                                            $code = $match[1];
+                                                            $allCode = $match[0];
+                                                            $num = $item->userinfos?explode(')',$item->userinfos->orga_mobile_phone)[1]:'';
+                                                        @endphp
+                                                        @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                            <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
+                                                        @endforeach    
+                                                    @else
+                                                        @php
+                                                            $num = "";
+                                                        @endphp
+                                                        @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                            <option value="+{{ $indicatif->code }}" {{ $indicatif->code=='61'?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
+                                                        @endforeach
+                                                    @endif
                                                 </select>
                                             </div>
                                             <div class="custom-file">
@@ -1741,14 +2378,23 @@
                                     <div class="input-group mb-3 col-sm-12">
                                         <div class="input-group-prepend">
                                             <select class="form-control" name="indicatif" id="indicatif">
-                                                @php
-                                                    $codetamps = preg_match('#\((.*?)\)#', $item->userinfos->orga_phone, $match);
-                                                    $code = $match[1];
-                                                    $num = $item->userinfos?explode(')',$item->userinfos->orga_phone)[1]:'';
-                                                @endphp
-                                                @foreach (App\Models\Indicatif::all() as $indicatif)
-                                                    <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
-                                                @endforeach
+                                                @if (isset($item->userinfos->orga_phone) && $item->userinfos->orga_phone)
+                                                    @php
+                                                        $codetamps = preg_match('#\((.*?)\)#', $item->userinfos->orga_phone, $match);
+                                                        $code = $match[1];
+                                                        $num = $item->userinfos?explode(')',$item->userinfos->orga_phone)[1]:'';
+                                                    @endphp
+                                                    @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                        <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
+                                                    @endforeach
+                                                @else
+                                                    @php
+                                                        $num = "";
+                                                    @endphp
+                                                    @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                        <option value="+{{ $indicatif->code }}" {{ $indicatif->code=='61'?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
+                                                    @endforeach
+                                                @endif
                                             </select>
                                         </div>
                                         <div class="custom-file">
@@ -1768,18 +2414,27 @@
                                     <div class="input-group mb-3 col-sm-12">
                                         <div class="input-group-prepend">
                                             <select class="form-control" name="indicatif3" id="indicatif3">
-                                                @php
-                                                    $codetamps = preg_match('#\((.*?)\)#', $item->userinfos->orga_mobile_phone, $match);
-                                                    $code = $match[1];
-                                                    $num = $item->userinfos?explode(')',$item->userinfos->orga_mobile_phone)[1]:'';
-                                                @endphp
-                                                @foreach (App\Models\Indicatif::all() as $indicatif)
-                                                    <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
-                                                @endforeach
+                                                @if (isset($item->userinfos->orga_mobile_phone) && $item->userinfos->orga_mobile_phone)
+                                                    @php
+                                                        $codetamps = preg_match('#\((.*?)\)#', $item->userinfos->orga_mobile_phone, $match);
+                                                        $code = $match[1];
+                                                        $num = $item->userinfos?explode(')',$item->userinfos->orga_mobile_phone)[1]:'';
+                                                    @endphp
+                                                    @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                        <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
+                                                    @endforeach
+                                                @else
+                                                    @php
+                                                        $num='';
+                                                    @endphp
+                                                    @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                        <option value="+{{ $indicatif->code }}" {{ $indicatif->code=='61'?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
+                                                    @endforeach
+                                                @endif
                                             </select>
                                         </div>
                                         <div class="custom-file">
-                                            <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="15" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="orga_mobile_phone" name="orga_mobile_phone" value="{{ old('orga_phone')?old('orga_phone'):($num) }}">
+                                            <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="15" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="orga_mobile_phone" name="orga_mobile_phone" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):($num) }}">
                                         </div>
                                     </div>
                                 </div>
@@ -2017,8 +2672,8 @@
                 </div>
             @endif
             
-            {{-- information contact for APL --}}
-            @if($item->isComplete() && !$item->isPerson())
+            {{-- information contact for APL && Seller (Real Estate Professionals and Non-profesionnal Legal Persons)  --}}
+            @if($item->isComplete() && !$item->isPerson() && !$item->isSnp() && !$item->isSbaIndividual() && !$item->isSbaBusiness())
                 {{-- <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
                     <h5>@lang('app.locality')</h5>
                     <div class="row">
@@ -2094,15 +2749,24 @@
                                     <div class="input-group mb-3 col-sm-12">
                                         <div class="input-group-prepend">
                                             <select class="form-control" name="indicatif2" id="indicatif2">
-                                                @php
-                                                    $codetamps2 = preg_match('#\((.*?)\)#', $item->userinfos->contact_phone, $match2);
-                                                    $code2 = $match2[1];
-                                                    $allCode2 = $match2[0];
-                                                    $num2 = $item->userinfos?explode(')',$item->userinfos->contact_phone)[1]:'';
-                                                @endphp
-                                                @foreach (App\Models\Indicatif::all() as $indicatif)
-                                                    <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code2?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
-                                                @endforeach
+                                                @if (isset($item->userinfos->orga_phone) && $item->userinfos->contact_phone)
+                                                    @php
+                                                        $codetamps2 = preg_match('#\((.*?)\)#', $item->userinfos->contact_phone, $match2);
+                                                        $code2 = $match2[1];
+                                                        $allCode2 = $match2[0];
+                                                        $num2 = $item->userinfos?explode(')',$item->userinfos->contact_phone)[1]:'';
+                                                    @endphp
+                                                    @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                        <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code2?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
+                                                    @endforeach
+                                                @else
+                                                    @php
+                                                        $num="";
+                                                    @endphp
+                                                    @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                        <option value="+{{ $indicatif->code }}" {{ $indicatif->code=='61'?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
+                                                    @endforeach
+                                                @endif
                                             </select>
                                         </div>
                                         <div class="custom-file">
@@ -2537,6 +3201,92 @@
                 date_of_birth: {
                     date:true
 				},
+
+                // seller non profesionnal natural person (SNP)
+                place_of_birth: {
+                    required: true,
+                },
+                street_adr: {
+                    required: true,
+                },
+                suburb: {
+                    required: true,
+                },
+                post_code: {
+                    required: true,
+                    number:true
+                },
+                phone: {
+                    required: true,
+                    number:true,
+                    minlength:6,
+                    maxlength:9
+                },
+                mobile: {
+                    required: true,
+                    number:true,
+                    minlength:6,
+                    maxlength:9
+                },
+                email_adr: {
+                    required: true,
+                    email:true,
+                },
+                // last_name_2: {
+                //     required: true,
+                // },
+                // first_name_2: {
+                //     required: true,
+                // },
+                date_of_birth_2: {
+                    // required: true,
+                    date:true
+                },
+                // place_of_birth_2: {
+                //     required: true,
+                // },
+                // nationality_2: {
+                //     required: true,
+                // },
+                // street_adr_2: {
+                //     required: true,
+                // },
+                // suburb_2: {
+                //     required: true,
+                // },
+                // city_2: {
+                //     required: true,
+                // },
+                post_code_2: {
+                    // required: true,
+                    number:true
+                },
+                // country_2: {
+                //     required: true,
+                // },
+                phone_2: {
+                    // required: true,
+                    number: true,
+                    minlength:6,
+                    maxlength:9
+                },
+                mobile_2: {
+                    // required: true,
+                    number: true,
+                    minlength:6,
+                    maxlength:9
+                },
+                email_adr_2: {
+                    // required: true,
+                    email: true,
+                },
+                // seller by afa business
+                business_name: {
+                    required: true,
+                },
+                country: {
+                    required: true,
+                },
                 
             },
             messages: {
@@ -2675,6 +3425,35 @@
                     required: "@lang('app.txt.champobligatoire')",
                 },
                 bank_bic: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                // seller SNP
+                place_of_birth: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                street_adr: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                suburb: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                post_code: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                phone: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                mobile: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                email_adr: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                // seller by afa business
+                business_name: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+                country: {
                     required: "@lang('app.txt.champobligatoire')",
                 },
             },

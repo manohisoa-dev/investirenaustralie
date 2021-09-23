@@ -309,7 +309,7 @@ class ProfileController extends Controller
                         ];
                      }
                 }else{
-                    if(session('seller_class')!=='seller_by_afa'){
+                    if($user->TypeUser->type_user_name=='Person'){
                         $rules = [
                             // Seller #1
                             'last_name'  => 'required|max:100',
@@ -323,49 +323,45 @@ class ProfileController extends Controller
                             'post_code' => 'required|max:100',
                             'state' => 'nullable|max:100',
                             'country' => 'required|max:100',
-                            'phone' => 'required|max:15',
-                            'mobile' => 'required|max:15',
+                            'phone' => 'required|digits_between:6,9|numeric',
+                            'mobile' => 'required|digits_between:6,9|numeric',
                             'email_adr' => 'required|email|max:100',
 
                             // Seller #2
-                            'last_name_2'  => 'required|max:100',
-                            'first_name_2' => 'required|max:100',
-                            'date_of_birth_2' => 'required|max:100',
-                            'place_of_birth_2' => 'required|max:100',
-                            'nationality_2' => 'required|max:100',
-                            'street_adr_2' => 'required|max:100',
-                            'suburb_2' => 'required|max:100',
-                            'city_2' => 'required|max:100',
-                            'post_code_2' => 'required|max:100',
+                            'last_name_2'  => 'nullable|max:100',
+                            'first_name_2' => 'nullable|max:100',
+                            'date_of_birth_2' => 'nullable|max:100',
+                            'place_of_birth_2' => 'nullable|max:100',
+                            'nationality_2' => 'nullable|max:100',
+                            'street_adr_2' => 'nullable|max:100',
+                            'suburb_2' => 'nullable|max:100',
+                            'city_2' => 'nullable|max:100',
+                            'post_code_2' => 'nullable|max:100',
                             'state_2' => 'nullable|max:100',
-                            'country_2' => 'required|max:100',
-                            'phone_2' => 'required|max:15',
-                            'mobile_2' => 'required|max:15',
-                            'email_adr_2' => 'required|email|max:100',
+                            'country_2' => 'nullable|max:100',
+                            'phone_2' => 'nullable|digits_between:6,9|numeric',
+                            'mobile_2' => 'nullable|digits_between:6,9|numeric',
+                            'email_adr_2' => 'nullable|email|max:100',
 
                         ];
                     }else{
-                        $rules = [
-                            'login_afa'  => 'required',
-                            'immat_afa' => 'required',
-                        ];
-
-                        if($request->type == 'business'){
-                            $rules += [
+                        // type user : individual or business
+                        if(strtolower($user->TypeUser->type_user_name)=='business'){
+                            $rules = [
                                 'business_name' => 'required|max:100',
-                                'street_adr_bs'        => 'required|max:100',
-                                'suburb_bs'        => 'required|max:100',
-                                'city_bs'        => 'required|max:100',
-                                'post_code_bs' => 'required|max:100',
-                                'state_bs' => 'required|max:100',
-                                'country_bs' => 'required|max:100',
-                                'phone_bs' => 'required|max:15',
-                                'mobile_bs' => 'required|max:15',
-                                'email_adr_bs' => 'required|email|max:100',
+                                'street_adr'        => 'required|max:100',
+                                'suburb'        => 'required|max:100',
+                                'city'        => 'required|max:100',
+                                'post_code' => 'required|max:100',
+                                'state' => 'required|max:100',
+                                'country' => 'required|max:100',
+                                'phone' => 'required|digits_between:6,9|numeric',
+                                'mobile' => 'required|digits_between:6,9|numeric',
+                                'email_adr' => 'required|email|max:100',
                             ];
                         }else{
-                            
-                            $rules += [
+                            // type user individual
+                            $rules = [
                                 // Seller #1
                                 'last_name'  => 'required|max:100',
                                 'first_name' => 'required|max:100',
@@ -375,39 +371,26 @@ class ProfileController extends Controller
                                 'post_code' => 'required|max:100',
                                 'state' => 'nullable|max:100',
                                 'country' => 'required|max:100',
-                                'phone' => 'required|max:15',
-                                'mobile' => 'required|max:15',
+                                'phone' => 'required|digits_between:6,9|numeric',
+                                'mobile' => 'required|digits_between:6,9|numeric',
                                 'email_adr' => 'required|email|max:100',
 
                                 // Seller #2
-                                'last_name_2'  => 'required|max:100',
-                                'first_name_2' => 'required|max:100',
-                                'street_adr_2' => 'required|max:100',
-                                'suburb_2' => 'required|max:100',
-                                'city_2' => 'required|max:100',
-                                'post_code_2' => 'required|max:100',
+                                'last_name_2'  => 'nullable|max:100',
+                                'first_name_2' => 'nullable|max:100',
+                                'street_adr_2' => 'nullable|max:100',
+                                'suburb_2' => 'nullable|max:100',
+                                'city_2' => 'nullable|max:100',
+                                'post_code_2' => 'nullable|max:100',
                                 'state_2' => 'nullable|max:100',
-                                'country_2' => 'required|max:100',
-                                'phone_2' => 'required|max:15',
-                                'mobile_2' => 'required|max:15',
-                                'email_adr_2' => 'required|email|max:100',
+                                'country_2' => 'nullable|max:100',
+                                'phone_2' => 'nullable|digits_between:6,9|numeric',
+                                'mobile_2' => 'nullable|digits_between:6,9|numeric',
+                                'email_adr_2' => 'nullable|email|max:100',
                             ];
                         }
                     }
                 }
-
-                $rules = [
-                    'orga_name'         => 'required|max:100',
-                    'orga_presentation' => 'nullable|max:2000',
-                    'orga_email'        => 'required|email|max:100',
-                    'orga_phone'        => 'required|digits_between:6,15|numeric',
-                    'orga_website'      => 'required|url|max:100',
-
-                    'contact_name'  => 'required|max:100',
-                    'contact_email' => 'required|max:100',
-                    'contact_phone' => 'required|digits_between:6,15|numeric',
-
-                ];
                 break;
             case 1:   // Administrateur
                 $rules = [
@@ -431,6 +414,7 @@ class ProfileController extends Controller
             return back()->withErrors($validator)
                         ->withInput();
         }
+
         
         if(!$user->isAdmin()){
 
