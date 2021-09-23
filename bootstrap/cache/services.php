@@ -39,6 +39,7 @@
     35 => 'Jleon\\LaravelPnotify\\NotifyServiceProvider',
     36 => 'Dedicated\\GoogleTranslate\\GoogleTranslateProvider',
     37 => 'Barryvdh\\DomPDF\\ServiceProvider',
+    38 => 'Anhskohbo\\NoCaptcha\\NoCaptchaServiceProvider',
   ),
   'eager' => 
   array (
@@ -66,6 +67,7 @@
     21 => 'Jleon\\LaravelPnotify\\NotifyServiceProvider',
     22 => 'Dedicated\\GoogleTranslate\\GoogleTranslateProvider',
     23 => 'Barryvdh\\DomPDF\\ServiceProvider',
+    24 => 'Anhskohbo\\NoCaptcha\\NoCaptchaServiceProvider',
   ),
   'deferred' => 
   array (
