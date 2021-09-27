@@ -276,6 +276,7 @@ class LoginController extends Controller
             session()->put('afa_id',Auth::user()->id);
             session()->put('afa_name',Auth::user()->name);
             session()->put('afa_immat',Auth::user()->immat);
+            session()->put('afa_login',Auth::user()->email);
 
             // logout
             $this->guard()->logout();

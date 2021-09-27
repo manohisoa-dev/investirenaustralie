@@ -36,7 +36,7 @@
         <div id="slider"> 
             <div class="container text-center"> 
                 <div class="jumbotron"> 
-                        <h2>@lang('app.afa')</h2> 
+                        <h2>@lang('afa.agreement.title')</h2> 
                 </div>                     
             </div>                 
         </div>             

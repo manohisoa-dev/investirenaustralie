@@ -35,4 +35,5 @@ return [
     "folders.title"  => "My folders",
     "folders.status.to_download"  => "To download",
     "folders.status.finalized"  => "Finalized",
+    "agreement.title"  => "AFA&rsquo;s agreements",
 ];

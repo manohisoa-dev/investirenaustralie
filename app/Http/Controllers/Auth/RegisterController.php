@@ -238,10 +238,10 @@ class RegisterController extends Controller
                 $request->session()->put("seller_class", $request->class);
                 
                 if(session('seller_class')!=='seller_by_afa'){
-                    $conditionCount = 2;
+                    $conditionCount = 4;
                 }else{
                     $view = view('login.sellerbyafa');
-                    $conditionCount = 3;
+                    $conditionCount = 4;
                 }
             break;
         }
@@ -398,7 +398,7 @@ class RegisterController extends Controller
                     'orga_abn'         => 'required|digits_between:11,11|numeric',
                     'orga_acn'         => 'nullable|digits_between:9,9|numeric',
                     'orga_license_number'  => 'required|max:100',
-                    'orga_email'        => 'required|email|max:100',
+                    // 'orga_email'        => 'required|email|max:100',
                     'orga_phone'        => 'required|digits_between:8,9|numeric',
                     'orga_fax'        => 'nullable|max:100',
                     'orga_mobile_phone'        => 'required|digits_between:9,9|numeric',
@@ -503,7 +503,7 @@ class RegisterController extends Controller
                         'orga_trading_name'         => 'required|max:100',
                         'orga_abn'         => 'required|digits_between:11,11|numeric',
                         'orga_acn'         => 'nullable|digits_between:9,9|numeric',
-                        'orga_email'        => 'required|email|max:100',
+                        // 'orga_email'        => 'required|email|max:100',
                         'orga_phone'        => 'required|digits_between:8,9|numeric',
                         'orga_fax'        => 'nullable|max:100',
                         'orga_mobile_phone'        => 'required|digits_between:9,9|numeric',
@@ -562,8 +562,8 @@ class RegisterController extends Controller
                             'post_code' => 'required|max:100',
                             'state' => 'nullable|max:100',
                             'country' => 'required|max:100',
-                            'phone' => 'required|max:15',
-                            'mobile' => 'required|max:15',
+                            // 'phone' => 'required|max:15',
+                            'mobile' => 'required|digits_between:6,15|numeric',
                             'email_adr' => 'required|email|max:100',
 
                             // Seller #2
@@ -578,8 +578,8 @@ class RegisterController extends Controller
                             'post_code_2' => 'nullable|max:100',
                             'state_2' => 'nullable|max:100',
                             'country_2' => 'nullable|max:100',
-                            'phone_2' => 'nullable|max:15',
-                            'mobile_2' => 'nullable|max:15',
+                            // 'phone_2' => 'nullable|max:15',
+                            'mobile_2' => 'nullable|digits_between:9,15|numeric',
                             'email_adr_2' => 'nullable|email|max:100',
 
                         ];
@@ -587,11 +587,16 @@ class RegisterController extends Controller
                         $rules = [
                             'login_afa'  => 'required',
                             'immat_afa' => 'required',
+                            'property_name'  => 'required',
+                            'contact_name'  => 'required|max:100',
+                            'contact_email' => 'required|email|max:100',
+                            'contact_phone' => 'required|digits_between:6,9|numeric',
                         ];
 
                         if($request->type == 'business'){
                             $rules += [
                                 'business_name' => 'required|max:100',
+                                'business_parent' => 'nullable|max:191',
                                 'street_adr_bs'        => 'required|max:100',
                                 'suburb_bs'        => 'required|max:100',
                                 'city_bs'        => 'required|max:100',
@@ -614,22 +619,20 @@ class RegisterController extends Controller
                                 'post_code' => 'required|max:100',
                                 'state' => 'nullable|max:100',
                                 'country' => 'required|max:100',
-                                'phone' => 'required|max:15',
-                                'mobile' => 'required|max:15',
+                                'mobile' => 'required|digits_between:6,15|numeric',
                                 'email_adr' => 'required|email|max:100',
 
                                 // Seller #2
-                                'last_name_2'  => 'required|max:100',
-                                'first_name_2' => 'required|max:100',
-                                'street_adr_2' => 'required|max:100',
-                                'suburb_2' => 'required|max:100',
-                                'city_2' => 'required|max:100',
-                                'post_code_2' => 'required|max:100',
+                                'last_name_2'  => 'nullable|max:100',
+                                'first_name_2' => 'nullable|max:100',
+                                'street_adr_2' => 'nullable|max:100',
+                                'suburb_2' => 'nullable|max:100',
+                                'city_2' => 'nullable|max:100',
+                                'post_code_2' => 'nullable|max:100',
                                 'state_2' => 'nullable|max:100',
-                                'country_2' => 'required|max:100',
-                                'phone_2' => 'required|max:15',
-                                'mobile_2' => 'required|max:15',
-                                'email_adr_2' => 'required|email|max:100',
+                                'country_2' => 'nullable|max:100',
+                                'mobile_2' => 'nullable|digits_between:6,15|numeric',
+                                'email_adr_2' => 'nullable|email|max:100',
                             ];
                         }
                     }
@@ -746,7 +749,7 @@ class RegisterController extends Controller
                         'post_code'=>$datas['post_code'], 
                         'state'=>$datas['state'], 
                         'country'=>$datas['country'], 
-                        'phone'=>$ausInd.$datas['phone'], 
+                        // 'phone'=>$ausInd.$datas['phone'], 
                         'mobile'=>$ausInd.$datas['mobile'], 
                         'email_adr'=>$datas['email_adr']
                     ]);
@@ -764,7 +767,7 @@ class RegisterController extends Controller
                         'post_code'=>isset($datas['post_code_2'])?$datas['post_code_2']:'', 
                         'state'=>isset($datas['state_2'])?$datas['state_2']:'', 
                         'country'=>isset($datas['country_2'])?$datas['country_2']:'', 
-                        'phone'=>isset($datas['phone_2'])?$ausInd.$datas['phone_2']:'', 
+                        // 'phone'=>isset($datas['phone_2'])?$ausInd.$datas['phone_2']:'', 
                         'mobile'=>isset($datas['mobile_2'])?$ausInd.$datas['mobile_2']:'', 
                         'email_adr'=>isset($datas['email_adr_2'])?$datas['email_adr_2']:''
                     ]);
@@ -773,6 +776,7 @@ class RegisterController extends Controller
                         $sb = SellerBusiness::create([
                             'user_id'=>$user->id, 
                             'business_name'=>$datas['business_name'], 
+                            'business_parent'=>$datas['business_parent'], 
                             'street_adr'=>$datas['street_adr_bs'], 
                             'suburb'=>$datas['suburb_bs'], 
                             'city'=>$datas['city_bs'], 

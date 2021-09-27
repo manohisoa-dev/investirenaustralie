@@ -1132,6 +1132,12 @@
 
             });
     </script>
+    <script>
+        function closeModal(){
+            loadingPage();
+            window.location.href = '{{ route("home") }}';
+        }
+    </script>
 
     <!-- end -->
 

@@ -27,6 +27,9 @@
             <div class="modal-content white-bg">
                 <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
                   <h4 class="modal-title white-color">{{$page?$page->title:''}}</h4>
+                  <button type="button" class="close" data-dismiss="modal" onclick="closeModal()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
                 </div>
                 <div class="modal-body">
                     <p class="text-justify">{{$page?$page->content:''}}</p>
@@ -73,13 +76,13 @@
                                                     @lang('seller.condition.step_1')
                                                 </h4>
                                             </div>
-                                                <div class="panel-body">
-                                                    @lang('seller.condition.step_1.content')
-                                                    <br>
-                                                    <label data-pg-collapsed>
-                                                        <input class="control-label" type="checkbox" name="condition[]" value="1" id="condition1" required>    @lang('app.txt.agree')   *
-                                                    </label>
-                                                </div>
+                                            <div class="panel-body">
+                                                @lang('seller.condition.step_1.content')
+                                                <br>
+                                                <label data-pg-collapsed>
+                                                    <input class="control-label" type="checkbox" name="condition[]" value="1" id="condition1" required>    @lang('app.txt.agree')   *
+                                                </label>
+                                            </div>
                                         </div>
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
@@ -88,13 +91,43 @@
                                                         @lang('seller.condition.step_2')
                                                 </h4>
                                             </div>
-                                                <div class="panel-body">
-                                                    @lang('seller.condition.step_2.content')
-                                                    <br>
-                                                    <label data-pg-collapsed>
-                                                        <input class="control-label" type="checkbox" value="1" id="condition2" name="condition[]" required>   &nbsp; @lang('app.txt.agree')   *
-                                                    </label>
-                                                </div>
+                                            <div class="panel-body">
+                                                @lang('seller.condition.step_2.content')
+                                                <br>
+                                                <label data-pg-collapsed>
+                                                    <input class="control-label" type="checkbox" value="1" id="condition2" name="condition[]" required>   &nbsp; @lang('app.txt.agree')   *
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                        <i class="more-less glyphicon glyphicon-plus"></i>
+                                                        @lang('seller.condition.step_3')
+                                                </h4>
+                                            </div>
+                                            <div class="panel-body">
+                                                @lang('seller.condition.step_3.content')
+                                                <br>
+                                                <label data-pg-collapsed>
+                                                    <input class="control-label" type="checkbox" value="1" id="condition3" name="condition[]" required>   &nbsp; @lang('app.txt.agree')   *
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                        <i class="more-less glyphicon glyphicon-plus"></i>
+                                                        @lang('seller.condition.step_4')
+                                                </h4>
+                                            </div>
+                                            <div class="panel-body">
+                                                @lang('seller.condition.step_4.content')
+                                                <br>
+                                                <label data-pg-collapsed>
+                                                    <input class="control-label" type="checkbox" value="1" id="condition4" name="condition[]" required>   &nbsp; @lang('app.txt.agree')   *
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                     <p class="help-block">

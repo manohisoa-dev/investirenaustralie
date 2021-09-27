@@ -261,7 +261,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 m-10px-tb">
+                            {{-- <div class="col-md-4 m-10px-tb">
                                 <div class="media">
                                     <div class="only-icon-20">
                                         <i class="fas fa-envelope"></i>
@@ -272,7 +272,7 @@
                                         <span class="text-danger">{{ $errors->first('orga_email') }}</span>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="col-md-6 m-10px-tb">
                                 <div class="media">
                                     <div class="only-icon-20">
@@ -303,20 +303,20 @@
                                                 </select>
                                             </div>
                                             <div class="custom-file">
-                                                <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="15" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="orga_phone" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):($num) }}">
+                                                <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="6" maxlength="9" placeholder="@lang('app.txt.businessphone')" class="form-control m-15px-t" id="orga_phone" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):($num) }}">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 m-10px-tb">
+                            <div class="col-md-6 m-10px-tb">
                                 <div class="media">
                                     <div class="only-icon-20">
                                         <i class="fas fa-envelope"></i>
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessfax') </div>
-                                        <input type="text" class="form-control" placeholder="@lang('app.txt.businessfax')" name="orga_fax" id="orga_fax" value="{{ old('orga_fax')?old('orga_fax'):($item->userinfos ?$item->userinfos->orga_fax:'')}}">
+                                        <input type="text" class="form-control" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="9" placeholder="@lang('app.txt.businessfax')" name="orga_fax" id="orga_fax" value="{{ old('orga_fax')?old('orga_fax'):($item->userinfos ?$item->userinfos->orga_fax:'')}}">
                                         <span class="text-danger">{{ $errors->first('orga_fax') }}</span>
                                     </div>
                                 </div>
@@ -351,13 +351,13 @@
                                                 </select>
                                             </div>
                                             <div class="custom-file">
-                                                <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="15" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="orga_mobile_phone" name="orga_mobile_phone" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):($num) }}">
+                                                <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="9" placeholder="@lang('app.txt.businessphone')" class="form-control m-15px-t" id="orga_mobile_phone" name="orga_mobile_phone" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):($num) }}">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 m-10px-tb">
+                            <div class="col-md-6 m-10px-tb">
                                 <div class="media">
                                     <div class="only-icon-20">
                                         <i class="fas fa-envelope"></i>
@@ -1046,7 +1046,7 @@
                                         </div>
                                     </div>
                                 @endif
-                                <div class="col-md-6 m-10px-tb">
+                                {{-- <div class="col-md-6 m-10px-tb">
                                     <div class="media">
                                         <div class="only-icon-20">
                                             <i class="fas fa-envelope"></i>
@@ -1057,7 +1057,7 @@
                                             <span class="text-danger">{{ $errors->first('orga_email') }}</span>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="col-md-6 m-10px-tb">
                                     <div class="media">
                                         <div class="only-icon-20">
@@ -1515,7 +1515,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 m-10px-tb">
+                                    {{-- <div class="col-md-6 m-10px-tb">
                                         <div class="media">
                                             <div class="only-icon-20">
                                                 <i class="fas fa-phone"></i>
@@ -1545,14 +1545,14 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-md-6 m-10px-tb">
                                         <div class="media">
                                             <div class="only-icon-20">
                                                 <i class="fas fa-phone"></i>
                                             </div>
                                             <div class="media-body p-15px-l lh-normal">
-                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.mobile')</div>
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.mobile_seller',['num'=>$tot])</div>
                                                 <div class="input-group mb-3 col-sm-12">
                                                     <div class="input-group-prepend">
                                                         <select class="form-control" name="indicatif3{{$sfx}}" id="indicatif3{{$sfx}}">
@@ -1571,7 +1571,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="custom-file">
-                                                        <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="9" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="mobile{{$sfx}}" name="mobile{{$sfx}}" value="{{ old('mobile'.$sfx)?old('mobile'.$sfx):($num) }}">
+                                                        <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="9" placeholder="@lang('app.txt.mobile_seller',['num'=>$tot])" class="form-control m-15px-t" id="mobile{{$sfx}}" name="mobile{{$sfx}}" value="{{ old('mobile'.$sfx)?old('mobile'.$sfx):($num) }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1591,6 +1591,70 @@
                                     </div>
                                 </div>
                             @endforeach
+                        </div>
+                    @endif
+
+                    @if ($item->isSbaIndividual() || $item->isSbaBusiness())
+                        {{-- Contact info --}}
+                        <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
+                            <h5>@lang('app.txt.contactinfo')</h5>
+                            <div class="row">
+                                <div class="col-md-6 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.contactname') </div>
+                                            <input type="text" class="form-control" name="contact_name" id="contact_name" placeholder="@lang('app.txt.contactname')" value="{{old('contact_name')?old('contact_name'):($item->userinfos ?$item->userinfos->contact_name : '') }}">
+                                            <span class="text-danger">{{ $errors->first('contact_name') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-envelope"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.contactemail') </div>
+                                            <input type="text" class="form-control" name="contact_email" id="contact_email" placeholder="@lang('app.txt.contactemail')" value="{{ old('contact_email')?old('contact_email'):($item->userinfos ?$item->userinfos->contact_email:'') }}">
+                                            <span class="text-danger">{{ $errors->first('contact_email') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-7 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-phone"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.contactphone')</div>
+                                            <div class="input-group mb-3 col-sm-12">
+                                                <div class="input-group-prepend">
+                                                    <select class="form-control" name="indicatif2" id="indicatif2">
+                                                        @if (isset($item->userinfos->orga_phone) && $item->userinfos->contact_phone)
+                                                            @php
+                                                                $codetamps = preg_match('#\((.*?)\)#', $item->userinfos->contact_phone, $match);
+                                                                $code = $match[1];
+                                                                $ct_num = $item->userinfos?explode(')',$item->userinfos->contact_phone)[1]:'';
+                                                            @endphp
+                                                        @else
+                                                            @php
+                                                                $ct_num="";
+                                                            @endphp
+                                                        @endif
+                                                        <option value="+61" selected>(+61)</option>
+                                                    </select>
+                                                </div>
+                                                <div class="custom-file">
+                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="6" maxlength="9" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="contact_phone" name="contact_phone" value="{{ old('contact_phone')?old('contact_phone'):($ct_num) }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     @endif
 
@@ -1702,7 +1766,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 m-10px-tb">
+                                    {{-- <div class="col-md-6 m-10px-tb">
                                         <div class="media">
                                             <div class="only-icon-20">
                                                 <i class="fas fa-phone"></i>
@@ -1732,14 +1796,14 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-md-6 m-10px-tb">
                                         <div class="media">
                                             <div class="only-icon-20">
                                                 <i class="fas fa-phone"></i>
                                             </div>
                                             <div class="media-body p-15px-l lh-normal">
-                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.mobile')</div>
+                                                <div class="dark-color m-5px-b font-w-600">@lang('app.txt.mobile_seller',['num'=>$tot])</div>
                                                 <div class="input-group mb-3 col-sm-12">
                                                     <div class="input-group-prepend">
                                                         <select class="form-control" name="indicatif3{{$sfx}}" id="indicatif3{{$sfx}}">
@@ -1758,7 +1822,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="custom-file">
-                                                        <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="9" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="mobile{{$sfx}}" name="mobile{{$sfx}}" value="{{ old('mobile'.$sfx)?old('mobile'.$sfx):($num) }}">
+                                                        <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="9" placeholder="@lang('app.txt.mobile_seller',['num'=>$tot])" class="form-control m-15px-t" id="mobile{{$sfx}}" name="mobile{{$sfx}}" value="{{ old('mobile'.$sfx)?old('mobile'.$sfx):($num) }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1799,6 +1863,18 @@
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessname') </div>
                                             <input type="text" class="form-control" placeholder="@lang('app.txt.businessname')" name="business_name" id="business_name" value="{{ old('business_name')?old('business_name'):($sbaBus->business_name)}}">
                                             <span class="text-danger">{{ $errors->first('business_name') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-10px-tb">
+                                    <div class="media">
+                                        <div class="only-icon-20">
+                                            <i class="fas fa-building"></i>
+                                        </div>
+                                        <div class="media-body p-15px-l lh-normal">
+                                            <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessparentname')</div>
+                                            <input type="text" class="form-control" placeholder="@lang('app.txt.businessparentname')" name="business_parent" id="business_parent" value="{{ old('business_parent')?old('business_parent'):($sbaBus->business_parent)}}">
+                                            <span class="text-danger">{{ $errors->first('business_parent') }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -3192,6 +3268,7 @@
                     url:true
 				},
                 date_of_birth: {
+                    required:true,
                     date:true
 				},
 
@@ -3209,12 +3286,12 @@
                     required: true,
                     number:true
                 },
-                phone: {
-                    required: true,
-                    number:true,
-                    minlength:6,
-                    maxlength:9
-                },
+                // phone: {
+                //     required: true,
+                //     number:true,
+                //     minlength:6,
+                //     maxlength:9
+                // },
                 mobile: {
                     required: true,
                     number:true,
@@ -3257,12 +3334,12 @@
                 // country_2: {
                 //     required: true,
                 // },
-                phone_2: {
-                    // required: true,
-                    number: true,
-                    minlength:6,
-                    maxlength:9
-                },
+                // phone_2: {
+                //     // required: true,
+                //     number: true,
+                //     minlength:6,
+                //     maxlength:9
+                // },
                 mobile_2: {
                     // required: true,
                     number: true,
@@ -3279,6 +3356,12 @@
                 },
                 country: {
                     required: true,
+                },
+
+                orga_fax: {
+                    number:true,
+                    minlength:6,
+                    maxlength:9,
                 },
                 
             },
