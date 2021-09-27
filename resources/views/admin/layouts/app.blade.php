@@ -605,9 +605,15 @@
     <?php
     $notif = json_decode(Session::get('notifier.notice'));
 
-    $title = $notif->title;
-    $text = isset($notif->text) && $notif->text != '' ? $notif->text : '';
-    $type = $notif->type;
+    if($notif){
+        $title = $notif->title;
+        $text = isset($notif->text) && $notif->text != '' ? $notif->text : '';
+        $type = $notif->type;
+    }else{
+        $title = '';
+        $text = '';
+        $type = '';
+    }
     ?>
 
 
