@@ -688,7 +688,7 @@ class User extends Authenticatable {
         }
         switch ($this->role) {
             case 1:
-                if ($value = $request->input('first_name'))
+                if ($value = $request->input('first_name'))                    
                     $userinfos->update(["first_name" => $value]);
                 if ($value = $request->input('last_name'))
                     $userinfos->update(["last_name" => $value]);

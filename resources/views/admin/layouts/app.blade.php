@@ -604,10 +604,29 @@
 @if (Session::has('notifier.notice'))
     <?php
     $notif = json_decode(Session::get('notifier.notice'));
+<<<<<<< HEAD
+	if($notif){
+		$title = $notif->title;
+    	$text = isset($notif->text) && $notif->text != '' ? $notif->text : '';
+    	$type = $notif->type;
+	}else{
+		$title = '';
+		$text = '';
+		$type = '';
+	}
+    
+=======
 
-    $title = $notif->title;
-    $text = isset($notif->text) && $notif->text != '' ? $notif->text : '';
-    $type = $notif->type;
+    if($notif){
+        $title = $notif->title;
+        $text = isset($notif->text) && $notif->text != '' ? $notif->text : '';
+        $type = $notif->type;
+    }else{
+        $title = '';
+        $text = '';
+        $type = '';
+    }
+>>>>>>> 8442e7a0a51a22b6a05e34b6195984863ad30b79
     ?>
 
 
