@@ -218,6 +218,8 @@
 									@else
 										@if($record->status == 'disabled')
 											<span class="label label-danger">Suspendu</span>
+										@elseif($record->status == 'deleted')
+											<span class="label label-danger">Supprimer</span>
 										@elseif($record->status == 'pinged')
 											<span class="label label-warning">{{ucfirst($record->status)}}</span>
 										@endif

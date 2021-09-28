@@ -67,7 +67,7 @@
 										<input class="form-control" value="{{old('first_name', $item->meta('first_name', ''))}}" name="first_name" placeholder="@lang('app.form.first_name')">
 									</div>
 									<div class="form-group">
-										<label>@lang('app.form.last_name')</label>
+										<label>@lang('app.form.last_name') -- {{$item->meta('key')}}</label>
 										<input class="form-control" value="{{old('last_name', $item->meta('last_name', ''))}}" name="last_name" placeholder="@lang('app.form.last_name')">
 									</div>
 									<div class="form-group">

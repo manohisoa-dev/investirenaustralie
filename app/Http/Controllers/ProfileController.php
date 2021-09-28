@@ -56,7 +56,6 @@ class ProfileController extends Controller
     public function profile()
     {
         $action = route('profile.edit');
-        
         if(Auth::user()->isAdmin()){
             $view = view('admin.user.edit.update');
         }else{

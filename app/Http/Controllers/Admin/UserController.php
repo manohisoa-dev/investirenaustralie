@@ -489,9 +489,8 @@ class UserController extends Controller {
     }
 
     public function active(Request $request, User $user) {
-
         if ($user->id == 1) {
-            Notify::error("Cette action ne peut pas etre rÃ©alisÃ©e.");
+            Notify::error("Cette action ne peut pas etre réalisé.");
             return redirect(route('admin.user.index'));
         }
         if ($user->status == 'pinged') {
