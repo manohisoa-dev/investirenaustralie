@@ -497,7 +497,7 @@ class ProfileController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function password()
-    {
+    {   
         if(Auth::user()->isAdmin()){
             $view = view('admin.user.edit.password');
         }else{
@@ -545,10 +545,19 @@ class ProfileController extends Controller
             Auth::user()->password = bcrypt($request->password);
             Auth::user()->use_default_password = 0;
             Auth::user()->save();
+        }else{
+            return back()->with('error',trans('app.txt.password_update_error'));
         }
         
+        if($request->use_default_password){
+            session()->forget('default_password');
+        }
+
+        // Logout user
+        Auth::logout();
+
         // Success
-        return back()->with('success',trans('app.txt.password_update'));
+        return redirect()->route('login')->with('success',trans('app.txt.password_update'));
     }
 
     /**

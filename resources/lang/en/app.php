@@ -1269,4 +1269,6 @@ return
 	'txt.password_error' => 'Password error !',
 	'txt.name_num_of_the_road' => 'Name and n° of road',
 	'txt.for_information' => 'for information',
+	'txt.alert_success' => '<p>Hi,</p> <p class=&quot;p-10px-tb&quot;>We acknowledge receipt of your "Invest in Australia" registration form. The entire IEA portal team thanks you for this mark of confidence.</p> <p>In order to make sure that you are not a machine we have sent you an email to the email address you gave us.</p><p class=&quot;p-10px-tb&quot;>Please open the message sent and confirm your registration by clicking on the link that will be indicated to you.</p><p class=&quot;p-10px-tb&quot;>Looking forward to,</p><p class=&quot;p-10px-tb&quot;>Very cordial greetings</p><p class=&quot;p-10px-tb&quot;>L&rsquo;équipe Investir en Australie</p>',
+	'txt.password_update_error' => 'Password update error !',
 ];

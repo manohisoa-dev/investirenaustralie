@@ -308,6 +308,15 @@ class User extends Authenticatable {
     }
 
     /**
+     * Is user active
+     *
+     * @return Boolean
+     */
+    public function useDefaultPassword() {
+        return ($this->use_default_password == 1);
+    }
+
+    /**
      * Is user deleted
      *
      * @return Boolean

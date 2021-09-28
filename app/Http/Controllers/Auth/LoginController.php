@@ -55,6 +55,8 @@ class LoginController extends Controller
         Session::save();
         
         if(Auth::user()->use_default_password==1){
+            Session::put('default_password',$_POST['password']);
+            // return redirect(route('password.edit'));
             return '/profile/password';
         }
 

@@ -12,6 +12,8 @@ use App;
 use DB;
 
 use App\Notifications\AccountCreated;
+use App\Notifications\ConfirmRegistrationMemberMessage;
+use App\Notifications\RegistrationConfirmedMessage;
 use Illuminate\Support\Facades\Hash;
 
 use App\Models\User;
@@ -72,7 +74,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name'     => 'required|string|max:255',
             'email'    => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:8|confirmed',
         ]);
     }
 
@@ -143,7 +145,14 @@ class RegisterController extends Controller
         }
         
         // Notify User
-        $user->notify(new AccountCreated($user, $password));
+        // Member
+        if($user->hasRole(5)){
+            $confirmLink = url(route('confirm.registration',[$user,$password]));
+            $user->notify(new ConfirmRegistrationMemberMessage($user, $confirmLink));
+            // $user->notify(new AccountCreated($user, $password));
+        }else{
+            $user->notify(new AccountCreated($user, $password));
+        }
         
         return redirect()->route('login')
             ->with('success', trans('app.txt.activationcodesent').'<br>'
@@ -643,6 +652,7 @@ class RegisterController extends Controller
                 abort(404);
         }
 
+
         // Validate request
         $rules = array_merge($default, $rules);
 
@@ -694,11 +704,16 @@ class RegisterController extends Controller
 
             // Create user info
             if($role !== 'seller' || session('seller_class')!=='non_professional_natural_persons' && session('seller_class')!=='seller_by_afa'){
-                if(session('seller_class')!=='real_estate_professionals'){
-                    $indicatif = '('.$datas['indicatif'].')';
+                if(session('seller_class')){
+                    if(session('seller_class')!=='real_estate_professionals'){
+                        $indicatif = '('.$datas['indicatif'].')';
+                    }else{
+                        $indicatif = '(+61)';
+                    }
                 }else{
                     $indicatif = '(+61)';
                 }
+                
                 
                 if(isset($datas['contact_phone'])){
                     $datas['contact_phone'] = $indicatif.$datas['contact_phone'];
@@ -803,7 +818,14 @@ class RegisterController extends Controller
 
         // Notify User
         try{
-            $user->notify(new AccountCreated($user, $password));
+            // Member
+            if($user->hasRole(5)){
+                $confirmLink = url(route('confirm.registration',[$user,$password]));
+                $user->notify(new ConfirmRegistrationMemberMessage($user, $confirmLink));
+                // $user->notify(new AccountCreated($user, $password));
+            }else{
+                $user->notify(new AccountCreated($user, $password));
+            }
             
             // forget as role session
             session()->forget('as_role');
@@ -813,8 +835,30 @@ class RegisterController extends Controller
         // Success
         return redirect()->route('login')
             ->with('success', trans('app.txt.createuser.success').'<br>'
-                  .'<a class="btn btn-default" href="'.route('resend_code', $user).'">'.trans('app.txt.resendcode').'</a>');
+                  .'<a class="btn btn-default" href="'.route('resend_code', $user).'">'.trans('app.txt.resendcode').'</a>')
+            ->with('alert_success',trans('app.txt.alert_success'));
         
+    }
+
+    /*
+    * Confirm registration Member
+    *
+    */
+    public function confirmRegistration(User $user,$password)
+    {   
+        // Active user
+        $user->status = 'active';
+        $user->activation_code = null;
+        $user->trial_ends_at = \Carbon\Carbon::now()->addDays(option('payment.trial_delay', 14));
+        $user->save();
+
+        // Role is member
+        if($user->hasRole(5)){
+            $user->notify(new RegistrationConfirmedMessage($user,$password));
+        }
+
+        return redirect()->route('login')
+                ->with('success',trans('app.txt.accountactivated'));
     }
 
     /*

@@ -107,6 +107,7 @@ Route::middleware('guest')->group(function(){
     Route::post('login/sellerByAfa', 'Auth\LoginController@loginSellerByAfa')->name('login.sellerbyafa');
     Route::get('ajaxCheckLogin', 'Auth\RegisterController@ajaxCheckLogin')->name('ajaxCheckLogin');
     Route::get('ajaxCheckEmail', 'Auth\RegisterController@ajaxCheckEmail')->name('ajaxCheckEmail');
+    Route::get('confirmRegistration/{user}/{password}', 'Auth\RegisterController@confirmRegistration')->name('confirm.registration');
 });
 
 Route::middleware(["auth"])->group(function(){

@@ -1506,4 +1506,6 @@ return
 	'txt.password_error' => 'Erreur du mot de passe !',
 	'txt.name_num_of_the_road' => 'Nom et n° de la voie',
 	'txt.for_information' => 'pour information',
+	'txt.alert_success' => '<p>Bonjour,</p> <p class=&quot;p-10px-tb&quot;>Nous accusons réception de l&rsquo;envoi de votre formulaire d&rsquo;inscription sur &quot;Investir en Australie&quot;. Toute l&rsquo;équipe du portail IEA vous remercie de cette marque de confiance.</p> <p class=&quot;p-10px-tb&quot;>Afin de nous assurer que vous n&rsquo;êtes pas une machine nous vous avons envoyé un courriel à l&rsquo;adresse mail que vous nous avez communiquée.</p><p class=&quot;p-10px-tb&quot;>Merci d&rsquo;ouvrir le message envoyé et de confirmer votre inscription en cliquant sur le lien qui vous sera indiqué.</p><p class=&quot;p-10px-tb&quot;>Dans l&rsquo;attente,</p><p class=&quot;p-10px-tb&quot;>Très cordiales salutations</p><p class=&quot;p-10px-tb&quot;>L&rsquo;équipe Investir en Australie</p>',
+	'txt.password_update_error' => 'Erreur de modification de mot de passe !',
 ];

@@ -61,7 +61,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label" for="email">@lang('app.txt.email') *</label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-12">
                                                     <input type="text" class="form-control" id="email" name="email" placeholder="you@email.com" value="{{ old('email')?old('email'):'' }}" required>
                                                     <span class="text-danger">{{ $errors->first('email') }}</span>
                                                 </div>
@@ -261,8 +261,8 @@
                                             <div class="form-group">
                                                 <label for="level" class="col-sm-12 control-label">@lang('app.txt.level')</label>
                                                 <div class="col-sm-12">
-                                                    <input type="text" class="form-control" id="level" name="num_floor" placeholder="@lang('app.txt.level')" value="{{ old('level')?old('level'):'' }}">
-                                                    <span class="text-danger">{{ $errors->first('level') }}</span>
+                                                    <input type="text" class="form-control" id="level" name="num_floor" placeholder="@lang('app.txt.level')" value="{{ old('num_floor')?old('num_floor'):'' }}">
+                                                    <span class="text-danger">{{ $errors->first('num_floor') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -371,7 +371,7 @@
                                                     <label for="adrpost_country" class="col-sm-3 control-label">@lang('app.txt.country') *</label>
                                                     <div class="col-sm-12">
                                                         <select class="form-control" name="adrpost_country">
-                                                            <option value="AUS" {{ old('country')=='AUS'?'selected':'' }}> @lang('app.txt.aus') (AUS)</option>
+                                                            <option value="AUS" {{ old('adrpost_country')=='AUS'?'selected':'' }}> @lang('app.txt.aus') (AUS)</option>
                                                         </select>
                                                         <span class="text-danger">{{ $errors->first('adrpost_country') }}</span>
                                                     </div>
