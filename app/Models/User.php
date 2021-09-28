@@ -633,15 +633,10 @@ class User extends Authenticatable {
         }
         switch ($this->role) {
             case 1:
-                $config = new Config();
-                dd($config->get_meta_array('last_name',90));
                 if ($value = $request->input('first_name'))                    
-                    $config->update_meta_array("first_name" , $value);
-                    //$item->update_meta(["first_name" => $value]);
-                    //$userinfos->update(["first_name" => $value]);
+                    $userinfos->update(["first_name" => $value]);
                 if ($value = $request->input('last_name'))
-                    $config->update_meta_array("last_name" , $value);
-                    //$userinfos->update(["last_name" => $value]);
+                    $userinfos->update(["last_name" => $value]);
                 break;
             case 5:
                 $type = $request->input('type');
