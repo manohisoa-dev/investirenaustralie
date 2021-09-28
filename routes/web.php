@@ -152,7 +152,8 @@ Route::middleware(["auth"])->group(function(){
 
     // message controller
     Route::get('message/unread/notification/{user_id}', 'MessageController@getUnreadMessageNotification')->name('get.unread.message.notification');
-
+    
+    Route::get('ajaxCheckPassword', 'Auth\RegisterController@ajaxCheckPassword')->name('ajaxCheckPassword');
 });
 
 
@@ -338,7 +339,5 @@ Route::get('paypal', array('as' => 'payment.status','uses' => 'Paypal@getPayment
 
 Route::get('createTemplateCaPdf', 'MemberController@autoCompleteForm6');
 
-
-
-
-
+Route::get('contact-test', 'ContactFormController@form');
+Route::post('contact-request', 'ContactFormController@contactRequest')->name('contact-request');

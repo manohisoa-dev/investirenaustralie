@@ -211,8 +211,8 @@
                                         <div class="form-group">
                                             <label for="level" class="col-sm-12 control-label">@lang('app.txt.level')</label>
                                             <div class="col-sm-12">
-                                                <input type="text" class="form-control" id="level" name="level" placeholder="@lang('app.txt.level')" value="{{ old('level')?old('level'):'' }}">
-                                                <span class="text-danger">{{ $errors->first('level') }}</span>
+                                                <input type="text" class="form-control" id="level" name="num_floor" placeholder="@lang('app.txt.level')" value="{{ old('num_floor')?old('num_floor'):'' }}">
+                                                <span class="text-danger">{{ $errors->first('num_floor') }}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -345,7 +345,7 @@
                                             <label for="orga_mobile_phone" class="col-sm-12 control-label">@lang('app.txt.mobile') *</label>
                                             <div class="input-group mb-3 col-sm-12">
                                                 <div class="input-group-prepend">
-                                                    <select class="form-control" name="indicatif" id="indicatif">
+                                                    <select class="form-control" name="indicatif3" id="indicatif3">
                                                         @foreach (App\Models\Indicatif::all() as $indicatif)
                                                             <option value="+{{ $indicatif->code }}" {{ $indicatif->code=='61'?'selected':'' }}>(+ {{ $indicatif->code }}) </option>
                                                         @endforeach
@@ -451,7 +451,10 @@
                 country: {
 					required: true
 				},
-                
+                nationality: {
+					required: true
+				},
+
                 civility: {
 					required: true
 				},
@@ -461,14 +464,6 @@
 				},
 
                 first_name: {
-					required: true
-				},
-
-                nationality: {
-					required: true
-				},
-
-                civility: {
 					required: true
 				},
 

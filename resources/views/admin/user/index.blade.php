@@ -118,7 +118,7 @@
 						{!!\Nvd\Crud\Html::sortableTh('role','admin.user.index','Rôle')!!}
 						{!!\Nvd\Crud\Html::sortableTh('type_users_id','admin.user.index','Type')!!}
 						{!!\Nvd\Crud\Html::sortableTh('status','admin.user.index','Statuts')!!}
-						<th><a href="javascript:void(0)">Actions</a></th>
+						<th width="16%"><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     </thead>
 
@@ -235,22 +235,27 @@
 									<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show', ['user_id' => $record->uid]):route('admin.user.show', ['user_id' => $record->uid])}}" class="btn btn-default btn-circle" title="@lang('app.btn.view')">
 										<i class="fa fa-info text-success"></i>
 									</a>&nbsp;&nbsp;
-									@if($record->status=='active')
-									<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.desactiver', ['user_id' => $record->uid]):route('admin.user.desactiver', ['user_id' => $record->uid])}}" class="btn btn-default btn-circle" title="@lang('app.btn.disable')">
-										<i class="fa fa-eye-slash"></i>
-									</a>&nbsp;&nbsp;
-									@else
-									<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.active', ['user_id' => $record->uid]):route('admin.user.active', ['user_id' => $record->uid])}}" class="btn btn-default btn-circle" title="@lang('app.btn.active')">
-										<i class="fa fa-eye text-info"></i>
-									</a>&nbsp;&nbsp;
+									@if(!$record->isAdmin())
+										@if($record->status=='active')
+											<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.desactiver', ['user_id' => $record->uid]):route('admin.user.desactiver', ['user_id' => $record->uid])}}" class="btn btn-default btn-circle" title="@lang('app.btn.disable')">
+												<i class="fa fa-eye-slash"></i>
+											</a>&nbsp;&nbsp;
+										@else
+											<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.active', ['user_id' => $record->uid]):route('admin.user.active', ['user_id' => $record->uid])}}" class="btn btn-default btn-circle" title="@lang('app.btn.active')">
+												<i class="fa fa-eye text-info"></i>
+											</a>&nbsp;&nbsp;
+										@endif
+										<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.contact', ['user_id' => $record->uid]):route('admin.user.contact', ['user_id' => $record->uid])}}" class="btn btn-default btn-circle" title="@lang('app.btn.contact')">
+											<i class="fa fa-envelope" aria-hidden="true"></i>
+										</a>&nbsp;&nbsp;
+										<a href="#" class="btn btn-default btn-circle" title="@lang('app.btn.contact')">
+											<i class="fa fa-comment	" aria-hidden="true"></i>
+										</a>&nbsp;&nbsp;
+										{{ csrf_field() }}
+										{{ method_field('DELETE') }}
+										<button type="button" class="btn btn-default btn-circle" title="Suppression" id="delRecord"><i class="fa fa-times text-danger"></i>
+										</button>
 									@endif
-									<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.contact', ['user_id' => $record->uid]):route('admin.user.contact', ['user_id' => $record->uid])}}" class="btn btn-default btn-circle" title="@lang('app.btn.contact')">
-										<i class="fa fa-address-book-o" aria-hidden="true"></i>
-									</a>&nbsp;&nbsp;
-									{{ csrf_field() }}
-									{{ method_field('DELETE') }}
-									<button type="button" class="btn btn-default btn-circle" title="Suppression" id="delRecord"><i class="fa fa-times text-danger"></i>
-									</button>
 								</form>
 							@endif
 							</td>

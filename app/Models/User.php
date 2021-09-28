@@ -11,7 +11,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 use Session;
 use App\Models\Product;
-use Auth;
+use App\Models\SellerIndividual;
+use App\Models\SellerBusiness;
 
 class User extends Authenticatable {
     use Notifiable;
@@ -389,6 +390,51 @@ class User extends Authenticatable {
     }
 
     /**
+     * A user is seller builder
+     *
+     * @return Boolean
+     */
+    public function isSbu() {
+        return $this->hasRole(2) && ($this->type_users_id == 3);
+    }
+    
+    /**
+     * A user is seller developer
+     *
+     * @return Boolean
+     */
+    public function isSde() {
+        return $this->hasRole(2) && ($this->type_users_id == 4);
+    }
+
+    /**
+     * A user is seller natural person
+     *
+     * @return Boolean
+     */
+    public function isSnp() {
+        return $this->hasRole(2) && ($this->type_users_id == 2);
+    }
+
+    /**
+     * A user is seller by afa business
+     *
+     * @return Boolean
+     */
+    public function isSbaBusiness() {
+        return $this->hasRole(2) && ($this->type_users_id == 9);
+    }
+    
+    /**
+     * A user is seller by afa individual
+     *
+     * @return Boolean
+     */
+    public function isSbaIndividual() {
+        return $this->hasRole(2) && ($this->type_users_id == 8);
+    }
+
+    /**
      * Get Url of Attached Image OR Default Image
      *
      * @param Boolean $thumb
@@ -641,7 +687,7 @@ class User extends Authenticatable {
             case 5:
                 $type = $request->input('type');
                 if (strtolower($type) == 'person') {
-                    // Update MetaData
+                    // Update userinfo Member particulier (person)
                     if ($value = $request->input('first_name'))
                         $userinfos->update(["first_name" => $value]);
                     if ($value = $request->input('last_name'))
@@ -652,10 +698,38 @@ class User extends Authenticatable {
                         $userinfos->update(["civility" => $value]);
                     if ($value = $request->input('sexe'))
                         $userinfos->update(["sexe" => $value]);
+
+                    // User is complete
+                    if ($value = $request->input('date_of_birth'))
+                        $userinfos->update(["date_of_birth" => (new Carbon($value))->toDateString()]);
+                    if ($value = $request->input('place_of_birth'))
+                        $userinfos->update(["place_of_birth" => $value]);
+                    if ($value = $request->input('orga_phone')) {
+                        $ct_phone = $request->input('indicatif') . $value;
+                        $userinfos->update(["orga_phone" => $ct_phone]);
+                    }
+                    if ($value = $request->input('orga_mobile_phone')) {
+                        $ct_phone = $request->input('indicatif') . $value;
+                    }
+                    if ($value = $request->input('orga_phone')) {
+                        $ct_phone = '(' . $request->input('indicatif') . ')' . $value;
+                        $userinfos->update(["orga_phone" => $ct_phone]);
+                    }
+                    if ($value = $request->input('orga_mobile_phone')) {
+                        $ct_phone = '(' . $request->input('indicatif3') . ')' . $value;
+                        $userinfos->update(["orga_mobile_phone" => $ct_phone]);
+                    }
+                    if ($value = $request->input('orga_email'))
+                        $userinfos->update(["orga_email" => $value]);
+                    if ($value = $request->input('orga_skype'))
+                        $userinfos->update(["orga_skype" => $value]);
+                    if ($value = $request->input('orga_fb'))
+                        $userinfos->update(["orga_fb" => $value]);
+
                 } elseif (strtolower($type) == 'person_complete') {
                     $userloc = Localisation::whereId($user->location_id);
 
-                    // Update userinfo
+                    // Update userinfo Member particulier complete info
                     if ($value = $request->input('last_name'))
                         $userinfos->update(["last_name" => $value]);
                     if ($value = $request->input('first_name'))
@@ -714,57 +788,100 @@ class User extends Authenticatable {
                     if ($value = $request->input('adrpost_country'))
                         $userloc->update(["adrpost_country" => $value]);
                 } else {
-                    // Update MetaData
-                    if ($value = $request->input('orga_name'))
-                        $userinfos->update(["orga_name" => $value]);
-                    if ($value = $request->input('orga_email'))
-                        $userinfos->update(["orga_email" => $value]);
-                    if ($value = $request->input('orga_phone')) {
-                        $ct_phone = $request->input('indicatif') . $value;
-                    }
+                    // Update userinfo Member organization
                     if ($value = $request->input('orga_phone')) {
                         $ct_phone = '(' . $request->input('indicatif') . ')' . $value;
                         $userinfos->update(["orga_phone" => $ct_phone]);
                     }
-                    if ($value = $request->input('orga_website'))
-                        $userinfos->update(["orga_website" => $value]);
+                    if ($value = $request->input('orga_fax'))
+                        $userinfos->update(["orga_fax" => $value]);
+                    if ($value = $request->input('orga_mobile_phone')) {
+                        $ct_phone = '(' . $request->input('indicatif3') . ')' . $value;
+                        $userinfos->update(["orga_mobile_phone" => $ct_phone]);
+                    }
+                    if ($value = $request->input('orga_name'))
+                        $userinfos->update(["orga_name" => $value]);
+                    if ($value = $request->input('orga_registration_number'))
+                        $userinfos->update(["orga_registration_number" => $value]);
+                    if ($value = $request->input('orga_rep_official_registration'))
+                        $userinfos->update(["orga_rep_official_registration" => $value]);
+                    if ($value = $request->input('orga_type'))
+                        $userinfos->update(["orga_type" => $value]);
+                    if ($value = $request->input('orga_form'))
+                        $userinfos->update(["orga_form" => $value]);
                     if ($value = $request->input('orga_presentation'))
                         $userinfos->update(["orga_presentation" => $value]);
-                    // Create Contact MetaData
                     if ($value = $request->input('contact_name'))
                         $userinfos->update(["contact_name" => $value]);
-                    if ($value = $request->input('contact_email'))
-                        $userinfos->update(["contact_email" => $value]);
-                    if ($value = $request->input('contact_phone')) {
-                        $ct_phone = $request->input('indicatif') . $value;
-                    }
                     if ($value = $request->input('contact_phone')) {
                         $ct_phone = '(' . $request->input('indicatif2') . ')' . $value;
                         $userinfos->update(["contact_phone" => $ct_phone]);
                     }
-                    // Create CRM MetaData
-                    // if ($value = $request->input('crm_name'))
-                    //     $userinfos->update(["crm_name" => $value]);
-                    // if ($value = $request->input('crm_email'))
-                    //     $userinfos->update(["crm_email" => $value]);
+                    if ($value = $request->input('contact_email'))
+                        $userinfos->update(["contact_email" => $value]);
+                    if ($value = $request->input('newsletter'))
+                        $userinfos->update(["newsletter" => $value]);
+                    if ($value = $request->input('allow_sharing'))
+                        $userinfos->update(["allow_sharing" => $value]);
+
+                    // update localisation
+                    // $userloc = Localisation::whereId($user->location_id);
+                    // if ($value = $request->input('building_name'))
+                    //         $userloc->update(["building_name" => $value]);
+                    // if ($value = $request->input('route'))
+                    //         $userloc->update(["route" => $value]);
+                    // if ($value = $request->input('route_number'))
+                    //         $userloc->update(["route_number" => $value]);
+                    // if ($value = $request->input('num_rooms'))
+                    //         $userloc->update(["num_rooms" => $value]);
+                    // if ($value = $request->input('num_floor'))
+                    //         $userloc->update(["num_floor" => $value]);
+                    // if ($value = $request->input('locality'))
+                    //         $userloc->update(["locality" => $value]);
+                    // if ($value = $request->input('postalCode'))
+                    //         $userloc->update(["postalCode" => $value]);
+                    // if ($value = $request->input('area_level_1'))
+                    //         $userloc->update(["area_level_1" => $value]);
+                    // if ($value = $request->input('adrpost_postal_box'))
+                    //         $userloc->update(["adrpost_postal_box" => $value]);
+                    // if ($value = $request->input('adrpost_locality'))
+                    //         $userloc->update(["adrpost_locality" => $value]);
+                    // if ($value = $request->input('adrpost_postalCode'))
+                    //         $userloc->update(["adrpost_postalCode" => $value]);
+                    // if ($value = $request->input('adrpost_area_level_1'))
+                    //         $userloc->update(["adrpost_area_level_1" => $value]);
+                    // if ($value = $request->input('adrpost_country'))
+                    //         $userloc->update(["adrpost_country" => $value]);
                 }
                 break;
             case 3:
                 // Update MetaData
                 if ($value = $request->input('orga_name'))
                     $userinfos->update(["orga_name" => $value]);
-                if ($value = $request->input('orga_presentation'))
-                    $userinfos->update(["orga_presentation" => $value]);
+                if ($value = $request->input('orga_trading_name'))
+                    $userinfos->update(["orga_trading_name" => $value]);
+                if ($value = $request->input('orga_abn'))
+                    $userinfos->update(["orga_abn" => $value]);
+                if ($value = $request->input('orga_acn'))
+                    $userinfos->update(["orga_acn" => $value]);
+                if ($value = $request->input('orga_license_number'))
+                    $userinfos->update(["orga_license_number" => $value]);
                 if ($value = $request->input('orga_email'))
                     $userinfos->update(["orga_email" => $value]);
                 if ($value = $request->input('orga_phone')){
-                    $ct_phone = '('.$request->input('indicatif').')'.$value;
-                    $userinfos->update(["orga_phone" => $ct_phone]);
+                    $userinfos->update(["orga_phone" => '(+61)'.$value]);
+                }
+                if ($value = $request->input('orga_fax'))
+                    $userinfos->update(["orga_fax" => $value]);
+                if ($value = $request->input('orga_mobile_phone')) {
+                    $userinfos->update(["orga_mobile_phone" => '(+61)'.$value]);
                 }
                 if ($value = $request->input('orga_website'))
                     $userinfos->update(["orga_website" => $value]);
+                if ($value = $request->input('orga_presentation'))
+                    $userinfos->update(["orga_presentation" => $value]);
                 if ($value = $request->input('orga_operation_state'))
-                    $userinfos->update(["orga_operation_state" => $value]);
+                    $userinfos->update(["orga_operation_state" => serialize($value)]);
                 if ($value = $request->input('orga_operation_range'))
                     $userinfos->update(["orga_operation_range" => $value]);
 
@@ -774,11 +891,7 @@ class User extends Authenticatable {
                 if ($value = $request->input('contact_email'))
                     $userinfos->update(["contact_email" => $value]);
                 if ($value = $request->input('contact_phone')) {
-                    $userinfos->update(["contact_phone" => $value]);
-                }
-                if ($value = $request->input('contact_phone')){
-                    $ct_phone = '('.$request->input('indicatif2').')'.$value;
-                    $userinfos->update(["contact_phone" => $ct_phone]);
+                    $userinfos->update(["contact_phone" => '(+61)'.$value]);
                 }
 
                 // CRM Prodvider data
@@ -791,20 +904,16 @@ class User extends Authenticatable {
                 // Update MetaData
                 if ($value = $request->input('orga_name'))
                     $userinfos->update(["orga_name" => $value]);
+                if ($value = $request->input('orga_registration_number'))
+                    $userinfos->update(["orga_registration_number" => $value]);
+                if ($value = $request->input('orga_license_number'))
+                    $userinfos->update(["orga_license_number" => $value]);
+                if ($value = $request->input('orga_type'))
+                    $userinfos->update(["orga_type" => $value]);
+                if ($value = $request->input('orga_form'))
+                    $userinfos->update(["orga_form" => $value]);
                 if ($value = $request->input('orga_presentation'))
                     $userinfos->update(["orga_presentation" => $value]);
-                if ($value = $request->input('orga_email'))
-                    $userinfos->update(["orga_email" => $value]);
-                if ($value = $request->input('orga_phone')) {
-                    $ct_phone = $request->input('indicatif') . $value;
-                }
-                
-                if ($value = $request->input('orga_phone')){
-                    $ct_phone = '('.$request->input('indicatif').')'.$value;
-                    $userinfos->update(["orga_phone" => $ct_phone]);
-                }
-                if ($value = $request->input('orga_website'))
-                    $userinfos->update(["orga_website" => $value]);
                 if ($value = $request->input('orga_operation_range'))
                     $userinfos->update(["orga_operation_range" => $value]);
                 if ($value = $request->input('contact_name'))
@@ -812,12 +921,14 @@ class User extends Authenticatable {
                 if ($value = $request->input('contact_email'))
                     $userinfos->update(["contact_email" => $value]);
                 if ($value = $request->input('contact_phone')) {
-                    $ct_phone = $request->input('indicatif') . $value;
-                }
-                if ($value = $request->input('contact_phone')){
-                    $ct_phone = '('.$request->input('indicatif2').')'.$value;
+                    $ct_phone = '(' . $request->input('indicatif') . ')' . $value;
                     $userinfos->update(["contact_phone" => $ct_phone]);
                 }
+                
+                if ($value = $request->input('bank_name'))
+                    $userinfos->update(["bank_name" => $value]);
+                if ($value = $request->input('bank_agency'))
+                    $userinfos->update(["bank_agency" => $value]);
                 if ($value = $request->input('bank_iban'))
                     $userinfos->update(["bank_iban" => $value]);
                 if ($value = $request->input('bank_bic'))
@@ -825,40 +936,73 @@ class User extends Authenticatable {
                 
                 break;
             case 2:
-                // Create Organisation MetaData
-                if ($value = $request->input('orga_name'))
-                    $userinfos->update(["orga_name" => $value]);
-                if ($value = $request->input('orga_presentation'))
-                    $userinfos->update(["orga_presentation" => $value]);
-                if ($value = $request->input('orga_email'))
-                    $userinfos->update(["orga_email" => $value]);
-                if ($value = $request->input('orga_phone')) {
-                }
-                $userinfos->update(["orga_phone" => $value]);
-                if ($value = $request->input('orga_phone')){
-                    $ct_phone = '('.$request->input('indicatif').')'.$value;
-                    $userinfos->update(["orga_phone" => $ct_phone]);
-                }
-                if ($value = $request->input('orga_website'))
-                    $userinfos->update(["orga_website" => $value]);
-                // Create Contact MetaData
-                if ($value = $request->input('contact_name'))
-                    $userinfos->update(["contact_name" => $value]);
-                if ($value = $request->input('contact_email'))
-                    $userinfos->update(["contact_email" => $value]);
-                if ($value = $request->input('contact_phone')) {
-                    $userinfos->update(["contact_phone" => $value]);
-                }
-                if ($value = $request->input('contact_phone')){
-                    $ct_phone = '('.$request->input('indicatif2').')'.$value;
-                    $userinfos->update(["contact_phone" => $ct_phone]);
-                }
+                // Seller Natural Person (SNP)
+                if($user->isSnp() || $user->isSbaIndividual()){
+                    for ($i=0; $i < 2; $i++) { 
+                        $tot = $i+1;
+                        $sfx = $i!==0?'_'.$tot:'';
 
-                // CRM Prodvider data
-                // if ($value = $request->input('crm_name'))
-                //     $userinfos->update(["crm_name" => $value]);
-                // if ($value = $request->input('crm_email'))
-                //     $userinfos->update(["crm_email" => $value]);
+                        $si = SellerIndividual::whereId($request->input('id_seller'.$sfx));
+                        if ($value = $request->input('last_name'.$sfx))
+                            $si->update(["last_name" => $value]);
+                        if ($value = $request->input('first_name'.$sfx))
+                            $si->update(["first_name" => $value]);
+                        if ($value = $request->input('date_of_birth'.$sfx))
+                            $si->update(["date_of_birth" => $value]);
+                        if ($value = $request->input('place_of_birth'.$sfx))
+                            $si->update(["place_of_birth" => $value]);
+                        if ($value = $request->input('nationality'.$sfx))
+                            $si->update(["nationality" => $value]);
+                        if ($value = $request->input('street_adr'.$sfx))
+                            $si->update(["street_adr" => $value]);
+                        if ($value = $request->input('suburb'.$sfx))
+                            $si->update(["suburb" => $value]);
+                        if ($value = $request->input('city'.$sfx))
+                            $si->update(["city" => $value]);
+                        if ($value = $request->input('post_code'.$sfx))
+                            $si->update(["post_code" => $value]);
+                        if ($value = $request->input('country'.$sfx))
+                            $si->update(["country" => $value]);
+                        if ($value = $request->input('phone'.$sfx)){
+                            $phone = '('.$request->input('indicatif'.$sfx).')'.$value;
+                            $si->update(["phone" => $phone]);
+                        }else{
+                            $si->update(["phone" => '']);
+                        }
+                        if ($value = $request->input('email_adr'.$sfx))
+                            $si->update(["email_adr" => $value]);
+                        if ($value = $request->input('mobile'.$sfx)){
+                            $mobile = '('.$request->input('indicatif3'.$sfx).')'.$value;
+                            $si->update(["mobile" => $mobile]);
+                        }else{
+                            $si->update(["mobile" => '']);
+                        }
+                    }
+                }else{
+                    $sb = SellerBusiness::whereId($request->input('id_seller'));
+                    if ($value = $request->input('business_name'))
+                        $sb->update(["business_name" => $value]);
+                    if ($value = $request->input('street_adr'))
+                        $sb->update(["street_adr" => $value]);
+                    if ($value = $request->input('suburb'))
+                        $sb->update(["suburb" => $value]);
+                    if ($value = $request->input('city'))
+                        $sb->update(["city" => $value]);
+                    if ($value = $request->input('post_code'))
+                        $sb->update(["post_code" => $value]);
+                    if ($value = $request->input('country'))
+                        $sb->update(["country" => $value]);
+                    if ($value = $request->input('phone')){
+                        $phone = '('.$request->input('indicatif').')'.$value;
+                        $sb->update(["phone" => $phone]);
+                    }
+                    if ($value = $request->input('email_adr'))
+                        $sb->update(["email_adr" => $value]);
+                    if ($value = $request->input('mobile')){
+                        $mobile = '('.$request->input('indicatif3').')'.$value;
+                        $sb->update(["mobile" => $mobile]);
+                    }
+                }
                 break;
         }
 
@@ -935,7 +1079,7 @@ class User extends Authenticatable {
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function sellerIndividual() {
-        // return $this->hasOne(SellerIndividual::class,'user_id','id');
+        return $this->hasMany(SellerIndividual::class,'user_id','id')->orderBy('id','ASC')->get();
     }
 
     /**
@@ -944,7 +1088,7 @@ class User extends Authenticatable {
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function sellerBusiness() {
-        // return $this->hasOne(SellerBusiness::class,'user_id','id');
+        return $this->hasMany(SellerBusiness::class,'user_id','id')->first();
     }
 
     public function historiques() {
