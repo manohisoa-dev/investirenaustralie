@@ -352,6 +352,7 @@ class RegisterController extends Controller
                         'nationality'  => 'required|max:100',
                         'sexe'       => 'required',
                         'civility'  => 'required|max:3',
+                        'g-recaptcha-response' => 'required|captcha',
                     ];
                 }else{
                     $rules = [

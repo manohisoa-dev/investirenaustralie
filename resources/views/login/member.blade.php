@@ -1,6 +1,5 @@
 @extends('layouts.app')
 
-
 @section('content')
 
 <!-- Page Title -->
@@ -266,6 +265,17 @@
                                                     <div class="col-lg-10">
                                                         <label class="control-label" for="newsletter">@lang('app.form.register.shareinfo')</label>
                                                     </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group m-25px-t{{ $errors->has('g-recaptcha-response') ? ' has-error' : '' }}">
+                                                {{-- <label class="col-md-4 control-label">Captcha</label> --}}
+                                                <div class="col-md-12">
+                                                    {!! app('captcha')->display() !!}
+                                                    @if ($errors->has('g-recaptcha-response'))
+                                                        <span class="help-block text-danger">
+                                                            <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                                                        </span>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -652,8 +662,8 @@
                                                     <div class="col-lg-2">
                                                         <select name="newsletter" class="form-control" required>
                                                             <option value="" selected disabled>@lang('app.txt.select')</option>
-                                                            <option value="yes" {{ old('allow_sharing')=='yes'?'selected':'' }}>@lang('app.txt.yes')</option>
-                                                            <option value="no" {{ old('allow_sharing')=='no'?'selected':'' }}>@lang('app.txt.no')</option>
+                                                            <option value="yes" {{ old('newsletter')=='yes'?'selected':'' }}>@lang('app.txt.yes')</option>
+                                                            <option value="no" {{ old('newsletter')=='no'?'selected':'' }}>@lang('app.txt.no')</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-lg-10">
@@ -677,6 +687,19 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="form-group m-25px-t{{ $errors->has('g-recaptcha-response') ? ' has-error' : '' }}">
+                                        {{-- <label class="col-md-4 control-label">Captcha</label> --}}
+                                        <div class="col-md-12">
+                                            {!! app('captcha')->display() !!}
+                                            @if ($errors->has('g-recaptcha-response'))
+                                                <span class="help-block text-danger">
+                                                    <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
                                     <div class="form-group m-50px-t">
                                         <div class="col-sm-offset-3 col-sm-9">
                                             <em class="help-block">@lang('app.form.required')</em>
@@ -718,6 +741,7 @@
 @endsection
 
 @push('script')
+{!! NoCaptcha::renderJs() !!}
     <script src="{{asset('js/myJs.js')}}"></script>
     <!-- Jquery Validate -->
 <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
@@ -1166,7 +1190,10 @@
 <!-- End Jquery Validate -->
     <script type="text/javascript">
         $(document).ready(function(){
-            $('#chooseTypeMemberModal').modal('show');
+            
+            if(!sessionStorage.getItem('member_type')){
+                $('#chooseTypeMemberModal').modal('show');
+            }
 
             $('#engagementForm').validate({
                 ignore: [],
@@ -1437,7 +1464,7 @@
 
     </script>
     {{-- Fin google map location --}}
-    
+
     <script>
         function resetOrgaForm(){
             $('#orgaForm').attr('hidden','hidden');
