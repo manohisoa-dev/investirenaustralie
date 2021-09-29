@@ -826,6 +826,9 @@
                     }
                 },
             },
+            'g-recaptcha-response': {
+                required: true,
+            },
             politic: {
                 required: {
                     depends: function(element) {
@@ -873,6 +876,9 @@
                 required: "@lang('app.txt.champobligatoire')",
             },
             allow_sharing: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            'g-recaptcha-response': {
                 required: "@lang('app.txt.champobligatoire')",
             },
             politic: {
@@ -1062,6 +1068,9 @@
                     }
                 },
             },
+            'g-recaptcha-response': {
+                required: true,
+            },
             politic: {
                 required: {
                     depends: function(element) {
@@ -1151,6 +1160,9 @@
                 required: "@lang('app.txt.champobligatoire')",
             },
             allow_sharing: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            'g-recaptcha-response': {
                 required: "@lang('app.txt.champobligatoire')",
             },
             politic: {

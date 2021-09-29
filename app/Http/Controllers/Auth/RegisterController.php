@@ -372,6 +372,7 @@ class RegisterController extends Controller
                         'contact_name'       => 'required|max:100',
                         'contact_phone'       => 'required|max:100',
                         'contact_email'        => 'required|email|max:100',
+                        'g-recaptcha-response' => 'required|captcha',
                     ];
 
                     if($request->orga_type == 'private' || $request->orga_type == 'mixte'){
