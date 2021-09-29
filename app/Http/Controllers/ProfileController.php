@@ -136,6 +136,7 @@ class ProfileController extends Controller
                         'orga_email'        => 'required|email|max:100',
                         'orga_fb'        => 'nullable|url',
                         'politic'    => 'required',
+                        'g-recaptcha-response' => 'required|captcha',
                     ];
 
                     if($request->postal_address_below || $request->adrpost_postal_box){

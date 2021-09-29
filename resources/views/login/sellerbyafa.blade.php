@@ -452,6 +452,17 @@
                                                 </div>
                                             </fieldset>
 
+                                            <div class="form-group m-10px-tb m-50px-b{{ $errors->has('g-recaptcha-response') ? ' has-error' : '' }}">
+                                                <div class="col-md-12">
+                                                    {!! app('captcha')->display() !!}
+                                                    @if ($errors->has('g-recaptcha-response'))
+                                                        <span class="help-block text-danger">
+                                                            <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                            </div>
+
                                             <div class="form-group m-25px-t">
                                                 <div class="col-sm-offset-3 col-sm-9">
                                                     <em class="help-block">@lang('app.form.required')</em>
@@ -493,6 +504,7 @@
 @endsection
 
 @push('script')
+{!! NoCaptcha::renderJs() !!}
 <script src="{{asset('js/myJs.js')}}"></script>
 <!-- Jquery Validate -->
 <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
@@ -840,6 +852,9 @@
                 minlength: 6,
                 maxlength: 9,
             },
+            'g-recaptcha-response': {
+                required: true,
+            },
         },
         messages: {
             name: {
@@ -952,6 +967,9 @@
                 required: "@lang('app.txt.champobligatoire')",
             },
             contact_phone: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            'g-recaptcha-response': {
                 required: "@lang('app.txt.champobligatoire')",
             },
         },

@@ -373,6 +373,18 @@
                                                     <span class="text-danger m-5px-l">{{ $errors->first('contact_phone') }}</span>
                                                 </div>
                                             </fieldset>
+
+                                            <div class="form-group m-10px-tb m-50px-b{{ $errors->has('g-recaptcha-response') ? ' has-error' : '' }}">
+                                                <div class="col-md-12">
+                                                    {!! app('captcha')->display() !!}
+                                                    @if ($errors->has('g-recaptcha-response'))
+                                                        <span class="help-block text-danger">
+                                                            <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                            </div>
+
                                             <div class="form-group m-35px-t">
                                                 <div class="col-sm-offset-3 col-sm-9">
                                                     <em class="help-block">@lang('app.form.required')</em>
@@ -690,6 +702,17 @@
                                                 </div>
                                             </fieldset>
 
+                                            <div class="form-group m-10px-tb m-50px-b{{ $errors->has('g-recaptcha-response') ? ' has-error' : '' }}">
+                                                <div class="col-md-12">
+                                                    {!! app('captcha')->display() !!}
+                                                    @if ($errors->has('g-recaptcha-response'))
+                                                        <span class="help-block text-danger">
+                                                            <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                            </div>
+
                                             <div class="form-group m-35px-t">
                                                 <div class="col-sm-offset-3 col-sm-9">
                                                     <em class="help-block">@lang('app.form.required')</em>
@@ -729,6 +752,7 @@
 @endsection
 
 @push('script')
+{!! NoCaptcha::renderJs() !!}
 <script src="{{asset('js/myJs.js')}}"></script>
 <!-- Jquery Validate -->
 <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
@@ -936,6 +960,9 @@
                 maxlength: 9,
                 le:'#orga_phone',
             },
+            'g-recaptcha-response': {
+                required: true,
+            },
         },
         messages: {
             name: {
@@ -1033,6 +1060,9 @@
             contact_phone: {
                 required: "@lang('app.txt.champobligatoire')",
                 le: '@lang("app.txt.value_already_used")'
+            },
+            'g-recaptcha-response': {
+                required: "@lang('app.txt.champobligatoire')",
             },
         },
         errorPlacement: function ( error, element ) {
@@ -1213,6 +1243,9 @@
                 // required: true,
                 email: true,
             },
+            'g-recaptcha-response': {
+                required: true,
+            },
         },
         messages: {
             name: {
@@ -1268,6 +1301,9 @@
                 required: "@lang('app.txt.champobligatoire')",
             },
             email_adr: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            'g-recaptcha-response': {
                 required: "@lang('app.txt.champobligatoire')",
             },
             // last_name_2: {

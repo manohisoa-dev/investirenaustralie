@@ -430,6 +430,8 @@ class RegisterController extends Controller
                     'contact_name'  => 'required|max:100',
                     'contact_email' => 'required|email|max:100',
                     'contact_phone' => 'required|digits_between:9,9|numeric',
+
+                    'g-recaptcha-response' => 'required|captcha',
                 ];
 
                 if($request->postal_address_below){
@@ -480,6 +482,8 @@ class RegisterController extends Controller
                     'bank_country' => 'required|max:100',
                     'bank_iban' => 'required|alpha_num|min:27|max:27',
                     'bank_bic' => 'required|alpha_num|min:8|max:11',
+
+                    'g-recaptcha-response' => 'required|captcha',
                 ];
 
                 if($request->orga_type == 'society'){
@@ -532,6 +536,8 @@ class RegisterController extends Controller
                         'contact_name'  => 'required|max:100',
                         'contact_email' => 'required|email|max:100',
                         'contact_phone' => 'required|digits_between:9,9|numeric',
+
+                        'g-recaptcha-response' => 'required|captcha',
     
                     ];
 
@@ -593,6 +599,8 @@ class RegisterController extends Controller
                             'mobile_2' => 'nullable|digits_between:9,15|numeric',
                             'email_adr_2' => 'nullable|email|max:100',
 
+                            'g-recaptcha-response' => 'required|captcha',
+
                         ];
                     }else{
                         $rules = [
@@ -602,6 +610,8 @@ class RegisterController extends Controller
                             'contact_name'  => 'required|max:100',
                             'contact_email' => 'required|email|max:100',
                             'contact_phone' => 'required|digits_between:6,9|numeric',
+
+                            'g-recaptcha-response' => 'required|captcha',
                         ];
 
                         if($request->type == 'business'){

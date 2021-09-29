@@ -741,7 +741,7 @@
 @endsection
 
 @push('script')
-{!! NoCaptcha::renderJs() !!}
+    {!! NoCaptcha::renderJs() !!}
     <script src="{{asset('js/myJs.js')}}"></script>
     <!-- Jquery Validate -->
 <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
