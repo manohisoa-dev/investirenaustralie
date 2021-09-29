@@ -16,7 +16,7 @@
             <div id="slider"> 
                 <div class="container text-center"> 
                     <div class="jumbotron"> 
-                        <h2>@lang('seller.seller_by_afa_acceptance_page')</h2> 
+                        <h2>@lang('seller.seller_by_afa_agreement_page')</h2> 
                     </div>                     
                 </div>                 
             </div>             
@@ -115,6 +115,21 @@
                                             </div>
                                             <div class="panel-body">
                                                 @lang('seller.seller_by_afa_condition.step_3.content')
+                                                <br>
+                                                <label data-pg-collapsed>
+                                                    <input class="control-label" type="checkbox" value="1" id="condition3" name="condition[]" required>   &nbsp; @lang('app.txt.agree')   *
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                        <i class="more-less glyphicon glyphicon-plus"></i>
+                                                        @lang('seller.seller_by_afa_condition.step_4')
+                                                </h4>
+                                            </div>
+                                            <div class="panel-body">
+                                                @lang('seller.seller_by_afa_condition.step_4.content')
                                                 <br>
                                                 <label data-pg-collapsed>
                                                     <input class="control-label" type="checkbox" value="1" id="condition3" name="condition[]" required>   &nbsp; @lang('app.txt.agree')   *

@@ -32,4 +32,5 @@ return [
     "folders.title"  => "Mes dossiers",
     "folders.status.to_download"  => "A télécharger",
     "folders.status.finalized"  => "Finalisé",
+    "agreement.title"  => "Accords de l&rsquo;afa",
 ];

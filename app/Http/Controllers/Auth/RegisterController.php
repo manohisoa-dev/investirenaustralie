@@ -12,6 +12,8 @@ use App;
 use DB;
 
 use App\Notifications\AccountCreated;
+use App\Notifications\ConfirmRegistrationMemberMessage;
+use App\Notifications\RegistrationConfirmedMessage;
 use Illuminate\Support\Facades\Hash;
 
 use App\Models\User;
@@ -72,7 +74,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name'     => 'required|string|max:255',
             'email'    => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:8|confirmed',
         ]);
     }
 
@@ -143,7 +145,14 @@ class RegisterController extends Controller
         }
         
         // Notify User
-        $user->notify(new AccountCreated($user, $password));
+        // Member
+        if($user->hasRole(5)){
+            $confirmLink = url(route('confirm.registration',[$user,$password]));
+            $user->notify(new ConfirmRegistrationMemberMessage($user, $confirmLink));
+            // $user->notify(new AccountCreated($user, $password));
+        }else{
+            $user->notify(new AccountCreated($user, $password));
+        }
         
         return redirect()->route('login')
             ->with('success', trans('app.txt.activationcodesent').'<br>'
@@ -238,10 +247,10 @@ class RegisterController extends Controller
                 $request->session()->put("seller_class", $request->class);
                 
                 if(session('seller_class')!=='seller_by_afa'){
-                    $conditionCount = 2;
+                    $conditionCount = 4;
                 }else{
                     $view = view('login.sellerbyafa');
-                    $conditionCount = 3;
+                    $conditionCount = 4;
                 }
             break;
         }
@@ -343,6 +352,7 @@ class RegisterController extends Controller
                         'nationality'  => 'required|max:100',
                         'sexe'       => 'required',
                         'civility'  => 'required|max:3',
+                        'g-recaptcha-response' => 'required|captcha',
                     ];
                 }else{
                     $rules = [
@@ -362,6 +372,7 @@ class RegisterController extends Controller
                         'contact_name'       => 'required|max:100',
                         'contact_phone'       => 'required|max:100',
                         'contact_email'        => 'required|email|max:100',
+                        'g-recaptcha-response' => 'required|captcha',
                     ];
 
                     if($request->orga_type == 'private' || $request->orga_type == 'mixte'){
@@ -398,7 +409,7 @@ class RegisterController extends Controller
                     'orga_abn'         => 'required|digits_between:11,11|numeric',
                     'orga_acn'         => 'nullable|digits_between:9,9|numeric',
                     'orga_license_number'  => 'required|max:100',
-                    'orga_email'        => 'required|email|max:100',
+                    // 'orga_email'        => 'required|email|max:100',
                     'orga_phone'        => 'required|digits_between:8,9|numeric',
                     'orga_fax'        => 'nullable|max:100',
                     'orga_mobile_phone'        => 'required|digits_between:9,9|numeric',
@@ -419,6 +430,8 @@ class RegisterController extends Controller
                     'contact_name'  => 'required|max:100',
                     'contact_email' => 'required|email|max:100',
                     'contact_phone' => 'required|digits_between:9,9|numeric',
+
+                    'g-recaptcha-response' => 'required|captcha',
                 ];
 
                 if($request->postal_address_below){
@@ -469,6 +482,8 @@ class RegisterController extends Controller
                     'bank_country' => 'required|max:100',
                     'bank_iban' => 'required|alpha_num|min:27|max:27',
                     'bank_bic' => 'required|alpha_num|min:8|max:11',
+
+                    'g-recaptcha-response' => 'required|captcha',
                 ];
 
                 if($request->orga_type == 'society'){
@@ -503,7 +518,7 @@ class RegisterController extends Controller
                         'orga_trading_name'         => 'required|max:100',
                         'orga_abn'         => 'required|digits_between:11,11|numeric',
                         'orga_acn'         => 'nullable|digits_between:9,9|numeric',
-                        'orga_email'        => 'required|email|max:100',
+                        // 'orga_email'        => 'required|email|max:100',
                         'orga_phone'        => 'required|digits_between:8,9|numeric',
                         'orga_fax'        => 'nullable|max:100',
                         'orga_mobile_phone'        => 'required|digits_between:9,9|numeric',
@@ -521,6 +536,8 @@ class RegisterController extends Controller
                         'contact_name'  => 'required|max:100',
                         'contact_email' => 'required|email|max:100',
                         'contact_phone' => 'required|digits_between:9,9|numeric',
+
+                        'g-recaptcha-response' => 'required|captcha',
     
                     ];
 
@@ -562,8 +579,8 @@ class RegisterController extends Controller
                             'post_code' => 'required|max:100',
                             'state' => 'nullable|max:100',
                             'country' => 'required|max:100',
-                            'phone' => 'required|max:15',
-                            'mobile' => 'required|max:15',
+                            // 'phone' => 'required|max:15',
+                            'mobile' => 'required|digits_between:6,15|numeric',
                             'email_adr' => 'required|email|max:100',
 
                             // Seller #2
@@ -578,20 +595,29 @@ class RegisterController extends Controller
                             'post_code_2' => 'nullable|max:100',
                             'state_2' => 'nullable|max:100',
                             'country_2' => 'nullable|max:100',
-                            'phone_2' => 'nullable|max:15',
-                            'mobile_2' => 'nullable|max:15',
+                            // 'phone_2' => 'nullable|max:15',
+                            'mobile_2' => 'nullable|digits_between:9,15|numeric',
                             'email_adr_2' => 'nullable|email|max:100',
+
+                            'g-recaptcha-response' => 'required|captcha',
 
                         ];
                     }else{
                         $rules = [
                             'login_afa'  => 'required',
                             'immat_afa' => 'required',
+                            'property_name'  => 'required',
+                            'contact_name'  => 'required|max:100',
+                            'contact_email' => 'required|email|max:100',
+                            'contact_phone' => 'required|digits_between:6,9|numeric',
+
+                            'g-recaptcha-response' => 'required|captcha',
                         ];
 
                         if($request->type == 'business'){
                             $rules += [
                                 'business_name' => 'required|max:100',
+                                'business_parent' => 'nullable|max:191',
                                 'street_adr_bs'        => 'required|max:100',
                                 'suburb_bs'        => 'required|max:100',
                                 'city_bs'        => 'required|max:100',
@@ -614,22 +640,20 @@ class RegisterController extends Controller
                                 'post_code' => 'required|max:100',
                                 'state' => 'nullable|max:100',
                                 'country' => 'required|max:100',
-                                'phone' => 'required|max:15',
-                                'mobile' => 'required|max:15',
+                                'mobile' => 'required|digits_between:6,15|numeric',
                                 'email_adr' => 'required|email|max:100',
 
                                 // Seller #2
-                                'last_name_2'  => 'required|max:100',
-                                'first_name_2' => 'required|max:100',
-                                'street_adr_2' => 'required|max:100',
-                                'suburb_2' => 'required|max:100',
-                                'city_2' => 'required|max:100',
-                                'post_code_2' => 'required|max:100',
+                                'last_name_2'  => 'nullable|max:100',
+                                'first_name_2' => 'nullable|max:100',
+                                'street_adr_2' => 'nullable|max:100',
+                                'suburb_2' => 'nullable|max:100',
+                                'city_2' => 'nullable|max:100',
+                                'post_code_2' => 'nullable|max:100',
                                 'state_2' => 'nullable|max:100',
-                                'country_2' => 'required|max:100',
-                                'phone_2' => 'required|max:15',
-                                'mobile_2' => 'required|max:15',
-                                'email_adr_2' => 'required|email|max:100',
+                                'country_2' => 'nullable|max:100',
+                                'mobile_2' => 'nullable|digits_between:6,15|numeric',
+                                'email_adr_2' => 'nullable|email|max:100',
                             ];
                         }
                     }
@@ -639,6 +663,7 @@ class RegisterController extends Controller
             default:
                 abort(404);
         }
+
 
         // Validate request
         $rules = array_merge($default, $rules);
@@ -691,11 +716,16 @@ class RegisterController extends Controller
 
             // Create user info
             if($role !== 'seller' || session('seller_class')!=='non_professional_natural_persons' && session('seller_class')!=='seller_by_afa'){
-                if(session('seller_class')!=='real_estate_professionals'){
-                    $indicatif = '('.$datas['indicatif'].')';
+                if(session('seller_class')){
+                    if(session('seller_class')!=='real_estate_professionals'){
+                        $indicatif = '('.$datas['indicatif'].')';
+                    }else{
+                        $indicatif = '(+61)';
+                    }
                 }else{
                     $indicatif = '(+61)';
                 }
+                
                 
                 if(isset($datas['contact_phone'])){
                     $datas['contact_phone'] = $indicatif.$datas['contact_phone'];
@@ -746,7 +776,7 @@ class RegisterController extends Controller
                         'post_code'=>$datas['post_code'], 
                         'state'=>$datas['state'], 
                         'country'=>$datas['country'], 
-                        'phone'=>$ausInd.$datas['phone'], 
+                        // 'phone'=>$ausInd.$datas['phone'], 
                         'mobile'=>$ausInd.$datas['mobile'], 
                         'email_adr'=>$datas['email_adr']
                     ]);
@@ -764,7 +794,7 @@ class RegisterController extends Controller
                         'post_code'=>isset($datas['post_code_2'])?$datas['post_code_2']:'', 
                         'state'=>isset($datas['state_2'])?$datas['state_2']:'', 
                         'country'=>isset($datas['country_2'])?$datas['country_2']:'', 
-                        'phone'=>isset($datas['phone_2'])?$ausInd.$datas['phone_2']:'', 
+                        // 'phone'=>isset($datas['phone_2'])?$ausInd.$datas['phone_2']:'', 
                         'mobile'=>isset($datas['mobile_2'])?$ausInd.$datas['mobile_2']:'', 
                         'email_adr'=>isset($datas['email_adr_2'])?$datas['email_adr_2']:''
                     ]);
@@ -773,6 +803,7 @@ class RegisterController extends Controller
                         $sb = SellerBusiness::create([
                             'user_id'=>$user->id, 
                             'business_name'=>$datas['business_name'], 
+                            'business_parent'=>$datas['business_parent'], 
                             'street_adr'=>$datas['street_adr_bs'], 
                             'suburb'=>$datas['suburb_bs'], 
                             'city'=>$datas['city_bs'], 
@@ -799,7 +830,14 @@ class RegisterController extends Controller
 
         // Notify User
         try{
-            $user->notify(new AccountCreated($user, $password));
+            // Member
+            if($user->hasRole(5)){
+                $confirmLink = url(route('confirm.registration',[$user,$password]));
+                $user->notify(new ConfirmRegistrationMemberMessage($user, $confirmLink));
+                // $user->notify(new AccountCreated($user, $password));
+            }else{
+                $user->notify(new AccountCreated($user, $password));
+            }
             
             // forget as role session
             session()->forget('as_role');
@@ -809,8 +847,30 @@ class RegisterController extends Controller
         // Success
         return redirect()->route('login')
             ->with('success', trans('app.txt.createuser.success').'<br>'
-                  .'<a class="btn btn-default" href="'.route('resend_code', $user).'">'.trans('app.txt.resendcode').'</a>');
+                  .'<a class="btn btn-default" href="'.route('resend_code', $user).'">'.trans('app.txt.resendcode').'</a>')
+            ->with('alert_success',trans('app.txt.alert_success'));
         
+    }
+
+    /*
+    * Confirm registration Member
+    *
+    */
+    public function confirmRegistration(User $user,$password)
+    {   
+        // Active user
+        $user->status = 'active';
+        $user->activation_code = null;
+        $user->trial_ends_at = \Carbon\Carbon::now()->addDays(option('payment.trial_delay', 14));
+        $user->save();
+
+        // Role is member
+        if($user->hasRole(5)){
+            $user->notify(new RegistrationConfirmedMessage($user,$password));
+        }
+
+        return redirect()->route('login')
+                ->with('success',trans('app.txt.accountactivated'));
     }
 
     /*

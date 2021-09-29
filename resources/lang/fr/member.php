@@ -36,6 +36,12 @@ return [
     "relation_active" => "Relation APL active",
     "historique_relation" => "Historiques de relation",
     "btn.select_afa" => "Selectionner AFA",
+
+    'condition.point_1' => 'POINT 1 - Termes et Conditions d&rsquo;Utilisation',
+	'condition.point_2' => 'POINT 2 - Sécurisation de la relation d&rsquo;affaires entre IEA et l&rsquo;APL',
+    'condition.point_1.content' => 'La personne physique qui souhaite devenir Membre reconnaît avoir pris connaissance des Termes et Conditions d&rsquo;Utilisation du portail immobilier <b>https://investirenaustralie.com</b> et déclare les accepter sans aucune réserve.',
+	'condition.point_2.content' => 'La personne physique qui souhaite devenir Membre accepte la sécurisation de la relation d&rsquo;affaires entre le portail &quot;Investir en Australie&quot; et elle-même et qui se traduit, dès lors qu&rsquo;une opération d&rsquo;achat est engagée, par l&rsquo;octroi d&rsquo;une exclusivité accordée au portail et aux entités qui concourent à son fonctionnement. Elle accepte de même les pénalités financières prévues par le système IEA en cas de violation de l&rsquo;exclusivité ci-dessus et qui seront confirmées lors des procédures d&rsquo;achat de biens.',
+
     "message.transaction.title" => "Message de rappel de transaction au membre",
     "message.transaction.content" => "<p>Bonjour <b>:name</b>,</p> <p>Nous nous rappelons que vous avez une transaction en cours, ouverte dans votre compte.</p> <p>Vous pouvez y accéder dans votre panneau de contrôle &ldquo;<a href=:url id=:id>Dashboard</a>&rdquo;.</p>",
     "gothere.select_afa" => ":date – :hour<hr> <p>Bonjour <b>:name</b>,</p> <p>Vous êtes intéressé par un bien présenté sur le portail &ldquo;Investir En Australie&rdquo; (IEA) et vous souhaitez vous rendre en Australie pour avoir une meilleure idée de la consistance du bien et de son environnement.</p>

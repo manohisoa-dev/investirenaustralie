@@ -61,7 +61,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label" for="email">@lang('app.txt.email') *</label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-12">
                                                     <input type="text" class="form-control" id="email" name="email" placeholder="you@email.com" value="{{ old('email')?old('email'):'' }}" required>
                                                     <span class="text-danger">{{ $errors->first('email') }}</span>
                                                 </div>
@@ -125,13 +125,13 @@
                                                     <span class="text-danger">{{ $errors->first('orga_license_number') }}</span>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
+                                            {{-- <div class="form-group">
                                                 <label for="orga_email" class="col-sm-12 control-label">@lang('app.txt.businessemail') *</label>
                                                 <div class="col-sm-12">
                                                     <input type="email" class="form-control" id="orga_email" name="orga_email" placeholder="business@email.com" value="{{ old('orga_email')?old('orga_email'):'' }}" required>
                                                     <span class="text-danger">{{ $errors->first('orga_email') }}</span>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                             <div class="form-group">
                                                 <label for="orga_phone" class="col-sm-12 control-label">@lang('app.txt.businessphone') *</label>
                                                 <div class="input-group mb-3 col-sm-12">
@@ -151,7 +151,7 @@
                                                         <span class="input-group-text form-control">(+61)</span>
                                                     </div>
                                                     <div class="custom-file">
-                                                        <input type="text" class="form-control m-15px-t" id="orga_fax" name="orga_fax" value="{{ old('orga_fax')?old('orga_fax'):'' }}">
+                                                        <input type="text" class="form-control m-15px-t" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="9" id="orga_fax" name="orga_fax" value="{{ old('orga_fax')?old('orga_fax'):'' }}">
                                                     </div>
                                                     <span class="text-danger m-5px-l">{{ $errors->first('orga_fax') }}</span>
                                                 </div>
@@ -261,8 +261,8 @@
                                             <div class="form-group">
                                                 <label for="level" class="col-sm-12 control-label">@lang('app.txt.level')</label>
                                                 <div class="col-sm-12">
-                                                    <input type="text" class="form-control" id="level" name="num_floor" placeholder="@lang('app.txt.level')" value="{{ old('level')?old('level'):'' }}">
-                                                    <span class="text-danger">{{ $errors->first('level') }}</span>
+                                                    <input type="text" class="form-control" id="level" name="num_floor" placeholder="@lang('app.txt.level')" value="{{ old('num_floor')?old('num_floor'):'' }}">
+                                                    <span class="text-danger">{{ $errors->first('num_floor') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -371,7 +371,7 @@
                                                     <label for="adrpost_country" class="col-sm-3 control-label">@lang('app.txt.country') *</label>
                                                     <div class="col-sm-12">
                                                         <select class="form-control" name="adrpost_country">
-                                                            <option value="AUS" {{ old('country')=='AUS'?'selected':'' }}> @lang('app.txt.aus') (AUS)</option>
+                                                            <option value="AUS" {{ old('adrpost_country')=='AUS'?'selected':'' }}> @lang('app.txt.aus') (AUS)</option>
                                                         </select>
                                                         <span class="text-danger">{{ $errors->first('adrpost_country') }}</span>
                                                     </div>
@@ -409,6 +409,17 @@
                                                 <span class="text-danger m-5px-l">{{ $errors->first('contact_phone') }}</span>
                                             </div>
                                         </fieldset>
+
+                                        <div class="form-group m-10px-tb m-50px-b{{ $errors->has('g-recaptcha-response') ? ' has-error' : '' }}">
+                                            <div class="col-md-12">
+                                                {!! app('captcha')->display() !!}
+                                                @if ($errors->has('g-recaptcha-response'))
+                                                    <span class="help-block text-danger">
+                                                        <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                                                    </span>
+                                                @endif
+                                            </div>
+                                        </div>
                                         
                                         <div class="form-group">
                                             <div class="col-sm-offset-3 col-sm-9">
@@ -450,6 +461,7 @@
 @endsection
 
 @push('script')
+    {!! NoCaptcha::renderJs() !!}
     <script src="{{asset('js/myJs.js')}}"></script>
     <!-- Jquery Validate -->
     <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
@@ -480,7 +492,7 @@
                 email: {
                     required: true,
                     email:true,
-                    le:'#orga_email',
+                    // le:'#orga_email',
                     remote: {
                         url: "{{ route('ajaxCheckEmail') }}",
                         type: "get",
@@ -522,12 +534,12 @@
                     minlength:7,
                     maxlength:7
                 },
-                orga_email: {
-                    required: true,
-                    email:true,
-                    le:'#email',
-                    ge:'#contact_email',
-                },
+                // orga_email: {
+                //     required: true,
+                //     email:true,
+                //     le:'#email',
+                //     ge:'#contact_email',
+                // },
                 orga_phone: {
                     required: true,
                     number:true,
@@ -539,6 +551,11 @@
                     required: true,
                     number:true,
                     minlength:9,
+                    maxlength:9,
+                },
+                orga_fax: {
+                    number:true,
+                    minlength:6,
                     maxlength:9,
                 },
                 orga_website: {
@@ -631,7 +648,7 @@
                 contact_email: {
                     required: true,
                     email:true,
-                    le:'#orga_email',
+                    // le:'#orga_email',
                 },
                 contact_phone: {
                     required: true,
@@ -639,6 +656,9 @@
                     minlength: 9,
                     maxlength: 9,
                     le:'#orga_phone',
+                },
+                'g-recaptcha-response': {
+                    required: true,
                 },
             },
             messages: {
@@ -669,11 +689,11 @@
                 orga_abn: {
                     required: "@lang('app.txt.champobligatoire')",
                 },
-                orga_email: {
-                    required: "@lang('app.txt.champobligatoire')",
-                    le: '@lang("app.txt.value_already_used")',
-                    ge: '@lang("app.txt.value_already_used")'
-                },
+                // orga_email: {
+                //     required: "@lang('app.txt.champobligatoire')",
+                //     le: '@lang("app.txt.value_already_used")',
+                //     ge: '@lang("app.txt.value_already_used")'
+                // },
                 orga_phone: {
                     required: "@lang('app.txt.champobligatoire')",
                     le: '@lang("app.txt.value_already_used")'
@@ -736,6 +756,9 @@
                 contact_phone: {
                     required: "@lang('app.txt.champobligatoire')",
                     le: '@lang("app.txt.value_already_used")'
+                },
+                'g-recaptcha-response': {
+                    required: "@lang('app.txt.champobligatoire')",
                 },
             },
             errorPlacement: function ( error, element ) {

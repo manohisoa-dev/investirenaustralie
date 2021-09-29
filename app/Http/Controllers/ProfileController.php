@@ -57,7 +57,6 @@ class ProfileController extends Controller
     public function profile()
     {
         $action = route('profile.edit');
-        
         if(Auth::user()->isAdmin()){
             $view = view('admin.user.edit.update');
         }else{
@@ -137,6 +136,7 @@ class ProfileController extends Controller
                         'orga_email'        => 'required|email|max:100',
                         'orga_fb'        => 'nullable|url',
                         'politic'    => 'required',
+                        'g-recaptcha-response' => 'required|captcha',
                     ];
 
                     if($request->postal_address_below || $request->adrpost_postal_box){
@@ -190,7 +190,7 @@ class ProfileController extends Controller
                     'orga_abn'         => 'required|digits_between:11,11|numeric',
                     'orga_acn'         => 'nullable|digits_between:9,9|numeric',
                     'orga_license_number'  => 'required|max:100',
-                    'orga_email'        => 'required|email|max:100',
+                    // 'orga_email'        => 'required|email|max:100',
                     'orga_phone'        => 'required|digits_between:6,15|numeric',
                     'orga_fax'        => 'nullable|max:100',
                     'orga_mobile_phone'        => 'required|digits_between:6,15|numeric',
@@ -272,7 +272,7 @@ class ProfileController extends Controller
                         'orga_trading_name'         => 'required|max:100',
                         'orga_abn'         => 'required|digits_between:11,11|numeric',
                         'orga_acn'         => 'nullable|digits_between:9,9|numeric',
-                        'orga_email'        => 'required|email|max:100',
+                        // 'orga_email'        => 'required|email|max:100',
                         'orga_phone'        => 'required|digits_between:8,9|numeric',
                         'orga_fax'        => 'nullable|max:100',
                         'orga_mobile_phone'        => 'required|digits_between:9,9|numeric',
@@ -323,7 +323,7 @@ class ProfileController extends Controller
                             'post_code' => 'required|max:100',
                             'state' => 'nullable|max:100',
                             'country' => 'required|max:100',
-                            'phone' => 'required|digits_between:6,9|numeric',
+                            // 'phone' => 'required|digits_between:6,9|numeric',
                             'mobile' => 'required|digits_between:6,9|numeric',
                             'email_adr' => 'required|email|max:100',
 
@@ -339,7 +339,7 @@ class ProfileController extends Controller
                             'post_code_2' => 'nullable|max:100',
                             'state_2' => 'nullable|max:100',
                             'country_2' => 'nullable|max:100',
-                            'phone_2' => 'nullable|digits_between:6,9|numeric',
+                            // 'phone_2' => 'nullable|digits_between:6,9|numeric',
                             'mobile_2' => 'nullable|digits_between:6,9|numeric',
                             'email_adr_2' => 'nullable|email|max:100',
 
@@ -349,6 +349,7 @@ class ProfileController extends Controller
                         if(strtolower($user->TypeUser->type_user_name)=='business'){
                             $rules = [
                                 'business_name' => 'required|max:100',
+                                'business_parent' => 'nullable|max:191',
                                 'street_adr'        => 'required|max:100',
                                 'suburb'        => 'required|max:100',
                                 'city'        => 'required|max:100',
@@ -358,6 +359,9 @@ class ProfileController extends Controller
                                 'phone' => 'required|digits_between:6,9|numeric',
                                 'mobile' => 'required|digits_between:6,9|numeric',
                                 'email_adr' => 'required|email|max:100',
+                                'contact_name'  => 'required|max:100',
+                                'contact_email' => 'required|email|max:100',
+                                'contact_phone' => 'required|digits_between:6,9|numeric',
                             ];
                         }else{
                             // type user individual
@@ -371,7 +375,6 @@ class ProfileController extends Controller
                                 'post_code' => 'required|max:100',
                                 'state' => 'nullable|max:100',
                                 'country' => 'required|max:100',
-                                'phone' => 'required|digits_between:6,9|numeric',
                                 'mobile' => 'required|digits_between:6,9|numeric',
                                 'email_adr' => 'required|email|max:100',
 
@@ -384,9 +387,12 @@ class ProfileController extends Controller
                                 'post_code_2' => 'nullable|max:100',
                                 'state_2' => 'nullable|max:100',
                                 'country_2' => 'nullable|max:100',
-                                'phone_2' => 'nullable|digits_between:6,9|numeric',
                                 'mobile_2' => 'nullable|digits_between:6,9|numeric',
                                 'email_adr_2' => 'nullable|email|max:100',
+
+                                'contact_name'  => 'required|max:100',
+                                'contact_email' => 'required|email|max:100',
+                                'contact_phone' => 'required|digits_between:6,9|numeric',
                             ];
                         }
                     }
@@ -491,7 +497,7 @@ class ProfileController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function password()
-    {
+    {   
         if(Auth::user()->isAdmin()){
             $view = view('admin.user.edit.password');
         }else{
@@ -539,10 +545,19 @@ class ProfileController extends Controller
             Auth::user()->password = bcrypt($request->password);
             Auth::user()->use_default_password = 0;
             Auth::user()->save();
+        }else{
+            return back()->with('error',trans('app.txt.password_update_error'));
         }
         
+        if($request->use_default_password){
+            session()->forget('default_password');
+        }
+
+        // Logout user
+        Auth::logout();
+
         // Success
-        return back()->with('success',trans('app.txt.password_update'));
+        return redirect()->route('login')->with('success',trans('app.txt.password_update'));
     }
 
     /**

@@ -308,6 +308,15 @@ class User extends Authenticatable {
     }
 
     /**
+     * Is user active
+     *
+     * @return Boolean
+     */
+    public function useDefaultPassword() {
+        return ($this->use_default_password == 1);
+    }
+
+    /**
      * Is user deleted
      *
      * @return Boolean
@@ -679,7 +688,7 @@ class User extends Authenticatable {
         }
         switch ($this->role) {
             case 1:
-                if ($value = $request->input('first_name'))
+                if ($value = $request->input('first_name'))                    
                     $userinfos->update(["first_name" => $value]);
                 if ($value = $request->input('last_name'))
                     $userinfos->update(["last_name" => $value]);
@@ -947,8 +956,11 @@ class User extends Authenticatable {
                             $si->update(["last_name" => $value]);
                         if ($value = $request->input('first_name'.$sfx))
                             $si->update(["first_name" => $value]);
-                        if ($value = $request->input('date_of_birth'.$sfx))
-                            $si->update(["date_of_birth" => $value]);
+                        if ($value = $request->input('date_of_birth'.$sfx)){
+                           $dOb = new Carbon($value);
+                            $dt = $dOb->toDateString();
+                            $si->update(["date_of_birth" => $dt]);
+                        }
                         if ($value = $request->input('place_of_birth'.$sfx))
                             $si->update(["place_of_birth" => $value]);
                         if ($value = $request->input('nationality'.$sfx))
@@ -978,10 +990,21 @@ class User extends Authenticatable {
                             $si->update(["mobile" => '']);
                         }
                     }
+
+                    if ($value = $request->input('contact_name'))
+                        $userinfos->update(["contact_name" => $value]);
+                    if ($value = $request->input('contact_email'))
+                        $userinfos->update(["contact_email" => $value]);
+                    if ($value = $request->input('contact_phone')) {
+                        $ct_phone = '(+61)'.$value;
+                        $userinfos->update(["contact_phone" => $ct_phone]);
+                    }
                 }else{
                     $sb = SellerBusiness::whereId($request->input('id_seller'));
                     if ($value = $request->input('business_name'))
                         $sb->update(["business_name" => $value]);
+                    if ($value = $request->input('business_parent'))
+                        $sb->update(["business_parent" => $value]);
                     if ($value = $request->input('street_adr'))
                         $sb->update(["street_adr" => $value]);
                     if ($value = $request->input('suburb'))

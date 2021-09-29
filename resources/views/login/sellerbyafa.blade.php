@@ -51,6 +51,13 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
+                                                    <label class="col-sm-3 control-label" for="login">@lang('app.txt.afa_login') *</label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" placeholder="@lang('app.txt.afa_login')" value="{{ session('afa_login')?session('afa_login'):'' }}" readonly required>
+                                                        <span class="text-danger">{{ $errors->first('afa_login') }}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
                                                     <label class="col-sm-3 control-label" for="immat">@lang('app.txt.afa_id') *</label>
                                                     <div class="col-sm-12">
                                                         <input type="text" class="form-control" id="immat" name="immat_afa" placeholder="AFA-XXXXX" value="{{ session('afa_immat')?session('afa_immat'): (old('immat_afa')?old('immat_afa'):'') }}" readonly required>
@@ -61,16 +68,30 @@
 
                                             {{-- Login Information --}}
                                             <fieldset class="m-25px-t">
-                                                <legend>@lang('app.txt.logininfo')</legend>
+                                                <legend>@lang('app.txt.logininfo.sba')</legend>
                                                 <div class="form-group">
-                                                    <label class="col-sm-3 control-label" for="name">@lang('app.txt.login') *</label>
+                                                    <label class="col-sm-6 control-label" for="name">@lang('app.txt.name_of_property_to_be_sold') *</label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" id="property_name" name="property_name" placeholder="@lang('app.txt.name_of_property_to_be_sold')" value="{{ old('property_name')?old('property_name'):'' }}" required>
+                                                        <span class="text-danger">{{ $errors->first('property_name') }}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-6 control-label" for="name">@lang('app.txt.name_sba')</label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" id="sba_name" name="name" placeholder="@lang('app.txt.name_sba')" value="{{ old('name')?old('name'):'' }}" readonly required>
+                                                        <span class="text-danger">{{ $errors->first('name') }}</span>
+                                                    </div>
+                                                </div>
+                                                {{-- <div class="form-group">
+                                                    <label class="col-sm-6 control-label" for="name">@lang('app.txt.login_sba') *</label>
                                                     <div class="col-sm-12">
                                                         <input type="text" class="form-control" id="name" name="name" placeholder="@lang('app.txt.login')" value="{{ old('name')?old('name'):'' }}" required>
                                                         <span class="text-danger">{{ $errors->first('name') }}</span>
                                                     </div>
-                                                </div>
+                                                </div> --}}
                                                 <div class="form-group">
-                                                    <label class="col-sm-3 control-label" for="email">@lang('app.txt.email') *</label>
+                                                    <label class="col-sm-6 control-label" for="email">@lang('app.txt.email_sba') *</label>
                                                     <div class="col-sm-12">
                                                         <input type="text" class="form-control" id="email" name="email" placeholder="you@email.com" value="{{ old('email')?old('email'):'' }}" required>
                                                         <span class="text-danger">{{ $errors->first('email') }}</span>
@@ -84,6 +105,37 @@
                                                             <option value="en" {{ app()->getLocale()=='en'?'selected':'' }}>@lang('app.txt.en')</option>
                                                         </select>
                                                     </div>
+                                                </div>
+                                            </fieldset>
+
+                                            {{-- Contact Details --}}
+                                            <fieldset class="m-25px-t">
+                                                <legend>@lang('app.txt.contact_details')</legend>
+                                                <div class="form-group">
+                                                    <label for="contact_name" class="col-sm-12 control-label">@lang('app.txt.contactname') *</label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" id="contact_name" name="contact_name" placeholder="@lang('app.txt.contactname')" value="{{ old('contact_name')?old('contact_name'):'' }}"  required>
+                                                        <span class="text-danger">{{ $errors->first('contact_name') }}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="contact_email" class="col-sm-12 control-label">@lang('app.txt.contactemail') *</label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" id="contact_email" name="contact_email" placeholder="email@iea.com" value="{{ old('contact_email')?old('contact_email'):'' }}" required>
+                                                        <span class="text-danger">{{ $errors->first('contact_email') }}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="contact_phone" class="col-sm-12 control-label">@lang('app.txt.contactphone') *</label>
+                                                    <div class="input-group mb-3 col-sm-12">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text form-control">(+61)</span>
+                                                        </div>
+                                                        <div class="custom-file">
+                                                            <input type="text" pattern="[0-9]{1}[0-9]{8}" minlength="9" maxlength="9" placeholder="XXXXXXXX" class="form-control m-15px-t" id="contact_phone" name="contact_phone" value="{{ old('contact_phone')?old('contact_phone'):'' }}" required>
+                                                        </div>
+                                                    </div>
+                                                    <span class="text-danger m-5px-l">{{ $errors->first('contact_phone') }}</span>
                                                 </div>
                                             </fieldset>
 
@@ -168,7 +220,7 @@
                                                                 <span class="text-danger">{{ $errors->first('country') }}</span>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group">
+                                                        {{-- <div class="form-group">
                                                             <label for="phone" class="col-sm-12 control-label">@lang('app.txt.phone') *</label>
                                                             <div class="input-group mb-3 col-sm-12">
                                                                 <div class="input-group-prepend">
@@ -179,15 +231,15 @@
                                                                 </div>
                                                             </div>
                                                             <span class="text-danger m-5px-l">{{ $errors->first('phone') }}</span>
-                                                        </div>
+                                                        </div> --}}
                                                         <div class="form-group">
-                                                            <label for="mobile" class="col-sm-12 control-label">@lang('app.txt.mobile') *</label>
+                                                            <label for="mobile" class="col-sm-12 control-label">@lang('app.txt.mobile_seller',['num'=>1]) *</label>
                                                             <div class="input-group mb-3 col-sm-12">
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text form-control">(+61)</span>
                                                                 </div>
                                                                 <div class="custom-file">
-                                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="6" maxlength="9" placeholder="XXXXXXXX" class="form-control m-15px-t" id="mobile" name="mobile" value="{{ old('mobile')?old('mobile'):'' }}" required>
+                                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="6" maxlength="9" placeholder="@lang('app.txt.mobile_seller',['num'=>1])" class="form-control m-15px-t" id="mobile" name="mobile" value="{{ old('mobile')?old('mobile'):'' }}" required>
                                                                 </div>
                                                             </div>
                                                             <span class="text-danger m-5px-l">{{ $errors->first('mobile') }}</span>
@@ -267,7 +319,7 @@
                                                                 <span class="text-danger">{{ $errors->first('country_2') }}</span>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group">
+                                                        {{-- <div class="form-group">
                                                             <label for="phone_2" class="col-sm-12 control-label">@lang('app.txt.phone')</label>
                                                             <div class="input-group mb-3 col-sm-12">
                                                                 <div class="input-group-prepend">
@@ -278,15 +330,15 @@
                                                                 </div>
                                                             </div>
                                                             <span class="text-danger m-5px-l">{{ $errors->first('phone_2') }}</span>
-                                                        </div>
+                                                        </div> --}}
                                                         <div class="form-group">
-                                                            <label for="mobile_2" class="col-sm-12 control-label">@lang('app.txt.mobile')</label>
+                                                            <label for="mobile_2" class="col-sm-12 control-label">@lang('app.txt.mobile_seller',['num'=>2])</label>
                                                             <div class="input-group mb-3 col-sm-12">
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text form-control">(+61)</span>
                                                                 </div>
                                                                 <div class="custom-file">
-                                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="6" maxlength="9" placeholder="XXXXXXXX" class="form-control m-15px-t" id="mobile_2" name="mobile_2" value="{{ old('mobile_2')?old('mobile_2'):'' }}">
+                                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="6" maxlength="9" placeholder="@lang('app.txt.mobile_seller',['num'=>2])" class="form-control m-15px-t" id="mobile_2" name="mobile_2" value="{{ old('mobile_2')?old('mobile_2'):'' }}">
                                                                 </div>
                                                             </div>
                                                             <span class="text-danger m-5px-l">{{ $errors->first('mobile_2') }}</span>
@@ -308,6 +360,13 @@
                                                         <div class="col-sm-12">
                                                             <input type="text" class="form-control" id="business_name" name="business_name" placeholder="@lang('app.txt.businessname')" value="{{ old('business_name')?old('business_name'):'' }}">
                                                             <span class="text-danger">{{ $errors->first('business_name') }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="orga_parent_name" class="col-sm-12 control-label">@lang('app.txt.businessparentname') (@lang('app.txt.for_information'))</label>
+                                                        <div class="col-sm-12">
+                                                            <input type="text" class="form-control" id="business_parent" name="business_parent" placeholder="@lang('app.txt.businessparentname.placeholder')" value="{{ old('business_parent')?old('business_parent'):'' }}" required>
+                                                            <span class="text-danger">{{ $errors->first('business_parent') }}</span>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -393,6 +452,17 @@
                                                 </div>
                                             </fieldset>
 
+                                            <div class="form-group m-10px-tb m-50px-b{{ $errors->has('g-recaptcha-response') ? ' has-error' : '' }}">
+                                                <div class="col-md-12">
+                                                    {!! app('captcha')->display() !!}
+                                                    @if ($errors->has('g-recaptcha-response'))
+                                                        <span class="help-block text-danger">
+                                                            <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                            </div>
+
                                             <div class="form-group m-25px-t">
                                                 <div class="col-sm-offset-3 col-sm-9">
                                                     <em class="help-block">@lang('app.form.required')</em>
@@ -434,6 +504,7 @@
 @endsection
 
 @push('script')
+{!! NoCaptcha::renderJs() !!}
 <script src="{{asset('js/myJs.js')}}"></script>
 <!-- Jquery Validate -->
 <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
@@ -536,18 +607,21 @@
             country: {
                 required: true,
             },
-            phone: {
-                required: {
-                    depends: function(element) {
-                        if($("#sellerDetailsIndividual").is(":visible")){
-                            return true;	
-                        }
-                    }
-                },
-                number:true,
-                minlength:6,
-                maxlength:9,
+            property_name: {
+                required: true,
             },
+            // phone: {
+            //     required: {
+            //         depends: function(element) {
+            //             if($("#sellerDetailsIndividual").is(":visible")){
+            //                 return true;	
+            //             }
+            //         }
+            //     },
+            //     number:true,
+            //     minlength:6,
+            //     maxlength:9,
+            // },
             mobile: {
                 required: {
                     depends: function(element) {
@@ -633,18 +707,18 @@
             //         }
             //     }
             // },
-            phone_2: {
-                // required: {
-                //     depends: function(element) {
-                //         if($("#sellerDetailsIndividual").is(":visible")){
-                //             return true;	
-                //         }
-                //     }
-                // },
-                number: true,
-                minlength:6,
-                maxlength:9,
-            },
+            // phone_2: {
+            //     // required: {
+            //     //     depends: function(element) {
+            //     //         if($("#sellerDetailsIndividual").is(":visible")){
+            //     //             return true;	
+            //     //         }
+            //     //     }
+            //     // },
+            //     number: true,
+            //     minlength:6,
+            //     maxlength:9,
+            // },
             mobile_2: {
                 // required: {
                 //     depends: function(element) {
@@ -765,11 +839,30 @@
                     }
                 }
             },
+            contact_name: {
+                required: true,
+            },
+            contact_email: {
+                required: true,
+                email:true,
+            },
+            contact_phone: {
+                required: true,
+                number:true,
+                minlength: 6,
+                maxlength: 9,
+            },
+            'g-recaptcha-response': {
+                required: true,
+            },
         },
         messages: {
             name: {
             	required: "@lang('app.txt.champobligatoire')",
             	remote: jQuery.validator.format("{0} @lang('app.txt.form.already_exist')")
+            },
+            property_name: {
+            	required: "@lang('app.txt.champobligatoire')",
             },
             email: {
                 required: "@lang('app.txt.champobligatoire')",
@@ -797,9 +890,9 @@
             country: {
                 required: "@lang('app.txt.champobligatoire')",
             },
-            phone: {
-                required: "@lang('app.txt.champobligatoire')",
-            },
+            // phone: {
+            //     required: "@lang('app.txt.champobligatoire')",
+            // },
             mobile: {
                 required: "@lang('app.txt.champobligatoire')",
             },
@@ -866,6 +959,18 @@
             email_adr_bs: {
                 required: "@lang('app.txt.champobligatoire')",
                 he: "@lang('app.txt.value_already_used')"
+            },
+            contact_name: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            contact_email: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            contact_phone: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            'g-recaptcha-response': {
+                required: "@lang('app.txt.champobligatoire')",
             },
         },
         errorPlacement: function ( error, element ) {
@@ -972,6 +1077,14 @@
             $('#mobile_bs').attr('required','required');
             $('#email_adr_bs').attr('required','required');
         }
+    });
+
+    // Function to Autcomplete Seller by afa name
+    $('#formSellerRegistrator').on('input','#property_name',function(){
+        var afaName = $('#login').val();
+        var propertyName = $(this).val();
+
+        return $('#sba_name').val(afaName+'-'+propertyName);
     });
 </script>
 {{-- End Script as_above or below --}}

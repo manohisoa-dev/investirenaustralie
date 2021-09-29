@@ -40,6 +40,11 @@ return [
     "message.transaction.title" => "Transaction reminder message to member",
     "message.transaction.content" => "<p>Hello <b>:name</b>,</p> <p>We remember that you have a transaction in progress, opened in your account.</p> <p>You can access it in your &ldquo;<a href=:url id=:id>Dashboard</a>&rdquo; control panel.</p>",
     
+    'condition.point_1' => 'POINT 1 - Terms and Conditions of Use',
+	'condition.point_2' => 'POINT 2 - Securing the business relationship between IEA and APL',
+    'condition.point_1.content' => 'The natural person who wishes to become a Member acknowledges having read the Terms and Conditions of Use of the real estate portal <b> https://investirenaustral.com </b> and declares to accept them without any reservation.',
+	'condition.point_2.content' => 'The natural person who wishes to become a Member accepts the securing of the business relationship between the &quot;Investir en Australie&quot; portal. and itself and which results, as soon as a purchase operation is initiated, by the granting of an exclusivity granted to the portal and to the entities which contribute to its operation. It also accepts the financial penalties provided for by the IEA system in the event of violation of the above exclusivity and which will be confirmed during the procedures for purchasing goods.',
+    
     "gothere.select_afa" => ":date – :hour<hr> <p>Hello <b>:name</b>,</p> <p>You are interested in a property presented on the &ldquo;Investing In Australia&rdquo; (IEA) portal and you want to go to Australia to get a better idea of ​​the consistency of the property and its environment.</p>
     <p>This initiates a process which will perhaps lead you to an effective investment, and is therefore an important decision on your part that we welcome.</p>
     <p>You should know that you can revisit your investment decision at any time throughout the procedure piloted by the IEA portal. However, we invite you to ask yourself questions about the conditions under which you will commit.

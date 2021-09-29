@@ -1,6 +1,5 @@
 @extends('layouts.app')
 
-
 @section('content')
 
 <!-- Page Title -->
@@ -27,23 +26,53 @@
     }
 </style>
 
-<div id="myModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+<div id="chooseTypeMemberModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog">
       <div class="modal-content white-bg">
           <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
-              <h4 class="modal-title white-color">{{$page?$page->title:''}}</h4>
+              {{-- <h4 class="modal-title white-color">{{$page?$page->title:''}}</h4> --}}
+              <h4 class="modal-title white-color">{{ trans('app.txt.inscription.membre.choose_type.title') }}</h4>
+              <button type="button" class="close" data-dismiss="modal" onclick="closeModal()" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
           </div>
           <div class="modal-body">
-              <p class="text-justify">{{$page?$page->content:''}}</p>
+              {{-- <p class="text-justify">{{$page?$page->content:''}}</p> --}}
+              <div class="row">
+                <label for="type" class="col-sm-12 col-lg-12 control-label">@lang('app.txt.typemembre') *</label>
+                <div class="col-md-12">
+                    <select class="form-control" id="type" required>
+                        <option value="person" {{ old('type')=='person'?'selected':'' }}>@lang('app.txt.particulier')</option>
+                        <option value="organization" {{ old('type')=='organization'?'selected':'' }}>@lang('app.txt.organisation')</option>
+                    </select>
+                </div>
+            </div>
           </div>
           <div class="modal-footer">
               <a type="button" class="pull-left m-btn m-btn-theme" href="{{ route('home') }}">@lang('app.btn.abandonner')</a>
-              <a type="button" class="m-btn m-btn-theme2nd" href="#section1" id="custom-close">@lang('app.btn.continuer')</a>
+              <a type="button" class="m-btn m-btn-theme2nd" href="#section1" id="custom-continue">@lang('app.btn.continuer')</a>
           </div>
       </div>
   </div>
 </div>
-
+<div id="myModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content white-bg">
+            <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
+                {{-- <h4 class="modal-title white-color">{{$page?$page->title:''}}</h4> --}}
+                <h4 class="modal-title white-color"></h4>
+                <button type="button" class="close" data-dismiss="modal" onclick="closeModal()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" id="engagementForm">
+                    {{-- <p class="text-justify">{{$page?$page->content:''}}</p> --}}
+                </form>
+            </div>
+        </div>
+    </div>
+  </div>
 
 <div id="countrySelectModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg">
@@ -81,15 +110,16 @@
                             <div class="main-slider-wrapper clearfix content corps gery"> 
                                 <div id="slider"> 
                                     <div class="container text-center"> 
-                                        <div class="jumbotron"> 
-                                                <h2>@lang('app.txt.inscription.membre.title')</h2> 
+                                        <div class="jumbotron title-form"> 
+                                            {{-- title form --}}
+                                            <h2>{{ strtoupper(trans("app.txt.inscription.membre.organization.title")) }}</h2>
                                         </div>                     
                                     </div>                 
                                 </div>             
                             </div>
                             <div class="panel-body">
                                 @include('includes.alerts')
-                                <div class="row">
+                                {{-- <div class="row">
                                     <label for="type" class="col-sm-12 col-lg-3 control-label">@lang('app.txt.typemembre') *</label>
                                     <div class="col-md-3">
                                         <select class="form-control" id="type" required>
@@ -98,7 +128,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <br>
+                                <br> --}}
 
                                 {{-- Form for particulier --}}
                                 <form {{ old('type')=='person'?'': (old('type')=='organization'?'hidden="hidden"':'') }} class="form-horizontal" role="form" id="particulierForm" action="{{$action}}" method="post" enctype="multipart/form-data">
@@ -235,6 +265,17 @@
                                                     <div class="col-lg-10">
                                                         <label class="control-label" for="newsletter">@lang('app.form.register.shareinfo')</label>
                                                     </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group m-25px-t{{ $errors->has('g-recaptcha-response') ? ' has-error' : '' }}">
+                                                {{-- <label class="col-md-4 control-label">Captcha</label> --}}
+                                                <div class="col-md-12">
+                                                    {!! app('captcha')->display() !!}
+                                                    @if ($errors->has('g-recaptcha-response'))
+                                                        <span class="help-block text-danger">
+                                                            <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                                                        </span>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -415,21 +456,21 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="orga_presentation" class="col-sm-12 control-label">@lang('app.txt.presentation.organisation')</label>
+                                            <label for="orga_presentation" id="orga_presentation_label" class="col-sm-12 control-label">@lang('app.txt.presentation.organisation')</label>
                                             <div class="col-sm-12">
                                                 <textarea class="form-control" maxlength="2000" id="orga_presentation" name="orga_presentation" placeholder="@lang('app.txt.presentation.organisation')" rows="10">{{ old('orga_presentation')?old('orga_presentation'):'' }}</textarea>
                                                 <span class="text-danger">{{ $errors->first('orga_presentation') }}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-3 control-label" for="image"> @lang('app.txt.logo.organisation')</label>
+                                            <label class="col-md-3 control-label" for="image" id="orga_logo_label"> @lang('app.txt.logo.organisation')</label>
                                             <div class="input-group mb-3 col-md-9">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">@lang('app.txt.upload')</span>
                                                 </div>
                                                 <div class="custom-file">
                                                     <input type="file" class="custom-file-input inputGroupFile02" id="inputGroupFile02" name="image">
-                                                    <label class="custom-file-label inputGroupFileName02" for="inputGroupFile02">@lang('app.txt.logo.organisation.libelle')</label>
+                                                    <label class="custom-file-label inputGroupFileName02" id="orga_logo_upload_label" for="inputGroupFile02">@lang('app.txt.logo.organisation.libelle')</label>
                                                 </div>
                                                 <span class="text-danger">{{ $errors->first('image') }}</span>
                                             </div>
@@ -621,8 +662,8 @@
                                                     <div class="col-lg-2">
                                                         <select name="newsletter" class="form-control" required>
                                                             <option value="" selected disabled>@lang('app.txt.select')</option>
-                                                            <option value="yes" {{ old('allow_sharing')=='yes'?'selected':'' }}>@lang('app.txt.yes')</option>
-                                                            <option value="no" {{ old('allow_sharing')=='no'?'selected':'' }}>@lang('app.txt.no')</option>
+                                                            <option value="yes" {{ old('newsletter')=='yes'?'selected':'' }}>@lang('app.txt.yes')</option>
+                                                            <option value="no" {{ old('newsletter')=='no'?'selected':'' }}>@lang('app.txt.no')</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-lg-10">
@@ -646,6 +687,19 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="form-group m-25px-t{{ $errors->has('g-recaptcha-response') ? ' has-error' : '' }}">
+                                        {{-- <label class="col-md-4 control-label">Captcha</label> --}}
+                                        <div class="col-md-12">
+                                            {!! app('captcha')->display() !!}
+                                            @if ($errors->has('g-recaptcha-response'))
+                                                <span class="help-block text-danger">
+                                                    <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
                                     <div class="form-group m-50px-t">
                                         <div class="col-sm-offset-3 col-sm-9">
                                             <em class="help-block">@lang('app.form.required')</em>
@@ -687,6 +741,7 @@
 @endsection
 
 @push('script')
+    {!! NoCaptcha::renderJs() !!}
     <script src="{{asset('js/myJs.js')}}"></script>
     <!-- Jquery Validate -->
 <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
@@ -771,6 +826,9 @@
                     }
                 },
             },
+            'g-recaptcha-response': {
+                required: true,
+            },
             politic: {
                 required: {
                     depends: function(element) {
@@ -818,6 +876,9 @@
                 required: "@lang('app.txt.champobligatoire')",
             },
             allow_sharing: {
+                required: "@lang('app.txt.champobligatoire')",
+            },
+            'g-recaptcha-response': {
                 required: "@lang('app.txt.champobligatoire')",
             },
             politic: {
@@ -1007,6 +1068,9 @@
                     }
                 },
             },
+            'g-recaptcha-response': {
+                required: true,
+            },
             politic: {
                 required: {
                     depends: function(element) {
@@ -1098,6 +1162,9 @@
             allow_sharing: {
                 required: "@lang('app.txt.champobligatoire')",
             },
+            'g-recaptcha-response': {
+                required: "@lang('app.txt.champobligatoire')",
+            },
             politic: {
                 required: "@lang('app.txt.champobligatoire')"
             },
@@ -1135,12 +1202,72 @@
 <!-- End Jquery Validate -->
     <script type="text/javascript">
         $(document).ready(function(){
-            $('#myModal').modal('show');
+            
+            if(!sessionStorage.getItem('member_type')){
+                $('#chooseTypeMemberModal').modal('show');
+            }
+
+            $('#engagementForm').validate({
+                ignore: [],
+                rules: {
+                    checkbox_1: {
+                        required: true,
+                    },
+                    checkbox_2: {
+                        required: true,
+                    },
+                },
+                messages: {
+                    checkbox_1: {
+                        required: "@lang('app.txt.champobligatoire')",
+                    },
+                    checkbox_2: {
+                        required: "@lang('app.txt.champobligatoire')",
+                    },
+                },
+                errorPlacement: function ( error, element ) {
+                    if(element.parent().hasClass('input-group')){
+                        error.insertAfter( element.parent() );
+                    }else{
+                        error.insertBefore( element );
+                    }
+                },
+            });
+            $('#engagementForm').submit(function(e) { // fires on every keyup & blur
+                e.preventDefault();
+                loadingPage();
+                if ($('#engagementForm').valid()) {                 // checks form for validity
+                    setInterval(() => {
+                        stopLoadingPage();
+                        $('#myModal').modal('hide');
+                    }, 1000);
+                }else{
+                    stopLoadingPage();
+                }
+            });
         });
 
-        //fermeture du modal
-        $("#custom-close").on('click', function() {
-            $('#myModal').modal('hide');
+        //fermeture du modal choix type member
+        $("#custom-continue").on('click', function() {
+            $('#chooseTypeMemberModal').modal('hide');
+            setTimeout(() => {
+                if(sessionStorage.getItem('member_type') === 'person'){
+                    $('#myModal .modal-title').html('{{ strtoupper(trans("app.txt.inscription.membre.person.engagement.title")) }}');
+                }else{
+                    $('#myModal .modal-title').html('{{ strtoupper(trans("app.txt.inscription.membre.organization.title")) }}');
+                }
+
+                $('#myModal .modal-body form').html('');
+                $('#myModal .modal-body form').append('<p class="h4">{{ trans("member.condition.point_1") }}</p>');
+                $('#myModal .modal-body form').append('<p>{!! trans("member.condition.point_1.content") !!}</p>');
+                $('#myModal .modal-body form').append('<p><input type="checkbox" name="checkbox_1"> {{ trans("app.txt.agree") }} *</p>');
+                $('#myModal .modal-body form').append('<p class="h4">{{ trans("member.condition.point_2") }}</p>');
+                $('#myModal .modal-body form').append('<p>{!! trans("member.condition.point_2.content") !!}</p>');
+                $('#myModal .modal-body form').append('<p><input type="checkbox" name="checkbox_2"> {{ trans("app.txt.agree") }} *</p><hr>');
+                $('#myModal .modal-body form').append('<div class="pull-right"><a type="button" class="m-btn m-btn-theme" href={{ route("home") }}>{{trans("app.btn.abandonner")}}</a>'+
+                '<a href="#section1" id="custom-close2"><input type="submit" class="m-btn m-btn-theme2nd m-10px-l" value={{trans("app.btn.continuer")}}></a></div>');
+                $('#myModal').modal('show');
+            }, 500);
         });
     </script>
     <script type="text/javascript">
@@ -1173,10 +1300,12 @@
                 sessionStorage.setItem('member_type','organization');
                 $('#organisationForm').removeAttr('hidden');
                 $('#particulierForm').attr('hidden','hidden');
+                $('.title-form').html('<h2>{{ strtoupper(trans("app.txt.inscription.membre.organization.title")) }}</h2> ');
             }else{
                 sessionStorage.setItem('member_type','person');
                 $('#organisationForm').attr('hidden','hidden');
                 $('#particulierForm').removeAttr('hidden');
+                $('.title-form').html('<h2>{{ strtoupper(trans("app.txt.inscription.membre.person.title")) }}</h2> ');
             }            
         });
 
@@ -1185,10 +1314,12 @@
                 $("#type option:eq(1)").prop('selected',true);
                 $('#organisationForm').removeAttr('hidden');
                 $('#particulierForm').attr('hidden','hidden');
+                $('.title-form').html('<h2>{{ strtoupper(trans("app.txt.inscription.membre.organization.title")) }}</h2> ');
             }else{
                 $("#type option:eq(0)").prop('selected',true);
                 $('#organisationForm').attr('hidden','hidden');
                 $('#particulierForm').removeAttr('hidden');
+                $('.title-form').html('<h2>{{ strtoupper(trans("app.txt.inscription.membre.person.title")) }}</h2> ');
             }
         }
     </script>
@@ -1345,7 +1476,7 @@
 
     </script>
     {{-- Fin google map location --}}
-    
+
     <script>
         function resetOrgaForm(){
             $('#orgaForm').attr('hidden','hidden');
@@ -1370,6 +1501,12 @@
                 $('#orgaForm').removeAttr('hidden');
                 $('#orga_form').attr('name','orga_form');
 
+                // update orga presentation label
+                $('#orga_presentation_label').html('{{ trans("app.txt.presentation.entreprise") }}');
+                $('#orga_presentation').html('{{ trans("app.txt.presentation.entreprise") }}');
+                $('#orga_logo_label').html('{{ trans("app.txt.businesslogo") }}');
+                $('#orga_logo_upload_label').html('{{ trans("app.txt.logo.entreprise.libelle") }}');
+
                 // Reinitialize orgaFormMixte
                 resetOrgaFormMixte();
                 
@@ -1377,12 +1514,24 @@
                 $('#orgaFormMixte').removeAttr('hidden');
                 $('#orga_form_mixte').attr('name','orga_form');
 
+                // update orga presentation label
+                $('#orga_presentation_label').html('{{ trans("app.txt.presentation.organisation") }}');
+                $('#orga_presentation').html('{{ trans("app.txt.presentation.organisation") }}');
+                $('#orga_logo_label').html('{{ trans("app.txt.logo.organisation") }}');
+                $('#orga_logo_upload_label').html('{{ trans("app.txt.logo.organisation.libelle") }}');
+
                 // Reinitialize orgaForm
                 resetOrgaForm();
             }
             else{
                 // Reinitialize orgaForm
                 resetOrgaForm();
+
+                // update orga presentation label
+                $('#orga_presentation_label').html('{{ trans("app.txt.presentation.organisation") }}');
+                $('#orga_presentation').html('{{ trans("app.txt.presentation.organisation") }}');
+                $('#orga_logo_label').html('{{ trans("app.txt.logo.organisation") }}');
+                $('#orga_logo_upload_label').html('{{ trans("app.txt.logo.organisation.libelle") }}');
                 
                 // Reinitialize orgaFormMixte
                 resetOrgaFormMixte();

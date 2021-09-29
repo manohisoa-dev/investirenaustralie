@@ -495,6 +495,25 @@
         </div>
     @endif
 
+    {{-- Alert success Modal --}}
+    @if (session()->get('alert_success'))
+        <div id="alertSuccessModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content white-bg">
+                    <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
+                        <h4 class="modal-title white-color text-center">{{ strtoupper(trans('app.message')) }} </h4>
+                    </div>
+                    <div class="modal-body">
+                        {!! session()->get('alert_success') !!}
+                    </div>
+                    <div class="modal-footer">
+                        <a type="button" class="m-btn m-btn-theme2nd" href="javascript:void(0)" data-dismiss="modal" id="btnOkNotifTrans">@lang('app.btn.ok')</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <!-- jquery -->
     <script src="{{ asset('js/jquery-3.0.0.min.js') }}"></script>
     <script src="{{ asset('js/jquery-migrate-3.0.0.min.js') }}"></script>
@@ -1131,6 +1150,18 @@
             appNotifications.init();
 
             });
+
+            $(window).on('load',function(){
+                if('{{ session()->get("alert_success") }}'){
+                    $('#alertSuccessModal').modal('show');
+                }
+            });
+    </script>
+    <script>
+        function closeModal(){
+            loadingPage();
+            window.location.href = '{{ route("home") }}';
+        }
     </script>
 
     <!-- end -->
