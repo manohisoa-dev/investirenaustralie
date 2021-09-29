@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Hash;
 use Auth;
 use Event;
 use App;
@@ -14,7 +15,8 @@ use DB;
 use App\Notifications\AccountCreated;
 use App\Notifications\ConfirmRegistrationMemberMessage;
 use App\Notifications\RegistrationConfirmedMessage;
-use Illuminate\Support\Facades\Hash;
+use App\Notifications\ConfirmRegistrationSellerRealEstateProfessional;
+use App\Notifications\ConfirmRegistrationSellerNonProfessionalLegalPersons;
 
 use App\Models\User;
 use App\Models\Localisation;
@@ -703,7 +705,7 @@ class RegisterController extends Controller
 
             // generate immatriculation user
             $datas['immat'] = $this->generateImmat($role,$type);
-
+            
             // Set User is seller
             if($role === 'seller'){
                 $datas['is_seller'] = 1;
@@ -717,15 +719,15 @@ class RegisterController extends Controller
             // Create user info
             if($role !== 'seller' || session('seller_class')!=='non_professional_natural_persons' && session('seller_class')!=='seller_by_afa'){
                 if(session('seller_class')){
-                    if(session('seller_class')!=='real_estate_professionals'){
+                    if(session('seller_class')!=='real_estate_professionals' && session('seller_class')!=='non_professional_legal_persons'){
+                        dd(session('seller_class'));
                         $indicatif = '('.$datas['indicatif'].')';
                     }else{
                         $indicatif = '(+61)';
                     }
                 }else{
                     $indicatif = '(+61)';
-                }
-                
+                }                
                 
                 if(isset($datas['contact_phone'])){
                     $datas['contact_phone'] = $indicatif.$datas['contact_phone'];
@@ -830,13 +832,46 @@ class RegisterController extends Controller
 
         // Notify User
         try{
+            App::setLocal($user->language);
             // Member
-            if($user->hasRole(5)){
+            if($user->hasRole(5)){ //Member
                 $confirmLink = url(route('confirm.registration',[$user,$password]));
                 $user->notify(new ConfirmRegistrationMemberMessage($user, $confirmLink));
-                // $user->notify(new AccountCreated($user, $password));
+                $alert =trans('app.txt.alert_success');
+            }elseif($user->hasRole(2)){ // Seller
+                if($user->isSlp()){
+                    $user->notify(new ConfirmRegistrationSellerNonProfessionalLegalPersons($user, $confirmLink));
+                    $alert =trans('app.txt.alert_success_slp');
+                }
+                if($user->isSnp()){
+                    $user->notify(new AccountCreated($user, $password));
+                    $alert =trans('app.txt.alert_success_snp');
+                }
+                if($user->isSbu()){
+                    $user->notify(new ConfirmRegistrationSellerRealEstateProfessional($user, $confirmLink));
+                    $alert =trans('app.txt.alert_success_sbu');
+                }
+                if($user->isSde()){
+                    $user->notify(new ConfirmRegistrationSellerRealEstateProfessional($user, $confirmLink));
+                    $alert =trans('app.txt.alert_success_sde');
+                }
+                if($user->isSbaBusiness()){
+                    $user->notify(new AccountCreated($user, $password));
+                    $alert =trans('app.txt.alert_success_sba');
+                }
+                if($user->isSbaIndividual()){
+                    $user->notify(new AccountCreated($user, $password));
+                    $alert =trans('app.txt.alert_success_sba');
+                }
+            }elseif($user->hasRole(3)){ // AFA
+                $user->notify(new AccountCreated($user, $password));
+                $alert =trans('app.txt.alert_success_afa');
+            }elseif($user->hasRole(4)){ // APL
+                $user->notify(new AccountCreated($user, $password));
+                $alert =trans('app.txt.alert_success_apl');
             }else{
                 $user->notify(new AccountCreated($user, $password));
+                $alert =trans('app.txt.alert_success');
             }
             
             // forget as role session
@@ -848,7 +883,7 @@ class RegisterController extends Controller
         return redirect()->route('login')
             ->with('success', trans('app.txt.createuser.success').'<br>'
                   .'<a class="btn btn-default" href="'.route('resend_code', $user).'">'.trans('app.txt.resendcode').'</a>')
-            ->with('alert_success',trans('app.txt.alert_success'));
+            ->with('alert_success',$alert);
         
     }
 
@@ -864,10 +899,8 @@ class RegisterController extends Controller
         $user->trial_ends_at = \Carbon\Carbon::now()->addDays(option('payment.trial_delay', 14));
         $user->save();
 
-        // Role is member
-        if($user->hasRole(5)){
-            $user->notify(new RegistrationConfirmedMessage($user,$password));
-        }
+        //Send connexion information to user
+        $user->notify(new RegistrationConfirmedMessage($user,$password));
 
         return redirect()->route('login')
                 ->with('success',trans('app.txt.accountactivated'));
