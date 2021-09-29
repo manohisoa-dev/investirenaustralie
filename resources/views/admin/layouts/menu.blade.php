@@ -1,7 +1,7 @@
 {{--    PROFILE BLOCK --}}
 <li class="nav-header">
     <div class="dropdown profile-element">
-        <img alt="image" class="rounded-circle" src="{{Auth::user()->imageUrl()}}" width="50"/>
+        <img alt="image" class="rounded-circle" src="{{Auth::user()->imageUrl()}}" width="50" style="height: 50px;"/>
         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
             <span class="block m-t-xs font-bold">{{ucfirst(Auth::user()->name)}}</span>
             <span class="text-muted text-xs block">{{\App\Models\User::find(Auth::id())->roleUser->role_name}}<b class="caret"></b></span>
