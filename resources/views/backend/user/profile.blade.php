@@ -2098,7 +2098,6 @@
                                                         @php
                                                             $codetamps = preg_match('#\((.*?)\)#', $item->userinfos->orga_mobile_phone, $match);
                                                             $code = $match[1];
-                                                            $allCode = $match[0];
                                                             $num = $item->userinfos?explode(')',$item->userinfos->orga_mobile_phone)[1]:'';
                                                         @endphp
                                                         @foreach (App\Models\Indicatif::all() as $indicatif)

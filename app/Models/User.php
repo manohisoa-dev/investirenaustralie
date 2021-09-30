@@ -424,6 +424,15 @@ class User extends Authenticatable {
     public function isSnp() {
         return $this->hasRole(2) && ($this->type_users_id == 2);
     }
+    
+    /**
+     * A user is seller natural person
+     *
+     * @return Boolean
+     */
+    public function isSlp() {
+        return $this->hasRole(2) && ($this->type_users_id == 1);
+    }
 
     /**
      * A user is seller by afa business
