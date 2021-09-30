@@ -42,7 +42,8 @@
 					<div class="col-sm-9">
 						<h3 class="m-t-none m-b">@lang('app.login_info')</h3>
 						<form role="form" action="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.profile.info'):route('admin.profile.infos')}}" method="post" enctype="multipart/form-data">
-						
+							<input type="hidden" name="userinfos_id" value="{{ $item->userinfos ? $item->userinfos->id : ''}}">
+							<input type="hidden" name="role" value="{{ $item->role }}">
 							<div class="row">
 								<div class="col-sm-6">
 									<div class="form-group">
@@ -64,11 +65,11 @@
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label>@lang('app.form.first_name')</label> 
-										<input class="form-control" value="{{old('first_name', $item->meta('first_name', ''))}}" name="first_name" placeholder="@lang('app.form.first_name')">
+										<input class="form-control" value="{{$item->userinfos->first_name?$item->userinfos->first_name:trans('app.txt.noinfo')}}" name="first_name" placeholder="@lang('app.form.first_name')">
 									</div>
 									<div class="form-group">
-										<label>@lang('app.form.last_name') -- {{$item->meta('key')}}</label>
-										<input class="form-control" value="{{old('last_name', $item->meta('last_name', ''))}}" name="last_name" placeholder="@lang('app.form.last_name')">
+										<label>@lang('app.form.last_name')</label>
+										<input class="form-control" value="{{$item->userinfos->last_name?$item->userinfos->last_name:trans('app.txt.noinfo')}}" name="last_name" placeholder="@lang('app.form.last_name')">
 									</div>
 									<div class="form-group">
 										<label>Avatar</label>
@@ -100,7 +101,7 @@
 				</div>
 			</div>
 			<div class="ibox-content">
-				<form role="form" action="{{route('admin.password')}}" method="post" id="passwordForm">
+				<form role="form" action="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.password'):route('admin.password')}}" method="post" id="passwordForm">
 					<div class="row">
 						<div class="col-sm-4">
 							<div class="form-group">
@@ -143,10 +144,9 @@
 					</a>
 				</div>
 			</div>
-			<form role="form" action="{{route('admin.location.edit')}}" method="post">
+			<form role="form" action="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.location.edit'):route('admin.location.edit')}}" method="post">
 			<div class="ibox-content">
 				<!--<div id="map"></div>-->
-				<div class="hr-line-dashed"></div>
 				<div class="row">
 					<div class="col-sm-3">
 						<div class="form-group">
@@ -164,32 +164,25 @@
 							<select class="form-control" name="country" id="country">
 								<option value="0">@lang('app.select_country')</option>
 								@if (Auth::user()->isAdmin())
-									@foreach(\App\Models\Country::all() as $country)
-										<option value="{{$country->id}}" {{ $country->content == $location->country ? 'selected' : '' }}> {{$country->content}}</option>
+									@foreach(\App\Models\Country::where('id',12)->get() as $country)
+										<option value="{{$country->id}}" {{ $country->code == $location->country ? 'selected' : '' }}>{{$country->content}}</option>
 									@endforeach
 								@endif
 							</select>
 						</div>
-						<div class="form-group">
-							<label>@lang('app.area_level_1')</label>
-							<select class="form-control" name="area_level_1" id="area_level_1">
-								<option value="0">@lang('app.select_country')</option>
-								@if (Auth::user()->isAdmin())
-									@foreach(\App\Models\State::all() as $state)
-										<option value="{{$state->id}}" {{ ( $state->states == $location->state) ? 'selected' : '' }}> {{$state->content}}</option>
-									@endforeach
-								@endif
-							</select>
-						</div>
-					</div>
-					<div class="col-sm-3">
 						<div class="form-group">
 							<label>@lang('app.area_level_2')</label>
-							<input type="text" name="area_level_2" class="form-control" id="area_level_2" placeholder="@lang('app.region')" value="{{old('region')?old('region'):$location?$location->region:''}}">
+							<input type="text" name="area_level_1" class="form-control" id="area_level_1" value="{{old('region')?old('region'):$location?$location->area_level_1:''}}">
 						</div>
+					</div>
+					<div class="col-sm-3">						
 						<div class="form-group">
 							<label>@lang('app.locality')</label>
-							 <input type="text" name="locality" class="form-control" id="locality" placeholder="@lang('app.locality')" value="{{old('locality')?old('locality'):$location?$location->locality:''}}">
+							 <input type="text" name="locality" class="form-control" id="locality" placeholder="@lang('app.locality')" value="{{old('locality')?old('locality'):$location?$location->route:''}}">
+						</div>
+						<div class="form-group">
+							<label>@lang('app.postalCode')</label>
+							<input type="text" name="postalCode" class="form-control" id="postalCode" placeholder="@lang('app.postalCode')" value="{{old('postalCode')?old('postalCode'):$location?$location->postalCode:''}}">
 						</div>
 					</div>
 					<div class="col-sm-3">
@@ -197,10 +190,7 @@
 							<label>@lang('app.route')</label>
 							<input type="text" name="route" class="form-control" id="route" placeholder="@lang('app.route')" value="{{old('route')?old('route'):$location?$location->route:''}}">
 						</div>
-						<div class="form-group">
-							<label>@lang('app.postalCode')</label>
-							<input type="text" name="postalCode" class="form-control" id="postalCode" placeholder="@lang('app.postalCode')" value="{{old('postalCode')?old('postalCode'):$location?$location->postalCode:''}}">
-						</div>
+						
 					</div>
 					<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 					<input type="hidden" name="formatted" id="formatted">
@@ -244,7 +234,6 @@
 			}
 		});
 		$("#country").select2();
-		$("#area_level_1").select2();
 	});
 	
 </script>

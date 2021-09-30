@@ -221,7 +221,7 @@ class ProfileController extends Controller {
         $user = Auth::user();
 
         // Create Localization
-        $datas = $request->all();
+        $datas = $request->all();        
         if ($location = $user->location) {
 
             $location->fill($datas);
