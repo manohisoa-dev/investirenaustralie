@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Image;
 use App\Models\RelationMembreApl;
+use App\Models\Userinfo;
 
 class UserController extends Controller {
     public $viewDir = "admin.user";
@@ -350,6 +351,8 @@ class UserController extends Controller {
             unset($datas['type']);
             $user = User::create($datas);
             // $user->handles($request);
+            $userInfo = new Userinfo();
+            
 
         }
         catch (\Exception $exception) {
