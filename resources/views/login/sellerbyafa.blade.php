@@ -365,7 +365,7 @@
                                                     <div class="form-group">
                                                         <label for="orga_parent_name" class="col-sm-12 control-label">@lang('app.txt.businessparentname') (@lang('app.txt.for_information'))</label>
                                                         <div class="col-sm-12">
-                                                            <input type="text" class="form-control" id="business_parent" name="business_parent" placeholder="@lang('app.txt.businessparentname.placeholder')" value="{{ old('business_parent')?old('business_parent'):'' }}" required>
+                                                            <input type="text" class="form-control" id="business_parent" name="business_parent" placeholder="@lang('app.txt.businessparentname.placeholder')" value="{{ old('business_parent')?old('business_parent'):'' }}">
                                                             <span class="text-danger">{{ $errors->first('business_parent') }}</span>
                                                         </div>
                                                     </div>

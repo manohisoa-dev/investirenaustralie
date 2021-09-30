@@ -17,6 +17,8 @@ use App\Notifications\ConfirmRegistrationMemberMessage;
 use App\Notifications\RegistrationConfirmedMessage;
 use App\Notifications\ConfirmRegistrationSellerRealEstateProfessional;
 use App\Notifications\ConfirmRegistrationSellerNonProfessionalLegalPersons;
+use App\Notifications\ConfirmRegistrationSellerNonProfessionalNaturalPersons;
+use App\Notifications\ConfirmRegistrationSellerByAfa;
 
 use App\Models\User;
 use App\Models\Localisation;
@@ -831,11 +833,12 @@ class RegisterController extends Controller
         $request->session()->forget("step");
 
         // Notify User
+        $alert="";
+        App::setLocale($request->language);
         try{
-            App::setLocal($user->language);
+            $confirmLink = url(route('confirm.registration',[$user,$password]));
             // Member
             if($user->hasRole(5)){ //Member
-                $confirmLink = url(route('confirm.registration',[$user,$password]));
                 $user->notify(new ConfirmRegistrationMemberMessage($user, $confirmLink));
                 $alert =trans('app.txt.alert_success');
             }elseif($user->hasRole(2)){ // Seller
@@ -844,7 +847,7 @@ class RegisterController extends Controller
                     $alert =trans('app.txt.alert_success_slp');
                 }
                 if($user->isSnp()){
-                    $user->notify(new AccountCreated($user, $password));
+                    $user->notify(new ConfirmRegistrationSellerNonProfessionalNaturalPersons($user, $confirmLink));
                     $alert =trans('app.txt.alert_success_snp');
                 }
                 if($user->isSbu()){
@@ -856,11 +859,11 @@ class RegisterController extends Controller
                     $alert =trans('app.txt.alert_success_sde');
                 }
                 if($user->isSbaBusiness()){
-                    $user->notify(new AccountCreated($user, $password));
+                    $user->notify(new ConfirmRegistrationSellerByAfa($user, $confirmLink));
                     $alert =trans('app.txt.alert_success_sba');
                 }
                 if($user->isSbaIndividual()){
-                    $user->notify(new AccountCreated($user, $password));
+                    $user->notify(new ConfirmRegistrationSellerByAfa($user, $confirmLink));
                     $alert =trans('app.txt.alert_success_sba');
                 }
             }elseif($user->hasRole(3)){ // AFA
@@ -940,7 +943,7 @@ class RegisterController extends Controller
                 }elseif(session('seller_class')=='non_professional_legal_persons'){
                     $immatPrefix = 'SLP-';
                 }else{
-                    if($type == 'builder'){
+                    if(strtolower($type) == 'builder'){
                         $immatPrefix = 'SBU-';
                     }else{
                         $immatPrefix = 'SDE-';

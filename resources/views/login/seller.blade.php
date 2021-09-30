@@ -75,13 +75,13 @@
                                                         <div class="col-sm-12">
                                                             <select class="form-control" name="type" id="type" required>
                                                                 <option value="" selected disabled>@lang('app.form.choix_txt')</option>
-                                                                <option value="Builder"> @lang('app.txt.builder')</option>
-                                                                <option value="Developer"> @lang('app.txt.developer')</option>
+                                                                <option value="Builder" {{ old('type')?(old('type')==='Builder'?'selected':''):'' }}> @lang('app.txt.builder')</option>
+                                                                <option value="Developer" {{ old('type')?(old('type')==='Developer'?'selected':''):'' }}> @lang('app.txt.developer')</option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                 @else
-                                                    <input type="hidden" name="type" value="Organization">
+                                                    <input type="hidden" name="type" value="{{ old('type')?old('type'):'Organization' }}">
                                                 @endif
                                                 
                                                 <div class="form-group">
