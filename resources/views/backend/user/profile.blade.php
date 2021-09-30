@@ -2830,7 +2830,7 @@
                                                     @endforeach
                                                 @else
                                                     @php
-                                                        $num="";
+                                                        $num2="";
                                                     @endphp
                                                     @foreach (App\Models\Indicatif::all() as $indicatif)
                                                         <option value="+{{ $indicatif->code }}" {{ $indicatif->code=='61'?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
