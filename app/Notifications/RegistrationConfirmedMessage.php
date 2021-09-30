@@ -45,7 +45,7 @@ class RegistrationConfirmedMessage extends Notification
     public function toMail($notifiable)
     {
         $user = $this->user;
-        $name = $user->isPerson()?$user->name:$user->userInfos->orga_name;
+        $name = $user->isPerson()||$user->isSnp()||$user->isSbaBusiness()||$user->isSbaIndividual()?$user->name:$user->userInfos->orga_name;
         $immat = $user->immat;
         $login = $name;
         $email = $user->email;
@@ -70,10 +70,10 @@ class RegistrationConfirmedMessage extends Notification
                 $content = 'mail.registration.confirmed.seller.rep';
             }
             if($user->isSbaBusiness()){
-                $content = 'mail.registration.confirmed.seller.ba_bu';
+                $content = 'mail.registration.confirmed.seller.sba';
             }
             if($user->isSbaIndividual()){
-                $content = 'mail.registration.confirmed.seller.ba_ind';
+                $content = 'mail.registration.confirmed.seller.sba';
             }
         }elseif($user->hasRole(3)){ // AFA
             $content = 'mail.registration.confirmed.afa';
