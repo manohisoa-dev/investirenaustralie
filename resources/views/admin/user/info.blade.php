@@ -371,5 +371,160 @@
 		</div>
 	</div>
 	@endif
+	
+	@if($user->role==5)
+	<div class="row">
+		<div class="col-md-12">
+			<div class="ibox">
+				<div class="ibox-title">
+					<h5><i class="fa fa-calendar"></i> @lang('app.orders')</h5>
+				</div>
+				<div class="ibox-content">
+					@include('admin.table.product',[
+						'products'=>$user->purchases()->wherePivot('status', 'ordered')
+					])
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-md-12">
+			<div class="ibox">
+				<div class="ibox-title">
+					<h5><i class="fa fa-shopping-cart"></i> @lang('app.purchases')</h5>
+				</div>
+				<div class="ibox-content">
+					@include('admin.table.product',[
+						'products'=>$user->purchases()->wherePivot('status', 'paid')
+					])
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-md-12">
+			<div class="ibox">
+				<div class="ibox-title">
+					<h5><i class="fa fa-bookmark-o"></i> @lang('app.favorites')</h5>
+				</div>
+				<div class="ibox-content">
+					@include('admin.table.product',['products'=>$user->favorites])
+				</div>
+			</div>
+		</div>
+	</div>
+	@endif
+	
+	@if($user->role==4)
+	<div class="row">
+		<div class="col-md-12">
+			<div class="ibox">
+				<div class="ibox-title">
+					<h5><i class="fa fa-handshake-o"></i> @lang('app.customers')</h5>
+				</div>
+				<div class="ibox-content">
+					@include('admin.table.user',['users'=>$user->customers])
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-md-12">
+			<div class="ibox">
+				<div class="ibox-title">
+					<h5><i class="fa fa-calendar"></i> @lang('app.orders')</h5>
+				</div>
+				<div class="ibox-content">
+					@include('admin.table.product',[
+						'products'=>$user->sales()->wherePivot('status', 'ordered')
+					])
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-md-12">
+			<div class="ibox">
+				<div class="ibox-title">
+					<h5><i class="fa fa-briefcase"></i> @lang('app.sales')</h5>
+				</div>
+				<div class="ibox-content">
+					@include('admin.table.product',[
+						'products'=>$user->sales()->wherePivot('status', 'paid')
+					])
+				</div>
+			</div>
+		</div>
+	</div>
+	@endif
+	
+	@if($user->role==2)
+	<div class="row">
+		<div class="col-md-12">
+			<div class="ibox">
+				<div class="ibox-title">
+					<h5><i class="fa fa-product-hunt"></i> @lang('app.products')</h5>
+				</div>
+				<div class="ibox-content">
+					@include('admin.table.product',[
+						'products'=>$user->products
+					])
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-md-12">
+			<div class="ibox">
+				<div class="ibox-title">
+					<h5><i class="fa fa-calendar"></i> @lang('app.orders')</h5>
+				</div>
+				<div class="ibox-content">
+					@include('admin.table.product',[
+						'products'=>$user->products()->where('products.status', 'ordered')
+					])
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-md-12">
+			<div class="ibox">
+				<div class="ibox-title">
+					<h5><i class="fa fa-briefcase"></i> @lang('app.sales')</h5>
+				</div>
+				<div class="ibox-content">
+					@include('admin.table.product',[
+						'products'=>$user->products()->where('products.status', 'paid')
+					])
+				</div>
+			</div>
+		</div>
+	</div>
+	@endif
+	
+	@if($user->role==3)
+	<div class="row">
+		<div class="col-md-12">
+			<div class="ibox">
+				<div class="ibox-title">
+					<h5><i class="fa fa-calendar"></i> @lang('app.orders')</h5>
+				</div>
+				<div class="ibox-content">
+					@include('admin.table.product',[
+						'products'=>$user->sales()->wherePivot('status', 'ordered')
+					])
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-md-12">
+			<div class="ibox">
+				<div class="ibox-title">
+					<h5><i class="fa fa-briefcase"></i> @lang('app.sales')</h5>
+				</div>
+				<div class="ibox-content">
+					@include('admin.table.product',[
+						'products'=>$user->sales()->wherePivot('status', 'paid')
+					])
+				</div>
+			</div>
+		</div>
+	</div>
+	@endif
 </div>
 @endsection
