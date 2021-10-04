@@ -7,6 +7,11 @@
     .herbyCookieConsent .herbyBtn, .herbyBtn2{
         margin-bottom: 1rem;
     }
+
+    #btn-connexion{ z-index: 999;}
+    .bloc-registration{z-index: 1;}
+
+    .dropdown-messages{position: absolute !important; left: -10rem !important;}
 }
 
 /* Extra small devices (phones, 600px and down) */
