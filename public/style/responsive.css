@@ -1,3 +1,14 @@
+@media  (min-width: 320px) and (max-width: 479px) {
+    .herbyCookieConsent {
+        margin-left: 0 !important;
+        height: 19rem;
+        width: 100% !important;
+    }
+    .herbyCookieConsent .herbyBtn, .herbyBtn2{
+        margin-bottom: 1rem;
+    }
+}
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
     .light-logo,.dark-logo{width : 6rem;}
