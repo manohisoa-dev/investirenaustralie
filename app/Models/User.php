@@ -426,7 +426,7 @@ class User extends Authenticatable {
     }
     
     /**
-     * A user is seller natural person
+     * A user is seller legal person
      *
      * @return Boolean
      */
@@ -1187,8 +1187,8 @@ class User extends Authenticatable {
     public function afaHasSendCa($from_id, $to_id) {
         $ca = Product::conjunctionAgreement()->where('from_id', '=', $from_id)->where('to_id',
             '=', $to_id)->first();
-
-        if (sizeof($ca) !== 0) {
+        if (sizeof(array($ca)) !== 0) {
+            
             if ($ca->status === 0) {
                 return false;
             } else {

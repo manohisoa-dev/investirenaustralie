@@ -24,6 +24,9 @@ use App\Models\Image;
 use App\Models\RelationMembreApl;
 use App\Models\Userinfo;
 use App\Models\Localisation;
+use App\Models\Message;
+use DB;
+use Carbon\Carbon;
 
 class UserController extends Controller {
     public $viewDir = "admin.user";
@@ -71,6 +74,17 @@ class UserController extends Controller {
         return $this->view("showUser", ['records' => $records, 'roles' => $role,
             'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
             'statuts' => $statuts, 'userRole' => $userRole, 'link' => $link]);
+    }
+
+    public function showMessage() {
+        $id_admin = Auth::id();
+        $id_user = $_GET['user_id'];
+        $user = User::find($id_user);
+        $user_admin = User::find($id_admin);
+        $results = DB::select("SELECT * FROM `messages` WHERE (`from_id` = $id_admin and `to_id` = $id_user) or (`from_id` = $id_user and `to_id` = $id_admin) ORDER BY `messages`.`created_at` ASC");
+
+        return $this->view("message", ['conversation' => $results, 'id_user' => $id_user,
+            'user' => $user, 'user_admin' => $user_admin]);
     }
 
     public function showAfa() {

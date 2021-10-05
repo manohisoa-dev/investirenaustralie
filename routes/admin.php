@@ -107,6 +107,7 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::get('user/show/member/type/organisation', 'UserController@showMemberOrganisation')->name('user.show.member.organisation');
     Route::get('user/show/collaborator', 'UserController@showCollaborator')->name('user.show.collaborator');
     Route::get('user/create/collaborator', 'UserController@createCollaborator')->name('user.create.collaborator');
+    Route::get('user/show/message', 'UserController@showMessage')->name('user.show.message');
 
     Route::resource('sale','SaleController');
     Route::get('pay/{sale}/{role}', 'SaleController@pay')->name('sale.pay');
@@ -380,7 +381,8 @@ Route::prefix('collaborators')->namespace('Admin')->as('admin.')->middleware(["a
     Route::get('user/show/member/type/organisation', 'UserController@showMemberOrganisation')->name('collaborators.admin.user.show.member.organisation');
     Route::get('user/show/collaborator', 'UserController@showCollaborator')->name('collaborators.admin.user.show.collaborator');
     Route::get('user/create/collaborator', 'UserController@createCollaborator')->name('collaborators.admin.user.create.collaborator');
-
+    Route::get('user/show/message', 'UserController@showMessage')->name('collaborators.admin.user.show.message');
+    
     // Route::resource('sale','SaleController');
     Route::get('/admin/sale', 'SaleController@index')->name('collaborators.admin.sale.index');
     Route::post('/admin/sale', 'SaleController@store')->name('collaborators.admin.sale.store');
@@ -559,14 +561,15 @@ Route::prefix('collaborator')->namespace('Admin')->as('admin.')->middleware(["au
     //Route::get('comments/{blog}/{filter?}', 'CommentController@all')->name('comment.list');
 
     
-    Route::post('info', 'ProfileController@editProfile')->name('profile.info');
-    Route::post('update', 'ProfileController@updateLocation')->name('location.edit');
-    Route::post('password', 'ProfileController@updatePassword')->name('password');
+    Route::post('info', 'ProfileController@editProfile')->name('collaborator.profile.info');
+    Route::post('update', 'ProfileController@updateLocation')->name('collaborator.location.edit');
+    Route::post('password', 'ProfileController@updatePassword')->name('collaborator.password');
     
     Route::resource('menu','MenuController');
 
     Route::resource('country','CountryController');
     Route::resource('state','StateController');
+    Route::get('user/show/message', 'UserController@showMessage')->name('collaborator.user.show.message');
 
     // Route::resource('category','CategoryController');
     // Route::get('category/{category}/edit', 'CategoryController@edit')->name('category.edit');

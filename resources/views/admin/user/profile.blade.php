@@ -165,7 +165,7 @@
 								<option value="0">@lang('app.select_country')</option>
 								@if (Auth::user()->isAdmin())
 									@foreach(\App\Models\Country::where('id',12)->get() as $country)
-										<option value="{{$country->id}}" {{ $country->code == $location->country ? 'selected' : '' }}>{{$country->content}}</option>
+										<option value="{{$country->code}}" {{ $country->code == $location->country ? 'selected' : '' }}>{{$country->content}}</option>
 									@endforeach
 								@endif
 							</select>
@@ -177,8 +177,8 @@
 					</div>
 					<div class="col-sm-3">						
 						<div class="form-group">
-							<label>@lang('app.locality')</label>
-							 <input type="text" name="locality" class="form-control" id="locality" placeholder="@lang('app.locality')" value="{{old('locality')?old('locality'):$location?$location->route:''}}">
+							<label>@lang('app.form.programme_ville')</label>
+							 <input type="text" name="locality" class="form-control" id="locality" placeholder="@lang('app.locality')" value="{{old('locality')?old('locality'):$location?$location->locality:''}}">
 						</div>
 						<div class="form-group">
 							<label>@lang('app.postalCode')</label>
