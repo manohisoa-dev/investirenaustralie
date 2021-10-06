@@ -19,7 +19,7 @@ class BlogController extends Controller {
     protected $post_type = 'blog';
 
     public function index() {
-        Blog::regenerateAllAvatar() ;
+        Blog::regenerateAllAvatar();
         $records = Blog::findRequested();
         $status = Blog::groupBy('status')->pluck('status', 'status');
         return $this->view("index", ['records' => $records, 'status' => $status]);

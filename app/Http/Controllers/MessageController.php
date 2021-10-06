@@ -42,7 +42,7 @@ class MessageController extends Controller
                             ->get();
         
         if(Auth::user()->hasRole(5) && $user_id !== '1'){
-            $hasSendCa = Auth::user()->afaHasSendCa($user_id,$to_id)?1:0; // 0: CA not send  1:CA send 
+            //$hasSendCa = Auth::user()->afaHasSendCa($user_id,$to_id)?1:0; // 0: CA not send  1:CA send 
         }
 
         $data = [];
@@ -123,7 +123,7 @@ class MessageController extends Controller
                             ->get();
 
         if(Auth::user()->hasRole(3) && $from_id !== '1'){
-            $hasSendCa = Auth::user()->afaHasSendCa($from_id,$to_id)?1:0; // 0: CA not send  1:CA send 
+            //$hasSendCa = Auth::user()->afaHasSendCa($from_id,$to_id)?1:0; // 0: CA not send  1:CA send 
         }
 
         $data = [];
