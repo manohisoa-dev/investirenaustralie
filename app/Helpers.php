@@ -594,7 +594,6 @@ if (!function_exists('geocodeAddress')) {
         return $data;
     }
 }
-<<<<<<< .mine
 
 if(!function_exists('storeFile')){
     function storeFile($file,$path){
@@ -612,25 +611,6 @@ if(!function_exists('storeFile')){
         return false;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
 
 
 if (!function_exists('imageResizeUrl')) {
@@ -666,4 +646,3 @@ if (!function_exists('imageResizeUrl')) {
         return $url;
     }
 }
->>>>>>> .theirs
