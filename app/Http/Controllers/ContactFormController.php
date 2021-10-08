@@ -3,13 +3,35 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ContactFormController extends Controller
 {
 
-    public function form()
+    public function form(Request $request)
     {
+        // $this->setCookie($request);
+        // \Cookie::forget('name');
+        \Cookie::queue('namexxx', 'value', '');
+
+        \Cookie::queue(\Cookie::forget('namexxx'));
+        $value = \Cookie::get('namexxx');
+
+
+
         return view('contactform');
+    }
+
+    public function setCookie(Request $request){
+        $minutes = 10080;
+        $response = new Response('Set Cookie');
+        $response->withCookie(cookie('name', 'MyValue', $minutes));
+        return $response;
+    }
+
+    public function getCookie(Request $request){
+        $value = $request->cookie('name');
+        echo $value;
     }
 
     public function contactRequest(Request $request)

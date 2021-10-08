@@ -7,21 +7,21 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class ConfirmRegistrationSellerRealEstateProfessional extends Notification
+class RegistrationRejectedMessage extends Notification
 {
     use Queueable;
-    private $user;
-    private $confirmLink;
+    private $sujet;
+    private $content;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($user,$confirmLink)
+    public function __construct($sujet,$content)
     {
-        $this->user = $user;
-        $this->confirmLink = $confirmLink;
+        $this->sujet = $sujet;
+        $this->content = $content;
     }
 
     /**
@@ -43,15 +43,13 @@ class ConfirmRegistrationSellerRealEstateProfessional extends Notification
      */
     public function toMail($notifiable)
     {
-        $user = $this->user;
-        $confirmLink = $this->confirmLink;
-        
+        $sujet = $this->sujet;
+        $content = $this->content;
+
         return (new MailMessage)
             ->from(env('ADMIN_MAIL'))
-            ->subject(__('mail.created.subject', ['app'=>app_name()]))
-            ->line(__('mail.confirm.registration.message.seller.rep.1'))
-            ->action(strtoupper(__('mail.btn.confirm.registration')), $confirmLink)
-            ->line(__('mail.confirm.registration.message.seller.rep.2'));
+            ->subject('['.app_name().']'.' '.$sujet)
+            ->line($content);
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -14,11 +15,14 @@ use DB;
 
 use App\Notifications\AccountCreated;
 use App\Notifications\ConfirmRegistrationMemberMessage;
+use App\Notifications\ConfirmRegistrationSeller;
+use App\Notifications\ConfirmRegistrationAfa;
+use App\Notifications\ConfirmRegistrationApl;
 use App\Notifications\RegistrationConfirmedMessage;
-use App\Notifications\ConfirmRegistrationSellerRealEstateProfessional;
-use App\Notifications\ConfirmRegistrationSellerNonProfessionalLegalPersons;
-use App\Notifications\ConfirmRegistrationSellerNonProfessionalNaturalPersons;
-use App\Notifications\ConfirmRegistrationSellerByAfa;
+use App\Notifications\AdminNotifyMessage;
+use App\Notifications\RegistrationRejectedMessage;
+use App\Notifications\ConfirmRegistrationGetContract;
+use App\Notifications\ConfirmRegistrationSubmitContract;
 
 use App\Models\User;
 use App\Models\Localisation;
@@ -31,9 +35,18 @@ use App\Models\TypeUser;
 use App\Models\Userinfo;
 use App\Models\SellerBusiness;
 use App\Models\SellerIndividual;
+use App\Models\Newsletter;
+use App\Mail\MailTemplate;
+use App\Models\MailsTemplate;
+use App\Models\TemplateModel;
+use App\Models\Parameter;
+use App\Models\Contract;
+use App\Models\Message;
+use App\Models\Config;
 use Carbon\Carbon;
 use Session;
-use App\Models\Newsletter;
+use Mail;
+use PDF;
 
 class RegisterController extends Controller
 {
@@ -148,14 +161,119 @@ class RegisterController extends Controller
                 ->with('error',trans('app.txt.probleme.survenu'));
         }
         
-        // Notify User
+        $confirmLink = url(route('confirm.registration',[$user]));
         // Member
-        if($user->hasRole(5)){
-            $confirmLink = url(route('confirm.registration',[$user,$password]));
-            $user->notify(new ConfirmRegistrationMemberMessage($user, $confirmLink));
-            // $user->notify(new AccountCreated($user, $password));
+        if($user->hasRole(5)){ //Member
+            $lang = $request->language;
+            $body = 'template_' . $lang;
+            $template = MailsTemplate::where('id', 26)->first();
+            if($template){
+                $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
+                $vars = array(
+                    '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                );
+                $content = strtr($template->$body, $vars);
+                $content = ['title' => '', 'body' => $content];
+                $user->notify(new ConfirmRegistrationMemberMessage($sujet,$content));
+                $alert =trans('app.txt.alert_success');
+            }else{
+                return abort(404);
+            }
+        }elseif($user->hasRole(2)){ // Seller
+            if($user->isSlp()){
+                $vars = array(
+                    '{role}' => trans('seller.non_professional_legal_persons'),
+                    '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                );
+                $alert =trans('app.txt.alert_success_slp');
+            }
+            if($user->isSnp()){
+                $vars = array(
+                    '{role}' => trans('seller.non_professional_natural_persons'),
+                    '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                );
+                $alert =trans('app.txt.alert_success_snp');
+            }
+            if($user->isSbu()){
+                $vars = array(
+                    '{role}' => trans('seller.rea_estate_professionals'),
+                    '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                );
+                $alert =trans('app.txt.alert_success_sbu');
+            }
+            if($user->isSde()){
+                $vars = array(
+                    '{role}' => trans('seller.rea_estate_professionals'),
+                    '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                );
+                $alert =trans('app.txt.alert_success_sde');
+            }
+            if($user->isSbaBusiness()){
+                $vars = array(
+                    '{role}' => trans('seller.seller_by_afa'),
+                    '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                );
+                $alert =trans('app.txt.alert_success_sba');
+            }
+            if($user->isSbaIndividual()){
+                $vars = array(
+                    '{role}' => trans('seller.seller_by_afa'),
+                    '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                );
+                $alert =trans('app.txt.alert_success_sba');
+            }
+            $lang = 'en';
+            $body = 'template_' . $lang;
+            $template = MailsTemplate::where('id', 25)->first();
+            if($template){
+                $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
+                $content = strtr($template->$body, $vars);
+                $content = ['title' => '', 'body' => $content];
+                $user->notify(new ConfirmRegistrationSeller($sujet,$content));
+            }else{
+                return abort(404);
+            }
+        }elseif($user->hasRole(3)){ // AFA
+            // set cookie default_password during 7 days
+            // \Cookie::queue('default_pwd', $password, '');
+            $confirmEmailLink= url(route('confirm.registration.afa.email',[$user]));
+            App::setLocale('en');
+            $lang = 'en';
+            $body = 'template_' . $lang;
+            $vars = array(
+                '{confirmEmailLink}' => '<a href="'.$confirmEmailLink.'">'.strtoupper(trans('mail.btn.email_address_confirmation')).'</a>',
+            );
+            $template = MailsTemplate::where('id', 24)->first();
+            if($template){
+                $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
+                $content = strtr($template->$body, $vars);
+                $content = ['title' => '', 'body' => $content];
+                $user->notify(new ConfirmRegistrationApl($sujet,$content));
+                $alert =trans('app.txt.alert_success_afa');
+            }else{
+                return abort(404);
+            }
+        }elseif($user->hasRole(4)){ // APL
+            $confirmEmailLink= url(route('confirm.registration.apl.email',[$user]));
+            App::setLocale('fr');
+            $lang = 'fr';
+            $body = 'template_' . $lang;
+            $vars = array(
+                '{confirmEmailLink}' => '<a href="'.$confirmEmailLink.'">'.strtoupper(trans('mail.btn.email_address_confirmation')).'</a>',
+            );
+            $template = MailsTemplate::where('id', 20)->first();
+            if($template){
+                $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
+                $content = strtr($template->$body, $vars);
+                $content = ['title' => '', 'body' => $content];
+                $user->notify(new ConfirmRegistrationApl($sujet,$content));
+                $alert =trans('app.txt.alert_success_apl');
+            }else{
+                return abort(404);
+            }
         }else{
             $user->notify(new AccountCreated($user, $password));
+            $alert =trans('app.txt.alert_success');
         }
         
         return redirect()->route('login')
@@ -836,42 +954,116 @@ class RegisterController extends Controller
         $alert="";
         App::setLocale($request->language);
         try{
-            $confirmLink = url(route('confirm.registration',[$user,$password]));
+            $confirmLink = url(route('confirm.registration',[$user]));
             // Member
             if($user->hasRole(5)){ //Member
-                $user->notify(new ConfirmRegistrationMemberMessage($user, $confirmLink));
-                $alert =trans('app.txt.alert_success');
+                $lang = $request->language;
+                $body = 'template_' . $lang;
+                $template = MailsTemplate::where('id', 26)->first();
+                if($template){
+                    $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
+                    $vars = array(
+                        '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                    );
+                    $content = strtr($template->$body, $vars);
+                    $content = ['title' => '', 'body' => $content];
+                    $user->notify(new ConfirmRegistrationMemberMessage($sujet,$content));
+                    $alert =trans('app.txt.alert_success');
+                }else{
+                    return abort(404);
+                }
             }elseif($user->hasRole(2)){ // Seller
                 if($user->isSlp()){
-                    $user->notify(new ConfirmRegistrationSellerNonProfessionalLegalPersons($user, $confirmLink));
+                    $vars = array(
+                        '{role}' => trans('seller.non_professional_legal_persons'),
+                        '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                    );
                     $alert =trans('app.txt.alert_success_slp');
                 }
                 if($user->isSnp()){
-                    $user->notify(new ConfirmRegistrationSellerNonProfessionalNaturalPersons($user, $confirmLink));
+                    $vars = array(
+                        '{role}' => trans('seller.non_professional_natural_persons'),
+                        '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                    );
                     $alert =trans('app.txt.alert_success_snp');
                 }
                 if($user->isSbu()){
-                    $user->notify(new ConfirmRegistrationSellerRealEstateProfessional($user, $confirmLink));
+                    $vars = array(
+                        '{role}' => trans('seller.real_estate_professionals'),
+                        '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                    );
                     $alert =trans('app.txt.alert_success_sbu');
                 }
                 if($user->isSde()){
-                    $user->notify(new ConfirmRegistrationSellerRealEstateProfessional($user, $confirmLink));
+                    $vars = array(
+                        '{role}' => trans('seller.real_estate_professionals'),
+                        '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                    );
                     $alert =trans('app.txt.alert_success_sde');
                 }
                 if($user->isSbaBusiness()){
-                    $user->notify(new ConfirmRegistrationSellerByAfa($user, $confirmLink));
+                    $vars = array(
+                        '{role}' => trans('seller.seller_by_afa'),
+                        '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                    );
                     $alert =trans('app.txt.alert_success_sba');
                 }
                 if($user->isSbaIndividual()){
-                    $user->notify(new ConfirmRegistrationSellerByAfa($user, $confirmLink));
+                    $vars = array(
+                        '{role}' => trans('seller.seller_by_afa'),
+                        '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                    );
                     $alert =trans('app.txt.alert_success_sba');
                 }
+                $lang = 'en';
+                $body = 'template_' . $lang;
+                $template = MailsTemplate::where('id', 25)->first();
+                if($template){
+                    $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
+                    $content = strtr($template->$body, $vars);
+                    $content = ['title' => '', 'body' => $content];
+                    $user->notify(new ConfirmRegistrationSeller($sujet,$content));
+                }else{
+                    return abort(404);
+                }
             }elseif($user->hasRole(3)){ // AFA
-                $user->notify(new AccountCreated($user, $password));
-                $alert =trans('app.txt.alert_success_afa');
+                // set cookie default_password during 7 days
+                // \Cookie::queue('default_pwd', $password, '');
+                $confirmEmailLink= url(route('confirm.registration.afa.email',[$user]));
+                App::setLocale('en');
+                $lang = 'en';
+                $body = 'template_' . $lang;
+                $vars = array(
+                    '{confirmEmailLink}' => '<a href="'.$confirmEmailLink.'">'.strtoupper(trans('mail.btn.email_address_confirmation')).'</a>',
+                );
+                $template = MailsTemplate::where('id', 24)->first();
+                if($template){
+                    $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
+                    $content = strtr($template->$body, $vars);
+                    $content = ['title' => '', 'body' => $content];
+                    $user->notify(new ConfirmRegistrationApl($sujet,$content));
+                    $alert =trans('app.txt.alert_success_afa');
+                }else{
+                    return abort(404);
+                }
             }elseif($user->hasRole(4)){ // APL
-                $user->notify(new AccountCreated($user, $password));
-                $alert =trans('app.txt.alert_success_apl');
+                $confirmEmailLink= url(route('confirm.registration.apl.email',[$user]));
+                App::setLocale('fr');
+                $lang = 'fr';
+                $body = 'template_' . $lang;
+                $vars = array(
+                    '{confirmEmailLink}' => '<a href="'.$confirmEmailLink.'">'.strtoupper(trans('mail.btn.email_address_confirmation')).'</a>',
+                );
+                $template = MailsTemplate::where('id', 20)->first();
+                if($template){
+                    $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
+                    $content = strtr($template->$body, $vars);
+                    $content = ['title' => '', 'body' => $content];
+                    $user->notify(new ConfirmRegistrationApl($sujet,$content));
+                    $alert =trans('app.txt.alert_success_apl');
+                }else{
+                    return abort(404);
+                }
             }else{
                 $user->notify(new AccountCreated($user, $password));
                 $alert =trans('app.txt.alert_success');
@@ -891,23 +1083,384 @@ class RegisterController extends Controller
     }
 
     /*
-    * Confirm registration Member
+    * Confirm registration each user
     *
     */
-    public function confirmRegistration(User $user,$password)
+    public function confirmRegistration(User $user)
     {   
+        $idTemplateAfa = 11;
+        $idTemplateMem = 12;
+        $idTemplateRep = 13;
+        $idTemplateSlp = 14;
+        $idTemplateSnp = 15;
+        $idTemplateSba = 16;
+        $idTemplateApl = 17;
+       
         // Active user
+        $password = str_random(10);
         $user->status = 'active';
         $user->activation_code = null;
         $user->trial_ends_at = \Carbon\Carbon::now()->addDays(option('payment.trial_delay', 14));
+        $user->password = Hash::make($password);
         $user->save();
 
-        //Send connexion information to user
-        $user->notify(new RegistrationConfirmedMessage($user,$password));
+        $lia = Config::lia();
+        $lia_name = $lia->get_meta('lia_name')->value;
+        App::setLocale($user->language);
+        $lang = $user->language;
+        $body = 'template_' . $lang;
+        $vars = array(
+            '{immat}' => $user->immat,
+            '{login}' => $user->name,
+            '{email}' => $user->email,
+            '{password}' => $password,
+            '{ieaagencyname}' => $lia_name,
+        );
+
+        if($user->hasRole(5)){ //Member
+            $id_template = $idTemplateMem;
+            $vars['{name}'] = $user->isPerson()?$user->name:$user->userinfos->orga_name;
+        }elseif($user->hasRole(2)){ // Seller
+            $vars['{ieaagencyname}'] = $lia_name;
+            if($user->isSlp()){
+                $id_template = $idTemplateSlp;
+            }
+            if($user->isSnp()){
+                $id_template = $idTemplateSnp;
+            }
+            if($user->isSbu()){
+                $id_template = $idTemplateRep;
+            }
+            if($user->isSde()){
+                $id_template = $idTemplateRep;
+            }
+            if($user->isSbaBusiness()){
+                $id_template = $idTemplateSba;
+            }
+            if($user->isSbaIndividual()){
+                $id_template = $idTemplateSba;
+            }
+        }elseif($user->hasRole(4)){ // APL
+            $id_template = $idTemplateApl;
+        }else{
+            $id_template = $idTemplateMem;
+        }
+
+        
+        $template = MailsTemplate::where('id', $id_template)->first();
+        if($template){
+            $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
+            $content = strtr($template->$body, $vars);
+            $content = ['title' => '', 'body' => $content];
+        }else{
+            return abort(404);
+        }
+
+        $user->notify(new RegistrationConfirmedMessage($sujet,$content));
 
         return redirect()->route('login')
                 ->with('success',trans('app.txt.accountactivated'));
     }
+
+    /*
+    * Confirm registration afa email
+    *
+    */
+    public function confirmRegistrationAfaEmail(User $user)
+    {   
+        $lang = 'en';
+        $body = 'template_' . $lang;
+        $vars = array(
+            '{abandonLink}' => '<a href="'.url(route('confirm.registration.afa.abandon.get_contract',[$user])).'">'.strtoupper(trans('app.btn.abandonner')).'</a>',
+            '{continueLink}' => '<a href="'.url(route('confirm.registration.afa.continue.get_contract',[$user])).'">'.strtoupper(trans('app.btn.continuer')).'</a>',
+        );
+        $template = MailsTemplate::where('id', 23)->first();
+        if($template){
+            $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
+            $content = strtr($template->$body, $vars);
+            $content = ['title' => '', 'body' => $content];
+        }else{
+            return abort(404);
+        }
+
+        $user->notify(new ConfirmRegistrationGetContract($sujet,$content));
+
+        return redirect()->route('home')->with('alert_message',trans('mail.sent'));
+    }
+
+    /*
+    * Confirm registration Afa Abandon get contract
+    *
+    */
+    public function confirmRegistrationAfaAbandonGetContract(User $user)
+    {   
+        // Active user
+        $user->deleteUser();
+        
+        return redirect()->route('home');
+    }
+    
+    /*
+    * Confirm registration Afa Continue get contract
+    *
+    */
+    public function confirmRegistrationAfaContinueGetContract(User $user)
+    {   
+        // Create contract pdf to download
+        $pdf_template = 'pdf.afa_contract';
+        $pdfName = 'PARTENERSHIP CONTRACT AUSTRALIAN FRANCOPHONE AGENCY ('.$user->name.')';
+        $path = 'pdf/registrations/afa/'.$pdfName.'.pdf';
+        $this->createContractPdf($user,$pdf_template,$path);
+
+        App::setLocale($user->language);
+        $lang = $user->language;
+        $body = 'template_' . $lang;
+        $url = url($path);
+        $vars = array(
+            '{btnSubmit}' => '<a href="'.route('home').'?action=submit_contract&id='.$user->id.'" type="button" class="m-btn m-btn-theme2nd" id="submit_contract" value="1">'.strtoupper(trans("mail.btn.submit_afa_contract_signed")).'</a>',
+            '{contractLink}' => '<a href="'.$url.'">'.strtoupper(trans('mail.txt.afa_contract_draft')).'</a>',
+        );
+        $template = MailsTemplate::where('id', 10)->first();
+        if($template){
+            $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
+            $content = strtr($template->$body, $vars);
+            $content = ['title' => '', 'body' => $content];
+        }else{
+            return abort(404);
+        }
+ 
+        // \Mail::to($user->id)->send(new MailTemplate($content,$sujet));
+
+        //Send afa contract to user
+        $user->notify(new ConfirmRegistrationSubmitContract($sujet,$content));
+        
+        return redirect()->route('home')->with('alert_message',trans('mail.sent'));
+    }
+
+    /*
+    * Confirm registration apl email
+    *
+    */
+    public function confirmRegistrationAplEmail(User $user)
+    {   
+        $lang = 'fr';
+        $body = 'template_' . $lang;
+        $vars = array(
+            '{abandonLink}' => '<a href="'.url(route('confirm.registration.apl.abandon.get_contract',[$user])).'">'.strtoupper(trans('app.btn.abandonner')).'</a>',
+            '{continueLink}' => '<a href="'.url(route('confirm.registration.apl.continue.get_contract',[$user])).'">'.strtoupper(trans('app.btn.continuer')).'</a>',
+        );
+        $template = MailsTemplate::where('id', 21)->first();
+        if($template){
+            $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
+            $content = strtr($template->$body, $vars);
+            $content = ['title' => '', 'body' => $content];
+        }else{
+            return abort(404);
+        }
+
+        $user->notify(new ConfirmRegistrationGetContract($sujet,$content));
+
+        return redirect()->route('home')->with('alert_message',trans('mail.sent'));
+    }
+
+    /*
+    * Confirm registration Afa Abandon get contract
+    *
+    */
+    public function confirmRegistrationAplAbandonGetContract(User $user)
+    {   
+        // Active user
+        $user->deleteUser();
+        
+        return redirect()->route('home');
+    }
+    
+    /*
+    * Confirm registration Afa Continue get contract
+    *
+    */
+    public function confirmRegistrationAplContinueGetContract(User $user)
+    {   
+        // Create contract pdf to download
+        $pdf_template = 'pdf.apl_contract';
+        $pdfName = 'CONTRAT DE PARTENARIAT AGENCE PARTENAIRE LOCALE ('.$user->name.')';
+        $path = 'pdf/registrations/apl/'.$pdfName.'.pdf';
+        $this->createContractPdf($user,$pdf_template,$path);
+
+        $template = MailsTemplate::where('id', 22)->first();
+        App::setLocale($user->language);
+        $lang = $user->language;
+        $body = 'template_' . $lang;
+        $url = url($path);
+        $vars = array(
+            '{btnSubmit}' => '<a href="'.route('home').'?action=submit_contract&id='.$user->id.'" type="button" class="m-btn m-btn-theme2nd" id="submit_contract" value="1">'.strtoupper(trans("mail.btn.submit_apl_contract_signed")).'</a>',
+            '{contractLink}' => '<a href="'.$url.'">'.strtoupper(trans('mail.txt.apl_contract_draft')).'</a>',
+        );
+        $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
+        $content = strtr($template->$body, $vars);
+        $content = ['title' => '', 'body' => $content];
+        
+        //Send apl contract to user
+        $user->notify(new ConfirmRegistrationSubmitContract($sujet,$content));
+        
+        return redirect()->route('home')->with('alert_message',trans('mail.sent'));
+    }
+    
+    public function confirmRegistrationSendContract(Request $request){
+        $datas = $request->all();
+        $validator = Validator::make($datas, ['file_contract' => 'required|mimes:pdf']);
+        $contr = "";
+        
+        // Validate file
+        if ($validator->fails()) {
+            return response()->json(['response'=>'false']);
+        }
+        
+        // Handle file Upload to uploads/pdf/transaction path
+        $user_id = $request->user_id;
+        $user = User::whereId($user_id)->first();
+        $admin = User::whereId(1)->first();
+        $user_role = $user->role===3?'afa':'apl';
+        $file = $request->file('file_contract');
+        $filenameWithExt = $file->getClientOriginalName();
+        $url = 'uploads/pdf/registrations/'.$user_role.'/'.$filenameWithExt;
+        $path = public_path('uploads/pdf/registrations/'.$user_role);
+        
+        // Save afa contract in db
+        if($user->contract()){
+            if($user->isRejected()){
+                $contr = Contract::create(['user_id'=>$user_id,'url_contract'=>$url,'status_contract'=>1,'date_envoie_contract'=>Carbon::now(),'date_signature_contract'=>Carbon::now()]);
+            }else{
+                if($user->isValidate()){
+                    return response()->json(['response'=>'false', 'status'=>2]);
+                }else{
+                    return response()->json(['response'=>'false', 'status'=>1]);
+                }
+            }
+        }else{
+            $contr = Contract::create(['user_id'=>$user_id,'url_contract'=>$url,'status_contract'=>1,'date_envoie_contract'=>Carbon::now(),'date_signature_contract'=>Carbon::now()]);
+        }
+        
+        // Save afa contract file in storage path
+        storeFile($file,$path);
+        
+        // Notify Admin with message and email
+        $id_contract = $contr->id;
+        $link = route('home'); //link to verify contract sent
+        $content = trans('mail.contract_signed_sent',['name'=>$user->name, 'role'=>strtoupper($user_role), 'link'=>$link, 'txt'=>trans('mail.to_verify')]);
+        Message::create(['type'=>'admin','from_id'=>1,'to_id'=>1,'body'=>$content]);
+        $admin->notify(new AdminNotifyMessage($content));
+
+        
+        return response()->json(['response'=>'true']);
+    }
+
+    public function afaContract(){
+        return view('pdf.afa_contract',['user'=>User::whereId(361)->first()]);
+    }
+    public function aplContract(){
+        return view('pdf.apl_contract',['user'=>User::whereId(2)->first()]);
+    }
+    
+    public function createContractPdf($user,$pdf_template,$path) {
+        return PDF::loadView($pdf_template,['user'=>$user])->save($path);
+    }
+
+    // Method to set in admin controller
+    public function validateContract($id_contract){
+        // Update contract to validate
+        $contract = Contract::whereId($id_contract)->first();
+        $contract->update(['status_contract'=>2]);
+
+        // Send notification to user
+        $user = User::whereId($contract->user_id)->first();
+        $password = str_random(10);
+        
+        // Active user compte
+        $user->update(['status'=>'active', 'activation_code'=>null, 'trial_ends_at'=>Carbon::now()->addDays(option('payment.trial_delay', 14)), 'password'=>Hash::make($password)]);
+        
+        $lia = Config::lia();
+        $lia_name = $lia->get_meta('lia_name')->value;
+        App::setLocale($user->language);
+        $lang = $user->language;
+        $body = 'template_' . $lang;
+        $vars = array(
+            '{immat}' => $user->immat,
+            '{login}' => $user->name,
+            '{email}' => $user->email,
+            '{password}' => $password,
+            '{ieaagencyname}' => $lia_name,
+        );
+        $template = MailsTemplate::where('id', $user->roleUser->role_initial=='afa'?11:17)->first();
+        if($template){
+            $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
+            $content = strtr($template->$body, $vars);
+            $content = ['title' => '', 'body' => $content];
+        }else{
+            return abort(404);
+        }
+
+        $user->notify(new RegistrationConfirmedMessage($sujet,$content));
+
+        return 'contract accepted';
+    }
+    
+    public function rejectedContract($id_contract){
+        $contract = Contract::whereId($id_contract)->first();
+        $user = User::whereId($contract->user_id)->first();
+        $nbContract = Contract::where('user_id',$contract->user_id)->count();
+
+        // get template
+        App::setLocale($user->language);
+        $lang = $user->language;
+        $body = 'template_' . $lang;
+        $vars = array(
+            '{role}' => strtoupper($user->roleUser->role_initial),
+        );
+        $template = MailsTemplate::where('id', $nbContract!==2?18:19)->first();
+
+        if($template){
+            $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
+            $content = strtr($template->$body, $vars);
+            $content = ['title' => '', 'body' => $content];
+        }else{
+            return abort(404);
+        }
+
+        // Notify user
+        $user->notify(new RegistrationRejectedMessage($sujet,$content));
+
+        if($nbContract===2){
+            DB::table('users')->where('id', $user->id)->delete();
+            DB::table('contracts')->where('user_id', $user->id)->delete();
+        }else{
+            $contract->update(['status_contract'=>3,'date_fin_reponse_contract'=>Carbon::now()->addDays(Parameter::nbDayEndResponseContract())]);
+        }
+
+        return 'contract rejected';
+    }
+
+    // function cron to check delai submit contract (if 7 days delete)
+    public function checkContractDelai(){
+        $allContract = Contract::getAllContractRejected();
+
+        if($allContract){
+            foreach ($allContract as $key => $contract) {
+                $dateEnd = Carbon::parse($contract->date_fin_reponse_contract)->format('Y-m-d');
+                $dateNow = Carbon::now()->toDateString();
+
+                if($dateEnd == $dateNow){
+                    // DB::table('users')->where('id', $contract->user_id)->delete();
+                    DB::table('contracts')->where('user_id', $contract->user_id)->delete();
+                }
+            }
+        }
+        
+        return '';
+    }
+
+
+    // End Method to set in admin controller
 
     /*
     * Generate user immat

@@ -10,18 +10,18 @@ use Illuminate\Notifications\Messages\MailMessage;
 class ConfirmRegistrationMemberMessage extends Notification
 {
     use Queueable;
-    private $user;
-    private $confirmLink;
+    private $subject;
+    private $content;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($user,$confirmLink)
+    public function __construct($subject,$content)
     {
-        $this->user = $user;
-        $this->confirmLink = $confirmLink;
+        $this->subject = $subject;
+        $this->content = $content;
     }
 
     /**
@@ -43,15 +43,13 @@ class ConfirmRegistrationMemberMessage extends Notification
      */
     public function toMail($notifiable)
     {
-        $user = $this->user;
-        $confirmLink = $this->confirmLink;
+        $subject = $this->subject;
+        $content = $this->content;
         
         return (new MailMessage)
             ->from(env('ADMIN_MAIL'))
-            ->subject(__('mail.created.subject', ['app'=>app_name()]))
-            ->line(__('mail.confirm.registration.message.member.1'))
-            ->action(strtoupper(__('mail.btn.confirm.registration')), $confirmLink)
-            ->line(__('mail.confirm.registration.message.member.2'));
+            ->subject('['.app_name().'] ' . $subject)
+            ->line($content);
     }
 
     /**

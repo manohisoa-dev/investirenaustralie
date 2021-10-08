@@ -367,14 +367,14 @@
                                         <div class="form-group">
                                             <label for="orga_skype" class="col-sm-12 control-label">@lang('app.txt.skype_nickname')</label>
                                             <div class="col-sm-12">
-                                                <input type="text" class="form-control" id="orga_skype" name="orga_skype" placeholder="Ex: live:xxxxxx" value="{{ old('orga_skype')?old('"orga_skype'):'' }}">
+                                                <input type="text" class="form-control" id="orga_skype" name="orga_skype" placeholder="Ex: live:xxxxxx" value="{{ old('orga_skype')?old('orga_skype'):'' }}">
                                                 <span class="text-danger">{{ $errors->first('orga_skype') }}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="orga_fb" class="col-sm-12 control-label">@lang('app.txt.fb_page')</label>
                                             <div class="col-sm-12">
-                                                <input type="text" class="form-control" id="orga_fb" name="orga_fb" placeholder="https://www.facebook.com/iea" value="{{ old('orga_website')?old('"orga_website'):'' }}">
+                                                <input type="text" class="form-control" id="orga_fb" name="orga_fb" placeholder="https://www.facebook.com/iea" value="{{ old('orga_website')?old('orga_website'):'' }}">
                                                 <span class="text-danger">{{ $errors->first('orga_fb') }}</span>
                                             </div>
                                         </div>

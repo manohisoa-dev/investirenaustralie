@@ -594,3 +594,20 @@ if (!function_exists('geocodeAddress')) {
         return $data;
     }
 }
+
+if(!function_exists('storeFile')){
+    function storeFile($file,$path){
+        // Get filename with the extension
+        $filenameWithExt = $file->getClientOriginalName();
+        //Get just filename
+        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+        // Get just ext
+        $extension = $file->getClientOriginalExtension();
+        // Filename to store
+        $fileNameToStore = $filename.'.'.$extension;
+        // Upload Image
+        $path = $file->move($path, $fileNameToStore);
+
+        return false;
+    }
+}

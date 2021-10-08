@@ -1266,6 +1266,8 @@ return
 	'btn.show_detail' => 'Show detail',
 	'txt.password_do_not_match' => 'Passwords do not match!',
 	'txt.regex_mdp' => 'Password must be at least eight characters long, at least one uppercase letter, one lowercase letter, one number and one special character',
+	'txt.regex_pdf' => 'Fichier non accépté. Veuillez choisir le bon fichier pdf !',
+	'txt.file_sent' => 'File successfully sent !',
 	'txt.password_error' => 'Password error !',
 	'txt.name_num_of_the_road' => 'Name and n° of road',
 	'txt.for_information' => 'for information',
@@ -1278,4 +1280,8 @@ return
 	'txt.alert_success_sba' => '<p>Hi,</p> <p class=&quot;p-10px-tb&quot;>We acknowledge receipt of your "Invest in Australia" Seller by AFA registration form. The entire IEA portal team thanks you for this mark of confidence.</p> <p>In order to make sure that you are not a machine we have sent you an email to the email address you gave us.</p><p class=&quot;p-10px-tb&quot;>Please open the message sent and confirm your registration by clicking on the link that will be indicated to you.</p><p class=&quot;p-10px-tb&quot;>Looking forward to your confirmation,</p><p class=&quot;p-10px-tb&quot;>With our best regards</p><p class=&quot;p-10px-tb&quot;>L&rsquo;équipe Investir en Australie Team</p>',
 	'txt.alert_success_afa' => '<p>Hi,</p> <p class=&quot;p-10px-tb&quot;>We acknowledge receipt of your "Invest in Australia" Australian Francophone Agency registration form. The entire IEA portal team thanks you for this mark of confidence.</p> <p>In order to make sure that you are not a machine we have sent you an email to the email address you gave us.</p><p class=&quot;p-10px-tb&quot;>Please open the message sent and confirm your registration by clicking on the link that will be indicated to you.</p><p class=&quot;p-10px-tb&quot;>Looking forward to your confirmation,</p><p class=&quot;p-10px-tb&quot;>With our best regards</p><p class=&quot;p-10px-tb&quot;>L&rsquo;équipe Investir en Australie Team</p>',
 	'txt.alert_success_apl' => '<p>Hi,</p> <p class=&quot;p-10px-tb&quot;>We acknowledge receipt of your "Invest in Australia" Local Partenaire Agency registration form. The entire IEA team warmly thanks you for this mark of confidence.</p> <p>In order to make sure that you are not a machine we have sent you an email to the email address you gave us.</p><p class=&quot;p-10px-tb&quot;>Please open the message sent and confirm your registration by clicking on the link that will be indicated to you.</p><p class=&quot;p-10px-tb&quot;>Looking forward to your confirmation,</p><p class=&quot;p-10px-tb&quot;>With our best regards</p><p class=&quot;p-10px-tb&quot;>L&rsquo;équipe Investir en Australie Team</p>',
+	'txt.submit_contract_signed' => 'Submit contract signed',
+	'txt.please_choose_your_signed_contract' => 'Please choose your signed contract',
+	'txt.contract_validated' => 'Your contract is already validated! !',
+	'txt.contract_awaiting_validation' => 'Your contract is awaiting validation !',
 ];
