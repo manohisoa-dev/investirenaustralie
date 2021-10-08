@@ -449,6 +449,13 @@
     THE.tooltip(),
     THE.typedbox(),
 		THE.Owl();
+
+		var btnConnexionElmt = $('#btn-connexion') ;
+		if(btnConnexionElmt.length){
+			$('#btn-connexion').click(function(){
+				console.log('ici') ;
+			}) ;
+		}
 	});
 
 	// Document on Scrool

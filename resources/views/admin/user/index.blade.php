@@ -248,7 +248,7 @@
 										<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.contact', ['user_id' => $record->uid]):route('admin.user.contact', ['user_id' => $record->uid])}}" class="btn btn-default btn-circle" title="@lang('app.btn.contact')">
 											<i class="fa fa-envelope" aria-hidden="true"></i>
 										</a>&nbsp;&nbsp;
-										<a href="#" class="btn btn-default btn-circle" title="">
+										<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show.message', ['user_id' => $record->uid]):route('admin.user.show.message', ['user_id' => $record->uid])}}" class="btn btn-default btn-circle" title="">
 											<i class="fa fa-comment	" aria-hidden="true"></i>
 										</a>&nbsp;&nbsp;
 										{{ csrf_field() }}

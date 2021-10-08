@@ -15,6 +15,11 @@
 <meta name="description" content="{{option('site.meta_desc', 'IEA')}}">
 <meta name="keywords" content="{{option('site.meta_keywords', 'IEA, Investir')}}">
 
+@php
+    $mytime = Carbon\Carbon::now();
+    $mytime->toDateTimeString()
+@endphp
+
 <!-- Mombo -->
 {{-- <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"> --}}
     <!-- plugin CSS -->
@@ -25,9 +30,9 @@
 <link href="{{ asset('plugin/owl-carousel/css/owl.carousel.min.css') }}" rel="stylesheet">
 <link href="{{ asset('plugin/magnific/magnific-popup.css') }}" rel="stylesheet">
 <!-- theme css -->
-<link href="{{ asset('style/master.css') }}" rel="stylesheet">
-<link href="{{ asset('style/app.css') }}" rel="stylesheet">
-<link href="{{ asset('style/responsive.css') }}" rel="stylesheet">
+<link href="{{ asset('style/master.css?v='.$mytime) }}" rel="stylesheet">
+<link href="{{ asset('style/app.css?v='.$mytime) }}" rel="stylesheet">
+<link href="{{ asset('style/responsive.css?v='.$mytime) }}" rel="stylesheet">
 <!-- Fin Mombo -->
 
 <!-- dropzone -->
@@ -156,7 +161,8 @@
                         @endif
                             <ul class="nav justify-content-end links-white dropdown-dark-header">
                                 @if(!Auth::check())
-                                <li class="text-white font-weight-bold m-10px-l"><i class="fas fa-mouse-pointer"></i> <a href="{{route('login')}}" class="text-white font-weight-bold ">@lang('app.connexion')</a>
+                                <li class="text-white font-weight-bold m-10px-l" id="btn-connexion">
+                                    <i class="fas fa-mouse-pointer"></i> <a href="{{route('login')}}" class="text-white font-weight-bold ">@lang('app.connexion')</a>
                                 </li>
 
                                 <li class="text-white font-weight-bold m-40px-l bloc-registration"><i class="fas fa-sign-in-alt"></i> @lang('app.sinscrire') :
@@ -587,7 +593,7 @@
     <script src="{{ asset('plugin/mail/js/form.min.js') }}"></script>
     <script src="{{ asset('plugin/mail/js/script.js') }}"></script>
     <!-- custom js -->
-    <script src="{{ asset('js/custom.js') }}"></script>
+    <script src="{{ asset('js/custom.js?v='.$mytime) }}"></script>
     <!-- end -->
     <!-- cookie js -->
     <script src="{{ asset('plugin/cookie/herbyCookie.min.js') }}"></script>

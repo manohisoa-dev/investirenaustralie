@@ -23,6 +23,10 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Image;
 use App\Models\RelationMembreApl;
 use App\Models\Userinfo;
+use App\Models\Localisation;
+use App\Models\Message;
+use DB;
+use Carbon\Carbon;
 
 class UserController extends Controller {
     public $viewDir = "admin.user";
@@ -72,6 +76,17 @@ class UserController extends Controller {
             'statuts' => $statuts, 'userRole' => $userRole, 'link' => $link]);
     }
 
+    public function showMessage() {
+        $id_admin = Auth::id();
+        $id_user = $_GET['user_id'];
+        $user = User::find($id_user);
+        $user_admin = User::find($id_admin);
+        $results = DB::select("SELECT * FROM `messages` WHERE (`from_id` = $id_admin and `to_id` = $id_user) or (`from_id` = $id_user and `to_id` = $id_admin) ORDER BY `messages`.`created_at` ASC");
+
+        return $this->view("message", ['conversation' => $results, 'id_user' => $id_user,
+            'user' => $user, 'user_admin' => $user_admin]);
+    }
+
     public function showAfa() {
         $this->middleware('auth');
         $this->middleware('role:1');
@@ -91,7 +106,8 @@ class UserController extends Controller {
             $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path' =>
                 url('admin/user/show/afa')]);
         } else {
-            $users_array = User::where('role', 3)->get();
+            //$users_array = User::where('role', 3)->get();
+            $users_array = User::findRequested()->where('role', 3);
             $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path' =>
                 url('admin/user/show/afa')]);
         }
@@ -252,9 +268,9 @@ class UserController extends Controller {
             $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path' =>
                 url('admin/user/show/collaborator')]);
         } else {
-            $users_array = User::where('role', 6)->join('localizations',
-                'localizations.id', '=', 'users.location_id')->select('users.id AS uid',
-                'users.name AS name', 'users.image_id AS image_id', 'users.email as email',
+            $users_array = User::where('role', 6)->join('localizations', 'localizations.id',
+                '=', 'users.location_id')->select('users.id AS uid', 'users.name AS name',
+                'users.image_id AS image_id', 'users.email as email',
                 'users.created_at as created_at', 'users.role as role', 'users.status as status',
                 'users.author_id as author_id', 'localizations.country as country',
                 'localizations.locality as locality', 'users.type_users_id as type_users_id')->get();
@@ -346,13 +362,20 @@ class UserController extends Controller {
             $datas['image_id'] = $image->id > 0 ? $image->id : 0;
         }
 
+        $id_localisation = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
+            $request->ville, $request->display_address);
+        $datas['location_id'] = $id_localisation;
+
         try {
             // Create user
             unset($datas['type']);
             $user = User::create($datas);
             // $user->handles($request);
             $userInfo = new Userinfo();
-            
+            $userInfo->first_name = $request->first_name;
+            $userInfo->last_name = $request->last_name;
+            $userInfo->user_id = $user->id;
+            $userInfo->save();
 
         }
         catch (\Exception $exception) {
@@ -514,9 +537,8 @@ class UserController extends Controller {
             $mail->content = $value;
         return $this->view("contact", ['user' => $user, 'mail' => $mail]);
     }
-    
-    public function contacterUser(Request $request)
-    {
+
+    public function contacterUser(Request $request) {
         $mail = new Email();
         $mail->subject = $request->subject;
         $mail->content = $request->content;
@@ -541,6 +563,31 @@ class UserController extends Controller {
         User::where('id', $request->id_membre)->update(['apl_id' => 0, 'apl_ends_at' =>
             '']);
         return response()->json(['success' => 'true']);
+    }
+
+    function save_location($country, $suburb, $postalCode, $locality, $route) {
+        $adresse = $route . ', ' . $locality . ' ' . $postalCode . ', ' . $country;
+        $coordonne_tab = geocodeAddress($adresse);
+        if ($coordonne_tab) {
+            $latitude = $coordonne_tab['lat'];
+            $longitude = $coordonne_tab['lng'];
+        } else {
+            $latitude = '';
+            $longitude = '';
+        }
+
+        $location = new Localisation();
+        $location->country = $country;
+        $location->area_level_1 = $suburb;
+        $location->postalCode = $postalCode;
+        $location->longitude = $longitude;
+        $location->latitude = $latitude;
+        $location->locality = $locality;
+        $location->route = $route;
+        $location->author_id = Auth::user()->id;
+
+        $location->save();
+        return $location->id;
     }
 
 }

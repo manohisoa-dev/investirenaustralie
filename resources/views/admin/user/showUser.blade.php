@@ -225,7 +225,7 @@
 									<i class="fa fa-chain text-success"></i>
 								</a>&nbsp;&nbsp;
 								@endif
-								<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.part.show', ['user_role' => App\Models\Role::where('id',$record->role)->first()->role_initial,'user_id' => $record->uid]):route('admin.user.part.show', ['user_role' => App\Models\Role::where('id',$record->role)->first()->role_initial,'user_id' => $record->uid])}}" class="btn btn-default btn-circle" title="@lang('app.btn.view')">
+								<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show', ['user_id' => $record->uid]):route('admin.user.show', ['user_id' => $record->uid])}}" class="btn btn-default btn-circle" title="@lang('app.btn.view')">
 									<i class="fa fa-info text-success"></i>
 								</a>&nbsp;&nbsp;
 								@if($record->status=='active')
@@ -240,7 +240,7 @@
 								<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.contact', ['user_id' => $record->uid]):route('admin.user.contact', ['user_id' => $record->uid])}}" class="btn btn-default btn-circle" title="@lang('app.btn.contact')">
 									<i class="fa fa-envelope" aria-hidden="true"></i>
 								</a>&nbsp
-								<a href="#" class="btn btn-default btn-circle" title="">
+								<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show.message', ['user_id' => $record->uid]):route('admin.user.show.message', ['user_id' => $record->uid])}}" class="btn btn-default btn-circle" title="">
 									<i class="fa fa-comment	" aria-hidden="true"></i>
 								</a>&nbsp;&nbsp;
 								{{ csrf_field() }}

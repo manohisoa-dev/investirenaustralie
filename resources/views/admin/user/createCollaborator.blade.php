@@ -29,7 +29,7 @@
                 <h5>@lang('app.txt.add_collaborator')</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-validation form-padding" action="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.store'):route('admin.user.store') }}" method="post"  enctype="multipart/form-data">
+                <form class="form-validation form-padding" action="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.store'):route('admin.user.store') }}" method="post"  enctype="multipart/form-data" id="form-collaborator">
 					<h3 class="m-t-none m-b">@lang('app.txt.login_info')</h3>
                     {{ csrf_field() }}
                     <div class="row">
@@ -47,18 +47,56 @@
 								<span class="text-danger">{{ $errors->has('email') ? $errors->first('email') : '' }}</span>
 							</div>
 						</div>
-						<div class="col-md-12 col-lg-6">                                    
+						<div class="col-md-12 col-lg-4">                                    
 							<div class="form-group">
-								<label for="first_name">@lang('app.form.first_name')</label>
+								<label for="first_name">@lang('app.form.first_name')*</label>
 								<input name="first_name" id="first_name" class="form-control" type="text" value="">
 							</div>
 						</div>
-						<div class="col-md-12 col-lg-6">                                    
+						<div class="col-md-12 col-lg-4">                                    
 							<div class="form-group">
 								<label for="last_name">@lang('app.form.last_name')</label>
 								<input name="last_name" id="last_name" class="form-control" type="text" value="">
 							</div>
-						</div>  	
+						</div>  
+						<!-- info localisation -->
+						<div class="col-md-12 col-lg-4">                                    
+							<div class="form-group">
+								<label for="last_name">@lang('app.form.programme_adresse') *</label>
+								<input name="display_address" id="display_address" class="form-control" type="text" value="">
+							</div>
+						</div> 
+						
+						<div class="col-md-12 col-lg-3">                                    
+							<div class="form-group">
+								<label for="last_name">@lang('app.form.programme_ville')*</label>
+								<input name="ville" id="ville" class="form-control" type="text" value="">
+							</div>
+						</div> 
+						<div class="col-md-12 col-lg-3">                                    
+							<div class="form-group">
+								<label for="last_name">@lang('app.form.programme_suburb')*</label>
+								<input name="suburb" id="suburb" class="form-control" type="text" value="">
+							</div>
+						</div> 
+						<div class="col-md-12 col-lg-3">                                    
+							<div class="form-group">
+								<label for="last_name">@lang('app.form.programme_cp') *</label>
+								<input name="postalCode" id="postalCode" class="form-control" type="text" value="">
+							</div>
+						</div> 
+						<div class="col-md-12 col-lg-3">                                    
+							<div class="form-group">
+								<label for="last_name">@lang('app.form.programme_pays')</label>
+								<select class="form-control" name="countryId" id="countryId" style="width:100%">
+									@foreach(\App\Models\Country::where('id',12)->get() as $country)
+										<option value="{{$country->id}}">{{$country->content}}</option>
+									@endforeach
+								</select>
+							</div>
+						</div>
+						<!-- info localisation -->
+						
 						<div class="col-md-12 col-lg-6">   
 							<div class="form-group">
 								<label for="password">@lang('app.password') *</label>
@@ -144,6 +182,8 @@
 		content: "{{ trans('app.form.choose_file') }}";
 	}
 </style>
+<!-- Jquery Validate -->
+<script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
 <script>
 $(document).ready(function(){
 	$('#role').change(function() {
@@ -224,6 +264,65 @@ $(document).ready(function(){
 		$('#btn_show_password').show();
 
 		return $(this).hide();
+	});
+	
+	$('#form-collaborator').validate({
+		ignore: [],
+		rules: {
+			login: {
+				required: true
+			},
+			email: {
+				required: true,
+				email: true
+			},
+			first_name: {
+				required: true
+			},
+			display_address: {
+				required: true
+			},
+			ville: {
+				required: true
+			},
+			suburb: {
+				required: true
+			},
+			postalCode: {
+				required: true
+			}
+		},
+		messages: {
+			login: {
+				required: "@lang('app.txt.champobligatoire')"
+			},
+			email: {
+				required: "@lang('app.txt.champobligatoire')",
+				email: "Enter valid email"
+			},
+			first_name: {
+				required: "@lang('app.txt.champobligatoire')"
+			},
+			display_address: {
+				required: "@lang('app.txt.champobligatoire')"
+			},
+			ville: {
+				required: "@lang('app.txt.champobligatoire')"
+			},
+			suburb: {
+				required: "@lang('app.txt.champobligatoire')"
+			},
+			postalCode: {
+				required: "@lang('app.txt.champobligatoire')"
+			}
+		},
+		errorPlacement: function ( error, element ) {
+			if(element.parent().hasClass('input-group')){
+				error.insertAfter( element.parent() );
+			}else{
+				error.insertAfter( element );
+			}
+		},
 	});
 });
 </script>

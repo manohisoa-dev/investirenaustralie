@@ -30,17 +30,15 @@ class ProfileController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        if (Auth::user()->isAdmin() || Auth::user()->isAdminBlog() || Auth::user()->isAdminDelegate()) {
+        if (Auth::user()->isAdmin() || Auth::user()->isAdminBlog() || Auth::user()->isAdminDelegate
+            ()) {
             $view = view('admin.user.profile');
-        }else {
+        } else {
             $view = view('backend.user.profile');
         }
 
-        return 
-        $view->with('title', __('app.profile'))
-        ->with('item', Auth::user())
-        ->with('location',Auth::user()->location)
-        ->with('breadcrumbs', __('app.profile'));
+        return $view->with('title', __('app.profile'))->with('item', Auth::user())->with('location',
+            Auth::user()->location)->with('breadcrumbs', __('app.profile'));
     }
 
     /**
@@ -109,9 +107,9 @@ class ProfileController extends Controller {
                     '|max:100', 'orga_phone' => 'required|max:100', 'orga_website' =>
                     'required|url|max:100', 'orga_operation_state' => 'required|max:100',
                     'orga_operation_range' => 'required|max:100', 'contact_name' =>
-                        'required|max:100', 'contact_email' => 'required|max:100', 'contact_phone' =>
-                        'required|max:100', 'crm_name' => 'required|max:100', 'crm_email' =>
-                        'required|max:100', ];
+                    'required|max:100', 'contact_email' => 'required|max:100', 'contact_phone' =>
+                    'required|max:100', 'crm_name' => 'required|max:100', 'crm_email' =>
+                    'required|max:100', ];
                 break;
             case 2:
                 $rules = ['orga_name' => 'required|max:100', 'orga_presentation' =>
@@ -220,29 +218,35 @@ class ProfileController extends Controller {
 
         $user = Auth::user();
 
+        Localisation::where('id', $user->location_id)->update(['area_level_1' => $request->area_level_1,
+            'country' => $request->country, 'postalCode' => $request->postalCode, 'locality' =>
+            $request->locality, 'route' => $request->route, 'longitude' => $request->longitude,
+            'latitude' => $request->latitude]);
+
         // Create Localization
-        $datas = $request->all();
+        /*$datas = $request->all();
         if ($location = $user->location) {
-
-            $location->fill($datas);
-
-            // Success
-            Notify::success('Votre location a été bien modifiée.');
-            return back();
-        } else
-            if ($location = Localisation::create($datas)) {
-                $user->location_id = $location->id > 0 ? $location->id : 0;
-            }
-        try {
-            $user->save();
-        }
-        catch (\Exception $e) {
-            Notify::error($e->getMessage());
-            return back();
-        }
+        dd($location);
+        $location->fill($datas);
 
         // Success
-        Notify::success('Votre location a été bien ajoutée.');
+        Notify::success('Votre location a été bien modifiée.');
+        return back();
+        } else
+        dd('2');
+        if ($location = Localisation::create($datas)) {
+        $user->location_id = $location->id > 0 ? $location->id : 0;
+        }
+        try {
+        $user->save();
+        }
+        catch (\Exception $e) {
+        Notify::error($e->getMessage());
+        return back();
+        }*/
+
+        // Success
+        Notify::success('Votre location a été bien modifiée.');
         return back();
     }
 
