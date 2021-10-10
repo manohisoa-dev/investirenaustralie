@@ -520,6 +520,62 @@
         </div>
     @endif
 
+    {{-- Alert message Modal --}}
+    @if (session()->get('alert_message'))
+        <div id="alertMessageModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content white-bg">
+                    <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
+                        <h4 class="modal-title white-color text-center">{{ strtoupper(trans('app.message')) }} </h4>
+                    </div>
+                    <div class="modal-body">
+                        {!! session()->get('alert_message') !!}
+                    </div>
+                    <div class="modal-footer">
+                        <a type="button" class="m-btn m-btn-theme2nd" href="javascript:void(0)" data-dismiss="modal">@lang('app.btn.ok')</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    {{-- Upload contract Modal --}}
+    @if(Request::get("action") === 'submit_contract')
+        <div id="submitContractModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content white-bg">
+                    <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
+                        <h4 class="modal-title white-color text-center">{{ strtoupper(trans('app.txt.submit_contract_signed')) }} </h4>
+                        <button type="button" class="close" data-dismiss="modal" onclick="closeModal()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    
+                    @php
+                        // $user = App\Models\User::whereId(Request::get('id'))->first();
+                        // var_dump($user->contract());
+                    @endphp
+
+                    <div class="modal-body"> 
+                        <form action="" id="formSendContract" method="get" enctype="multipart/form-data">
+                            <div class="form-group ">
+                                <input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="user_id" id="user_id" value="{{ Request::get('id')?Request::get('id'):'' }}">
+                                <label for="">@lang('app.txt.please_choose_your_signed_contract') *</label>
+                                <input type="file" name="file_contract" id="file_contract">
+                            </div>
+                            <hr/>
+                            <div class="input-group">
+                                <a type="button" class="m-btn m-btn-theme m-10px-r" href="javascript:void(0)" data-dismiss="modal" id="btn_cancel_contract">@lang('app.btn.cancel')</a>
+                                <button type="submit" class="m-btn m-btn-theme2nd" id="btn_send_contract">@lang('app.btn.send')</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <!-- jquery -->
     <script src="{{ asset('js/jquery-3.0.0.min.js') }}"></script>
     <script src="{{ asset('js/jquery-migrate-3.0.0.min.js') }}"></script>
@@ -556,6 +612,113 @@
 	<script src="{{ asset('administrator/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
     {{-- dateformat script --}}
     <script src="{{ asset('/js/jquery-dateFormat.min.js') }}"></script>
+    <!-- Jquery Validate -->
+    <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
+    <script>
+        $.validator.addMethod('regex', function (value, element) {
+            // 8 caractères min : 1 letter maj, 1 letter min, 1 number 1 car spéciaux
+            return this.optional(element) || value.match(/^[^+]+\.pdf$/);
+        }, '@lang("app.txt.regex_pdf")');
+
+        $('#formSendContract').validate({
+            ignore: [],
+            rules: {
+                file_contract: {
+                    required: true,
+                    regex: true,
+                },
+            },
+            messages: {
+                file_contract: {
+                    required: "@lang('app.txt.champobligatoire')",
+                },
+            },
+            errorPlacement: function ( error, element ) {
+                if(element.parent().hasClass('input-group')){
+                    error.insertBefore( element.parent() );
+                }else{
+                    error.insertAfter( element );
+                }
+            },
+        });
+
+        $('#formSendContract').submit(function(e) { 
+            if ($('#formSendContract').valid()) {
+                e.preventDefault();
+                var fileToUpload = new FormData();
+                
+                // Show loading icon
+                loadingPage();
+                
+                fileToUpload.append('_token', $( '#csrf_token' ).val() );
+                fileToUpload.append('user_id', $( '#user_id' ).val() );
+                fileToUpload.append('file_contract', $( '#file_contract' )[0].files[0] );                
+                $.ajax({
+                    url: "{{route('confirm.registration.send.contract')}}",
+                    type:"POST",
+                    data: fileToUpload,
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    dataType:'json',
+                    enctype: 'multipart/form-data',
+                    success: function( data ){
+                        // hide loading icon
+                        stopLoadingPage();
+
+                        if(data.response == 'true'){
+                            //  show loading icon
+                            loadingPage();
+
+                            swal({
+                                title: "{{ trans('app.txt.submit_contract_signed') }}", 
+                                text: "{{ trans('app.txt.file_sent') }}", 
+                                type: "success"
+                                },
+                                function(){ 
+                                    // hide modal
+                                    $('#submitContractModal').modal('hide');
+                                    
+                                    // go to home page
+                                    window.location.href= "{{route('home')}}";
+                                }
+                            );
+                        }else{
+                            if(data.status == 2){
+                                swal("{{ trans('app.txt.submit_contract_signed') }}", "{{ trans('app.txt.contract_validated') }}", "info");
+                                // go to home page
+                                window.location.href= "{{route('home')}}";
+                            }
+                            else if(data.status == 1){
+                                swal("{{ trans('app.txt.submit_contract_signed') }}", "{{ trans('app.txt.contract_awaiting_validation') }}", "info");
+                                // go to home page
+                                window.location.href= "{{route('home')}}";
+                            }
+                            else{
+                                swal("{{ trans('app.txt.submit_contract_signed') }}", "{{ trans('app.txt.upload_error') }}", "error");
+                            }
+                        }
+                    },
+                    error:function(){
+                        // hide loading icon
+                        stopLoadingPage();
+                        swal("{{ trans('app.txt.submit_contract_signed') }}", "{{ trans('app.txt.upload_error') }}", "error");
+                    }
+                });
+
+
+            } else {
+                stopLoadingPage();
+            }
+        });
+    </script>
+    <style>
+        .error {
+            color: #F00;
+            background-color: #FFF;
+        }
+    </style>
+    <!-- End Jquery Validate -->
     {{-- Tooltip css style --}}
     <style>
         .tooltip-inner {
@@ -618,7 +781,32 @@
                     $('#memberHasDossierTransactionModal').modal('show');
                 }
             }
+
+            // Show notification message if exist
+            if('{{ session()->get("alert_message") }}'){
+                $('#alertMessageModal').modal('show');
+            }
+
+            // Show upload registration contract modal
+            if('{{ Request::get("action") }}' === 'submit_contract'){
+                $('#submitContractModal').modal('show');
+            }
         });
+
+        $('#btn_cancel_contract').click(function(){
+            swal({
+                title: "@lang('app.txt.submit_contract_signed')",
+                text: "@lang('app.txt.operation_canceled')",
+                type: "error",
+                confirmButtonColor: '#D0D0D0',
+                confirmButtonText: "@lang('app.btn.close')",
+                showCancelButton: false,
+                showConfirmButton: true,
+            },
+            function(){
+                window.location.href="{{ route('home') }}";
+            });
+        })
 
         $('#btnOkNotifTrans').click(function(){
             // 1: notificaiton seen

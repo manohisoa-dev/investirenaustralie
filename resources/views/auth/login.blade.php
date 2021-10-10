@@ -18,7 +18,6 @@
                             </div>
                             <form action="{{route('login')}}" method="post">
                                 {{ csrf_field() }}
-
                                 <div class="form-group">
                                     <label class="form-control-label">@lang('app.txt.email')</label>
                                     <input type="email" name="email" class="form-control" placeholder="@lang('app.txt.your.email') *" required="required" value="{{ old('email') }}" autofocus>

@@ -32,6 +32,11 @@
 @component('mail::button', ['url' => $actionUrl, 'color' => $color])
 {{ $actionText }}
 @endcomponent
+@if(isset($actionUrl2))
+@component('mail::button', ['url' => $actionUrl2, 'color' => $color])
+{{ $actionText2 }}
+@endcomponent
+@endif
 @endisset
 
 {{-- Outro Lines --}}

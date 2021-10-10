@@ -85,8 +85,8 @@
                                                 <div class="col-sm-12">
                                                     <select class="form-control" name="type" id="type" required>
                                                         <option value="" selected disabled>@lang('app.form.choix_txt')</option>
-                                                        <option value="Real Estate Agency"> @lang('app.txt.real_estate_agency')</option>
-                                                        <option value="Business Broker"> @lang('app.txt.business_broker')</option>
+                                                        <option value="Real Estate Agency" {{ old('type')?(old('type')==='Real Estate Agency'?'selected':''):'' }} > @lang('app.txt.real_estate_agency')</option>
+                                                        <option value="Business Broker" {{ old('type')?(old('type')==='Business Broker'?'selected':''):'' }}> @lang('app.txt.business_broker')</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -171,14 +171,14 @@
                                             <div class="form-group">
                                                 <label for="orga_website" class="col-sm-12 control-label">@lang('app.txt.websiteurl') *</label>
                                                 <div class="col-sm-12">
-                                                    <input type="text" class="form-control" id="orga_website" name="orga_website" placeholder="Ex: http://www.iea.com" value="{{ old('orga_website')?old('"orga_website'):'' }}" required>
+                                                    <input type="text" class="form-control" id="orga_website" name="orga_website" placeholder="Ex: http://www.iea.com" value="{{ old('orga_website')?old('orga_website'):'' }}" required>
                                                     <span class="text-danger">{{ $errors->first('orga_website') }}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="orga_presentation" class="col-sm-12 control-label">@lang('app.txt.businesspresentation')</label>
                                                 <div class="col-sm-12">
-                                                    <textarea class="form-control" id="orga_presentation" name="orga_presentation" maxlength="2000" rows="10">{{ old('orga_presentation')?old('"orga_presentation'):'' }}</textarea>
+                                                    <textarea class="form-control" id="orga_presentation" name="orga_presentation" maxlength="2000" rows="10">{{ old('orga_presentation')?old('orga_presentation'):'' }}</textarea>
                                                     <span class="text-danger">{{ $errors->first('orga_presentation') }}</span>
                                                 </div>
                                             </div>

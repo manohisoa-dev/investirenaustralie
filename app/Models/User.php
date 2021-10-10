@@ -13,6 +13,7 @@ use Session;
 use App\Models\Product;
 use App\Models\SellerIndividual;
 use App\Models\SellerBusiness;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable {
     use Notifiable;
@@ -1233,6 +1234,65 @@ class User extends Authenticatable {
         }
 
         return '';
+    }
+
+    public function deleteUser(){
+        DB::table('users')->where('id', $this->id)->delete();
+        DB::table('localizations')->where('id', $this->location_id)->delete();
+
+        return '';
+    }
+
+    public function contract(){
+        return $this->hasMany(Contract::class,'user_id','id')->first();
+    }
+
+    public function isToSignContract(){
+        $contr = Contract::whereRaw('id = (select max(`id`) from contracts where user_id=?)',[$this->id])->first();
+        if (sizeof($contr) > 0) {
+            if($contr->status_contract == 0)
+                return true;
+            else
+                return false;
+        }
+
+        return false;
+    }
+
+    public function isSigned(){
+        $contr = Contract::whereRaw('id = (select max(`id`) from contracts where user_id=?)',[$this->id])->first();
+        if (sizeof($contr) > 0) {
+            if($contr->status_contract == 1)
+                return true;
+            else
+                return false;
+        }
+
+        return false;
+    }
+    
+    public function isValidate(){
+        $contr = Contract::whereRaw('id = (select max(`id`) from contracts where user_id=?)',[$this->id])->first();
+        if (sizeof($contr) > 0) {
+            if($contr->status_contract == 2)
+                return true;
+            else
+                return false;
+        }
+
+        return false;
+    }
+    
+    public function isRejected(){
+        $contr = Contract::whereRaw('id = (select max(`id`) from contracts where user_id=?)',[$this->id])->first();
+        if (sizeof($contr) > 0) {
+            if($contr->status_contract == 3)
+                return true;
+            else
+                return false;
+        }
+
+        return false;
     }
 
 

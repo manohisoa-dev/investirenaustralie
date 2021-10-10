@@ -108,8 +108,26 @@ Route::middleware('guest')->group(function(){
     Route::post('login/sellerByAfa', 'Auth\LoginController@loginSellerByAfa')->name('login.sellerbyafa');
     Route::get('ajaxCheckLogin', 'Auth\RegisterController@ajaxCheckLogin')->name('ajaxCheckLogin');
     Route::get('ajaxCheckEmail', 'Auth\RegisterController@ajaxCheckEmail')->name('ajaxCheckEmail');
-    Route::get('confirmRegistration/{user}/{password}', 'Auth\RegisterController@confirmRegistration')->name('confirm.registration');
+    Route::get('confirmRegistration/{user}', 'Auth\RegisterController@confirmRegistration')->name('confirm.registration');
+    Route::get('confirm-registration/afa/{user}/email', 'Auth\RegisterController@confirmRegistrationAfaEmail')->name('confirm.registration.afa.email');
+    Route::get('confirm-registration/afa/abandon/get-contract/{user}', 'Auth\RegisterController@confirmRegistrationAfaAbandonGetContract')->name('confirm.registration.afa.abandon.get_contract');
+    Route::get('confirm-registration/afa/continue/get-contract/{user}', 'Auth\RegisterController@confirmRegistrationAfaContinueGetContract')->name('confirm.registration.afa.continue.get_contract');
+    Route::get('confirm-registration/apl/{user}/email', 'Auth\RegisterController@confirmRegistrationAPlEmail')->name('confirm.registration.apl.email');
+    Route::get('confirm-registration/apl/abandon/get-contract/{user}', 'Auth\RegisterController@confirmRegistrationAplAbandonGetContract')->name('confirm.registration.apl.abandon.get_contract');
+    Route::get('confirm-registration/apl/continue/get-contract/{user}', 'Auth\RegisterController@confirmRegistrationAplContinueGetContract')->name('confirm.registration.apl.continue.get_contract');
+    Route::post('confirm-registration/send-contract', 'Auth\RegisterController@confirmRegistrationSendContract')->name('confirm.registration.send.contract');
+    
+    // route validation and reject contract in admin
+    Route::get('confirm-registration/validated-contract/{id_contract}', 'Auth\RegisterController@validateContract')->name('confirm.registration.validate.contract');
+    Route::get('confirm-registration/rejected-contract/{id_contract}', 'Auth\RegisterController@rejectedContract')->name('confirm.registration.rejected.contract');
+    // Cron to check contract rejected delai
+    Route::get('confirm-registration/check-contract', 'Auth\RegisterController@checkContractDelai')->name('confirm.registration.check.contract');
+
 });
+
+// Vue pdf contract afa et apl
+Route::get('afa-contract', 'Auth\RegisterController@afaContract');
+Route::get('apl-contract', 'Auth\RegisterController@aplContract');
 
 Route::middleware(["auth"])->group(function(){
     // Notification

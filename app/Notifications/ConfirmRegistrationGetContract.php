@@ -6,12 +6,11 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use App\Models\Config;
 
-class RegistrationConfirmedMessage extends Notification
+class ConfirmRegistrationGetContract extends Notification
 {
     use Queueable;
-    private $sujet;
+    private $subject;
     private $content;
 
     /**
@@ -19,9 +18,9 @@ class RegistrationConfirmedMessage extends Notification
      *
      * @return void
      */
-    public function __construct($sujet,$content)
+    public function __construct($subject,$content)
     {
-        $this->sujet = $sujet;
+        $this->subject = $subject;
         $this->content = $content;
     }
 
@@ -44,12 +43,12 @@ class RegistrationConfirmedMessage extends Notification
      */
     public function toMail($notifiable)
     {
-        $sujet = $this->sujet;
+        $subject = $this->subject;
         $content = $this->content;
-
+        
         return (new MailMessage)
             ->from(env('ADMIN_MAIL'))
-            ->subject('['.app_name().']'.' '.$sujet)
+            ->subject('['.app_name().'] ' . $subject)
             ->line($content);
     }
 

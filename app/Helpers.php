@@ -595,6 +595,23 @@ if (!function_exists('geocodeAddress')) {
     }
 }
 
+if(!function_exists('storeFile')){
+    function storeFile($file,$path){
+        // Get filename with the extension
+        $filenameWithExt = $file->getClientOriginalName();
+        //Get just filename
+        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+        // Get just ext
+        $extension = $file->getClientOriginalExtension();
+        // Filename to store
+        $fileNameToStore = $filename.'.'.$extension;
+        // Upload Image
+        $path = $file->move($path, $fileNameToStore);
+
+        return false;
+    }
+}
+
 
 if (!function_exists('imageResizeUrl')) {
     function imageResizeUrl($path, $width = NULL, $height = NULL,$quality=NULL,$crop=NULL) {
