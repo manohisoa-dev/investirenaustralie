@@ -39,7 +39,9 @@
                     <tr class="header-row">
 						{!!\Nvd\Crud\Html::sortableTh('id','admin.model-message.index','Id')!!}
 						{!!\Nvd\Crud\Html::sortableTh('titre','admin.model-message.index','Titre')!!}
-						{!!\Nvd\Crud\Html::sortableTh('message','admin.model-message.index','Message')!!}
+						{!!\Nvd\Crud\Html::sortableTh('message_fr','admin.model-message.index','Message Fr')!!}
+						{!!\Nvd\Crud\Html::sortableTh('message_en','admin.model-message.index','Message En')!!}
+						{!!\Nvd\Crud\Html::sortableTh('params','admin.model-message.index','Params')!!}
 						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.model-message.index','Created At')!!}
 						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.model-message.index','Updated At')!!}
 						<th><a href="javascript:void(0)">Actions</a></th>
@@ -48,7 +50,9 @@
                         <form class="search-form">
 							<td><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
 							<td><input type="text" class="form-control" name="titre" value="{{Request::input("titre")}}"></td>
-							<td><input type="text" class="form-control" name="message" value="{{Request::input("message")}}"></td>
+							<td><input type="text" class="form-control" name="message_fr" value="{{Request::input("message_fr")}}"></td>
+							<td><input type="text" class="form-control" name="message_en" value="{{Request::input("message_en")}}"></td>
+							<td></td>
 							<td><input type="text" class="form-control" name="created_at" value="{{Request::input("created_at")}}"></td>
 							<td><input type="text" class="form-control" name="updated_at" value="{{Request::input("updated_at")}}"></td>
 							<td style="min-width: 6em;">@include('vendor.crud.single-page-templates.common.search-btn')</td>
@@ -71,13 +75,23 @@
                               </td>
                               <td>
                                   <span class="editable"
-                                          data-type="number"
-                                          data-name="message"
-                                          data-value="{{ $record->message }}"
+                                          data-type="text"
+                                          data-name="message_fr"
+                                          data-value="{{ $record->message_fr }}"
                                           data-pk="{{ $record->{$record->getKeyName()} }}"
                                           data-url="{{ route('admin.model-message.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{str_limit(strip_tags($record->message),"100","...")}}</span>
+                                          >{{str_limit(strip_tags($record->message_fr),"100","...")}}</span>
                               </td>
+							  <td>
+                                  <span class="editable"
+                                          data-type="text"
+                                          data-name="message_en"
+                                          data-value="{{ $record->message_en }}"
+                                          data-pk="{{ $record->{$record->getKeyName()} }}"
+                                          data-url="{{ route('admin.model-message.index')}}/{{ $record->{$record->getKeyName()} }}"
+                                          >{{str_limit(strip_tags($record->message_en),"100","...")}}</span>
+                              </td>
+							  <td>{{$record->params}}</td>
                               <td>{{$record->created_at ? $record->created_at->diffForHumans() : ""}}</td>
                               <td>{{$record->updated_at ? $record->updated_at->diffForHumans() : ""}}</td>
 							  <td class="actions-cell">

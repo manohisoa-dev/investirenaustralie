@@ -17,7 +17,8 @@ class ModelMessage extends Model {
         // search results based on user input
         \Request::input('id') and $query->where('id',\Request::input('id'));
         \Request::input('titre') and $query->where('titre','like','%'.\Request::input('titre').'%');
-        \Request::input('message') and $query->where('message',\Request::input('message'));
+        \Request::input('message_fr') and $query->where('message_fr',\Request::input('message_fr'));
+        \Request::input('message_en') and $query->where('message_en',\Request::input('message_en'));
         \Request::input('created_at') and $query->where('created_at',\Request::input('created_at'));
         \Request::input('updated_at') and $query->where('updated_at',\Request::input('updated_at'));
         
@@ -32,7 +33,8 @@ class ModelMessage extends Model {
     {
         $rules = [
             'titre' => 'required|string|max:255',
-            'message' => 'required|string',
+            'message_fr' => 'required|string',
+            'message_en' => 'required|string',
         ];
 
         // no list is provided

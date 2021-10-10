@@ -42,8 +42,12 @@
 						<input name="titre" id="titre" class="form-control" type="text" value="">
 					</div>    
 					<div class="form-group">
-						<label for="contenu">@lang('app.message')</label>
-						<textarea name="message" id="contenu" class="form-control"></textarea>
+						<label for="contenu">@lang('app.message') fr</label>
+						<textarea name="message_fr" id="contenu" class="form-control"></textarea>
+					</div> 
+					<div class="form-group">
+						<label for="contenu">@lang('app.message') En</label>
+						<textarea name="message_en" id="contenu_en" class="form-control"></textarea>
 					</div> 
                     <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-save"></i> @lang('app.btn.create')</button>
                 </form>
@@ -59,6 +63,7 @@
 	<script>
         $(document).ready(function(){
             CKEDITOR.replace( 'contenu' );
+			CKEDITOR.replace( 'contenu_en' );
 		});
 	</script>
 @endsection

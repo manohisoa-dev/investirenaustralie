@@ -49,7 +49,7 @@
 									<small class="float-left">{{$elapsed}}</small>
 									<strong>{{$user_admin->name}}</strong>
 									<p class="m-b-xs">
-										{{$val->body}}
+										{!! $val->body !!}
 									</p>
 									<small class="text-muted">{!! htmlspecialchars_decode(date('l jS \\of F Y h:i:s A', strtotime($val->created_at))) !!}</small>
 								</div>
@@ -63,7 +63,7 @@
 									<small class="float-right text-navy">{{$elapsed}}</small>
 									<strong>{{$user->name}}</strong>
 									<p class="m-b-xs">
-										{{$val->body}}
+										{!! $val->body !!}
 									</p>
 									<small class="text-muted">{!! htmlspecialchars_decode(date('l jS \\of F Y h:i:s A', strtotime($val->created_at))) !!}</small>
 								</div>

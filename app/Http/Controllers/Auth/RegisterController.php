@@ -784,7 +784,7 @@ class RegisterController extends Controller
                         'mobile'=>$ausInd.$datas['mobile'], 
                         'email_adr'=>$datas['email_adr']
                     ]);
-
+                    
                     $si2= SellerIndividual::create([
                         'user_id'=>$user->id, 
                         'last_name'=>isset($datas['last_name_2'])?$datas['last_name_2']:'', 
@@ -802,6 +802,8 @@ class RegisterController extends Controller
                         'mobile'=>isset($datas['mobile_2'])?$ausInd.$datas['mobile_2']:'', 
                         'email_adr'=>isset($datas['email_adr_2'])?$datas['email_adr_2']:''
                     ]);
+                    dd($si);
+                    dd($si2);
                 }else{
                     if($type == 'business'){
                         $sb = SellerBusiness::create([

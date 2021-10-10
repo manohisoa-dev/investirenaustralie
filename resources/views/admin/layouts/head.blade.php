@@ -92,13 +92,13 @@
                         </li>
                         <li class="dropdown-divider"></li>
                     @endforeach
-                    <li>
+                    {{--<li>
                         <div class="text-center link-block">
                             <a href="{{route('admin.mail.index')}}" class="dropdown-item">
                                 <i class="fa fa-envelope"></i> <strong>@lang('app.txt.read_all_messages')</strong>
                             </a>
                         </div>
-                    </li>
+                    </li>--}}
                 </ul>
             </li>
 

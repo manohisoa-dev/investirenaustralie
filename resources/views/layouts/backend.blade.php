@@ -677,6 +677,7 @@
                             @endif
 
                             @If(Auth::user()->hasRole(3))
+							  {{--
 							  <a href="#properties" data-toggle="collapse" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ Request::is('nouveau-programmes') || Request::is('nouveau-produit') ? 'menu-active' : ''}}">
 									<div>
 										<i class="fa fa-industry m-10px-r"></i>
@@ -707,6 +708,7 @@
                                       <i class="fas fa-chevron-right"></i>
                                   </div>
                               </a>
+							  --}}
                               <a href="{{route('afa.orders')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('afa/orders')) ? 'menu-active' : '' }}">
                                   <div>
                                       <i class="fa fa-cart-plus m-10px-r"></i>
@@ -765,11 +767,13 @@
 									</div>
 								</a>								
 								<ul id="properties" class="collapse {{Request::is('nouveau-programmes') || Request::is('nouveau-produit') ? 'show' : ''}}" style="list-style:none">
+									@If(Auth::user()->hasTypeUser(3) || Auth::user()->hasTypeUser(4) || Auth::user()->hasTypeUser(8) || Auth::user()->hasTypeUser(9))
 									<li>
 										<a href="javascript:void(0)" id="newProgramm" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{Request::is('nouveau-programmes') ? 'menu-active' : ''}}">
 											@lang('app.admin.program.add')
 										</a>
 									</li>
+									@endif
 									<li>
 										<a href="javascript:void(0)" id="newProduct" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{Request::is('nouveau-produit') ? 'menu-active' : ''}}">
 											@lang('app.admin.product.add')

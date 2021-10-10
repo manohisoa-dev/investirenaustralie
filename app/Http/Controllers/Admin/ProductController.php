@@ -22,6 +22,8 @@ use App\Models\State;
 use Auth;
 use App;
 use Carbon\Carbon;
+use App\Models\Message;
+use App\Models\ModelMessage;
 
 
 use GuzzleHttp;
@@ -725,9 +727,38 @@ class ProductController extends Controller {
         $product->status = 'published';
         $product->validated_at = Carbon::now();
         $product->save();
+        //envoie message au vendeur
+        $this->send_msg_vendeur_after_validation_produit($product->id);
+        
         Notify::success('Le produit a été publié avec succés');
-
         return back();
+    }
+    
+    public function send_msg_vendeur_after_validation_produit($id_produit)
+    {
+        $product = Product::find($id_produit);
+        $localisation = Localisation::find($product->location_id);
+        $state = State::find($product->state_id);
+        $user = User::find($product->author_id);
+        $lang = $user->language;
+        $content_lab = 'message_'.$lang;
+        $message = ModelMessage::where('id', 3)->get();
+        if (count($message) > 0) {
+            $vars = array(
+                '{Date system}' => Carbon::now()->toFormattedDateString(),
+                '{Heure system}' => Carbon::now()->toTimeString(),
+                '{Nom Programme}' => $product->title,
+                '{Ville}' => $localisation->locality,
+                '{Etat}' => $state->content);
+            $contenu = strtr($message[0]->$content_lab, $vars);
+            
+            $item = new Message();
+            $item->type = 'admin';
+            $item->from_id = 1;
+            $item->body = $contenu;
+            $item->to_id = $user->id;
+            $item->save();
+        }
     }
 
     protected function view($view, $data = []) {
@@ -903,7 +934,36 @@ class ProductController extends Controller {
         $product = Product::find($request->id_produit);
         Product::where('parent_id', $product->id)->delete(); //suppression programme
         $product->delete();
+        //envoie message au vendeur 
+        $this->envoie_msg_rejet_a_condition_commission($request->id_produit);
         return response()->json(['success' => 'true']);
+    }
+    
+    public function envoie_msg_rejet_a_condition_commission($id_produit)
+    {
+        $product = Product::find($id_produit);
+        $localisation = Localisation::find($product->location_id);
+        $state = State::find($product->state_id);
+        $user = User::find($product->author_id);
+        $lang = $user->language;
+        $content_lab = 'message_'.$lang;
+        $message = ModelMessage::where('id', 2)->get();
+        if (count($message) > 0) {
+            $vars = array(
+                '{Date system}' => Carbon::now()->toFormattedDateString(),
+                '{Heure system}' => Carbon::now()->toTimeString(),
+                '{Nom Programme}' => $product->title,
+                '{Ville}' => $localisation->locality,
+                '{Etat}' => $state->content);
+            $contenu = strtr($message[0]->$content_lab, $vars);
+            
+            $item = new Message();
+            $item->type = 'admin';
+            $item->from_id = 1;
+            $item->body = $contenu;
+            $item->to_id = $user->id;
+            $item->save();
+        }        
     }
 
     public function ajaxChangeIconPhotoActive(Request $request) {
