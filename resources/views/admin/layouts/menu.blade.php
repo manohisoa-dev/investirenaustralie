@@ -38,7 +38,7 @@
 			--}}
         </ul>
     </li>
-    <li class="{{Request::is('*/user/*') || Request::is('*/user') || Request::is('*/role/*') || Request::is('*/role') || Request::is('*/type-user/*') || Request::is('*/type-user') ? 'active' : ''}}">
+    <li class="{{Request::is('*/user/*') || Request::is('*/user') || Request::is('*/role/*') || Request::is('*/role') || Request::is('*/type-user/*') || Request::is('*/contract') || Request::is('*/type-user') ? 'active' : ''}}">
         <a href="#">
             <i class="fa fa-users" title="Parties prenantes"></i> 
             <span class="nav-label">@lang('app.txt.stakeholders') </span><span class="fa arrow"></span>
@@ -85,6 +85,13 @@
             </li>
             <li class="">
                 <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.type-user.index'):route('admin.type-user.index')}}">@lang('app.txt.types')</a>
+            </li>
+            <hr>
+            <li class="">
+                <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.contract.index'):route('admin.contract.index')}}">
+                    <span class="nav-label">@lang('app.txt.contract_to_be_validated')</span>
+                    {!! App\Models\Contract::getAllContractToBeValidated()!==0?'<span class="label label-warning float-right">'.App\Models\Contract::getAllContractToBeValidated()->count().'</span>':'' !!}
+                </a>
             </li>
         </ul>
     </li>
