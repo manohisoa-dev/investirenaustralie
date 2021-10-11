@@ -1351,6 +1351,7 @@ class RegisterController extends Controller
         
         // Notify Admin with message and email
         $id_contract = $contr->id;
+        // $link = route('admin.contract.index'); //link to verify contract sent
         $link = route('home'); //link to verify contract sent
         $content = trans('mail.contract_signed_sent',['name'=>$user->name, 'role'=>strtoupper($user_role), 'link'=>$link, 'txt'=>trans('mail.to_verify')]);
         Message::create(['type'=>'admin','from_id'=>1,'to_id'=>1,'body'=>$content]);
@@ -1369,80 +1370,6 @@ class RegisterController extends Controller
     
     public function createContractPdf($user,$pdf_template,$path) {
         return PDF::loadView($pdf_template,['user'=>$user])->save($path);
-    }
-
-    // Method to set in admin controller
-    public function validateContract($id_contract){
-        // Update contract to validate
-        $contract = Contract::whereId($id_contract)->first();
-        $contract->update(['status_contract'=>2]);
-
-        // Send notification to user
-        $user = User::whereId($contract->user_id)->first();
-        $password = str_random(10);
-        
-        // Active user compte
-        $user->update(['status'=>'active', 'activation_code'=>null, 'trial_ends_at'=>Carbon::now()->addDays(option('payment.trial_delay', 14)), 'password'=>Hash::make($password)]);
-        
-        $lia = Config::lia();
-        $lia_name = $lia->get_meta('lia_name')->value;
-        App::setLocale($user->language);
-        $lang = $user->language;
-        $body = 'template_' . $lang;
-        $vars = array(
-            '{immat}' => $user->immat,
-            '{login}' => $user->name,
-            '{email}' => $user->email,
-            '{password}' => $password,
-            '{ieaagencyname}' => $lia_name,
-        );
-        $template = MailsTemplate::where('id', $user->roleUser->role_initial=='afa'?11:17)->first();
-        if($template){
-            $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
-            $content = strtr($template->$body, $vars);
-            $content = ['title' => '', 'body' => $content];
-        }else{
-            return abort(404);
-        }
-
-        $user->notify(new RegistrationConfirmedMessage($sujet,$content));
-
-        return 'contract accepted';
-    }
-    
-    public function rejectedContract($id_contract){
-        $contract = Contract::whereId($id_contract)->first();
-        $user = User::whereId($contract->user_id)->first();
-        $nbContract = Contract::where('user_id',$contract->user_id)->count();
-
-        // get template
-        App::setLocale($user->language);
-        $lang = $user->language;
-        $body = 'template_' . $lang;
-        $vars = array(
-            '{role}' => strtoupper($user->roleUser->role_initial),
-        );
-        $template = MailsTemplate::where('id', $nbContract!==2?18:19)->first();
-
-        if($template){
-            $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
-            $content = strtr($template->$body, $vars);
-            $content = ['title' => '', 'body' => $content];
-        }else{
-            return abort(404);
-        }
-
-        // Notify user
-        $user->notify(new RegistrationRejectedMessage($sujet,$content));
-
-        if($nbContract===2){
-            DB::table('users')->where('id', $user->id)->delete();
-            DB::table('contracts')->where('user_id', $user->id)->delete();
-        }else{
-            $contract->update(['status_contract'=>3,'date_fin_reponse_contract'=>Carbon::now()->addDays(Parameter::nbDayEndResponseContract())]);
-        }
-
-        return 'contract rejected';
     }
 
     // function cron to check delai submit contract (if 7 days delete)

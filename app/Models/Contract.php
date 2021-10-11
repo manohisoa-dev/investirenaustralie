@@ -16,4 +16,27 @@ class Contract extends Model
             ->get();
     }
 
+    public static function getAllContractToBeValidated(){
+        return Contract::where("status_contract",'=', 1)->get();
+    }
+    
+    public static function findRequested()
+    {
+        $query = Contract::query()->where('status_contract',1);
+        $user = User::query();
+
+        // search results based on user input
+        \Request::input('id') and $query->where('id',\Request::input('id'));
+        \Request::input('user_id') and $query->where('user_id','like','%'.\Request::input('user_id').'%');
+        \Request::input('url_contract') and $query->where('url_contract','like','%'.\Request::input('url_contract').'%');
+        
+        // sort results
+        \Request::input("sort") and $query->orderBy(\Request::input("sort"),\Request::input("sortType","asc"));
+
+        // paginate results
+        return $query->paginate(15);
+    }
+
+    
+    
 }
