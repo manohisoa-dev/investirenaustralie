@@ -527,6 +527,9 @@
                 <div class="modal-content white-bg">
                     <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
                         <h4 class="modal-title white-color text-center">{{ strtoupper(trans('app.message')) }} </h4>
+                        <button type="button" class="close" data-dismiss="modal" onclick="closeModal()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body">
                         {!! session()->get('alert_message') !!}
@@ -685,14 +688,28 @@
                             );
                         }else{
                             if(data.status == 2){
-                                swal("{{ trans('app.txt.submit_contract_signed') }}", "{{ trans('app.txt.contract_validated') }}", "info");
-                                // go to home page
-                                window.location.href= "{{route('home')}}";
+                                swal({
+                                    title: "{{ trans('app.txt.submit_contract_signed') }}", 
+                                    text: "{{ trans('app.txt.contract_validated') }}", 
+                                    type: "info"
+                                    },
+                                    function(){ 
+                                        // go to home page
+                                        window.location.href= "{{route('home')}}";
+                                    }
+                                );
                             }
                             else if(data.status == 1){
-                                swal("{{ trans('app.txt.submit_contract_signed') }}", "{{ trans('app.txt.contract_awaiting_validation') }}", "info");
-                                // go to home page
-                                window.location.href= "{{route('home')}}";
+                                swal({
+                                    title: "{{ trans('app.txt.submit_contract_signed') }}", 
+                                    text: "{{ trans('app.txt.contract_awaiting_validation') }}", 
+                                    type: "info"
+                                    },
+                                    function(){ 
+                                        // go to home page
+                                        window.location.href= "{{route('home')}}";
+                                    }
+                                );
                             }
                             else{
                                 swal("{{ trans('app.txt.submit_contract_signed') }}", "{{ trans('app.txt.upload_error') }}", "error");

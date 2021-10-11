@@ -89,7 +89,7 @@
 										<div class="form-group">
 											<label for="title">@lang('app.form.programme_taux_commission')</label>
 											<div class="input-group m-b">
-												<input type="number" class="form-control" name="sales_rate" id="sales_rate">
+												<input type="number" min="0" class="form-control" name="sales_rate" id="sales_rate">
 												<div class="input-group-append">
 													<span class="input-group-text">%</span>
 												</div>
@@ -100,7 +100,7 @@
 										<div class="form-group">
 											<label for="title">@lang('app.form.programme_mt_commission')</label>
 											<div class="input-group m-b">
-												<input type="number" class="form-control" name="rate_commission" id="rate_commission">
+												<input type="number" min="0" class="form-control" name="rate_commission" id="rate_commission">
 												<div class="input-group-append">
 													<span class="input-group-text">AUD</span>
 												</div>
@@ -114,7 +114,7 @@
 								<div class="col-md-4">
 									<label for="title">@lang('app.form.programme_price_min') *</label>
 									<div class="input-group">
-										<input type="number" class="form-control" name="prix_min" id="prix_min">
+										<input type="number" min="0" class="form-control" name="prix_min" id="prix_min">
 										<div class="input-group-append">
 											<span class="input-group-text">AUD</span>
 										</div>
@@ -123,7 +123,7 @@
 								<div class="col-md-4">
 									<label for="title">@lang('app.form.programme_price_max') *</label>
 									<div class="input-group">
-										<input type="number" class="form-control" name="prix_max" id="prix_max">
+										<input type="number" min="0" class="form-control" name="prix_max" id="prix_max">
 										<div class="input-group-append">
 											<span class="input-group-text">AUD</span>
 										</div>
@@ -234,7 +234,7 @@
 								<div class="col-lg-6">
 									<div class="form-group">
 										<label for="title">@lang('app.form.product_anneeConstructBuild') *</label>
-										<input type="number" class="form-control" name="annee_const" id="annee_const" disabled="disabled"/>
+										<input type="number" min="0" class="form-control" name="annee_const" id="annee_const" disabled="disabled"/>
 									</div>
 								</div>
 							</div>
@@ -383,7 +383,7 @@
 									<div class="form-group">
 										<label for="title">@lang('app.form.programme_taux_commission')</label>
 										<div class="input-group m-b">
-											<input type="number" class="form-control" name="sales_rate_product" id="sales_rate_product">
+											<input type="number" min="0" class="form-control" name="sales_rate_product" id="sales_rate_product">
 											<div class="input-group-append">
 												<span class="input-group-text">%</span>
 											</div>
@@ -394,7 +394,7 @@
 									<div class="form-group">
 										<label for="title">@lang('app.form.programme_mt_commission')</label>
 										<div class="input-group m-b">
-											<input type="number" class="form-control" name="rate_commission_product" id="rate_commission_product">
+											<input type="number" min="0" class="form-control" name="rate_commission_product" id="rate_commission_product">
 											<div class="input-group-append">
 												<span class="input-group-text">AUD</span>
 											</div>
@@ -424,7 +424,7 @@
 							<div class="col-lg-6">
 								<label for="title">@lang('app.table.price') *</label>
 								<div class="input-group" style="margin-bottom: .5rem;">
-									<input type="number" class="form-control" name="simple_price" id="simple_price">
+									<input type="number" min="0" class="form-control" name="simple_price" id="simple_price">
 									<div class="input-group-append">
 										<span class="input-group-text">AUD</span>
 									</div>
@@ -435,7 +435,7 @@
 							<div class="col-lg-6">
 								<label for="title">@lang('app.form.product_prix_min') *</label>
 								<div class="input-group" style="margin-bottom: .5rem;">
-									<input type="number" class="form-control" name="price" id="price">
+									<input type="number" min="0" class="form-control" name="price" id="price">
 									<div class="input-group-append">
 										<span class="input-group-text">AUD</span>
 									</div>
@@ -444,7 +444,7 @@
 							<div class="col-lg-6">
 								<label for="title">@lang('app.form.product_prix_max') *</label>
 								<div class="input-group" style="margin-bottom: .5rem;">
-									<input type="number" class="form-control" name="price_max_prd" id="price_max_prd">
+									<input type="number" min="0" class="form-control" name="price_max_prd" id="price_max_prd">
 									<div class="input-group-append">
 										<span class="input-group-text">AUD</span>
 									</div>
@@ -466,7 +466,7 @@
 								<div id="montant_bonus_vente" style="display:none">
 									<label for="title">@lang('app.txt.valeur_bonus') *</label>
 									<div class="input-group" style="margin-bottom: .5rem;">
-										<input type="number" class="form-control" name="bonus_amount" id="bonus_amount">
+										<input type="number" min="0" class="form-control" name="bonus_amount" id="bonus_amount">
 										<div class="input-group-append">
 											<span class="input-group-text">AUD</span>
 										</div>
@@ -503,7 +503,7 @@
 								<div id="yearConstruct" style="display:none">								
 									<div class="form-group">
 										<label for="title">@lang('app.form.product_anneeConstruct') *</label>
-										<input name="year_built" id="year_built" class="form-control" type="number" value="0">
+										<input name="year_built" id="year_built" class="form-control" type="number" min="0" value="0">
 									</div>
 								</div>
 							</div>	
@@ -511,7 +511,7 @@
 								<div id="jardin_info" style="display:none">
 									<label for="title">@lang('app.form.product_jardin_space')</label>
 									<div class="input-group" style="margin-bottom: .5rem;">
-										<input type="number" class="form-control" name="superficie_jardin" id="superficie_jardin" value="0">
+										<input type="number" min="0" class="form-control" name="superficie_jardin" id="superficie_jardin" value="0">
 										<div class="input-group-append">
 											<span class="input-group-text">.m2</span>
 										</div>
@@ -526,13 +526,13 @@
 								<div class="col-lg-6">
 									<div class="form-group">
 										<label for="title">@lang('app.input.nbchambre')</label>
-										<input name="bedrooms" id="bedrooms" class="form-control" type="number" value="0">
+										<input name="bedrooms" id="bedrooms" class="form-control" type="number" min="0" value="0">
 									</div>  
 								</div>
 								<div class="col-lg-6">
 									<div class="form-group">
 										<label for="title">@lang('app.input.nbchambresuite')</label>
-										<input name="ensuite" id="ensuite" class="form-control" type="number" value="0">
+										<input name="ensuite" id="ensuite" class="form-control" type="number" min="0" value="0">
 									</div>
 								</div>														
 							</div>
@@ -540,14 +540,14 @@
 								<div class="col-lg-6">
 									<div class="form-group">
 										<label for="title">@lang('app.input.nbsalledebain')</label>
-										<input name="bathrooms" id="bathrooms" class="form-control" type="number" value="0">
+										<input name="bathrooms" id="bathrooms" class="form-control" type="number" min="0" value="0">
 									</div> 
 								</div>	
 								<div class="col-lg-6">
 									<div id="info_qte">
 										<div class="form-group">
 											<label for="title">@lang('app.form.product_qte')</label>
-											<input name="quantity" id="quantity" class="form-control" type="number" value="1" min="1">
+											<input name="quantity" id="quantity" class="form-control" type="number" min="0" value="1" min="1">
 										</div>
 									</div>
 								</div>						
@@ -585,13 +585,13 @@
 								<div class="col-lg-6">
 									<div class="form-group">
 										<label for="title">@lang('app.form.product_parking_ferme')</label>
-										<input name="garage_spaces" id="garage_spaces" class="form-control" type="number" value="0">
+										<input name="garage_spaces" id="garage_spaces" class="form-control" type="number" min="0" value="0">
 									</div>
 								</div>
 								<div class="col-lg-6">
 									<div class="form-group">
 										<label for="title">@lang('app.form.product_parking_carpot')</label>
-										<input name="carport_spaces" id="carport_spaces" class="form-control" type="number" value="0">
+										<input name="carport_spaces" id="carport_spaces" class="form-control" type="number" min="0" value="0">
 									</div>
 								</div>
 							</div>
@@ -619,7 +619,7 @@
 								<div class="col-lg-6">
 									<div class="form-group">
 										<label for="title">Surface *</label>
-										<input type="number" name="surface_foncier" id="surface_foncier" class="form-control">
+										<input type="number" min="0" name="surface_foncier" id="surface_foncier" class="form-control">
 									</div>
 								</div>
 								<div class="col-lg-6">
@@ -670,7 +670,7 @@
 								</div>
 								<div class="col-md-4">
 									<label for="title">Number of parking spots</label>
-									<input type="number" class="form-control" name="nombre_cutomer_parking" />
+									<input type="number" min="0" class="form-control" name="nombre_cutomer_parking" />
 								</div>
 							</div>
 						</div>

@@ -100,13 +100,16 @@
             messages: {
                 old_password: {
                     required: "@lang('app.txt.champobligatoire')",
+                    minlength: "@lang('app.txt.password_min_validation')",
                     remote: jQuery.validator.format("@lang('app.txt.password_error')")
                 },
                 password: {
                     required: "@lang('app.txt.champobligatoire')",
+                    minlength: "@lang('app.txt.password_min_validation')",
                 },
                 password_confirmation: {
                     required: "@lang('app.txt.champobligatoire')",
+                    minlength: "@lang('app.txt.password_min_validation')",
                     ge: '@lang("app.txt.password_do_not_match")',
                 },
             },

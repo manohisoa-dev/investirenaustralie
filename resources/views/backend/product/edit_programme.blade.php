@@ -88,7 +88,7 @@
 											<div class="form-group">
 												<label for="title">@lang('app.form.programme_taux_commission')</label>
 												<div class="input-group m-b">
-													<input type="number" class="form-control" name="sales_rate" id="sales_rate">
+													<input type="number" min="0" class="form-control" name="sales_rate" id="sales_rate">
 													<div class="input-group-append">
 														<span class="input-group-text">%</span>
 													</div>
@@ -99,7 +99,7 @@
 											<div class="form-group">
 												<label for="title">@lang('app.form.programme_mt_commission')</label>
 												<div class="input-group m-b">
-													<input type="number" class="form-control" name="rate_commission" id="rate_commission">
+													<input type="number" min="0" class="form-control" name="rate_commission" id="rate_commission">
 													<div class="input-group-append">
 														<span class="input-group-text">AUD</span>
 													</div>
@@ -113,7 +113,7 @@
 									<div class="col-lg-4">
 										<label for="title">@lang('app.form.programme_price_min') *</label>
 										<div class="input-group">
-											<input type="number" class="form-control" name="prix_min" id="prix_min" value="{{$product->min_price}}">
+											<input type="number" min="0" class="form-control" name="prix_min" id="prix_min" value="{{$product->min_price}}">
 											<div class="input-group-append">
 												<span class="input-group-text">AUD</span>
 											</div>
@@ -123,7 +123,7 @@
 										<div class="form-group">
 											<label for="title">@lang('app.form.programme_price_max') *</label>
 											<div class="input-group">
-												<input type="number" class="form-control" name="prix_max" id="prix_max" value="{{$product->max_price}}">
+												<input type="number" min="0" class="form-control" name="prix_max" id="prix_max" value="{{$product->max_price}}">
 												<div class="input-group-append">
 													<span class="input-group-text">AUD</span>
 												</div>

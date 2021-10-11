@@ -1289,4 +1289,5 @@ return
 	'txt.contract' => 'Contract',
 	'txt.contracts' => 'Contracts',
 	'btn.show' => 'Show',
+	'txt.password_min_validation' => 'Password must contain at least 8 characters',
 ];

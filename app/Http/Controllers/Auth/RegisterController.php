@@ -1330,11 +1330,12 @@ class RegisterController extends Controller
 //        $url = 'uploads/pdf/registrations/'.$user_role.'/'.$filenameWithExt;
         $url = public_path('uploads'.DIRECTORY_SEPARATOR.'pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.$user_role.DIRECTORY_SEPARATOR.$filenameWithExt);
         $path = public_path('uploads'.DIRECTORY_SEPARATOR.'pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.$user_role);
+        $download_path = url('uploads'.DIRECTORY_SEPARATOR.'pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.$user_role);
         
         // Save afa contract in db
         if($user->contract()){
             if($user->isRejected()){
-                $contr = Contract::create(['user_id'=>$user_id,'url_contract'=>$url,'status_contract'=>1,'date_envoie_contract'=>Carbon::now(),'date_signature_contract'=>Carbon::now()]);
+                $contr = Contract::create(['user_id'=>$user_id,'url_contract'=>$download_path,'status_contract'=>1,'date_envoie_contract'=>Carbon::now(),'date_signature_contract'=>Carbon::now()]);
             }else{
                 if($user->isValidate()){
                     return response()->json(['response'=>'false', 'status'=>2]);
@@ -1343,7 +1344,7 @@ class RegisterController extends Controller
                 }
             }
         }else{
-            $contr = Contract::create(['user_id'=>$user_id,'url_contract'=>$url,'status_contract'=>1,'date_envoie_contract'=>Carbon::now(),'date_signature_contract'=>Carbon::now()]);
+            $contr = Contract::create(['user_id'=>$user_id,'url_contract'=>$download_path,'status_contract'=>1,'date_envoie_contract'=>Carbon::now(),'date_signature_contract'=>Carbon::now()]);
         }
         
         // Save afa contract file in storage path

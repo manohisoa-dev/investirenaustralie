@@ -93,7 +93,7 @@
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_taux_commission')</label>
 									<div class="input-group">
-										<input type="number" class="form-control" name="sales_rate" id="sales_rate" value="{{ old('sales_rate')?old('sales_rate'):'' }}">
+										<input type="number" min="0" class="form-control" name="sales_rate" id="sales_rate" value="{{ old('sales_rate')?old('sales_rate'):'' }}">
 										<div class="input-group-append">
 											<span class="input-group-text">%</span>
 										</div>
@@ -104,7 +104,7 @@
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_mt_commission')</label>
 									<div class="input-group">
-										<input type="number" class="form-control" name="rate_commission" id="rate_commission" value="{{ old('rate_commission')?old('rate_commission'):'' }}">
+										<input type="number" class="form-control" min="0" name="rate_commission" id="rate_commission" value="{{ old('rate_commission')?old('rate_commission'):'' }}">
 										<div class="input-group-append">
 											<span class="input-group-text">AUD</span>
 										</div>
@@ -118,7 +118,7 @@
 						<div class="col-lg-4">
 							<label for="title">@lang('app.form.programme_price_min') *</label>
 							<div class="input-group">
-								<input type="number" class="form-control" name="prix_min" id="prix_min" value="{{ old('prix_min')?old('prix_min'):'' }}">
+								<input type="number" class="form-control" name="prix_min" id="prix_min" min="0" value="{{ old('prix_min')?old('prix_min'):'' }}">
 								<div class="input-group-append">
 									<span class="input-group-text">AUD</span>
 								</div>
@@ -128,7 +128,7 @@
 							<div class="form-group">
 								<label for="title">@lang('app.form.programme_price_max') *</label>
 								<div class="input-group">
-									<input type="number" class="form-control" name="prix_max" id="prix_max" value="{{ old('prix_max')?old('prix_max'):'' }}">
+									<input type="number" min="0" class="form-control" name="prix_max" id="prix_max" value="{{ old('prix_max')?old('prix_max'):'' }}">
 									<div class="input-group-append">
 										<span class="input-group-text">AUD</span>
 									</div>
