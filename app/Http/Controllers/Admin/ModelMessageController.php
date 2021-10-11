@@ -37,9 +37,22 @@ class ModelMessageController extends Controller
     public function store( Request $request )
     {
         $this->validate($request, ModelMessage::validationRules());
+        $search = '';
+        $search .= $request->message_fr;
+        $valeur_var = '';
+        preg_match_all('#\{.*?\}#si', $search, $matches);
+        if ($matches) {
+            foreach ($matches as $val) {
+                $valeur_var .= implode(', ', array_unique($val));
+            }
 
-        ModelMessage::create($request->all());
-
+        }
+        $model_msg = new ModelMessage();
+        $model_msg->titre = $request->titre;
+        $model_msg->message_fr = $request->message_fr;
+        $model_msg->message_en = $request->message_en;
+        $model_msg->params = $valeur_var;
+        $model_msg->save();
         # notification
         Notify::success('Model Message a été créer avec succès');
         return back();
@@ -73,6 +86,17 @@ class ModelMessageController extends Controller
      */
     public function update(Request $request, ModelMessage $modelMessage)
     {
+        $search = '';
+        $search .= $request->message_fr;
+        $valeur_var = '';
+        preg_match_all('#\{.*?\}#si', $search, $matches);
+        if ($matches) {
+            foreach ($matches as $val) {
+                $valeur_var .= implode(', ', array_unique($val));
+            }
+
+        }
+        
         if( $request->isXmlHttpRequest() )
         {
             $data = [$request->name  => $request->value];
@@ -84,9 +108,8 @@ class ModelMessageController extends Controller
         }
 
         $this->validate($request, ModelMessage::validationRules());
-
         $modelMessage->update($request->all());
-
+        ModelMessage::where('id', $modelMessage->id)->update(['params' => $valeur_var]);
         # notification
         Notify::success('Model Message a été mise à jour avec succès');
         return redirect(route('admin.model-message.index'));

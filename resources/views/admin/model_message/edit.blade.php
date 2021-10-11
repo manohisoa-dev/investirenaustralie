@@ -40,11 +40,18 @@
 
                     {{ method_field("PUT") }}
                                                                                                 
-					{!! \Nvd\Crud\Form::input('titre','text')->model($modelMessage)->show() !!}
-																
+					
 					<div class="form-group">
-						<label for="contenu">@lang('app.message')</label>
-						<textarea name="message" id="contenu" class="form-control">{!! $modelMessage->message !!}</textarea>
+						<label for="contenu">@lang('app.table.title')</label>
+						<input name="titre" id="titre" class="form-control" type="text" value="{!! $modelMessage->titre !!}">
+					</div> 											
+					<div class="form-group">
+						<label for="contenu">@lang('app.message') fr</label>
+						<textarea name="message_fr" id="contenu" class="form-control">{!! $modelMessage->message_fr !!}</textarea>
+					</div> 
+					<div class="form-group">
+						<label for="contenu">@lang('app.message') en</label>
+						<textarea name="message_en" id="contenu_en" class="form-control">{!! $modelMessage->message_en !!}</textarea>
 					</div>                                                 
                     <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Enregistrer</button>
 
@@ -60,6 +67,7 @@
 	<script>
         $(document).ready(function(){
             CKEDITOR.replace( 'contenu' );
+			CKEDITOR.replace( 'contenu_en' );
 		});
 	</script>
 @endsection

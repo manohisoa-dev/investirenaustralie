@@ -101,6 +101,25 @@
 						<div class="hr-line-dashed"></div>
 						<dl class="row mb-0">
 							<div class="col-sm-4 text-sm">
+								<dt>CHOIX AFA :</dt>
+							</div>
+							<div class="col-sm-8 text-sm-left">
+								<dd class="mb-1">
+									@if($product->afaId_possible == 0)
+										<span class="label label-danger">									
+											Il n'y a pas d'AFA correspondante
+										</span>
+									@else
+										<span class="label label-info">									
+											{{$product->afaId_possible}}
+										</span>
+									@endif									
+								</dd>
+							</div>
+						</dl>
+						<div class="hr-line-dashed"></div>
+						<dl class="row mb-0">
+							<div class="col-sm-4 text-sm">
 								<dt>@lang('app.form.programme_title'):</dt>
 							</div>
 							<div class="col-sm-8 text-sm-left">

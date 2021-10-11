@@ -75,6 +75,7 @@ Route::post('save-product', 'ProductController@saveProduct')->name('save-product
 Route::post('ajaxDropFondDossier', 'ProductController@ajaxDropFondDossier')->name('ajaxDropFondDossier'); 
 Route::post('ajaxDropEoiDossier', 'ProductController@ajaxDropEoiDossier')->name('ajaxDropEoiDossier'); 
 Route::post('ajaxDropLiaDossier', 'ProductController@ajaxDropLiaDossier')->name('ajaxDropLiaDossier'); 
+Route::post('ajaxCheckCreation', 'ProductController@ajaxCheckCreation')->name('ajaxCheckCreation');
 
 Route::post('ajaxDropZoneDeleteFile', 'ProductController@ajaxDropZoneDeleteFile')->name('ajaxDropZoneDeleteFile'); 
 // Programme

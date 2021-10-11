@@ -29,6 +29,9 @@ use App\Mail\MailTemplate;
 use App\Models\MailsTemplate;
 use Mail;
 use App\Models\TemplateModel;
+use App\Models\Message;
+use App\Models\ModelMessage;
+use DB;
 
 class ProductController extends Controller {
 
@@ -322,6 +325,7 @@ class ProductController extends Controller {
         /*$send = new TemplateModel();
         $vars = array('{Nom AFA}'=>'Rakoto','{Ville}'=>'Ankadifotsy','{Etat}'=>'Mada','{Nom Programme}'=>'pro 897');
         $send->sendMailNotification(2,$vars,'dev4.easydata@gmail.com');*/
+
         $lapls = Localisation::select('localizations.*')->join('users',
             'users.location_id', '=', 'localizations.id')->where('users.role', '=', '4')->groupBy('localizations.locality')->get();
 
@@ -397,7 +401,27 @@ class ProductController extends Controller {
         }
     }
 
-    public function send_notification_creation($id_produit) {
+    public function ajaxCheckCreation(Request $request) {
+        //trouver AFA par code postale
+        $cp_programme = $request->postalCode;
+        $slug = generateSlug($request->title_programme);
+        $categorie = $request->cat_programmme_id;
+        $type = $request->type_id;
+        $programme_existe = Product::where('display_address', $request->display_address)->where('category_id',
+            $categorie)->where('type_id', $type)->where('parent_id', 0)->get();
+        $afa_possible = DB::select("SELECT `users`.id as id_afa, `users`.`name` FROM `users` LEFT JOIN `localizations` ON `users`.`location_id` = `localizations`.`id` WHERE `users`.`role` = 3 and `localizations`.`postalCode` = '$cp_programme'");
+        $nb_programme = count($programme_existe) . '<br>';
+        if ($nb_programme > 0) {
+            return response()->json(['success' => 'false']);
+        } else {
+            $this->saveProgramme($request);
+        }
+        //dd(count($results));
+        //$this->saveProgramme($request);
+        //return response()->json(['success' => 'false']);
+    }
+
+    public function send_email_sellerByAfa_after_create_produit($id_produit) {
         $product = Product::find($id_produit);
         $localisation = Localisation::find($product->location_id);
         $state = State::find($product->state_id);
@@ -415,11 +439,38 @@ class ProductController extends Controller {
             '{Nom Programme}' => $product->title,
             '{Code Postal}' => $localisation->postalCode);
         $sujet = $user->name . ' - ' . $product->title;
-        $content = strtr($template[0]->$body, $vars);
+        $contenu = strtr($template[0]->$body, $vars);
 
-        $content = ['title' => '', 'body' => $content];
+        $content = ['title' => '', 'body' => $contenu];
         $email_to = $user->email;
         Mail::to($email_to)->send(new MailTemplate($content, $sujet));
+    }
+
+    public function send_email_afa_proprietaire_after_creat_produit($id_produit, $id_afa) {
+        $product = Product::find($id_produit);
+        $localisation = Localisation::find($product->location_id);
+        $state = State::find($product->state_id);
+        $user_afa = User::find($id_afa);
+
+        $template = MailsTemplate::where('id', 11)->get();
+        if (count($template) > 0) {
+            $lang = App::getLocale();
+            $body = 'template_' . $lang;
+            $vars = array(
+                '{Date system}' => Carbon::now()->toFormattedDateString(),
+                '{Heure system}' => Carbon::now()->toTimeString(),
+                '{Nom AFA}' => $user_afa->name,
+                '{Nom Programme}' => $product->title,
+                '{Ville}' => $localisation->locality,
+                '{Etat}' => $state->content,
+                '{Code Postal}' => $localisation->postalCode);
+            $sujet_lab = 'sujet_' . $lang;
+            $sujet = $template[0]->$sujet_lab;
+            $contenu = strtr($template[0]->$body, $vars);
+            $content = ['title' => '', 'body' => $contenu];
+            $email_to = $user_afa->email;
+            Mail::to($email_to)->send(new MailTemplate($content, $sujet));
+        }
     }
 
     function save_location($country, $suburb, $postalCode, $locality, $route) {
@@ -448,7 +499,7 @@ class ProductController extends Controller {
 
     function save_programme($categorie, $ancienete, $nature, $prix_min, $prix_max, $type_id,
         $display_address, $postalCode, $state_id, $title, $content, $location_id, $fond_dossier,
-        $status, $type_commission, $commission) {
+        $status, $type_commission, $commission, $id_afa = 0) {
         $slug = generateSlug($title);
         $programme = new Product();
 
@@ -468,6 +519,7 @@ class ProductController extends Controller {
         $programme->state_id = $state_id;
         $programme->title = $title;
         $programme->content = $content;
+        $programme->quantity = 1;
         $programme->slug = $slug;
         $programme->location_id = $location_id;
         $programme->status = $status;
@@ -475,6 +527,7 @@ class ProductController extends Controller {
         $programme->commision = $commission;
         $programme->author_id = Auth::user()->id;
         $programme->validated_at = Carbon::now();
+        $programme->afaId_possible = $id_afa;
         $programme->save();
 
         // // save translation
@@ -562,6 +615,27 @@ class ProductController extends Controller {
         $anciennete = $request->ancienneteBien;
         $nature = $request->natureBien;
 
+        $programme_existe = Product::where('display_address', $request->display_address)->where('category_id',
+            $request->cat_programmme_id)->where('type_id', $request->type_id)->where('parent_id',
+            0)->get();
+
+        $afa_possible = DB::select("SELECT `users`.id as id_afa FROM `users` LEFT JOIN `localizations` ON `users`.`location_id` = `localizations`.`id` WHERE `users`.`role` = 3 and `localizations`.`postalCode` = '$request->postalCode'");
+        if (count($afa_possible) > 0) {
+            $tab_afa = array();
+            foreach ($afa_possible as $val) {
+                $tab_afa[] = $val->id_afa;
+            }
+            $id_afa_p = implode(', ', $tab_afa);
+        } else {
+            $id_afa_p = 0;
+        }
+
+        if (count($programme_existe) > 0) {
+            return back()->withInput()->withErrors(['msg' =>
+                "We're sorry, but it appears that this program has already been registered or is on its way to be registered.\n Your program cannot be registered and your program registration form will be deleted.
+"]);
+        }
+
         $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
             $request->ville, $request->display_address);
 
@@ -574,7 +648,8 @@ class ProductController extends Controller {
         $id_programme = $this->save_programme($request->cat_programmme_id, $request->ancienneteBien,
             $request->natureBien, $request->prix_min, $request->prix_max, $request->type_id,
             $request->display_address, $request->postalCode, $request->state_id, $request->title_programme,
-            $request->description, $id_location, '', 'waiting', $request->commision, $taux_commision);
+            $request->description, $id_location, '', 'waiting', $request->commision, $taux_commision,
+            $id_afa_p);
 
         if ($request->dropPhoto) {
             foreach ($request->dropPhoto as $key => $value) {
@@ -608,11 +683,45 @@ class ProductController extends Controller {
                 $this->save_fond_dossier($value, $id_programme);
             }
         }
-        $this->send_notification_creation($id_programme);
+        //test si seller by afa qui crée le progremme
+        if (Auth::user()->hasTypeUser(8) || Auth::user()->hasTypeUser(9)) {
+            //envoie email à l'email à seller by afa
+            $this->send_email_sellerByAfa_after_create_produit($id_programme);
+            //envoie email au propriété
+            $id_afa = Auth::user()->afa_id;
+            //envoie email à l'AFA
+            $this->send_email_afa_proprietaire_after_creat_produit($id_programme, $id_afa);
+        }
+        //envoie message à l'admin
+        $this->sendMessage_admin_after_create_programme($id_programme);
 
         # notification
         return redirect()->route('mes-programmes')->with('success',
             "Produit a été créer avec succès");
+    }
+
+    public function sendMessage_admin_after_create_programme($id_produit) {
+        $current = Auth::user();
+        $message = ModelMessage::where('id', 1)->get();
+        if (count($message) > 0) {
+            $product = Product::find($id_produit);
+            $localisation = Localisation::find($product->location_id);
+            $state = State::find($product->state_id);
+
+            $vars = array(
+                '{Nom du Vendeur}' => $current->name,
+                '{Nom Programme}' => $product->title,
+                '{Ville}' => $localisation->locality,
+                '{Etat}' => $state->content);
+            $contenu = strtr($message[0]->message_fr, $vars);
+
+            $item = new Message();
+            $item->type = 'admin';
+            $item->from_id = $current->id;
+            $item->body = $contenu;
+            $item->to_id = 1;
+            $item->save();
+        }
     }
 
     public function ajaxDropZoneEdit(Request $request) {
@@ -822,14 +931,14 @@ class ProductController extends Controller {
                     'locality' => $request->ville_product, 'route' => $request->display_address,
                     'longitude' => $longitude, 'latitude' => $latitude]);
                 $id_location = $product->location_id;
-            }else{
+            } else {
                 $id_location = $product->location_id;
             }
         } else {
             $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
                 $request->postalCode_product, $request->ville_product, $request->display_address);
         }
-        
+
         if ($request->commision_product == 'Sales commission rate (%)') {
             $taux_commision = $request->sales_rate_product;
         } else {

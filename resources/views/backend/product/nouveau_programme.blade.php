@@ -31,6 +31,12 @@
 						<li>@lang('app.txt_information_etape2')</li>
 					</ul>
 				</div>
+				@if($errors->any())
+				<div class="alert alert-danger alert-dismissable">
+					<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+					{{$errors->first()}}.
+				</div>
+				@endif
 				<form class="form-validation form-padding" action="{{route('save-programme')}}" method="post" id="programmeForm" enctype="multipart/form-data">
 					{{ csrf_field() }}
 					<div class="form-group">
@@ -63,12 +69,12 @@
 					
 					<div class="form-group">
 						<label for="title">@lang('app.form.programme_title') *</label>
-						<input name="title_programme" id="title_programme" class="form-control" type="text" value="">
+						<input name="title_programme" id="title_programme" class="form-control" type="text" value="{{ old('title_programme')?old('title_programme'):'' }}">
 					</div>
 					
 					<div class="form-group">
 						<label for="title">@lang('app.form.programme_content')</label>
-						<textarea class="form-control" rows="10" name="description" id="description"></textarea>
+						<textarea class="form-control" rows="10" name="description" id="description">{{ old('description')?old('description'):'' }}</textarea>
 					</div>
 								
 					<div class="row">
@@ -87,7 +93,7 @@
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_taux_commission')</label>
 									<div class="input-group">
-										<input type="number" class="form-control" name="sales_rate" id="sales_rate">
+										<input type="number" class="form-control" name="sales_rate" id="sales_rate" value="{{ old('sales_rate')?old('sales_rate'):'' }}">
 										<div class="input-group-append">
 											<span class="input-group-text">%</span>
 										</div>
@@ -98,7 +104,7 @@
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_mt_commission')</label>
 									<div class="input-group">
-										<input type="number" class="form-control" name="rate_commission" id="rate_commission">
+										<input type="number" class="form-control" name="rate_commission" id="rate_commission" value="{{ old('rate_commission')?old('rate_commission'):'' }}">
 										<div class="input-group-append">
 											<span class="input-group-text">AUD</span>
 										</div>
@@ -112,7 +118,7 @@
 						<div class="col-lg-4">
 							<label for="title">@lang('app.form.programme_price_min') *</label>
 							<div class="input-group">
-								<input type="number" class="form-control" name="prix_min" id="prix_min">
+								<input type="number" class="form-control" name="prix_min" id="prix_min" value="{{ old('prix_min')?old('prix_min'):'' }}">
 								<div class="input-group-append">
 									<span class="input-group-text">AUD</span>
 								</div>
@@ -122,7 +128,7 @@
 							<div class="form-group">
 								<label for="title">@lang('app.form.programme_price_max') *</label>
 								<div class="input-group">
-									<input type="number" class="form-control" name="prix_max" id="prix_max">
+									<input type="number" class="form-control" name="prix_max" id="prix_max" value="{{ old('prix_max')?old('prix_max'):'' }}">
 									<div class="input-group-append">
 										<span class="input-group-text">AUD</span>
 									</div>
@@ -141,26 +147,26 @@
 					
 					<div class="form-group">
 						<label for="title">@lang('app.form.programme_adresse') *</label>
-						<input name="display_address" id="display_address" class="form-control" type="text" value="">
+						<input name="display_address" id="display_address" class="form-control" type="text" value="{{ old('display_address')?old('display_address'):'' }}">
 					</div>
 					
 					<div class="row">
 						<div class="col-lg-4">
 							<div class="form-group">
 								<label for="title">@lang('app.form.programme_suburb') *</label>
-								<input name="suburb" id="suburb" class="form-control" type="text" value="">
+								<input name="suburb" id="suburb" class="form-control" type="text" value="{{ old('suburb')?old('suburb'):'' }}">
 							</div>
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
 								<label for="title">@lang('app.form.programme_ville') *</label>
-								<input name="ville" id="ville" class="form-control" type="text">
+								<input name="ville" id="ville" class="form-control" type="text" value="{{ old('ville')?old('ville'):'' }}">
 							</div>  
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
 								<label for="title">@lang('app.form.programme_cp') *</label>
-								<input name="postalCode" id="postalCode" class="form-control" type="text" value="">
+								<input name="postalCode" id="postalCode" class="form-control" type="text" value="{{ old('postalCode')?old('postalCode'):'' }}">
 							</div>
 						</div>
 					</div>
@@ -583,7 +589,7 @@
 				},
 				display_address: {
 					required: true,
-					remote: {
+					/*remote: {
 						url: "{{ route('ajaxCheckAdresse') }}",
 						type: "get",
 						data: {
@@ -591,7 +597,7 @@
 								return $("input[name='display_address']").val();
 							}
 						}
-					}
+					}*/
 				},
 				postalCode: {
 					required: true
@@ -649,7 +655,7 @@
 				},
 				display_address: {
 					required: "@lang('app.txt.champobligatoire')",
-					remote: "@lang('app.txt.adress_exist_error')"
+					/*remote: "@lang('app.txt.adress_exist_error')"*/
 				},
 				postalCode: {
 					required: "@lang('app.txt.champobligatoire')"
