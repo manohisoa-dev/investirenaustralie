@@ -1210,8 +1210,9 @@ class RegisterController extends Controller
     {   
         // Create contract pdf to download
         $pdf_template = 'pdf.afa_contract';
-        $pdfName = 'PARTENERSHIP CONTRACT AUSTRALIAN FRANCOPHONE AGENCY ('.$user->name.')';
-        $path = 'pdf/registrations/afa/'.$pdfName.'.pdf';
+        $pdfName = 'partenership_contract_australian_francophone_agency_'.strtolower($user->name);
+        $path = public_path('pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.'afa'.DIRECTORY_SEPARATOR).$pdfName.'.pdf';
+        $downloadPath = url('pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.'afa'). DIRECTORY_SEPARATOR . $pdfName.'.pdf';
         $this->createContractPdf($user,$pdf_template,$path);
 
         App::setLocale($user->language);
@@ -1220,7 +1221,7 @@ class RegisterController extends Controller
         $url = url($path);
         $vars = array(
             '{btnSubmit}' => '<a href="'.route('home').'?action=submit_contract&id='.$user->id.'" type="button" class="m-btn m-btn-theme2nd" id="submit_contract" value="1">'.strtoupper(trans("mail.btn.submit_afa_contract_signed")).'</a>',
-            '{contractLink}' => '<a href="'.$url.'">'.strtoupper(trans('mail.txt.afa_contract_draft')).'</a>',
+            '{contractLink}' => '<a href="'.$downloadPath.'">'.strtoupper(trans('mail.txt.afa_contract_draft')).'</a>',
         );
         $template = MailsTemplate::where('id', 10)->first();
         if($template){
@@ -1285,8 +1286,9 @@ class RegisterController extends Controller
     {   
         // Create contract pdf to download
         $pdf_template = 'pdf.apl_contract';
-        $pdfName = 'CONTRAT DE PARTENARIAT AGENCE PARTENAIRE LOCALE ('.$user->name.')';
-        $path = 'pdf/registrations/apl/'.$pdfName.'.pdf';
+        $pdfName = 'contrat_de_partenariat_agence_partenaire_locale_'.strtolower($user->name);
+        $path = public_path('pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.'apl'.DIRECTORY_SEPARATOR).$pdfName.'.pdf';
+        $downloadPath = url('pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.'apl'). DIRECTORY_SEPARATOR .$pdfName.'.pdf';
         $this->createContractPdf($user,$pdf_template,$path);
 
         $template = MailsTemplate::where('id', 22)->first();
@@ -1296,7 +1298,7 @@ class RegisterController extends Controller
         $url = url($path);
         $vars = array(
             '{btnSubmit}' => '<a href="'.route('home').'?action=submit_contract&id='.$user->id.'" type="button" class="m-btn m-btn-theme2nd" id="submit_contract" value="1">'.strtoupper(trans("mail.btn.submit_apl_contract_signed")).'</a>',
-            '{contractLink}' => '<a href="'.$url.'">'.strtoupper(trans('mail.txt.apl_contract_draft')).'</a>',
+            '{contractLink}' => '<a href="'.$downloadPath.'">'.strtoupper(trans('mail.txt.apl_contract_draft')).'</a>',
         );
         $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
         $content = strtr($template->$body, $vars);
@@ -1325,8 +1327,9 @@ class RegisterController extends Controller
         $user_role = $user->role===3?'afa':'apl';
         $file = $request->file('file_contract');
         $filenameWithExt = $file->getClientOriginalName();
-        $url = 'uploads/pdf/registrations/'.$user_role.'/'.$filenameWithExt;
-        $path = public_path('uploads/pdf/registrations/'.$user_role);
+//        $url = 'uploads/pdf/registrations/'.$user_role.'/'.$filenameWithExt;
+        $url = public_path('uploads'.DIRECTORY_SEPARATOR.'pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.$user_role.DIRECTORY_SEPARATOR.$filenameWithExt);
+        $path = public_path('uploads'.DIRECTORY_SEPARATOR.'pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.$user_role);
         
         // Save afa contract in db
         if($user->contract()){
