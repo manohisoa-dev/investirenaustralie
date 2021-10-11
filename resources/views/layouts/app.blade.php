@@ -688,28 +688,14 @@
                             );
                         }else{
                             if(data.status == 2){
-                                swal({
-                                    title: "{{ trans('app.txt.submit_contract_signed') }}", 
-                                    text: "{{ trans('app.txt.contract_validated') }}", 
-                                    type: "info"
-                                    },
-                                    function(){ 
-                                        // go to home page
-                                        window.location.href= "{{route('home')}}";
-                                    }
-                                );
+                                swal("{{ trans('app.txt.submit_contract_signed') }}", "{{ trans('app.txt.contract_validated') }}", "info");
+                                // go to home page
+                                window.location.href= "{{route('home')}}";
                             }
                             else if(data.status == 1){
-                                swal({
-                                    title: "{{ trans('app.txt.submit_contract_signed') }}", 
-                                    text: "{{ trans('app.txt.contract_awaiting_validation') }}", 
-                                    type: "info"
-                                    },
-                                    function(){ 
-                                        // go to home page
-                                        window.location.href= "{{route('home')}}";
-                                    }
-                                );
+                                swal("{{ trans('app.txt.submit_contract_signed') }}", "{{ trans('app.txt.contract_awaiting_validation') }}", "info");
+                                // go to home page
+                                window.location.href= "{{route('home')}}";
                             }
                             else{
                                 swal("{{ trans('app.txt.submit_contract_signed') }}", "{{ trans('app.txt.upload_error') }}", "error");
