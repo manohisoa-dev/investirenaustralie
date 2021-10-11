@@ -795,26 +795,6 @@ class RegisterController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
-        // Create Localization
-        if($user->hasRole(3)){
-            $adr = $datas['route_number'].' '.$datas['route'].' '.$datas['area_level_2'].' '.$datas['country'];
-            $coord_tab = geocodeAddress($adr);
-            if($coord_tab){
-                $lat = $coord_tab['lat'];
-                $lng = $coord_tab['lng'];
-            }else{
-                $lat = '';
-                $lng = '';
-            }
-            $datas['latitude'] = $lat;
-            $datas['longitude'] = $lng;
-        }
-        
-        $datas['location_id'] = 0;
-        if($location = Localisation::create($datas)){
-            $datas['location_id'] = $location->id>0?$location->id:0;
-        }
-
         // Store image file
         $datas['image_id'] = 0;
         if($file=$request->file('image')){
@@ -849,6 +829,31 @@ class RegisterController extends Controller
             $user = User::create($datas);
             $user->save();
             $datas['user_id'] = $user->id;
+
+            // Create Localization
+            if($user->hasRole(3)){
+                $adr = $datas['route_number'].' '.$datas['route'].' '.$datas['area_level_2'].' '.$datas['country'];
+                $coord_tab = geocodeAddress($adr);
+                if($coord_tab){
+                    $lat = $coord_tab['lat'];
+                    $lng = $coord_tab['lng'];
+                }else{
+                    $lat = '';
+                    $lng = '';
+                }
+                $datas['latitude'] = $lat;
+                $datas['longitude'] = $lng;
+            }
+            
+            //$datas['location_id'] = 0;
+            if($location = Localisation::create($datas)){
+                if($user->hasRole(3)){
+                    $user->location_id = $location->id>0?$location->id:0;
+                    $user->save();
+                }else{
+                    $datas['location_id'] = $location->id>0?$location->id:0;
+                }
+            }
 
             // Create user info
             if($role !== 'seller' || session('seller_class')!=='non_professional_natural_persons' && session('seller_class')!=='seller_by_afa'){
