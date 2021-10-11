@@ -796,6 +796,20 @@ class RegisterController extends Controller
         }
 
         // Create Localization
+        if($user->hasRole(3)){
+            $adr = $datas['route_number'].' '.$datas['route'].' '.$datas['area_level_2'].' '.$datas['country'];
+            $coord_tab = geocodeAddress($adr);
+            if($coord_tab){
+                $lat = $coord_tab['lat'];
+                $lng = $coord_tab['lng'];
+            }else{
+                $lat = '';
+                $lng = '';
+            }
+            $datas['latitude'] = $lat;
+            $datas['longitude'] = $lng;
+        }
+        
         $datas['location_id'] = 0;
         if($location = Localisation::create($datas)){
             $datas['location_id'] = $location->id>0?$location->id:0;
