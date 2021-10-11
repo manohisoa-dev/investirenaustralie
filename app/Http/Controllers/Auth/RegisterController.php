@@ -1343,7 +1343,7 @@ class RegisterController extends Controller
         $filenameWithExt = $file->getClientOriginalName();
 //        $url = 'uploads/pdf/registrations/'.$user_role.'/'.$filenameWithExt;
         $url = public_path('uploads'.DIRECTORY_SEPARATOR.'pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.$user_role.DIRECTORY_SEPARATOR.$filenameWithExt);
-        $path = public_path('uploads'.DIRECTORY_SEPARATOR.'pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.$user_role.DIRECTORY_SEPARATOR.$filenameWithExt);
+        $path = public_path('uploads'.DIRECTORY_SEPARATOR.'pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.$user_role);
         $download_path = url('uploads'.DIRECTORY_SEPARATOR.'pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.$user_role.DIRECTORY_SEPARATOR.$filenameWithExt);
         
         // Save afa contract in db
