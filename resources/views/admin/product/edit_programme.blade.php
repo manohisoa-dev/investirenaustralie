@@ -107,7 +107,7 @@
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_taux_commission')</label>
 									<div class="input-group m-b">
-										<input type="number" class="form-control" name="sales_rate" id="sales_rate">
+										<input type="number" class="form-control" name="sales_rate" id="sales_rate" min="0">
 										<div class="input-group-append">
 											<span class="input-group-addon">%</span>
 										</div>
