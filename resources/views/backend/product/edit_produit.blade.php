@@ -138,7 +138,7 @@
 												<div class="form-group">
 													<label for="title">@lang('app.form.programme_taux_commission')</label>
 													<div class="input-group m-b">
-														<input type="number" class="form-control" name="sales_rate_product" id="sales_rate_product">
+														<input type="number" min="0" class="form-control" name="sales_rate_product" id="sales_rate_product">
 														<div class="input-group-append">
 															<span class="input-group-text">%</span>
 														</div>
@@ -149,7 +149,7 @@
 												<div class="form-group">
 													<label for="title">@lang('app.form.programme_mt_commission')</label>
 													<div class="input-group m-b">
-														<input type="number" class="form-control" name="rate_commission_product" id="rate_commission_product">
+														<input type="number" min="0" class="form-control" name="rate_commission_product" id="rate_commission_product">
 														<div class="input-group-append">
 															<span class="input-group-text">AUD</span>
 														</div>
@@ -162,7 +162,7 @@
 										<div class="col-lg-6">
 											<label for="title">@lang('app.input.prix') *</label>
 											<div class="input-group" style="margin-bottom: 1.5rem;">
-												<input type="number" class="form-control" name="simple_price" id="simple_price" value="{{$product->price}}">
+												<input type="number" min="0" class="form-control" name="simple_price" id="simple_price" value="{{$product->price}}">
 												<div class="input-group-append">
 													<span class="input-group-text">AUD</span>
 												</div>
@@ -184,7 +184,7 @@
 											<div id="montant_bonus_vente">
 												<label for="title">@lang('app.txt.valeur_bonus') *</label>
 												<div class="input-group" style="margin-bottom: .5rem;">
-													<input type="number" class="form-control" value="{{$product->amount_bonus}}" name="bonus_amount" id="bonus_amount">
+													<input type="number" min="0" class="form-control" value="{{$product->amount_bonus}}" name="bonus_amount" id="bonus_amount">
 													<div class="input-group-append">
 														<span class="input-group-text">AUD</span>
 													</div>
@@ -212,7 +212,7 @@
 										<div class="col-lg-6">
 											<label for="title">@lang('app.form.product_jardin_space')</label>
 											<div class="input-group" style="margin-bottom: .5rem;">
-												<input type="number" class="form-control" name="superficie_jardin" id="superficie_jardin" value="{{$product->superficie_jardin}}">
+												<input type="number" min="0" class="form-control" name="superficie_jardin" id="superficie_jardin" value="{{$product->superficie_jardin}}">
 												<div class="input-group-append">
 													<span class="input-group-text">.m2</span>
 												</div>
@@ -222,7 +222,7 @@
 										<div class="col-lg-6">							
 											<div class="form-group">
 												<label for="title">@lang('app.form.product_anneeConstruct') *</label>
-												<input name="year_built" id="year_built" class="form-control" type="number" value="{{$product->year_built}}">
+												<input name="year_built" id="year_built" class="form-control" type="number" min="0" value="{{$product->year_built}}">
 											</div>
 										</div>	
 										@endif										
@@ -231,13 +231,13 @@
 										<div class="col-lg-6">
 											<div class="form-group">
 												<label for="title">@lang('app.input.nbchambre')</label>
-												<input name="bedrooms" id="bedrooms" class="form-control" type="number" value="{{$product->bedrooms}}">
+												<input name="bedrooms" id="bedrooms" class="form-control" type="number" min="0" value="{{$product->bedrooms}}">
 											</div>  
 										</div>
 										<div class="col-lg-6">
 											<div class="form-group">
 												<label for="title">@lang('app.input.nbchambresuite')</label>
-												<input name="ensuite" id="ensuite" class="form-control" type="number" value="{{$product->ensuite}}">
+												<input name="ensuite" id="ensuite" class="form-control" type="number" min="0" value="{{$product->ensuite}}">
 											</div>
 										</div>
 									</div>
@@ -245,13 +245,13 @@
 										<div class="col-lg-6">
 											<div class="form-group">
 												<label for="title">@lang('app.input.nbsalledebain')</label>
-												<input name="bathrooms" id="bathrooms" class="form-control" type="number" value="{{$product->bathrooms}}">
+												<input name="bathrooms" id="bathrooms" class="form-control" type="number" min="0" value="{{$product->bathrooms}}">
 											</div> 
 										</div>
 										<div class="col-lg-6">
 											<div class="form-group">
 												<label for="title">@lang('app.form.product_qte')</label>
-												<input name="quantity" id="quantity" class="form-control" type="number" value="{{$product->quantity}}" min="1">
+												<input name="quantity" id="quantity" class="form-control" type="number" min="0" value="{{$product->quantity}}" min="1">
 											</div>
 										</div>	
 									</div>
@@ -294,13 +294,13 @@
 										<div class="col-lg-6">
 											<div class="form-group">
 												<label for="title">@lang('app.form.product_parking_ferme')</label>
-												<input name="garage_spaces" id="garage_spaces" class="form-control" type="number" value="{{$product->garage_spaces}}">
+												<input name="garage_spaces" id="garage_spaces" class="form-control" type="number" min="0" value="{{$product->garage_spaces}}">
 											</div>
 										</div>
 										<div class="col-lg-6">
 											<div class="form-group">
 												<label for="title">@lang('app.form.product_parking_carpot')</label>
-												<input name="carport_spaces" id="carport_spaces" class="form-control" type="number" value="{{$product->carport_spaces}}">
+												<input name="carport_spaces" id="carport_spaces" class="form-control" type="number" min="0" value="{{$product->carport_spaces}}">
 											</div>
 										</div>
 									</div>
@@ -575,7 +575,7 @@
 										<div class="col-lg-4">
 											<label for="title">@lang('app.input.prix') *</label>
 											<div class="input-group" style="margin-bottom: 1.5rem;">
-												<input type="number" class="form-control" name="simple_price" id="simple_price" value="{{$product->price}}">
+												<input type="number" min="0" class="form-control" name="simple_price" id="simple_price" value="{{$product->price}}">
 												<div class="input-group-append">
 													<span class="input-group-text">AUD</span>
 												</div>
@@ -600,7 +600,7 @@
 												<div class="form-group">
 													<label for="title">@lang('app.form.programme_taux_commission')</label>
 													<div class="input-group m-b">
-														<input type="number" class="form-control" name="sales_rate_product" id="sales_rate_product">
+														<input type="number" min="0" class="form-control" name="sales_rate_product" id="sales_rate_product">
 														<div class="input-group-append">
 															<span class="input-group-text">%</span>
 														</div>
@@ -611,7 +611,7 @@
 												<div class="form-group">
 													<label for="title">@lang('app.form.programme_mt_commission')</label>
 													<div class="input-group m-b">
-														<input type="number" class="form-control" name="rate_commission_product" id="rate_commission_product">
+														<input type="number" min="0" class="form-control" name="rate_commission_product" id="rate_commission_product">
 														<div class="input-group-append">
 															<span class="input-group-text">AUD</span>
 														</div>
@@ -635,7 +635,7 @@
 											<div id="montant_bonus_vente">
 												<label for="title">@lang('app.txt.valeur_bonus') *</label>
 												<div class="input-group" style="margin-bottom: 1.5rem;">
-													<input type="number" class="form-control" value="{{$product->amount_bonus}}" name="bonus_amount" id="bonus_amount">
+													<input type="number" min="0" class="form-control" value="{{$product->amount_bonus}}" name="bonus_amount" id="bonus_amount">
 													<div class="input-group-append">
 														<span class="input-group-text">AUD</span>
 													</div>
@@ -647,7 +647,7 @@
 										<div class="col-lg-6">
 											<div class="form-group" style="margin-bottom:1.5rem;">
 												<label for="title">Surface *</label>
-												<input type="number" name="surface_foncier" id="surface_foncier" value="{{$product->area}}" class="form-control">
+												<input type="number" min="0" name="surface_foncier" id="surface_foncier" value="{{$product->area}}" class="form-control">
 											</div>
 										</div>
 										<div class="col-lg-6">
@@ -911,7 +911,7 @@
 										<div class="col-lg-4">
 											<label for="title">@lang('app.input.prix') *</label>
 											<div class="input-group" style="margin-bottom: 1.5rem;">
-												<input type="number" class="form-control" name="simple_price" id="simple_price" value="{{$product->price}}">
+												<input type="number" min="0" class="form-control" name="simple_price" id="simple_price" value="{{$product->price}}">
 												<div class="input-group-append">
 													<span class="input-group-text">AUD</span>
 												</div>
@@ -936,7 +936,7 @@
 												<div class="form-group">
 													<label for="title">@lang('app.form.programme_taux_commission')</label>
 													<div class="input-group m-b">
-														<input type="number" class="form-control" name="sales_rate_product" id="sales_rate_product">
+														<input type="number" min="0" class="form-control" name="sales_rate_product" id="sales_rate_product">
 														<div class="input-group-append">
 															<span class="input-group-text">%</span>
 														</div>
@@ -947,7 +947,7 @@
 												<div class="form-group">
 													<label for="title">@lang('app.form.programme_mt_commission')</label>
 													<div class="input-group m-b">
-														<input type="number" class="form-control" name="rate_commission_product" id="rate_commission_product">
+														<input type="number" min="0" class="form-control" name="rate_commission_product" id="rate_commission_product">
 														<div class="input-group-append">
 															<span class="input-group-text">AUD</span>
 														</div>
@@ -971,7 +971,7 @@
 											<div id="montant_bonus_vente">
 												<label for="title">@lang('app.txt.valeur_bonus') *</label>
 												<div class="input-group" style="margin-bottom: 1.5rem;">
-													<input type="number" class="form-control" value="{{$product->amount_bonus}}" name="bonus_amount" id="bonus_amount">
+													<input type="number" min="0" class="form-control" value="{{$product->amount_bonus}}" name="bonus_amount" id="bonus_amount">
 													<div class="input-group-append">
 														<span class="input-group-text">AUD</span>
 													</div>
@@ -1237,7 +1237,7 @@
 										<div class="col-lg-4">
 											<label for="title">@lang('app.input.prix') *</label>
 											<div class="input-group" style="margin-bottom: 1.5rem;">
-												<input type="number" class="form-control" name="simple_price" id="simple_price" value="{{$product->price}}">
+												<input type="number" min="0" class="form-control" name="simple_price" id="simple_price" value="{{$product->price}}">
 												<div class="input-group-append">
 													<span class="input-group-text">AUD</span>
 												</div>
@@ -1262,7 +1262,7 @@
 												<div class="form-group">
 													<label for="title">@lang('app.form.programme_taux_commission')</label>
 													<div class="input-group m-b">
-														<input type="number" class="form-control" name="sales_rate_product" id="sales_rate_product">
+														<input type="number" min="0" class="form-control" name="sales_rate_product" id="sales_rate_product">
 														<div class="input-group-append">
 															<span class="input-group-text">%</span>
 														</div>
@@ -1273,7 +1273,7 @@
 												<div class="form-group">
 													<label for="title">@lang('app.form.programme_mt_commission')</label>
 													<div class="input-group m-b">
-														<input type="number" class="form-control" name="rate_commission_product" id="rate_commission_product">
+														<input type="number" min="0" class="form-control" name="rate_commission_product" id="rate_commission_product">
 														<div class="input-group-append">
 															<span class="input-group-text">AUD</span>
 														</div>
@@ -1297,7 +1297,7 @@
 											<div id="montant_bonus_vente">
 												<label for="title">@lang('app.txt.valeur_bonus') *</label>
 												<div class="input-group" style="margin-bottom: 1.5rem;">
-													<input type="number" class="form-control" value="{{$product->amount_bonus}}" name="bonus_amount" id="bonus_amount">
+													<input type="number" min="0" class="form-control" value="{{$product->amount_bonus}}" name="bonus_amount" id="bonus_amount">
 													<div class="input-group-append">
 														<span class="input-group-text">AUD</span>
 													</div>
@@ -1325,7 +1325,7 @@
 										</div>
 										<div class="col-md-4">
 											<label for="title">Number of parking spots</label>
-											<input type="number" class="form-control" value="{{$product->nb_parking_spots}}" name="nombre_cutomer_parking" />
+											<input type="number" min="0" class="form-control" value="{{$product->nb_parking_spots}}" name="nombre_cutomer_parking" />
 										</div>
 									</div>
 									<!-- si fond dossier existe -->

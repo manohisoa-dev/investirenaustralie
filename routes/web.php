@@ -117,9 +117,6 @@ Route::middleware('guest')->group(function(){
     Route::get('confirm-registration/apl/continue/get-contract/{user}', 'Auth\RegisterController@confirmRegistrationAplContinueGetContract')->name('confirm.registration.apl.continue.get_contract');
     Route::post('confirm-registration/send-contract', 'Auth\RegisterController@confirmRegistrationSendContract')->name('confirm.registration.send.contract');
     
-    // route validation and reject contract in admin
-    Route::get('confirm-registration/validated-contract/{id_contract}', 'Auth\RegisterController@validateContract')->name('confirm.registration.validate.contract');
-    Route::get('confirm-registration/rejected-contract/{id_contract}', 'Auth\RegisterController@rejectedContract')->name('confirm.registration.rejected.contract');
     // Cron to check contract rejected delai
     Route::get('confirm-registration/check-contract', 'Auth\RegisterController@checkContractDelai')->name('confirm.registration.check.contract');
 

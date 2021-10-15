@@ -225,6 +225,7 @@ return
 	'btn.ok' => 'OK',
 	'btn.refresh' => 'Refresh',
 	'btn.validate' => 'Validate',
+	'btn.reject' => 'Reject',
 	'contact_admin' => 'Contact Administrateur',
 	'contact_apl' => 'Contact APL',
 	'contact_afa' => 'Contact AFA',
@@ -1284,4 +1285,9 @@ return
 	'txt.please_choose_your_signed_contract' => 'Please choose your signed contract',
 	'txt.contract_validated' => 'Your contract is already validated! !',
 	'txt.contract_awaiting_validation' => 'Your contract is awaiting validation !',
+	'txt.contract_to_be_validated' => 'Contract to be validated',
+	'txt.contract' => 'Contract',
+	'txt.contracts' => 'Contracts',
+	'btn.show' => 'Show',
+	'txt.password_min_validation' => 'Password must contain at least 8 characters',
 ];

@@ -720,6 +720,7 @@ return
 	'btn.ok' => 'OK',
 	'btn.refresh' => 'Actualiser',
 	'btn.validate' => 'Valider',
+	'btn.reject' => 'Rejeter',
 	'contact_admin' => 'Contacter l&rsquo;administrateur',
 	'contact_apl' => 'Contacter l&rsquo;APL',
 	'contact_afa' => 'Contacter l&rsquo;AFA',
@@ -1521,4 +1522,9 @@ return
 	'txt.please_choose_your_signed_contract' => 'Veuillez choisir votre contract signé',
 	'txt.contract_validated' => 'Votre contract est déjà validé !',
 	'txt.contract_awaiting_validation' => 'Votre contract est en attente de validation !',
+	'txt.contract_to_be_validated' => 'Contrat à valider',
+	'txt.contract' => 'Contrat',
+	'txt.contracts' => 'Contrats',
+	'btn.show' => 'Afficher',
+	'txt.password_min_validation' => 'Le mot de passe doit contenir au moin 8 caractères',
 ];

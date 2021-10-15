@@ -167,7 +167,11 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     //Route inscris newsletters
     Route::resource('newsletter','NewsletterController');
     Route::post('ajaxSendNewsLetter', 'NewsletterTemplateController@ajaxSendNewsLetter')->name('ajaxSendNewsLetter');
-    
+
+    // Route Contract
+    Route::get('/contract', 'ContractController@index')->name('contract.index');
+    Route::get('/contract/{id}/validate', 'ContractController@validateContract')->name('contract.validate');
+    Route::get('/contract/{id}/reject', 'ContractController@rejectContract')->name('contract.validate');
 });
 
 // ROUTE ADMIN DELEGATE
@@ -401,6 +405,11 @@ Route::prefix('collaborators')->namespace('Admin')->as('admin.')->middleware(["a
     Route::put('/admin/role/{role}', 'RoleController@update')->name('collaborators.admin.role.update');
     Route::delete('/admin/role/{role}', 'RoleController@destroy')->name('collaborators.admin.role.destroy');
     Route::get('/admin/role/{role}/edit', 'RoleController@edit')->name('collaborators.admin.role.edit');
+    
+    // Route Contract
+    Route::get('/contract', 'ContractController@index')->name('collaborators.admin.contract.index');
+    Route::get('/contract/{id}/validate', 'ContractController@validate')->name('collaborators.admin.contract.validate');
+    Route::get('/contract/{id}/reject', 'ContractController@reject')->name('collaborators.admin.contract.validate');
 
     // Route::resource('type-user','TypeUserController');
     Route::get('/admin/type-user', 'TypeUserController@index')->name('collaborators.admin.type-user.index');

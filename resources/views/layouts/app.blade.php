@@ -271,57 +271,59 @@
                             </li>
                             <li><a class="nav-link" href="{{route('blog.all')}}">@lang('app.blog')</a></li>
                             @if(Auth::check())
-                            <li class="mm-in px-dropdown">
-                                <a href="#home">@lang('app.account')</a>
-                                <i class="fa fa-angle-down px-nav-toggle"></i>
-                                <ul class="px-dropdown-menu mm-dorp-in">
-                                    <li><a href="{{url(\App\Models\User::find(Auth::id())->roleUser->role_initial)}}">@lang('app.dashboard')</a></li>
-                                    <li><a href="@if(!Auth::user()->isAdmin() && !Auth::user()->isAdminBlog() && !Auth::user()->isAdminDelegate()) {{ route('profile') }} @else {{ Auth::user()->isAdmin() ? route('admin.profile') : route('admin.collaborator.admin.profile') }} @endif">@lang('app.profile')</a></li>
-                                    <li><a href="{{route('logout')}}" id="btnLogout">@lang('app.logout')</a></li>
-                                </ul>
-                            </li>
+                                <li class="mm-in px-dropdown">
+                                    <a href="#home">@lang('app.account')</a>
+                                    <i class="fa fa-angle-down px-nav-toggle"></i>
+                                    <ul class="px-dropdown-menu mm-dorp-in">
+                                        <li><a href="{{url(\App\Models\User::find(Auth::id())->roleUser->role_initial)}}">@lang('app.dashboard')</a></li>
+                                        <li><a href="@if(!Auth::user()->isAdmin() && !Auth::user()->isAdminBlog() && !Auth::user()->isAdminDelegate()) {{ route('profile') }} @else {{ Auth::user()->isAdmin() ? route('admin.profile') : route('admin.collaborator.admin.profile') }} @endif">@lang('app.profile')</a></li>
+                                        <li><a href="{{route('logout')}}" id="btnLogout">@lang('app.logout')</a></li>
+                                    </ul>
+                                </li>
 
-                            <!-- // add this dropdown // -->
-                            <li class="mm-in px-dropdown">
-                                {{-- <a id="notifications" aria-haspopup="true" aria-expanded="true">
-                                    <span class="fa fa-bell"></span>
-                                    <small id="notificationsCount" class="badge badge-danger">1</small>
-                                </a>
-                                <i class="fa fa-angle-down px-nav-toggle"></i>
-                                <ul class="px-dropdown-menu mm-dorp-in" aria-labelledby="notificationsMenu" id="notificationsMenu">
-                                    <li>@lang('app.no_notification')</li>
-                                </ul> --}}
-                                <!-- ICON -->
-                                <div class="dropdown nav-button notifications-button hidden-sm-down m-20px-t">
+                                <!-- // add this dropdown // -->
+                                @if(!Auth::user()->isAdmin())
+                                    <li class="mm-in px-dropdown">
+                                        {{-- <a id="notifications" aria-haspopup="true" aria-expanded="true">
+                                            <span class="fa fa-bell"></span>
+                                            <small id="notificationsCount" class="badge badge-danger">1</small>
+                                        </a>
+                                        <i class="fa fa-angle-down px-nav-toggle"></i>
+                                        <ul class="px-dropdown-menu mm-dorp-in" aria-labelledby="notificationsMenu" id="notificationsMenu">
+                                            <li>@lang('app.no_notification')</li>
+                                        </ul> --}}
+                                        <!-- ICON -->
+                                        <div class="dropdown nav-button notifications-button hidden-sm-down m-20px-t">
 
-                                    <a class="btn btn-secondary dropdown-toggle" href="#" id="notifications-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i id="notificationsIcon" class="fa fa-bell" aria-hidden="true"></i>
-                                    <span id="notificationsBadge" class="badge badge-danger"><i class="fa fa-spinner fa-pulse fa-fw" aria-hidden="true"></i></span>
-                                    </a>
-                            
-                                    <!-- NOTIFICATIONS -->
-                                    <div class="dropdown-menu notification-dropdown-menu" aria-labelledby="notifications-dropdown">
-                                    <h6 class="dropdown-header">@lang('app.notifications')</h6>
-                            
-                                    <!-- CHARGEMENT -->
-                                    <a id="notificationsLoader" class="dropdown-item dropdown-notification" href="#">
-                                        <p class="notification-solo text-center"><i id="notificationsIcon" class="fa fa-spinner fa-pulse fa-fw" aria-hidden="true"></i>@lang('app.txt.loading_the_latest_notifications')</p>
-                                    </a>
-                            
-                                    <div id="notificationsContainer" class="notifications-container"></div>
-                            
-                                    <!-- AUCUNE NOTIFICATION -->
-                                    <a id="notificationAucune" class="dropdown-item dropdown-notification" href="#">
-                                        <p class="notification-solo text-center">@lang('app.no_notification')</p>
-                                    </a>
-                            
-                                    <!-- TOUTES -->
-                                    <span class="dropdown-item dropdown-notification-all"></span>
-                            
-                                    </div>
-                            
-                                </div>
-                            </li>
+                                            <a class="btn btn-secondary dropdown-toggle" href="#" id="notifications-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i id="notificationsIcon" class="fa fa-bell" aria-hidden="true"></i>
+                                            <span id="notificationsBadge" class="badge badge-danger"><i class="fa fa-spinner fa-pulse fa-fw" aria-hidden="true"></i></span>
+                                            </a>
+
+                                            <!-- NOTIFICATIONS -->
+                                            <div class="dropdown-menu notification-dropdown-menu" aria-labelledby="notifications-dropdown">
+                                            <h6 class="dropdown-header">@lang('app.notifications')</h6>
+
+                                            <!-- CHARGEMENT -->
+                                            <a id="notificationsLoader" class="dropdown-item dropdown-notification" href="#">
+                                                <p class="notification-solo text-center"><i id="notificationsIcon" class="fa fa-spinner fa-pulse fa-fw" aria-hidden="true"></i>@lang('app.txt.loading_the_latest_notifications')</p>
+                                            </a>
+
+                                            <div id="notificationsContainer" class="notifications-container"></div>
+
+                                            <!-- AUCUNE NOTIFICATION -->
+                                            <a id="notificationAucune" class="dropdown-item dropdown-notification" href="#">
+                                                <p class="notification-solo text-center">@lang('app.no_notification')</p>
+                                            </a>
+
+                                            <!-- TOUTES -->
+                                            <span class="dropdown-item dropdown-notification-all"></span>
+
+                                            </div>
+
+                                        </div>
+                                    </li>
+                                @endif
                             @endif
                         </ul>
                     </div>
@@ -527,6 +529,9 @@
                 <div class="modal-content white-bg">
                     <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
                         <h4 class="modal-title white-color text-center">{{ strtoupper(trans('app.message')) }} </h4>
+                        <button type="button" class="close" data-dismiss="modal" onclick="closeModal()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body">
                         {!! session()->get('alert_message') !!}
@@ -685,14 +690,28 @@
                             );
                         }else{
                             if(data.status == 2){
-                                swal("{{ trans('app.txt.submit_contract_signed') }}", "{{ trans('app.txt.contract_validated') }}", "info");
-                                // go to home page
-                                window.location.href= "{{route('home')}}";
+                                swal({
+                                    title: "{{ trans('app.txt.submit_contract_signed') }}", 
+                                    text: "{{ trans('app.txt.contract_validated') }}", 
+                                    type: "info"
+                                    },
+                                    function(){ 
+                                        // go to home page
+                                        window.location.href= "{{route('home')}}";
+                                    }
+                                );
                             }
                             else if(data.status == 1){
-                                swal("{{ trans('app.txt.submit_contract_signed') }}", "{{ trans('app.txt.contract_awaiting_validation') }}", "info");
-                                // go to home page
-                                window.location.href= "{{route('home')}}";
+                                swal({
+                                    title: "{{ trans('app.txt.submit_contract_signed') }}", 
+                                    text: "{{ trans('app.txt.contract_awaiting_validation') }}", 
+                                    type: "info"
+                                    },
+                                    function(){ 
+                                        // go to home page
+                                        window.location.href= "{{route('home')}}";
+                                    }
+                                );
                             }
                             else{
                                 swal("{{ trans('app.txt.submit_contract_signed') }}", "{{ trans('app.txt.upload_error') }}", "error");

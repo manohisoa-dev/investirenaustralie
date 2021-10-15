@@ -65,6 +65,7 @@ class MessageController extends Controller {
             $from_id . " AND from_id = $to_id )")->orderBy('created_at', 'ASC')->get();
 
         $data = [];
+<<<<<<< HEAD
         foreach($messages as $message){
             $data[] = [
                 'id' => $message->id,
@@ -78,12 +79,30 @@ class MessageController extends Controller {
             ];
         }
         /*foreach ($messages as $message) {
+=======
+        // foreach($messages as $message){
+        //     $data[] = [
+        //         'id' => $message->id,
+        //         'from_id' => $message->from_id,
+        //         'from_name' => User::where('id',$message->from_id)->first()->name,
+        //         'to_id' => $message->to_id,
+        //         'body' => nl2br(($message->body)),
+        //         'created_at' => $message->created_at,
+        //         'created_at_send' => $message->created_at->diffForHumans(),
+        //         'seen' => $message->seen? trans('app.txt.read') : trans('app.txt.unread'),
+        //     ];
+        foreach ($messages as $message) {
+>>>>>>> ae68bed4e10ef469fcea21f91f955c3b895827c4
             $data[] = ['id' => $message->id, 'from_id' => $message->from_id, 'from_name' =>
                 User::where('id', $message->from_id)->first()->name, 'to_id' => $message->to_id,
-                'body' => nl2br(e($message->body)), 'created_at' => $message->created_at,
+                'body' => nl2br(($message->body)), 'created_at' => $message->created_at,
                 'created_at_send' => $message->created_at->diffForHumans(), 'seen' => $message->seen ?
                 trans('app.txt.read') : trans('app.txt.unread'), ];
+<<<<<<< HEAD
         }*/
+=======
+        }
+>>>>>>> ae68bed4e10ef469fcea21f91f955c3b895827c4
 
 
         // update message showing

@@ -795,12 +795,6 @@ class RegisterController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
-        // Create Localization
-        $datas['location_id'] = 0;
-        if($location = Localisation::create($datas)){
-            $datas['location_id'] = $location->id>0?$location->id:0;
-        }
-
         // Store image file
         $datas['image_id'] = 0;
         if($file=$request->file('image')){
@@ -835,6 +829,31 @@ class RegisterController extends Controller
             $user = User::create($datas);
             $user->save();
             $datas['user_id'] = $user->id;
+
+            // Create Localization
+            if($user->hasRole(3)){
+                $adr = $datas['route_number'].' '.$datas['route'].' '.$datas['area_level_2'].' '.$datas['country'];
+                $coord_tab = geocodeAddress($adr);
+                if($coord_tab){
+                    $lat = $coord_tab['lat'];
+                    $lng = $coord_tab['lng'];
+                }else{
+                    $lat = '';
+                    $lng = '';
+                }
+                $datas['latitude'] = $lat;
+                $datas['longitude'] = $lng;
+            }
+            
+            //$datas['location_id'] = 0;
+            if($location = Localisation::create($datas)){
+                if($user->hasRole(3)){
+                    $user->location_id = $location->id>0?$location->id:0;
+                    $user->save();
+                }else{
+                    $datas['location_id'] = $location->id>0?$location->id:0;
+                }
+            }
 
             // Create user info
             if($role !== 'seller' || session('seller_class')!=='non_professional_natural_persons' && session('seller_class')!=='seller_by_afa'){
@@ -1210,8 +1229,9 @@ class RegisterController extends Controller
     {   
         // Create contract pdf to download
         $pdf_template = 'pdf.afa_contract';
-        $pdfName = 'PARTENERSHIP CONTRACT AUSTRALIAN FRANCOPHONE AGENCY ('.$user->name.')';
-        $path = 'pdf/registrations/afa/'.$pdfName.'.pdf';
+        $pdfName = 'partenership_contract_australian_francophone_agency_'.strtolower($user->name);
+        $path = public_path('pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.'afa'.DIRECTORY_SEPARATOR).$pdfName.'.pdf';
+        $downloadPath = url('pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.'afa'). DIRECTORY_SEPARATOR . $pdfName.'.pdf';
         $this->createContractPdf($user,$pdf_template,$path);
 
         App::setLocale($user->language);
@@ -1220,7 +1240,7 @@ class RegisterController extends Controller
         $url = url($path);
         $vars = array(
             '{btnSubmit}' => '<a href="'.route('home').'?action=submit_contract&id='.$user->id.'" type="button" class="m-btn m-btn-theme2nd" id="submit_contract" value="1">'.strtoupper(trans("mail.btn.submit_afa_contract_signed")).'</a>',
-            '{contractLink}' => '<a href="'.$url.'">'.strtoupper(trans('mail.txt.afa_contract_draft')).'</a>',
+            '{contractLink}' => '<a href="'.$downloadPath.'">'.strtoupper(trans('mail.txt.afa_contract_draft')).'</a>',
         );
         $template = MailsTemplate::where('id', 10)->first();
         if($template){
@@ -1285,8 +1305,9 @@ class RegisterController extends Controller
     {   
         // Create contract pdf to download
         $pdf_template = 'pdf.apl_contract';
-        $pdfName = 'CONTRAT DE PARTENARIAT AGENCE PARTENAIRE LOCALE ('.$user->name.')';
-        $path = 'pdf/registrations/apl/'.$pdfName.'.pdf';
+        $pdfName = 'contrat_de_partenariat_agence_partenaire_locale_'.strtolower($user->name);
+        $path = public_path('pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.'apl'.DIRECTORY_SEPARATOR).$pdfName.'.pdf';
+        $downloadPath = url('pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.'apl'). DIRECTORY_SEPARATOR .$pdfName.'.pdf';
         $this->createContractPdf($user,$pdf_template,$path);
 
         $template = MailsTemplate::where('id', 22)->first();
@@ -1296,7 +1317,7 @@ class RegisterController extends Controller
         $url = url($path);
         $vars = array(
             '{btnSubmit}' => '<a href="'.route('home').'?action=submit_contract&id='.$user->id.'" type="button" class="m-btn m-btn-theme2nd" id="submit_contract" value="1">'.strtoupper(trans("mail.btn.submit_apl_contract_signed")).'</a>',
-            '{contractLink}' => '<a href="'.$url.'">'.strtoupper(trans('mail.txt.apl_contract_draft')).'</a>',
+            '{contractLink}' => '<a href="'.$downloadPath.'">'.strtoupper(trans('mail.txt.apl_contract_draft')).'</a>',
         );
         $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
         $content = strtr($template->$body, $vars);
@@ -1325,13 +1346,15 @@ class RegisterController extends Controller
         $user_role = $user->role===3?'afa':'apl';
         $file = $request->file('file_contract');
         $filenameWithExt = $file->getClientOriginalName();
-        $url = 'uploads/pdf/registrations/'.$user_role.'/'.$filenameWithExt;
-        $path = public_path('uploads/pdf/registrations/'.$user_role);
+//        $url = 'uploads/pdf/registrations/'.$user_role.'/'.$filenameWithExt;
+        $url = public_path('uploads'.DIRECTORY_SEPARATOR.'pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.$user_role.DIRECTORY_SEPARATOR.$filenameWithExt);
+        $path = public_path('uploads'.DIRECTORY_SEPARATOR.'pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.$user_role);
+        $download_path = url('uploads'.DIRECTORY_SEPARATOR.'pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.$user_role.DIRECTORY_SEPARATOR.$filenameWithExt);
         
         // Save afa contract in db
         if($user->contract()){
             if($user->isRejected()){
-                $contr = Contract::create(['user_id'=>$user_id,'url_contract'=>$url,'status_contract'=>1,'date_envoie_contract'=>Carbon::now(),'date_signature_contract'=>Carbon::now()]);
+                $contr = Contract::create(['user_id'=>$user_id,'url_contract'=>$download_path,'status_contract'=>1,'date_envoie_contract'=>Carbon::now(),'date_signature_contract'=>Carbon::now()]);
             }else{
                 if($user->isValidate()){
                     return response()->json(['response'=>'false', 'status'=>2]);
@@ -1340,7 +1363,7 @@ class RegisterController extends Controller
                 }
             }
         }else{
-            $contr = Contract::create(['user_id'=>$user_id,'url_contract'=>$url,'status_contract'=>1,'date_envoie_contract'=>Carbon::now(),'date_signature_contract'=>Carbon::now()]);
+            $contr = Contract::create(['user_id'=>$user_id,'url_contract'=>$download_path,'status_contract'=>1,'date_envoie_contract'=>Carbon::now(),'date_signature_contract'=>Carbon::now()]);
         }
         
         // Save afa contract file in storage path
@@ -1348,6 +1371,7 @@ class RegisterController extends Controller
         
         // Notify Admin with message and email
         $id_contract = $contr->id;
+        // $link = route('admin.contract.index'); //link to verify contract sent
         $link = route('home'); //link to verify contract sent
         $content = trans('mail.contract_signed_sent',['name'=>$user->name, 'role'=>strtoupper($user_role), 'link'=>$link, 'txt'=>trans('mail.to_verify')]);
         Message::create(['type'=>'admin','from_id'=>1,'to_id'=>1,'body'=>$content]);
@@ -1366,80 +1390,6 @@ class RegisterController extends Controller
     
     public function createContractPdf($user,$pdf_template,$path) {
         return PDF::loadView($pdf_template,['user'=>$user])->save($path);
-    }
-
-    // Method to set in admin controller
-    public function validateContract($id_contract){
-        // Update contract to validate
-        $contract = Contract::whereId($id_contract)->first();
-        $contract->update(['status_contract'=>2]);
-
-        // Send notification to user
-        $user = User::whereId($contract->user_id)->first();
-        $password = str_random(10);
-        
-        // Active user compte
-        $user->update(['status'=>'active', 'activation_code'=>null, 'trial_ends_at'=>Carbon::now()->addDays(option('payment.trial_delay', 14)), 'password'=>Hash::make($password)]);
-        
-        $lia = Config::lia();
-        $lia_name = $lia->get_meta('lia_name')->value;
-        App::setLocale($user->language);
-        $lang = $user->language;
-        $body = 'template_' . $lang;
-        $vars = array(
-            '{immat}' => $user->immat,
-            '{login}' => $user->name,
-            '{email}' => $user->email,
-            '{password}' => $password,
-            '{ieaagencyname}' => $lia_name,
-        );
-        $template = MailsTemplate::where('id', $user->roleUser->role_initial=='afa'?11:17)->first();
-        if($template){
-            $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
-            $content = strtr($template->$body, $vars);
-            $content = ['title' => '', 'body' => $content];
-        }else{
-            return abort(404);
-        }
-
-        $user->notify(new RegistrationConfirmedMessage($sujet,$content));
-
-        return 'contract accepted';
-    }
-    
-    public function rejectedContract($id_contract){
-        $contract = Contract::whereId($id_contract)->first();
-        $user = User::whereId($contract->user_id)->first();
-        $nbContract = Contract::where('user_id',$contract->user_id)->count();
-
-        // get template
-        App::setLocale($user->language);
-        $lang = $user->language;
-        $body = 'template_' . $lang;
-        $vars = array(
-            '{role}' => strtoupper($user->roleUser->role_initial),
-        );
-        $template = MailsTemplate::where('id', $nbContract!==2?18:19)->first();
-
-        if($template){
-            $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
-            $content = strtr($template->$body, $vars);
-            $content = ['title' => '', 'body' => $content];
-        }else{
-            return abort(404);
-        }
-
-        // Notify user
-        $user->notify(new RegistrationRejectedMessage($sujet,$content));
-
-        if($nbContract===2){
-            DB::table('users')->where('id', $user->id)->delete();
-            DB::table('contracts')->where('user_id', $user->id)->delete();
-        }else{
-            $contract->update(['status_contract'=>3,'date_fin_reponse_contract'=>Carbon::now()->addDays(Parameter::nbDayEndResponseContract())]);
-        }
-
-        return 'contract rejected';
     }
 
     // function cron to check delai submit contract (if 7 days delete)
