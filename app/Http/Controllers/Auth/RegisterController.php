@@ -859,7 +859,6 @@ class RegisterController extends Controller
             if($role !== 'seller' || session('seller_class')!=='non_professional_natural_persons' && session('seller_class')!=='seller_by_afa'){
                 if(session('seller_class')){
                     if(session('seller_class')!=='real_estate_professionals' && session('seller_class')!=='non_professional_legal_persons'){
-                        dd(session('seller_class'));
                         $indicatif = '('.$datas['indicatif'].')';
                     }else{
                         $indicatif = '(+61)';
@@ -939,8 +938,6 @@ class RegisterController extends Controller
                         'mobile'=>isset($datas['mobile_2'])?$ausInd.$datas['mobile_2']:'', 
                         'email_adr'=>isset($datas['email_adr_2'])?$datas['email_adr_2']:''
                     ]);
-                    dd($si);
-                    dd($si2);
                 }else{
                     if($type == 'business'){
                         $sb = SellerBusiness::create([

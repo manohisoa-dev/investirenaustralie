@@ -445,7 +445,7 @@ class DossierController extends Controller
         $lang = 'en';
         $body = 'template_' . $lang;
         $sujet_tpl = 'sujet_'.$lang;
-        $pathLink = url('/uploads/pdf/transaction/').'/'.$dossTrans->eoi_finalize_file_name;
+        $pathLink = url('/uploads/pdf/transaction/').'/'.$dossTrans->eoi_finalize_file_name_afa;
         $downloadeoiLink = setLinkDynamic($pathLink,strtoupper(trans('app.txt.eoi_finalized')));
         $vars = array(
             '{date}' => Carbon::now()->toFormattedDateString(),
