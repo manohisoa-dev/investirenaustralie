@@ -313,6 +313,7 @@
 
 
 
+
 @push('script')
     <link rel="stylesheet" href="{{ asset('carousel/style.css') }}">
     <script src="{{ asset('carousel/popper.min.js') }}"></script>

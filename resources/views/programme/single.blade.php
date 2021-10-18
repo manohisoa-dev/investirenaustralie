@@ -286,6 +286,10 @@
                     <div>
                         <a href="{{ url()->previous() }}" class="m-btn m-btn-theme"><i class="fa fa-arrow-left"></i> @lang('app.btn.return')</a>
                     </div>
+
+                    <div class="m-35px-t">
+                        <small><em>@lang('app.txt.advertisers_statement')</em></small>
+                    </div>
                 </div>
 
                 <!-- Sidebar -->

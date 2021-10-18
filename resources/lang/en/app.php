@@ -1304,4 +1304,5 @@ return
 	'btn.i_not_moving' => 'I&rsquo;m not moving',
 	'btn.i_move' => 'I move',
 	'txt.inscription.membre.title' => 'Complete registration information',
+	'txt.advertisers_statement' => 'Advertiser&rsquo; statement:<br/>$quot;I/we, the owner/advertiser,<br/>* certify that I/we have the legal title to dispose of this program/product as :<br/><span class=m-15px-l>o The legal owner of this program/product;</span><br/><span class=m-15px-l>o The holder of a legal mandate to sell this program/product;</span><br/>* certify the legal compliance of this program/product in accordance with the Australian law about foreign direct investment applied by the Foreign Investment Review Board regarding residential, land, industrial or commercial properties.<br/>* release "Investir en Australie" portal and its directly linked entities from any responsibility for the legal and financial consequences of the publication on said portal and sale of this program/product.&quot;',
 ];
