@@ -1375,6 +1375,27 @@
             loadingPage();
             window.location.href = '{{ route("home") }}';
         }
+
+        function cancelRegistration(){
+            swal({
+                title: "@lang('app.inscription')",
+                text: "@lang('app.cancel_registration_confirme')",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: '#ff3547',
+                confirmButtonText: "@lang('app.yes')",
+                cancelButtonText: "@lang('app.no')",
+                closeOnConfirm: true,
+                closeOnCancel: true
+            },
+            function(isConfirm){	
+            if (isConfirm){
+                    loadingPage();
+                    sessionStorage.clear();
+                    return window.location.href="{{route('home')}}";    
+                }
+            });
+        }
     </script>
 
     <!-- end -->

@@ -1185,6 +1185,7 @@ return
 	'txt.eoi_sent' =>'Expression Of Interest Sent',
 	'txt.eoi' =>'Expression Of Interest',
 	'txt.eoi_finalized' =>'Finalized EOI',
+	'cancel_registration_confirme' => 'Are you sure you want to cancel ?',
 	'txt.sent_eoi_finalized' => 'Return the finalized Expression Of Interest document',
 	'txt.upload_error' =>'Upload error!',
 	'txt.dossier.i_would_like_to_buy_this' => 'I would like to buy this property',
