@@ -8,12 +8,21 @@
         <div class="col-sm-12 col-lg-12 m-15px-tb">
             <div class="box-shadow-hover hover-top white-bg our-team-hover-icon border-radius-3">
                 @php
-                    if(@getimagesize($item->imageUrl())) {
-                        $img=$item->imageUrl();
-                    } else {
-                        $img=asset('images/iea.png');
-                    }   
+                    $photo_principal = \App\Models\ProductsImage::where('products_images.product_id', '=', $item->id)->where('products_images.is_principal', '=', 1)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+                    $first_photo = \App\Models\ProductsImage::where('products_images.product_id', '=', $item->id)->join('images', 'products_images.image_id', '=', 'images.id')->first();
                 @endphp
+                @if($first_photo)
+                    @if($photo_principal)
+                    <!-- Programme sans principal -->
+                    @php $img = asset($photo_principal->filepath) @endphp
+                    @else
+                    <!-- Programme principal -->
+                    @php $img = asset($first_photo->filepath) @endphp
+                    @endif
+                @else
+                    <!-- Programme aucun photo -->
+                    @php $img = asset('images/product.png') @endphp
+                @endif	
                 
                 <a href="{{ route('programme.show', ['slug'=>$item->slug]) }}" >
                     <div class="transition blog-grid-overlay border-radius-0" style="background-image: url({{ $img }}); ">
@@ -46,12 +55,27 @@
                                                 <div class="thumb-wrapper">
                                                     <div class="img-box p-10px-b m-15px-b border-bottom-2 border-color-gray">
                                                         @php
-                                                            if(@getimagesize($prod->imageUrl())) { 
-                                                                $img_prod=$prod->imageUrl();
-                                                            } else {
-                                                                $img_prod=asset('images/iea.png');
-                                                            }   
+                                                            $photo_principal = \App\Models\ProductsImage::where('products_images.product_id', '=', $prod->id)->where('products_images.is_principal', '=', 1)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+                                                            $first_photo = \App\Models\ProductsImage::where('products_images.product_id', '=', $prod->id)->join('images', 'products_images.image_id', '=', 'images.id')->first();
                                                         @endphp
+                                                        @if($first_photo)
+                                                            @if($photo_principal)
+                                                            <!-- Programme sans principal -->
+                                                                @php
+                                                                    $img_prod= asset($photo_principal->filepath);
+                                                                @endphp
+                                                            @else
+                                                                <!-- Programme principal -->
+                                                                @php
+                                                                    $img_prod= asset($first_photo->filepath);
+                                                                @endphp
+                                                            @endif
+                                                        @else
+                                                            <!-- Programme aucun photo -->
+                                                            @php
+                                                                $img_prod= asset('images/product.png');
+                                                            @endphp
+                                                        @endif	
                                                         <a href="{{route('product.index',['product'=>$prod->slug])}}" target="_blank"><img src="{{$img_prod}}" alt="{{$prod->title}}" class="img-fluid"></a>
                                                         {{-- Badge type --}}
                                                         <span class="type-badge btn-info">{{  getGTranslateAutoDetect( App::getLocale() ,App\Models\Type::find($prod->type_id)->title) }}</span>
@@ -140,10 +164,9 @@
                                             <div class="col-lg-12 col-sm-12">
                                                 <div class="thumb-wrapper">
                                                     <div class="img-box p-10px-b m-15px-b border-bottom-2 border-color-gray">
-                                                        <a href="{{ $pub->links }}" target="_blank"><img src="{{asset('images/iea.png')}}" alt="Investir en Australie" class="img-fluid"></a>
+                                                        <a href="#"><img src="{{asset('images/iea.png')}}" alt="Investir en Australie" class="img-fluid"></a>
                                                     </div>
                                                     <div class="thumb-content">
-                                                        <p><span>{{ getGTranslateAutoDetect( App::getLocale() , $pub->title) }}</span></p>
                                                     </div>
                                                 </div>
                                             </div>

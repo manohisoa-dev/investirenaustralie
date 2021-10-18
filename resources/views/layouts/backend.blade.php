@@ -567,6 +567,15 @@
                                         <i class="fas fa-chevron-right"></i>
                                     </div>
                                 </a>
+                                <a href="{{route('member.transaction')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('member/transaction')) ? 'menu-active' : '' }}">
+                                    <div>
+                                        <i class="fa fa-calendar m-10px-r"></i>
+                                        <span>Procédure d'achat</span>
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-chevron-right"></i>
+                                    </div>
+                                </a>
                                 <a href="{{route('member.dossier')}}" class="{{ Auth::user()->hasCurrentTransaction()?'theme2nd-bg-alt':'' }} list-group-item list-group-item-action d-flex justify-content-between p15px-tb align-items-center {{ (request()->is('member/dossier')) ? 'menu-active' : '' }}">
                                     <div>
                                         <i class="fa fa-folder m-10px-r"></i>
@@ -745,6 +754,15 @@
                                       <i class="fas fa-chevron-right"></i>
                                   </div>
                               </a>
+                              <a href="{{route('afa.transaction')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('afa/transaction')) ? 'menu-active' : '' }}">
+                                <div>
+                                    <i class="fa fa-calendar m-10px-r"></i>
+                                    <span>Procédure d'achat</span>
+                                </div>
+                                <div>
+                                    <i class="fas fa-chevron-right"></i>
+                                </div>
+                            </a>
                               <a href="{{route('afa.dossier')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb align-items-center {{ (request()->is('afa/dossier')) ? 'menu-active' : '' }}">
                                 <div>
                                     <i class="fa fa-folder m-10px-r"></i>

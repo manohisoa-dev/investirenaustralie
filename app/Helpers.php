@@ -646,3 +646,10 @@ if (!function_exists('imageResizeUrl')) {
         return $url;
     }
 }
+
+if (!function_exists('setLinkDynamic')) {
+    function setLinkDynamic($path_file,$label_link)
+    {
+        return link_to_asset($path_file,$label_link);
+    }
+}

@@ -183,7 +183,6 @@
 </section>
 <!-- End Section -->
 
-
 @if(isset($q)&&$q)
 <!-- Modal -->
 <div id="modal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
@@ -258,6 +257,7 @@
         }
     });
     </script>
+    
 
     @if(isset($q)&&$q)
         <script>

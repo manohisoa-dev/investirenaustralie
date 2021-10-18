@@ -6,16 +6,13 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Carbon\Carbon;
-use App\Models\User;
 
-class AfaConjunctionAgreementMessage extends Notification
+class AplMessage extends Notification
 {
     use Queueable;
-
     private $sujet;
     private $content;
-        
+
     /**
      * Create a new notification instance.
      *
@@ -46,12 +43,13 @@ class AfaConjunctionAgreementMessage extends Notification
      */
     public function toMail($notifiable)
     {
-       $sujet=$this->sujet;
-       $content=$this->content;
+        $sujet = $this->sujet;
+        $content = $this->content;
 
         return (new MailMessage)
             ->from(env('ADMIN_MAIL'))
-            ->subject('['.app_name().']'. $sujet)
+            ->subject(__('app.message'))
+            ->subject('['.app_name().'] '. $sujet)
             ->line($content);
     }
 

@@ -566,7 +566,7 @@
                             <div class="form-group ">
                                 <input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
                                 <input type="hidden" name="user_id" id="user_id" value="{{ Request::get('id')?Request::get('id'):'' }}">
-                                <label for="">@lang('app.txt.please_choose_your_signed_contract') *</label>
+                                <label for="">@lang('app.txt.please_choose_your_signed_contract',['filename'=>trans('app.txt.contract')]) *</label>
                                 <input type="file" name="file_contract" id="file_contract">
                             </div>
                             <hr/>

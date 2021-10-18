@@ -51,6 +51,7 @@
                                 <form class="form-horizontal" role="form" id="partForm" action="{{route('profile.edit')}}" method="post" enctype="multipart/form-data">
                                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                                     <input type="hidden" name="type" value="person_complete">
+                                    <input type="hidden" name="id_doss" value="{{$id_doss}}">
                                     <input type="hidden" name="userinfos_id" value="{{ $user?$user->userinfos()->first()->id:'' }}">
 
                                     {{-- Login Information --}}
@@ -59,14 +60,14 @@
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label" for="name">@lang('app.txt.login') *</label>
                                             <div class="col-sm-12">
-                                                <input type="text" class="form-control" id="name" name="name" placeholder="Votre nom d'utilisateur" value="{{ old('name')?old('name'):($user?$user->name:'') }}" required>
+                                                <input type="text" class="form-control" id="name" name="name" placeholder="Votre nom d'utilisateur" value="{{ old('name')?old('name'):($user?$user->name:'') }}">
                                                 <span class="text-danger">{{ $errors->first('name') }}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label" for="email">@lang('app.txt.email') *</label>
                                             <div class="col-sm-12">
-                                                <input type="text" class="form-control" id="email" name="email" placeholder="you@exemple.com" value="{{ old('email')?old('email'):($user?$user->email:'') }}" required>
+                                                <input type="text" class="form-control" id="email" name="email" placeholder="you@exemple.com" value="{{ old('email')?old('email'):($user?$user->email:'') }}">
                                                 <span class="text-danger">{{ $errors->first('email') }}</span>
                                             </div>
                                         </div>
@@ -143,21 +144,21 @@
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label" for="last_name">@lang('app.txt.nom') *</label>
                                             <div class="col-sm-12">
-                                                <input type="text" class="form-control"  name="last_name" value="{{ old('last_name')?old('last_name'):($user?$user->userinfos()->first()->last_name:'') }}" required>
+                                                <input type="text" class="form-control"  name="last_name" value="{{ old('last_name')?old('last_name'):($user?$user->userinfos()->first()->last_name:'') }}" >
                                                 <span class="text-danger">{{ $errors->first('last_name') }}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="first_name" class="col-sm-3 control-label">@lang('app.txt.prenom') *</label>
                                             <div class="col-sm-12">
-                                                <input type="text" class="form-control" name="first_name" value="{{ old('first_name')?old('first_name'):($user?$user->userinfos()->first()->first_name:'') }}" required>
+                                                <input type="text" class="form-control" name="first_name" value="{{ old('first_name')?old('first_name'):($user?$user->userinfos()->first()->first_name:'') }}" >
                                                 <span class="text-danger">{{ $errors->first('first_name') }}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label" for="name">@lang('app.txt.nationality') *</label>
                                             <div class="col-sm-12">
-                                                <input type="text" class="form-control" id="nationality" name="nationality" value="{{ old('nationality')?old('nationality'):($user?$user->userinfos()->first()->nationality:'') }}" placeholder="@lang('app.txt.nationality')" required>
+                                                <input type="text" class="form-control" id="nationality" name="nationality" value="{{ old('nationality')?old('nationality'):($user?$user->userinfos()->first()->nationality:'') }}" placeholder="@lang('app.txt.nationality')" >
                                                 <span class="text-danger">{{ $errors->first('nationality') }}</span>
                                             </div>
                                         </div>
@@ -190,14 +191,14 @@
                                         <div class="form-group">
                                             <label for="route" class="col-sm-12 control-label">@lang('app.txt.name_of_the_road') *</label>
                                             <div class="col-sm-12">
-                                                <input type="text" class="form-control" id="route" name="route" placeholder="@lang('app.txt.name_of_the_road')" value="{{ old('route')?old('route'):'' }}" required>
+                                                <input type="text" class="form-control" id="route" name="route" placeholder="@lang('app.txt.name_of_the_road')" value="{{ old('route')?old('route'):'' }}" >
                                                 <span class="text-danger">{{ $errors->first('route') }}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="route_number" class="col-sm-12 control-label">@lang('app.txt.number_of_the_road') *</label>
                                             <div class="col-sm-12">
-                                                <input type="text" class="form-control" id="route_number" name="route_number" placeholder="@lang('app.txt.number_of_the_road')" value="{{ old('route_number')?old('route_number'):'' }}" required>
+                                                <input type="text" class="form-control" id="route_number" name="route_number" placeholder="@lang('app.txt.number_of_the_road')" value="{{ old('route_number')?old('route_number'):'' }}" >
                                                 <span class="text-danger">{{ $errors->first('route_number') }}</span>
                                             </div>
                                         </div>
@@ -218,14 +219,14 @@
                                         <div class="form-group">
                                             <label for="area_level_2" class="col-sm-3 control-label">@lang('app.txt.city') *</label>
                                             <div class="col-sm-12">
-                                                <input type="text" class="form-control" id="administrative_area_level_2" name="area_level_2" placeholder="@lang('app.txt.city')" value="{{ old('area_level_2')?old('area_level_2'):'' }}" required>
+                                                <input type="text" class="form-control" id="administrative_area_level_2" name="area_level_2" placeholder="@lang('app.txt.city')" value="{{ old('area_level_2')?old('area_level_2'):'' }}" >
                                                 <span class="text-danger">{{ $errors->first('area_level_2') }}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="postalCode" class="col-sm-3 control-label">@lang('app.txt.codepostal') *</label>
                                             <div class="col-sm-12">
-                                                <input type="text" class="form-control" id="postal_code" name="postalCode" placeholder="@lang('app.txt.codepostal')" value="{{ old('postalCode')?old('postalCode'):'' }}" required>
+                                                <input type="text" class="form-control" id="postal_code" name="postalCode" placeholder="@lang('app.txt.codepostal')" value="{{ old('postalCode')?old('postalCode'):'' }}" >
                                                 <span class="text-danger">{{ $errors->first('postalCode') }}</span>
                                             </div>
                                         </div>
@@ -239,7 +240,7 @@
                                         <div class="form-group">
                                             <label for="adrphy_country" class="col-sm-12 control-label">@lang('app.txt.country') *</label>
                                             <div class="col-md-12">
-                                                <select class="form-control" name="adrphy_country" required>
+                                                <select class="form-control" name="adrphy_country" >
                                                     <option value="" selected disabled>@lang('app.select_country')</option>
                                                     @foreach(App\Models\Country::all() as $country)
                                                         @if($country->prefixPhone)
@@ -336,7 +337,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="custom-file">
-                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="6" maxlength="9" placeholder="XXXXXXXX" class="form-control m-15px-t" id="orga_phone" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):'' }}" required>
+                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="6" maxlength="9" placeholder="XXXXXXXX" class="form-control m-15px-t" id="orga_phone" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):'' }}" >
                                                 </div>
                                             </div>
                                             <span class="text-danger m-5px-l">{{ $errors->first('orga_phone') }}</span>
@@ -352,7 +353,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="custom-file">
-                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="6" maxlength="9" placeholder="XXXXXXXX" class="form-control m-15px-t" id="orga_mobile_phone" name="orga_mobile_phone" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):'' }}" required>
+                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="6" maxlength="9" placeholder="XXXXXXXX" class="form-control m-15px-t" id="orga_mobile_phone" name="orga_mobile_phone" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):'' }}" >
                                                 </div>
                                             </div>
                                             <span class="text-danger m-5px-l">{{ $errors->first('orga_mobile_phone') }}</span>
@@ -360,7 +361,7 @@
                                         <div class="form-group">
                                             <label for="orga_email" class="col-sm-12 control-label">@lang('app.txt.email_adr') *</label>
                                             <div class="col-sm-12">
-                                                <input type="text" class="form-control" id="orga_email" name="orga_email" placeholder="email@iea.com" value="{{ old('orga_email')?old('orga_email'):'' }}" required>
+                                                <input type="text" class="form-control" id="orga_email" name="orga_email" placeholder="email@iea.com" value="{{ old('orga_email')?old('orga_email'):'' }}" >
                                                 <span class="text-danger">{{ $errors->first('orga_email') }}</span>
                                             </div>
                                         </div>
@@ -403,11 +404,11 @@
                                     <div>
                                         <div class="form-group m-25px-t m-50px-b">
                                             <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" name="politic" id="checkbox-3" required>
+                                                <input type="checkbox" class="custom-control-input" name="politic" id="checkbox-3" >
                                                 <label class="custom-control-label" for="checkbox-3"><b>@lang('app.form.register.politic') *</b></label>
                                             </div>
                                             <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" name="condition" id="checkbox-4" required>
+                                                <input type="checkbox" class="custom-control-input" name="condition" id="checkbox-4" >
                                                 <label class="custom-control-label" for="checkbox-4"><b>@lang('app.form.register.condition') *</b></label>
                                             </div>
                                         </div>
@@ -557,6 +558,14 @@
                 orga_email: {
 					required: true,
                     email:true
+				},
+
+                condition: {
+					required: true,
+				},
+
+                politic: {
+					required: true,
 				},
                 
                 orga_fb: {

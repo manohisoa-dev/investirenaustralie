@@ -1169,7 +1169,18 @@ class User extends Authenticatable {
 
     public function hasCurrentTransaction() {
         $dosTransUser = DossierTransaction::where('user_id', $this->id)->where('status',
-            'current')->get();
+            0)->get();
+
+        if (sizeof($dosTransUser) !== 0) {
+            return true;
+        }
+
+        return false;
+    }
+    
+    public function hasCurrentDossierTransaction($id_product) {
+        $dosTransUser = DossierTransaction::where('user_id', $this->id)->where('product_id',
+        $id_product)->get();
 
         if (sizeof($dosTransUser) !== 0) {
             return true;
@@ -1178,9 +1189,50 @@ class User extends Authenticatable {
         return false;
     }
 
+    public function getCurrentStatusTransaction($prod_id) {
+        $dosTransUser = DossierTransaction::where('user_id', $this->id)->where('product_id',$prod_id)->first();
+
+        if (sizeof($dosTransUser) !== 0) {
+            return $dosTransUser->status;
+        }
+
+        return 0;
+    }
+
+    public function getCurrentStatusTransactionAfa($prod_id) {
+        $dosTransUser = DossierTransaction::where('afa_id', $this->id)->where('product_id',$prod_id)->first();
+
+        if (sizeof($dosTransUser) !== 0) {
+            return $dosTransUser->status;
+        }
+
+        return 0;
+    }
+
+    public function getUserCurrentTransaction($prod_id) {
+        $dosTransUser = DossierTransaction::where('user_id', $this->id)->where('product_id',$prod_id)->first();
+
+        if (sizeof($dosTransUser) !== 0) {
+            return $dosTransUser->id;
+        }
+
+        return 0;
+    }
+
+    public function getDossierTransaction() {
+        $dossierTrans = DossierTransaction::where('user_id', $this->id)->where('status','!=',12);
+
+        return $dossierTrans;
+    }
+    
+    public function getDossierTransactionAfa() {
+        $dossierTrans = DossierTransaction::where('afa_id', $this->id)->where('status','!=',12);
+
+        return $dossierTrans;
+    }
+
     public function dossierTransaction() {
-        $dossierTrans = DossierTransaction::where('user_id', $this->id)->where('status',
-            'current');
+        $dossierTrans = DossierTransaction::where('user_id', $this->id)->where('status',0);
 
         return $dossierTrans;
     }

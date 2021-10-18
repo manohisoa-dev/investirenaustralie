@@ -141,25 +141,92 @@
                   @endif
 
                   <section class="property-meta-wrapper common">
-                    <div class="row m-15px-t">
-                        <div class="col-sm-6">
-                          {{-- @if(Auth::check() && Auth::user()->hasRole(5)) --}}
-                            <a href="{{route('member.buy.product', $item )}}" type="button" id="btn_buy" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12"
-                                    {{ Auth::check()&&Auth::user()->isMove() ? (Auth::user()->afa && Auth::user()->memberHasSendMr(1,Auth::user()->id,Auth::user()->afa->id)?'':'disabled') :''  }}>
+                    @if(Auth::check())
+                      @if (Auth::user()->hasRole(5))
+                        @php
+                            $user=Auth::user();
+                            $haveDossTrans=$user->hasCurrentDossierTransaction($item->id);
+                            $statusDossTrans=$user->getCurrentStatusTransaction($item->id);
+                        @endphp
+                        @if ($haveDossTrans)
+                          @php
+                              $trans = App\Models\DossierTransaction::where('user_id',$user->id)->where('product_id',$item->id)->first();
+                          @endphp
+                          {{-- user connecté dossier transaction existe --}}
+                          @if ($statusDossTrans==6)
+                            <div class="row m-15px-t">
+                              <div class="col-sm-6">
+                                  <a href="{{route('member.buy.product', $item )}}" type="button" id="btn_buy" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12">
+                                    <i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')
+                                  </a>
+                              </div>
+                              <div class="col-sm-6">
+                                  <a href="{{route('member.transaction')}}" disabled id="btn_go_there" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme flex-shrink-0 col-md-12" title="@lang('app.txt.go_to_location')">
+                                    <i class="fa fa-map-marker"></i> @lang('app.btn.go_to_location')
+                                  </a>
+                                </div>
+                            </div>
+                          @elseif($statusDossTrans==7||$statusDossTrans==8||$statusDossTrans==9||$statusDossTrans==10||$statusDossTrans==11)
+                            <div class="row m-15px-t">
+                              <div class="col-sm-6">
+                                  <a href="{{route('member.transaction', $item )}}" type="button" id="btn_buy" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12">
+                                    <i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')
+                                  </a>
+                              </div>
+                              <div class="col-sm-6">
+                                  <a href="{{route('member.transaction')}}" disabled id="btn_go_there" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme flex-shrink-0 col-md-12" title="@lang('app.txt.go_to_location')">
+                                    <i class="fa fa-map-marker"></i> @lang('app.btn.go_to_location')
+                                  </a>
+                                </div>
+                            </div>
+                          @else
+                              {{-- {{ $statusDossTrans }} --}}
+                              <div class="row m-15px-t">
+                                <div class="col-sm-6">
+                                    <a href="{{route('member.buy.product', $item )}}" disabled type="button" id="btn_buy" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12">
+                                      <i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')
+                                    </a>
+                                </div>
+                                <div class="col-sm-6">
+                                    <a href="{{route('member.transaction')}}" id="btn_go_there" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme flex-shrink-0 col-md-12" title="@lang('app.txt.go_to_location')">
+                                      <i class="fa fa-map-marker"></i> @lang('app.btn.go_to_location')
+                                    </a>
+                                  </div>
+                              </div>
+                          @endif
+                        @else
+                          {{-- user connécté pas de relation dossier transaction --}}
+                          <div class="row m-15px-t">
+                            <div class="col-sm-6">
+                                <a href="{{route('member.buy.product', $item )}}" type="button" id="btn_buy" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12">
+                                  <i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')
+                                </a>
+                            </div>
+                            <div class="col-sm-6">
+                                <a href="{{route('member.go.there', $item )}}" id="btn_go_there" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme flex-shrink-0 col-md-12" title="@lang('app.txt.go_to_location')">
+                                  <i class="fa fa-map-marker"></i> @lang('app.btn.go_to_location')
+                                </a>
+                              </div>
+                          </div>
+                        @endif
+                      @else
+                        {{-- Autre user connécté que Membre --}}
+                      @endif
+                    @else
+                        {{-- user non connécté Btn activé --}}
+                        <div class="row m-15px-t">
+                          <div class="col-sm-6">
+                              <a href="{{route('member.buy.product', $item )}}" type="button" id="btn_buy" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12">
                                 <i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')
-                            </a>
-                          {{-- @else
-                            <button type="button" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12" disabled title="@lang('app.txt.logintocontinue')"><i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')</button>
-                          @endif --}}
+                              </a>
+                          </div>
+                          <div class="col-sm-6">
+                              <a href="{{route('member.go.there', $item )}}" id="btn_go_there" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme flex-shrink-0 col-md-12" title="@lang('app.txt.go_to_location')">
+                                <i class="fa fa-map-marker"></i> @lang('app.btn.go_to_location')
+                              </a>
+                            </div>
                         </div>
-                        <div class="col-sm-6">
-                          <a href="{{route('member.go.there', $item )}}" id="btn_go_there" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme flex-shrink-0 col-md-12" title="@lang('app.txt.go_to_location')"
-                            @if(Auth::check())
-                                {{ Auth::user()->isMove() ? (Auth::user()->afa && Auth::user()->memberHasSendMr(1,Auth::user()->id,Auth::user()->afa->id)?'disabled':''):(Auth::user()->isCheckedDossierTransaction($item->id)?'disabled' : '') }}
-                            @endif><i class="fa fa-map-marker"></i> @lang('app.btn.go_to_location')
-                          </a>
-                        </div>
-                    </div>
+                    @endif
                   </section>
                   
                   <div class="p-25px-tb m-35px-tb border-top-1 border-bottom-1 border-color-gray">
@@ -329,7 +396,9 @@
                   </div>
               </div>
               <div class="m-25px-b">
-                <a type="button" id="btnSelectAfa" class="m-btn m-btn-theme2nd col-md-12" disabled href="{{ route("member.select.afa", $item) }}" >{{ strtoupper(trans('app.select_afa')) }}</a>
+                @if(Auth::user()->hasCurrentTransaction()) 
+                  <a type="button" id="btnSelectAfa" class="m-btn m-btn-theme2nd col-md-12" disabled href="{{ route("member.select.afa", Auth::user()->getUserCurrentTransaction($item->id)) }}" >{{ strtoupper(trans('app.select_afa')) }}</a>
+                @endif
               </div>
               <div>
                   <p>@lang('app.txt.cordial_greetings')</p>
@@ -427,8 +496,12 @@
       var hasAfa = $('#contact_afa').attr('value');
 
       // show engagement modal
-      if(eng_go !== '0' || eng_buy !== '0'){
-        $('#engagementModal').modal('show');
+      if(eng_go !== undefined || eng_buy !== undefined){
+        if(eng_go !== '0' || eng_buy !== '0'){
+          console.log(eng_go);
+          console.log(eng_buy);
+          $('#engagementModal').modal('show');
+        }
       }
 
       // show has afa modal
