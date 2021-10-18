@@ -25,6 +25,10 @@ use Carbon\Carbon;
 use App\Models\Message;
 use App\Models\ModelMessage;
 
+use App\Mail\MailTemplate;
+use App\Models\MailsTemplate;
+use Mail;
+
 
 use GuzzleHttp;
 use GuzzleHttp\Client;
