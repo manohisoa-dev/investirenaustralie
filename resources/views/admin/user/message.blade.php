@@ -80,7 +80,7 @@
 							<textarea class="form-control" name="content" placeholder="Message"></textarea>
 						</div>
 						<div class="text-right">
-							<button type="submit" class="btn btn-sm btn-primary m-t-n-xs"><strong>Send message</strong></button>
+							<button type="submit" class="btn btn-sm btn-primary m-t-n-xs"><strong>Envoyer le message</strong></button>
 						</div>
 					</form>
 				</div>
