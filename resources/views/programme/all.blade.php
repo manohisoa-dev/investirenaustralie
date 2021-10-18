@@ -25,7 +25,7 @@
                 @endif	
                 
                 <a href="{{ route('programme.show', ['slug'=>$item->slug]) }}">
-                    <div class="transition blog-grid-overlay border-radius-0 border-particular" style="background-image: url({{ $img }});">
+                    <div class="transition blog-grid-overlay border-radius-0 {{ $item->isParticular()?'border-particular':'' }}" style="background-image: url({{ $img }});">
                         <div class="blog-gird-info">
                             <h5>{{ $item->title?getGTranslateAutoDetect( App::getLocale() ,$item->title):'' }}</h5>
                             <p><span class="white-color">{{ $item->location ? Illuminate\Support\Str::upper($item->location->locality.' '.$item->location->area_level_2.', '.$item->location->area_level_1.' '.$item->location->postalCode) : '' }}</span></p>            
@@ -385,22 +385,6 @@
                 color:#AE4435;
                 padding:5px 10px;
                 font-size:14px;
-            }
-
-            .border-particular{
-                border: solid 4px #ffd700 ;
-            }
-            
-            .border-particular-cocarde{
-                position: absolute;
-                left: 85%;
-                top: 35%;
-                text-align: center;
-                background: none;
-                color:#AE4435;
-                padding:5px 10px;
-                font-size:14px;
-                content: url('images/ico/cocarde.png')
             }
         </style>
 @endpush

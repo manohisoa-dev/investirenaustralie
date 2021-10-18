@@ -62,18 +62,18 @@
                                     <div class="col-md-12 col-sm-12">
                                         <div class="thumb-wrapper">
                                             <div class="img-box p-10px-b m-15px-b border-bottom-2 border-color-gray">
-                                                <div class="grid-item product branding">
+                                                <div class="grid-item product branding {{ $item->isParticular()?'border-particular':'' }}">
                                                     <div class="portfolio-box-02">
                                                         <div class="portfolio-img">
-                                                        @php
-                                                            $img_prod = "";
-                                                            if(@getimagesize(App\Models\Image::whereId($it->pivot->image_id)->first()->filepath)) { 
-                                                                $img_prod=App\Models\Image::whereId($it->pivot->image_id)->first()->filepath;
-                                                            } else {
-                                                                $img_prod=asset('images/iea.png');
-                                                            }   
-                                                        @endphp
-                                                        <a href="javascript:void(0)"><img src="{{asset($img_prod)}}" alt="{{$it->title}}" class="img-fluid imageresource{{ $key }}"></a>
+                                                            @php
+                                                                $img_prod = "";
+                                                                if(@getimagesize(App\Models\Image::whereId($it->pivot->image_id)->first()->filepath)) { 
+                                                                    $img_prod=App\Models\Image::whereId($it->pivot->image_id)->first()->filepath;
+                                                                } else {
+                                                                    $img_prod=asset('images/iea.png');
+                                                                }   
+                                                            @endphp
+                                                            <a href="javascript:void(0)"><img src="{{asset($img_prod)}}" alt="{{$it->title}}" class="img-fluid imageresource{{ $key }}"></a>
                                                         </div>
                                                         <div class="portfolio-info">
                                                             <div class="portfolio-desc">
@@ -88,6 +88,11 @@
                                                 {{-- Badge agence exclusive --}}
                                                 @if($item->isExclusiveAgency())
                                                     <span class="notify-badge-prod">@lang('app.txt.priority_agency')</span>
+                                                @endif
+                                                
+                                                {{-- Cocarde --}}
+                                                @if($item->isParticular())
+                                                    <span class="border-particular-cocarde-2"></span>
                                                 @endif
                                             </div>
                                         </div>
@@ -226,13 +231,22 @@
                                                     <div class="thumb-wrapper">
                                                         <div class="img-box p-10px-b m-15px-b border-bottom-2 border-color-gray">
                                                             @php
-                                                                if(@getimagesize($prod->imageUrl())){
-                                                                    $img_prod=$prod->imageUrl();
-                                                                }else{
-                                                                    $img_prod=asset('images/iea.png');
-                                                                }   
+                                                                $photo_principal = \App\Models\ProductsImage::where('products_images.product_id', '=', $prod->id)->where('products_images.is_principal', '=', 1)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+                                                                $first_photo = \App\Models\ProductsImage::where('products_images.product_id', '=', $prod->id)->join('images', 'products_images.image_id', '=', 'images.id')->first();
                                                             @endphp
-                                                            <a href="{{route('product.index',['product'=>$prod->slug])}}" target="_blank"><img src="{{$img_prod}}" alt="{{$prod->title}}" class="img-fluid"></a>
+                                                            @if($first_photo)
+                                                                @if($photo_principal)
+                                                                <!-- Programme sans principal -->
+                                                                @php $img = asset($photo_principal->filepath) @endphp
+                                                                @else
+                                                                <!-- Programme principal -->
+                                                                @php $img = asset($first_photo->filepath) @endphp
+                                                                @endif
+                                                            @else
+                                                                <!-- Programme aucun photo -->
+                                                                @php $img = asset('images/product.png') @endphp
+                                                            @endif	
+                                                            <a href="{{route('product.index',['product'=>$prod->slug])}}" target="_blank"><img src="{{$img}}" alt="{{$prod->title}}" class="img-fluid"></a>
                                                         </div>
                                                         <div class="thumb-content">
                                                             <p class="item-price"><span>$ {{number_format($prod->price, 0, '.', ' ')}}</span></p>
@@ -343,6 +357,18 @@
             color:#AE4435;
             padding:5px 10px;
             font-size:14px;
+        }
+
+        .border-particular-cocarde-2{
+            position: absolute;
+            left: 85%;
+            top: 70%;
+            text-align: center;
+            background: none;
+            color:#AE4435;
+            padding:5px 10px;
+            font-size:14px;
+            content: url('../images/ico/cocarde.png')
         }
     </style>
     <script src="{{ asset('carousel/popper.min.js') }}"></script>

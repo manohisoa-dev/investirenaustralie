@@ -88,7 +88,7 @@
                                           </div>
                                           {{-- Badge agence exclusive --}}
                                           @if($item->isExclusiveAgency())
-                                            <span class="notify-badge-prod">@lang('app.txt.priority_agency')</span>
+                                            <span class="notify-badge-prod-2">@lang('app.txt.priority_agency')</span>
                                           @endif
                                         </div>
                                     </div>
