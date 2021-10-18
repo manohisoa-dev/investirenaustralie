@@ -62,29 +62,33 @@
                                     <div class="col-md-12 col-sm-12">
                                         <div class="thumb-wrapper">
                                             <div class="img-box p-10px-b m-15px-b border-bottom-2 border-color-gray">
-                                            <div class="grid-item product branding">
-                                                <div class="portfolio-box-02">
-                                                    <div class="portfolio-img">
-                                                    @php
-                                                        $img_prod = "";
-                                                        if(@getimagesize(App\Models\Image::whereId($it->pivot->image_id)->first()->filepath)) { 
-                                                            $img_prod=App\Models\Image::whereId($it->pivot->image_id)->first()->filepath;
-                                                        } else {
-                                                            $img_prod=asset('images/iea.png');
-                                                        }   
-                                                    @endphp
-                                                    <a href="javascript:void(0)"><img src="{{asset($img_prod)}}" alt="{{$it->title}}" class="img-fluid imageresource{{ $key }}"></a>
-                                                    </div>
-                                                    <div class="portfolio-info">
-                                                        <div class="portfolio-desc">
-                                                            <h5><a href="#">{{ getGTranslateAutoDetect( App::getLocale() ,$item->title) }}</a></h5>
+                                                <div class="grid-item product branding">
+                                                    <div class="portfolio-box-02">
+                                                        <div class="portfolio-img">
+                                                        @php
+                                                            $img_prod = "";
+                                                            if(@getimagesize(App\Models\Image::whereId($it->pivot->image_id)->first()->filepath)) { 
+                                                                $img_prod=App\Models\Image::whereId($it->pivot->image_id)->first()->filepath;
+                                                            } else {
+                                                                $img_prod=asset('images/iea.png');
+                                                            }   
+                                                        @endphp
+                                                        <a href="javascript:void(0)"><img src="{{asset($img_prod)}}" alt="{{$it->title}}" class="img-fluid imageresource{{ $key }}"></a>
                                                         </div>
-                                                        <a href="javascript:void(0)" value="{{ $key }}" class="gallery-link pop">
-                                                            <i class="ti-plus"></i>
-                                                        </a>
+                                                        <div class="portfolio-info">
+                                                            <div class="portfolio-desc">
+                                                                <h5><a href="#">{{ getGTranslateAutoDetect( App::getLocale() ,$item->title) }}</a></h5>
+                                                            </div>
+                                                            <a href="javascript:void(0)" value="{{ $key }}" class="gallery-link pop">
+                                                                <i class="ti-plus"></i>
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                                {{-- Badge agence exclusive --}}
+                                                @if($item->isExclusiveAgency())
+                                                    <span class="notify-badge-prod">@lang('app.txt.priority_agency')</span>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -329,6 +333,18 @@
 	@endphp
     <link rel="stylesheet" href="{{ asset('carousel/style.css') }}">
 	<link rel="stylesheet" href="{{ asset('plugin/fancybox/jquery.fancybox.css') }}" type="text/css" media="screen" />
+    <style>
+        .notify-badge-prod{
+            position: absolute;
+            left: 15px;
+            top: 50px;
+            text-align: center;
+            background: rgba(255,255,255, 0.8);
+            color:#AE4435;
+            padding:5px 10px;
+            font-size:14px;
+        }
+    </style>
     <script src="{{ asset('carousel/popper.min.js') }}"></script>
     <script src="{{ asset('carousel/carousel.js') }}"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>

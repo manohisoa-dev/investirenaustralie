@@ -87,8 +87,8 @@
                                             </div>
                                           </div>
                                           {{-- Badge agence exclusive --}}
-                                          @if(!$item->isExclusiveAgency())
-                                            <span class="notify-badge-prod">@lang('app.txt.exclusive_agency')</span>
+                                          @if($item->isExclusiveAgency())
+                                            <span class="notify-badge-prod">@lang('app.txt.priority_agency')</span>
                                           @endif
                                         </div>
                                     </div>
@@ -132,8 +132,8 @@
                               </div>
                             </div>
                             {{-- Badge agence exclusive --}}
-                            @if(!$item->isExclusiveAgency())
-                              <span class="notify-badge-prod">@lang('app.txt.exclusive_agency')</span>
+                            @if($item->isExclusiveAgency())
+                              <span class="notify-badge-prod">@lang('app.txt.priority_agency')</span>
                             @endif
                           </div>
                       </div>

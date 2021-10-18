@@ -303,8 +303,8 @@
 
                                     <div class="form-group">
                                         <div class="col-sm-offset-3 col-sm-9">
-                                            <button type="submit" class="m-btn m-btn-theme2nd" id="btn_member_part_register"> @lang('app.btn.validerinscription') </button>
                                             <button type="button" class="m-btn m-btn-theme" onclick="cancelRegistration()">@lang('app.btn.cancel')</button>
+                                            <button type="submit" class="m-btn m-btn-theme2nd" id="btn_member_part_register"> @lang('app.btn.validerinscription') </button>
                                         </div>
                                     </div>
                                 </form>
@@ -723,8 +723,8 @@
                                     
                                     <div class="form-group">
                                         <div class="col-sm-offset-3 col-sm-9">
-                                            <button type="submit" class="m-btn m-btn-theme2nd" id="btn_member_org_register">@lang('app.btn.register')</button>
                                             <button type="button" class="m-btn m-btn-theme" onclick="cancelRegistration()">@lang('app.btn.cancel')</button>
+                                            <button type="submit" class="m-btn m-btn-theme2nd" id="btn_member_org_register">@lang('app.btn.register')</button>
                                         </div>
                                     </div>
                                 </form>

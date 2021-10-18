@@ -1400,6 +1400,7 @@ return
 	'txt.dossier.conjunction_agreement' => 'Module Conjunction Agreement',
 	'txt.dossier.conjunction_agreement.description' => 'Lancement du Module Conjunction Agreement',
 	'txt.exclusive_agency' => 'Agence Exclusive',
+	'txt.priority_agency' => 'Agence Prioritaire',
 	'btn.download' => 'Télécharger',
 	'txt.downloaded' => 'Télécharger',
 	'btn.upload' => 'Importer',

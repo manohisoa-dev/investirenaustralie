@@ -24,8 +24,8 @@
                     @php $img = asset('images/product.png') @endphp
                 @endif	
                 
-                <a href="{{ route('programme.show', ['slug'=>$item->slug]) }}" >
-                    <div class="transition blog-grid-overlay border-radius-0" style="background-image: url({{ $img }}); ">
+                <a href="{{ route('programme.show', ['slug'=>$item->slug]) }}">
+                    <div class="transition blog-grid-overlay border-radius-0 border-particular" style="background-image: url({{ $img }});">
                         <div class="blog-gird-info">
                             <h5>{{ $item->title?getGTranslateAutoDetect( App::getLocale() ,$item->title):'' }}</h5>
                             <p><span class="white-color">{{ $item->location ? Illuminate\Support\Str::upper($item->location->locality.' '.$item->location->area_level_2.', '.$item->location->area_level_1.' '.$item->location->postalCode) : '' }}</span></p>            
@@ -37,6 +37,15 @@
                         <span class="notify-badge btn-success">@lang('app.txt.new')</span>
                     @endif
 
+                    {{-- Badge agence exclusive --}}
+                    @if($item->isExclusiveAgency())
+                        <span class="notify-badge-prod3">@lang('app.txt.priority_agency')</span>
+                    @endif
+
+                    {{-- Cocarde --}}
+                    @if($item->isParticular())
+                        <span class="border-particular-cocarde"></span>
+                    @endif
                 </a>
         
                 <div class="p-5px-t p-20px-b text-center">
@@ -48,7 +57,6 @@
                         <div class="row mx-auto my-auto">
                             <div id="myCarousel{{ $i }}" class="carousel slide w-100" data-ride="carousel">
                                 <div class="carousel-inner w-100" role="listbox">
-                                    
                                     @forelse (App\Models\Product::where('parent_id','=',$item->id)->orderBy($orderBy,$order)->get() as $prod)
                                         <div class="carousel-item carousel-item-prod @if($loop->first) active @endif">
                                             <div class="{{ $viewProd=='list' ? 'col-lg-4' : 'col-md-12'}} col-sm-12">
@@ -83,6 +91,11 @@
                                                         @if ($prod->validated_at > Carbon\Carbon::now()->subDays(App\Models\Parameter::where('name','nb_day_new_prod')->first()->value))
                                                             <span class="notify-badge-prod btn-success">@lang('app.txt.new')</span>
                                                         @endif
+
+                                                        {{-- Badge agence exclusive --}}
+                                                        @if($item->isExclusiveAgency())
+                                                            <span class="notify-badge-prod2">@lang('app.txt.priority_agency')</span>
+                                                        @endif
                                                     </div>
                                                     <div class="thumb-content">
                                                         <p class="item-price"><span>$ {{number_format($prod->price, 0, '.', ' ')}}</span></p>
@@ -93,7 +106,7 @@
                                                                 <a class="body-color font-w-500" href="#"><i class="fa fa-car"></i> {{$prod->garage_spaces?__('app.yes'):__('app.no')}}</a>
                                                             </ul>
                                                         </div>
-                                                    </div>						
+                                                    </div>	
                                                 </div>
                                             </div>
                                         </div>
@@ -350,6 +363,44 @@
                 color:white;
                 padding:5px 10px;
                 font-size:14px;
+            }
+
+            .notify-badge-prod2{
+                position: absolute;
+                left: 15px;
+                top: 50px;
+                text-align: center;
+                background: rgba(255,255,255, 0.8);
+                color:#AE4435;
+                padding:5px 10px;
+                font-size:14px;
+            }
+
+            .notify-badge-prod3{
+                position: absolute;
+                left: 0px;
+                top: 50px;
+                text-align: center;
+                background: rgba(255,255,255, 0.8);
+                color:#AE4435;
+                padding:5px 10px;
+                font-size:14px;
+            }
+
+            .border-particular{
+                border: solid 4px #ffd700 ;
+            }
+            
+            .border-particular-cocarde{
+                position: absolute;
+                left: 85%;
+                top: 35%;
+                text-align: center;
+                background: none;
+                color:#AE4435;
+                padding:5px 10px;
+                font-size:14px;
+                content: url('images/ico/cocarde.png')
             }
         </style>
 @endpush

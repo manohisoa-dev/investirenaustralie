@@ -12,6 +12,11 @@
     .bloc-registration{z-index: 1;}
 
     .dropdown-messages{position: absolute !important; left: -10rem !important;}
+
+    .border-particular-cocarde{
+        left: 68% !important;
+        top: 23% !important;
+    }
 }
 
 /* Extra small devices (phones, 600px and down) */
@@ -37,15 +42,21 @@
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
-
+    .border-particular-cocarde{
+        left: 87% !important;
+        top: 24% !important;
+    }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
-
+    .border-particular-cocarde{
+        left: 80%;
+        top: 35% !important;
+    }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
-
+    
 }

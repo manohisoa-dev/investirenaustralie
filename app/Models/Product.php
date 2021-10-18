@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\EoiDossier;
+use App\Models\Parameter;
 
 
 class Product extends Model {
@@ -535,7 +536,19 @@ class Product extends Model {
      */
     public function isExclusiveAgency()
     {
-        if($this->author->role !== 3){
+        if($this->author->role == 3){
+            return true;
+        }
+
+        return false;
+    }
+
+    // Programmes/Products autonomes dont le taux de commission est = ou > au seuil promotionnel
+    public function isParticular()
+    {
+        $param = Parameter::where('name','seuil_promotionnel')->first();
+
+        if($this->parent_id==0 && $this->commision >= $param->value || $this->parent_id==-1 && $this->commision >= $param->value){
             return true;
         }
 
