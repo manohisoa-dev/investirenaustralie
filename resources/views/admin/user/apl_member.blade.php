@@ -81,7 +81,7 @@
 								data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
 								>{{ $record->email }}</span>
 							</td>
-							<td>{{$member->apl_ends_at->formatLocalized('%d %B %Y')}}</td>
+							<td>{{$member->apl_ends_at ? $member->apl_ends_at->formatLocalized('%d %B %Y') : ''}}</td>
 							<td>
 								<span class="editable"
 								data-type="text"
