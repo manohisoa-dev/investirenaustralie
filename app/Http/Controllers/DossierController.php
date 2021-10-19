@@ -301,36 +301,39 @@ class DossierController extends Controller
         DossierTransaction::whereId($dossTransId)->update(['eoi_finalize_file_name'=>$fileNameToStore,'date_eoi_finalize'=>Carbon::now(),'status'=>10,'sollicitor_id'=>0]);
 
         // Send Email to notify Sollicitor 
-        // $template = MailsTemplate::where('id', 34)->get();
-        // $lang = 'en';
-        // $body = 'template_' . $lang;
-        // $sujet_tpl = 'sujet_'.$lang;
-        // $mrLink='<a href="'.$downloadMrLink.'">'.strtoupper(trans('app.txt.mandate_to_search_for_propreties')).'</a>';
-        // $vars = array(
-        //     '{date}' => Carbon::now()->toFormattedDateString(),
-        //     '{heure}' => Carbon::now()->toTimeString(),
-        //     '{name}' => $user->isPerson()?$user->name:$user->userinfos->orga_name,
-        //     '{seller}' => $seller->name,
-        //     '{sellerparentcompany}' => $seller->userinfos->orga_parent_name,
-        //     '{title}' => $product->title,
-        //     '{lottype}' => $dossTrans->lot_type,
-        //     '{lotlevel}' => $dossTrans->lot_level,
-        //     '{lotid}' => $dossTrans->lot_id,
-        //     '{price}' => $dossTrans->final_sales_price,
-        //     '{afa}' => $afa->name,
-        //     '{abnafa}' => $afa->userinfos->orga_abn,
-                // '{adrafa}' => $adrafa,
-                // '{telafa}' => $afa->userinfos->orga_phone,
-                // '{faxafa}' => $afa->userinfos->orga_fax,
-                // '{emailafa}' => $afa->userinfos->orga_email,
-                // '{state}' => $afa->location->area_level_1,
-                // '{licenceafa}' => $afa->userinfos->orga_license_number,
-        // );
-        // $sujet = $template[0]->$sujet_tpl;
-        // $contenu = strtr($template[0]->$body, $vars);
-        // $content = ['title' => '', 'body' => $contenu];
-        // send email
-        // $user->notify(new SollicitorMessage($sujet,$content));
+        if($dossTrans->sollicitor_id != 0){
+            // $sollicitor = So
+            $template = MailsTemplate::where('id', 34)->get();
+            $lang = 'en';
+            $body = 'template_' . $lang;
+            $sujet_tpl = 'sujet_'.$lang;
+            $mrLink='<a href="'.$downloadMrLink.'">'.strtoupper(trans('app.txt.mandate_to_search_for_propreties')).'</a>';
+            $vars = array(
+                '{date}' => Carbon::now()->toFormattedDateString(),
+                '{heure}' => Carbon::now()->toTimeString(),
+                '{name}' => $user->isPerson()?$user->name:$user->userinfos->orga_name,
+                '{seller}' => $seller->name,
+                '{sellerparentcompany}' => $seller->userinfos->orga_parent_name,
+                '{title}' => $product->title,
+                '{lottype}' => $dossTrans->lot_type,
+                '{lotlevel}' => $dossTrans->lot_level,
+                '{lotid}' => $dossTrans->lot_id,
+                '{price}' => $dossTrans->final_sales_price,
+                '{afa}' => $afa->name,
+                '{abnafa}' => $afa->userinfos->orga_abn,
+                    '{adrafa}' => $adrafa,
+                    '{telafa}' => $afa->userinfos->orga_phone,
+                    '{faxafa}' => $afa->userinfos->orga_fax,
+                    '{emailafa}' => $afa->userinfos->orga_email,
+                    '{state}' => $afa->location->area_level_1,
+                    '{licenceafa}' => $afa->userinfos->orga_license_number,
+            );
+            $sujet = $template[0]->$sujet_tpl;
+            $contenu = strtr($template[0]->$body, $vars);
+            $content = ['title' => '', 'body' => $contenu];
+            // send email
+            $user->notify(new SollicitorMessage($sujet,$content));
+        }
 
         // Send Email to notify Seller (propriétaire du produit)
         $seller = User::whereId($product->seller_id)->first();

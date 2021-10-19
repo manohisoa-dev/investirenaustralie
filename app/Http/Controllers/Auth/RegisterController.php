@@ -1029,18 +1029,25 @@ class RegisterController extends Controller
                 if($user->isSbaIndividual()){
                     $vars = array(
                         '{role}' => trans('seller.seller_by_afa'),
-                        '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                        '{confirmLink}' => setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration'))),
                     );
                     $alert =trans('app.txt.alert_success_sba');
                 }
                 $lang = 'en';
                 $body = 'template_' . $lang;
-                $template = MailsTemplate::where('id', 25)->first();
-                if($template){
-                    $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
-                    $content = strtr($template->$body, $vars);
-                    $content = ['title' => '', 'body' => $content];
-                    $user->notify(new ConfirmRegistrationSeller($sujet,$content));
+                $template2 = MailsTemplate::where('id', 25)->first();
+                if($template2){
+                    $sujetLab = 'sujet_'.$lang;
+                    $sujet2 = $template2->$sujetLab;
+                    $content2 = strtr($template2->$body, $vars);
+                    $content2 = ['title' => '', 'body' => $content2];
+                    $email_to = $user->email;
+
+                    if($user->isSbaIndividual() || $user->isSbaBusiness()){
+                        Mail::to($email_to)->send(new MailTemplate($content2, $sujet2));
+                    }else{
+                        $user->notify(new ConfirmRegistrationSeller($sujet2,$content2));
+                    }
                 }else{
                     return abort(404);
                 }
@@ -1059,7 +1066,7 @@ class RegisterController extends Controller
                     $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
                     $content = strtr($template->$body, $vars);
                     $content = ['title' => '', 'body' => $content];
-                    $user->notify(new ConfirmRegistrationApl($sujet,$content));
+                    $user->notify(new ConfirmRegistrationAfa($sujet,$content));
                     $alert =trans('app.txt.alert_success_afa');
                 }else{
                     return abort(404);
