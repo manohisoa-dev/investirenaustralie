@@ -6,6 +6,7 @@ return [
     "products"  => "My products",
     "orders"    => "Current Sales",
     "sales"     => "Sales made",
+    "solicitor"     => "My solicitor",
     "customers"   => "Clients",
     "contact_customer"   => "Contact this client",
     "acceptance_page"   => "Seller&rsquo;s agreement",

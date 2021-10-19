@@ -7,6 +7,7 @@ return [
     "products"  => "Mes propriétés",
     "orders"    => "Ventes En Cours",
     "sales"     => "Ventes Effectuées",
+    "solicitor"     => "Mes cabinets",
     "customers"   => "Clients",
     "contact_customer"   => "Contacter ce client",
     "acceptance_page"   => "Accord du vendeur",
