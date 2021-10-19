@@ -230,9 +230,7 @@ Route::middleware(["auth", "role:5"])->group(function(){
         Route::get('relationApl', 'MemberController@relationApl')->name('member.relationApl');
         Route::post('ajaxDropRelation', 'MemberController@ajaxDropRelation')->name('member.ajaxDropRelation');
         Route::post('ajaxRenewRelation', 'MemberController@ajaxRenewRelation')->name('member.ajaxRenewRelation');
-        
         Route::get('ajaxSendMandatIeaToMember', 'MemberController@ajaxSendMandatIeaToMember')->name('member.ajaxSendMandatIeaToMember');
-
 
         // Mail Controller Groups
         Route::get('mails/{filter?}', 'MailController@all')->name('member.mail.list');
@@ -319,6 +317,11 @@ Route::prefix('seller')->middleware(["auth","role:2"])->group(function(){
     Route::get('products', 'SellerController@products')->name('seller.products');    
     Route::get('sales', 'SellerController@sales')->name('seller.sales');
     Route::get('orders', 'SellerController@orders')->name('seller.orders');
+    Route::get('solicitor', 'SellerController@solicitor')->name('seller.solicitor');
+    Route::post('ajaxSaveSolicitor', 'SellerController@ajaxSaveProduct')->name('ajaxSaveSolicitor');
+    Route::post('ajaxModifSolicitor', 'SellerController@ajaxModifSolicitor')->name('ajaxModifSolicitor');
+    Route::post('ajaxGetSolicitorById', 'SellerController@ajaxGetSolicitorById')->name('ajaxGetSolicitorById'); 
+    Route::post('ajaxDropSolicitor', 'SellerController@ajaxDropSolicitor')->name('ajaxDropSolicitor');      
     Route::get('cartitem/{cartitem}', 'CartItemController@show')->name('seller.cartitem.show');
 
     Route::get('contact/{user}' , 'BackendController@contact')->name('seller.user.contact');

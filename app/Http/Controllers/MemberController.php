@@ -1009,6 +1009,4 @@ class MemberController extends Controller {
         return response()->json(['success' => 'true']);
     }
 
-
-
 }
