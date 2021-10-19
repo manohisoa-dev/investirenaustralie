@@ -52,6 +52,10 @@
 					<h3 class="m-t-none m-b">@lang('app.login_info')</h3>
 					<table class='table table-borderless'>
 						<tr>
+							<th width="45%">Immatriculation</th>
+							<td>{{$user->immat}}</td>
+						</tr>
+						<tr>
 							<th width="45%">Rôle</th>
 							<td>{{$user->roleUser['role_initial']}}</td>
 						</tr>

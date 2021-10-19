@@ -8,15 +8,24 @@
         <div class="col-sm-12 col-lg-12 m-15px-tb">
             <div class="box-shadow-hover hover-top white-bg our-team-hover-icon border-radius-3">
                 @php
-                    if(@getimagesize($item->imageUrl())) {
-                        $img=$item->imageUrl();
-                    } else {
-                        $img=asset('images/iea.png');
-                    }   
+                    $photo_principal = \App\Models\ProductsImage::where('products_images.product_id', '=', $item->id)->where('products_images.is_principal', '=', 1)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+                    $first_photo = \App\Models\ProductsImage::where('products_images.product_id', '=', $item->id)->join('images', 'products_images.image_id', '=', 'images.id')->first();
                 @endphp
+                @if($first_photo)
+                    @if($photo_principal)
+                    <!-- Programme sans principal -->
+                    @php $img = asset($photo_principal->filepath) @endphp
+                    @else
+                    <!-- Programme principal -->
+                    @php $img = asset($first_photo->filepath) @endphp
+                    @endif
+                @else
+                    <!-- Programme aucun photo -->
+                    @php $img = asset('images/product.png') @endphp
+                @endif	
                 
-                <a href="{{ route('programme.show', ['slug'=>$item->slug]) }}" >
-                    <div class="transition blog-grid-overlay border-radius-0" style="background-image: url({{ $img }}); ">
+                <a href="{{ route('programme.show', ['slug'=>$item->slug]) }}">
+                    <div class="transition blog-grid-overlay border-radius-0 {{ $item->isParticular()?'border-particular':'' }}" style="background-image: url({{ $img }});">
                         <div class="blog-gird-info">
                             <h5>{{ $item->title?getGTranslateAutoDetect( App::getLocale() ,$item->title):'' }}</h5>
                             <p><span class="white-color">{{ $item->location ? Illuminate\Support\Str::upper($item->location->locality.' '.$item->location->area_level_2.', '.$item->location->area_level_1.' '.$item->location->postalCode) : '' }}</span></p>            
@@ -28,6 +37,15 @@
                         <span class="notify-badge btn-success">@lang('app.txt.new')</span>
                     @endif
 
+                    {{-- Badge agence exclusive --}}
+                    @if($item->isExclusiveAgency())
+                        <span class="notify-badge-prod3">@lang('app.txt.priority_agency')</span>
+                    @endif
+
+                    {{-- Cocarde --}}
+                    @if($item->isParticular())
+                        <span class="border-particular-cocarde"></span>
+                    @endif
                 </a>
         
                 <div class="p-5px-t p-20px-b text-center">
@@ -39,25 +57,44 @@
                         <div class="row mx-auto my-auto">
                             <div id="myCarousel{{ $i }}" class="carousel slide w-100" data-ride="carousel">
                                 <div class="carousel-inner w-100" role="listbox">
-                                    
                                     @forelse (App\Models\Product::where('parent_id','=',$item->id)->orderBy($orderBy,$order)->get() as $prod)
                                         <div class="carousel-item carousel-item-prod @if($loop->first) active @endif">
                                             <div class="{{ $viewProd=='list' ? 'col-lg-4' : 'col-md-12'}} col-sm-12">
                                                 <div class="thumb-wrapper">
                                                     <div class="img-box p-10px-b m-15px-b border-bottom-2 border-color-gray">
                                                         @php
-                                                            if(@getimagesize($prod->imageUrl())) { 
-                                                                $img_prod=$prod->imageUrl();
-                                                            } else {
-                                                                $img_prod=asset('images/iea.png');
-                                                            }   
+                                                            $photo_principal = \App\Models\ProductsImage::where('products_images.product_id', '=', $prod->id)->where('products_images.is_principal', '=', 1)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+                                                            $first_photo = \App\Models\ProductsImage::where('products_images.product_id', '=', $prod->id)->join('images', 'products_images.image_id', '=', 'images.id')->first();
                                                         @endphp
+                                                        @if($first_photo)
+                                                            @if($photo_principal)
+                                                            <!-- Programme sans principal -->
+                                                                @php
+                                                                    $img_prod= asset($photo_principal->filepath);
+                                                                @endphp
+                                                            @else
+                                                                <!-- Programme principal -->
+                                                                @php
+                                                                    $img_prod= asset($first_photo->filepath);
+                                                                @endphp
+                                                            @endif
+                                                        @else
+                                                            <!-- Programme aucun photo -->
+                                                            @php
+                                                                $img_prod= asset('images/product.png');
+                                                            @endphp
+                                                        @endif	
                                                         <a href="{{route('product.index',['product'=>$prod->slug])}}" target="_blank"><img src="{{$img_prod}}" alt="{{$prod->title}}" class="img-fluid"></a>
                                                         {{-- Badge type --}}
                                                         <span class="type-badge btn-info">{{  getGTranslateAutoDetect( App::getLocale() ,App\Models\Type::find($prod->type_id)->title) }}</span>
                                                         {{-- Badge new product --}}
                                                         @if ($prod->validated_at > Carbon\Carbon::now()->subDays(App\Models\Parameter::where('name','nb_day_new_prod')->first()->value))
                                                             <span class="notify-badge-prod btn-success">@lang('app.txt.new')</span>
+                                                        @endif
+
+                                                        {{-- Badge agence exclusive --}}
+                                                        @if($item->isExclusiveAgency())
+                                                            <span class="notify-badge-prod2">@lang('app.txt.priority_agency')</span>
                                                         @endif
                                                     </div>
                                                     <div class="thumb-content">
@@ -69,7 +106,7 @@
                                                                 <a class="body-color font-w-500" href="#"><i class="fa fa-car"></i> {{$prod->garage_spaces?__('app.yes'):__('app.no')}}</a>
                                                             </ul>
                                                         </div>
-                                                    </div>						
+                                                    </div>	
                                                 </div>
                                             </div>
                                         </div>
@@ -140,10 +177,9 @@
                                             <div class="col-lg-12 col-sm-12">
                                                 <div class="thumb-wrapper">
                                                     <div class="img-box p-10px-b m-15px-b border-bottom-2 border-color-gray">
-                                                        <a href="{{ $pub->links }}" target="_blank"><img src="{{asset('images/iea.png')}}" alt="Investir en Australie" class="img-fluid"></a>
+                                                        <a href="#"><img src="{{asset('images/iea.png')}}" alt="Investir en Australie" class="img-fluid"></a>
                                                     </div>
                                                     <div class="thumb-content">
-                                                        <p><span>{{ getGTranslateAutoDetect( App::getLocale() , $pub->title) }}</span></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -277,6 +313,7 @@
 
 
 
+
 @push('script')
     <link rel="stylesheet" href="{{ asset('carousel/style.css') }}">
     <script src="{{ asset('carousel/popper.min.js') }}"></script>
@@ -325,6 +362,28 @@
                 /* background: #0DA600; */
                 background: rgba(40,167,69, 0.8);
                 color:white;
+                padding:5px 10px;
+                font-size:14px;
+            }
+
+            .notify-badge-prod2{
+                position: absolute;
+                left: 15px;
+                top: 50px;
+                text-align: center;
+                background: rgba(255,255,255, 0.8);
+                color:#AE4435;
+                padding:5px 10px;
+                font-size:14px;
+            }
+
+            .notify-badge-prod3{
+                position: absolute;
+                left: 0px;
+                top: 50px;
+                text-align: center;
+                background: rgba(255,255,255, 0.8);
+                color:#AE4435;
                 padding:5px 10px;
                 font-size:14px;
             }

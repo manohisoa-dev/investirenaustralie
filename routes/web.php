@@ -190,9 +190,9 @@ Route::middleware(["auth", "role:5"])->group(function(){
         Route::get('select-apl', 'MemberController@selectApl')->name('member.select.apl');
         Route::post('select-apl', 'MemberController@updateApl');
 
-        Route::get('select-afa/{product?}', 'MemberController@selectAfa')->name('member.select.afa');
         Route::get('contact-afa', 'MemberController@contactAfa')->name('member.contact.afa');
-        Route::post('select-afa', 'MemberController@updateAfa');
+        Route::get('select-afa/{iddosstrans}', 'MemberController@selectAfa')->name('member.select.afa');
+        Route::post('select-afa', 'MemberController@updateAfa')->name('member.select.afa.update');
 
         // Route::get('go-there/{slug?}', 'MemberController@goThere')->name('member.go.there');
         Route::get('go-there/{product}', 'MemberController@goThere')->name('member.go.there');
@@ -214,6 +214,8 @@ Route::middleware(["auth", "role:5"])->group(function(){
 
         Route::get('carts', 'MemberController@carts')->name('member.carts');
         Route::get('orders', 'MemberController@orders')->name('member.orders');
+        Route::get('continueTransactions/{idtrans}', 'MemberController@continueTransaction')->name('member.continueTransaction');
+        Route::get('transactions', 'MemberController@transactions')->name('member.transaction');
         Route::get('purchases', 'MemberController@purchases')->name('member.purchases');
         Route::get('sale/{sale}', 'SaleController@show')->name('member.cart');
 
@@ -243,7 +245,10 @@ Route::middleware(["auth", "role:5"])->group(function(){
         Route::get('dossier', 'DossierController@showMemberDossier')->name('member.dossier');
         Route::post('dossier/upload_mr', 'DossierController@uploadMemberDossierMr')->name('member.dossier.upload_mr');
         Route::post('dossier/update_mr', 'DossierController@updateMr')->name('member.dossier.update_mr');
+        Route::post('dossier/confirm_dt', 'DossierController@confirmDt')->name('member.dossier.confirm_dt');
+
         Route::post('dossier/updateIsCompleteDt', 'DossierController@updateIsCompleteDt')->name('member.dossier.updateIsCompleteDt');
+        Route::post('dossier/update_dossier_trans', 'DossierController@updateDossierTrans')->name('member.dossier.update_dossier_trans');
         Route::post('dossier/upload_eoi', 'DossierController@uploadMemberDossierEoi')->name('member.dossier.upload_eoi');
     });
 
@@ -305,6 +310,9 @@ Route::prefix('afa')->middleware(["auth","role:3"])->group(function(){
     Route::post('dossier/upload_ca', 'DossierController@uploadAfaDossierCa')->name('afa.dossier.upload_ca');
     Route::post('dossier/update_ca', 'DossierController@updateCa')->name('afa.dossier.update_ca');
     Route::post('dossier/update_dt', 'DossierController@updateDt')->name('afa.dossier.update_dt');
+    Route::post('dossier/upload_eoi_finalized', 'DossierController@uploadMemberDossierEoiFinalized')->name('afa.dossier.upload_eoi_finalized');
+
+    Route::get('transactions', 'AfaController@transactions')->name('afa.transaction');
 });
 
 Route::prefix('seller')->middleware(["auth","role:2"])->group(function(){

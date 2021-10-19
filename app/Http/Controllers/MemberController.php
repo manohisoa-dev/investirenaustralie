@@ -18,7 +18,7 @@ use App\Notifications\MemberMandateSearchFinalisedMessage;
 
 use App\Models\Order;
 use App\Models\User;
-use App\Models\Mail;
+use App\Models\Email;
 use App\Models\MailUser;
 use App\Models\Localisation;
 use App\Models\Message;
@@ -31,6 +31,9 @@ use App\Models\ConjunctionAgreement;
 use App\Models\MandatRecherche;
 use App\Models\Config;
 use App\Models\Country;
+use App\Mail\MailTemplate;
+use App\Models\MailsTemplate;
+use Mail;
 use Session;
 use Carbon\Carbon;
 use App;
@@ -73,6 +76,12 @@ class MemberController extends Controller {
 
         return view('backend.sale.all')->with('title', __('member.orders'))->with('lapls',
             $lapls)->with('items', $items);
+    }
+    
+    public function transactions() {
+        $items = Auth::user()->getDossierTransaction()->paginate($this->pageSize);
+
+        return view('backend.transactions.all')->with('title', __('member.orders'))->with('items', $items);
     }
 
     /**
@@ -463,20 +472,27 @@ class MemberController extends Controller {
      * @param  \App\Models\Localisation
      * @return \Illuminate\Http\Response
      */
-    public function selectAfa(Request $request,Product $product) {
+    public function selectAfa(Request $request, $id_doss_trans) {
         $this->middleware('auth');
         $this->middleware('role:5');
 
+        $doss_trans = DossierTransaction::whereId($id_doss_trans)->first();
+        $product=Product::whereId($doss_trans->product_id)->first();
         if($product){
             $prodUrl = url('product/'.$product->slug);
             session()->put('id_product',$product->id);
             session()->put('link_product',$prodUrl);
         }
 
+        // Update dossier transaction status
+        if($doss_trans->status===0){
+            DossierTransaction::where('user_id',Auth::id())->where('product_id',$product->id)->update(['status'=>1]);
+        }
+
         $distance = $request->get('distance');
         if (empty($distance))
             $distance = 100;
-
+            
         $data = [];
         $postCode = $product->location()->first()->postalCode;
 
@@ -505,12 +521,13 @@ class MemberController extends Controller {
             }
         }
 
-        $action = route('member.select.afa');
+        $action = route('member.select.afa.update');
+
 
         return view('backend.afa.select')->with('location', Auth::user()->location)->with('action',
             $action)->with('items', $afas)->with('distance', $distance)->with('distances',
             $this->distances)->with('selected', json_encode($selected))->with('data',
-            json_encode($data));
+            json_encode($data))->with('id_doss_trans',$id_doss_trans);
     }
     
     /**
@@ -532,6 +549,7 @@ class MemberController extends Controller {
         $dtDate = $dt->format('m-d-Y');
         $dtTime = $dt->format('H:i:m');
         $user= Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name;
+        $id_doss_trans = $request->get('id_doss_trans');
 
         if ($request->has('afa')) {
             $afa = User::ofRole('3')->isActive()->where('id', '=', $request->afa)->first();
@@ -550,10 +568,13 @@ class MemberController extends Controller {
 
         // Update AFA
         Auth::user()->afa_id = $afa->id;
-        if(!$prod->isSellerByAfa()){
-            Auth::user()->afa_ends_at = \Carbon\Carbon::now()->addDays(option('payment.afa_ends_at',
-            Parameter::nbDayEndAfa()));
+        if($prod){
+            if(!$prod->isSellerByAfa()){
+                Auth::user()->afa_ends_at = \Carbon\Carbon::now()->addDays(option('payment.afa_ends_at',
+                Parameter::nbDayEndAfa()));
+            }
         }
+
         Auth::user()->save();
 
         // Notify User
@@ -585,30 +606,62 @@ class MemberController extends Controller {
 
             // Declenche Conjuction Agreement Module
             App::setLocale('en');
-            $this->sendConjuctionAgreementModule(Auth::user()->afa_id,Auth::user()->afa->email,trans('member.gothere.select_afa.ca.message_to_afa', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'immat'=>Auth::user()->immat,'agence' => 'IEA', 'download_ca'=>$downloadCaLink,'upload_ca'=>$uploadCaLink]), $downloadCaLink, $uploadCaLink);
+            $this->sendConjuctionAgreementModule(Auth::user()->afa_id,Auth::user()->afa->email,trans('member.gothere.select_afa.ca.message_to_afa', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'immat'=>Auth::user()->immat,'agence' => 'IEA', 'download_ca'=>$downloadCaLink,'upload_ca'=>$uploadCaLink]), $downloadCaLink, $uploadCaLink, $id_doss_trans);
             
             // set language to default
             App::setLocale(Auth::user()->language);
-            return redirect($linkProduct)->with('engagement', trans('member.waiting_message', ['user'=>$user,'date'=>$dtDate,'hour'=>$dtTime,'afa' => Auth::user()->afa->name]))->with('waiting',1);
-        }
+            if($id_doss_trans == 0){
+                return redirect($linkProduct)->with('engagement', trans('member.waiting_message', ['user'=>$user,'date'=>$dtDate,'hour'=>$dtTime,'afa' => Auth::user()->afa->name]))->with('waiting',1);
+            }
+        }  
 
-        return back()->with('success', trans('app.txt.info_saved'));
+        // Update status et ajouter id afa dans la table dossier transaction
+        $doss_trans = DossierTransaction::whereId($id_doss_trans)->update(['status'=>2,'afa_id'=>$request->afa, 'date_choose_afa'=>Carbon::now()]);
+
+        return redirect()->route('member.transaction')->with('success', trans('member.message.afa.selected',['afa'=>User::whereId($request->afa)->first()->name]));
     }
 
     // Declanche Conjunction Agreement (CA)
-    public function sendConjuctionAgreementModule($afa_id,$afa_mail,$content,$downloadCaLink,$uploadCaLink){
+    public function sendConjuctionAgreementModule($afa_id,$afa_mail,$content,$downloadCaLink,$uploadCaLink,$id_doss_trans){
+        $afaId=$afa_id;
+
         // Create CA pdf
         $pdfName=explode('/',$downloadCaLink);
-        $this->createCaPdf($pdfName[6]);
+        $this->createCaPdf($pdfName[6],$id_doss_trans);
         
         // send chat message to afa from IEA (admin)
         Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$afa_id,'body'=>$content]);
 
         // send notification email to afa from IEA
-        User::whereId($afa_id)->first()->notify(new AfaConjunctionAgreementMessage(Auth::user(),$downloadCaLink,$uploadCaLink));
+        $user=Auth::user();
+        $afa =User::whereId($afa_id)->first();
+        $template = MailsTemplate::where('id', 27)->get();
+        $lang = App::getLocale();
+        $body = 'template_' . $lang;
+        $sujet_tpl = 'sujet_'.$lang;
+        $downloadLink='<a href="'.$downloadCaLink.'">'.strtoupper(trans('app.txt.conjunction_agreement')).'</a>';
+        $uploadLink='<a href="'.$uploadCaLink.'">'.strtoupper(trans('app.txt.send_the_finalized_conjuntion_agreement')).'</a>';
+        $lia = Config::lia();
+        $lia_name = $lia->get_meta('lia_name')->value;
+        $vars = array(
+            '{date}' => Carbon::now()->toFormattedDateString(),
+            '{heure}' => Carbon::now()->toTimeString(),
+            '{name}' => $user->isPerson()?$user->name:$user->userinfos->orga_name,
+            '{immat}' => $user->immat,
+            '{ieaagencyname}' => $lia_name,
+            '{downloadlink}' => $downloadLink,
+            '{submitlink}' => $uploadLink
+        );
+        $sujet = $template[0]->$sujet_tpl;
+        $contenu = strtr($template[0]->$body, $vars);
+        $content = ['title' => '', 'body' => $contenu];
+        // $email_to = 'dev4.easydata@gmail.com';
+        // Mail::to($email_to)->send(new MailTemplate($content, $sujet));
+
+        $afa->notify(new AfaConjunctionAgreementMessage($sujet,$content));
     }
 
-    public function createCaPdf($name) {
+    public function createCaPdf($name,$id_doss_trans) {
         $pdf_template = 'pdf.conjunction_agreement';
         $user = Auth::user();
         $lia = Config::lia();
@@ -629,8 +682,11 @@ class MemberController extends Controller {
         $prod_id = session()->get('id_product');
 
         // Save conjunction agreement in 
-        ConjunctionAgreement::create(['file_name'=>$pdfName,'path'=>$path,'product_id'=>$prod_id,'from_id'=>$user->id,'to_id'=>$user->afa->id]);
+        $ca = ConjunctionAgreement::create(['file_name'=>$pdfName,'path'=>$path,'product_id'=>$prod_id,'from_id'=>$user->id,'to_id'=>$user->afa->id]);
         session()->forget('id_product');
+
+        // Update ca_id dossier transation
+        DossierTransaction::whereId($id_doss_trans)->update(['ca_id'=>$ca->id]);
 
         return PDF::loadView($pdf_template,['user'=>$user, 'iea'=>$iea])->save($path);
     }
@@ -724,82 +780,35 @@ class MemberController extends Controller {
     public function buyThisProduct(Request $request,Product $product) {
         $this->middleware('auth');
         $this->middleware('role:5');
+
         Session()->put('buy_this_product',true);
 
-        // abort(404);
-        if($product){
-            $prod_id = $product->id;
-            $prodUrl = url('product/'.$product->slug);
-            $dt = Carbon::now();
-            $dtDate = $dt->format('m-d-Y');
-            $dtTime = $dt->format('H:i:m');
-            $user= Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name;
-            $userAuth= Auth::user();
-            $country = Country::where('code',$userAuth->location->country)->pluck('content')[0];
-            $city=$userAuth->afa->location->locality;
-            $mandatesearch = url(MandatRecherche::where('product_id','=',$prod_id)->where('to_id','=',$userAuth->id)->where('afa_id','=',$userAuth->afa->id)->first()->path);
-            $linkcompletetrans = url('afa/dossier?action=complete_dossier_transaction_info&ID='.DossierTransaction::getDossierTransactionId($prod_id,$userAuth->id));
-
-            if($userAuth->isComplete()){
-                if(!$userAuth->isCheckedDossierTransaction($prod_id)){
-                    $this->creationDossierTransaction($product);
-                }
-
-                if ($userAuth->hasAfa()) {
-                    if($userAuth->afaHasSendCa($userAuth->id,$userAuth->afa->id)){
-                        Session::put('id_product',$prod_id);
-
-                        if ($userAuth->memberHasSendMr(1,$userAuth->id,$userAuth->afa->id)){
-                            if($userAuth->isMove()){
-                                if($userAuth->dossierTransactionIsComplete($prod_id)==='not_completed'){
-                                    
-                                    // Update dossier transaction to be completed
-                                    DossierTransaction::updateDossierTransaction($userAuth->id,$prod_id,1);
-
-                                    // Message from IEA to AFA if Member buy product not moving
-                                    // send message
-                                    App::setLocale('en');
-                                    $content=trans('member.tobuy.mr.message_to_afa', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'country'=>$country,'city'=>$city,'afa' =>$userAuth->afa->name,'linkcompletetrans'=>$linkcompletetrans,'mandatesearch'=>$mandatesearch]);
-                                    Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$userAuth->afa->id,'body'=>$content]);
-                                    // send email
-                                    $userAuth->afa->notify(new AfaMandateSearchFinalisedMessage($userAuth,$linkcompletetrans,$mandatesearch));
-                                    
-                                    // Message and notification email to Member
-                                    App::setLocale($userAuth->language);
-                                    // Message
-                                    $contentToMember=trans('member.tobuy.mr.message_to_member', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user]);
-                                    Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$userAuth->id,'body'=>$contentToMember]);
-                                    // Email
-                                    $userAuth->notify(new MemberMandateSearchFinalisedMessage($userAuth));
-                                    
-                                    return redirect($prodUrl)->with('engagement', $contentToMember)->with('waiting',1);
-                                    
-                                }elseif($userAuth->dossierTransactionIsComplete($prod_id)==='to_be_completed'){
-                                    return redirect($prodUrl)->with('engagement', trans('member.tobuy.mr.message_to_member', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user]))->with('waiting',1);
-                                }
-                                elseif($userAuth->dossierTransactionIsComplete($prod_id)==='complete'){
-                                    return redirect(url('member/dossier?action=confirm_decision&ID='.DossierTransaction::getDossierTransactionId($prod_id,$userAuth->id)));
-                                }
-                                else{
-                                    // If purchase is complete or validate
-                                    return redirect(url('member/dossier?action=download_eoi&ID='.DossierTransaction::getDossierTransactionId($prod_id,$userAuth->id)));
-                                }
-                            }else{
-                                return dd('Message from IEA to AFA sent');
-                            }
-                            
-                        }
-                        return redirect($prodUrl)->with('engagement', trans('member.notification.after_afa_send_finalized_ca'))->with('waiting',1);
-                    }else{
-                        return redirect($prodUrl)->with('engagement', trans('member.waiting_message', ['date'=>$dtDate,'hour'=>$dtTime,'user'=>$user,'afa' => Auth::user()->afa->name]))->with('waiting',1);
-                    }
-                } else {
-                    return redirect($prodUrl)->with('engagement', trans('member.tobuy.select_afa', ['date'=>$dtDate, 'hour'=>$dtTime, 'name'=>$user]))->with('hasAfa',0);
-                }
-            }else{
+        if(Auth::user()->isPerson()){
+            // Membre particulier
+            if($product){
+                $prod_id = $product->id;
+                $prodUrl = url('product/'.$product->slug);
+                $dt = Carbon::now();
+                $dtDate = $dt->format('m-d-Y');
+                $dtTime = $dt->format('H:i:m');
+                $user= Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name;
+                $userAuth= Auth::user();
+                $country = Country::where('code',$userAuth->location->country)->pluck('content')[0];
+                $city=$userAuth->afa->location->locality;
+                $mandatesearch = url(MandatRecherche::where('product_id','=',$prod_id)->where('to_id','=',$userAuth->id)->where('afa_id','=',$userAuth->afa->id)->first()->path);
+                $linkcompletetrans = url('afa/dossier?action=complete_dossier_transaction_info&ID='.DossierTransaction::getDossierTransactionId($prod_id,$userAuth->id));
+            
                 Session()->put('complete_registration',true);
                 return redirect($prodUrl)->with('complete_registration_content', trans('member.tobuy.complete_registration.header', ['date'=>$dtDate, 'hour'=>$dtTime, 'name'=>$user]))->with('complete_registration_message',1);
+            }else{
+                abort(404);
             }
+        }else{
+            // Membre organisation
+            // Update dossier transaction
+            DossierTransaction::where('product_id',$product->id)->with('user_id',Auth::id())->update(['status'=>7]);
+
+            return redirect()->route('membre.transaction');
         }
 
         
@@ -818,6 +827,7 @@ class MemberController extends Controller {
         $this->middleware('auth');
         $this->middleware('role:5');
 
+        
         if($product){
             $prodUrl = url('product/'.$product->slug);
             session()->put('id_product',$product->id);
@@ -825,7 +835,9 @@ class MemberController extends Controller {
             $prod_id = $product->id;
         }
 
-        return view('login.memberpart')->with('user', Auth::user());
+        $dossTrans = DossierTransaction::where('user_id',Auth::id())->where('product_id',$product->id)->first();
+        
+        return view('login.memberpart')->with('user', Auth::user())->with('id_doss',$dossTrans->id);
     }
 
     /**
@@ -840,6 +852,9 @@ class MemberController extends Controller {
         $this->middleware('auth');
         $this->middleware('role:5');
 
+        $user = Auth::user();
+        $doss_trans_status = Auth::user()->getCurrentStatusTransaction($product->id);
+        
         if($product){
             $prod_id = $product->id;
             $prodUrl = url('product/'.$product->slug);
@@ -856,6 +871,7 @@ class MemberController extends Controller {
                 Auth::user()->save();
             }
 
+
             if (Auth::user()->hasAfa()) {
                 if(Auth::user()->afaHasSendCa(Auth::user()->id,Auth::user()->afa->id)){
                     Session::put('id_product',$prod_id);
@@ -867,13 +883,71 @@ class MemberController extends Controller {
                 return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa', ['date'=>$dtDate, 'hour'=>$dtTime, 'name'=>$user]))->with('hasAfa',0);
             }
         }
+        
+        abort(404);
+    }
+
+    public function continueTransaction(Request $request,$idtrans) {
+        $this->middleware('auth');
+        $this->middleware('role:5');
+
+        $doss_trans=DossierTransaction::whereId($idtrans)->first();
+        $doss_trans_status = $doss_trans->status;
+        $prod = Product::whereId($doss_trans->product_id)->first();
+        $user = User::whereId($doss_trans->user_id)->first();
+        
+        switch ($doss_trans_status) {
+            // dossier transaction créer
+            case '0':
+                $dt = Carbon::now();
+                $dtDate = $dt->format('m-d-Y');
+                $dtTime = $dt->format('H:i:m');
+                $prodUrl = url('product/'.$prod->slug);
+
+                return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa', ['date'=>$dtDate, 'hour'=>$dtTime, 'name'=>$user->name]))->with('hasAfa',0);
+
+                break;
+            // dossier transaction choisir afa
+            case '1':
+                $id_dossier_transaction = $user->getUserCurrentTransaction($prod->id);
+
+                return redirect()->route('member.select.afa',$idtrans);
+                
+                break;
+            // dossier transaction AFA selectionner
+            case '2':
+                
+                break;
+            case '3':
+                # code...
+                break;
+            case '4':
+                # code...
+                break;
+            case '5':
+                # code...
+                break;
+            case '6':
+                # code...
+                break;
+            case '7':
+                # code...
+                break;
+            case '8':
+                # code...
+                break;
+            
+            default:
+                # code...
+                break;
+        }
 
         abort(404);
     }
 
     public function creationDossierTransaction(Product $prod){
         $prefix = "";
-        $status = 'current'; //current=>en_cours, pending=>en_attente, completed=>complété
+        $status = 0; //0=>en_cours
         $user_id = Auth::id();
         $prod_id = $prod->id;
         $prod_cat_id = $prod->category_id;

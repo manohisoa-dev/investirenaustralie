@@ -12,28 +12,18 @@ class MemberMandateSearchMessage extends Notification
 {
     use Queueable;
 
-    private $user;
-    private $product;
-    private $dt;
-    private $hr;
-    private $uploadForm6;
-    private $downloadForm6;
-    private $abort;
-
+    private $sujet;
+    private $content;
+   
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($user,$product,$downloadForm6,$uploadForm6,$abort)
+    public function __construct($sujet,$content)
     {
-        $this->user = $user;
-        $this->product = $product;
-        $this->dt = Carbon::now()->format('m-d-Y');
-        $this->hr = Carbon::now()->format('H:i:m');
-        $this->uploadForm6 = $uploadForm6;
-        $this->downloadForm6 = $downloadForm6;
-        $this->abort = $abort;
+        $this->sujet = $sujet;
+        $this->content = $content;
     }
 
     /**
@@ -55,19 +45,14 @@ class MemberMandateSearchMessage extends Notification
      */
     public function toMail($notifiable)
     {
-        $user = $this->user;
-        $product = $this->product;
-        $dt = $this->dt;
-        $hr = $this->hr;
-        $uploadForm6 = $this->uploadForm6;
-        $downloadForm6 = $this->downloadForm6;
-        $abort = $this->abort;
+        $sujet = $this->sujet;
+        $content = $this->content;
 
         return (new MailMessage)
             ->from(env('ADMIN_MAIL'))
             ->subject(__('app.message'))
-            ->subject(__('mail.message_from_iea.subject', ['app'=>app_name()]))
-            ->line(__('member.mr.message_to_member', ['date'=>$dt,'hour'=>$hr,'name'=>$user->name,'immat'=>$user->immat,'etat'=>$product->location->area_level_1,'afa'=>$user->afa->name,'download_mr'=>$downloadForm6,'upload_mr'=>$uploadForm6,'abort'=>$abort]));
+            ->subject('['.app_name().'] '. $sujet)
+            ->line($content);
     }
 
     /**

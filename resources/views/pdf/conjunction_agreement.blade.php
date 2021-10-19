@@ -66,13 +66,12 @@
 
         <div class="pdf-content-p1">
           <table class="table table-bordered">
-    
             <tr>
               <td class="list-rigth">LISTING AGENT:</td>
               <td>
                 <u>Company name</u>: {{ $user->afa->name }} - <u>ABN</u>: {{ $user->afa->userinfos()->first()->orga_abn }} <br>
                 <u>Address</u>: {{ $user->afa->location->locality.' '.$user->afa->location->area_level_2.', '.$user->afa->location->area_level_1.' '.$user->afa->location->postalCode }} <br>
-                <u>Phone</u>: {{ $user->afa->userinfos()->first()->orga_phone }} - <u>Fax</u>: {{ $user->afa->userinfos()->first()->orga_fax }} - <u>Email</u>: {{ $user->afa->userinfos()->first()->orga_email }} <u>Licence N°</u>: {{ $user->afa->userinfos()->first()->orga_license_number }} <br>
+                <u>Phone</u>: {{ $user->afa->userinfos()?$user->afa->userinfos()->first()->orga_phone:'' }} - <u>Fax</u>: {{ $user->afa->userinfos()?$user->afa->userinfos()->first()->orga_fax:'' }} - <u>Email</u>: {{ $user->afa->userinfos()?$user->afa->userinfos()->first()->orga_email:'' }} <u>Licence N°</u>: {{ $user->afa->userinfos()?$user->afa->userinfos()->first()->orga_license_number:'' }} <br>
               </td>
             </tr>
     

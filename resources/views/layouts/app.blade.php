@@ -566,7 +566,7 @@
                             <div class="form-group ">
                                 <input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
                                 <input type="hidden" name="user_id" id="user_id" value="{{ Request::get('id')?Request::get('id'):'' }}">
-                                <label for="">@lang('app.txt.please_choose_your_signed_contract') *</label>
+                                <label for="">@lang('app.txt.please_choose_your_signed_contract',['filename'=>trans('app.txt.contract')]) *</label>
                                 <input type="file" name="file_contract" id="file_contract">
                             </div>
                             <hr/>
@@ -1374,6 +1374,27 @@
         function closeModal(){
             loadingPage();
             window.location.href = '{{ route("home") }}';
+        }
+
+        function cancelRegistration(){
+            swal({
+                title: "@lang('app.inscription')",
+                text: "@lang('app.cancel_registration_confirme')",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: '#ff3547',
+                confirmButtonText: "@lang('app.yes')",
+                cancelButtonText: "@lang('app.no')",
+                closeOnConfirm: true,
+                closeOnCancel: true
+            },
+            function(isConfirm){	
+            if (isConfirm){
+                    loadingPage();
+                    sessionStorage.clear();
+                    return window.location.href="{{route('home')}}";    
+                }
+            });
         }
     </script>
 

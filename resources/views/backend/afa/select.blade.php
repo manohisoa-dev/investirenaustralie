@@ -2,7 +2,6 @@
 
 @section('subcontent')
 
-
 @include('includes.alerts')
 <div class="m-40px-tb card card-body">
     <div class="border-bottom-1 border-color-dark-gray m-15px-b p-0px-b">
@@ -56,6 +55,7 @@
                   <form id="afa-form-modal" class="form-horizontal" role="form" method="post" action="{{$action}}">
                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                     <input type="hidden" id="afa-modal"  name="afa">
+                    <input type="hidden" id="id_doss_trans"  name="id_doss_trans" value="{{ $id_doss_trans }}">
                     <div class="pull-left hidden row-confirm-modal" style="margin-bottom: 20px;">
                         <input id="check-confirm-modal" type="checkbox" name="confirm" value="1"><span style="color:red;"> {!!__('member.accept_term_and_condition_afa')!!}</span>
                         <p class="text-left">{!!__('member.select_afa')!!}</p>

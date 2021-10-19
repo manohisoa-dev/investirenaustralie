@@ -11,22 +11,18 @@ use Carbon\Carbon;
 class AfaMandateSearchMessage extends Notification
 {
     use Queueable;
-    private $user;
-    private $dt;
-    private $hr;
-    private $mandatesearch;
+    private $sujet;
+    private $content;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($user,$mandatesearch)
+    public function __construct($sujet,$content)
     {
-        $this->user = $user;
-        $this->dt = Carbon::now()->format('m-d-Y');
-        $this->hr = Carbon::now()->format('H:i:m');
-        $this->mandatesearch = $mandatesearch;
+        $this->sujet = $sujet;
+        $this->content = $content;
     }
 
     /**
@@ -48,17 +44,14 @@ class AfaMandateSearchMessage extends Notification
      */
     public function toMail($notifiable)
     {
-        $user = $this->user;
-        $dt = $this->dt;
-        $hr = $this->hr;
-        $mandatesearch = $this->mandatesearch;
-        $city = $user->afa->location->locality;
+        $sujet = $this->sujet;
+        $content = $this->content;
 
         return (new MailMessage)
             ->from(env('ADMIN_MAIL'))
             ->subject(__('app.message'))
-            ->subject(__('mail.message_from_iea.subject', ['app'=>app_name()]))
-            ->line(__('member.gothere.mr.message_to_afa', ['date'=>$dt,'hour'=>$hr,'name'=>$user->name,'immat'=>$user->immat,'city'=>$city,'afa' =>$user->afa->name,'mandatesearch'=>$mandatesearch]));
+            ->subject('['.app_name().'] '.$sujet)
+            ->line($content);
     }
 
     /**

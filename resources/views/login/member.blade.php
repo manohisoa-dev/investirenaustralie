@@ -30,14 +30,12 @@
   <div class="modal-dialog">
       <div class="modal-content white-bg">
           <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
-              {{-- <h4 class="modal-title white-color">{{$page?$page->title:''}}</h4> --}}
               <h4 class="modal-title white-color">{{ trans('app.txt.inscription.membre.choose_type.title') }}</h4>
               <button type="button" class="close" data-dismiss="modal" onclick="closeModal()" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
           </div>
           <div class="modal-body">
-              {{-- <p class="text-justify">{{$page?$page->content:''}}</p> --}}
               <div class="row">
                 <label for="type" class="col-sm-12 col-lg-12 control-label">@lang('app.txt.typemembre') *</label>
                 <div class="col-md-12">
@@ -305,7 +303,8 @@
 
                                     <div class="form-group">
                                         <div class="col-sm-offset-3 col-sm-9">
-                                            <button type="submit" class="m-btn m-btn-theme" id="btn_member_part_register"> @lang('app.btn.validerinscription') </button>
+                                            <button type="button" class="m-btn m-btn-theme" onclick="cancelRegistration()">@lang('app.btn.cancel')</button>
+                                            <button type="submit" class="m-btn m-btn-theme2nd" id="btn_member_part_register"> @lang('app.btn.validerinscription') </button>
                                         </div>
                                     </div>
                                 </form>
@@ -724,10 +723,12 @@
                                     
                                     <div class="form-group">
                                         <div class="col-sm-offset-3 col-sm-9">
-                                            <button type="submit" class="m-btn m-btn-theme" id="btn_member_org_register">@lang('app.btn.register')</button>
+                                            <button type="button" class="m-btn m-btn-theme" onclick="cancelRegistration()">@lang('app.btn.cancel')</button>
+                                            <button type="submit" class="m-btn m-btn-theme2nd" id="btn_member_org_register">@lang('app.btn.register')</button>
                                         </div>
                                     </div>
                                 </form>
+
                             </div>
                         </div>
                     </div>
@@ -745,6 +746,7 @@
     <script src="{{asset('js/myJs.js')}}"></script>
     <!-- Jquery Validate -->
 <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('administrator/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
 <script>
     $.validator.addMethod('le', function (value, element, param) {
         return this.optional(element) || value !== $(param).val();
@@ -1202,7 +1204,6 @@
 <!-- End Jquery Validate -->
     <script type="text/javascript">
         $(document).ready(function(){
-            
             if(!sessionStorage.getItem('member_type')){
                 $('#chooseTypeMemberModal').modal('show');
             }
@@ -1310,15 +1311,22 @@
         });
 
         function showForm(){
-            if(sessionStorage.getItem('member_type')!=='person'){
-                $("#type option:eq(1)").prop('selected',true);
-                $('#organisationForm').removeAttr('hidden');
-                $('#particulierForm').attr('hidden','hidden');
-                $('.title-form').html('<h2>{{ strtoupper(trans("app.txt.inscription.membre.organization.title")) }}</h2> ');
+            if(sessionStorage.getItem('member_type')){
+                if(sessionStorage.getItem('member_type')=='person'){
+                    $("#type option:eq(0)").prop('selected',true);
+                    $('#particulierForm').removeAttr('hidden');
+                    $('#organisationForm').attr('hidden','hidden');
+                    $('.title-form').html('<h2>{{ strtoupper(trans("app.txt.inscription.membre.person.title")) }}</h2> ');
+                }else{
+                    $("#type option:eq(1)").prop('selected',true);
+                    $('#particulierForm').attr('hidden','hidden');
+                    $('#organisationForm').removeAttr('hidden');
+                    $('.title-form').html('<h2>{{ strtoupper(trans("app.txt.inscription.membre.organization.title")) }}</h2> ');
+                }
             }else{
                 $("#type option:eq(0)").prop('selected',true);
-                $('#organisationForm').attr('hidden','hidden');
                 $('#particulierForm').removeAttr('hidden');
+                $('#organisationForm').attr('hidden','hidden');
                 $('.title-form').html('<h2>{{ strtoupper(trans("app.txt.inscription.membre.person.title")) }}</h2> ');
             }
         }

@@ -109,5 +109,11 @@ class AfaController extends Controller
             ->with('role', $role)
             ->with('title', trans('app.chat'));
     }
+
+    public function transactions() {
+        $items = Auth::user()->getDossierTransactionAfa()->paginate($this->pageSize);
+
+        return view('backend.transactions.all')->with('title', __('member.orders'))->with('items', $items);
+    }
     
 }

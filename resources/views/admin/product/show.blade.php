@@ -110,9 +110,15 @@
 											Il n'y a pas d'AFA correspondante
 										</span>
 									@else
-										<span class="label label-info">									
-											{{$product->afaId_possible}}
-										</span>
+										@php
+											$afaposstab = explode(',',$product->afaId_possible);
+											$afaposs = App\Models\User::whereIn('id',$afaposstab)->get();
+										@endphp
+										@foreach($afaposs as $afa)
+											<span class="label label-info" style="margin-right: 5px;">
+												{{$afa->name}}
+											</span>
+										@endforeach
 									@endif									
 								</dd>
 							</div>
