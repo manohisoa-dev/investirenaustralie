@@ -17,6 +17,7 @@ class TemoignageController extends Controller {
     public $viewDir = "admin.temoignage";
 
     public function index() {
+        return view('pdf.cpc_invoice_bonus');
         /*$pdf = new Fpdi('l');
         $pdf_file = public_path('uploads/certificate.pdf');
         $pagecount = $pdf->setSourceFile($pdf_file);
@@ -36,8 +37,8 @@ class TemoignageController extends Controller {
 
         $pdf->Output();*/
 
-        $records = Temoignage::findRequested();
-        return $this->view("index", ['records' => $records]);
+        /*$records = Temoignage::findRequested();
+        return $this->view("index", ['records' => $records]);*/
     }
 
     /**

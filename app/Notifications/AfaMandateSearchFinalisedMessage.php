@@ -60,7 +60,7 @@ class AfaMandateSearchFinalisedMessage extends Notification
         $country = $this->country;
         $mandatesearch = $this->mandatesearch;
         $linkcompletetrans = $this->linkcompletetrans;
-        $userName = $user->isPerson()?$user->name:$user->userinfos()->first()->orga_name;
+        $userName = $user->isPerson()?$user->userinfos->first_name.' '.$user->userinfos->last_name:$user->userinfos->orga_name;
 
         return (new MailMessage)
             ->from(env('ADMIN_MAIL'))

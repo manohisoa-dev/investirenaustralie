@@ -48,7 +48,7 @@ class MemberWaitingMessage extends Notification
     public function toMail($notifiable)
     {
         $user= $this->user;
-        $userName= $user->isPerson()?$user->name:$user->userinfos->orga_name;
+        $userName= $user->isPerson()?$user->userinfos->first_name.' '.$user->userinfos->last_name:$user->userinfos->orga_name;
         $dt = $this->dt;
         $hr = $this->hr;
 

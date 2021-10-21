@@ -62,14 +62,15 @@ class UserController extends Controller {
 
         if (isset($request->country_id) || isset($request->state_id) || isset($request->name) ||
             isset($request->type_users_id) || isset($request->status)) {
-            $users_array = User::findRequested()->where('role', 2);
+            /*$users_array = User::findRequested()->where('role', 2);
             $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path' =>
-                url('admin/user/show/seller')]);
+                url('admin/user/show/seller')]);*/
+            $records = User::findRequested_byRole(2);
         } else {
-            //$users_array = User::where('role', 2)->get();
-            $users_array = User::findRequested()->where('role', 2);
-            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path' =>
-                url('admin/user/show/seller')]);
+            //$users_array = User::where('role', 2)->where('id',17)->get();
+            $records = User::findRequested_byRole(2);
+            /*$records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path' =>
+                url('admin/user/show/seller')]);*/
         }
         return $this->view("showUser", ['records' => $records, 'roles' => $role,
             'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
@@ -102,14 +103,13 @@ class UserController extends Controller {
 
         if (isset($request->country_id) || isset($request->state_id) || isset($request->name) ||
             isset($request->type_users_id) || isset($request->status)) {
-            $users_array = User::findRequested()->where('role', 3);
-            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path' =>
-                url('admin/user/show/afa')]);
+            $records = User::findRequested_byRole(3);
         } else {
             //$users_array = User::where('role', 3)->get();
-            $users_array = User::findRequested()->where('role', 3);
+            /*$users_array = User::findRequested()->where('role', 3);
             $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path' =>
-                url('admin/user/show/afa')]);
+                url('admin/user/show/afa')]);*/
+            $records = User::findRequested_byRole(3);
         }
 
         return $this->view("showUser", ['records' => $records, 'roles' => $role,
@@ -132,14 +132,9 @@ class UserController extends Controller {
 
         if (isset($_GET['country_id']) || isset($_GET['state_id']) || isset($_GET['name']) ||
             isset($_GET['type_users_id']) || isset($_GET['status'])) {
-            $users_array = User::findRequested()->where('role', 4);
-            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path' =>
-                url('admin/user/show/apl')]);
+            $records = User::findRequested_byRole(4);
         } else {
-            //$users_array = User::where('role', 4)->get();
-            $users_array = User::findRequested()->where('role', 4);
-            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path' =>
-                url('admin/user/show/apl')]);
+            $records = User::findRequested_byRole(4);
         }
         return $this->view("showUser", ['records' => $records, 'roles' => $role,
             'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
@@ -161,18 +156,9 @@ class UserController extends Controller {
 
         if (isset($request->country_id) || isset($request->state_id) || isset($request->name) ||
             isset($request->type_users_id) || isset($request->status)) {
-            $users_array = User::findRequested()->where('role', 5);
-            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path' =>
-                url('admin/user/show/member')]);
+            $records = User::findRequested_byRole(5);
         } else {
-            $users_array = User::where('users.role', 5)->join('localizations',
-                'localizations.id', '=', 'users.location_id')->select('users.id AS uid',
-                'users.name AS name', 'users.image_id AS image_id', 'users.email as email',
-                'users.created_at as created_at', 'users.role as role', 'users.status as status',
-                'users.author_id as author_id', 'localizations.country as country',
-                'localizations.locality as locality', 'users.type_users_id as type_users_id')->get();
-            $records = new LengthAwarePaginator($users_array, count($users_array), 10, 1, ['path' =>
-                url('admin/user/show/member')]);
+            $records = User::findRequested_byRole(5);
         }
 
         return $this->view("showUser", ['records' => $records, 'roles' => $role,

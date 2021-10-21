@@ -141,6 +141,11 @@ class LoginController extends Controller
             if ($user->active() && $this->attemptLogin($request)) {
                 // Send the normal successful login response
                 return $this->sendLoginResponse($request);
+            
+                // Make sure the user is temp (seller by afa)
+            }else if($user->temp() && $this->attemptLogin($request)){
+
+                return $this->sendLoginResponse($request);
             }else {
                 
                 // Increment the failed login attempts and redirect back to the
@@ -226,7 +231,6 @@ class LoginController extends Controller
         //         ?: redirect()->intended($this->redirectPath());
         //         break;
         //     }
-
             
         return $this->authenticated($request, $this->guard()->user())
             ?: redirect()->intended($this->redirectPath());

@@ -49,7 +49,7 @@ class MemberMandateSearchFinalisedMessage extends Notification
         $user = $this->user;
         $dt = $this->dt;
         $hr = $this->hr;
-        $userName = $user->isPerson()?$user->name:$user->userinfos()->first()->orga_name;
+        $userName = $user->isPerson()?$user->userinfos->first_name.' '.$user->userinfos->last_name:$user->userinfos->orga_name;
 
         return (new MailMessage)
             ->from(env('ADMIN_MAIL'))

@@ -499,7 +499,7 @@ class ProductController extends Controller {
 
     function save_programme($categorie, $ancienete, $nature, $prix_min, $prix_max, $type_id,
         $display_address, $postalCode, $state_id, $title, $content, $location_id, $fond_dossier,
-        $status, $type_commission, $commission, $id_afa = 0) {
+        $status, $type_commission, $commission, $id_afa = 0,$seller_id = 0) {
         $slug = generateSlug($title);
         $programme = new Product();
 
@@ -528,6 +528,7 @@ class ProductController extends Controller {
         $programme->author_id = Auth::user()->id;
         $programme->validated_at = Carbon::now();
         $programme->afaId_possible = $id_afa;
+        $programme->seller_id = $seller_id;
         $programme->save();
 
         // // save translation
@@ -612,6 +613,29 @@ class ProductController extends Controller {
     }
 
     public function saveProgramme(Request $request) {
+        $user = Auth::user();
+        if ($user->isSbaBusiness || $user->isSbaIndividual) {
+            $prefix = User::whereId($user->afa_id)->first()->name();
+            $seller_id = User::whereId($user->afa_id)->first()->id();
+            $id_afa_p = $seller_id;
+            $titre_programme = $prefix.'-'.$request->title_programme;
+        } else {
+            $prefix = '';
+            $seller_id = 0;
+            $titre_programme = $request->title_programme;
+
+            $afa_possible = DB::select("SELECT `users`.id as id_afa FROM `users` LEFT JOIN `localizations` ON `users`.`location_id` = `localizations`.`id` WHERE `users`.`role` = 3 and `localizations`.`postalCode` = '$request->postalCode'");
+            if (count($afa_possible) > 0) {
+                $tab_afa = array();
+                foreach ($afa_possible as $val) {
+                    $tab_afa[] = $val->id_afa;
+                }
+                $id_afa_p = implode(', ', $tab_afa);
+            } else {
+                $id_afa_p = 0;
+            }
+        }
+
         $anciennete = $request->ancienneteBien;
         $nature = $request->natureBien;
 
@@ -619,16 +643,6 @@ class ProductController extends Controller {
             $request->cat_programmme_id)->where('type_id', $request->type_id)->where('parent_id',
             0)->get();
 
-        $afa_possible = DB::select("SELECT `users`.id as id_afa FROM `users` LEFT JOIN `localizations` ON `users`.`location_id` = `localizations`.`id` WHERE `users`.`role` = 3 and `localizations`.`postalCode` = '$request->postalCode'");
-        if (count($afa_possible) > 0) {
-            $tab_afa = array();
-            foreach ($afa_possible as $val) {
-                $tab_afa[] = $val->id_afa;
-            }
-            $id_afa_p = implode(', ', $tab_afa);
-        } else {
-            $id_afa_p = 0;
-        }
 
         if (count($programme_existe) > 0) {
             return back()->withInput()->withErrors(['msg' =>
@@ -647,9 +661,9 @@ class ProductController extends Controller {
 
         $id_programme = $this->save_programme($request->cat_programmme_id, $request->ancienneteBien,
             $request->natureBien, $request->prix_min, $request->prix_max, $request->type_id,
-            $request->display_address, $request->postalCode, $request->state_id, $request->title_programme,
+            $request->display_address, $request->postalCode, $request->state_id, $titre_programme,
             $request->description, $id_location, '', 'waiting', $request->commision, $taux_commision,
-            $id_afa_p);
+            $id_afa_p,$seller_id);
 
         if ($request->dropPhoto) {
             foreach ($request->dropPhoto as $key => $value) {

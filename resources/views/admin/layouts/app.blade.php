@@ -824,11 +824,12 @@
     }
 
     function getUnreadMessage(){
-        $.ajax({
+		$.ajax({
             url: '{{ Auth::user()->isAdmin()?route("admin.ajax.get.unread.message"):route("admin.collaborators.admin.ajax.get.unread.message") }}',
             type: "GET",
             dataType: "json",
             success:function(data){
+				//console.log(data.res);
                 var unreadCountContactArray = new Array();
                 var unreadCountMessage = (data.res).length!==0?(data.res).length:'';
 

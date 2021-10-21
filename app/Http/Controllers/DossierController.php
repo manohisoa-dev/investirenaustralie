@@ -11,6 +11,7 @@ use App\Models\MandatRecherche;
 use App\Models\DossierTransaction;
 use App\Models\Message;
 use App\Models\Config;
+use App\Models\Country;
 use App\Notifications\AfaMandateSearchMessage;
 use App\Notifications\AfaMandateSearchFinalisedMessage;
 use App\Notifications\MemberMandateSearchFinalisedMessage;
@@ -106,7 +107,7 @@ class DossierController extends Controller
         $dtTime = $dt->format('H:i:m');
         $downloadForm6Link = url($mdRch->path);
         $uploadForm6Link = route('member.dossier');
-        $user_name= $user->isPerson()?$user->name:$user->userinfos()->first()->orga_name;
+        $user_name= $user->isPerson()?$user->userinfos->first_name.' '.$user->userinfos->last_name:$user->userinfos->orga_name;
         $user_immat = $user->immat;
         $afa = $user->afa->name;
         $product = Product::whereId($prod_id)->first();
@@ -133,7 +134,7 @@ class DossierController extends Controller
             '{date}' => Carbon::now()->toFormattedDateString(),
             '{heure}' => Carbon::now()->toTimeString(),
             '{etat}' => $product->location->area_level_1,
-            '{name}' => $user->isPerson()?$user->name:$user->userinfos->orga_name,
+            '{name}' => $user->isPerson()?$user->userinfos->first_name.' '.$user->userinfos->last_name:$user->userinfos->orga_name,
             '{afa}' => $user->afa->name,
             '{mandatofficielname}' => $lia_name, //Nom Officiel Mandat Agence Immobilière
             '{uploadLink}' => $uploadLink,
@@ -198,7 +199,7 @@ class DossierController extends Controller
                 '{date}' => Carbon::now()->toFormattedDateString(),
                 '{heure}' => Carbon::now()->toTimeString(),
                 '{city}' => $product->location->locality,
-                '{name}' => $user->isPerson()?$user->name:$user->userinfos->orga_name,
+                '{name}' => $user->isPerson()?$user->userinfos->first_name.' '.$user->userinfos->last_name:$user->userinfos->orga_name,
                 '{immat}' => $user->immat,
                 '{afa}' => $user->afa->name,
                 '{mrLink}' => $mrLink,
@@ -222,7 +223,7 @@ class DossierController extends Controller
             $dt = Carbon::now();
             $dtDate = $dt->format('m-d-Y');
             $dtTime = $dt->format('H:i:m');
-            $user_name= $user->isPerson()?$user->name:$user->userinfos()->first()->orga_name;
+            $user_name= $user->isPerson()?$user->userinfos->first_name.' '.$user->userinfos->last_name:$user->userinfos->orga_name;
             $mr_id=$request->mr_id;
             $mandatesearch= MandatRecherche::whereId($mr_id)->first();
             $mandatesearchLink= url($mandatesearch->path);
@@ -275,6 +276,7 @@ class DossierController extends Controller
         $filenameEoi = $product->productEoi->first()->image->first()->filename;
         $withoutExt = preg_replace('/\\.[^.\\s]{3,4}$/', '', $filenameEoi);
         $dossNum = $dossTrans->numero;
+        $sollicitorId = $product->solicitor_id;
 
         // Validate file
         if ($validator->fails()) {
@@ -297,21 +299,21 @@ class DossierController extends Controller
         $path = $file->move($path, $fileNameToStore);
 
         // Update dossier transaction status
-        // Id sollicitor à définir
-        DossierTransaction::whereId($dossTransId)->update(['eoi_finalize_file_name'=>$fileNameToStore,'date_eoi_finalize'=>Carbon::now(),'status'=>10,'sollicitor_id'=>0]);
+        DossierTransaction::whereId($dossTransId)->update(['eoi_finalize_file_name'=>$fileNameToStore,'date_eoi_finalize'=>Carbon::now(),'status'=>10,'sollicitor_id'=>$sollicitorId]);
 
         // Send Email to notify Sollicitor 
         if($dossTrans->sollicitor_id != 0){
-            // $sollicitor = So
+            $sollicitor = Solicitor::whereId($dossTrans->sollicitor_id)->first();
+            $user = User::whereId($dossTrans->user_id)->first();
+            $afa = User::whereId($dossTrans->afa_id)->first();
             $template = MailsTemplate::where('id', 34)->get();
             $lang = 'en';
             $body = 'template_' . $lang;
             $sujet_tpl = 'sujet_'.$lang;
-            $mrLink='<a href="'.$downloadMrLink.'">'.strtoupper(trans('app.txt.mandate_to_search_for_propreties')).'</a>';
             $vars = array(
                 '{date}' => Carbon::now()->toFormattedDateString(),
                 '{heure}' => Carbon::now()->toTimeString(),
-                '{name}' => $user->isPerson()?$user->name:$user->userinfos->orga_name,
+                '{name}' => $user->isPerson()?$user->userinfos->first_name.' '.$user->userinfos->last_name:$user->userinfos->orga_name,
                 '{seller}' => $seller->name,
                 '{sellerparentcompany}' => $seller->userinfos->orga_parent_name,
                 '{title}' => $product->title,
@@ -319,20 +321,22 @@ class DossierController extends Controller
                 '{lotlevel}' => $dossTrans->lot_level,
                 '{lotid}' => $dossTrans->lot_id,
                 '{price}' => $dossTrans->final_sales_price,
+                '{sollicitor}' => $sollicitor->cabinet_name,
                 '{afa}' => $afa->name,
                 '{abnafa}' => $afa->userinfos->orga_abn,
-                    '{adrafa}' => $adrafa,
-                    '{telafa}' => $afa->userinfos->orga_phone,
-                    '{faxafa}' => $afa->userinfos->orga_fax,
-                    '{emailafa}' => $afa->userinfos->orga_email,
-                    '{state}' => $afa->location->area_level_1,
-                    '{licenceafa}' => $afa->userinfos->orga_license_number,
+                '{adrafa}' => $adrafa,
+                '{telafa}' => $afa->userinfos->orga_phone,
+                '{faxafa}' => $afa->userinfos->orga_fax,
+                '{emailafa}' => $afa->userinfos->orga_email,
+                '{state}' => $afa->location->area_level_1,
+                '{licenceafa}' => $afa->userinfos->orga_license_number,
             );
             $sujet = $template[0]->$sujet_tpl;
             $contenu = strtr($template[0]->$body, $vars);
             $content = ['title' => '', 'body' => $contenu];
-            // send email
-            $user->notify(new SollicitorMessage($sujet,$content));
+
+            // send email to soliciton
+            Mail::to($sollicitor->cabinet_email)->send(new MailTemplate($content, $sujet));
         }
 
         // Send Email to notify Seller (propriétaire du produit)
@@ -349,7 +353,7 @@ class DossierController extends Controller
         $vars = array(
             '{date}' => Carbon::now()->toFormattedDateString(),
             '{heure}' => Carbon::now()->toTimeString(),
-            '{name}' => $member->isPerson()?$member->name:$member->userinfos->orga_name,
+            '{name}' => $member->isPerson()?$member->userinfos->first_name.' '.$member->userinfos->last_name:$member->userinfos->orga_name,
             '{title}' => $member->afa->name,
             '{lottype}' => $dossTrans->lot_type,
             '{lotlevel}' => $dossTrans->lot_level,
@@ -382,7 +386,7 @@ class DossierController extends Controller
         $vars = array(
             '{date}' => Carbon::now()->toFormattedDateString(),
             '{heure}' => Carbon::now()->toTimeString(),
-            '{name}' => $member->isPerson()?$member->name:$member->userinfos->orga_name,
+            '{name}' =>$member->isPerson()?$member->userinfos->first_name.' '.$member->userinfos->last_name:$member->userinfos->orga_name,
             '{seller}' => $seller->name,
             '{sellerparentcompany}' => $seller->userinfos->orga_parent_name,
             '{title}' => $product->title,
@@ -406,54 +410,45 @@ class DossierController extends Controller
     public function uploadMemberDossierEoiFinalized(Request $request)
     {    
         $datas = $request->all();
-        
-        // validation form
-        $validator = Validator::make($datas, ['file_ca' => 'required|mimes:pdf']);
-        
-        $dossTransId = $request->id_doss_trans;
+         
+        $dossTransId = $request->doss_id;
         $dossTrans = DossierTransaction::whereId($dossTransId)->first();
         $product = Product::whereId($dossTrans->product_id)->first();
         $filenameEoi = $product->productEoi->first()->image->first()->filename;
-        $withoutExt = preg_replace('/\\.[^.\\s]{3,4}$/', '', $dossTrans->eoi_finalize_file_name);
-
-        // Validate file
-        if ($validator->fails()) {
-            return response()->json(['response'=>'false']);
-        }
 
         // Handle file Upload to uploads/pdf/transaction path
-        $file = $request->file('file_ca');
+        // $file = $request->file('file_ca');
         $path = public_path('uploads/pdf/transaction');
-        // store file in public folder
-        $filenameWithExt = $file->getClientOriginalName();
-        //Get just filename
-        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+        $nomFile = 'eoi_21_RES-00002_finalized.pdf';
+        $source = $path.'/'.$nomFile;
         // Get just ext
-        $extension = $file->getClientOriginalExtension();
+        $extension = 'pdf';
         // Filename to store
+        $withoutExt = preg_replace('/\\.[^.\\s]{3,4}$/', '', $nomFile);
         $fileNameToStore = $withoutExt.'_afa.'.$extension;
-        
-        // Upload Image
-        $path = $file->move($path, $fileNameToStore);
+        $destination = $path.'/'.$fileNameToStore;
+        // store eoi finalized by afa
+        copy($source,$destination);
 
         // Update dossier transaction
         DossierTransaction::whereId($dossTransId)->update(['eoi_finalize_file_name_afa'=>$fileNameToStore,'date_eoi_finalize_afa'=>Carbon::now(),'status'=>11]);
 
-        // Send Email to notify admin
-        $admin= User::whereId(1)->first();
+        // Send Email SELLING PROCESS CLEARANCE to admin
+        $admin = User::whereId(1)->first();
         $user = User::whereId($dossTrans->user_id)->first();
         $afa = User::whereId($dossTrans->afa_id)->first();
         $seller = User::whereId($product->seller_id)->first();
         $template = MailsTemplate::where('id', 37)->get();
-        $lang = 'en';
+        App::setLocale('fr');
+        $lang = 'fr';
         $body = 'template_' . $lang;
         $sujet_tpl = 'sujet_'.$lang;
         $pathLink = url('/uploads/pdf/transaction/').'/'.$dossTrans->eoi_finalize_file_name_afa;
-        $downloadeoiLink = setLinkDynamic($pathLink,strtoupper(trans('app.txt.eoi_finalized')));
+        $downloadeoiLink = '<b>'.setLinkDynamic($pathLink,strtoupper(trans('app.txt.eoi_finalized'))).'</b>';
         $vars = array(
             '{date}' => Carbon::now()->toFormattedDateString(),
             '{afa}' => $afa->name,
-            '{name}' => $user->isPerson()?$user->name:$user->userinfos->orga_name,
+            '{name}' => $user->isPerson()?$user->userinfos->first_name.' '.$user->userinfos->last_name:$user->userinfos->orga_name,
             '{seller}' => $seller->name,
             '{sellerparentcompany}' => $seller->userinfos->orga_parent_name,
             '{title}' => $product->title,
@@ -461,15 +456,141 @@ class DossierController extends Controller
             '{lotlevel}' => $dossTrans->lot_level,
             '{lotid}' => $dossTrans->lot_id,
             '{price}' => $dossTrans->final_sales_price,
+            '{checkbox}' => '<input type="checkbox" checked disabled>',
             '{downloadLink}' => $downloadeoiLink,
         );
         $sujet = $template[0]->$sujet_tpl;
         $contenu = strtr($template[0]->$body, $vars);
         $content = ['title' => '', 'body' => $contenu];
-        // send email
-        $admin->notify(new AdminMessage($sujet,$content));
-        
-        return response()->json(['response'=>'true']);
+        // send email admin
+        Mail::to($admin->email)->send(new MailTemplate($content, $sujet));
+
+        // Send Email to member (PROCEDURE DE VENTE TRANSFEREE)
+        $nomMembre = $user->isPerson()?$user->userinfos->first_name.' '.$user->userinfos->last_name:$user->userinfos->orga_name;
+        $adrPostAfa = $afa->location->adrpost_locality.' '.$afa->location->adrpost_postalCode.' '.Country::where('code',$afa->location->adrpost_country)->first()->content;
+        $adrPhyAfa = $afa->location->route.', '.$afa->location->locality.' '.$afa->location->postalCode.' '.Country::where('code',$afa->location->country)->first()->content;
+        $adrPostSeller = $seller->location->adrpost_locality.' '.$seller->location->adrpost_postalCode.' '.Country::where('code',$seller->location->adrpost_country)->first()->content;
+        $adrPhySeller = $seller->location->route.', '.$seller->location->locality.' '.$seller->location->postalCode.' '.Country::where('code',$seller->location->country)->first()->content;
+        $template2 = MailsTemplate::where('id', 38)->get();
+        App::setLocale($user->language);
+        $lang = App::getLocale();
+        $body = 'template_' . $lang;
+        $sujet_tpl = 'sujet_'.$lang;
+        $vars = array(
+            '{datesysteme}' => Carbon::now()->toFormattedDateString(),
+            '{heuresysteme}' => Carbon::now()->toTimeString(),
+            '{Nom Membre}' => $nomMembre,
+            '{Nom AFA}' => $afa->name,
+            '{ABN AFA}' => $afa->userinfos->orga_abn,
+            '{adresse physique complete AFA}' => $adrPhyAfa,
+            '{adresse postale complete AFA}' => $adrPostAfa,
+            '{telephone AFA}' => $afa->userinfos->orga_phone,
+            '{Mobile AFA}' => $afa->userinfos->orga_mobile_phone,
+            '{fax AFA}' => $afa->userinfos->orga_fax,
+            '{email AFA}' => $afa->userinfos->orga_email,
+            '{license AFA}' => $afa->userinfos->orga_license_number,
+            '{Seller Business Name}' => $seller->userinfos->orga_name,
+            '{Parent Companyname}' => $seller->userinfos->orga_parent_name,
+            '{ABN Vendeur}' => $seller->userinfos->orga_name,
+            '{adresse physique complete Vendeur}' => $adrPhySeller,
+            '{adresse postale complete Vendeur}' => $adrPostSeller,
+            '{Mobile Vendeur}' => $seller->userinfos->orga_phone,
+            '{fax Vendeur}' => $seller->userinfos->orga_mobile_phone,
+            '{email Vendeur}' => $seller->userinfos->orga_email,
+        );
+        $sujet2 = $template2[0]->$sujet_tpl;
+        $contenu2 = strtr($template2[0]->$body, $vars);
+        $content2 = ['title' => '', 'body' => $contenu2];
+        // send email to member
+        Mail::to($user->email)->send(new MailTemplate($content2, $sujet2));
+
+        // Send Email to Seller  (vendeur)
+        $title = $product->title;
+        $lotLevel = $dossTrans->lot_level;
+        $lotType = $dossTrans->lot_type;
+        $lotId = $dossTrans->lot_id;
+        $finalSalesPrice = $dossTrans->final_sales_price;
+        $adrPostMember = ($user->location!==''?$user->location->adrpost_locality:'').' '.($user->location!==''?$user->location->adrpost_postalCode:'').' '.($user->location!==''?Country::where('code',$user->location->country)->first()->content:'');
+        $adrPhyMember = $user->location->route.', '.$user->location->locality.' '.$user->location->postalCode.' '.Country::where('code',$user->location->country)->first()->content;
+        $template3 = MailsTemplate::where('id', 39)->get();
+        App::setLocale($seller->language);
+        $lang = App::getLocale();
+        $body = 'template_' . $lang;
+        $sujet_tpl = 'sujet_'.$lang;
+        $vars = array(
+            '{Date system}' => Carbon::now()->toFormattedDateString(),
+            '{Heure system}' => Carbon::now()->toTimeString(),
+            '{Nom Membre}' => $nomMembre,
+            '{Programm name}' => $title,
+            '{lot type}'=> $lotType,
+            '{lot level}'=> $lotLevel,
+            '{lot ID}'=> $lotId,
+            '{final sales price}'=> $finalSalesPrice,
+            '{adresse physique complete Membre}'=>$adrPhyMember,
+            '{adresse postale complete Membre}'=>$adrPostMember,
+            '{telephone Membre}'=>$user->userinfos->orga_phone,
+            '{Mobile Membre}'=>$user->userinfos->orga_mobile_phone,
+            '{fax Membre}'=>$user->userinfos->orga_fax,
+            '{Email Membre}'=>$user->userinfos->orga_email,
+            '{Nom AFA}' => $afa->name,
+            '{ABN AFA}' => $afa->userinfos->orga_abn,
+            '{adresse physique complete AFA}'=>$adrPhyAfa,
+            '{adresse postale complete AFA}'=>$adrPostAfa,
+            '{telephone AFA}'=>$afa->userinfos->orga_phone,
+            '{AFA mobile}'=>$afa->userinfos->orga_mobile_phone,
+            '{Fax AFA}'=>$afa->userinfos->orga_fax,
+            '{Email AFA}'=>$afa->userinfos->orga_email,
+            '{licence AFA}'=>$afa->userinfos->orga_license_number,
+        );
+        $sujet3 = $template3[0]->$sujet_tpl;
+        $contenu3 = strtr($template3[0]->$body, $vars);
+        $content3 = ['title' => '', 'body' => $contenu3];
+        // send email to seller
+        Mail::to($seller->email)->send(new MailTemplate($content3, $sujet3));
+
+        // Send Email to AFA
+        $confirmationInitialDepotLink= setLinkDynamic(route('afa.transaction'),strtoupper(trans('app.txt.initial_deposit_confirmation')));
+        $lia = Config::lia();
+        $lia_name = $lia->get_meta('lia_name')->value;
+        $template4 = MailsTemplate::where('id', 40)->get();
+        App::setLocale($afa->language);
+        $lang = App::getLocale();
+        $body = 'template_' . $lang;
+        $sujet_tpl = 'sujet_'.$lang;
+        $vars = array(
+            '{Date system}' => Carbon::now()->toFormattedDateString(),
+            '{Heure system}' => Carbon::now()->toTimeString(),
+            '{Nom Membre}' => $nomMembre,
+            '{Nom programm}' => $title,
+            '{Type lot}'=> $lotType,
+            '{Niveau lot}'=> $lotLevel,
+            '{identifiant lot}'=> $lotId,
+            '{Prix vente final}'=> $finalSalesPrice,
+            '{adresse physique complete Membre}'=>$adrPhyMember,
+            '{adresse postale complete Membre}'=>$adrPostMember,
+            '{telephone Membre}'=>$user->userinfos->orga_phone,
+            '{Mobile Membre}'=>$user->userinfos->orga_mobile_phone,
+            '{fax Membre}'=>$user->userinfos->orga_fax,
+            '{Email Membre}'=>$user->userinfos->orga_email,
+            '{Nom commercial du vendeur}'=>$seller->userinfos->orga_name,
+            '{nom de la societe mere}'=>$seller->userinfos->orga_parent_name,
+            '{ABN entreprise}'=>$seller->userinfos->orga_abn,
+            '{adresse physique complete vendeur}'=>$adrPhySeller,
+            '{adresse postale complete vendeur}'=>$adrPostSeller,
+            '{telephone vendeur}'=>$lotType,
+            '{Vendeur mobile}'=>$seller->userinfos->orga_phone,
+            '{fax Vendeur}'=>$seller->userinfos->orga_mobile_phone,
+            '{Email du vendeur}'=>$seller->userinfos->orga_email,
+            '{Nom societe manager portail IEA}'=>$lia_name,
+            '{confirmation_initial_depot_link}'=>$confirmationInitialDepotLink,
+        );
+        $sujet4 = $template4[0]->$sujet_tpl;
+        $contenu4 = strtr($template4[0]->$body, $vars);
+        $content4 = ['title' => '', 'body' => $contenu4];
+        // send email to seller
+        Mail::to($afa->email)->send(new MailTemplate($content4, $sujet4));
+
+        return back()->with('success',trans('app.txt.eoi_finalized_sent'));
     }
 
     private function storeFile($file,$path){
@@ -513,7 +634,7 @@ class DossierController extends Controller
             $dtTime = $dt->format('H:i:m');
             $dossTrans = DossierTransaction::whereId($request->doss_id)->first();
             $member = User::whereId($dossTrans->user_id)->first();
-            $user_name= $member->isPerson()?$member->name:$member->userinfos()->first()->orga_name;
+            $user_name= $member->isPerson()?$member->userinfos->first_name.' '.$member->userinfos->last_name:$member->userinfos->orga_name;
             $afa = $member->afa->name;
             $product = Product::whereId($dossTrans->product_id)->first();
             $city = $product->location->locality;
@@ -581,7 +702,7 @@ class DossierController extends Controller
         $dossTrans = DossierTransaction::whereId($dtId)->first();
         $member = User::whereId($dossTrans->user_id)->first();
         $product = Product::whereId($dossTrans->product_id)->first();
-        $user_name= $member->isPerson()?$member->name:$member->userinfos()->first()->orga_name;
+        $user_name= $member->isPerson()?$member->userinfos->first_name.' '.$member->userinfos->last_name:$member->userinfos->orga_name;
         $afa = $member->afa->name;
         $seller = $product->author->name;
         $city = $product->location->locality;
@@ -627,6 +748,64 @@ class DossierController extends Controller
         return back()->with('success', trans('app.txt.purchase_confirmed'));
     }
 
+    // Confirm initial deposit
+    public function initialDepositConfirm(Request $request){
+        $dtId = $request->doss_id;
+        $user = Auth::user();
+
+        // udpate dossier transaction status
+        DossierTransaction::whereId($dtId)->update(['status'=>12]);
+
+        // get template mail and send message and email to afa
+        $admin = User::whereId(1)->first();
+        $dt = Carbon::now();
+        $dtDate = $dt->format('m-d-Y');
+        $dtTime = $dt->format('H:i:m');
+        $dossTrans = DossierTransaction::whereId($dtId)->first();
+        $member = User::whereId($dossTrans->user_id)->first();
+        $product = Product::whereId($dossTrans->product_id)->first();
+        $NomMembre= $member->isPerson()?$member->userinfos->first_name.' '.$member->userinfos->last_name:$member->userinfos->orga_name;
+        $afaId = $member->afa->id;
+        $afa = $member->afa->name;
+        $title = $product->title;
+        $lotLevel = $dossTrans->lot_level;
+        $lotType = $dossTrans->lot_type;
+        $lotId = $dossTrans->lot_id;
+        $finalSalesPrice = $dossTrans->final_sales_price;
+        $lia = Config::lia();
+        $lia_name = $lia->get_meta('lia_name')->value;
+        $template = MailsTemplate::where('id', 41)->get();
+        App::setLocale($member->language);
+        $lang = $member->language;
+        $body = 'template_' . $lang;
+        $sujet_tpl = 'sujet_'.$lang;
+        $vars = array(
+            '{Date system}' => $dtDate,
+            '{Heure system}' => $dtTime,
+            '{Nom AFA}' => $afa,
+            '{NomMembre}' => $NomMembre,
+            '{NomProgramme}' => $title,
+            '{TypeLot}' => $lotType,
+            '{NiveauLot}' => $lotLevel,
+            '{IdentifiantLot}' => $lotId,
+            '{PrixVenteFinal}' => $finalSalesPrice,
+            '{Nom societe gestionnaire portail IEA}' => $lia_name,
+        );
+        $sujet = $template[0]->$sujet_tpl;
+        $contenu = strtr($template[0]->$body, $vars);
+        $content = ['title' => '', 'body' => $contenu];
+        
+        // message
+        Message::create(['type'=>'admin','from_id'=>$afaId,'to_id'=>1,'body'=>$contenu]);
+
+        // email
+        Mail::to($admin->email)->send(new MailTemplate($content, $sujet));
+        
+        return response()->json(['msg'=>trans('app.txt.initial_deposit_confirmed')]);
+    }
+
+    
+
 
 
 
@@ -671,7 +850,7 @@ class DossierController extends Controller
         $dtTime = $dt->format('H:i:m');
         $downloadForm6Link = url($mdRch->path);
         $uploadForm6Link = route('member.dossier');
-        $user_name= $user->isPerson()?$user->name:$user->userinfos()->first()->orga_name;
+        $user_name= $user->isPerson()?$user->userinfos->first_name.' '.$user->userinfos->last_name:$user->userinfos->orga_name;
         $user_immat = $user->immat;
         $afa = $user->afa->name;
         $product = Product::whereId($prod_id)->first();

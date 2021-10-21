@@ -42,7 +42,7 @@
             <td align="center">
                 @if (Auth::user()->hasRole(5))
                     @php
-                        if($trans->status==2 || $trans->status==11){
+                        if($trans->status==2 || $trans->status==10 || $trans->status==11){
                             $btnText="En attente";
                         }else{
                             $btnText=trans('app.btn.continuer');
@@ -69,6 +69,10 @@
                         <a href="javascript:void(0)" onclick="confirmDossierTrans()" class="btn btn-success btn-sm">{{trans('app.btn.confirm_purchase')}}</a>
                     @elseif ($trans->status == 9 )
                         <a href="javascript:void(0)" onclick="submitEoi()" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.sent_eoi_finalized')}}</a>
+                    @elseif ($trans->status == 11 )
+                        <small class="badge-warning" style="margin-bottom:5px;padding:10px;">@lang('app.txt.waiting_initial_deposit') </small>
+                    @elseif ($trans->status == 12 )
+                        <small class="badge-success" style="margin-bottom:5px;padding:10px;">@lang('app.txt.end_of_transaction') </small>
                     @else
                         <a href="javascript:void(0)" class="m-btn m-btn-theme m-btn-sm" disabled>{{$btnText}}</a>
                     @endif
@@ -91,7 +95,9 @@
                     @elseif ($trans->status == 7 )
                         <a href="javascript:void(0)" onclick="completeDossTrans()" class="m-btn m-btn-theme2nd">@lang('app.txt.complete_transaction_file_info')</a>
                     @elseif ($trans->status == 10 )
-                        <a href="javascript:void(0)" onclick="submitEoi()" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.sent_eoi_finalized')}}</a>
+                        <a href="javascript:void(0)" onclick="submitEoi()" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.send_finalized_eoi')}}</a>
+                    @elseif ($trans->status == 11 )
+                        <a href="javascript:void(0)" onclick="initialDepositConfirm({{$trans->id}})" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.initial_deposit_confirmation')}}</a>
                     @else
                         <a href="javascript:void(0)" class="m-btn m-btn-theme m-btn-sm" disabled>{{$btnText}}</a>
                     @endif
@@ -249,7 +255,7 @@
                         $dtDate = $dt->format('m-d-Y');
                         $dtTime = $dt->format('H:i:m');
                         $member = App\Models\User::whereId($trans->user_id)->first();
-                        $user_name= $member->isPerson()?$member->name:$member->userinfos()->first()->orga_name;
+                        $user_name= $member->isPerson()?$member->userinfos->first_name.' '.$member->userinfos->last_name:$member->userinfos->orga_name;
                         $afa = $member->afa->name;
                         $product = App\Models\Product::whereId($trans->product_id)->first();
                         $city = $product->location->locality;
@@ -290,6 +296,62 @@
                         );
                         $sujet = $template[0]->$sujet_tpl;
                         $contenu = strtr($template[0]->$body, $vars);
+                    @endphp
+                    
+                    {!! $contenu !!}
+
+                    <div class="float-right m-15px-t">
+                        <button type="reset" class="m-btn m-btn-theme" data-dismiss="modal" id="btn_cancel">@lang("app.btn.cancel")</button> 
+                        <button type="submit" class="m-btn m-btn-theme2nd"  id="btn_save">@lang("app.txt_confirm_btn")</button></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                @lang('app.form.required')
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal to send finalized eoi with afa -->
+<div id="sellingProcessClearanceModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content white-bg">
+            <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
+                <h4 class="modal-title white-color"> @lang('app.message')<span></span></h4>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route("afa.dossier.upload_eoi_finalized") }}" id="sellingProcessClearanceForm" method="POST">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="doss_id" value="{{$trans->id}}">
+                    @php
+                        $user = App\Models\User::whereId($trans->user_id)->first();
+                        $afa = App\Models\User::whereId($trans->afa_id)->first();
+                        $seller = App\Models\User::whereId($product->seller_id)->first();
+                        $template = App\Models\MailsTemplate::where('id', 37)->get();
+                        App::setLocale(Auth::user()->language);
+                        $lang = 'en';
+                        $body = 'template_' . $lang;
+                        $sujet_tpl = 'sujet_'.$lang;
+                        $pathLink = url('/uploads/pdf/transaction/').'/'.$trans->eoi_finalize_file_name;
+                        $downloadeoiLink = '<b>'.setLinkDynamic($pathLink,strtoupper(trans('app.txt.eoi_finalized'))).'</b>';
+                        $vars = array(
+                            '{date}' => Carbon\Carbon::now()->toFormattedDateString(),
+                            '{afa}' => $afa->name,
+                            '{name}' => $user->isPerson()?$user->userinfos->first_name.' '.$user->userinfos->last_name:$user->userinfos->orga_name,
+                            '{seller}' => $seller->name,
+                            '{sellerparentcompany}' => $seller->userinfos->orga_parent_name,
+                            '{title}' => $product->title,
+                            '{lottype}' => $trans->lot_type,
+                            '{lotlevel}' => $trans->lot_level,
+                            '{lotid}' => $trans->lot_id,
+                            '{price}' => $trans->final_sales_price,
+                            '{checkbox}' => '<input type="checkbox" name="confirm_firb" id="confirm_firb">',
+                            '{downloadLink}' => $downloadeoiLink,
+                        );
+                        $sujet = $template[0]->$sujet_tpl;
+                        $contenu = strtr($template[0]->$body, $vars);
+                        $content = ['title' => '', 'body' => $contenu];
                     @endphp
                     
                     {!! $contenu !!}
@@ -629,7 +691,7 @@
         }
 
         function submitEoi(doss_id){
-            $('#uploadModal').modal('show');
+            $('#sellingProcessClearanceModal').modal('show');
         }
 
         $(document).ready(function(){
@@ -738,7 +800,82 @@
                     }
                 },
             });
+
+            $('#sellingProcessClearanceForm').validate({
+                ignore: [],
+                rules: {
+                    'confirm_firb': {
+                        required: true,
+                    },
+                },
+                messages: {
+                    'confirm_firb': {
+                        required: "@lang('app.txt.champobligatoire')",
+                    },
+                },
+                errorPlacement: function ( error, element ) {
+                    if(element.parent().hasClass('input-group')){
+                        error.insertBefore( element.parent() );
+                    }else{
+                        error.insertAfter( element );
+                    }
+                },
+            });
+
+            $('#sellingProcessClearanceForm').submit(function() { // fires on every keyup & blur
+                if ($('#sellingProcessClearanceForm').valid()) {                   // checks form for validity
+                    loadingPage();
+                }
+            });
         });
+
+        function initialDepositConfirm(id_doss_trans){
+            swal({
+                title: "{{ trans('app.txt.initial_deposit_confirmation') }}",
+                text: "{{ trans('app.do_you_confirm') }}",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: '#ff3547',
+                confirmButtonText: "@lang('app.yes')",
+                cancelButtonText: "@lang('app.no')",
+                closeOnConfirm: true,
+                closeOnCancel: true
+            },
+            function(isConfirm){
+                loadingPage();
+
+                if (isConfirm){
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        url: '{{ route("afa.dossier.initialDepositConfirm") }}',
+                        type: "POST",
+                        dataType: "JSON",
+                        data:{"doss_id": id_doss_trans},
+                        success: function(data)
+                        {
+                            var msg = data.msg;
+
+                            swal("{{ trans('app.txt.initial_deposit_confirmation') }}", msg, "success");
+                            location.reload();	
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            stopLoadingPage();
+                            swal("{{ trans('app.txt.initial_deposit_confirmation') }}", "{{ trans('app.txt.confirmation_error') }}", "error");	
+                        }
+                    }); 
+                } else {
+                    stopLoadingPage();
+                    swal("{{ trans('app.txt.initial_deposit_confirmation') }}", "@lang('app.jquery.delete_cancel')", "error");
+                }
+            });
+        }
+
+
 
         // $(document).ready(function(){
         //     $('#formUpload').validate({

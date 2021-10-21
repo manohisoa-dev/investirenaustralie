@@ -646,7 +646,7 @@ class MemberController extends Controller {
         $vars = array(
             '{date}' => Carbon::now()->toFormattedDateString(),
             '{heure}' => Carbon::now()->toTimeString(),
-            '{name}' => $user->isPerson()?$user->name:$user->userinfos->orga_name,
+            '{name}' => $user->isPerson()?$user->userinfos->first_name.' '.$user->userinfos->last_name:$user->userinfos->orga_name,
             '{immat}' => $user->immat,
             '{ieaagencyname}' => $lia_name,
             '{downloadlink}' => $downloadLink,
@@ -703,7 +703,7 @@ class MemberController extends Controller {
         $downloadForm6Link = url($mdRch->path);
         $uploadForm6Link = route('member.dossier');
         $user = Auth::user();
-        $user_name= $user->isPerson()?$user->name:$user->userinfos()->first()->orga_name;
+        $user_name= $user->isPerson()?$user->userinfos->first_name.' '.$user->userinfos->last_name:$user->userinfos->orga_name;
         $user_immat = $user->immat;
         $afa = $user->afa->name;
         $prod_id = session()->get('id_product');

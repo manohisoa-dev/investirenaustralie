@@ -81,7 +81,13 @@
 						</tr>
 						<tr>
 							<th width="45%">@lang('app.status')</th>
-							<td>{{ $user->status?trans('app.txt.'.$user->status):'-' }}</td>
+							<td>
+							@if($user->status == 'temp')
+								<span class="label label-warning">@lang('app.txt.status_pending')</span>
+							@else
+								{{ $user->status?trans('app.txt.'.$user->status):'-' }}
+							@endif
+							</td>
 						</tr>
 					</table>
 				</div>

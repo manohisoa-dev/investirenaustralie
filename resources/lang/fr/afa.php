@@ -33,4 +33,6 @@ return [
     "folders.status.to_download"  => "A télécharger",
     "folders.status.finalized"  => "Finalisé",
     "agreement.title"  => "Accords de l&rsquo;afa",
+    "message.transaction.initial.deposit.content" => "<p>Bonjour <b>:name</b>,</p> <p>Nous nous rappelons que vous avez un dépôt initial à vérifier dans votre compte.</p> <p>Vous pouvez y accéder dans votre panneau de contrôle &ldquo;<a href=:url id=:id><b>:label</b></a>&rdquo;.</p>",
+    "message.transaction.initial.deposit.title" => "Message de rappel de dépôt initial",
 ];

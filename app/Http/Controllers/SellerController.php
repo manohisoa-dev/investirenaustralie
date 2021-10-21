@@ -16,7 +16,7 @@ class SellerController extends Controller {
     public function __construct() {
         $this->middleware('auth');
         $this->middleware('role:2');
-        $this->middleware('user:active');
+        $this->middleware('user', ['only' => ['active','temp']]);
     }
 
     /**

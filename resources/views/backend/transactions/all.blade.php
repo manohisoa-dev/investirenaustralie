@@ -4,7 +4,7 @@
 
     <div class="profile-content-area m-40px-tb card card-body">
         <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
-            <h5>Procédure d'achat en cours</h5>
+            <h5>@lang('app.txt.procedure_achat_encours')</h5>
             <div class="row">
                 <div class="col-md-12 m-10px-tb">
                     <div class="media">

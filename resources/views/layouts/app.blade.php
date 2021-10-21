@@ -581,6 +581,25 @@
         </div>
     @endif
 
+    <!-- Modal of afa has dossier transaction initial deposit -->
+    @if(Auth::check() && Auth::user()->hasRole(3) && Auth::user()->hasDossierTransactionInitialDeposit())
+        <div id="afaHasDossierTransactionInitialDepositModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content white-bg">
+                    <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
+                        <h4 class="modal-title white-color text-center">{{ strtoupper(trans('afa.message.transaction.initial.deposit.title')) }} </h4>
+                    </div>
+                    <div class="modal-body">
+                        {!! trans('afa.message.transaction.initial.deposit.content',['name'=> Auth::user()->name, 'url'=>route('afa.transaction'), 'id'=>'btnProcedureAchat', 'label'=>trans('app.txt.procedure_achat')]) !!}
+                    </div>
+                    <div class="modal-footer">
+                        <a type="button" class="m-btn m-btn-theme2nd" href="javascript:void(0)" data-dismiss="modal" id="btnOkNotifTransInitDeposit">@lang('app.btn.ok')</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <!-- jquery -->
     <script src="{{ asset('js/jquery-3.0.0.min.js') }}"></script>
     <script src="{{ asset('js/jquery-migrate-3.0.0.min.js') }}"></script>
@@ -800,6 +819,13 @@
                     $('#memberHasDossierTransactionModal').modal('show');
                 }
             }
+            
+            // Show notification current transaction initial deposit afa
+            if('{{ Request::is("afa") }}'){
+                if('{{ Auth::check() && Auth::user()->hasRole(3) && Auth::user()->hasDossierTransactionInitialDeposit() }}' && !sessionStorage.getItem('notif_trans_afa')){
+                    $('#afaHasDossierTransactionInitialDepositModal').modal('show');
+                }
+            }
 
             // Show notification message if exist
             if('{{ session()->get("alert_message") }}'){
@@ -830,7 +856,12 @@
         $('#btnOkNotifTrans').click(function(){
             // 1: notificaiton seen
             return sessionStorage.setItem('notif_trans_member', 1);
-        })
+        });
+        
+        $('#btnOkNotifTransInitDeposit').click(function(){
+            // 1: notificaiton seen
+            return sessionStorage.setItem('notif_trans_afa', 1);
+        });
 
         $('#btnDashboard').click(function(){
             // 1: notificaiton seen

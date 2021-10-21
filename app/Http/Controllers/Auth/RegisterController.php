@@ -1123,7 +1123,11 @@ class RegisterController extends Controller
        
         // Active user
         $password = str_random(10);
-        $user->status = 'active';
+        if($user->hasRole(2)&&$user->isSbaBusiness() || $user->hasRole(2)&&$user->isSbaIndividual()){
+            $user->status = 'temp';
+        }else{
+            $user->status = 'active';
+        }
         $user->activation_code = null;
         $user->trial_ends_at = \Carbon\Carbon::now()->addDays(option('payment.trial_delay', 14));
         $user->password = Hash::make($password);
@@ -1144,7 +1148,7 @@ class RegisterController extends Controller
 
         if($user->hasRole(5)){ //Member
             $id_template = $idTemplateMem;
-            $vars['{name}'] = $user->isPerson()?$user->name:$user->userinfos->orga_name;
+            $vars['{name}'] = $user->isPerson()?$user->userinfos->first_name.' '.$user->userinfos->last_name:$user->userinfos->orga_name;
         }elseif($user->hasRole(2)){ // Seller
             $vars['{ieaagencyname}'] = $lia_name;
             if($user->isSlp()){
@@ -1184,7 +1188,7 @@ class RegisterController extends Controller
         $user->notify(new RegistrationConfirmedMessage($sujet,$content));
 
         return redirect()->route('login')
-                ->with('success',trans('app.txt.accountactivated'));
+                ->with('success',trans('app.txt.accountactivated')->with('alert_message',trans('mail.sent')));
     }
 
     /*

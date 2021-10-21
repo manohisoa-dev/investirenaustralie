@@ -132,6 +132,86 @@ class User extends Authenticatable {
         // paginate results
         return $query->paginate(15);
     }
+    
+    public static function findRequested_byRole($role) {
+        $query = User::query();
+        $query->join('localizations', 'localizations.id', '=', 'users.location_id');
+        $query->select('users.id AS uid', 'users.name AS name',
+            'users.image_id AS image_id', 'users.email as email',
+            'users.created_at as created_at', 'users.role as role', 'users.status as status',
+            'users.author_id as author_id', 'localizations.country as country',
+            'localizations.locality as locality', 'users.type_users_id as type_users_id');
+        $query->where('role',$role);
+        // search results based on user input
+        \Request::input('id') and $query->where('users.id', \Request::input('id'));
+        \Request::input('name') and $query->where('users.name', 'like', '%' . \Request::input
+            ('name') . '%');
+        \Request::input('email') and $query->where('users.email', 'like', '%' . \Request::input
+            ('email') . '%');
+        \Request::input('password') and $query->where('users.password', 'like', '%' . \Request::input
+            ('password') . '%');
+        \Request::input('role') and $query->where('users.role', 'like', '%' . \Request::input
+            ('role') . '%');
+        \Request::input('type_users_id') and $query->where('users.type_users_id', 'like',
+            '%' . \Request::input('type_users_id') . '%');
+        \Request::input('language') and $query->where('users.language', 'like', '%' . \Request::input
+            ('language') . '%');
+        \Request::input('status') and $query->where('users.status', 'like', '%' . \Request::input
+            ('status') . '%');
+        \Request::input('percent') and $query->where('users.percent', \Request::input('percent'));
+        \Request::input('enabled_at') and $query->where('users.enabled_at', \Request::input
+            ('enabled_at'));
+        \Request::input('disabled_at') and $query->where('users.disabled_at', \Request::input
+            ('disabled_at'));
+        \Request::input('use_default_password') and $query->where('users.use_default_password', \Request::input
+            ('use_default_password'));
+        \Request::input('is_seller') and $query->where('users.is_seller', \Request::input
+            ('is_seller'));
+        \Request::input('apl_id') and $query->where('users.apl_id', \Request::input('apl_id'));
+        \Request::input('apl_ends_at') and $query->where('users.apl_ends_at', \Request::input
+            ('apl_ends_at'));
+        \Request::input('image_id') and $query->where('users.image_id', \Request::input
+            ('image_id'));
+        \Request::input('author_id') and $query->where('users.author_id', \Request::input
+            ('author_id'));
+        \Request::input('location_id') and $query->where('users.location_id', \Request::input
+            ('location_id'));
+        \Request::input('country_id') and $query->where('users.country_id', \Request::input
+            ('country_id'));
+        \Request::input('operation_range') and $query->where('users.operation_range', \Request::input
+            ('operation_range'));
+        \Request::input('state_id') and $query->where('users.state_id', \Request::input
+            ('state_id'));
+        \Request::input('activation_code') and $query->where('users.activation_code',
+            'like', '%' . \Request::input('activation_code') . '%');
+        \Request::input('remember_token') and $query->where('users.remember_token',
+            'like', '%' . \Request::input('remember_token') . '%');
+        \Request::input('created_at') and $query->where('users.created_at', \Request::input
+            ('created_at'));
+        \Request::input('updated_at') and $query->where('users.updated_at', \Request::input
+            ('updated_at'));
+        \Request::input('braintree_id') and $query->where('users.braintree_id', 'like',
+            '%' . \Request::input('braintree_id') . '%');
+        \Request::input('paypal_email') and $query->where('users.paypal_email', 'like',
+            '%' . \Request::input('paypal_email') . '%');
+        \Request::input('stripe_id') and $query->where('users.stripe_id', 'like', '%' . \Request::input
+            ('stripe_id') . '%');
+        \Request::input('card_brand') and $query->where('users.card_brand', 'like', '%' . \Request::input
+            ('card_brand') . '%');
+        \Request::input('card_last_four') and $query->where('users.card_last_four',
+            'like', '%' . \Request::input('card_last_four') . '%');
+        \Request::input('trial_ends_at') and $query->where('users.trial_ends_at', \Request::input
+            ('trial_ends_at'));
+        \Request::input('subscription_ends_at') and $query->where('users.subscription_ends_at', \Request::input
+            ('subscription_ends_at'));
+
+        // sort results
+        \Request::input("sort") and $query->orderBy(\Request::input("sort"), \Request::input
+            ("sortType", "asc"));
+
+        // paginate results
+        return $query->paginate(15);
+    }
 
     public static function validationRulesAdmin($attributes = null) {
         $rules = ['login' => 'required|string|max:100', 'email' =>
@@ -306,6 +386,15 @@ class User extends Authenticatable {
      */
     public function active() {
         return ($this->status == 'active');
+    }
+
+    /**
+     * Is user temp (seller by afa)
+     *
+     * @return Boolean
+     */
+    public function temp() {
+        return ($this->status == 'temp');
     }
 
     /**
@@ -1177,6 +1266,17 @@ class User extends Authenticatable {
 
         return false;
     }
+
+    public function hasDossierTransactionInitialDeposit() {
+        $initDeposit = DossierTransaction::where('afa_id', $this->id)->where('status','=',
+            11)->get();
+
+        if (sizeof($initDeposit) !== 0) {
+            return true;
+        }
+
+        return false;
+    }
     
     public function hasCurrentDossierTransaction($id_product) {
         $dosTransUser = DossierTransaction::where('user_id', $this->id)->where('product_id',
@@ -1220,13 +1320,13 @@ class User extends Authenticatable {
     }
 
     public function getDossierTransaction() {
-        $dossierTrans = DossierTransaction::where('user_id', $this->id)->where('status','!=',12);
+        $dossierTrans = DossierTransaction::where('user_id', $this->id)->where('status','!=',13);
 
         return $dossierTrans;
     }
     
     public function getDossierTransactionAfa() {
-        $dossierTrans = DossierTransaction::where('afa_id', $this->id)->where('status','!=',12);
+        $dossierTrans = DossierTransaction::where('afa_id', $this->id)->where('status','!=',13);
 
         return $dossierTrans;
     }

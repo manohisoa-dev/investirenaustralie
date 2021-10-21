@@ -121,16 +121,21 @@
 						<tr>
 							<td>{{ $index + $records->firstItem() }}</td>
 							<td>
-							@if (@getimagesize($record->imageUrl()))
-								<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show', $record):route('admin.user.show', $record->uid)}}">
-									<img class="img-responsive" src="{{$record->imageUrl()}}" width="50">
-								</a>
+							@if($record->image_id != 0)
+								@if (@getimagesize($record->imageUrl()))
+									<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show', $record):route('admin.user.show', $record->uid)}}">
+										<img class="img-responsive" src="{{$record->imageUrl()}}" width="50">
+									</a>
+								@else
+									<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show', $record):route('admin.user.show', $record->uid)}}">
+										<img class="img-responsive" src="{{asset('img/500x500.jpg')}}" width="50">
+									</a>
+								@endif
 							@else
 								<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show', $record):route('admin.user.show', $record->uid)}}">
 									<img class="img-responsive" src="{{asset('img/500x500.jpg')}}" width="50">
 								</a>
-							@endif
-								
+							@endif								
 							</td>
 							<td>
 								<span class="editable"
@@ -176,7 +181,12 @@
 								data-value="{{ $record->role }}"
 								data-pk="{{ $record->{$record->getKeyName()} }}"
 								data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
-								><a href=""><span class="label label-warning">{{$record->roleUser['role_initial']}}</span></a></span>
+								>
+								@if($record->type_users_id == 8 || $record->type_users_id == 9)
+									<a href="#"><span class="label label-warning">Selle by AFA</span></a></span>
+								@else
+									<a href="#"><span class="label label-warning">{{$record->roleUser['role_initial']}}</span></a></span>
+								@endif
 							</td>
 							<td>
 								<span class="editable"
@@ -211,6 +221,8 @@
 									@else
 										@if($record->status == 'disabled')
 											<span class="label label-danger">Suspendu</span>
+										@elseif($record->status == 'temp')
+											<span class="label label-warning">@lang('app.txt.status_pending')</span>
 										@elseif($record->status == 'pinged')
 											<span class="label label-warning">{{ucfirst($record->status)}}</span>
 										@endif

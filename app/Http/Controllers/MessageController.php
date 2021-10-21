@@ -71,7 +71,6 @@ class MessageController extends Controller
 
     public function getUnreadMessage(Request $request, $user_id){
         $role = Auth::user()->role;
-
         $unreadCountAdmin = '';
         $unreadCountAfa = '';
         $unreadCountApl = '';

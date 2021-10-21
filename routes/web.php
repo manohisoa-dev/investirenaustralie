@@ -311,6 +311,7 @@ Route::prefix('afa')->middleware(["auth","role:3"])->group(function(){
     Route::post('dossier/update_ca', 'DossierController@updateCa')->name('afa.dossier.update_ca');
     Route::post('dossier/update_dt', 'DossierController@updateDt')->name('afa.dossier.update_dt');
     Route::post('dossier/upload_eoi_finalized', 'DossierController@uploadMemberDossierEoiFinalized')->name('afa.dossier.upload_eoi_finalized');
+    Route::post('dossier/initial_deposit_confirm', 'DossierController@initialDepositConfirm')->name('afa.dossier.initialDepositConfirm');
 
     Route::get('transactions', 'AfaController@transactions')->name('afa.transaction');
 });

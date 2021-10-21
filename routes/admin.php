@@ -160,7 +160,7 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::post('message', 'MessageController@sendMessage')->name('ajax.send.message');
     Route::get('message/unread', 'MessageController@getUnreadMessage')->name('ajax.get.unread.message');
     
-    //Route mod�le message
+    //Route modele message
     Route::resource('model-message','ModelMessageController');
     //Route template newsletters
     Route::resource('newsletter-template','NewsletterTemplateController');
@@ -172,6 +172,9 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::get('/contract', 'ContractController@index')->name('contract.index');
     Route::get('/contract/{id}/validate', 'ContractController@validateContract')->name('contract.validate');
     Route::get('/contract/{id}/reject', 'ContractController@rejectContract')->name('contract.validate');
+    
+    //Route procedure d'Achat
+    Route::get('liste_procedure_achat', 'ProcedureAchatController@liste')->name('procedure.liste');
 });
 
 // ROUTE ADMIN DELEGATE

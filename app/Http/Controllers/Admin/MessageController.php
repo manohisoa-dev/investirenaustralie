@@ -72,66 +72,62 @@ class MessageController extends Controller {
                 'created_at_send' => $message->created_at->diffForHumans(), 'seen' => $message->seen ?
                 trans('app.txt.read') : trans('app.txt.unread'), ];
         }
+        Message::where('from_id', $from_id)->where('to_id', $to_id)->update(['seen' => 1]);
+
+
+        return json_encode($data);
     }
 
 
-    // update message showing
-    Message::where('from_id', $from_id)->where('to_id', $to_id)->update(['seen' => 1]);
+    public function sendMessage(Request $request) {
+        // Validate request
+        $datas = $request->all();
+        $validator = Validator::make($datas, ['content' => 'required|max:1000',
+            //'files.*' => 'mimes:jpeg,jpg,png,gif,svg|max:2048',
+            ]);
 
+        if ($validator->passes()) {
+            $current = Auth::user();
 
-    return json_encode($data);
-}
+            $item = new Message();
+            $item->type = 'admin';
+            $item->from_id = $current->id;
+            $item->body = $request->content;
+            $item->to_id = $request->to_id;
+            $item->save();
 
+            return response()->json(['success' => trans('app.txt.message_sent')]);
+        }
 
-public function sendMessage(Request $request) {
-    // Validate request
-    $datas = $request->all();
-    $validator = Validator::make($datas, ['content' => 'required|max:1000',
-        //'files.*' => 'mimes:jpeg,jpg,png,gif,svg|max:2048',
-        ]);
-
-    if ($validator->passes()) {
-        $current = Auth::user();
-
-        $item = new Message();
-        $item->type = 'admin';
-        $item->from_id = $current->id;
-        $item->body = $request->content;
-        $item->to_id = $request->to_id;
-        $item->save();
-
-        return response()->json(['success' => trans('app.txt.message_sent')]);
+        return response()->json(['error' => $validator->errors()->all()]);
     }
 
-    return response()->json(['error' => $validator->errors()->all()]);
-}
 
+    public function getListContactMessage(Request $request) {
+        $user_id = Auth::user()->id;
 
-public function getListContactMessage(Request $request) {
-    $user_id = Auth::user()->id;
+        $lists = Message::where("to_id", $user_id)->join('users', 'users.id', '=',
+            'messages.from_id')->select('messages.*', 'messages.created_at as dt',
+            'users.name', 'users.immat', 'users.id as user_id', 'users.role')->orderBy('created_at',
+            'ASC')->groupBy('from_id')->get();
 
-    $lists = Message::where("to_id", $user_id)->join('users', 'users.id', '=',
-        'messages.from_id')->select('messages.*', 'messages.created_at as dt',
-        'users.name', 'users.immat', 'users.id as user_id', 'users.role')->orderBy('created_at',
-        'ASC')->groupBy('from_id')->get();
+        $data = [];
+        foreach ($lists as $key => $list) {
+            $data[$key] = ['name' => $list->name, 'immat' => $list->immat, 'dateSend' => $list->created_at->diffForHumans(),
+                'user_id' => $list->user_id, 'user_role' => trans('app.' . Role::where('id', $list->role)->first
+                ()->role_initial), ];
+        }
 
-    $data = [];
-    foreach ($lists as $key => $list) {
-        $data[$key] = ['name' => $list->name, 'immat' => $list->immat, 'dateSend' => $list->created_at->diffForHumans(),
-            'user_id' => $list->user_id, 'user_role' => trans('app.' . Role::where('id', $list->role)->first
-            ()->role_initial), ];
+        return response()->json($data);
     }
 
-    return response()->json($data);
-}
+    public function getUnreadCountMessageContact(Request $request) {
+        $user_id = Auth::user()->id;
 
-public function getUnreadCountMessageContact(Request $request) {
-    $user_id = Auth::user()->id;
-
-    $unreadCount = Message::where("to_id", $user_id)->selectRaw('messages.from_id, COUNT(messages.id) as count')->whereRaw('seen = 0')->orderBy('created_at',
-        'ASC')->groupBy('from_id')->get();
+        $unreadCount = Message::where("to_id", $user_id)->selectRaw('messages.from_id, COUNT(messages.id) as count')->whereRaw('seen = 0')->orderBy('created_at',
+            'ASC')->groupBy('from_id')->get();
 
 
-    return response()->json($unreadCount);
-}
+        return response()->json($unreadCount);
+    }
 }

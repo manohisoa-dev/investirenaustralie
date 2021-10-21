@@ -134,9 +134,9 @@
 											<i class="fa fa-pencil-square-o"></i>
 										</a>&nbsp;&nbsp;
 										
-										<a href="javascript:void(0)" onclick="send_email({{$record->id}})" class="btn btn-default btn-circle" title="Envoyer un mail test">
+										{{--<a href="javascript:void(0)" onclick="send_email({{$record->id}})" class="btn btn-default btn-circle" title="Envoyer un mail test">
 											<i class="fa fa-send-o"></i>
-										</a>&nbsp;&nbsp;
+										</a>&nbsp;&nbsp;--}}
 									
 										{{ csrf_field() }}
 										{{ method_field('DELETE') }}

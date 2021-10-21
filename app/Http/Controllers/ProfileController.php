@@ -33,7 +33,7 @@ class ProfileController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('user:active');
+        $this->middleware('user', ['only' => ['active','temp']]);
     }
 
     /**
@@ -502,7 +502,7 @@ class ProfileController extends Controller
                     '{date}' => Carbon::now()->toFormattedDateString(),
                     '{heure}' => Carbon::now()->toTimeString(),
                     '{country}' => $product->location->area_level_1,
-                    '{name}' => $user->isPerson()?$user->name:$user->userinfos->orga_name,
+                    '{name}' => $user->isPerson()?$user->userinfos->first_name.' '.$user->userinfos->last_name:$user->userinfos->orga_name,
                     '{afa}' => $user->afa->name,
                     '{city}' => $product->location->locality,
                     '{completedtLink}' => $completedtLink,

@@ -55,7 +55,7 @@
                 @else
                     <li class="{{Request::is('*/user/show/'.$item->role_initial) || Request::is('*/user/show/'.$item->role_initial.'/*') || Request::is('*/user/create/'.$item->role_initial) ? 'active' : ''}}">
                         <a href="#"> 
-                            <span class="nav-label">@lang('app.txt.'.$item->role_initial) </span><span class="fa arrow"></span>
+                            <span class="nav-label">@lang('app.txt.'.$item->role_initial)</span><span class="fa arrow"></span>
                         </a>
                         <ul class="nav nav-second-level collapse">
                             <li class="">
@@ -108,6 +108,12 @@
             {{--<li><a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.create'):route('admin.product.create') }}?type=produit">@lang('app.admin.product.add')</a></li>--}}
         </ul>
     </li>
+	<li class="{{Request::is('*/liste_procedure_achat/*') || Request::is('*/liste_procedure_achat') || Request::is('collaborator') || Request::is('collaborators') ? 'active' : ''}}">
+		<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.procedure.liste'):route('admin.procedure.liste')}}">
+			<i class="fa fa-exchange" title="@lang('app.txt.procedure_achat')"></i> 
+			<span class="nav-label">@lang('app.txt.procedure_achat')</span>
+		</a>
+	</li>
     <li class="{{Request::is('*/sale/*') || Request::is('*/sale') ? 'active' : ''}}">
         <a href="#">
             <i class="fa fa-shopping-cart" title="Ventes"></i> 

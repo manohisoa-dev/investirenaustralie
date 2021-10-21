@@ -58,6 +58,10 @@
                         <h4>@lang('app.table.template_in')</h4>
                         <h5>{!! $mailsTemplate->template_en !!}</h5>
                     </li>
+					<li class="list-group-item">
+                        <h4>Params</h4>
+                        <h5>{!! $mailsTemplate->params !!}</h5>
+                    </li>
                     <li class="list-group-item">
                         <h4>@lang('app.txt.created_on')</h4>
                         <h5>{{$mailsTemplate->created_at}}</h5>

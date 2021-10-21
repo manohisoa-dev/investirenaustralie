@@ -36,4 +36,6 @@ return [
     "folders.status.to_download"  => "To download",
     "folders.status.finalized"  => "Finalized",
     "agreement.title"  => "AFA&rsquo;s agreements",
+    "message.transaction.initial.deposit.content" => "<p>Hello <b>:name</b>,</p> <p>We remember that you have an initial deposit to verify in your account.</p> <p>You can access it in your &ldquo;<a href=:url id=:id><b>:label</b></a>&rdquo; control panel.</p>",
+    "message.transaction.initial.deposit.title" => "Initial deposit reminder message",
 ];

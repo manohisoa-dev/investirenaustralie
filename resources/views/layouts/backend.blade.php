@@ -570,7 +570,7 @@
                                 <a href="{{route('member.transaction')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('member/transaction')) ? 'menu-active' : '' }}">
                                     <div>
                                         <i class="fa fa-calendar m-10px-r"></i>
-                                        <span>Procédure d'achat</span>
+                                        <span>@lang('app.txt.procedure_achat')</span>
                                     </div>
                                     <div>
                                         <i class="fas fa-chevron-right"></i>
@@ -757,7 +757,7 @@
                               <a href="{{route('afa.transaction')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('afa/transaction')) ? 'menu-active' : '' }}">
                                 <div>
                                     <i class="fa fa-calendar m-10px-r"></i>
-                                    <span>Procédure d'achat</span>
+                                    <span>@lang('app.txt.procedure_achat')</span>
                                 </div>
                                 <div>
                                     <i class="fas fa-chevron-right"></i>
@@ -775,7 +775,7 @@
                             @endif
 
                             @If(Auth::user()->hasRole(2))
-								 <a href="{{route('seller.solicitor')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('seller/solicitor')) ? 'menu-active' : '' }}">
+								 <a href="{{route('seller.solicitor')}}" class="{{ Auth::user()->temp()?'inactiveLink':'' }} list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('seller/solicitor')) ? 'menu-active' : '' }}">
                                   <div>
                                       <i class="fa fa-fw fa-balance-scale m-10px-r"></i>
                                       <span>Solicitor</span>
@@ -807,7 +807,7 @@
 										</a>
 									</li>
 								</ul> 
-                                <a href="{{route('mes-programmes')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ Request::is('mes-programmes') || Request::is('mes-produits') ? 'menu-active' : ''}}">
+                                <a href="{{route('mes-programmes')}}" class="{{ Auth::user()->temp()?'inactiveLink':'' }} list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ Request::is('mes-programmes') || Request::is('mes-produits') ? 'menu-active' : ''}}">
                                   <div>
                                       <i class="fa fa-paperclip m-10px-r"></i>
                                       <span>@lang('seller.products')</span>
@@ -816,7 +816,7 @@
                                       <i class="fas fa-chevron-right"></i>
                                   </div>
                               </a>
-                              <a href="{{route('seller.orders')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('seller/orders')) ? 'menu-active' : '' }}">
+                              <a href="{{route('seller.orders')}}" class="{{ Auth::user()->temp()?'inactiveLink':'' }} list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('seller/orders')) ? 'menu-active' : '' }}">
                                   <div>
                                       <i class="fa fa-cart-plus m-10px-r"></i>
                                       <span>@lang('seller.orders')</span>
@@ -825,7 +825,7 @@
                                       <i class="fas fa-chevron-right"></i>
                                   </div>
                               </a>
-                              <a href="{{route('seller.sales')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('seller/sales')) ? 'menu-active' : '' }}">
+                              <a href="{{route('seller.sales')}}" class="{{ Auth::user()->temp()?'inactiveLink':'' }} list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('seller/sales')) ? 'menu-active' : '' }}">
                                   <div>
                                       <i class="fa fa-chart-line m-10px-r"></i>
                                       <span>@lang('seller.sales')</span>
@@ -837,7 +837,7 @@
                             @endif
 
                             @if(!Auth::user()->isAdmin())
-                              <a href="{{url(\App\Models\User::find(Auth::id())->roleUser->role_initial.'/favorites')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is(\App\Models\User::find(Auth::id())->roleUser->role_initial.'/favorites')) ? 'menu-active' : '' }}">
+                              <a href="{{url(\App\Models\User::find(Auth::id())->roleUser->role_initial.'/favorites')}}" class="{{ Auth::user()->temp()?'inactiveLink':'' }} list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is(\App\Models\User::find(Auth::id())->roleUser->role_initial.'/favorites')) ? 'menu-active' : '' }}">
                                   <div>
                                       <i class="fa fa-heart m-10px-r"></i>
                                       <span>@lang('app.favorites')</span>
@@ -846,7 +846,7 @@
                                       <i class="fas fa-chevron-right"></i>
                                   </div>
                               </a>
-                              <a href="{{url(\App\Models\User::find(Auth::id())->roleUser->role_initial.'/searches')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is(\App\Models\User::find(Auth::id())->roleUser->role_initial.'/searches')) ? 'menu-active' : '' }}">
+                              <a href="{{url(\App\Models\User::find(Auth::id())->roleUser->role_initial.'/searches')}}" class="{{ Auth::user()->temp()?'inactiveLink':'' }} list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is(\App\Models\User::find(Auth::id())->roleUser->role_initial.'/searches')) ? 'menu-active' : '' }}">
                                   <div>
                                       <i class="fa fa-search m-10px-r"></i>
                                       <span>@lang('app.searches')</span>
@@ -879,7 +879,7 @@
                                 </a>
                               @endif
 
-                              <a href="{{route(''.\App\Models\User::find(Auth::id())->roleUser->role_initial.'.mail.list',['filter'=>'inbox'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is(\App\Models\User::find(Auth::id())->roleUser->role_initial.'/mails/inbox')) ? 'menu-active' : '' }}">
+                              <a href="{{route(''.\App\Models\User::find(Auth::id())->roleUser->role_initial.'.mail.list',['filter'=>'inbox'])}}" class="{{ Auth::user()->temp()?'inactiveLink':'' }} list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is(\App\Models\User::find(Auth::id())->roleUser->role_initial.'/mails/inbox')) ? 'menu-active' : '' }}">
                                   <div>
                                       <i class="far fa-envelope m-10px-r"></i>
                                       <span>@lang('app.mails')</span>
@@ -1056,6 +1056,14 @@
 @push('script')
     <link rel="stylesheet" href="{{asset('administrator/plugins/bootstrap-fileupload/css/bootstrap-fileupload.css')}}">
     <script src="{{asset('administrator/plugins/bootstrap-fileupload/js/bootstrap-fileupload.js')}}"></script>
+    <style>
+        .inactiveLink {
+            pointer-events: none;
+            cursor: default;
+            background: #8F8F8F; 
+            color: #B8B8B8 !important;
+        }
+    </style>
     <script>
         $(document).ready(function(){
 			$('#newProduct').click(function(e){
