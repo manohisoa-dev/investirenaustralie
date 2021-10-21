@@ -76,7 +76,21 @@
 						<label for="title">@lang('app.form.programme_content')</label>
 						<textarea class="form-control" rows="10" name="description" id="description">{{ old('description')?old('description'):'' }}</textarea>
 					</div>
-								
+					
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label for="title">@lang('app.form.programme_commencement_dt') *</label>
+								<input type="text" name="commencement_dt" id="commencement_dt" placeholder="Month/YYYY" class="form-control date_month_year" />
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label for="title">@lang('app.form.estimated_delivery_dt') *</label>
+								<input type="text" name="estimated_delvivery_dt" id="estimated_delvivery_dt" class="form-control date_month_year" placeholder="Month/YYYY"/>
+							</div>
+						</div>
+					</div>			
 					<div class="row">
 						<div class="col-lg-4">
 							<div class="form-group">
@@ -193,7 +207,38 @@
 							</div> 
 						</div>
 						<div class="col-lg-4">
-							
+							<div class="form-group">
+								<label for="title">@lang('app.form.programme_solicitor') *</label>
+								<select class="form-control" name="solicitor_id" id="solicitor_id" style="width:100%">
+									@foreach(\App\Models\Solicitor::where('vendeur_id',Auth::id())->get() as $solicitor)
+										<option value="{{$solicitor->id}}">{{$solicitor->cabinet_name}}</option>
+									@endforeach
+								</select>
+							</div> 
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label for="title">@lang('app.form.programme_firb_pre_approved_program') *</label>
+								<select class="form-control" name="programme_firb_pre_approved_program" id="programme_firb_pre_approved_program" style="width:100%">
+									<option value="">@lang('app.form.choix_txt')</option>
+									<option value="NO">NO</option>
+									<option value="YES - 50%">YES - 50%</option>
+									<option value="YES - 100%">YES - 100%</option>
+								</select>
+							</div> 
+						</div>
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label for="title">@lang('app.form.programme_pre_approved_sale') *</label>
+								<select class="form-control" name="programme_pre_approved_sale" id="programme_pre_approved_sale" style="width:100%">
+									<option value="">@lang('app.form.choix_txt')</option>
+									<option value="NO">NO</option>
+									<option value="YES">YES</option>
+								</select>
+							</div> 
 						</div>
 					</div>
 					
@@ -286,6 +331,27 @@
 			}else{
 				$('#fixed_commission').hide();
 				$('#commission_rate').hide();
+			}
+		});
+		
+		$(".date_month_year").datepicker({
+			changeMonth: true,
+			changeYear: true,
+			showButtonPanel: true,
+			dateFormat: 'MM yy',
+			onClose: function(dateText, inst) { 
+				var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+				var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+				$(this).datepicker('setDate', new Date(year, month, 1));
+			},
+			beforeShow : function(input, inst) {
+				var datestr;
+				if ((datestr = $(this).val()).length > 0) {
+					year = datestr.substring(datestr.length-4, datestr.length);
+					month = jQuery.inArray(datestr.substring(0, datestr.length-5), $(this).datepicker('option', 'monthNamesShort'));
+					$(this).datepicker('option', 'defaultDate', new Date(year, month, 1));
+					$(this).datepicker('setDate', new Date(year, month, 1));
+				}
 			}
 		});
 			
@@ -625,6 +691,15 @@
 				},
 				chk_firb: {
 					required: true
+				},
+				commencement_dt: {
+					required: true
+				},
+				estimated_delvivery_dt: {
+					required: true
+				},
+				solicitor_id: {
+					required: true
 				}
 			},
 			messages: {
@@ -674,6 +749,15 @@
 					remote: jQuery.validator.format("{0} @lang('app.form.programme_validate_titre')")
 				},
 				chk_firb: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				commencement_dt: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				estimated_delvivery_dt: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				solicitor_id: {
 					required: "@lang('app.txt.champobligatoire')"
 				}
 			},

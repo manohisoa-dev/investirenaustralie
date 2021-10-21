@@ -499,7 +499,13 @@ class ProductController extends Controller {
 
     function save_programme($categorie, $ancienete, $nature, $prix_min, $prix_max, $type_id,
         $display_address, $postalCode, $state_id, $title, $content, $location_id, $fond_dossier,
+<<<<<<< HEAD
         $status, $type_commission, $commission, $id_afa = 0,$seller_id = 0) {
+=======
+        $status, $type_commission, $commission, $id_afa = 0, $id_solicitor, $commencement_dt,
+        $estimated_delvivery_dt, $programme_firb_pre_approved, $programme_pre_approved_sale) {
+
+>>>>>>> 513beb1a6d55eec3bdb599b698457f2d2a4d725b
         $slug = generateSlug($title);
         $programme = new Product();
 
@@ -528,7 +534,15 @@ class ProductController extends Controller {
         $programme->author_id = Auth::user()->id;
         $programme->validated_at = Carbon::now();
         $programme->afaId_possible = $id_afa;
+<<<<<<< HEAD
         $programme->seller_id = $seller_id;
+=======
+        $programme->solicitor_id = $id_solicitor;
+        $programme->commencement_dt = $commencement_dt;
+        $programme->estimated_delvivery_dt = $estimated_delvivery_dt;
+        $programme->programme_firb_pre_approved = $programme_firb_pre_approved;
+        $programme->programme_pre_approved_sale = $programme_pre_approved_sale;
+>>>>>>> 513beb1a6d55eec3bdb599b698457f2d2a4d725b
         $programme->save();
 
         // // save translation
@@ -663,7 +677,12 @@ class ProductController extends Controller {
             $request->natureBien, $request->prix_min, $request->prix_max, $request->type_id,
             $request->display_address, $request->postalCode, $request->state_id, $titre_programme,
             $request->description, $id_location, '', 'waiting', $request->commision, $taux_commision,
+<<<<<<< HEAD
             $id_afa_p,$seller_id);
+=======
+            $id_afa_p, $request->solicitor_id, $request->commencement_dt, $request->estimated_delvivery_dt,
+            $request->programme_firb_pre_approved_program,$request->programme_pre_approved_sale);
+>>>>>>> 513beb1a6d55eec3bdb599b698457f2d2a4d725b
 
         if ($request->dropPhoto) {
             foreach ($request->dropPhoto as $key => $value) {

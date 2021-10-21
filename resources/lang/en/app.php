@@ -1311,8 +1311,16 @@ return
 	'txt.initial_deposit_confirmed' => 'Initial deposit confirmed !',
 	'do_you_confirm' => 'Are you sure you want to confirm ?',
 	'txt.advertisers_statement' => 'Advertiser&rsquo; statement:<br/>$quot;I/we, the owner/advertiser,<br/>* certify that I/we have the legal title to dispose of this program/product as :<br/><span class=m-15px-l>o The legal owner of this program/product;</span><br/><span class=m-15px-l>o The holder of a legal mandate to sell this program/product;</span><br/>* certify the legal compliance of this program/product in accordance with the Australian law about foreign direct investment applied by the Foreign Investment Review Board regarding residential, land, industrial or commercial properties.<br/>* release "Investir en Australie" portal and its directly linked entities from any responsibility for the legal and financial consequences of the publication on said portal and sale of this program/product.&quot;',
+<<<<<<< HEAD
     'txt.procedure_achat' => 'Procédure d&rsquo;achat',
     'txt.procedure_achat_encours' => 'Procédure d&rsquo;achat en cours',
     'txt.confirmation_error' => 'Erreur de confirmation',
     'txt.status_pending' => 'Pending Subscription',
+=======
+    'form.programme_commencement_dt' => 'Commencement Date',
+    'form.estimated_delivery_dt' => 'Estimated Delivery / Settlement Date',
+    'form.programme_solicitor' => 'Solicitor ',
+    'form.programme_firb_pre_approved_program' => 'FIRB pre-approved program ',
+    'form.programme_pre_approved_sale' => 'FIRB pre-approved sale',
+>>>>>>> 513beb1a6d55eec3bdb599b698457f2d2a4d725b
 ];

@@ -1546,8 +1546,16 @@ return
 	'txt.initial_deposit_confirmation' => 'Confirmer dépôt initial',
 	'txt.initial_deposit_confirmed' => 'Dépôt initial confirmé !',
 	'txt.advertisers_statement' => 'Déclaration de l&rsquo;annonceur :<br/>&quot;Je/nous, propriétaire/annonceur,<br/>* certifie/certifions que j&rsquo;ai/nous avons le titre légal de disposer de ce programme/produit en tant que:<br/><span class=m-15px-l>o Propriétaire légal de ce programme/produit;</span><br/><span class=m-15px-l>o Titulaire d&rsquo;un mandat légal pour vendre ce programme/produit; </span><br/>* certifie/certifions la conformité légale de ce programme/produit au regard de la loi australienne sur les investissements directs étrangers appliquée par le Foreign Investment Review Board concernant les propriétés résidentielles, foncières, industrielles ou commerciales.<br/>* dégage/dégageons le portail "Investir en Australie" et ses entités directement liées de toute responsabilité pour les conséquences juridiques et financières de la publication sur ledit portail et de la vente de ce programme/produit.&quot;',
+<<<<<<< HEAD
     'txt.procedure_achat' => 'Procédure d&rsquo;achat',
     'txt.procedure_achat_encours' => 'Procédure d&rsquo;achat en cours',
 	'txt.confirmation_error' => 'Confirmation error',
     'txt.status_pending' => 'Inscription en attente',
+=======
+    'form.programme_commencement_dt' => 'Date de début',
+    'form.estimated_delivery_dt' => 'Livraison estimée / Date de règlement',
+    'form.programme_solicitor' => 'Cabinet d&rsquo;avocat',
+    'form.programme_firb_pre_approved_program' => 'Programme pré-approuvé FIRB',
+    'form.programme_pre_approved_sale' => 'Vente pré-approuvée FIRB',
+>>>>>>> 513beb1a6d55eec3bdb599b698457f2d2a4d725b
 ];
