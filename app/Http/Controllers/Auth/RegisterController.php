@@ -184,42 +184,42 @@ class RegisterController extends Controller
             if($user->isSlp()){
                 $vars = array(
                     '{role}' => trans('seller.non_professional_legal_persons'),
-                    '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                    '{confirmLink}' => setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration'))),
                 );
                 $alert =trans('app.txt.alert_success_slp');
             }
             if($user->isSnp()){
                 $vars = array(
                     '{role}' => trans('seller.non_professional_natural_persons'),
-                    '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                    '{confirmLink}' => setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration'))),
                 );
                 $alert =trans('app.txt.alert_success_snp');
             }
             if($user->isSbu()){
                 $vars = array(
                     '{role}' => trans('seller.rea_estate_professionals'),
-                    '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                    '{confirmLink}' => setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration'))),
                 );
                 $alert =trans('app.txt.alert_success_sbu');
             }
             if($user->isSde()){
                 $vars = array(
                     '{role}' => trans('seller.rea_estate_professionals'),
-                    '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                    '{confirmLink}' => setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration'))),
                 );
                 $alert =trans('app.txt.alert_success_sde');
             }
             if($user->isSbaBusiness()){
                 $vars = array(
                     '{role}' => trans('seller.seller_by_afa'),
-                    '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                    '{confirmLink}' => setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration'))),
                 );
                 $alert =trans('app.txt.alert_success_sba');
             }
             if($user->isSbaIndividual()){
                 $vars = array(
                     '{role}' => trans('seller.seller_by_afa'),
-                    '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                    '{confirmLink}' => setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration'))),
                 );
                 $alert =trans('app.txt.alert_success_sba');
             }
@@ -242,7 +242,7 @@ class RegisterController extends Controller
             $lang = 'en';
             $body = 'template_' . $lang;
             $vars = array(
-                '{confirmEmailLink}' => '<a href="'.$confirmEmailLink.'">'.strtoupper(trans('mail.btn.email_address_confirmation')).'</a>',
+                '{confirmEmailLink}' => setLinkDynamic($confirmEmailLink,strtoupper(trans('mail.btn.email_address_confirmation'))),
             );
             $template = MailsTemplate::where('id', 24)->first();
             if($template){
@@ -260,7 +260,7 @@ class RegisterController extends Controller
             $lang = 'fr';
             $body = 'template_' . $lang;
             $vars = array(
-                '{confirmEmailLink}' => '<a href="'.$confirmEmailLink.'">'.strtoupper(trans('mail.btn.email_address_confirmation')).'</a>',
+                '{confirmEmailLink}' => setLinkDynamic($confirmEmailLink,strtoupper(trans('mail.btn.email_address_confirmation'))),
             );
             $template = MailsTemplate::where('id', 20)->first();
             if($template){

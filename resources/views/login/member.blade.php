@@ -538,11 +538,11 @@
                                         <div class="form-group">
                                             <label for="country" class="col-sm-12 control-label">@lang('app.txt.country') *</label>
                                             <div class="col-md-12">
-                                                <select class="form-control" name="country" required>
+                                                <select class="form-control" name="country" id="country_1" required>
                                                     <option value="" selected disabled>@lang('app.select_country')</option>
                                                     @foreach($countries as $country)
                                                         @if($country->prefixPhone)
-                                                            <option value="{{$country->code}}" {{ old('country')==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
+                                                            <option value="{{$country->code}}" long="{{$country->content}}" {{ old('country')==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
                                                         @endif
                                                     @endforeach
                                                 </select>
@@ -1598,7 +1598,63 @@
     </script>
 
     {{-- Google map autocomplete --}}
+    {{-- @php
+        $key = env('GMAP_API_KEY');
+        $url = "https://maps.googleapis.com/maps/api/js?key=".$key."&callback=initMap&libraries=places&v=weekly";
+    @endphp
+    <script async defer src={{$url}}></script> --}}
+    <script async defer type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2izG_M7K3gP6pFUH5cyzmDjuGpOYfgc4&libraries=places&callback=initMap"></script>
     <script>
+        function initMap(){
+            var autocomplete = new google.maps.places.Autocomplete($("#locality")[0], {});
+
+            google.maps.event.addListener(autocomplete, 'place_changed', function() {
+                var place = autocomplete.getPlace();
+                var arrAddress = place.address_components;
+                var itemRoute='';
+                var itemLocality='';
+                var itemCountry='';
+                var itemPc='';
+                var itemSnumber='';
+                
+                $.each(arrAddress, function (i, address_components) {
+                    if (address_components.types[0] == "street_number") {
+                        //console.log("street_number:" + address_components.long_name);
+                        itemSnumber = address_components.long_name;
+                    }
+                    if (address_components.types[0] == "route") {
+                        //console.log(i + ": route:" + address_components.long_name);
+                        itemRoute = address_components.long_name;
+                    }
+                    
+                    if (address_components.types[0] == "locality") {
+                        //console.log("town:" + address_components.long_name);
+                        itemLocality = address_components.long_name;
+                    }
+                    
+                    if (address_components.types[0] == "country") {
+                        // console.log("country:" + address_components.long_name);
+                        itemCountry = address_components.long_name;
+                    }
+                    
+                    if (address_components.types[0] == "postal_code") {
+                        //console.log("pc:" + address_components.long_name);
+                        itemPc = address_components.long_name;
+                    }
+                    
+                    var adresse = itemSnumber + ' ' + itemRoute;
+                    $('#display_address').val(adresse);
+                    $('#locality').val(itemLocality);
+                    $('#postalCode').val(itemPc);
+
+                    var val = itemCountry;
+                    $('#country_1 option[long="'+val+'"]').prop('selected', true);
+
+                });
+        });
+        }
+    </script>
+    {{-- <script>
         // This sample uses the Autocomplete widget to help the user select a
         // place, then it retrieves the address components associated with that
         // place, and then it populates the form fields with those details.
@@ -1735,6 +1791,6 @@
             $('input[name=city').val('');
             $('input[name=suburb').val('');
         })
-    </script>
+    </script> --}}
     {{-- End google map autocomplete --}}
 @endpush

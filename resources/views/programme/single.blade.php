@@ -340,6 +340,11 @@
 
 
 @push('script')
+    @php
+        $key = env('GMAP_API_KEY');
+        $url = "https://maps.googleapis.com/maps/api/js?key=".$key."&callback=initMap&libraries=places&v=weekly";
+    @endphp
+    <script async defer src={{$url}}></script>
 	@php
 		if(isset($location) && $location->latitude != '' && $location->longitude != ''){
 			$latitude = $location->latitude;

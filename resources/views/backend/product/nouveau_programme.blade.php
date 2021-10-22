@@ -311,6 +311,61 @@
 <script src="{{asset('administrator/plugins/ckeditor/ckeditor.js')}}"></script>
 <!-- Jquery Validate -->
 <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2izG_M7K3gP6pFUH5cyzmDjuGpOYfgc4&libraries=places&callback=initMap&channel=GMPSB_addressselection_v1_cABC" async defer></script>
+<!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2izG_M7K3gP6pFUH5cyzmDjuGpOYfgc4&libraries=places&callback=initMap"></script>-->
+<script>
+// display_address
+function initMap(){
+	var autocomplete = new google.maps.places.Autocomplete($("#display_address")[0], {});
+	autocomplete.setComponentRestrictions({'country': ['au']});
+
+	google.maps.event.addListener(autocomplete, 'place_changed', function() {
+		var place = autocomplete.getPlace();
+		//console.log(place.address_components);
+		var arrAddress = place.address_components;
+		var itemRoute='';
+		var itemLocality='';
+		var itemCountry='';
+		var itemPc='';
+		var itemSnumber='';
+		
+		$.each(arrAddress, function (i, address_components) {
+			if (address_components.types[0] == "street_number") {
+				//console.log("street_number:" + address_components.long_name);
+				itemSnumber = address_components.long_name;
+			}
+			if (address_components.types[0] == "route") {
+				//console.log(i + ": route:" + address_components.long_name);
+				itemRoute = address_components.long_name;
+			}
+			
+			if (address_components.types[0] == "locality") {
+				//console.log("town:" + address_components.long_name);
+				itemLocality = address_components.long_name;
+			}
+			
+			if (address_components.types[0] == "country") {
+				//document.getElementById("country_code").value = place.address_components[i].short_name;
+				console.log("country:" + address_components.long_name);
+				console.log("country:" + address_components.short_name);
+				itemCountry = address_components.long_name;
+			}
+			
+			if (address_components.types[0] == "postal_code") {
+				//console.log("pc:" + address_components.long_name);
+				itemPc = address_components.long_name;
+			}
+			
+			var adresse = itemSnumber + ' ' + itemRoute;
+			$('#display_address').val(adresse);
+			$('#ville').val(itemLocality);
+			$('#postalCode').val(itemPc);
+		});
+	});
+}
+</script>
+
 <script>
 	Dropzone.autoDiscover = false;
 	$(document).ready(function(){

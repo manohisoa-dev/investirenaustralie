@@ -463,6 +463,11 @@
 
 @push('script')
     {!! NoCaptcha::renderJs() !!}
+    @php
+        $key = env('GMAP_API_KEY');
+        $url = "https://maps.googleapis.com/maps/api/js?key=".$key."&callback=initMap&libraries=places&v=weekly";
+    @endphp
+    <script async defer src={{$url}}></script>
     <script src="{{asset('js/myJs.js')}}"></script>
     <!-- Jquery Validate -->
     <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
