@@ -342,7 +342,7 @@ class ProductController extends Controller {
             } else {
                 $type_active = '';
             }
-            $output .= '<option value="' . $val->id . '" ' . $type_active . '>' . $val->title .
+            $output .= '<option value="' . $val->id . '" ' . $type_active . '>' . getGTranslateAutoDetect('en',$val->title) .
                 '</option>';
         }
         return response()->json($output);
@@ -621,11 +621,11 @@ class ProductController extends Controller {
 
     public function saveProgramme(Request $request) {
         $user = Auth::user();
-        if ($user->isSbaBusiness || $user->isSbaIndividual) {
-            $prefix = User::whereId($user->afa_id)->first()->name();
-            $seller_id = User::whereId($user->afa_id)->first()->id();
+        if ($user->isSbaBusiness() || $user->isSbaIndividual()) {
+            $prefix = User::whereId($user->afa_id)->first();
+            $seller_id = $prefix->id;
             $id_afa_p = $seller_id;
-            $titre_programme = $prefix.'-'.$request->title_programme;
+            $titre_programme = $prefix->name.'-'.$request->title_programme;
         } else {
             $prefix = '';
             $seller_id = 0;
@@ -668,7 +668,7 @@ class ProductController extends Controller {
         
         $id_programme = $this->save_programme($request->cat_programmme_id, $request->ancienneteBien,
             $request->natureBien, $request->prix_min, $request->prix_max, $request->type_id,
-            $request->display_address, $request->postalCode, $request->state_id, $request->title_programme,
+            $request->display_address, $request->postalCode, $request->state_id, $titre_programme,
             $request->description, $id_location, '', 'waiting', $request->commision, $taux_commision,
             $id_afa_p, $request->solicitor_id, $request->commencement_dt, $request->estimated_delvivery_dt,
             $request->programme_firb_pre_approved_program,$request->programme_pre_approved_sale,$seller_id);
@@ -689,9 +689,7 @@ class ProductController extends Controller {
         }
 
         if ($request->eoiDossier) {
-            foreach ($request->eoiDossier as $key => $value) {
-                $this->save_eoi_dossier($value, $id_programme);
-            }
+            $this->save_eoi_dossier($request->eoiDossier, $id_programme);
         }
 
         if ($request->liaDossier) {

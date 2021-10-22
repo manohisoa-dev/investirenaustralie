@@ -43,6 +43,7 @@ use App\Models\Parameter;
 use App\Models\Contract;
 use App\Models\Message;
 use App\Models\Config;
+use App\Models\ModelMessage;
 use Carbon\Carbon;
 use Session;
 use Mail;
@@ -831,7 +832,7 @@ class RegisterController extends Controller
             $datas['user_id'] = $user->id;
 
             // Create Localization
-            if($user->hasRole(3)){
+            if($user->hasRole(2) || $user->hasRole(3) || $user->hasRole(4) || ($user->hasRole(5)&&!$user->isPerson())){
                 $adr = $datas['route_number'].' '.$datas['route'].' '.$datas['area_level_2'].' '.$datas['country'];
                 $coord_tab = geocodeAddress($adr);
                 if($coord_tab){
@@ -847,12 +848,13 @@ class RegisterController extends Controller
             
             //$datas['location_id'] = 0;
             if($location = Localisation::create($datas)){
-                if($user->hasRole(3)){
+                if($user->hasRole(2) || $user->hasRole(3) || $user->hasRole(4)){
                     $user->location_id = $location->id>0?$location->id:0;
                     $user->save();
                 }else{
                     $datas['location_id'] = $location->id>0?$location->id:0;
                 }
+
             }
 
             // Create user info
@@ -981,7 +983,7 @@ class RegisterController extends Controller
                 if($template){
                     $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
                     $vars = array(
-                        '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                        '{confirmLink}' => setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration'))),
                     );
                     $content = strtr($template->$body, $vars);
                     $content = ['title' => '', 'body' => $content];
@@ -994,44 +996,70 @@ class RegisterController extends Controller
                 if($user->isSlp()){
                     $vars = array(
                         '{role}' => trans('seller.non_professional_legal_persons'),
-                        '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                        '{confirmLink}' => setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration'))),
                     );
                     $alert =trans('app.txt.alert_success_slp');
                 }
                 if($user->isSnp()){
                     $vars = array(
                         '{role}' => trans('seller.non_professional_natural_persons'),
-                        '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                        '{confirmLink}' => setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration'))),
                     );
                     $alert =trans('app.txt.alert_success_snp');
                 }
                 if($user->isSbu()){
                     $vars = array(
                         '{role}' => trans('seller.real_estate_professionals'),
-                        '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                        '{confirmLink}' => setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration'))),
                     );
                     $alert =trans('app.txt.alert_success_sbu');
                 }
                 if($user->isSde()){
                     $vars = array(
                         '{role}' => trans('seller.real_estate_professionals'),
-                        '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                        '{confirmLink}' => setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration'))),
                     );
                     $alert =trans('app.txt.alert_success_sde');
                 }
                 if($user->isSbaBusiness()){
                     $vars = array(
                         '{role}' => trans('seller.seller_by_afa'),
-                        '{confirmLink}' => '<a href="'.$confirmLink.'">'.strtoupper(trans('mail.btn.confirm.registration')).'</a>',
+                        '{confirmLink}' => setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration'))),
                     );
-                    $alert =trans('app.txt.alert_success_sba');
+                    // template message
+                    App::setLocale($user->language);
+                    $lang = $user->language;
+                    $content_lab = 'message_'.$lang;
+                    $message = ModelMessage::where('id', 8)->get();
+                    if (count($message) > 0) {
+                        $vars2 = array(
+                            '{Seller by AFA Name}' => $user->name,
+                            '{Name of property to be sold}' => $request->property_name);
+                        $contenu = strtr($message[0]->$content_lab, $vars2);
+                        
+                        $alert =$contenu;
+                    }
                 }
                 if($user->isSbaIndividual()){
                     $vars = array(
                         '{role}' => trans('seller.seller_by_afa'),
                         '{confirmLink}' => setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration'))),
                     );
-                    $alert =trans('app.txt.alert_success_sba');
+                    // template message
+                    App::setLocale($user->language);
+                    $lang = $user->language;
+                    $content_lab = 'message_'.$lang;
+                    $message = ModelMessage::where('id', 8)->get();
+
+                    
+                    if (count($message) > 0) {
+                        $vars2 = array(
+                            '{Seller by AFA Name}' => $user->name,
+                            '{Name of property to be sold}' => $request->property_name);
+                            $contenu = strtr($message[0]->$content_lab, $vars2);
+                            
+                        $alert =$contenu;
+                    }
                 }
                 $lang = 'en';
                 $body = 'template_' . $lang;
@@ -1059,7 +1087,7 @@ class RegisterController extends Controller
                 $lang = 'en';
                 $body = 'template_' . $lang;
                 $vars = array(
-                    '{confirmEmailLink}' => '<a href="'.$confirmEmailLink.'">'.strtoupper(trans('mail.btn.email_address_confirmation')).'</a>',
+                    '{confirmEmailLink}' => setLinkDynamic($confirmEmailLink,strtoupper(trans('mail.btn.confirm.email_address_confirmation'))),
                 );
                 $template = MailsTemplate::where('id', 24)->first();
                 if($template){
@@ -1077,7 +1105,7 @@ class RegisterController extends Controller
                 $lang = 'fr';
                 $body = 'template_' . $lang;
                 $vars = array(
-                    '{confirmEmailLink}' => '<a href="'.$confirmEmailLink.'">'.strtoupper(trans('mail.btn.email_address_confirmation')).'</a>',
+                    '{confirmEmailLink}' => setLinkDynamic($confirmEmailLink,strtoupper(trans('mail.btn.confirm.email_address_confirmation'))),
                 );
                 $template = MailsTemplate::where('id', 20)->first();
                 if($template){
@@ -1185,10 +1213,10 @@ class RegisterController extends Controller
             return abort(404);
         }
 
-        $user->notify(new RegistrationConfirmedMessage($sujet,$content));
+        // RegistrationConfirmedMessage
+        Mail::to($user->email)->send(new MailTemplate($content, $sujet));
 
-        return redirect()->route('login')
-                ->with('success',trans('app.txt.accountactivated')->with('alert_message',trans('mail.sent')));
+        return redirect()->route('login')->with('success',trans('app.txt.accountactivated'))->with('alert_message',trans('mail.sent'));
     }
 
     /*

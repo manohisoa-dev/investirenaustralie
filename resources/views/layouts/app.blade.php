@@ -1396,7 +1396,7 @@
             });
 
             $(window).on('load',function(){
-                if('{{ session()->get("alert_success") }}'){
+                if('{{ session()->has("alert_success") }}'){
                     $('#alertSuccessModal').modal('show');
                 }
             });

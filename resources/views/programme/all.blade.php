@@ -38,8 +38,8 @@
                     @endif
 
                     {{-- Badge agence exclusive --}}
-                    @if($item->isExclusiveAgency())
-                        <span class="notify-badge-prod3">@lang('app.txt.priority_agency')</span>
+                    @if ($item->isExclusiveAgency())
+                    <span class="notify-badge-prod3">@lang('app.txt.priority_agency')</span>
                     @endif
 
                     {{-- Cocarde --}}
@@ -93,7 +93,7 @@
                                                         @endif
 
                                                         {{-- Badge agence exclusive --}}
-                                                        @if($item->isExclusiveAgency())
+                                                        @if ($item->isExclusiveAgency())
                                                             <span class="notify-badge-prod2">@lang('app.txt.priority_agency')</span>
                                                         @endif
                                                     </div>
@@ -300,7 +300,6 @@
             @endif
         @endif
         {{-- End show blog --}}
-    
 
     @php $i++; @endphp
     @if($i%2 === 0)
@@ -310,9 +309,6 @@
 @if((($i%2) > 0))
 </div>
 @endif
-
-
-
 
 @push('script')
     <link rel="stylesheet" href="{{ asset('carousel/style.css') }}">

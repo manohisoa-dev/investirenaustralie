@@ -502,6 +502,10 @@
                                     @if(App\Models\User::find(Auth::id())->role == 5)
                                         <a class="m-btn m-btn-sm m-btn-theme-light m-btn-radius" href="{{ route('member.contact', ['role'=>'admin']) }}"><i class="far fa-envelope"></i> @lang('app.txt.sendmessage') </a>
                                     @endif
+
+                                    @if(Auth::user()->hasRole(2) && Auth::user()->temp())
+                                        <label class="badge-warning p-10px"> @lang('app.txt.status_pending') </label>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -807,7 +811,7 @@
 										</a>
 									</li>
 								</ul> 
-                                <a href="{{route('mes-programmes')}}" class="{{ Auth::user()->temp()?'inactiveLink':'' }} list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ Request::is('mes-programmes') || Request::is('mes-produits') ? 'menu-active' : ''}}">
+                                <a href="{{route('mes-programmes')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ Request::is('mes-programmes') || Request::is('mes-produits') ? 'menu-active' : ''}}">
                                   <div>
                                       <i class="fa fa-paperclip m-10px-r"></i>
                                       <span>@lang('seller.products')</span>

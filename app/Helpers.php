@@ -491,33 +491,32 @@ if (!function_exists('getGTranslateAutoDetectBd')) {
 
 if (!function_exists('getGTranslateAutoDetect')) {
     function getGTranslateAutoDetect($targetLang, $text) {
-        /*$translator = new Translator;
-        // $lang = getGTranslateLangDetect($text);
+        $translator = new Translator;
+        $lang = getGTranslateLangDetect($text);
+        //dd($lang);
         $result = $text;
 
-        // if ($targetLang !== $lang) {
-        //     $result = $translator->setTargetLang($targetLang)->translate($text);
-        // }
+        if ($targetLang !== $lang) {
+            $result = $translator->setTargetLang($targetLang)->translate($text);
+        }
 
-        return $result;*/
-        return $text;
+        return $result;
     }
 }
 
 if (!function_exists('getGTranslateLangDetect')) {
     function getGTranslateLangDetect($text) {
-        //$translator = new Translator;
-        //$result = $translator->detect($text);
-        return $text;
+        $translator = new Translator;
+        $result = $translator->detect($text);
+        return $result;
     }
 }
 
 if (!function_exists('getGTranslateTest')) {
     function getGTranslateTest($targetLang, $text) {
-        /*$translator = new Translator;
+        $translator = new Translator;
         $result = $translator->setTargetLang($targetLang)->translate($text);
-        return $result;*/
-        return $text;
+        return $result;
     }
 }
 

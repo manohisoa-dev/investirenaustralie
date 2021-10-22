@@ -68,13 +68,11 @@
 							@endif
 							</td>
 							<td align="center">
+								@if($record->status=='published')
 								<a href="{{route('produit.programme', $record->id)}}" title="@lang('app.table.product_programme')">
 									<i class="fa fa-building"></i>
 								</a>&nbsp;
-								<a href="{{route('edit.programme', $record->id)}}" title="@lang('app.table.btn_title_modification')">
-									<i class="fa fa-edit"></i>
-								</a>
-								@if($record->status=='waiting')
+								@else
 								<a href="{{route('edit.programme', $record->id)}}" title="@lang('app.table.btn_title_modification')">
 									<i class="fa fa-edit"></i>
 								</a>&nbsp;

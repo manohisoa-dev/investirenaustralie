@@ -35,7 +35,7 @@
 									<select class="form-control" name="cat_programmme_id" id="cat_programmme_id">
 										<option value="">@lang('app.form.choix_txt')</option>
 										@foreach(\App\Models\Category::all() as $category)
-											<option value="{{$category->id}}">{{$category->title}}</option>
+											<option value="{{$category->id}}">{{ trans('app.txt.'.$category->title) }}</option>
 										@endforeach
 									</select>
 								</div>
@@ -269,6 +269,21 @@
 							</div>
 						</div>
 						
+						<div class="row">
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label for="title">@lang('app.form.programme_commencement_dt') *</label>
+									<input type="text" name="commencement_dt" id="commencement_dt" placeholder="Month/YYYY" class="form-control date_month_year" />
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label for="title">@lang('app.form.estimated_delivery_dt') *</label>
+									<input type="text" name="estimated_delvivery_dt" id="estimated_delvivery_dt" class="form-control date_month_year" placeholder="Month/YYYY"/>
+								</div>
+							</div>
+						</div>		
+						
 						<div class="row" id="bloc_fond_doc_produit" style="display:none">
 							<div class="col-lg-12">
 								<h5>@lang('app.form.programme_fond_dossier')</h5>
@@ -452,7 +467,17 @@
 							</div>			
 						</div>
 						<div class="row">
-							<div class="col-lg-6">
+							<div class="col-lg-4">
+								<div id="firb_pre_approved_sale">
+									<label for="title">@lang('app.form.programme_pre_approved_sale') *</label>
+									<select class="form-control" name="programme_pre_approved_sale" id="programme_pre_approved_sale" style="width:100%">
+										<option value="">@lang('app.form.choix_txt')</option>
+										<option value="NO">NO</option>
+										<option value="YES">YES</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-4">
 								<div class="form-group" style="margin-bottom:.5rem;">
 									<label for="title">@lang('app.txt.avoir_bonus')</label>
 									<select class="form-control" name="bonus_vente" id="bonus_vente">
@@ -462,7 +487,7 @@
 									</select>
 								</div>
 							</div>
-							<div class="col-lg-6">
+							<div class="col-lg-4">
 								<div id="montant_bonus_vente" style="display:none">
 									<label for="title">@lang('app.txt.valeur_bonus') *</label>
 									<div class="input-group" style="margin-bottom: .5rem;">
@@ -472,7 +497,7 @@
 										</div>
 									</div>
 								</div>
-							</div>
+							</div>							
 						</div>
 						<!-- info date produit isolé-->
 						<div id="info-date-isole">
@@ -730,9 +755,6 @@
 		content: "{{ trans('app.form.choose_file') }}";
 	}
 	.error{color:red !important}
-	.ui-datepicker-calendar {
-		display: none;
-	}
 </style>
 <!-- dropzone -->
 <script src="{{ asset('administrator/js/plugins/dropzone/dropzone.js') }}"></script>
@@ -750,6 +772,7 @@
 		$.validator.setDefaults({
 			ignore: []
 		});	
+		
 		$("#form").steps({
 			bodyTag: "fieldset",
 			labels: {
@@ -762,6 +785,27 @@
 			},
 			onStepChanging: function (event, currentIndex, newIndex)
 			{
+				$(".date_month_year").datepicker({
+					changeMonth: true,
+					changeYear: true,
+					showButtonPanel: true,
+					dateFormat: 'MM yy',
+					onClose: function(dateText, inst) { 
+						var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+						var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+						$(this).datepicker('setDate', new Date(year, month, 1));
+					},
+					beforeShow : function(input, inst) {
+						var datestr;
+						if ((datestr = $(this).val()).length > 0) {
+							year = datestr.substring(datestr.length-4, datestr.length);
+							month = jQuery.inArray(datestr.substring(0, datestr.length-5), $(this).datepicker('option', 'monthNamesShort'));
+							$(this).datepicker('option', 'defaultDate', new Date(year, month, 1));
+							$(this).datepicker('setDate', new Date(year, month, 1));
+						}
+					}
+				});
+		
 				var ancienneteBien = $('#ancienneteBien').val();
 				var natureBien = 'Produit isolé';
 				var cat = $('#cat_programmme_id').val();
@@ -1295,6 +1339,9 @@
 							}
 						}
 					}
+				},
+				programme_pre_approved_sale: {
+					required: true
 				}
 			},
 			messages: {
@@ -1415,6 +1462,9 @@
 					required: "@lang('app.txt.champobligatoire')"
 				},
 				chk_firb: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				programme_pre_approved_sale: {
 					required: "@lang('app.txt.champobligatoire')"
 				}
 			},

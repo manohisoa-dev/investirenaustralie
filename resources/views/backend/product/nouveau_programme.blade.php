@@ -208,7 +208,7 @@
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
-								<label for="title">@lang('app.form.programme_solicitor') *</label>
+								<label for="title">@lang('app.form.programme_solicitor')</label>
 								<select class="form-control" name="solicitor_id" id="solicitor_id" style="width:100%">
 									@foreach(\App\Models\Solicitor::where('vendeur_id',Auth::id())->get() as $solicitor)
 										<option value="{{$solicitor->id}}">{{$solicitor->cabinet_name}}</option>
@@ -254,6 +254,7 @@
 					<div class="row">
 						<div class="col-lg-12">
 							<label for="title">@lang('app.table.eoi_dossier') *</label>
+							<input type="hidden" name="eoiDossier" id="eoiDossier" />
 							<div class="dropzone" id="eoi_dossier" multiple style="margin-bottom:25px">
 								<div id="template" class="file-row"></div>
 							</div>
@@ -285,8 +286,8 @@
 							</label>
 						</div>
 					</div>
-					<button type="submit" id="savePro" class="btn btn-primary btn-lg pull-right">
-						<i class="fa fa-save"></i> @lang('app.btn.submit')
+					<button type="submit" id="savePro" class="m-btn m-btn-theme2nd btn-lg pull-right">
+						<i class="fa fa-save m-5px"></i> @lang('app.btn.submit')
 					</button>			
 				</form>
 			</div>
@@ -313,6 +314,10 @@
 <script>
 	Dropzone.autoDiscover = false;
 	$(document).ready(function(){
+		$.validator.setDefaults({
+			ignore: []
+		});	
+			
 		$('#fond_dossier').on('change',function(){
 			//get the file name
 			var fileName = $(this).val();
@@ -434,12 +439,12 @@
 		});
 		
 		$("#eoi_dossier").dropzone({
-			maxFiles: 25, 
+			maxFiles: 1, 
             maxFilesize: 25,
 			dictDefaultMessage: "@lang('app.txt.eoi_dossier')",
 			url: "{{ route('ajaxDropZone') }}",
 			params: {"_token": "{{ csrf_token() }}"},
-            acceptedFiles: ".jpeg,.jpg,.png,.gif,.doc,.docx,.xls,.xlsx,.pdf",
+            acceptedFiles: ".pdf",
             addRemoveLinks: true,
             timeout: 50000,
             init:function() {
@@ -455,7 +460,7 @@
 					}else{
 						var name = file.name;
 					}
-					//console.log(name);
+					document.getElementById("eoiDossier").value = '';
 					var fileRef;
 						return (fileRef = file.previewElement) != null ? 
 						fileRef.parentNode.removeChild(file.previewElement) : void 0;
@@ -472,7 +477,7 @@
 				file.previewElement.querySelector("img").alt = response.success;
 				file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'>"+response.success+"</label>");
 				file.previewElement.appendChild(file._captionBox);
-				$('#programmeForm').append('<input type="hidden" name="eoiDossier[]" value="'+response.success +'">');
+				document.getElementById("eoiDossier").value = response.success;
 				olddatadzname.innerHTML = response.success;
             },
             error: function(file, response)
@@ -698,7 +703,13 @@
 				estimated_delvivery_dt: {
 					required: true
 				},
-				solicitor_id: {
+				programme_firb_pre_approved_program: {
+					required: true
+				},
+				programme_pre_approved_sale: {
+					required: true
+				},
+				eoiDossier: {
 					required: true
 				}
 			},
@@ -757,7 +768,13 @@
 				estimated_delvivery_dt: {
 					required: "@lang('app.txt.champobligatoire')"
 				},
-				solicitor_id: {
+				programme_firb_pre_approved_program: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				programme_pre_approved_sale: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				eoiDossier: {
 					required: "@lang('app.txt.champobligatoire')"
 				}
 			},
@@ -768,6 +785,10 @@
 					error.insertAfter( element );
 				}
 			},
+			invalidHandler: function(form, validator) {
+				var errors = validator.numberOfInvalids();
+				console.log(validator.errorList);
+			}
 		});
 	});
 </script>

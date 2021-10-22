@@ -45,27 +45,27 @@
 							<td>{{$item->numero}}</td>
 							<td>
 							@if($item->product_id != 0)
-								{{ \App\Models\Product::whereId($item->product_id)->pluck('title')[0] }}
+								{{ sizeOf(\App\Models\Product::whereId($item->product_id)->pluck('title'))!=0?\App\Models\Product::whereId($item->product_id)->pluck('title')[0]:'-' }}
 							@endif
 							</td>
 							<td>
 							@if($item->user_id != 0)
-								{{ \App\Models\User::whereId($item->user_id)->pluck('name')[0] }}
+								{{ sizeOf(\App\Models\User::whereId($item->user_id)->pluck('name'))!=0?\App\Models\User::whereId($item->user_id)->pluck('name')[0]:'-' }}
 							@endif
 							</td>
 							<td>
 								@if($item->afa_id != 0)
-									{{ \App\Models\User::whereId($item->afa_id)->pluck('name')[0] }}
+									{{ sizeOf(\App\Models\User::whereId($item->afa_id)->pluck('name'))!=0?\App\Models\User::whereId($item->afa_id)->pluck('name')[0]:'-' }}
 								@endif
 							</td>
 							<td>
 								@if($item->vendeur_id != 0)
-									{{ \App\Models\User::whereId($item->vendeur_id)->pluck('name')[0] }}
+									{{ sizeOf(\App\Models\User::whereId($item->vendeur_id)->pluck('name'))!=0?\App\Models\User::whereId($item->vendeur_id)->pluck('name')[0]:'-' }}
 								@endif
 							</td>
 							<td>
 								@if($item->sollicitor_id != 0)
-									{{ \App\Models\Solicitor::whereId($item->sollicitor_id)->pluck('cabinet_name')[0] }}
+									{{ sizeOf(\App\Models\Solicitor::whereId($item->sollicitor_id)->pluck('name'))!=0?\App\Models\User::whereId($item->sollicitor_id)->pluck('name')[0]:'-' }}
 								@endif
 							</td>
 							<td>{{$item->status}}</td>

@@ -731,6 +731,11 @@ class ProductController extends Controller {
         $product->status = 'published';
         $product->validated_at = Carbon::now();
         $product->save();
+        
+        if($product->seller_id != 0){
+            $id_user_seller_byAfa = $product->author_id;
+            User::whereId($id_user_seller_byAfa)->update(['status'=>'active']);
+        }
         //envoie message au vendeur
         $this->send_msg_vendeur_after_validation_produit($product->id);
         
