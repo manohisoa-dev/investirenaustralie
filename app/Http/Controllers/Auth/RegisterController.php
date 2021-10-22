@@ -832,8 +832,9 @@ class RegisterController extends Controller
             $datas['user_id'] = $user->id;
 
             // Create Localization
-            if($user->hasRole(2) || $user->hasRole(3) || $user->hasRole(4) || ($user->hasRole(5)&&!$user->isPerson())){
-                $adr = $datas['route_number'].' '.$datas['route'].' '.$datas['area_level_2'].' '.$datas['country'];
+            // if($user->hasRole(2) || $user->hasRole(3) || $user->hasRole(4) || ($user->hasRole(5)&&!$user->isPerson())){
+            if($user->hasRole(3)){
+                $adr = isset($datas['route_number'])?$datas['route_number']:''.' '.isset($datas['route'])?$datas['route']:''.' '.isset($datas['area_level_2'])?$datas['area_level_2']:''.' '.isset($datas['country'])?$datas['country']:'';
                 $coord_tab = geocodeAddress($adr);
                 if($coord_tab){
                     $lat = $coord_tab['lat'];
