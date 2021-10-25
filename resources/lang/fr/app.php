@@ -652,7 +652,7 @@ return
 	'txt.programme_in_favorites' => 'Programme déjà dans la liste de vos favoris. Cliquez pour annuler',
 	'txt.programme_favorites' => 'Mettre dans mes favoris',
 	'txt.programme_remove_favorites' => 'Programme supprimé de votre liste de favoris',
-	'txt.choose_an_apl' => 'Vous devez choisir un APL.',
+	'txt.choose_an_apl' => 'Vous devez choisir une APL.',
 	'txt.choose_an_afa' => 'Vous devez choisir un AFA.',
 	'txt.choose_an_afa_before_messaging' => 'Vous devez choisir une AFA pour pouvoir le contacter.',
 	'txt.choose_an_apl_before_messaging' => 'Vous devez choisir une APL pour pouvoir le contacter.',
