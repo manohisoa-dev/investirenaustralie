@@ -766,6 +766,15 @@ class User extends Authenticatable {
     }
 
     /**
+     * A user is seller by afa 
+     *
+     * @return Boolean
+     */
+    public function isSba() {
+        return $this->hasRole(2) && ($this->type_users_id == 8 || $this->type_users_id == 9);
+    }
+
+    /**
      * A user is seller by afa business
      *
      * @return Boolean

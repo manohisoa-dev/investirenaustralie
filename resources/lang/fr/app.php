@@ -1436,7 +1436,7 @@ return
 	'txt.radio_legal_owner_choix_2' => 'Titulaire d&rsquo;un mandat légal pour vendre ce programme/produit',
 	'txt.certificat_loi_investissement' => 'Certifie / certifions la conformité légale de ce programme/produit au regard de la loi australienne sur les investissements directs étrangers appliquée par le Foreign Investment Review Board concerant les propriétés résidentielles, foncières, industrielles ou commerciales.',
 	'txt.certificat_responsabilite' => 'Dégage / Dégageons le portail « Investir en Australie » et ses entités directement liées de toute responsabilité pour les conséquences juridiques et financières de la publication sur ledit portail et de la vente de ce programme/produit.',
-	'txt.certificat_acceptation' => 'J&rsquo;accepte que les certificats et la clause de non-responsabilité ci-dessus soient clairement affichés dans la publication de ce programme/produit.',
+	'txt.certificat_acceptation' => 'J&rsquo;accepte que les certificats et la clause de non-responsabilité ci-dessus soient clairement affichés dans la publication de cette propriété',
 	'txt.declaration_annonceur' => 'Déclaration de l&rsquo;annonceur :',
 	'txt.type_annonceur' => 'Je / nous, propriétaire / annonceur',
 	'txt.confirm_creation' => 'Les biens affichés sur le portail « Investir en Australie » s&rsquo;adressent à une clientèle internationale francophone composée majoritairement de personnes résidant hors des frontières australiennes et qualifiées de « Non-Resident Foreigners » par la loi australienne. Ces personnes sont confrontées à un certain nombre de limitations d&rsquo;investissement en Australie.',

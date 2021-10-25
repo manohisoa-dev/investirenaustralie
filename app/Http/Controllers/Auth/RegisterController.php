@@ -828,6 +828,7 @@ class RegisterController extends Controller
 
             unset($datas['type']);
             $user = User::create($datas);
+            $user->property_name = isset($datas['property_name'])?$datas['property_name']:'';
             $user->save();
             $datas['user_id'] = $user->id;
 

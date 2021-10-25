@@ -1515,7 +1515,7 @@
 
                 // update orga presentation label
                 $('#orga_presentation_label').html('{{ trans("app.txt.presentation.entreprise") }}');
-                $('#orga_presentation').html('{{ trans("app.txt.presentation.entreprise") }}');
+                $('#orga_presentation').html('');
                 $('#orga_logo_label').html('{{ trans("app.txt.businesslogo") }}');
                 $('#orga_logo_upload_label').html('{{ trans("app.txt.logo.entreprise.libelle") }}');
 
@@ -1528,7 +1528,7 @@
 
                 // update orga presentation label
                 $('#orga_presentation_label').html('{{ trans("app.txt.presentation.organisation") }}');
-                $('#orga_presentation').html('{{ trans("app.txt.presentation.organisation") }}');
+                $('#orga_presentation').html('');
                 $('#orga_logo_label').html('{{ trans("app.txt.logo.organisation") }}');
                 $('#orga_logo_upload_label').html('{{ trans("app.txt.logo.organisation.libelle") }}');
 
@@ -1541,7 +1541,7 @@
 
                 // update orga presentation label
                 $('#orga_presentation_label').html('{{ trans("app.txt.presentation.organisation") }}');
-                $('#orga_presentation').html('{{ trans("app.txt.presentation.organisation") }}');
+                $('#orga_presentation').html('');
                 $('#orga_logo_label').html('{{ trans("app.txt.logo.organisation") }}');
                 $('#orga_logo_upload_label').html('{{ trans("app.txt.logo.organisation.libelle") }}');
                 

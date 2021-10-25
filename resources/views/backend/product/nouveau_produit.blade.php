@@ -295,7 +295,7 @@
 						
 						<div class="row" id="bloc_eoi_doc" style="display:none">
 							<div class="col-lg-12">
-								<h5>@lang('app.table.eoi_dossier')</h5>
+								<h5>@lang('app.table.eoi_dossier') *</h5>
 								<input type="hidden" name="p_eoiDossier" id="p_eoiDossier" />
 								<div class="dropzone" id="p_eoi_dossier" multiple style="margin-bottom:25px">
 									<div id="template" class="file-row"></div>
@@ -470,11 +470,12 @@
 						<div class="row">
 							<div class="col-lg-4">
 								<div id="firb_pre_approved_sale">
-									<label for="title">@lang('app.form.programme_pre_approved_sale') *</label>
-									<select class="form-control" name="programme_pre_approved_sale" id="programme_pre_approved_sale" style="width:100%">
+									<label for="title">@lang('app.form.programme_firb_pre_approved_program') *</label>
+									<select class="form-control" name="programme_firb_pre_approved_program" id="programme_firb_pre_approved_program" style="width:100%">
 										<option value="">@lang('app.form.choix_txt')</option>
 										<option value="NO">NO</option>
-										<option value="YES">YES</option>
+										<option value="YES - 50%">YES - 50%</option>
+										<option value="YES - 100%">YES - 100%</option>
 									</select>
 								</div>
 							</div>
@@ -715,7 +716,7 @@
 										<input class="form-check-input" type="radio" name="certificat" id="certificat"/>
 										<label class="form-check-label" for="certificat"> @lang('app.txt.radio_legal_owner_choix_1')</label>
 									</div>
-									@If(Auth::user()->hasRole(2))
+									@If(Auth::user()->isSba())
 									<div class="form-check" id="choix_seller">
 										<input class="form-check-input" type="radio" name="certificat" id="certificat1"/>
 										<label class="form-check-label" for="certificat1"> @lang('app.txt.radio_legal_owner_choix_2')</label>

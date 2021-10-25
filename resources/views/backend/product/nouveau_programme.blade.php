@@ -69,7 +69,11 @@
 					
 					<div class="form-group">
 						<label for="title">@lang('app.form.programme_title') *</label>
+						@If(Auth::user()->isSba())
+						<input name="title_programme" id="title_programme" class="form-control" type="text" value="{{Auth::user()->property_name}}">
+						@else
 						<input name="title_programme" id="title_programme" class="form-control" type="text" value="{{ old('title_programme')?old('title_programme'):'' }}">
+						@endif
 					</div>
 					
 					<div class="form-group">

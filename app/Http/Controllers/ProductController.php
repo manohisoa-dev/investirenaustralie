@@ -626,7 +626,8 @@ class ProductController extends Controller {
             $prefix = User::whereId($user->afa_id)->first();
             $seller_id = $prefix->id;
             $id_afa_p = $seller_id;
-            $titre_programme = $prefix->name . '-' . $request->title_programme;
+            //$titre_programme = Auth::user()->property_name . '-' . $request->title_programme;
+            $titre_programme = $request->title_programme;
         } else {
             $prefix = '';
             $seller_id = 0;
@@ -1060,8 +1061,8 @@ class ProductController extends Controller {
         $year_built, $display_address, $price, $min_price, $max_price, $currency, $status,
         $type_id, $cat_programmme_id, $postalCode, $state_id, $programme_id, $location_id,
         $superficie_jardin, $avoir_parking_voie_public, $avoir_piscine, $type_commission,
-        $taux_commission, $dt_db_travaux, $dt_prevu_livraison, $avoir_bonus, $mt_bonus,
-        $property_detail, $nb_parking_spots, $min_area, $max_area) {
+        $taux_commission, $commencement_dt, $estimated_delvivery_dt, $avoir_bonus, $mt_bonus,
+        $property_detail, $nb_parking_spots, $min_area, $max_area,$programme_firb_pre_approved_program) {
 
         $product = new Product();
         $lastId = Product::latest('id')->first();
@@ -1115,12 +1116,13 @@ class ProductController extends Controller {
         $product->commision = $taux_commission;
         $product->avoir_bonus = $avoir_bonus;
         $product->amount_bonus = $mt_bonus;
-        $product->dt_db_travaux = $dt_db_travaux;
-        $product->dt_prevu_livraison = $dt_prevu_livraison;
+        $product->commencement_dt = $commencement_dt;
+        $product->estimated_delvivery_dt = $estimated_delvivery_dt;
         $product->property_detail = $property_detail;
         $product->nb_parking_spots = $nb_parking_spots;
         $product->min_area = $min_area;
         $product->max_area = $max_area;
+        $product->programme_firb_pre_approved = $programme_firb_pre_approved_program;
         $product->validated_at = Carbon::now();
         $product->save();
 

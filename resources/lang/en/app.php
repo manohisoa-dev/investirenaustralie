@@ -1199,7 +1199,7 @@ return
     'txt.radio_legal_owner_choix_2' => 'The holder of a legal mandate to sell this program/product',
     'txt.certificat_loi_investissement' => 'I / we certify the legal compliance of this program/product in accordance with the Australian Foreign Direct Investment Law enforced by the Foreign Investment Review Board in relation to residential, land, industrial or commercial property.',
     'txt.certificat_responsabilite' => 'I / we release "Investir en Australie" portal and its directly linked entities from any responsibility for the legal and financial consequence of the publication on said portal and sale of this program/product.',
-    'txt.certificat_acceptation' => 'I agree the the above certificates and disclaimer are clearly displayed in the publication of this program/product.',
+    'txt.certificat_acceptation' => 'I agree that the above certificates and disclaimer tobe clearly displayed in the publication of this property',
     'txt.declaration_annonceur' => 'Advertiser&rsquo;s declaration:',
     'txt.type_annonceur' => 'I / we, the owner / advertiser',
     'txt.confirm_creation' => 'Properties displayed on "Investir en Australie" portal are intended for an international Francophone clientele which is made up mostly of people residing outside Australian borders and who are qualified as "Non-Resident Foreigners" by Australian law. Those persons face a certain number of limitations on investment in Australia.',
