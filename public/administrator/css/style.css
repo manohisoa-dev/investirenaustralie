@@ -2319,6 +2319,9 @@ button.dim:active:before {
   width: 38px;
   height: 38px;
 }
+.dropdown-messages-box .media-body {
+  cursor: pointer;
+}
 .chat-element .well {
   border: 1px solid #e7eaec;
   box-shadow: none;

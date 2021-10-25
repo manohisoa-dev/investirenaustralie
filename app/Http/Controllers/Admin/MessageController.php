@@ -109,7 +109,7 @@ class MessageController extends Controller {
         $lists = Message::where("to_id", $user_id)->join('users', 'users.id', '=',
             'messages.from_id')->select('messages.*', 'messages.created_at as dt',
             'users.name', 'users.immat', 'users.id as user_id', 'users.role')->orderBy('created_at',
-            'ASC')->groupBy('from_id')->get();
+            'DESC')->groupBy('from_id')->get();
 
         $data = [];
         foreach ($lists as $key => $list) {
