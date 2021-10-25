@@ -342,8 +342,8 @@ class ProductController extends Controller {
             } else {
                 $type_active = '';
             }
-            $output .= '<option value="' . $val->id . '" ' . $type_active . '>' . getGTranslateAutoDetect('en',$val->title) .
-                '</option>';
+            $output .= '<option value="' . $val->id . '" ' . $type_active . '>' .
+                getGTranslateAutoDetect('en', $val->title) . '</option>';
         }
         return response()->json($output);
     }
@@ -500,7 +500,8 @@ class ProductController extends Controller {
     function save_programme($categorie, $ancienete, $nature, $prix_min, $prix_max, $type_id,
         $display_address, $postalCode, $state_id, $title, $content, $location_id, $fond_dossier,
         $status, $type_commission, $commission, $id_afa = 0, $id_solicitor, $commencement_dt,
-        $estimated_delvivery_dt, $programme_firb_pre_approved, $programme_pre_approved_sale,$seller_id) {
+        $estimated_delvivery_dt, $programme_firb_pre_approved, $programme_pre_approved_sale,
+        $seller_id) {
 
         $slug = generateSlug($title);
         $programme = new Product();
@@ -625,7 +626,7 @@ class ProductController extends Controller {
             $prefix = User::whereId($user->afa_id)->first();
             $seller_id = $prefix->id;
             $id_afa_p = $seller_id;
-            $titre_programme = $prefix->name.'-'.$request->title_programme;
+            $titre_programme = $prefix->name . '-' . $request->title_programme;
         } else {
             $prefix = '';
             $seller_id = 0;
@@ -665,13 +666,14 @@ class ProductController extends Controller {
         } else {
             $taux_commision = $request->rate_commission;
         }
-        
+
         $id_programme = $this->save_programme($request->cat_programmme_id, $request->ancienneteBien,
             $request->natureBien, $request->prix_min, $request->prix_max, $request->type_id,
             $request->display_address, $request->postalCode, $request->state_id, $titre_programme,
             $request->description, $id_location, '', 'waiting', $request->commision, $taux_commision,
             $id_afa_p, $request->solicitor_id, $request->commencement_dt, $request->estimated_delvivery_dt,
-            $request->programme_firb_pre_approved_program,$request->programme_pre_approved_sale,$seller_id);
+            $request->programme_firb_pre_approved_program, $request->programme_pre_approved_sale,
+            $seller_id);
 
         if ($request->dropPhoto) {
             foreach ($request->dropPhoto as $key => $value) {
@@ -1381,8 +1383,8 @@ class ProductController extends Controller {
                         0, $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
                         $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                         $id_programme, $id_location, 0, $avoir_parking, 0, $request->commision_product,
-                        $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison, $request->bonus_vente,
-                        $request->bonus_amount, '', 0, 0, 0);
+                        $taux_commision_prd, '', '', $request->bonus_vente, $request->bonus_amount, '',
+                        0, 0, 0);
                 } else {
                     //produit isolé
                     $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
@@ -1400,8 +1402,8 @@ class ProductController extends Controller {
                         $request->simple_price, 0, 0, 'AUD', $request->status, $request->product_type_id,
                         $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                         -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine, $request->commision_product,
-                        $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison, $request->bonus_vente,
-                        $request->bonus_amount, '', 0, 0, 0);
+                        $taux_commision_prd, '', '', $request->bonus_vente, $request->bonus_amount, '',
+                        0, 0, 0);
 
                     //save fond dossier programme
                     if ($request->p_fondDossier) {
@@ -1411,10 +1413,9 @@ class ProductController extends Controller {
                     }
 
                     if ($request->p_eoiDossier) {
-                        foreach ($request->p_eoiDossier as $key => $value) {
-                            $this->save_eoi_dossier($value, $id_produit);
-                        }
+                        $this->save_eoi_dossier($request->p_eoiDossier, $id_produit);
                     }
+
                     if ($request->p_liaDossier) {
                         foreach ($request->p_liaDossier as $key => $value) {
                             $this->save_lia_dossier($value, $id_produit);
@@ -1437,8 +1438,8 @@ class ProductController extends Controller {
                     $request->simple_price, 0, 0, 'AUD', $request->status, $request->product_type_id,
                     $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                     -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine, $request->commision_product,
-                    $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison, $request->bonus_vente,
-                    $request->bonus_amount, '', 0, 0, 0);
+                    $taux_commision_prd, '', '', $request->bonus_vente, $request->bonus_amount, '',
+                    0, 0, 0);
 
                 //save fond dossier programme
                 if ($request->p_fondDossier) {
@@ -1448,10 +1449,9 @@ class ProductController extends Controller {
                 }
 
                 if ($request->p_eoiDossier) {
-                    foreach ($request->p_eoiDossier as $key => $value) {
-                        $this->save_eoi_dossier($value, $id_produit);
-                    }
+                    $this->save_eoi_dossier($request->p_eoiDossier, $id_produit);
                 }
+
                 if ($request->p_liaDossier) {
                     foreach ($request->p_liaDossier as $key => $value) {
                         $this->save_lia_dossier($value, $id_produit);
@@ -1474,9 +1474,8 @@ class ProductController extends Controller {
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, date('Y'), $request->display_address_product, $request->simple_price,
                 0, 0, 'AUD', $request->status, $request->product_type_id, $request->cat_programmme_id,
                 $request->postalCode_product, $request->state_id_product, -1, $id_location, $request->superficie_jardin,
-                0, 0, $request->commision_product, $taux_commision_prd, $request->dt_db_travaux,
-                $request->dt_prevu_livraison, $request->bonus_vente, $request->bonus_amount, '',
-                0, 0, 0);
+                0, 0, $request->commision_product, $taux_commision_prd, '', '', $request->bonus_vente,
+                $request->bonus_amount, '', 0, 0, 0);
 
             //save fond dossier programme
             if ($request->p_fondDossier) {
@@ -1486,10 +1485,9 @@ class ProductController extends Controller {
             }
 
             if ($request->p_eoiDossier) {
-                foreach ($request->p_eoiDossier as $key => $value) {
-                    $this->save_eoi_dossier($value, $id_produit);
-                }
+                $this->save_eoi_dossier($request->p_eoiDossier, $id_produit);
             }
+
             if ($request->p_liaDossier) {
                 foreach ($request->p_liaDossier as $key => $value) {
                     $this->save_lia_dossier($value, $id_produit);
@@ -1511,9 +1509,8 @@ class ProductController extends Controller {
                 0, 0, 0, date('Y'), $request->display_address_product, $request->simple_price, 0,
                 0, 'AUD', $request->status, $request->product_type_id, $request->cat_programmme_id,
                 $request->postalCode_product, $request->state_id_product, -1, $id_location, $request->superficie_jardin,
-                0, 0, $request->commision_product, $taux_commision_prd, $request->dt_db_travaux,
-                $request->dt_prevu_livraison, $request->bonus_vente, $request->bonus_amount, $request->property_detail,
-                0, 0, 0);
+                0, 0, $request->commision_product, $taux_commision_prd, '', '', $request->bonus_vente,
+                $request->bonus_amount, $request->property_detail, 0, 0, 0);
 
             //save fond dossier programme
             if ($request->p_fondDossier) {
@@ -1523,10 +1520,9 @@ class ProductController extends Controller {
             }
 
             if ($request->p_eoiDossier) {
-                foreach ($request->p_eoiDossier as $key => $value) {
-                    $this->save_eoi_dossier($value, $id_produit);
-                }
+                $this->save_eoi_dossier($request->p_eoiDossier, $id_produit);
             }
+
             if ($request->p_liaDossier) {
                 foreach ($request->p_liaDossier as $key => $value) {
                     $this->save_lia_dossier($value, $id_produit);
@@ -1548,8 +1544,8 @@ class ProductController extends Controller {
                 $request->simple_price, 0, 0, 'AUD', $request->status, $request->product_type_id,
                 $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                 -1, $id_location, $request->superficie_jardin, $request->type_cutomer_parking, 0,
-                $request->commision_product, $taux_commision_prd, $request->dt_db_travaux, $request->dt_prevu_livraison,
-                $request->bonus_vente, $request->bonus_amount, $request->property_detail, $request->nombre_cutomer_parking,
+                $request->commision_product, $taux_commision_prd, '', '', $request->bonus_vente,
+                $request->bonus_amount, $request->property_detail, $request->nombre_cutomer_parking,
                 0, 0);
 
             //save fond dossier programme
@@ -1560,10 +1556,9 @@ class ProductController extends Controller {
             }
 
             if ($request->p_eoiDossier) {
-                foreach ($request->p_eoiDossier as $key => $value) {
-                    $this->save_eoi_dossier($value, $id_produit);
-                }
+                $this->save_eoi_dossier($request->p_eoiDossier, $id_produit);
             }
+
             if ($request->p_liaDossier) {
                 foreach ($request->p_liaDossier as $key => $value) {
                     $this->save_lia_dossier($value, $id_produit);

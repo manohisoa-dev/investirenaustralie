@@ -296,6 +296,7 @@
 						<div class="row" id="bloc_eoi_doc" style="display:none">
 							<div class="col-lg-12">
 								<h5>@lang('app.table.eoi_dossier')</h5>
+								<input type="hidden" name="p_eoiDossier" id="p_eoiDossier" />
 								<div class="dropzone" id="p_eoi_dossier" multiple style="margin-bottom:25px">
 									<div id="template" class="file-row"></div>
 								</div>
@@ -322,8 +323,8 @@
 							</div>
 							<div class="col-lg-6">
 								<div class="form-group">
-									<label for="title">@lang('app.form.programme_suburb') *</label>
-									<input name="suburb_product" id="suburb_product" class="form-control" type="text" value="">
+									<label for="title">@lang('app.form.programme_adresse') *</label>
+									<input name="display_address_product" id="display_address_product" class="form-control" type="text" value="">
 								</div>
 							</div>
 						</div>
@@ -344,8 +345,8 @@
 						<div class="row">							
 							<div class="col-lg-6">
 								<div class="form-group">
-									<label for="title">@lang('app.form.programme_adresse') *</label>
-									<input name="display_address_product" id="display_address_product" class="form-control" type="text" value="">
+									<label for="title">@lang('app.form.programme_suburb') *</label>
+									<input name="suburb_product" id="suburb_product" class="form-control" type="text" value="">
 								</div>
 							</div>
 							<div class="col-lg-6">
@@ -422,7 +423,7 @@
 						<!-- eoi debut-->
 						<div class="row" id="bloc_eoi_doc" style="display:none">
 							<div class="col-lg-12">
-								<label for="title">@lang('app.table.eoi_dossier')</label>
+								<label for="title">@lang('app.table.eoi_dossier')</label>								
 								<div class="dropzone" id="p_eoi_dossier" multiple style="margin-bottom:25px">
 									<div id="template" class="file-row"></div>
 								</div>
@@ -500,7 +501,7 @@
 							</div>							
 						</div>
 						<!-- info date produit isolé-->
-						<div id="info-date-isole">
+						<!--<div id="info-date-isole">
 							<div class="row">
 								<div class="col-lg-6">
 									<div class="form-group">
@@ -515,7 +516,7 @@
 									</div>
 								</div>
 							</div>
-						</div>
+						</div>-->
 						<!-- fin info date produit isolé-->
 						<div class="row mb-2">
 							<div class="col-lg-12">
@@ -548,26 +549,28 @@
 						<!-- info pour le produit résidentiel -->
 						<div id="info_prd_residentiel" style="display:none">
 							<div class="row">					
-								<div class="col-lg-6">
+								<div class="col-lg-4">
 									<div class="form-group">
 										<label for="title">@lang('app.input.nbchambre')</label>
 										<input name="bedrooms" id="bedrooms" class="form-control" type="number" min="0" value="0">
 									</div>  
 								</div>
-								<div class="col-lg-6">
+								<div class="col-lg-4">
 									<div class="form-group">
 										<label for="title">@lang('app.input.nbchambresuite')</label>
 										<input name="ensuite" id="ensuite" class="form-control" type="number" min="0" value="0">
 									</div>
-								</div>														
-							</div>
-							<div class="row">							
-								<div class="col-lg-6">
+								</div>	
+								<div class="col-lg-4">
 									<div class="form-group">
 										<label for="title">@lang('app.input.nbsalledebain')</label>
 										<input name="bathrooms" id="bathrooms" class="form-control" type="number" min="0" value="0">
+										<input name="quantity" id="quantity" class="form-control" type="hidden" min="0" value="1" min="1">
 									</div> 
-								</div>	
+								</div>														
+							</div>
+							<!--<div class="row">
+								<div class="col-lg-6"></div>
 								<div class="col-lg-6">
 									<div id="info_qte">
 										<div class="form-group">
@@ -576,7 +579,7 @@
 										</div>
 									</div>
 								</div>						
-							</div>
+							</div>-->
 							<div class="row">
 								<div class="col-lg-4">
 									<label for="title">@lang('app.form.product_area_interior') *</label>
@@ -755,6 +758,9 @@
 		content: "{{ trans('app.form.choose_file') }}";
 	}
 	.error{color:red !important}
+	.ui-datepicker-calendar {
+    	display: none;
+    }
 </style>
 <!-- dropzone -->
 <script src="{{ asset('administrator/js/plugins/dropzone/dropzone.js') }}"></script>
@@ -766,6 +772,61 @@
 <script src="{{asset('administrator/plugins/ckeditor/ckeditor.js')}}"></script>
 <!-- Jquery Validate -->
 <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2izG_M7K3gP6pFUH5cyzmDjuGpOYfgc4&libraries=places&callback=initMap&channel=GMPSB_addressselection_v1_cABC" async defer></script>
+<!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2izG_M7K3gP6pFUH5cyzmDjuGpOYfgc4&libraries=places&callback=initMap"></script>-->
+<script>
+// display_address
+function initMap(){
+	var autocomplete = new google.maps.places.Autocomplete($("#display_address_product")[0], {});
+	autocomplete.setComponentRestrictions({'country': ['au']});
+
+	google.maps.event.addListener(autocomplete, 'place_changed', function() {
+		var place = autocomplete.getPlace();
+		console.log(place.address_components);
+		var arrAddress = place.address_components;
+		var itemRoute='';
+		var itemLocality='';
+		var itemCountry='';
+		var itemPc='';
+		var itemSnumber='';
+		
+		$.each(arrAddress, function (i, address_components) {
+			if (address_components.types[0] == "street_number") {
+				//console.log("street_number:" + address_components.long_name);
+				itemSnumber = address_components.long_name;
+			}
+			if (address_components.types[0] == "route") {
+				//console.log(i + ": route:" + address_components.long_name);
+				itemRoute = address_components.long_name;
+			}
+			
+			if (address_components.types[0] == "locality") {
+				//console.log("town:" + address_components.long_name);
+				itemLocality = address_components.long_name;
+			}
+			
+			if (address_components.types[0] == "country") {
+				//document.getElementById("country_code").value = place.address_components[i].short_name;
+				console.log("country:" + address_components.long_name);
+				console.log("country:" + address_components.short_name);
+				itemCountry = address_components.long_name;
+			}
+			
+			if (address_components.types[0] == "postal_code") {
+				//console.log("pc:" + address_components.long_name);
+				itemPc = address_components.long_name;
+			}
+			
+			var adresse = itemSnumber + ' ' + itemRoute;
+			$('#display_address_product').val(adresse);
+			$('#ville_product').val(itemLocality);
+			$('#postalCode_product').val(itemPc);
+		});
+	});
+}
+</script>
+
 <script>
 	Dropzone.autoDiscover = false;
 	$(document).ready(function(){
@@ -785,6 +846,7 @@
 			},
 			onStepChanging: function (event, currentIndex, newIndex)
 			{
+				initMap();
 				$(".date_month_year").datepicker({
 					changeMonth: true,
 					changeYear: true,
@@ -794,15 +856,6 @@
 						var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
 						var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
 						$(this).datepicker('setDate', new Date(year, month, 1));
-					},
-					beforeShow : function(input, inst) {
-						var datestr;
-						if ((datestr = $(this).val()).length > 0) {
-							year = datestr.substring(datestr.length-4, datestr.length);
-							month = jQuery.inArray(datestr.substring(0, datestr.length-5), $(this).datepicker('option', 'monthNamesShort'));
-							$(this).datepicker('option', 'defaultDate', new Date(year, month, 1));
-							$(this).datepicker('setDate', new Date(year, month, 1));
-						}
 					}
 				});
 		
@@ -833,7 +886,7 @@
 							$('#fixed_commission_prd').hide();
 						}
 						$("#progTitle").text(titre_programme);
-						$('#info-date-isole').hide();
+						//$('#info-date-isole').hide();
 						$('#price_simple').hide();
 						$('#price_max_min').show();
 						$('#chk_picine').hide();
@@ -843,7 +896,7 @@
 						$('#bloc_lia_doc').hide();
 					
 					}else if(ancienneteBien == 'Neuf' && natureBien == 'Produit isolé'){
-						$('#info-date-isole').show();
+						//$('#info-date-isole').show();
 						$('#info_qte').show();
 						$('#chk_picine').show();
 						$('#jardin_info').show();
@@ -863,7 +916,7 @@
 						$('#yearConstruct').show();
 						$('#jardin_info').show();
 						$('#chk_picine').show();
-						$('#info-date-isole').hide();
+						//$('#info-date-isole').hide();
 						$('#price_simple').show();
 						$('#price_max_min').hide();
 						
@@ -882,7 +935,7 @@
 					$('#jardin_info').hide();
 					$('[name="postalCode_product"]').val('').prop("readonly", false);
 				}else if(cat == 3){
-				    $('#info-date-isole').hide();
+				    //$('#info-date-isole').hide();
 					$('#bloc_fond_doc_produit').show();
 					$('#bloc_eoi_doc').show();
 					$('#bloc_lia_doc').show();
@@ -890,7 +943,7 @@
 					$('#jardin_info').hide();
 					$('[name="postalCode_product"]').val('').prop("readonly", false);
 				}else if(cat == 4){
-					$('#info-date-isole').hide();
+					//$('#info-date-isole').hide();
 					$('#bloc_fond_doc_produit').show();
 					$('#bloc_eoi_doc').show();
 					$('#bloc_lia_doc').show();
@@ -1342,6 +1395,9 @@
 				},
 				programme_pre_approved_sale: {
 					required: true
+				},
+				p_eoiDossier: {
+					required: true
 				}
 			},
 			messages: {
@@ -1465,6 +1521,9 @@
 					required: "@lang('app.txt.champobligatoire')"
 				},
 				programme_pre_approved_sale: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				p_eoiDossier: {
 					required: "@lang('app.txt.champobligatoire')"
 				}
 			},
@@ -1783,12 +1842,12 @@
 		});
 		
 		$("#p_eoi_dossier").dropzone({
-			maxFiles: 25, 
+			maxFiles: 1, 
 			maxFilesize: 25,
 			dictDefaultMessage: "@lang('app.txt.eoi_dossier')",
 			url: "{{ route('ajaxDropZone') }}",
 			params: {"_token": "{{ csrf_token() }}"},
-			acceptedFiles: ".jpeg,.jpg,.png,.gif,.doc,.docx,.xls,.xlsx,.pdf",
+			acceptedFiles: ".pdf",
 			addRemoveLinks: true,
 			timeout: 50000,
 			init:function() {
@@ -1821,7 +1880,7 @@
 				file.previewElement.querySelector("img").alt = response.success;
 				file._captionBox = Dropzone.createElement("<label style='width:100%;text-align:center'>"+response.success+"</label>");
 				file.previewElement.appendChild(file._captionBox);
-				$('#form').append('<input type="hidden" name="p_eoiDossier[]" value="'+response.success +'">');
+				document.getElementById("p_eoiDossier").value = response.success;
 				olddatadzname.innerHTML = response.success;
 			},
 			error: function(file, response)
@@ -2045,7 +2104,7 @@
 			}else if(category == 2){
 				//pour categorie foncier 
 				$('#info_qte').hide();
-				$('#info-date-isole').hide();
+				//$('#info-date-isole').hide();
 				$('#info_prd_residentiel').hide();
 				$('#info_prd_foncier').show();
 				$('#info_prd_industriel').hide();

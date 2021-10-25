@@ -49,7 +49,7 @@
                         </div>
 					</div>
 					<div class="ibox-content">
-						<form class="search-form">
+						<form method="get" action="">
 							<div class="row">
 								<div class="col-md-2">
 									<label>@lang('app.select_country')</label> 

@@ -219,16 +219,20 @@
                                             <div class="form-group">
                                                 <label for="country" class="col-sm-12 control-label">@lang('app.txt.country') *</label>
                                                 <div class="col-md-12">
-                                                    <select class="form-control" name="country" required>
+                                                    <select class="form-control" name="country" id="country_1" required>
                                                         <option value="" selected disabled>@lang('app.select_country')</option>
                                                         @foreach($countries as $country)
                                                             @if($country->prefixPhone)
-                                                                <option value="{{$country->code}}" {{ old('country')==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
+                                                                <option value="{{$country->code}}" long="{{$country->content}}" {{ old('country')==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
                                                             @endif
                                                         @endforeach
                                                     </select>
                                                     <span class="text-danger">{{ $errors->first('country') }}</span>
                                                 </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="hidden" value="{{ old('long')?old('long'):'' }}" name="long" id="long">
+                                                <input type="hidden" value="{{ old('lat')?old('lat'):'' }}" name="lat" id="lat">
                                             </div>
                                         </fieldset>
 
@@ -291,7 +295,7 @@
                                                             <option value="" selected disabled>@lang('app.select_country')</option>
                                                             @foreach($countries as $country)
                                                                 @if($country->prefixPhone)
-                                                                    <option value="{{$country->code}}" {{ old('adrpost_country')==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
+                                                                    <option value="{{$country->code}}" long="{{$country->content}}" {{ old('adrpost_country')==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
                                                                 @endif
                                                             @endforeach
                                                         </select>
@@ -823,4 +827,61 @@
         }
     });
 </script>
+
+{{-- Google map autocomplete --}}
+<script>
+function initMap(){
+    var autocomplete = new google.maps.places.Autocomplete($("#route")[0], {});
+
+    google.maps.event.addListener(autocomplete, 'place_changed', function() {
+        var place = autocomplete.getPlace();
+        var arrAddress = place.address_components;
+        var itemRoute='';
+        var itemLocality='';
+        var itemCountry='';
+        var itemPc='';
+        var itemSnumber='';
+        var lat = place.geometry.location.lat();
+        var long = place.geometry.location.lng();
+        
+        $.each(arrAddress, function (i, address_components) {
+            if (address_components.types[0] == "street_number") {
+                //console.log("street_number:" + address_components.long_name);
+                itemSnumber = address_components.long_name;
+            }
+            if (address_components.types[0] == "route") {
+                //console.log(i + ": route:" + address_components.long_name);
+                itemRoute = address_components.long_name;
+            }
+            
+            if (address_components.types[0] == "locality") {
+                //console.log("town:" + address_components.long_name);
+                itemLocality = address_components.long_name;
+            }
+            
+            if (address_components.types[0] == "country") {
+                // console.log("country:" + address_components.long_name);
+                itemCountry = address_components.long_name;
+            }
+            
+            if (address_components.types[0] == "postal_code") {
+                //console.log("pc:" + address_components.long_name);
+                itemPc = address_components.long_name;
+            }
+            
+            $('#route').val(itemRoute);
+            $('#route_number').val(itemSnumber);
+            $('#locality').val(itemLocality);
+            $('#postalCode').val(itemPc);
+            $('#long').val(long);
+            $('#lat').val(lat);
+
+            var val = itemCountry;
+            $('#country_1 option[long="'+val+'"]').prop('selected', true);
+
+        });
+    });
+}
+</script>
+{{-- End google map autocomplete --}}
 @endpush

@@ -62,7 +62,7 @@
 									<select class="form-control" name="country_id" id="country_id">
 										<option value="">@lang('app.txt.any')</option>
 										@foreach($countries as $c)
-										<option value="{{$c->id}}" {{@$_GET['country_id']==$c->id?'selected':''}}>{{$c->content}}</option>
+										<option value="{{$c->code}}" {{@$_GET['country_id']==$c->code?'selected':''}}>{{$c->content}}</option>
 										@endforeach
 									</select>
 								</div>
@@ -268,10 +268,6 @@
                 </table>
 
                 @include('vendor.crud.single-page-templates.common.pagination', [ 'records' => $records ] )
-
-				<script>
-					$(".editable").editable({ajaxOptions:{method:'PUT'}});
-				</script>
 				</div>
 			</div>
 		</div>

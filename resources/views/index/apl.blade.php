@@ -86,6 +86,7 @@
     height: 25rem;
   }
 </style>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2izG_M7K3gP6pFUH5cyzmDjuGpOYfgc4&libraries=places&callback=initMap&channel=GMPSB_addressselection_v1_cABC" async defer></script>
 <script>
     $('#apl-form-modal').submit(function(event){
         if($('#check-confirm-modal').is(":checked"))

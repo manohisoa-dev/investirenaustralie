@@ -840,24 +840,28 @@ class RegisterController extends Controller
                     $lat = $coord_tab['lat'];
                     $lng = $coord_tab['lng'];
                 }else{
-                    // $lat = $request->long;
-                    // $lng = $request->lat;
                     $lat = '';
                     $lng = '';
                 }
-                $datas['latitude'] = $lat;
-                $datas['longitude'] = $lng;
+            }else if($user->hasRole(2) || $user->hasRole(4) || $user->hasRole(5)&&!$user->isPerson()){
+                $lat = $request->long;
+                $lng = $request->lat;
+            }else{
+                $lat = '';
+                $lng = '';
             }
+
+            $datas['latitude'] = $lat;
+            $datas['longitude'] = $lng;
             
             //$datas['location_id'] = 0;
             if($location = Localisation::create($datas)){
-                if($user->hasRole(2) || $user->hasRole(3) || $user->hasRole(4)){
+                if($user->hasRole(2) || $user->hasRole(3) || $user->hasRole(4) || $user->hasRole(5)){
                     $user->location_id = $location->id>0?$location->id:0;
                     $user->save();
-                }else{
-                    $datas['location_id'] = $location->id>0?$location->id:0;
                 }
-
+                
+                $datas['location_id'] = $user->location_id;
             }
 
             // Create user info
@@ -871,6 +875,7 @@ class RegisterController extends Controller
                 }else{
                     $indicatif = '(+61)';
                 }                
+
                 
                 if(isset($datas['contact_phone'])){
                     $datas['contact_phone'] = $indicatif.$datas['contact_phone'];
@@ -1090,7 +1095,7 @@ class RegisterController extends Controller
                 $lang = 'en';
                 $body = 'template_' . $lang;
                 $vars = array(
-                    '{confirmEmailLink}' => setLinkDynamic($confirmEmailLink,strtoupper(trans('mail.btn.confirm.email_address_confirmation'))),
+                    '{confirmEmailLink}' => setLinkDynamic($confirmEmailLink,strtoupper(trans('mail.btn.email_address_confirmation'))),
                 );
                 $template = MailsTemplate::where('id', 24)->first();
                 if($template){
@@ -1108,7 +1113,7 @@ class RegisterController extends Controller
                 $lang = 'fr';
                 $body = 'template_' . $lang;
                 $vars = array(
-                    '{confirmEmailLink}' => setLinkDynamic($confirmEmailLink,strtoupper(trans('mail.btn.confirm.email_address_confirmation'))),
+                    '{confirmEmailLink}' => setLinkDynamic($confirmEmailLink,strtoupper(trans('mail.btn.email_address_confirmation'))),
                 );
                 $template = MailsTemplate::where('id', 20)->first();
                 if($template){
@@ -1125,8 +1130,9 @@ class RegisterController extends Controller
                 $alert =trans('app.txt.alert_success');
             }
             
-            // forget as role session
+            // forget as role session and seller_class session
             session()->forget('as_role');
+            session()->forget('seller_class');
 
         }catch(\Exception $e){}
 

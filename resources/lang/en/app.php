@@ -905,7 +905,7 @@ return
 	'form.required' => '(*) Required field',
 	'txt.your_login' => 'Your login',
 	'txt.define' => 'Define',
-    'txt.fond_dossier' => 'Upload various information files regarding the program for assisting the <b>« Local Partner Agencies Network »</b>',
+    'txt.fond_dossier' => 'Upload various information files regarding the property for assisting the <b>« Local Partner Agencies Network »</b>',
     'txt.photo_programme' => 'Program photos',
 	'Agence_Francophone_Australienne' => 'Australian Francophone Agency',
 	'Agence_Partenaire_Locale' => 'Local Partner Agency',

@@ -70,16 +70,24 @@
                                 </li>
 							@elseif($item->role_initial == 'seller')
 								<li class="">
-									<a href="#">@lang('seller.real_estate_professionals')</a>
+									<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show.seller_real_estate_professionals'):route('admin.user.show.seller_real_estate_professionals')}}">
+										@lang('seller.real_estate_professionals')
+									</a>
 								</li>
 								<li class="">
-									<a href="#">@lang('seller.non_professional_legal_persons')</a>
+									<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show.seller_non_professional_legal_persons'):route('admin.user.show.seller_non_professional_legal_persons')}}">
+										@lang('seller.non_professional_legal_persons')
+									</a>
 								</li>
 								<li class="">
-									<a href="#">@lang('seller.non_professional_natural_persons')</a>
+									<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show.seller_non_professional_natural_persons'):route('admin.user.show.seller_non_professional_natural_persons')}}">
+										@lang('seller.non_professional_natural_persons')
+									</a>
 								</li>
 								<li class="">
-									<a href="#">@lang('seller.seller_by_afa')</a>
+									<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show.seller_by_afa'):route('admin.user.show.seller_by_afa')}}">
+										@lang('seller.seller_by_afa')
+									</a>
 								</li>
                             @else
                                 <li class="">

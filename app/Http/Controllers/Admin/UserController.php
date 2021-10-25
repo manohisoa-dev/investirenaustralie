@@ -25,6 +25,7 @@ use App\Models\RelationMembreApl;
 use App\Models\Userinfo;
 use App\Models\Localisation;
 use App\Models\Message;
+use App\Models\Product;
 use DB;
 use Carbon\Carbon;
 
@@ -447,7 +448,9 @@ class UserController extends Controller {
     public function destroy(Request $request, User $user) {
         $this->middleware('auth');
         $this->middleware('role:1');
-
+        //delete all product user
+        $product = Product::where('author_id', $user->id)->delete();
+        
         if ($user->id == 1) {
             Notify::error("Cette action ne peut pas etre réalisée.");
             return back();
@@ -574,6 +577,106 @@ class UserController extends Controller {
 
         $location->save();
         return $location->id;
+    }
+    
+    public function seller_real_estate_professionals(Request $request)
+    {
+        $this->middleware('auth');
+        $this->middleware('role:1');
+
+        $role = Role::all();
+        $statuts = User::groupBy('status')->pluck('status', 'status');
+        $countries = Country::all();
+        $states = State::all();
+        $typeUser = TypeUser::where('type_user_name', '!=', 'Admin blog')->where('type_user_name',
+            '!=', 'Admin delegate')->where('type_user_name', '!=', 'Super Admin')->get();
+        $userRole = 'seller';
+        $link = 'admin.user.show.seller_real_estate_professionals';
+
+        if (isset($request->country_id) || isset($request->state_id) || isset($request->name) ||
+            isset($request->type_users_id) || isset($request->status)) {
+            $records = User::seller_real_estate_professionals();
+        } else {
+            $records = User::seller_real_estate_professionals();
+        }
+        return $this->view("showUser", ['records' => $records, 'roles' => $role,
+            'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
+            'statuts' => $statuts, 'userRole' => $userRole, 'link' => $link]);
+    }
+    
+    public function seller_non_professional_legal_persons(Request $request)
+    {
+        $this->middleware('auth');
+        $this->middleware('role:1');
+
+        $role = Role::all();
+        $statuts = User::groupBy('status')->pluck('status', 'status');
+        $countries = Country::all();
+        $states = State::all();
+        $typeUser = TypeUser::where('type_user_name', '!=', 'Admin blog')->where('type_user_name',
+            '!=', 'Admin delegate')->where('type_user_name', '!=', 'Super Admin')->get();
+        $userRole = 'seller';
+        $link = 'admin.user.show.seller_non_professional_legal_persons';
+
+        if (isset($request->country_id) || isset($request->state_id) || isset($request->name) ||
+            isset($request->type_users_id) || isset($request->status)) {
+            $records = User::seller_non_professional(1);
+        } else {
+            $records = User::seller_non_professional(1);
+        }
+        return $this->view("showUser", ['records' => $records, 'roles' => $role,
+            'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
+            'statuts' => $statuts, 'userRole' => $userRole, 'link' => $link]);
+    }
+    
+    public function seller_non_professional_natural_persons(Request $request)
+    {
+        $this->middleware('auth');
+        $this->middleware('role:1');
+
+        $role = Role::all();
+        $statuts = User::groupBy('status')->pluck('status', 'status');
+        $countries = Country::all();
+        $states = State::all();
+        $typeUser = TypeUser::where('type_user_name', '!=', 'Admin blog')->where('type_user_name',
+            '!=', 'Admin delegate')->where('type_user_name', '!=', 'Super Admin')->get();
+        $userRole = 'seller';
+        $link = 'admin.user.show.seller_non_professional_natural_persons';
+
+        if (isset($request->country_id) || isset($request->state_id) || isset($request->name) ||
+            isset($request->type_users_id) || isset($request->status)) {
+            $records = User::seller_non_professional(2);
+        } else {
+            $records = User::seller_non_professional(2);
+        }
+        return $this->view("showUser", ['records' => $records, 'roles' => $role,
+            'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
+            'statuts' => $statuts, 'userRole' => $userRole, 'link' => $link]);
+    }
+    
+    public function seller_by_afa()
+    {
+        $this->middleware('auth');
+        $this->middleware('role:1');
+
+        $role = Role::all();
+        $statuts = User::groupBy('status')->pluck('status', 'status');
+        $countries = Country::all();
+        $states = State::all();
+        $typeUser = TypeUser::where('type_user_name', '!=', 'Admin blog')->where('type_user_name',
+            '!=', 'Admin delegate')->where('type_user_name', '!=', 'Super Admin')->get();
+        $userRole = 'seller';
+        $link = 'admin.user.show.seller_by_afa';
+
+        if (isset($request->country_id) || isset($request->state_id) || isset($request->name) ||
+            isset($request->type_users_id) || isset($request->status)) {
+            $records = User::seller_byAfa();
+        } else {
+            $records = User::seller_byAfa();
+        }
+        return $this->view("showUser", ['records' => $records, 'roles' => $role,
+            'countries' => $countries, 'states' => $states, 'typeUser' => $typeUser,
+            'statuts' => $statuts, 'userRole' => $userRole, 'link' => $link]);
     }
 
 }

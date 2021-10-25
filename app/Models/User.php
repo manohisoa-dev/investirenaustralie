@@ -96,7 +96,7 @@ class User extends Authenticatable {
             ('author_id'));
         \Request::input('location_id') and $query->where('users.location_id', \Request::input
             ('location_id'));
-        \Request::input('country_id') and $query->where('users.country_id', \Request::input
+        \Request::input('country_id') and $query->where('localizations.country', \Request::input
             ('country_id'));
         \Request::input('operation_range') and $query->where('users.operation_range', \Request::input
             ('operation_range'));
@@ -142,6 +142,247 @@ class User extends Authenticatable {
             'users.author_id as author_id', 'localizations.country as country',
             'localizations.locality as locality', 'users.type_users_id as type_users_id');
         $query->where('role',$role);
+        // search results based on user input
+        \Request::input('id') and $query->where('users.id', \Request::input('id'));
+        \Request::input('name') and $query->where('users.name', 'like', '%' . \Request::input
+            ('name') . '%');
+        \Request::input('email') and $query->where('users.email', 'like', '%' . \Request::input
+            ('email') . '%');
+        \Request::input('password') and $query->where('users.password', 'like', '%' . \Request::input
+            ('password') . '%');
+        \Request::input('role') and $query->where('users.role', 'like', '%' . \Request::input
+            ('role') . '%');
+        \Request::input('type_users_id') and $query->where('users.type_users_id', 'like',
+            '%' . \Request::input('type_users_id') . '%');
+        \Request::input('language') and $query->where('users.language', 'like', '%' . \Request::input
+            ('language') . '%');
+        \Request::input('status') and $query->where('users.status', 'like', '%' . \Request::input
+            ('status') . '%');
+        \Request::input('percent') and $query->where('users.percent', \Request::input('percent'));
+        \Request::input('enabled_at') and $query->where('users.enabled_at', \Request::input
+            ('enabled_at'));
+        \Request::input('disabled_at') and $query->where('users.disabled_at', \Request::input
+            ('disabled_at'));
+        \Request::input('use_default_password') and $query->where('users.use_default_password', \Request::input
+            ('use_default_password'));
+        \Request::input('is_seller') and $query->where('users.is_seller', \Request::input
+            ('is_seller'));
+        \Request::input('apl_id') and $query->where('users.apl_id', \Request::input('apl_id'));
+        \Request::input('apl_ends_at') and $query->where('users.apl_ends_at', \Request::input
+            ('apl_ends_at'));
+        \Request::input('image_id') and $query->where('users.image_id', \Request::input
+            ('image_id'));
+        \Request::input('author_id') and $query->where('users.author_id', \Request::input
+            ('author_id'));
+        \Request::input('location_id') and $query->where('users.location_id', \Request::input
+            ('location_id'));
+        \Request::input('country_id') and $query->where('users.country_id', \Request::input
+            ('country_id'));
+        \Request::input('operation_range') and $query->where('users.operation_range', \Request::input
+            ('operation_range'));
+        \Request::input('state_id') and $query->where('users.state_id', \Request::input
+            ('state_id'));
+        \Request::input('activation_code') and $query->where('users.activation_code',
+            'like', '%' . \Request::input('activation_code') . '%');
+        \Request::input('remember_token') and $query->where('users.remember_token',
+            'like', '%' . \Request::input('remember_token') . '%');
+        \Request::input('created_at') and $query->where('users.created_at', \Request::input
+            ('created_at'));
+        \Request::input('updated_at') and $query->where('users.updated_at', \Request::input
+            ('updated_at'));
+        \Request::input('braintree_id') and $query->where('users.braintree_id', 'like',
+            '%' . \Request::input('braintree_id') . '%');
+        \Request::input('paypal_email') and $query->where('users.paypal_email', 'like',
+            '%' . \Request::input('paypal_email') . '%');
+        \Request::input('stripe_id') and $query->where('users.stripe_id', 'like', '%' . \Request::input
+            ('stripe_id') . '%');
+        \Request::input('card_brand') and $query->where('users.card_brand', 'like', '%' . \Request::input
+            ('card_brand') . '%');
+        \Request::input('card_last_four') and $query->where('users.card_last_four',
+            'like', '%' . \Request::input('card_last_four') . '%');
+        \Request::input('trial_ends_at') and $query->where('users.trial_ends_at', \Request::input
+            ('trial_ends_at'));
+        \Request::input('subscription_ends_at') and $query->where('users.subscription_ends_at', \Request::input
+            ('subscription_ends_at'));
+
+        // sort results
+        \Request::input("sort") and $query->orderBy(\Request::input("sort"), \Request::input
+            ("sortType", "asc"));
+
+        // paginate results
+        return $query->paginate(15);
+    }
+    
+    
+    public static function seller_real_estate_professionals() {
+        $query = User::query();
+        $query->join('localizations', 'localizations.id', '=', 'users.location_id');
+        $query->select('users.id AS uid', 'users.name AS name',
+            'users.image_id AS image_id', 'users.email as email',
+            'users.created_at as created_at', 'users.role as role', 'users.status as status',
+            'users.author_id as author_id', 'localizations.country as country',
+            'localizations.locality as locality', 'users.type_users_id as type_users_id');
+        $query->where('role',2)->whereIn('type_users_id',array(3, 4));
+        // search results based on user input
+        \Request::input('id') and $query->where('users.id', \Request::input('id'));
+        \Request::input('name') and $query->where('users.name', 'like', '%' . \Request::input
+            ('name') . '%');
+        \Request::input('email') and $query->where('users.email', 'like', '%' . \Request::input
+            ('email') . '%');
+        \Request::input('password') and $query->where('users.password', 'like', '%' . \Request::input
+            ('password') . '%');
+        \Request::input('role') and $query->where('users.role', 'like', '%' . \Request::input
+            ('role') . '%');
+        \Request::input('type_users_id') and $query->where('users.type_users_id', 'like',
+            '%' . \Request::input('type_users_id') . '%');
+        \Request::input('language') and $query->where('users.language', 'like', '%' . \Request::input
+            ('language') . '%');
+        \Request::input('status') and $query->where('users.status', 'like', '%' . \Request::input
+            ('status') . '%');
+        \Request::input('percent') and $query->where('users.percent', \Request::input('percent'));
+        \Request::input('enabled_at') and $query->where('users.enabled_at', \Request::input
+            ('enabled_at'));
+        \Request::input('disabled_at') and $query->where('users.disabled_at', \Request::input
+            ('disabled_at'));
+        \Request::input('use_default_password') and $query->where('users.use_default_password', \Request::input
+            ('use_default_password'));
+        \Request::input('is_seller') and $query->where('users.is_seller', \Request::input
+            ('is_seller'));
+        \Request::input('apl_id') and $query->where('users.apl_id', \Request::input('apl_id'));
+        \Request::input('apl_ends_at') and $query->where('users.apl_ends_at', \Request::input
+            ('apl_ends_at'));
+        \Request::input('image_id') and $query->where('users.image_id', \Request::input
+            ('image_id'));
+        \Request::input('author_id') and $query->where('users.author_id', \Request::input
+            ('author_id'));
+        \Request::input('location_id') and $query->where('users.location_id', \Request::input
+            ('location_id'));
+        \Request::input('country_id') and $query->where('users.country_id', \Request::input
+            ('country_id'));
+        \Request::input('operation_range') and $query->where('users.operation_range', \Request::input
+            ('operation_range'));
+        \Request::input('state_id') and $query->where('users.state_id', \Request::input
+            ('state_id'));
+        \Request::input('activation_code') and $query->where('users.activation_code',
+            'like', '%' . \Request::input('activation_code') . '%');
+        \Request::input('remember_token') and $query->where('users.remember_token',
+            'like', '%' . \Request::input('remember_token') . '%');
+        \Request::input('created_at') and $query->where('users.created_at', \Request::input
+            ('created_at'));
+        \Request::input('updated_at') and $query->where('users.updated_at', \Request::input
+            ('updated_at'));
+        \Request::input('braintree_id') and $query->where('users.braintree_id', 'like',
+            '%' . \Request::input('braintree_id') . '%');
+        \Request::input('paypal_email') and $query->where('users.paypal_email', 'like',
+            '%' . \Request::input('paypal_email') . '%');
+        \Request::input('stripe_id') and $query->where('users.stripe_id', 'like', '%' . \Request::input
+            ('stripe_id') . '%');
+        \Request::input('card_brand') and $query->where('users.card_brand', 'like', '%' . \Request::input
+            ('card_brand') . '%');
+        \Request::input('card_last_four') and $query->where('users.card_last_four',
+            'like', '%' . \Request::input('card_last_four') . '%');
+        \Request::input('trial_ends_at') and $query->where('users.trial_ends_at', \Request::input
+            ('trial_ends_at'));
+        \Request::input('subscription_ends_at') and $query->where('users.subscription_ends_at', \Request::input
+            ('subscription_ends_at'));
+
+        // sort results
+        \Request::input("sort") and $query->orderBy(\Request::input("sort"), \Request::input
+            ("sortType", "asc"));
+
+        // paginate results
+        return $query->paginate(15);
+    }
+    
+    public static function seller_non_professional($type) {
+        $query = User::query();
+        $query->join('localizations', 'localizations.id', '=', 'users.location_id');
+        $query->select('users.id AS uid', 'users.name AS name',
+            'users.image_id AS image_id', 'users.email as email',
+            'users.created_at as created_at', 'users.role as role', 'users.status as status',
+            'users.author_id as author_id', 'localizations.country as country',
+            'localizations.locality as locality', 'users.type_users_id as type_users_id');
+        $query->where('role',2)->where('type_users_id',$type);
+        // search results based on user input
+        \Request::input('id') and $query->where('users.id', \Request::input('id'));
+        \Request::input('name') and $query->where('users.name', 'like', '%' . \Request::input
+            ('name') . '%');
+        \Request::input('email') and $query->where('users.email', 'like', '%' . \Request::input
+            ('email') . '%');
+        \Request::input('password') and $query->where('users.password', 'like', '%' . \Request::input
+            ('password') . '%');
+        \Request::input('role') and $query->where('users.role', 'like', '%' . \Request::input
+            ('role') . '%');
+        \Request::input('type_users_id') and $query->where('users.type_users_id', 'like',
+            '%' . \Request::input('type_users_id') . '%');
+        \Request::input('language') and $query->where('users.language', 'like', '%' . \Request::input
+            ('language') . '%');
+        \Request::input('status') and $query->where('users.status', 'like', '%' . \Request::input
+            ('status') . '%');
+        \Request::input('percent') and $query->where('users.percent', \Request::input('percent'));
+        \Request::input('enabled_at') and $query->where('users.enabled_at', \Request::input
+            ('enabled_at'));
+        \Request::input('disabled_at') and $query->where('users.disabled_at', \Request::input
+            ('disabled_at'));
+        \Request::input('use_default_password') and $query->where('users.use_default_password', \Request::input
+            ('use_default_password'));
+        \Request::input('is_seller') and $query->where('users.is_seller', \Request::input
+            ('is_seller'));
+        \Request::input('apl_id') and $query->where('users.apl_id', \Request::input('apl_id'));
+        \Request::input('apl_ends_at') and $query->where('users.apl_ends_at', \Request::input
+            ('apl_ends_at'));
+        \Request::input('image_id') and $query->where('users.image_id', \Request::input
+            ('image_id'));
+        \Request::input('author_id') and $query->where('users.author_id', \Request::input
+            ('author_id'));
+        \Request::input('location_id') and $query->where('users.location_id', \Request::input
+            ('location_id'));
+        \Request::input('country_id') and $query->where('users.country_id', \Request::input
+            ('country_id'));
+        \Request::input('operation_range') and $query->where('users.operation_range', \Request::input
+            ('operation_range'));
+        \Request::input('state_id') and $query->where('users.state_id', \Request::input
+            ('state_id'));
+        \Request::input('activation_code') and $query->where('users.activation_code',
+            'like', '%' . \Request::input('activation_code') . '%');
+        \Request::input('remember_token') and $query->where('users.remember_token',
+            'like', '%' . \Request::input('remember_token') . '%');
+        \Request::input('created_at') and $query->where('users.created_at', \Request::input
+            ('created_at'));
+        \Request::input('updated_at') and $query->where('users.updated_at', \Request::input
+            ('updated_at'));
+        \Request::input('braintree_id') and $query->where('users.braintree_id', 'like',
+            '%' . \Request::input('braintree_id') . '%');
+        \Request::input('paypal_email') and $query->where('users.paypal_email', 'like',
+            '%' . \Request::input('paypal_email') . '%');
+        \Request::input('stripe_id') and $query->where('users.stripe_id', 'like', '%' . \Request::input
+            ('stripe_id') . '%');
+        \Request::input('card_brand') and $query->where('users.card_brand', 'like', '%' . \Request::input
+            ('card_brand') . '%');
+        \Request::input('card_last_four') and $query->where('users.card_last_four',
+            'like', '%' . \Request::input('card_last_four') . '%');
+        \Request::input('trial_ends_at') and $query->where('users.trial_ends_at', \Request::input
+            ('trial_ends_at'));
+        \Request::input('subscription_ends_at') and $query->where('users.subscription_ends_at', \Request::input
+            ('subscription_ends_at'));
+
+        // sort results
+        \Request::input("sort") and $query->orderBy(\Request::input("sort"), \Request::input
+            ("sortType", "asc"));
+
+        // paginate results
+        return $query->paginate(15);
+    }
+    
+    public static function seller_byAfa() {
+        $query = User::query();
+        $query->join('localizations', 'localizations.id', '=', 'users.location_id');
+        $query->select('users.id AS uid', 'users.name AS name',
+            'users.image_id AS image_id', 'users.email as email',
+            'users.created_at as created_at', 'users.role as role', 'users.status as status',
+            'users.author_id as author_id', 'localizations.country as country',
+            'localizations.locality as locality', 'users.type_users_id as type_users_id');
+        $query->where('role',2)->whereIn('type_users_id',array(8,9));
         // search results based on user input
         \Request::input('id') and $query->where('users.id', \Request::input('id'));
         \Request::input('name') and $query->where('users.name', 'like', '%' . \Request::input

@@ -316,12 +316,16 @@
                                                                     <option value="" selected disabled>@lang('app.select_country')</option>
                                                                     @foreach($countries as $country)
                                                                         @if($country->prefixPhone)
-                                                                            <option value="{{$country->code}}" {{ old('country_2')==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
+                                                                            <option value="{{$country->code}}" long="{{$country->content}}" {{ old('country_2')==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
                                                                         @endif
                                                                     @endforeach
                                                                 </select>
                                                                 <span class="text-danger">{{ $errors->first('country_2') }}</span>
                                                             </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="hidden" value="{{ old('long_2')?old('long_2'):'' }}" name="long_2" id="long_2">
+                                                            <input type="hidden" value="{{ old('lat_2')?old('lat_2'):'' }}" name="lat_2" id="lat_2">
                                                         </div>
                                                         {{-- <div class="form-group">
                                                             <label for="phone_2" class="col-sm-12 control-label">@lang('app.txt.phone')</label>
@@ -1105,6 +1109,7 @@
 <script>
     function initMap(){
         var autocomplete = new google.maps.places.Autocomplete($("#street_adr")[0], {});
+        var autocomplete2 = new google.maps.places.Autocomplete($("#street_adr_2")[0], {});
 
         google.maps.event.addListener(autocomplete, 'place_changed', function() {
             var place = autocomplete.getPlace();
@@ -1114,7 +1119,6 @@
             var itemCountry='';
             var itemPc='';
             var itemSnumber='';
-
             var lat = place.geometry.location.lat();
             var long = place.geometry.location.lng();
             
@@ -1152,6 +1156,55 @@
 
                 var val = itemCountry;
                 $('#country option[long="'+val+'"]').prop('selected', true);
+
+            });
+        });
+
+        google.maps.event.addListener(autocomplete2, 'place_changed', function() {
+            var place2 = autocomplete2.getPlace();
+            var arrAddress2 = place2.address_components;
+            var itemRoute2='';
+            var itemLocality2='';
+            var itemCountry2='';
+            var itemPc2='';
+            var itemSnumber2='';
+            var lat2 = place2.geometry.location.lat();
+            var long2 = place2.geometry.location.lng();
+            
+            $.each(arrAddress2, function (i, address_components) {
+                if (address_components.types[0] == "street_number") {
+                    //console.log("street_number:" + address_components.long_name);
+                    itemSnumber2 = address_components.long_name;
+                }
+                if (address_components.types[0] == "route") {
+                    //console.log(i + ": route:" + address_components.long_name);
+                    itemRoute2 = address_components.long_name;
+                }
+                
+                if (address_components.types[0] == "locality") {
+                    //console.log("town:" + address_components.long_name);
+                    itemLocality2 = address_components.long_name;
+                }
+                
+                if (address_components.types[0] == "country") {
+                    // console.log("country:" + address_components.long_name);
+                    itemCountry2 = address_components.long_name;
+                }
+                
+                if (address_components.types[0] == "postal_code") {
+                    //console.log("pc:" + address_components.long_name);
+                    itemPc2 = address_components.long_name;
+                }
+                
+                var adresse2 = itemSnumber2 + ' ' + itemRoute2;
+                $('#street_adr_2').val(adresse2);
+                $('#long_2').val(long2);
+                $('#lat_2').val(lat2);
+                $('#city_2').val(itemLocality2);
+                $('#post_code_2').val(itemPc2);
+
+                var val2 = itemCountry2;
+                $('#country_2 option[long="'+val2+'"]').prop('selected', true);
 
             });
         });
