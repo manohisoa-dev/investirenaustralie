@@ -1427,6 +1427,10 @@
                 }
             });
         }
+
+        function myFunction() {
+            return input = document.activeElement.id;
+        }
     </script>
 
     <!-- end -->

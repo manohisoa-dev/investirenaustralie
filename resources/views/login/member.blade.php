@@ -1598,12 +1598,11 @@
     </script>
 
     {{-- Google map autocomplete --}}
-    {{-- @php
+    @php
         $key = env('GMAP_API_KEY');
         $url = "https://maps.googleapis.com/maps/api/js?key=".$key."&callback=initMap&libraries=places&v=weekly";
     @endphp
-    <script async defer src={{$url}}></script> --}}
-    <script async defer type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2izG_M7K3gP6pFUH5cyzmDjuGpOYfgc4&libraries=places&callback=initMap"></script>
+    <script async defer src={{$url}}></script>
     <script>
         function initMap(){
             var autocomplete = new google.maps.places.Autocomplete($("#locality")[0], {});
@@ -1616,6 +1615,9 @@
                 var itemCountry='';
                 var itemPc='';
                 var itemSnumber='';
+
+                console.log(place.geometry.location.lat());
+                console.log(place.geometry.location.lng());
                 
                 $.each(arrAddress, function (i, address_components) {
                     if (address_components.types[0] == "street_number") {

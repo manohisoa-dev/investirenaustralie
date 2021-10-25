@@ -840,6 +840,8 @@ class RegisterController extends Controller
                     $lat = $coord_tab['lat'];
                     $lng = $coord_tab['lng'];
                 }else{
+                    // $lat = $request->long;
+                    // $lng = $request->lat;
                     $lat = '';
                     $lng = '';
                 }

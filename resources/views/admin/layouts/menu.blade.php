@@ -48,7 +48,7 @@
                 <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}">@lang('app.txt.any')</a>
             </li>
             @forelse (App\Models\Role::where('role_initial','!=','admin')->get() as $item)
-                @if($item->role_initial !== 'member' && $item->role_initial !== 'collaborator')
+                @if($item->role_initial !== 'member' && $item->role_initial !== 'collaborator' && $item->role_initial !== 'seller')
                     <li class="">
                         <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show.'.$item->role_initial):route('admin.user.show.'.$item->role_initial)}}">@lang('app.txt.'.$item->role_initial)</a>
                     </li>
@@ -57,7 +57,7 @@
                         <a href="#"> 
                             <span class="nav-label">@lang('app.txt.'.$item->role_initial)</span><span class="fa arrow"></span>
                         </a>
-                        <ul class="nav nav-second-level collapse">
+                        <ul class="nav nav-third-level collapse">
                             <li class="">
                                 <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show.'.$item->role_initial):route('admin.user.show.'.$item->role_initial)}}">{{ trans('app.txt.list_of', ['role'=>trans('app.txt.'.$item->role_initial)]) }}</a>
                             </li>
@@ -68,6 +68,19 @@
                                 <li class="">
                                     <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show.member.organisation'):route('admin.user.show.member.organisation')}}">@lang('app.txt.list_organisation')</a>
                                 </li>
+							@elseif($item->role_initial == 'seller')
+								<li class="">
+									<a href="#">@lang('seller.real_estate_professionals')</a>
+								</li>
+								<li class="">
+									<a href="#">@lang('seller.non_professional_legal_persons')</a>
+								</li>
+								<li class="">
+									<a href="#">@lang('seller.non_professional_natural_persons')</a>
+								</li>
+								<li class="">
+									<a href="#">@lang('seller.seller_by_afa')</a>
+								</li>
                             @else
                                 <li class="">
                                     <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.create.collaborator'):route('admin.user.create.collaborator')}}">@lang('app.txt.add_collaborator')</a>
