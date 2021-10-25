@@ -692,7 +692,7 @@ class ProductController extends Controller {
             $this->save_eoi_dossier($request->eoiDossier, $id_programme);
         }
 
-        if ($request->liaDossier) {
+        if (isset($request->liaDossier)) {
             foreach ($request->liaDossier as $key => $value) {
                 $this->save_lia_dossier($value, $id_programme);
             }
