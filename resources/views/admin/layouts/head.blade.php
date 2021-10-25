@@ -69,7 +69,7 @@
 					$messages = \App\Models\Message::where("to_id", Auth::user()->id)
 					->join('users', 'users.id','=','messages.from_id')
 					->select('messages.*', 'messages.created_at as dt' , 'users.name', 'users.immat', 'users.id as user_id', 'users.role')
-					->orderBy('created_at' , 'ASC')
+					->orderBy('created_at' , 'DESC')
 					->groupBy('from_id')
 					->get();
 				@endphp
@@ -84,7 +84,7 @@
                                 <a class="dropdown-item float-left" href="javascript:void(0)" onclick="userChatBull('{{$msg->user_id}}','{{$msg->immat}}')">
                                     <img alt="image" class="rounded-circle" src="{{asset("images/iea.png")}}">
                                 </a>
-                                <div class="media-body">
+                                <div class="media-body" onclick="userChatBull('{{$msg->user_id}}','{{$msg->immat}}')">
                                     {!! trans('app.txt.you_have_received_message_from', ['user'=>$msg->name]) !!} <br>
                                     <small class="text-muted">{{ $msg->created_at ? $msg->created_at->diffForHumans() : '' }}</small>
                                 </div>
