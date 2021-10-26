@@ -60,12 +60,12 @@
 							<td>{{$user->roleUser['role_initial']}}</td>
 						</tr>
 						<tr>
-							<th width="45%">@lang('app.form.first_name')</th>
-							<td>{{$user->userinfos?$user->userinfos->first_name:''}}</td>
-						</tr>
-						<tr>
 							<th width="45%">@lang('app.form.last_name')</th>
 							<td>{{$user->userinfos?$user->userinfos->last_name:''}}</td>
+						</tr>
+						<tr>
+							<th width="45%">@lang('app.form.first_name')</th>
+							<td>{{$user->userinfos?$user->userinfos->first_name:''}}</td>
 						</tr>
 						<tr>
 							<th width="45%">@lang('app.form.login')</th>

@@ -166,6 +166,8 @@
 					<div class="form-group">
 						<label for="title">@lang('app.form.programme_adresse') *</label>
 						<input name="display_address" id="display_address" class="form-control" type="text" value="{{ old('display_address')?old('display_address'):'' }}">
+						<input type="hidden" name="long" id="long" />
+						<input type="hidden" name="lat" id="lat" />
 					</div>
 					
 					<div class="row">
@@ -332,10 +334,13 @@ function initMap(){
 		//console.log(place.address_components);
 		var arrAddress = place.address_components;
 		var itemRoute='';
-		var itemLocality='';
+		var itemSuburb='';
+		var itemCity = '';
 		var itemCountry='';
 		var itemPc='';
 		var itemSnumber='';
+		var lat = place.geometry.location.lat();
+		var long = place.geometry.location.lng();
 		
 		$.each(arrAddress, function (i, address_components) {
 			if (address_components.types[0] == "street_number") {
@@ -349,7 +354,7 @@ function initMap(){
 			
 			if (address_components.types[0] == "locality") {
 				//console.log("town:" + address_components.long_name);
-				itemLocality = address_components.long_name;
+				itemSuburb = address_components.long_name;
 			}
 			
 			if (address_components.types[0] == "country") {
@@ -363,11 +368,18 @@ function initMap(){
 				//console.log("pc:" + address_components.long_name);
 				itemPc = address_components.long_name;
 			}
+			if (address_components.types[0] == "administrative_area_level_2") {
+				//console.log("pc:" + address_components.long_name);
+				itemCity = address_components.short_name;
+			}
 			
 			var adresse = itemSnumber + ' ' + itemRoute;
 			$('#display_address').val(adresse);
-			$('#ville').val(itemLocality);
+			$('#ville').val(itemSuburb);
 			$('#postalCode').val(itemPc);
+			$('#suburb').val(itemCity);
+			$('#long').val(long);
+			$('#lat').val(lat);
 		});
 	});
 }

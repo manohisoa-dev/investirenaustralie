@@ -198,7 +198,7 @@
                                             <div class="form-group">
                                                 <label for="locality" class="col-sm-12 control-label">@lang('app.txt.city') *</label>
                                                 <div class="col-sm-12">
-                                                    <input type="text" class="form-control" id="locality" name="locality" placeholder="@lang('app.txt.city')" value="{{ old('locality')?old('locality'):'' }}" required>
+                                                    <input type="text" class="form-control" id="administrative_area_level_2" name="locality" placeholder="@lang('app.txt.city')" value="{{ old('locality')?old('locality'):'' }}" required>
                                                     <span class="text-danger">{{ $errors->first('locality') }}</span>
                                                 </div>
                                             </div>
@@ -480,11 +480,7 @@
 
 @push('script')
 {!! NoCaptcha::renderJs() !!}
-    @php
-        $key = env('GMAP_API_KEY');
-        $url = "https://maps.googleapis.com/maps/api/js?key=".$key."&callback=initMap&libraries=places&v=weekly";
-    @endphp
-    <script async defer src={{$url}}></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2izG_M7K3gP6pFUH5cyzmDjuGpOYfgc4&libraries=places&callback=initMap&channel=GMPSB_addressselection_v1_cABC" async defer></script>
 <script src="{{asset('js/myJs.js')}}"></script>
 <!-- Jquery Validate -->
 <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
@@ -830,58 +826,75 @@
 
 {{-- Google map autocomplete --}}
 <script>
-function initMap(){
-    var autocomplete = new google.maps.places.Autocomplete($("#route")[0], {});
+    function initMap(){
+        var autocomplete = new google.maps.places.Autocomplete($("#route")[0], {});
+        autocomplete.setComponentRestrictions({'country': ['au']});
+            
+        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+            var place = autocomplete.getPlace();
+            var arrAddress = place.address_components;
+            var itemRoute='';
+            var itemSuburb='';
+            var itemCountry='';
+            var itemCity = '';
+            var itemPc='';
+            var itemState='';
+            var itemSnumber='';
+            var lat = place.geometry.location.lat();
+            var long = place.geometry.location.lng();
+            
+            console.log(arrAddress);
 
-    google.maps.event.addListener(autocomplete, 'place_changed', function() {
-        var place = autocomplete.getPlace();
-        var arrAddress = place.address_components;
-        var itemRoute='';
-        var itemLocality='';
-        var itemCountry='';
-        var itemPc='';
-        var itemSnumber='';
-        var lat = place.geometry.location.lat();
-        var long = place.geometry.location.lng();
-        
-        $.each(arrAddress, function (i, address_components) {
-            if (address_components.types[0] == "street_number") {
-                //console.log("street_number:" + address_components.long_name);
-                itemSnumber = address_components.long_name;
-            }
-            if (address_components.types[0] == "route") {
-                //console.log(i + ": route:" + address_components.long_name);
-                itemRoute = address_components.long_name;
-            }
-            
-            if (address_components.types[0] == "locality") {
-                //console.log("town:" + address_components.long_name);
-                itemLocality = address_components.long_name;
-            }
-            
-            if (address_components.types[0] == "country") {
-                // console.log("country:" + address_components.long_name);
-                itemCountry = address_components.long_name;
-            }
-            
-            if (address_components.types[0] == "postal_code") {
-                //console.log("pc:" + address_components.long_name);
-                itemPc = address_components.long_name;
-            }
-            
-            $('#route').val(itemRoute);
-            $('#route_number').val(itemSnumber);
-            $('#locality').val(itemLocality);
-            $('#postalCode').val(itemPc);
-            $('#long').val(long);
-            $('#lat').val(lat);
+            $.each(arrAddress, function (i, address_components) {
+                if (address_components.types[0] == "street_number") {
+                    //console.log("street_number:" + address_components.long_name);
+                    itemSnumber = address_components.long_name;
+                }
+                if (address_components.types[0] == "route") {
+                    //console.log(i + ": route:" + address_components.long_name);
+                    itemRoute = address_components.long_name;
+                }
+                
+                if (address_components.types[0] == "locality") {
+                    //console.log("town:" + address_components.long_name);
+                    itemSuburb = address_components.long_name;
+                }
+                
+                if (address_components.types[0] == "country") {
+                    // console.log("country:" + address_components.long_name);
+                    itemCountry = address_components.long_name;
+                }
+                
+                if (address_components.types[0] == "postal_code") {
+                    //console.log("pc:" + address_components.long_name);
+                    itemPc = address_components.long_name;
+                }
 
-            var val = itemCountry;
-            $('#country_1 option[long="'+val+'"]').prop('selected', true);
+                if (address_components.types[0] == "administrative_area_level_1") {
+                    //console.log("pc:" + address_components.long_name);
+                    itemState = address_components.short_name;
+                }
+                
+                if (address_components.types[0] == "administrative_area_level_2") {
+                    //console.log("pc:" + address_components.long_name);
+                    itemCity = address_components.short_name;
+                }
 
+                $('#route').val(itemRoute);
+                $('#route_number').val(itemSnumber);
+                $('#locality').val(itemSuburb);
+                $('#administrative_area_level_2').val(itemCity);
+                $('#postalCode').val(itemPc);
+                $('#long').val(long);
+                $('#lat').val(lat);
+
+                var val = itemCountry;
+                $('#country_1 option[long="'+val+'"]').prop('selected', true);
+                $('#administrative_area_level_1 option[value="'+itemState+'"]').prop('selected', true);
+
+            });
         });
-    });
-}
+    }
 </script>
 {{-- End google map autocomplete --}}
 @endpush

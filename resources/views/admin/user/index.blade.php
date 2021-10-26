@@ -124,6 +124,14 @@
 
                     <tbody>
 					@forelse ( $records as $index =>$record )
+						@php
+							$user_info = \App\Models\Userinfo::where('user_id',$record->uid)->first();
+							if(!empty($user_info)){
+								$user_name = $user_info->first_name;
+							}else{
+								$user_name = $record->name;
+							}
+						@endphp
 						<tr>
 							<td>{{ $index + $records->firstItem() }}</td>
 							<td>
@@ -145,7 +153,7 @@
 								data-value="{{ $record->name }}"
 								data-pk="{{ $record->{$record->getKeyName()} }}"
 								data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
-								>{{ $record->name }}</span>
+								>{{ $user_name }}</span>
 							</td>
 							<td>
 								<span class="editable"

@@ -473,16 +473,7 @@ class ProductController extends Controller {
         }
     }
 
-    function save_location($country, $suburb, $postalCode, $locality, $route) {
-        $adresse = $route . ', ' . $locality . ' ' . $postalCode . ', ' . $country;
-        $coordonne_tab = geocodeAddress($adresse);
-        if ($coordonne_tab) {
-            $latitude = $coordonne_tab['lat'];
-            $longitude = $coordonne_tab['lng'];
-        } else {
-            $latitude = '';
-            $longitude = '';
-        }
+    function save_location($country, $suburb, $postalCode, $locality, $route,$longitude = '',$latitude = '') {        
         $location = new Localisation();
         $location->country = $country;
         $location->area_level_1 = $suburb;
@@ -660,7 +651,7 @@ class ProductController extends Controller {
         }
 
         $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
-            $request->ville, $request->display_address);
+            $request->ville, $request->display_address,$request->long,$request->lat);
 
         if ($request->commision == 'Sales commission rate (%)') {
             $taux_commision = $request->sales_rate;
@@ -885,16 +876,8 @@ class ProductController extends Controller {
             $localisation = Localisation::find($product->location_id);
             if ($localisation->route != $request->display_address || $localisation->locality !=
                 $request->ville) {
-                $adresse = $request->display_address . ', ' . $request->ville . ' ' . $request->postalCode .
-                    ', ' . $request->countryId;
-                $coordonne_tab = geocodeAddress($adresse);
-                if ($coordonne_tab) {
-                    $latitude = $coordonne_tab['lat'];
-                    $longitude = $coordonne_tab['lng'];
-                } else {
-                    $latitude = '';
-                    $longitude = '';
-                }
+                $longitude = $request->long;
+                $latitude = $request->lat;
                 Localisation::where('id', $product->location_id)->update(['area_level_1' => $request->suburb,
                     'country' => $request->countryId, 'postalCode' => $request->postalCode,
                     'locality' => $request->ville, 'route' => $request->display_address, 'longitude' =>
@@ -903,7 +886,7 @@ class ProductController extends Controller {
             }
         } else {
             $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
-                $request->ville, $request->display_address);
+                $request->ville, $request->display_address,$request->long,$request->lat);
         }
 
         if ($request->commision == 'Sales commission rate (%)') {
@@ -923,6 +906,10 @@ class ProductController extends Controller {
         $product->location_id = $id_location;
         $product->commission_type = $request->commision;
         $product->commision = $taux_commision;
+        $product->commencement_dt = $request->commencement_dt;
+        $product->estimated_delvivery_dt = $request->estimated_delvivery_dt;
+        $product->programme_firb_pre_approved = $request->programme_firb_pre_approved_program;
+        $product->programme_pre_approved_sale = $request->programme_pre_approved_sale;
         $product->save();
 
         // // update translation

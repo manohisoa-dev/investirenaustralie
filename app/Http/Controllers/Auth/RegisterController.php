@@ -12,6 +12,7 @@ use Auth;
 use Event;
 use App;
 use DB;
+use Redirect;
 
 use App\Notifications\AccountCreated;
 use App\Notifications\ConfirmRegistrationMemberMessage;
@@ -444,7 +445,6 @@ class RegisterController extends Controller
     */
     private function storeByRole(Request $request, $role)
     {    
-
         // Get post datas
         $datas = $request->all();
         
@@ -457,696 +457,1211 @@ class RegisterController extends Controller
             }
         }
         
-        $default = [
-            'name'     => 'required|unique:users,name|max:100',
-            'email'    => 'required|unique:users,email|max:100',
-            'language' => 'required|max:100',
-            'image'    => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ];
-
-        switch($role){
+        switch ($role) {
             case 'member':
-                $type=$request->input('type');
-                if($type=='person'){
-                    $rules = [
-                        'first_name' => 'required|max:100',
-                        'last_name'  => 'required|max:100',
-                        'country'    => 'required|max:100',
-                        'nationality'  => 'required|max:100',
-                        'sexe'       => 'required',
-                        'civility'  => 'required|max:3',
-                        'g-recaptcha-response' => 'required|captcha',
-                    ];
-                }else{
-                    $rules = [
-                        'orga_phone' => 'required|max:100',
-                        'orga_mobile_phone' => 'required|max:100',
-                        'orga_name'         => 'required|max:100',
-                        'orga_registration_number'         => 'required|max:100',
-                        'orga_rep_official_registration'         => 'nullable|max:100',
-                        'orga_type'         => 'required',
-                        'orga_presentation' => 'nullable|max:2000',
-                        'route'        => 'required|max:100',
-                        'route_number'        => 'required',
-                        'locality'     => 'required|max:100',
-                        'postalCode'   => 'required|max:100',
-                        'area_level_1' => 'nullable|max:100',
-                        'country'      => 'required|max:100',
-                        'contact_name'       => 'required|max:100',
-                        'contact_phone'       => 'required|max:100',
-                        'contact_email'        => 'required|email|max:100',
-                        'g-recaptcha-response' => 'required|captcha',
-                    ];
+                if($request->type=='person'){
+                    $resp = $this->storeMemberPart($request,$role);
 
-                    if($request->orga_type == 'private' || $request->orga_type == 'mixte'){
-                        $rules += ['orga_form' => 'required',];
-                    }
-    
-                    if($request->orga_form == 'other'){
-                        $rules += ['define_orga_form' => 'required',];
-                    }
-    
-                    if($request->postal_address_below){
-                       $rules += [
-                        'adrpost_postal_box'     => 'required|max:100',
-                        'adrpost_locality'     => 'required|max:100',
-                        'adrpost_postalCode'   => 'required|max:100',
-                        'adrpost_area_level_1' => 'nullable|max:100',
-                        'adrpost_country'      => 'required|max:100',
-                       ];
-                    }
-                }
-                if($request->newsletter == 'yes'){
-                    $newletter = new Newsletter;
-                    $newletter->email_adresse = $request->email;
-                    $newletter->statuts = 'Actif';
-                    $newletter->save();
-                }
-                
-                break;
-            case 'afa':
-                $rules = [
-                    'type'         => 'required',
-                    'orga_name'         => 'required|max:100',
-                    'orga_trading_name'         => 'required|max:100',
-                    'orga_abn'         => 'required|digits_between:11,11|numeric',
-                    'orga_acn'         => 'nullable|digits_between:9,9|numeric',
-                    'orga_license_number'  => 'required|max:100',
-                    // 'orga_email'        => 'required|email|max:100',
-                    'orga_phone'        => 'required|digits_between:8,9|numeric',
-                    'orga_fax'        => 'nullable|max:100',
-                    'orga_mobile_phone'        => 'required|digits_between:9,9|numeric',
-                    'orga_website'      => 'required|url|max:100',
-                    'orga_presentation' => 'max:2000',
-                    'orga_operation_state' => 'required',
-                    'orga_operation_range' => 'required',
-
-                    'route'        => 'required|max:100',
-                    'route_number'        => 'required',
-
-                    'area_level_2' => 'required|max:100',
-                    'locality'     => 'required|max:100',
-                    'postalCode'   => 'required|integer',
-                    'area_level_1' => 'required|max:100',
-                    'country'      => 'required',
-                    
-                    'contact_name'  => 'required|max:100',
-                    'contact_email' => 'required|email|max:100',
-                    'contact_phone' => 'required|digits_between:9,9|numeric',
-
-                    'g-recaptcha-response' => 'required|captcha',
-                ];
-
-                if($request->postal_address_below){
-                    $rules += [
-                     'adrpost_postal_box'     => 'required|max:100',
-                     'adrpost_locality'      => 'required|max:100',
-                     'adrpost_area_level_1' => 'required|max:100',
-                     'adrpost_postalCode'   => 'required|max:100',
-                    ];
-                 }
-
-                 if($request->postal_address_above){
-                    $datas['adrpost_locality'] = $datas['locality'];
-                    $datas['adrpost_area_level_1'] = $datas['area_level_1'];
-                    $datas['adrpost_postalCode'] = $datas['postalCode'];
-                 }
-
-                 if(is_array($datas['orga_operation_state'])){
-                    $datas['orga_operation_state']=serialize($datas['orga_operation_state']);
-                 }
-
-                break;
-            case 'apl':
-                $rules = [
-                    'orga_name'         => 'required|max:100',
-                    'orga_registration_number'         => 'required|max:100',
-                    'orga_type'         => 'required',
-                    'orga_license_number'         => 'required|max:100',
-                    'orga_operation_range' => 'required',
-                    'orga_presentation' => 'nullable|max:2000',
-                    
-                    'route'        => 'required|max:100',
-                    'route_number'        => 'required',
-                    'locality'     => 'required|max:100',
-                    'postalCode'   => 'required|max:100',
-                    'area_level_1' => 'nullable|max:100',
-                    'country'      => 'required|max:100',
-                    
-                    'contact_name'  => 'required|max:100',
-                    'contact_phone' => 'required|digits_between:6,9|numeric',
-                    'contact_email' => 'required|email|max:100',
-
-                    'bank_name' => 'required|max:100',
-                    'bank_agency' => 'required|max:100',
-                    'bank_postal_box' => 'required|max:100',
-                    'bank_locality' => 'required|max:100',
-                    'bank_postalCode' => 'required|max:100',
-                    'bank_country' => 'required|max:100',
-                    'bank_iban' => 'required|alpha_num|min:27|max:27',
-                    'bank_bic' => 'required|alpha_num|min:8|max:11',
-
-                    'g-recaptcha-response' => 'required|captcha',
-                ];
-
-                if($request->orga_type == 'society'){
-                    $rules += ['orga_form' => 'required',];
-                }
-
-                if($request->orga_form == 'other'){
-                    $rules += ['orga_form' => 'required',];
-                }
-
-                if($request->postal_address_below){
-                   $rules += [
-                    'adrpost_locality'     => 'required|max:100',
-                    'adrpost_postalCode'   => 'required|max:100',
-                    'adrpost_area_level_1' => 'nullable|max:100',
-                    'adrpost_country'      => 'required|max:100',
-                   ];
-                }
-
-                if($request->postal_address_above){
-                    $datas['adrpost_locality'] = $datas['locality'];
-                    $datas['adrpost_postalCode'] = $datas['postalCode'];
-                    $datas['adrpost_area_level_1'] = $datas['area_level_1'];
-                    $datas['adrpost_country'] = $datas['country'];
-                 }
-
-                break;
-            case 'seller':
-                if(session('seller_class')!=='non_professional_natural_persons' && session('seller_class')!=='seller_by_afa'){
-                    $rules = [
-                        'orga_name'         => 'required|max:100',
-                        'orga_trading_name'         => 'required|max:100',
-                        'orga_abn'         => 'required|digits_between:11,11|numeric',
-                        'orga_acn'         => 'nullable|digits_between:9,9|numeric',
-                        // 'orga_email'        => 'required|email|max:100',
-                        'orga_phone'        => 'required|digits_between:8,9|numeric',
-                        'orga_fax'        => 'nullable|max:100',
-                        'orga_mobile_phone'        => 'required|digits_between:9,9|numeric',
-                        'orga_website'      => 'required|url|max:100',
-                        'orga_presentation' => 'max:2000',
-
-                        'route_number'        => 'required',
-                        'route'        => 'required|max:100',
-                        'locality'     => 'required|max:100',
-                        'area_level_2' => 'required|max:100',
-                        'postalCode'   => 'required|integer',
-                        'area_level_1' => 'required|max:100',
-                        'country'      => 'required',
-
-                        'contact_name'  => 'required|max:100',
-                        'contact_email' => 'required|email|max:100',
-                        'contact_phone' => 'required|digits_between:9,9|numeric',
-
-                        'g-recaptcha-response' => 'required|captcha',
-    
-                    ];
-
-                    if(session('seller_class')==='real_estate_professionals'){
-                        $rules += [
-                            'type'     => 'required|max:100',
-                            'orga_parent_name'         => 'required|max:100',
-                        ];
-                    }
-    
-                    if($request->postal_address_below){
-                        $rules += [
-                         'adrpost_postal_box'     => 'required|max:100',
-                         'adrpost_locality'     => 'required|max:100',
-                         'adrpost_postalCode'   => 'required|max:100',
-                         'adrpost_area_level_1' => 'nullable|max:100',
-                         'adrpost_country'      => 'required|max:100',
-                        ];
-                     }
-    
-                     if($request->postal_address_above){
-                        $datas['adrpost_locality'] = $datas['locality'];
-                        $datas['adrpost_postalCode'] = $datas['postalCode'];
-                        $datas['adrpost_area_level_1'] = $datas['area_level_1'];
-                        $datas['adrpost_country'] = $datas['country'];
-                     }
-                }else{
-                    if(session('seller_class')!=='seller_by_afa'){
-                        $rules = [
-                            // Seller #1
-                            'last_name'  => 'required|max:100',
-                            'first_name' => 'required|max:100',
-                            'date_of_birth' => 'required|max:100',
-                            'place_of_birth' => 'required|max:100',
-                            'nationality' => 'required|max:100',
-                            'street_adr' => 'required|max:100',
-                            'suburb' => 'required|max:100',
-                            'city' => 'required|max:100',
-                            'post_code' => 'required|max:100',
-                            'state' => 'nullable|max:100',
-                            'country' => 'required|max:100',
-                            // 'phone' => 'required|max:15',
-                            'mobile' => 'required|digits_between:6,15|numeric',
-                            'email_adr' => 'required|email|max:100',
-
-                            // Seller #2
-                            'last_name_2'  => 'nullable|max:100',
-                            'first_name_2' => 'nullable|max:100',
-                            'date_of_birth_2' => 'nullable|max:100',
-                            'place_of_birth_2' => 'nullable|max:100',
-                            'nationality_2' => 'nullable|max:100',
-                            'street_adr_2' => 'nullable|max:100',
-                            'suburb_2' => 'nullable|max:100',
-                            'city_2' => 'nullable|max:100',
-                            'post_code_2' => 'nullable|max:100',
-                            'state_2' => 'nullable|max:100',
-                            'country_2' => 'nullable|max:100',
-                            // 'phone_2' => 'nullable|max:15',
-                            'mobile_2' => 'nullable|digits_between:9,15|numeric',
-                            'email_adr_2' => 'nullable|email|max:100',
-
-                            'g-recaptcha-response' => 'required|captcha',
-
-                        ];
+                    if($resp[0]['status']===false){
+                        return Redirect::back()->withErrors($resp[0]['resp'])->withInput();
                     }else{
-                        $rules = [
-                            'login_afa'  => 'required',
-                            'immat_afa' => 'required',
-                            'property_name'  => 'required',
-                            'contact_name'  => 'required|max:100',
-                            'contact_email' => 'required|email|max:100',
-                            'contact_phone' => 'required|digits_between:6,9|numeric',
+                        $alert =trans('app.txt.alert_success');
+                    }
+                }else{
+                    $resp = $this->storeMemberOrg($request,$role);
 
-                            'g-recaptcha-response' => 'required|captcha',
-                        ];
+                    if($resp[0]['status']===false){
+                        return Redirect::back()->withErrors($resp[0]['resp'])->withInput();
+                    }else{
+                        $alert =trans('app.txt.alert_success');
+                    }
+                }
+                break;
+            
+            case 'seller':
+                $class = session('seller_class');
+                if($class=='real_estate_professionals'){
+                    $resp = $this->storeSellerRep($request,$role);
 
-                        if($request->type == 'business'){
-                            $rules += [
-                                'business_name' => 'required|max:100',
-                                'business_parent' => 'nullable|max:191',
-                                'street_adr_bs'        => 'required|max:100',
-                                'suburb_bs'        => 'required|max:100',
-                                'city_bs'        => 'required|max:100',
-                                'post_code_bs' => 'required|max:100',
-                                'state_bs' => 'required|max:100',
-                                'country_bs' => 'required|max:100',
-                                'phone_bs' => 'required|max:15',
-                                'mobile_bs' => 'required|max:15',
-                                'email_adr_bs' => 'required|email|max:100',
-                            ];
+                    if($resp[0]['status']===false){
+                        return Redirect::back()->withErrors($resp[0]['resp'])->withInput();
+                    }else{
+                        if($resp[0]['resp']->isSbu()){
+                            $alert =trans('app.txt.alert_success_sbu');
                         }else{
-                            
-                            $rules += [
-                                // Seller #1
-                                'last_name'  => 'required|max:100',
-                                'first_name' => 'required|max:100',
-                                'street_adr' => 'required|max:100',
-                                'suburb' => 'required|max:100',
-                                'city' => 'required|max:100',
-                                'post_code' => 'required|max:100',
-                                'state' => 'nullable|max:100',
-                                'country' => 'required|max:100',
-                                'mobile' => 'required|digits_between:6,15|numeric',
-                                'email_adr' => 'required|email|max:100',
+                            $alert =trans('app.txt.alert_success_sde');
+                        }
+                    }
+                }else if($class=='non_professional_legal_persons'){
+                    $resp = $this->storeSellerSlp($request,$role);
 
-                                // Seller #2
-                                'last_name_2'  => 'nullable|max:100',
-                                'first_name_2' => 'nullable|max:100',
-                                'street_adr_2' => 'nullable|max:100',
-                                'suburb_2' => 'nullable|max:100',
-                                'city_2' => 'nullable|max:100',
-                                'post_code_2' => 'nullable|max:100',
-                                'state_2' => 'nullable|max:100',
-                                'country_2' => 'nullable|max:100',
-                                'mobile_2' => 'nullable|digits_between:6,15|numeric',
-                                'email_adr_2' => 'nullable|email|max:100',
-                            ];
+                    if($resp[0]['status']===false){
+                        return Redirect::back()->withErrors($resp[0]['resp'])->withInput();
+                    }else{
+                        $alert =trans('app.txt.alert_success_slp');
+                    }
+                }else if($class=='non_professional_natural_persons'){
+                    $resp = $this->storeSellerSnp($request,$role);
+
+                    if($resp[0]['status']===false){
+                        return Redirect::back()->withErrors($resp[0]['resp'])->withInput();
+                    }else{
+                        $alert =trans('app.txt.alert_success_snp');
+                    }
+                }else{
+                    // seller by afa
+                    if($datas['type'] == 'individual'){
+                        $resp = $this->storeSellerByAfaIndividual($request,$role);
+                    }else{
+                        $resp = $this->storeSellerByAfaBusiness($request,$role);
+                    }
+
+                    if($resp[0]['status']===false){
+                        return Redirect::back()->withErrors($resp[0]['resp'])->withInput();
+                    }else{
+                        if($resp[0]['resp']->isSbaBusiness()){
+                            // template message
+                            $user=$resp[0]['resp'];
+                            App::setLocale($user->language);
+                            $lang = $user->language;
+                            $content_lab = 'message_'.$lang;
+                            $message = ModelMessage::where('id', 8)->get();
+                            if (count($message) > 0) {
+                                $vars2 = array(
+                                    '{Seller by AFA Name}' => $user->name,
+                                    '{Name of property to be sold}' => $request->property_name);
+                                $contenu = strtr($message[0]->$content_lab, $vars2);
+                                
+                                $alert =$contenu;
+                            }
+                        }else{
+                            // template message
+                            $user=$resp[0]['resp'];
+                            App::setLocale($user->language);
+                            $lang = $user->language;
+                            $content_lab = 'message_'.$lang;
+                            $message = ModelMessage::where('id', 8)->get();
+                            if (count($message) > 0) {
+                                $vars2 = array(
+                                    '{Seller by AFA Name}' => $user->name,
+                                    '{Name of property to be sold}' => $request->property_name);
+                                    $contenu = strtr($message[0]->$content_lab, $vars2);
+                                    
+                                $alert =$contenu;
+                            }
                         }
                     }
                 }
 
+                // remove session seller class
+                session()->forget('seller_class');
+
                 break;
-            default:
-                abort(404);
-        }
 
+            case 'afa':
+                $resp = $this->storeAfa($request,$role);
 
-        // Validate request
-        $rules = array_merge($default, $rules);
-
-        $validator = Validator::make($datas, $rules);
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
-
-        // Store image file
-        $datas['image_id'] = 0;
-        if($file=$request->file('image')){
-            $image = Image::storeAndSave($file);
-            $datas['image_id'] = $image->id>0?$image->id:0;
-        }
-        
-        // More info
-        $oRole = Role::where('role_initial',$role)->first() ;
-        $typeUser = TypeUser::where('type_user_name',$datas['type'])->first() ;
-        
-        $datas['role'] = isset($oRole) ? $oRole->id : '';
-        $datas['password'] = Hash::make($password = str_random(10));
-        $datas['activation_code'] = md5(str_random(30).(time()*32));
-        $datas['use_default_password'] = 1;
-        $datas['type_users_id'] = isset($typeUser) ? $typeUser->id : '';
-        
-
-        try{
-            // Create user
-            $type= $datas['type'];
-
-            // generate immatriculation user
-            $datas['immat'] = $this->generateImmat($role,$type);
-            
-            // Set User is seller
-            if($role === 'seller'){
-                $datas['is_seller'] = 1;
-            }
-
-            unset($datas['type']);
-            $user = User::create($datas);
-            $user->property_name = isset($datas['property_name'])?$datas['property_name']:'';
-            $user->save();
-            $datas['user_id'] = $user->id;
-
-            // Create Localization
-            // if($user->hasRole(2) || $user->hasRole(3) || $user->hasRole(4) || ($user->hasRole(5)&&!$user->isPerson())){
-            if($user->hasRole(3)){
-                $adr = isset($datas['route_number'])?$datas['route_number']:''.' '.isset($datas['route'])?$datas['route']:''.' '.isset($datas['area_level_2'])?$datas['area_level_2']:''.' '.isset($datas['country'])?$datas['country']:'';
-                $coord_tab = geocodeAddress($adr);
-                if($coord_tab){
-                    $lat = $coord_tab['lat'];
-                    $lng = $coord_tab['lng'];
+                if($resp[0]['status']===false){
+                    return Redirect::back()->withErrors($resp[0]['resp'])->withInput();
                 }else{
-                    $lat = '';
-                    $lng = '';
-                }
-            }else if($user->hasRole(2) || $user->hasRole(4) || $user->hasRole(5)&&!$user->isPerson()){
-                $lat = $request->long;
-                $lng = $request->lat;
-            }else{
-                $lat = '';
-                $lng = '';
-            }
-
-            $datas['latitude'] = $lat;
-            $datas['longitude'] = $lng;
-            
-            //$datas['location_id'] = 0;
-            if($location = Localisation::create($datas)){
-                if($user->hasRole(2) || $user->hasRole(3) || $user->hasRole(4) || $user->hasRole(5)){
-                    $user->location_id = $location->id>0?$location->id:0;
-                    $user->save();
-                }
-                
-                $datas['location_id'] = $user->location_id;
-            }
-
-            // Create user info
-            if($role !== 'seller' || session('seller_class')!=='non_professional_natural_persons' && session('seller_class')!=='seller_by_afa'){
-                if(session('seller_class')){
-                    if(session('seller_class')!=='real_estate_professionals' && session('seller_class')!=='non_professional_legal_persons'){
-                        $indicatif = '('.$datas['indicatif'].')';
-                    }else{
-                        $indicatif = '(+61)';
-                    }
-                }else{
-                    $indicatif = '(+61)';
-                }                
-
-                
-                if(isset($datas['contact_phone'])){
-                    $datas['contact_phone'] = $indicatif.$datas['contact_phone'];
-                }
-                if(isset($datas['orga_mobile_phone'])){
-                    $datas['orga_mobile_phone'] = $indicatif.$datas['orga_mobile_phone'];
-                }
-                if(isset($datas['orga_phone'])){
-                    $datas['orga_phone'] = $indicatif.$datas['orga_phone'];
-                }
-
-                if($userInfo = Userinfo::create($datas)){
-                    unset($datas['user_id']);
-                }
-            }
-
-            // $request->merge([
-            //     'userinfos_id' => $userInfo->id,
-            // ]);
-            $rqst=$request;
-            if($role === 'afa'){
-                unset($rqst['orga_operation_state']);
-            }
-            $user->handles($rqst);
-
-            // Save info in seller_individual or seller_business table where registrator is seller non professional natural persons or seller by afa
-            if($role == 'seller'){
-                if(session('seller_class') == 'non_professional_natural_persons' || (session('seller_class') == 'seller_by_afa' && $type == 'individual' )){
-                    if(session('seller_class')!=='seller_by_afa'){
-                        $dtOfbirth = $datas['date_of_birth'];
-                        $dt = new Carbon($dtOfbirth);
-                        $dt = $dt->toDateString();
-                    }else{
-                        $dt ="";
-                    }
-                    $ausInd = '(+61)';
-        
-                    $si= SellerIndividual::create([
-                        'user_id'=>$user->id, 
-                        'last_name'=>$datas['last_name'], 
-                        'first_name'=>$datas['first_name'], 
-                        'date_of_birth'=>$dt, 
-                        'place_of_birth'=>session('seller_class')!=='seller_by_afa'?$datas['place_of_birth']:'', 
-                        'nationality'=>session('seller_class')!=='seller_by_afa'?$datas['nationality']:'', 
-                        'street_adr'=>$datas['street_adr'], 
-                        'suburb'=>$datas['suburb'], 
-                        'city'=>$datas['city'], 
-                        'post_code'=>$datas['post_code'], 
-                        'state'=>$datas['state'], 
-                        'country'=>$datas['country'], 
-                        // 'phone'=>$ausInd.$datas['phone'], 
-                        'mobile'=>$ausInd.$datas['mobile'], 
-                        'email_adr'=>$datas['email_adr']
-                    ]);
-                    
-                    $si2= SellerIndividual::create([
-                        'user_id'=>$user->id, 
-                        'last_name'=>isset($datas['last_name_2'])?$datas['last_name_2']:'', 
-                        'first_name'=>isset($datas['first_name_2'])?$datas['first_name_2']:'', 
-                        'date_of_birth'=>isset($datas['date_of_birth_2'])?(new Carbon($datas['date_of_birth_2']))->toDateString():'', 
-                        'place_of_birth'=>isset($datas['place_of_birth_2'])?(session('seller_class')!=='seller_by_afa'?$datas['place_of_birth_2']:''):'', 
-                        'nationality'=>isset($datas['nationality_2'])?(session('seller_class')!=='seller_by_afa'?$datas['nationality_2']:''):'', 
-                        'street_adr'=>isset($datas['street_adr_2'])?$datas['street_adr_2']:'', 
-                        'suburb'=>isset($datas['suburb_2'])?$datas['suburb_2']:'', 
-                        'city'=>isset($datas['city_2'])?$datas['city_2']:'', 
-                        'post_code'=>isset($datas['post_code_2'])?$datas['post_code_2']:'', 
-                        'state'=>isset($datas['state_2'])?$datas['state_2']:'', 
-                        'country'=>isset($datas['country_2'])?$datas['country_2']:'', 
-                        // 'phone'=>isset($datas['phone_2'])?$ausInd.$datas['phone_2']:'', 
-                        'mobile'=>isset($datas['mobile_2'])?$ausInd.$datas['mobile_2']:'', 
-                        'email_adr'=>isset($datas['email_adr_2'])?$datas['email_adr_2']:''
-                    ]);
-                }else{
-                    if($type == 'business'){
-                        $sb = SellerBusiness::create([
-                            'user_id'=>$user->id, 
-                            'business_name'=>$datas['business_name'], 
-                            'business_parent'=>$datas['business_parent'], 
-                            'street_adr'=>$datas['street_adr_bs'], 
-                            'suburb'=>$datas['suburb_bs'], 
-                            'city'=>$datas['city_bs'], 
-                            'post_code'=>$datas['post_code_bs'], 
-                            'state'=>$datas['state_bs'], 
-                            'country'=>$datas['country_bs'], 
-                            'phone'=>$datas['phone_bs'], 
-                            'mobile'=>$datas['mobile_bs'], 
-                            'email_adr'=>$datas['email_adr_bs']
-                        ]);
-                    }
-                }
-            }
-            
-        }catch (\Exception $exception) {
-            logger()->error($exception);
-            // remove user created if error
-            if(isset($user)){
-                DB::table('users')->where('id', $user->id)->delete();
-            }
-            if(isset($location)){
-                DB::table('localizations')->where('id', $location->id)->delete();
-            }
-            return back()->with('info', trans('app.txt.errorcreateuser'));
-        }
-
-        $request->session()->forget("step");
-
-        // Notify User
-        $alert="";
-        App::setLocale($request->language);
-        try{
-            $confirmLink = url(route('confirm.registration',[$user]));
-            // Member
-            if($user->hasRole(5)){ //Member
-                $lang = $request->language;
-                $body = 'template_' . $lang;
-                $template = MailsTemplate::where('id', 26)->first();
-                if($template){
-                    $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
-                    $vars = array(
-                        '{confirmLink}' => setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration'))),
-                    );
-                    $content = strtr($template->$body, $vars);
-                    $content = ['title' => '', 'body' => $content];
-                    $user->notify(new ConfirmRegistrationMemberMessage($sujet,$content));
-                    $alert =trans('app.txt.alert_success');
-                }else{
-                    return abort(404);
-                }
-            }elseif($user->hasRole(2)){ // Seller
-                if($user->isSlp()){
-                    $vars = array(
-                        '{role}' => trans('seller.non_professional_legal_persons'),
-                        '{confirmLink}' => setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration'))),
-                    );
-                    $alert =trans('app.txt.alert_success_slp');
-                }
-                if($user->isSnp()){
-                    $vars = array(
-                        '{role}' => trans('seller.non_professional_natural_persons'),
-                        '{confirmLink}' => setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration'))),
-                    );
-                    $alert =trans('app.txt.alert_success_snp');
-                }
-                if($user->isSbu()){
-                    $vars = array(
-                        '{role}' => trans('seller.real_estate_professionals'),
-                        '{confirmLink}' => setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration'))),
-                    );
-                    $alert =trans('app.txt.alert_success_sbu');
-                }
-                if($user->isSde()){
-                    $vars = array(
-                        '{role}' => trans('seller.real_estate_professionals'),
-                        '{confirmLink}' => setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration'))),
-                    );
-                    $alert =trans('app.txt.alert_success_sde');
-                }
-                if($user->isSbaBusiness()){
-                    $vars = array(
-                        '{role}' => trans('seller.seller_by_afa'),
-                        '{confirmLink}' => setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration'))),
-                    );
-                    // template message
-                    App::setLocale($user->language);
-                    $lang = $user->language;
-                    $content_lab = 'message_'.$lang;
-                    $message = ModelMessage::where('id', 8)->get();
-                    if (count($message) > 0) {
-                        $vars2 = array(
-                            '{Seller by AFA Name}' => $user->name,
-                            '{Name of property to be sold}' => $request->property_name);
-                        $contenu = strtr($message[0]->$content_lab, $vars2);
-                        
-                        $alert =$contenu;
-                    }
-                }
-                if($user->isSbaIndividual()){
-                    $vars = array(
-                        '{role}' => trans('seller.seller_by_afa'),
-                        '{confirmLink}' => setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration'))),
-                    );
-                    // template message
-                    App::setLocale($user->language);
-                    $lang = $user->language;
-                    $content_lab = 'message_'.$lang;
-                    $message = ModelMessage::where('id', 8)->get();
-
-                    
-                    if (count($message) > 0) {
-                        $vars2 = array(
-                            '{Seller by AFA Name}' => $user->name,
-                            '{Name of property to be sold}' => $request->property_name);
-                            $contenu = strtr($message[0]->$content_lab, $vars2);
-                            
-                        $alert =$contenu;
-                    }
-                }
-                $lang = 'en';
-                $body = 'template_' . $lang;
-                $template2 = MailsTemplate::where('id', 25)->first();
-                if($template2){
-                    $sujetLab = 'sujet_'.$lang;
-                    $sujet2 = $template2->$sujetLab;
-                    $content2 = strtr($template2->$body, $vars);
-                    $content2 = ['title' => '', 'body' => $content2];
-                    $email_to = $user->email;
-
-                    if($user->isSbaIndividual() || $user->isSbaBusiness()){
-                        Mail::to($email_to)->send(new MailTemplate($content2, $sujet2));
-                    }else{
-                        $user->notify(new ConfirmRegistrationSeller($sujet2,$content2));
-                    }
-                }else{
-                    return abort(404);
-                }
-            }elseif($user->hasRole(3)){ // AFA
-                // set cookie default_password during 7 days
-                // \Cookie::queue('default_pwd', $password, '');
-                $confirmEmailLink= url(route('confirm.registration.afa.email',[$user]));
-                App::setLocale('en');
-                $lang = 'en';
-                $body = 'template_' . $lang;
-                $vars = array(
-                    '{confirmEmailLink}' => setLinkDynamic($confirmEmailLink,strtoupper(trans('mail.btn.email_address_confirmation'))),
-                );
-                $template = MailsTemplate::where('id', 24)->first();
-                if($template){
-                    $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
-                    $content = strtr($template->$body, $vars);
-                    $content = ['title' => '', 'body' => $content];
-                    $user->notify(new ConfirmRegistrationAfa($sujet,$content));
                     $alert =trans('app.txt.alert_success_afa');
-                }else{
-                    return abort(404);
                 }
-            }elseif($user->hasRole(4)){ // APL
-                $confirmEmailLink= url(route('confirm.registration.apl.email',[$user]));
-                App::setLocale('fr');
-                $lang = 'fr';
-                $body = 'template_' . $lang;
-                $vars = array(
-                    '{confirmEmailLink}' => setLinkDynamic($confirmEmailLink,strtoupper(trans('mail.btn.email_address_confirmation'))),
-                );
-                $template = MailsTemplate::where('id', 20)->first();
-                if($template){
-                    $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
-                    $content = strtr($template->$body, $vars);
-                    $content = ['title' => '', 'body' => $content];
-                    $user->notify(new ConfirmRegistrationApl($sujet,$content));
-                    $alert =trans('app.txt.alert_success_apl');
-                }else{
-                    return abort(404);
-                }
-            }else{
-                $user->notify(new AccountCreated($user, $password));
-                $alert =trans('app.txt.alert_success');
-            }
+                break;
+                
+            case 'apl':
+                    $resp = $this->storeApl($request,$role);
+    
+                    if($resp[0]['status']===false){
+                        return Redirect::back()->withErrors($resp[0]['resp'])->withInput();
+                    }else{
+                        $alert =trans('app.txt.alert_success_apl');
+                    }
+                break;
             
-            // forget as role session and seller_class session
-            session()->forget('as_role');
-            session()->forget('seller_class');
-
-        }catch(\Exception $e){}
+            default:
+                aboart(404);
+                break;
+        }
 
         // Success
+        session()->forget('as_role');
+        session()->forget("step");
         return redirect()->route('login')
             ->with('success', trans('app.txt.createuser.success').'<br>'
-                  .'<a class="btn btn-default" href="'.route('resend_code', $user).'">'.trans('app.txt.resendcode').'</a>')
+                  .'<a class="btn btn-default" href="'.route('resend_code', $resp[0]['resp']).'">'.trans('app.txt.resendcode').'</a>')
             ->with('alert_success',$alert);
+    }
+
+    public function storeMemberPart(Request $request,$role){
+        $datas = $request->all();
+        $type=$request->input('type');
+        $rules = [
+            'name'     => 'required|unique:users,name|max:100',
+            'email'    => 'required|unique:users,email|max:100',
+            'language' => 'required|max:100',
+            'image'    => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'first_name' => 'required|max:100',
+            'last_name'  => 'required|max:100',
+            'country'    => 'required|max:100',
+            'nationality'  => 'required|max:100',
+            'sexe'       => 'required',
+            'civility'  => 'required|max:3',
+            'g-recaptcha-response' => 'required|captcha',
+        ];
+
+        if($request->newsletter == 'yes'){
+            $newletter = new Newsletter;
+            $newletter->email_adresse = $request->email;
+            $newletter->statuts = 'Actif';
+            $newletter->save();
+        }
         
+        $validator = Validator::make($datas, $rules);
+        if ($validator->fails()) {
+            return array(['resp'=>$validator,'status'=>false]);
+        }else{
+            // Store image file
+            $datas['image_id'] = 0;
+            if($file=$request->file('image')){
+                $image = Image::storeAndSave($file);
+                $datas['image_id'] = $image->id>0?$image->id:0;
+            }
+
+            // More info
+            $datas['role'] = 5;
+            $datas['password'] = Hash::make($password = str_random(10));
+            $datas['activation_code'] = md5(str_random(30).(time()*32));
+            $datas['use_default_password'] = 1;
+            $datas['type_users_id'] = 2;
+            // generate immatriculation user
+            $datas['immat'] = $this->generateImmat($role,$type);
+
+            try {
+                //Créer localisation
+                $location = Localisation::create(['country'=>$request->country]);
+                $location->save();
+
+                // Créer user membre
+                $user = User::create($datas);
+                $user->location_id = $location->id;
+                $user->save();
+
+                // Créer userinfo
+                $userInfo = Userinfo::create($datas);
+                $userInfo->user_id = $user->id;
+                $userInfo->save();
+
+                // Envoie email
+                $confirmLinkVar='confirmLink';
+                $confirmLink = url(route('confirm.registration',[$user]));
+                $lang = $user->language;
+                $this->sendNotificationEmail($user,$lang,$confirmLinkVar,26,'role','',$confirmLink);
+
+            } catch (\Throwable $th) {
+                logger()->error($exception);
+                // remove user created if error
+                if(isset($user)){
+                    DB::table('users')->where('id', $user->id)->delete();
+                }
+                if(isset($location)){
+                    DB::table('localizations')->where('id', $location->id)->delete();
+                }
+                return back()->with('info', trans('app.txt.errorcreateuser'));
+            }
+
+            return array(['resp'=>$user,'status'=>true]);
+        }
+    }
+
+    public function storeMemberOrg(Request $request,$role){
+        $datas = $request->all();
+        $type=$request->input('type');
+        $indicatif = '('.$request->indicatif.')';
+        $rules = [
+            'name'     => 'required|unique:users,name|max:100',
+            'email'    => 'required|unique:users,email|max:100',
+            'language' => 'required|max:100',
+            'image'    => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'orga_phone' => 'required|max:100',
+            'orga_mobile_phone' => 'required|max:100',
+            'orga_name'         => 'required|max:100',
+            'orga_registration_number'         => 'required|max:100',
+            'orga_rep_official_registration'         => 'nullable|max:100',
+            'orga_type'         => 'required',
+            'orga_presentation' => 'nullable|max:2000',
+            'route'        => 'required|max:100',
+            'route_number'        => 'required',
+            'locality'     => 'required|max:100',
+            'postalCode'   => 'required|max:100',
+            'area_level_1' => 'nullable|max:100',
+            'country'      => 'required|max:100',
+            'contact_name'       => 'required|max:100',
+            'contact_phone'       => 'required|max:100',
+            'contact_email'        => 'required|email|max:100',
+            'g-recaptcha-response' => 'required|captcha',
+        ];
+
+        if($request->orga_type == 'private' || $request->orga_type == 'mixte'){
+            $rules += ['orga_form' => 'required',];
+        }
+
+        if($request->orga_form == 'other'){
+            $rules += ['define_orga_form' => 'required',];
+        }
+
+        if($request->postal_address_below){
+            $rules += [
+            'adrpost_postal_box'     => 'required|max:100',
+            'adrpost_locality'     => 'required|max:100',
+            'adrpost_postalCode'   => 'required|max:100',
+            'adrpost_area_level_1' => 'nullable|max:100',
+            'adrpost_country'      => 'required|max:100',
+            ];
+        }
+
+        if($request->newsletter == 'yes'){
+            $newletter = new Newsletter;
+            $newletter->email_adresse = $request->email;
+            $newletter->statuts = 'Actif';
+            $newletter->save();
+        }
+        
+        $validator = Validator::make($datas, $rules);
+        if ($validator->fails()) {
+            return array(['resp'=>$validator,'status'=>false]);
+        }else{
+            // Store image file
+            $datas['image_id'] = 0;
+            if($file=$request->file('image')){
+                $image = Image::storeAndSave($file);
+                $datas['image_id'] = $image->id>0?$image->id:0;
+            }
+
+            // More info
+            $datas['role'] = 5;
+            $datas['password'] = Hash::make($password = str_random(10));
+            $datas['activation_code'] = md5(str_random(30).(time()*32));
+            $datas['use_default_password'] = 1;
+            $datas['type_users_id'] = 1;
+            // generate immatriculation user
+            $datas['immat'] = $this->generateImmat($role,$type);
+            $datas['latitude'] = $request->lat;
+            $datas['longitude'] = $request->long;
+            $datas['orga_mobile_phone'] = $indicatif.$request->orga_mobile_phone;
+            $datas['orga_phone'] = $indicatif.$request->orga_phone;
+
+            try {
+                //Créer localisation
+                $location = Localisation::create($datas);
+                $location->save();
+
+                // Créer user membre
+                $user = User::create($datas);
+                $user->location_id = $location->id;
+                $user->save();
+
+                // Créer userinfo
+                $userInfo = Userinfo::create($datas);
+                $userInfo->user_id = $user->id;
+                $userInfo->save();
+
+                // Envoie email
+                $confirmLinkVar='confirmLink';
+                $confirmLink = url(route('confirm.registration',[$user]));
+                $lang = $user->language;
+                $this->sendNotificationEmail($user,$lang,$confirmLinkVar,26,'role','',$confirmLink);
+
+            } catch (\Throwable $th) {
+                logger()->error($exception);
+                // remove user created if error
+                if(isset($user)){
+                    DB::table('users')->where('id', $user->id)->delete();
+                }
+                if(isset($location)){
+                    DB::table('localizations')->where('id', $location->id)->delete();
+                }
+                return back()->with('info', trans('app.txt.errorcreateuser'));
+            }
+
+            return array(['resp'=>$user,'status'=>true]);
+        }
+    }
+
+    public function storeAfa(Request $request,$role){
+        $datas = $request->all();
+        $type=$request->input('type');
+        $indicatif='(+61)';
+        $rules = [
+            'name'     => 'required|unique:users,name|max:100',
+            'email'    => 'required|unique:users,email|max:100',
+            'language' => 'required|max:100',
+            'image'    => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'type'         => 'required',
+            'orga_name'         => 'required|max:100',
+            'orga_trading_name'         => 'required|max:100',
+            'orga_abn'         => 'required|digits_between:11,11|numeric',
+            'orga_acn'         => 'nullable|digits_between:9,9|numeric',
+            'orga_license_number'  => 'required|max:100',
+            'orga_phone'        => 'required|digits_between:8,9|numeric',
+            'orga_fax'        => 'nullable|max:100',
+            'orga_mobile_phone'        => 'required|digits_between:9,9|numeric',
+            'orga_website'      => 'required',
+            'orga_presentation' => 'max:2000',
+            'orga_operation_state' => 'required',
+            'orga_operation_range' => 'required',
+            'route'        => 'required|max:100',
+            'route_number'        => 'required',
+            'area_level_2' => 'required|max:100',
+            'locality'     => 'required|max:100',
+            'postalCode'   => 'required|integer',
+            'area_level_1' => 'required|max:100',
+            'country'      => 'required',
+            'contact_name'  => 'required|max:100',
+            'contact_email' => 'required|email|max:100',
+            'contact_phone' => 'required|digits_between:9,9|numeric',
+            'g-recaptcha-response' => 'required|captcha',
+        ];
+
+        if($request->postal_address_below){
+            $rules += [
+             'adrpost_postal_box'     => 'required|max:100',
+             'adrpost_locality'      => 'required|max:100',
+             'adrpost_area_level_1' => 'required|max:100',
+             'adrpost_postalCode'   => 'required|max:100',
+            ];
+        }
+
+        if($request->postal_address_above){
+            $datas['adrpost_locality'] = $datas['locality'];
+            $datas['adrpost_area_level_1'] = $datas['area_level_1'];
+            $datas['adrpost_postalCode'] = $datas['postalCode'];
+        }
+
+        if(is_array($datas['orga_operation_state'])){
+            $datas['orga_operation_state']=serialize($datas['orga_operation_state']);
+        }
+        
+        $validator = Validator::make($datas, $rules);
+        if ($validator->fails()) {
+            return array(['resp'=>$validator,'status'=>false]);
+        }else{
+            // Store image file
+            $datas['image_id'] = 0;
+            if($file=$request->file('image')){
+                $image = Image::storeAndSave($file);
+                $datas['image_id'] = $image->id>0?$image->id:0;
+            }
+
+            // More info
+            $typeUserId=$request->type=='Real Estate Agency'?10:11;
+            $datas['role'] = 3;
+            $datas['password'] = Hash::make($password = str_random(10));
+            $datas['activation_code'] = md5(str_random(30).(time()*32));
+            $datas['use_default_password'] = 1;
+            $datas['type_users_id'] = $typeUserId;
+            // generate immatriculation user
+            $datas['immat'] = $this->generateImmat($role,$type);
+            $datas['latitude'] = $request->lat;
+            $datas['longitude'] = $request->long;
+            $datas['orga_mobile_phone'] = $indicatif.$request->orga_mobile_phone;
+            $datas['orga_phone'] = $indicatif.$request->orga_phone;
+            $datas['contact_phone'] = $indicatif.$request->contact_phone;
+
+            try {
+                //Créer localisation
+                $location = Localisation::create($datas);
+                $location->save();
+
+                // Créer user membre
+                $user = User::create($datas);
+                $user->location_id = $location->id;
+                $user->save();
+
+                // Créer userinfo
+                $userInfo = Userinfo::create($datas);
+                $userInfo->user_id = $user->id;
+                $userInfo->save();
+
+                // Envoie email
+                $confirmLinkVar='confirmEmailLink';
+                $confirmEmailLink= url(route('confirm.registration.afa.email',[$user]));
+                $lang = $user->language;
+                $this->sendNotificationEmail($user,$lang,$confirmLinkVar,24,'role','',$confirmEmailLink);
+
+            } catch (\Throwable $th) {
+                logger()->error($exception);
+                // remove user created if error
+                if(isset($user)){
+                    DB::table('users')->where('id', $user->id)->delete();
+                }
+                if(isset($location)){
+                    DB::table('localizations')->where('id', $location->id)->delete();
+                }
+                return back()->with('info', trans('app.txt.errorcreateuser'));
+            }
+
+            return array(['resp'=>$user,'status'=>true]);
+        }
+    }
+
+    public function storeApl(Request $request,$role){
+        $datas = $request->all();
+        $type=$request->input('type');
+        $indicatif='('.$request->indicatif.')';
+        $rules = [
+            'name'     => 'required|unique:users,name|max:100',
+            'email'    => 'required|unique:users,email|max:100',
+            'language' => 'required|max:100',
+            'image'    => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'orga_name'         => 'required|max:100',
+            'orga_registration_number'         => 'required|max:100',
+            'orga_type'         => 'required',
+            'orga_license_number'         => 'required|max:100',
+            'orga_operation_range' => 'required',
+            'orga_presentation' => 'nullable|max:2000',
+            
+            'route'        => 'required|max:100',
+            'route_number'        => 'required',
+            'locality'     => 'required|max:100',
+            'postalCode'   => 'required|max:100',
+            'area_level_1' => 'nullable|max:100',
+            'country'      => 'required|max:100',
+            
+            'contact_name'  => 'required|max:100',
+            'contact_phone' => 'required|digits_between:6,9|numeric',
+            'contact_email' => 'required|email|max:100',
+
+            'bank_name' => 'required|max:100',
+            'bank_agency' => 'required|max:100',
+            'bank_postal_box' => 'required|max:100',
+            'bank_locality' => 'required|max:100',
+            'bank_postalCode' => 'required|max:100',
+            'bank_country' => 'required|max:100',
+            'bank_iban' => 'required|alpha_num|min:27|max:27',
+            'bank_bic' => 'required|alpha_num|min:8|max:11',
+            'g-recaptcha-response' => 'required|captcha',
+        ];
+
+        if($request->orga_type == 'society'){
+            $rules += ['orga_form' => 'required',];
+        }
+
+        if($request->orga_form == 'other'){
+            $rules += ['orga_form' => 'required',];
+        }
+
+        if($request->postal_address_below){
+           $rules += [
+            'adrpost_locality'     => 'required|max:100',
+            'adrpost_postalCode'   => 'required|max:100',
+            'adrpost_area_level_1' => 'nullable|max:100',
+            'adrpost_country'      => 'required|max:100',
+           ];
+        }
+
+        if($request->postal_address_above){
+            $datas['adrpost_locality'] = $datas['locality'];
+            $datas['adrpost_postalCode'] = $datas['postalCode'];
+            $datas['adrpost_area_level_1'] = $datas['area_level_1'];
+            $datas['adrpost_country'] = $datas['country'];
+         }
+        
+        $validator = Validator::make($datas, $rules);
+        if ($validator->fails()) {
+            return array(['resp'=>$validator,'status'=>false]);
+        }else{
+            // Store image file
+            $datas['image_id'] = 0;
+            if($file=$request->file('image')){
+                $image = Image::storeAndSave($file);
+                $datas['image_id'] = $image->id>0?$image->id:0;
+            }
+
+            // More info
+            $datas['role'] = 4;
+            $datas['password'] = Hash::make($password = str_random(10));
+            $datas['activation_code'] = md5(str_random(30).(time()*32));
+            $datas['use_default_password'] = 1;
+            $datas['type_users_id'] = 1;
+            // generate immatriculation user
+            $datas['immat'] = $this->generateImmat($role,$type);
+            $datas['latitude'] = $request->lat;
+            $datas['longitude'] = $request->long;
+            $datas['contact_phone'] = $indicatif.$request->contact_phone;
+
+            try {
+                //Créer localisation
+                $location = Localisation::create($datas);
+                $location->save();
+
+                // Créer user membre
+                $user = User::create($datas);
+                $user->location_id = $location->id;
+                $user->save();
+
+                // Créer userinfo
+                $userInfo = Userinfo::create($datas);
+                $userInfo->user_id = $user->id;
+                $userInfo->save();
+
+                // Envoie email
+                $confirmLinkVar='confirmEmailLink';
+                $confirmEmailLink= url(route('confirm.registration.apl.email',[$user]));
+                $lang = $user->language;
+                $this->sendNotificationEmail($user,$lang,$confirmLinkVar,20,'role','',$confirmEmailLink);
+
+            } catch (\Throwable $th) {
+                logger()->error($exception);
+                // remove user created if error
+                if(isset($user)){
+                    DB::table('users')->where('id', $user->id)->delete();
+                }
+                if(isset($location)){
+                    DB::table('localizations')->where('id', $location->id)->delete();
+                }
+                return back()->with('info', trans('app.txt.errorcreateuser'));
+            }
+
+            return array(['resp'=>$user,'status'=>true]);
+        }
+    }
+
+    public function storeSellerRep(Request $request,$role){
+        $datas = $request->all();
+        $type=$request->input('type');
+        $indicatif='(+61)';
+        $rules = [
+            'name'     => 'required|unique:users,name|max:100',
+            'email'    => 'required|unique:users,email|max:100',
+            'language' => 'required|max:100',
+            'image'    => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'orga_name'         => 'required|max:100',
+            'orga_trading_name'         => 'required|max:100',
+            'orga_abn'         => 'required|digits_between:11,11|numeric',
+            'orga_acn'         => 'nullable|digits_between:9,9|numeric',
+            'orga_phone'        => 'required|digits_between:8,9|numeric',
+            'orga_fax'        => 'nullable|max:100',
+            'orga_mobile_phone'        => 'required|digits_between:9,9|numeric',
+            'orga_website'      => 'required|url|max:100',
+            'orga_presentation' => 'max:2000',
+            'route_number'        => 'required',
+            'route'        => 'required|max:100',
+            'locality'     => 'required|max:100',
+            'area_level_2' => 'required|max:100',
+            'postalCode'   => 'required|integer',
+            'area_level_1' => 'required|max:100',
+            'country'      => 'required',
+            'contact_name'  => 'required|max:100',
+            'contact_email' => 'required|email|max:100',
+            'contact_phone' => 'required|digits_between:9,9|numeric',
+            'g-recaptcha-response' => 'required|captcha',
+            'type'     => 'required|max:100',
+            'orga_parent_name'         => 'required|max:100',
+        ];
+
+        if($request->postal_address_below){
+            $rules += [
+             'adrpost_postal_box'     => 'required|max:100',
+             'adrpost_locality'     => 'required|max:100',
+             'adrpost_postalCode'   => 'required|max:100',
+             'adrpost_area_level_1' => 'nullable|max:100',
+             'adrpost_country'      => 'required|max:100',
+            ];
+         }
+
+         if($request->postal_address_above){
+            $datas['adrpost_locality'] = $datas['locality'];
+            $datas['adrpost_postalCode'] = $datas['postalCode'];
+            $datas['adrpost_area_level_1'] = $datas['area_level_1'];
+            $datas['adrpost_country'] = $datas['country'];
+         }
+        
+        $validator = Validator::make($datas, $rules);
+        if ($validator->fails()) {
+            return array(['resp'=>$validator,'status'=>false]);
+        }else{
+            // Store image file
+            $datas['image_id'] = 0;
+            if($file=$request->file('image')){
+                $image = Image::storeAndSave($file);
+                $datas['image_id'] = $image->id>0?$image->id:0;
+            }
+
+            // More info
+            $typeUserId=$request->type=='Builder'?3:4;
+            $datas['role'] = 2;
+            $datas['password'] = Hash::make($password = str_random(10));
+            $datas['activation_code'] = md5(str_random(30).(time()*32));
+            $datas['use_default_password'] = 1;
+            $datas['type_users_id'] = $typeUserId;
+            // generate immatriculation user
+            $datas['immat'] = $this->generateImmat($role,$type);
+            $datas['latitude'] = $request->lat;
+            $datas['longitude'] = $request->long;
+            $datas['contact_phone'] = $indicatif.$request->contact_phone;
+            $datas['orga_phone'] = $indicatif.$request->orga_phone;
+            $datas['orga_mobile_phone'] = $indicatif.$request->orga_mobile_phone;
+            $datas['is_seller'] = 1;
+
+            try {
+                //Créer localisation
+                $location = Localisation::create($datas);
+                $location->save();
+
+                // Créer user membre
+                $user = User::create($datas);
+                $user->location_id = $location->id;
+                $user->save();
+
+                // Créer userinfo
+                $userInfo = Userinfo::create($datas);
+                $userInfo->user_id = $user->id;
+                $userInfo->save();
+
+                // Envoie email
+                $confirmLinkVar='confirmLink';
+                $confirmEmailLink= url(route('confirm.registration',[$user]));
+                $varValue = trans('seller.real_estate_professionals');
+                $lang = 'en';
+                $this->sendNotificationEmail($user,$lang,$confirmLinkVar,25,'role',$varValue,$confirmEmailLink);
+
+            } catch (\Throwable $th) {
+                logger()->error($exception);
+                // remove user created if error
+                if(isset($user)){
+                    DB::table('users')->where('id', $user->id)->delete();
+                }
+                if(isset($location)){
+                    DB::table('localizations')->where('id', $location->id)->delete();
+                }
+                return back()->with('info', trans('app.txt.errorcreateuser'));
+            }
+
+            return array(['resp'=>$user,'status'=>true]);
+        }
+    }
+
+    public function storeSellerSlp(Request $request,$role){
+        $datas = $request->all();
+        $type=$request->input('type');
+        $indicatif='(+61)';
+        $rules = [
+            'name'     => 'required|unique:users,name|max:100',
+            'email'    => 'required|unique:users,email|max:100',
+            'language' => 'required|max:100',
+            'image'    => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'orga_name'         => 'required|max:100',
+            'orga_trading_name'         => 'required|max:100',
+            'orga_abn'         => 'required|digits_between:11,11|numeric',
+            'orga_acn'         => 'nullable|digits_between:9,9|numeric',
+            'orga_phone'        => 'required|digits_between:8,9|numeric',
+            'orga_fax'        => 'nullable|max:100',
+            'orga_mobile_phone'        => 'required|digits_between:9,9|numeric',
+            'orga_website'      => 'required|url|max:100',
+            'orga_presentation' => 'max:2000',
+            'route_number'        => 'required',
+            'route'        => 'required|max:100',
+            'locality'     => 'required|max:100',
+            'area_level_2' => 'required|max:100',
+            'postalCode'   => 'required|integer',
+            'area_level_1' => 'required|max:100',
+            'country'      => 'required',
+            'contact_name'  => 'required|max:100',
+            'contact_email' => 'required|email|max:100',
+            'contact_phone' => 'required|digits_between:9,9|numeric',
+            'g-recaptcha-response' => 'required|captcha',
+            'type'     => 'required|max:100',
+        ];
+
+        if($request->postal_address_below){
+            $rules += [
+             'adrpost_postal_box'     => 'required|max:100',
+             'adrpost_locality'     => 'required|max:100',
+             'adrpost_postalCode'   => 'required|max:100',
+             'adrpost_area_level_1' => 'nullable|max:100',
+             'adrpost_country'      => 'required|max:100',
+            ];
+         }
+
+         if($request->postal_address_above){
+            $datas['adrpost_locality'] = $datas['locality'];
+            $datas['adrpost_postalCode'] = $datas['postalCode'];
+            $datas['adrpost_area_level_1'] = $datas['area_level_1'];
+            $datas['adrpost_country'] = $datas['country'];
+         }
+        
+        $validator = Validator::make($datas, $rules);
+        if ($validator->fails()) {
+            return array(['resp'=>$validator,'status'=>false]);
+        }else{
+            // Store image file
+            $datas['image_id'] = 0;
+            if($file=$request->file('image')){
+                $image = Image::storeAndSave($file);
+                $datas['image_id'] = $image->id>0?$image->id:0;
+            }
+
+            // More info
+            $typeUserId=1;
+            $datas['role'] = 2;
+            $datas['password'] = Hash::make($password = str_random(10));
+            $datas['activation_code'] = md5(str_random(30).(time()*32));
+            $datas['use_default_password'] = 1;
+            $datas['type_users_id'] = $typeUserId;
+            // generate immatriculation user
+            $datas['immat'] = $this->generateImmat($role,$type);
+            $datas['latitude'] = $request->lat;
+            $datas['longitude'] = $request->long;
+            $datas['orga_phone'] = $indicatif.$request->orga_phone;
+            $datas['orga_mobile_phone'] = $indicatif.$request->orga_mobile_phone;
+            $datas['contact_phone'] = $indicatif.$request->contact_phone;
+            $datas['is_seller'] = 1;
+
+            try {
+                //Créer localisation
+                $location = Localisation::create($datas);
+                $location->save();
+
+                // Créer user membre
+                $user = User::create($datas);
+                $user->location_id = $location->id;
+                $user->save();
+
+                // Créer userinfo
+                $userInfo = Userinfo::create($datas);
+                $userInfo->user_id = $user->id;
+                $userInfo->save();
+
+                // Envoie email
+                $confirmLinkVar='confirmLink';
+                $confirmEmailLink= url(route('confirm.registration',[$user]));
+                $varValue = trans('seller.non_professional_legal_persons');
+                $lang = 'en';
+                $this->sendNotificationEmail($user,$lang,$confirmLinkVar,25,'role',$varValue,$confirmEmailLink);
+
+            } catch (\Throwable $th) {
+                logger()->error($exception);
+                // remove user created if error
+                if(isset($user)){
+                    DB::table('users')->where('id', $user->id)->delete();
+                }
+                if(isset($location)){
+                    DB::table('localizations')->where('id', $location->id)->delete();
+                }
+                return back()->with('info', trans('app.txt.errorcreateuser'));
+            }
+
+            return array(['resp'=>$user,'status'=>true]);
+        }
+    }
+
+    public function storeSellerSnp(Request $request,$role){
+        $datas = $request->all();
+        $type=$request->input('type');
+        $indicatif='(+61)';
+        $rules = [
+            'name'     => 'required|unique:users,name|max:100',
+            'email'    => 'required|unique:users,email|max:100',
+            'language' => 'required|max:100',
+            'image'    => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            // Seller #1
+            'last_name'  => 'required|max:100',
+            'first_name' => 'required|max:100',
+            'date_of_birth' => 'required|max:100',
+            'place_of_birth' => 'required|max:100',
+            'nationality' => 'required|max:100',
+            'street_adr' => 'required|max:100',
+            'suburb' => 'required|max:100',
+            'city' => 'required|max:100',
+            'post_code' => 'required|max:100',
+            'state' => 'nullable|max:100',
+            'country' => 'required|max:100',
+            // 'phone' => 'required|max:15',
+            'mobile' => 'required|digits_between:6,15|numeric',
+            'email_adr' => 'required|email|max:100',
+            // Seller #2
+            'last_name_2'  => 'nullable|max:100',
+            'first_name_2' => 'nullable|max:100',
+            'date_of_birth_2' => 'nullable|max:100',
+            'place_of_birth_2' => 'nullable|max:100',
+            'nationality_2' => 'nullable|max:100',
+            'street_adr_2' => 'nullable|max:100',
+            'suburb_2' => 'nullable|max:100',
+            'city_2' => 'nullable|max:100',
+            'post_code_2' => 'nullable|max:100',
+            'state_2' => 'nullable|max:100',
+            'country_2' => 'nullable|max:100',
+            // 'phone_2' => 'nullable|max:15',
+            'mobile_2' => 'nullable|digits_between:9,15|numeric',
+            'email_adr_2' => 'nullable|email|max:100',
+            'g-recaptcha-response' => 'required|captcha',
+        ];
+ 
+        $validator = Validator::make($datas, $rules);
+        if ($validator->fails()) {
+            return array(['resp'=>$validator,'status'=>false]);
+        }else{
+            // Store image file
+            $datas['image_id'] = 0;
+            if($file=$request->file('image')){
+                $image = Image::storeAndSave($file);
+                $datas['image_id'] = $image->id>0?$image->id:0;
+            }
+
+            // More info
+            $typeUserId=1;
+            $datas['role'] = 2;
+            $datas['password'] = Hash::make($password = str_random(10));
+            $datas['activation_code'] = md5(str_random(30).(time()*32));
+            $datas['use_default_password'] = 1;
+            $datas['type_users_id'] = $typeUserId;
+            // generate immatriculation user
+            $datas['immat'] = $this->generateImmat($role,$type);
+            $datas['latitude'] = $request->lat_1;
+            $datas['longitude'] = $request->long_1;
+            $datas['contact_phone'] = $indicatif.$request->contact_phone;
+            $datas['is_seller'] = 1;
+
+            try {
+                //Créer localisation
+                $location = Localisation::create($datas);
+                $location->save();
+
+                // Créer user membre
+                $user = User::create($datas);
+                $user->location_id = $location->id;
+                $user->save();
+
+                // Créer seller info
+                $dtOfbirth = $datas['date_of_birth'];
+                $dt = new Carbon($dtOfbirth);
+                $dt = $dt->toDateString();
+                $si= SellerIndividual::create([
+                    'user_id'=>$user->id, 
+                    'last_name'=>$datas['last_name'], 
+                    'first_name'=>$datas['first_name'], 
+                    'date_of_birth'=>$dt, 
+                    'place_of_birth'=>session('seller_class')!=='seller_by_afa'?$datas['place_of_birth']:'', 
+                    'nationality'=>session('seller_class')!=='seller_by_afa'?$datas['nationality']:'', 
+                    'street_adr'=>$datas['street_adr'], 
+                    'suburb'=>$datas['suburb'], 
+                    'city'=>$datas['city'], 
+                    'post_code'=>$datas['post_code'], 
+                    'state'=>$datas['state'], 
+                    'country'=>$datas['country'], 
+                    'mobile'=>$indicatif.$datas['mobile'], 
+                    'email_adr'=>$datas['email_adr']
+                ]);
+                
+                $si2= SellerIndividual::create([
+                    'user_id'=>$user->id, 
+                    'last_name'=>isset($datas['last_name_2'])?$datas['last_name_2']:'', 
+                    'first_name'=>isset($datas['first_name_2'])?$datas['first_name_2']:'', 
+                    'date_of_birth'=>isset($datas['date_of_birth_2'])?(new Carbon($datas['date_of_birth_2']))->toDateString():'', 
+                    'place_of_birth'=>isset($datas['place_of_birth_2'])?(session('seller_class')!=='seller_by_afa'?$datas['place_of_birth_2']:''):'', 
+                    'nationality'=>isset($datas['nationality_2'])?(session('seller_class')!=='seller_by_afa'?$datas['nationality_2']:''):'', 
+                    'street_adr'=>isset($datas['street_adr_2'])?$datas['street_adr_2']:'', 
+                    'suburb'=>isset($datas['suburb_2'])?$datas['suburb_2']:'', 
+                    'city'=>isset($datas['city_2'])?$datas['city_2']:'', 
+                    'post_code'=>isset($datas['post_code_2'])?$datas['post_code_2']:'', 
+                    'state'=>isset($datas['state_2'])?$datas['state_2']:'', 
+                    'country'=>isset($datas['country_2'])?$datas['country_2']:'', 
+                    'mobile'=>isset($datas['mobile_2'])?$indicatif.$datas['mobile_2']:'', 
+                    'email_adr'=>isset($datas['email_adr_2'])?$datas['email_adr_2']:''
+                ]);
+
+                // Créer userinfo
+                $userInfo = Userinfo::create($datas);
+                $userInfo->user_id = $user->id;
+                $userInfo->save();
+
+                // Envoie email
+                $confirmLinkVar='confirmLink';
+                $confirmEmailLink= url(route('confirm.registration',[$user]));
+                $varValue = trans('seller.non_professional_natural_persons');
+                $lang = 'en';
+                $this->sendNotificationEmail($user,$lang,$confirmLinkVar,25,'role',$varValue,$confirmEmailLink);
+
+            } catch (\Throwable $th) {
+                logger()->error($exception);
+                // remove user created if error
+                if(isset($user)){
+                    DB::table('users')->where('id', $user->id)->delete();
+                }
+                if(isset($location)){
+                    DB::table('localizations')->where('id', $location->id)->delete();
+                }
+                return back()->with('info', trans('app.txt.errorcreateuser'));
+            }
+
+            return array(['resp'=>$user,'status'=>true]);
+        }
+    }
+
+    public function storeSellerByAfaIndividual(Request $request,$role){
+        $datas = $request->all();
+        $type=$request->input('type');
+        $indicatif='(+61)';
+        $rules = [
+            'name'     => 'required|unique:users,name|max:100',
+            'email'    => 'required|unique:users,email|max:100',
+            'language' => 'required|max:100',
+            'image'    => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'login_afa'  => 'required',
+            'immat_afa' => 'required',
+            'property_name'  => 'required',
+            'contact_name'  => 'required|max:100',
+            'contact_email' => 'required|email|max:100',
+            'contact_phone' => 'required|digits_between:6,9|numeric',
+            // Seller #1
+            'last_name'  => 'required|max:100',
+            'first_name' => 'required|max:100',
+            'street_adr' => 'required|max:100',
+            'suburb' => 'required|max:100',
+            'city' => 'required|max:100',
+            'post_code' => 'required|max:100',
+            'state' => 'nullable|max:100',
+            'country' => 'required|max:100',
+            'mobile' => 'required|digits_between:6,15|numeric',
+            'email_adr' => 'required|email|max:100',
+            // Seller #2
+            'last_name_2'  => 'nullable|max:100',
+            'first_name_2' => 'nullable|max:100',
+            'street_adr_2' => 'nullable|max:100',
+            'suburb_2' => 'nullable|max:100',
+            'city_2' => 'nullable|max:100',
+            'post_code_2' => 'nullable|max:100',
+            'state_2' => 'nullable|max:100',
+            'country_2' => 'nullable|max:100',
+            'mobile_2' => 'nullable|digits_between:6,15|numeric',
+            'email_adr_2' => 'nullable|email|max:100',
+            'g-recaptcha-response' => 'required|captcha',
+        ];
+ 
+        $validator = Validator::make($datas, $rules);
+        if ($validator->fails()) {
+            return array(['resp'=>$validator,'status'=>false]);
+        }else{
+            // Store image file
+            $datas['image_id'] = 0;
+            if($file=$request->file('image')){
+                $image = Image::storeAndSave($file);
+                $datas['image_id'] = $image->id>0?$image->id:0;
+            }
+
+            // More info
+            $typeUserId=8;
+            $datas['role'] = 2;
+            $datas['password'] = Hash::make($password = str_random(10));
+            $datas['activation_code'] = md5(str_random(30).(time()*32));
+            $datas['use_default_password'] = 1;
+            $datas['type_users_id'] = $typeUserId;
+            // generate immatriculation user
+            $datas['immat'] = $this->generateImmat($role,$type);
+            $datas['latitude'] = $request->lat;
+            $datas['longitude'] = $request->long;
+            $datas['contact_phone'] = $indicatif.$request->contact_phone;
+            $datas['is_seller'] = 1;
+
+            try {
+                //Créer localisation
+                $location = Localisation::create($datas);
+                $location->save();
+
+                // Créer user membre
+                $user = User::create($datas);
+                $user->location_id = $location->id;
+                $user->save();
+
+                // Créer seller info
+                $dt ="";
+                $si= SellerIndividual::create([
+                    'user_id'=>$user->id, 
+                    'last_name'=>$datas['last_name'], 
+                    'first_name'=>$datas['first_name'], 
+                    'date_of_birth'=>$dt, 
+                    'place_of_birth'=>session('seller_class')!=='seller_by_afa'?$datas['place_of_birth']:'', 
+                    'nationality'=>session('seller_class')!=='seller_by_afa'?$datas['nationality']:'', 
+                    'street_adr'=>$datas['street_adr'], 
+                    'suburb'=>$datas['suburb'], 
+                    'city'=>$datas['city'], 
+                    'post_code'=>$datas['post_code'], 
+                    'state'=>$datas['state'], 
+                    'country'=>$datas['country'], 
+                    'mobile'=>$indicatif.$datas['mobile'], 
+                    'email_adr'=>$datas['email_adr']
+                ]);
+                
+                $si2= SellerIndividual::create([
+                    'user_id'=>$user->id, 
+                    'last_name'=>isset($datas['last_name_2'])?$datas['last_name_2']:'', 
+                    'first_name'=>isset($datas['first_name_2'])?$datas['first_name_2']:'', 
+                    'date_of_birth'=>isset($datas['date_of_birth_2'])?(new Carbon($datas['date_of_birth_2']))->toDateString():'', 
+                    'place_of_birth'=>isset($datas['place_of_birth_2'])?(session('seller_class')!=='seller_by_afa'?$datas['place_of_birth_2']:''):'', 
+                    'nationality'=>isset($datas['nationality_2'])?(session('seller_class')!=='seller_by_afa'?$datas['nationality_2']:''):'', 
+                    'street_adr'=>isset($datas['street_adr_2'])?$datas['street_adr_2']:'', 
+                    'suburb'=>isset($datas['suburb_2'])?$datas['suburb_2']:'', 
+                    'city'=>isset($datas['city_2'])?$datas['city_2']:'', 
+                    'post_code'=>isset($datas['post_code_2'])?$datas['post_code_2']:'', 
+                    'state'=>isset($datas['state_2'])?$datas['state_2']:'', 
+                    'country'=>isset($datas['country_2'])?$datas['country_2']:'', 
+                    'mobile'=>isset($datas['mobile_2'])?$indicatif.$datas['mobile_2']:'', 
+                    'email_adr'=>isset($datas['email_adr_2'])?$datas['email_adr_2']:''
+                ]);
+
+                // Créer userinfo
+                $userInfo = Userinfo::create($datas);
+                $userInfo->user_id = $user->id;
+                $userInfo->save();
+
+                // Envoie email
+                $confirmLinkVar='confirmLink';
+                $confirmEmailLink= url(route('confirm.registration',[$user]));
+                $varValue = trans('seller.seller_by_afa');
+                $lang = 'en';
+                $this->sendNotificationEmail($user,$lang,$confirmLinkVar,25,'role',$varValue,$confirmEmailLink);
+
+            } catch (\Throwable $th) {
+                logger()->error($exception);
+                // remove user created if error
+                if(isset($user)){
+                    DB::table('users')->where('id', $user->id)->delete();
+                }
+                if(isset($location)){
+                    DB::table('localizations')->where('id', $location->id)->delete();
+                }
+                return back()->with('info', trans('app.txt.errorcreateuser'));
+            }
+
+            return array(['resp'=>$user,'status'=>true]);
+        }
+    }
+
+    public function storeSellerByAfaBusiness(Request $request,$role){
+        $datas = $request->all();
+        $type=$request->input('type');
+        $indicatif='(+61)';
+        $rules = [
+            'name'     => 'required|unique:users,name|max:100',
+            'email'    => 'required|unique:users,email|max:100',
+            'language' => 'required|max:100',
+            'image'    => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'login_afa'  => 'required',
+            'immat_afa' => 'required',
+            'property_name'  => 'required',
+            'contact_name'  => 'required|max:100',
+            'contact_email' => 'required|email|max:100',
+            'contact_phone' => 'required|digits_between:6,9|numeric',
+            'business_name' => 'required|max:100',
+            'business_parent' => 'nullable|max:191',
+            'street_adr_bs'        => 'required|max:100',
+            'suburb_bs'        => 'required|max:100',
+            'city_bs'        => 'required|max:100',
+            'post_code_bs' => 'required|max:100',
+            'state_bs' => 'required|max:100',
+            'country_bs' => 'required|max:100',
+            'phone_bs' => 'required|max:15',
+            'mobile_bs' => 'required|max:15',
+            'email_adr_bs' => 'required|email|max:100',
+            'g-recaptcha-response' => 'required|captcha',
+        ];
+ 
+        $validator = Validator::make($datas, $rules);
+        if ($validator->fails()) {
+            return array(['resp'=>$validator,'status'=>false]);
+        }else{
+            // Store image file
+            $datas['image_id'] = 0;
+            if($file=$request->file('image')){
+                $image = Image::storeAndSave($file);
+                $datas['image_id'] = $image->id>0?$image->id:0;
+            }
+
+            // More info
+            $typeUserId=9;
+            $datas['role'] = 2;
+            $datas['password'] = Hash::make($password = str_random(10));
+            $datas['activation_code'] = md5(str_random(30).(time()*32));
+            $datas['use_default_password'] = 1;
+            $datas['type_users_id'] = $typeUserId;
+            // generate immatriculation user
+            $datas['immat'] = $this->generateImmat($role,$type);
+            $datas['latitude'] = $request->lat_1;
+            $datas['longitude'] = $request->long_1;
+            $datas['contact_phone'] = $indicatif.$request->contact_phone;
+            $datas['is_seller'] = 1;
+
+            try {
+                //Créer localisation
+                $location = Localisation::create($datas);
+                $location->save();
+
+                // Créer user membre
+                $user = User::create($datas);
+                $user->location_id = $location->id;
+                $user->save();
+
+                // Créer seller info
+                $sb = SellerBusiness::create([
+                    'user_id'=>$user->id, 
+                    'business_name'=>$datas['business_name'], 
+                    'business_parent'=>$datas['business_parent'], 
+                    'street_adr'=>$datas['street_adr_bs'], 
+                    'suburb'=>$datas['suburb_bs'], 
+                    'city'=>$datas['city_bs'], 
+                    'post_code'=>$datas['post_code_bs'], 
+                    'state'=>$datas['state_bs'], 
+                    'country'=>$datas['country_bs'], 
+                    'phone'=>$datas['phone_bs'], 
+                    'mobile'=>$datas['mobile_bs'], 
+                    'email_adr'=>$datas['email_adr_bs']
+                ]);
+
+                // Créer userinfo
+                $userInfo = Userinfo::create($datas);
+                $userInfo->user_id = $user->id;
+                $userInfo->save();
+
+                // Envoie email
+                $confirmLinkVar='confirmLink';
+                $confirmEmailLink= url(route('confirm.registration',[$user]));
+                $varValue = trans('seller.seller_by_afa');
+                $lang = 'en';
+                $this->sendNotificationEmail($user,$lang,$confirmLinkVar,25,'role',$varValue,$confirmEmailLink);
+
+            } catch (\Throwable $th) {
+                logger()->error($exception);
+                // remove user created if error
+                if(isset($user)){
+                    DB::table('users')->where('id', $user->id)->delete();
+                }
+                if(isset($location)){
+                    DB::table('localizations')->where('id', $location->id)->delete();
+                }
+                return back()->with('info', trans('app.txt.errorcreateuser'));
+            }
+
+            return array(['resp'=>$user,'status'=>true]);
+        }
+    }
+
+    public function sendNotificationEmail($user,$lang,$confirmLinkVar,$tempNum,$nomVar,$valVar,$confirmLink){;
+        App::setLocale($lang);
+        $body = 'template_' . $lang;
+        $template = MailsTemplate::where('id', $tempNum)->first();
+        if($template){
+            $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
+            $vars = array(
+                '{'.$nomVar.'}' =>$valVar,
+                '{'.$confirmLinkVar.'}' => setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration'))),
+            );
+            $content = strtr($template->$body, $vars);
+            $content = ['title' => '', 'body' => $content];
+
+            Mail::to($user->email)->send(new MailTemplate($content, $sujet));
+            
+            $alert =trans('app.txt.alert_success');
+        }
     }
 
     /*

@@ -1320,4 +1320,6 @@ return
     'form.programme_solicitor' => 'Solicitor ',
     'form.programme_firb_pre_approved_program' => 'FIRB pre-approved program ',
     'form.programme_pre_approved_sale' => 'FIRB pre-approved sale',
+	'form.first_name' => 'First name',
+	'form.last_name' => 'Last name'
 ];

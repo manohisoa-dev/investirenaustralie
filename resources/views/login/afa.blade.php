@@ -307,6 +307,10 @@
                                                     <span class="text-danger">{{ $errors->first('country') }}</span>
                                                 </div>
                                             </div>
+                                            <div class="form-group">
+                                                <input type="hidden" value="{{ old('long')?old('long'):'' }}" name="long" id="long">
+                                                <input type="hidden" value="{{ old('lat')?old('lat'):'' }}" name="lat" id="lat">
+                                            </div>
                                         </fieldset>
 
                                         {{-- Postal Address --}}
@@ -463,11 +467,7 @@
 
 @push('script')
     {!! NoCaptcha::renderJs() !!}
-    @php
-        $key = env('GMAP_API_KEY');
-        $url = "https://maps.googleapis.com/maps/api/js?key=".$key."&callback=initMap&libraries=places&v=weekly";
-    @endphp
-    <script async defer src={{$url}}></script>
+  	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2izG_M7K3gP6pFUH5cyzmDjuGpOYfgc4&libraries=places&callback=initMap&channel=GMPSB_addressselection_v1_cABC" async defer></script>
     <script src="{{asset('js/myJs.js')}}"></script>
     <!-- Jquery Validate -->
     <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
@@ -566,7 +566,7 @@
                 },
                 orga_website: {
                     required: true,
-                    url:true
+                    url:false
                 },
                 orga_presentation: {
                     maxlength: 2000,
@@ -853,142 +853,75 @@
 
     {{-- Google map autocomplete --}}
     <script>
-        // This sample uses the Autocomplete widget to help the user select a
-        // place, then it retrieves the address components associated with that
-        // place, and then it populates the form fields with those details.
-        // This sample requires the Places library. Include the libraries=places
-        // parameter when you first load the API. 
-        let placeSearch;
-        let autocomplete;
-        let autocomplete2;
-        let autocomplete3;
-        var input;
-        const componentForm = {
-            locality: "long_name",
-            administrative_area_level_1: "short_name",
-            administrative_area_level_2: "short_name",
-            postal_code: "short_name",
-        };
-
-        function myFunction() {
-            return input = document.activeElement.id;
-        }
-
-        var stateBounds={
-            cta: ["-35.473469","149.012375"],
-            nt: ["-19.491411","132.550964"],
-            vic: ["-37.020100","144.964600"],
-            sa: ["-30.000233","136.209152"],
-            wa: ["-25.042261","117.793221"],
-            qld: ["-20.917574","142.702789"],
-            nsw: ["-31.840233","145.612793"],
-        };
-
-        function getStateBounds(state) {
-            return new google.maps.LatLngBounds(
-            new google.maps.LatLng(stateBounds[state][0], 
-                                    stateBounds[state][1])
-            ); 
-        }
-
-        function initMap() {
-            var options = {
-                types: ["(regions)"],
-                componentRestrictions: {country: "au"},
-                bounds: getStateBounds('vic'),              //à continuer
-            };
-            
-            var options2 = {
-                types: ["(cities)"],
-                componentRestrictions: {country: "au"},
-                bounds: getStateBounds('vic'),              //à continuer
-            };
-
-            // Create the autocomplete object, restricting the search predictions to
-            // geographical location types.
-            autocomplete = new google.maps.places.Autocomplete(document.getElementById("administrative_area_level_2"),options);
-            
-            autocomplete2 = new google.maps.places.Autocomplete(document.getElementById("locality"),options2);
-            
-            autocomplete3 = new google.maps.places.Autocomplete(document.getElementById("adrpost_locality"),options);
-
-            // Avoid paying for data that you don't need by restricting the set of
-            // place fields that are returned to just the address components.
-            autocomplete.setFields(["address_component"]);
-            autocomplete2.setFields(["address_component"]);
-            autocomplete3.setFields(["address_component"]);
-            // When the user selects an address from the drop-down, populate the
-            // address fields in the form.
-            autocomplete.addListener("place_changed", fillInAddress);
-            autocomplete2.addListener("place_changed", fillInAddress);
-            autocomplete3.addListener("place_changed", fillInAddress);
-
-            // delimite contry autocomplete
-            // autocomplete.setComponentRestrictions({'country': ['au']});
-            // autocomplete2.setComponentRestrictions({'country': ['au']});
-        }
-
-        function fillInAddress() {
-            // Get the place details from the autocomplete object.
-            const place = input!=='locality'?(input!=='adrpost_locality'?autocomplete.getPlace():autocomplete3.getPlace()):autocomplete2.getPlace();
-            var prefix = '';
-
-            for (const component in componentForm) {
-                if(input==='adrpost_locality'){
-                    prefix = 'adrpost_';
-                }
-                
-                if(prefix == 'adrpost_' && component!=='administrative_area_level_2'){
-                    document.getElementById(prefix+component).value = "";
-                    document.getElementById(prefix+component).disabled = false;
-                }else{
-                    document.getElementById(component).value = "";
-                    document.getElementById(component).disabled = false;
-                }
-            }
-
-            // Get each component of the address from the place details,
-            // and then fill-in the corresponding field on the form.
-            for (const component of place.address_components) {
-                const addressType = component.types[0];
-                if (componentForm[addressType]) {
-                    const val = component[componentForm[addressType]];
-                    if(addressType !== "administrative_area_level_1"){
-                        if(prefix == 'adrpost_' && addressType!=='administrative_area_level_2'){
-                            document.getElementById(prefix+addressType).value = val;
-                        }else{
-                            document.getElementById(addressType).value = val;
-                        }
-                    }else{
-                        $('#'+prefix+'administrative_area_level_1 option[value="'+val+'"]').prop('selected', true);
-                    }
-                }
-            }
-        }
-
-        // Bias the autocomplete object to the user's geographical location,
-        // as supplied by the browser's 'navigator.geolocation' object.
-        function geolocate() {
-            if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((position) => {
-                const geolocation = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-                };
-                const circle = new google.maps.Circle({
-                center: geolocation,
-                radius: position.coords.accuracy,
-                });
-                autocomplete.setBounds(circle.getBounds());
-            });
-            }
-        }
-
-        // Initialize input after State selected
-        $('#administrative_area_level_1').on('change',function(){
-            $('input[name=city').val('');
-            $('input[name=suburb').val('');
-        })
+		function initMap(){
+			var autocomplete = new google.maps.places.Autocomplete($("#route")[0], {});
+			autocomplete.setComponentRestrictions({'country': ['au']});
+				
+			google.maps.event.addListener(autocomplete, 'place_changed', function() {
+				var place = autocomplete.getPlace();
+				var arrAddress = place.address_components;
+				var itemRoute='';
+				var itemSuburb='';
+				var itemCountry='';
+				var itemCity = '';
+				var itemPc='';
+				var itemState='';
+				var itemSnumber='';
+				var lat = place.geometry.location.lat();
+				var long = place.geometry.location.lng();
+				
+				console.log(arrAddress);
+	
+				$.each(arrAddress, function (i, address_components) {
+					if (address_components.types[0] == "street_number") {
+						//console.log("street_number:" + address_components.long_name);
+						itemSnumber = address_components.long_name;
+					}
+					if (address_components.types[0] == "route") {
+						//console.log(i + ": route:" + address_components.long_name);
+						itemRoute = address_components.long_name;
+					}
+					
+					if (address_components.types[0] == "locality") {
+						//console.log("town:" + address_components.long_name);
+						itemSuburb = address_components.long_name;
+					}
+					
+					if (address_components.types[0] == "country") {
+						// console.log("country:" + address_components.long_name);
+						itemCountry = address_components.long_name;
+					}
+					
+					if (address_components.types[0] == "postal_code") {
+						//console.log("pc:" + address_components.long_name);
+						itemPc = address_components.long_name;
+					}
+	
+					if (address_components.types[0] == "administrative_area_level_1") {
+						//console.log("pc:" + address_components.long_name);
+						itemState = address_components.short_name;
+					}
+					
+					if (address_components.types[0] == "administrative_area_level_2") {
+						//console.log("pc:" + address_components.long_name);
+						itemCity = address_components.short_name;
+					}
+	
+					$('#route').val(itemRoute);
+					$('#route_number').val(itemSnumber);
+					$('#locality').val(itemSuburb);
+					$('#administrative_area_level_2').val(itemCity);
+					$('#postal_code').val(itemPc);
+					$('#long').val(long);
+					$('#lat').val(lat);
+	
+					var val = itemCountry;
+					$('#country_1 option[long="'+val+'"]').prop('selected', true);
+					$('#administrative_area_level_1 option[value="'+itemState+'"]').prop('selected', true);
+	
+				});
+			});
+		}
     </script>
     {{-- End google map autocomplete --}}
 

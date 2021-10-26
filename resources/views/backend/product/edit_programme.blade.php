@@ -73,6 +73,21 @@
 								</div>
 								
 								<div class="row">
+									<div class="col-lg-6">
+										<div class="form-group">
+											<label for="title">@lang('app.form.programme_commencement_dt') *</label>
+											<input type="text" name="commencement_dt" id="commencement_dt" value="{{$product->commencement_dt}}" class="form-control date_month_year" />
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="form-group">
+											<label for="title">@lang('app.form.estimated_delivery_dt') *</label>
+											<input type="text" name="estimated_delvivery_dt" id="estimated_delvivery_dt" class="form-control date_month_year" value="{{$product->estimated_delvivery_dt}}"/>
+										</div>
+									</div>
+								</div>	
+								
+								<div class="row">
 									<div class="col-lg-4">
 										<div class="form-group">
 											<label for="title">@lang('app.form.programme_commission_type')</label>
@@ -143,6 +158,8 @@
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_adresse') *</label>
 									<input name="display_address" id="display_address" class="form-control" type="text" value="{{$product->display_address}}">
+									<input type="hidden" name="long" id="long" />
+									<input type="hidden" name="lat" id="lat" />
 								</div>
 								
 								<div class="row">
@@ -188,10 +205,40 @@
 										</div> 
 									</div>
 									<div class="col-lg-4">
-										
+										<div class="form-group">
+											<label for="title">@lang('app.form.programme_solicitor')</label>
+											<select class="form-control" name="solicitor_id" id="solicitor_id" style="width:100%">
+												@foreach(\App\Models\Solicitor::where('vendeur_id',Auth::id())->get() as $solicitor)
+													<option value="{{$solicitor->id}}" {{$solicitor->id == $product->solicitor_id ? 'selected' : ''}}>{{$solicitor->cabinet_name}}</option>
+												@endforeach
+											</select>
+										</div> 
 									</div>
 								</div>
 								
+								<div class="row">
+									<div class="col-lg-6">
+										<div class="form-group">
+											<label for="title">@lang('app.form.programme_firb_pre_approved_program') *</label>
+											<select class="form-control" name="programme_firb_pre_approved_program" id="programme_firb_pre_approved_program" style="width:100%">
+												<option value="">@lang('app.form.choix_txt')</option>
+												<option value="NO" {{$product->programme_firb_pre_approved == 'NO' ? 'selected' : ''}}>NO</option>
+												<option value="YES - 50%" {{$product->programme_firb_pre_approved == 'YES - 50%' ? 'selected' : ''}}>YES - 50%</option>
+												<option value="YES - 100%" {{$product->programme_firb_pre_approved == 'YES - 100%' ? 'selected' : ''}}>YES - 100%</option>
+											</select>
+										</div> 
+									</div>
+									<div class="col-lg-6">
+										<div class="form-group">
+											<label for="title">@lang('app.form.programme_pre_approved_sale') *</label>
+											<select class="form-control" name="programme_pre_approved_sale" id="programme_pre_approved_sale" style="width:100%">
+												<option value="">@lang('app.form.choix_txt')</option>
+												<option value="NO" {{$product->programme_pre_approved_sale == 'NO' ? 'selected' : ''}}>NO</option>
+												<option value="YES" {{$product->programme_pre_approved_sale == 'YES' ? 'selected' : ''}}>YES</option>
+											</select>
+										</div> 
+									</div>
+								</div>
 								@if ($dossier)
 								<div class="row">
 									 <div class="col-lg-12">
@@ -463,6 +510,9 @@
 		content: "{{ trans('app.form.choose_file') }}";
 	}
 	.error{color:red !important}
+	.ui-datepicker-calendar {
+    	display: none;
+    }
 </style>
 <!-- dropzone -->
 <script src="{{ asset('administrator/js/plugins/dropzone/dropzone.js') }}"></script>
@@ -474,6 +524,71 @@
 <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 <script src="{{ asset('administrator/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2izG_M7K3gP6pFUH5cyzmDjuGpOYfgc4&libraries=places&callback=initMap&channel=GMPSB_addressselection_v1_cABC" async defer></script>
+<!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2izG_M7K3gP6pFUH5cyzmDjuGpOYfgc4&libraries=places&callback=initMap"></script>-->
+<script>
+// display_address
+function initMap(){
+	var autocomplete = new google.maps.places.Autocomplete($("#display_address")[0], {});
+	autocomplete.setComponentRestrictions({'country': ['au']});
+
+	google.maps.event.addListener(autocomplete, 'place_changed', function() {
+		var place = autocomplete.getPlace();
+		//console.log(place.address_components);
+		var arrAddress = place.address_components;
+		var itemRoute='';
+		var itemSuburb='';
+		var itemCity = '';
+		var itemCountry='';
+		var itemPc='';
+		var itemSnumber='';
+		var lat = place.geometry.location.lat();
+		var long = place.geometry.location.lng();
+		
+		$.each(arrAddress, function (i, address_components) {
+			if (address_components.types[0] == "street_number") {
+				//console.log("street_number:" + address_components.long_name);
+				itemSnumber = address_components.long_name;
+			}
+			if (address_components.types[0] == "route") {
+				//console.log(i + ": route:" + address_components.long_name);
+				itemRoute = address_components.long_name;
+			}
+			
+			if (address_components.types[0] == "locality") {
+				//console.log("town:" + address_components.long_name);
+				itemSuburb = address_components.long_name;
+			}
+			
+			if (address_components.types[0] == "country") {
+				//document.getElementById("country_code").value = place.address_components[i].short_name;
+				console.log("country:" + address_components.long_name);
+				console.log("country:" + address_components.short_name);
+				itemCountry = address_components.long_name;
+			}
+			
+			if (address_components.types[0] == "postal_code") {
+				//console.log("pc:" + address_components.long_name);
+				itemPc = address_components.long_name;
+			}
+			if (address_components.types[0] == "administrative_area_level_2") {
+				//console.log("pc:" + address_components.long_name);
+				itemCity = address_components.short_name;
+			}
+			
+			var adresse = itemSnumber + ' ' + itemRoute;
+			$('#display_address').val(adresse);
+			$('#ville').val(itemSuburb);
+			$('#postalCode').val(itemPc);
+			$('#suburb').val(itemCity);
+			$('#long').val(long);
+			$('#lat').val(lat);
+		});
+	});
+}
+</script>
+
 <script>
 	Dropzone.autoDiscover = false;
 	$(document).ready(function(){					
@@ -490,6 +605,18 @@
 		});
 		$("a.fancyboxLinkDoc").fancybox({
 			type: "iframe"
+		});
+		
+		$(".date_month_year").datepicker({
+			changeMonth: true,
+			changeYear: true,
+			showButtonPanel: true,
+			dateFormat: 'MM yy',
+			onClose: function(dateText, inst) { 
+				var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+				var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+				$(this).datepicker('setDate', new Date(year, month, 1));
+			}
 		});
 		
 		<!-- info type de commission-->

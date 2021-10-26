@@ -549,6 +549,10 @@
                                                 <span class="text-danger">{{ $errors->first('country') }}</span>
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <input type="hidden" value="{{ old('long')?old('long'):'' }}" name="long" id="long">
+                                            <input type="hidden" value="{{ old('lat')?old('lat'):'' }}" name="lat" id="lat">
+                                        </div>
                                     </fieldset>
 
                                     {{-- Postal Address --}}
@@ -616,10 +620,6 @@
                                                     </select>
                                                     <span class="text-danger">{{ $errors->first('adrpost_country') }}</span>
                                                 </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="hidden" value="{{ old('long')?old('long'):'' }}" name="long" id="long">
-                                                <input type="hidden" value="{{ old('lat')?old('lat'):'' }}" name="lat" id="lat">
                                             </div>
                                         </div>
                                     </fieldset>
