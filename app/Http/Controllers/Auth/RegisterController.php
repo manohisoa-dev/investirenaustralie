@@ -972,8 +972,12 @@ class RegisterController extends Controller
         }catch (\Exception $exception) {
             logger()->error($exception);
             // remove user created if error
-            DB::table('users')->where('id', $user->id)->delete();
-            DB::table('localizations')->where('id', $location->id)->delete();
+            if(isset($user)){
+                DB::table('users')->where('id', $user->id)->delete();
+            }
+            if(isset($location)){
+                DB::table('localizations')->where('id', $location->id)->delete();
+            }
             return back()->with('info', trans('app.txt.errorcreateuser'));
         }
 
