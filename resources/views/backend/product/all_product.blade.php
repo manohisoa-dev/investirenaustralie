@@ -38,20 +38,19 @@
 								@php
 									$photo_principal = \App\Models\ProductsImage::where('products_images.product_id', '=', $record->id)->where('products_images.is_principal', '=', 1)->join('images', 'products_images.image_id', '=', 'images.id')->first();
 									$first_photo = \App\Models\ProductsImage::where('products_images.product_id', '=', $record->id)->join('images', 'products_images.image_id', '=', 'images.id')->first();
-									
 								@endphp
 								@if($first_photo)
 									@if($photo_principal)
 									<!-- Programme sans principal -->
-									<img src="{{asset($photo_principal->filepath)}}" class="img-responsive" style="height:80px" />
+									<img src="{{asset($photo_principal->filepath)}}" class="img-responsive" style="height:50px" />
 									@else
 									<!-- Programme principal -->
-									<img src="{{asset($first_photo->filepath)}}" class="img-responsive" style="height:80px" />
+									<img src="{{asset($first_photo->filepath)}}" class="img-responsive" style="height:50px" />
 									@endif
 								@else
 									<!-- Programme aucun photo -->
-									<img class="img-responsive" src="{{asset('images/product.png')}}" width="80">
-								@endif		
+									<img class="img-responsive" src="{{asset('images/product.png')}}" style="height:50px">
+								@endif	
 							</td>
 							<td>{{ $record->title }}<br />{{str_limit(strip_tags($record->excerpt()),"100","...")}}</td>
 							<td>

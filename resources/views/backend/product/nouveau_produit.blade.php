@@ -256,7 +256,11 @@
 							<div class="col-lg-12">
 								<div class="form-group">
 									<label for="title">@lang('app.form.product_title') *</label>
-									<input name="title_product" id="title_product" class="form-control" type="text" value="" title="@lang('app.form.product_title_input')">
+									@If(Auth::user()->isSba())
+									<input name="title_product" id="title_product" class="form-control" type="text" value="{{Auth::user()->property_name}}">
+									@else
+									<input name="title_product" id="title_product" class="form-control" type="text" value="{{ old('title_product')?old('title_product'):'' }}">
+									@endif
 								</div>
 							</div>
 						</div>
@@ -1399,6 +1403,9 @@ function initMap(){
 				},
 				p_eoiDossier: {
 					required: true
+				},
+				programme_firb_pre_approved_program: {
+					required: true
 				}
 			},
 			messages: {
@@ -1525,6 +1532,9 @@ function initMap(){
 					required: "@lang('app.txt.champobligatoire')"
 				},
 				p_eoiDossier: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				programme_firb_pre_approved_program: {
 					required: "@lang('app.txt.champobligatoire')"
 				}
 			},

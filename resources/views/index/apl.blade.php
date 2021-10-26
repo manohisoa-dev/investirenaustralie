@@ -103,6 +103,8 @@
     var _map;
     var _lat = -25.647467468105795;
     var _long = 146.89921517372136;
+    // var _lat = ‑31.083332;
+    // var _long = 150.916672;
     
     var iconBase = "{{url('')}}";
     var icons = {

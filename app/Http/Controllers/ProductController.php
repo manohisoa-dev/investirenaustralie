@@ -1404,8 +1404,8 @@ class ProductController extends Controller {
                         $request->simple_price, 0, 0, 'AUD', $request->status, $request->product_type_id,
                         $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                         -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine, $request->commision_product,
-                        $taux_commision_prd, '', '', $request->bonus_vente, $request->bonus_amount, '',
-                        0, 0, 0);
+                        $taux_commision_prd, $request->commencement_dt, $request->estimated_delvivery_dt, $request->bonus_vente, $request->bonus_amount, '',
+                        0, 0, 0,$request->programme_firb_pre_approved_program);
 
                     //save fond dossier programme
                     if ($request->p_fondDossier) {
@@ -1421,6 +1421,12 @@ class ProductController extends Controller {
                     if ($request->p_liaDossier) {
                         foreach ($request->p_liaDossier as $key => $value) {
                             $this->save_lia_dossier($value, $id_produit);
+                        }
+                    }
+                    
+                    if($request->dropPhoto){
+                        foreach ($request->dropPhoto as $key => $value) {
+                            $this->save_photo_programme($value, $id_produit, 0);
                         }
                     }
                 }
