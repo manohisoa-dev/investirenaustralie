@@ -556,8 +556,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <input type="hidden" value="{{ old('long')?old('long'):'' }}" name="long" id="long_1">
-                                                        <input type="hidden" value="{{ old('lat')?old('lat'):'' }}" name="lat" id="lat_1">
+                                                        <input type="hidden" value="{{ old('long_1')?old('long_1'):'' }}" name="long_1" id="long_1">
+                                                        <input type="hidden" value="{{ old('lat_1')?old('lat_1'):'' }}" name="lat_1" id="lat_1">
                                                     </div>
                                                     {{-- <div class="form-group">
                                                         <label for="phone" class="col-sm-12 control-label">@lang('app.txt.phone') *</label>
@@ -1583,6 +1583,7 @@
             var itemPc='';
             var itemState='';
             var itemSnumber='';
+			var itemCity3 = '';
             var lat = place.geometry.location.lat();
             var long = place.geometry.location.lng();
 
@@ -1615,11 +1616,17 @@
                     //console.log("pc:" + address_components.long_name);
                     itemState = address_components.short_name;
                 }
+				
+				if (address_components.types[0] == "administrative_area_level_2") {
+					//console.log("pc:" + address_components.long_name);
+					itemCity3 = address_components.short_name;
+				}
 
                 $('#route').val(itemRoute);
                 $('#route_number').val(itemSnumber);
-                $('#administrative_area_level_2').val(itemLocality);
+                $('#administrative_area_level_2').val(itemCity3);
                 $('#postal_code').val(itemPc);
+				$('#locality').val(itemLocality);
                 $('#long').val(long);
                 $('#lat').val(lat);
 

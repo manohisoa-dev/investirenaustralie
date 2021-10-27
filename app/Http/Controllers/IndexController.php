@@ -47,7 +47,6 @@ class IndexController extends Controller
         // $programme = Product::all()->first();
         // $text = getTranslate('programme',$programme,App::getLocale());
         // setTranslate('fr','es',$text,'programme',$programme);
-
         $typesRes = Type::orderBy('title', 'asc')
             ->where('object_type', 'type')
             ->where('categories_id', 1)

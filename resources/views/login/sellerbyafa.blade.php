@@ -381,34 +381,36 @@
                                                         <label for="street_adr_bs" class="col-sm-12 control-label">@lang('app.txt.streetaddress') *</label>
                                                         <div class="col-sm-12">
                                                             <input type="text" class="form-control" id="street_adr_bs" name="street_adr_bs" placeholder="@lang('app.txt.streetaddress')" value="{{ old('street_adr_bs')?old('street_adr_bs'):'' }}">
+															<input type="hidden" name="long_3" id="long_3" />
+															<input type="hidden" name="lat_3" id="lat_3" />
                                                             <span class="text-danger">{{ $errors->first('street_adr_bs') }}</span>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="suburb_bs" class="col-sm-12 control-label">@lang('app.txt.suburb') *</label>
                                                         <div class="col-sm-12">
-                                                            <input type="text" class="form-control" id="locality" name="suburb_bs" placeholder="@lang('app.txt.suburb')" value="{{ old('suburb_bs')?old('suburb_bs'):'' }}">
+                                                            <input type="text" class="form-control" id="suburb_bs" name="suburb_bs" placeholder="@lang('app.txt.suburb')" value="{{ old('suburb_bs')?old('suburb_bs'):'' }}">
                                                             <span class="text-danger">{{ $errors->first('suburb_bs') }}</span>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="city_bs" class="col-sm-3 control-label">@lang('app.txt.city') *</label>
                                                         <div class="col-sm-12">
-                                                            <input type="text" class="form-control" id="administrative_area_level_2" name="city_bs" placeholder="@lang('app.txt.city')" value="{{ old('city_bs')?old('city_bs'):'' }}">
+                                                            <input type="text" class="form-control" id="city_bs" name="city_bs" placeholder="@lang('app.txt.city')" value="{{ old('city_bs')?old('city_bs'):'' }}">
                                                             <span class="text-danger">{{ $errors->first('city_bs') }}</span>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="post_code_bs" class="col-sm-3 control-label">@lang('app.txt.codepostal') *</label>
                                                         <div class="col-sm-12">
-                                                            <input type="text" class="form-control" id="postal_code" name="post_code_bs" placeholder="@lang('app.txt.codepostal')" value="{{ old('post_code_bs')?old('post_code_bs'):'' }}">
+                                                            <input type="text" class="form-control" id="post_code_bs" name="post_code_bs" placeholder="@lang('app.txt.codepostal')" value="{{ old('post_code_bs')?old('post_code_bs'):'' }}">
                                                             <span class="text-danger">{{ $errors->first('post_code_bs') }}</span>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="state_bs" class="col-sm-3 control-label">@lang('app.txt.etat') *</label>
                                                         <div class="col-sm-12">
-                                                            <select id="administrative_area_level_1" class="form-control" name="state_bs">
+                                                            <select id="state_bs" class="form-control" name="state_bs">
                                                                 <option selected disabled>@lang('app.select_state')</option>
                                                                 @foreach ($states as $state)
                                                                     <option value="{{ $state->content }}" {{ old('state_bs')==$state->content?'selected':'' }}>{{ trans('app.txt.'.$state->content) }} ({{ $state->content }})</option>
@@ -1070,6 +1072,7 @@
             $('#phone_bs').removeAttr('required');
             $('#mobile_bs').removeAttr('required');
             $('#email_adr_bs').removeAttr('required');
+			initMap();
         }else{
             // $('#sellerDetailsBusiness').html(busInput);
             $('#sellerDetailsBusiness').removeAttr('hidden');
@@ -1086,6 +1089,7 @@
             $('#phone_bs').attr('required','required');
             $('#mobile_bs').attr('required','required');
             $('#email_adr_bs').attr('required','required');
+			initMap();
         }
     });
 
@@ -1106,6 +1110,7 @@
     function initMap(){
         var autocomplete = new google.maps.places.Autocomplete($("#street_adr")[0], {});
         var autocomplete2 = new google.maps.places.Autocomplete($("#street_adr_2")[0], {});
+		var autocomplete3 = new google.maps.places.Autocomplete($("#street_adr_bs")[0], {});
 
         google.maps.event.addListener(autocomplete, 'place_changed', function() {
             var place = autocomplete.getPlace();
@@ -1201,6 +1206,72 @@
 
                 var val2 = itemCountry2;
                 $('#country_2 option[long="'+val2+'"]').prop('selected', true);
+
+            });
+        });
+		
+		google.maps.event.addListener(autocomplete3, 'place_changed', function() {
+            var place3 = autocomplete3.getPlace();
+            var arrAddress3 = place3.address_components;
+            var itemRoute3='';
+            var itemLocality3='';
+            var itemCountry3='';
+            var itemPc3='';
+            var itemSnumber3='';
+			var itemCity3 = '';
+            var lat3 = place3.geometry.location.lat();
+            var long3 = place3.geometry.location.lng();
+			var itemState3 = '';
+            //console.log(arrAddress3);
+            $.each(arrAddress3, function (i, address_components) {
+                if (address_components.types[0] == "street_number") {
+                    //console.log("street_number:" + address_components.long_name);
+                    itemSnumber3 = address_components.long_name;
+                }
+                if (address_components.types[0] == "route") {
+                    //console.log(i + ": route:" + address_components.long_name);
+                    itemRoute3 = address_components.long_name;
+                }
+                
+                if (address_components.types[0] == "locality") {
+                    //console.log("town:" + address_components.long_name);
+                    itemLocality3 = address_components.long_name;
+                }
+                
+                if (address_components.types[0] == "country") {
+                    // console.log("country:" + address_components.long_name);
+                    itemCountry3 = address_components.long_name;
+                }
+                
+                if (address_components.types[0] == "postal_code") {
+                    //console.log("pc:" + address_components.long_name);
+                    itemPc3 = address_components.long_name;
+                }
+				
+				if (address_components.types[0] == "administrative_area_level_2") {
+					//console.log("pc:" + address_components.long_name);
+					itemCity3 = address_components.short_name;
+				}
+				
+				if (address_components.types[0] == "administrative_area_level_1") {
+					itemState3 = address_components.short_name;
+				}
+                
+                var adresse3 = itemSnumber3 + ' ' + itemRoute3;
+                $('#street_adr_bs').val(adresse3);
+                $('#long_3').val(long3);
+                $('#lat_3').val(lat3);
+                $('#city_bs').val(itemCity3);
+				$('#suburb_bs').val(itemLocality3);
+                $('#post_code_bs').val(itemPc3);
+
+                var val3 = itemCountry3;
+                $('#country_bs option[long="'+val3+'"]').prop('selected', true);
+				
+				var statebs = itemState3; 
+				$('#state_bs').val(statebs);
+				console.log(statebs);
+                //$('#state_bs option[long="'+statebs+'"]').prop('selected', true);
 
             });
         });

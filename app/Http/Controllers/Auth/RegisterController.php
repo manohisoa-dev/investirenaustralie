@@ -1309,7 +1309,7 @@ class RegisterController extends Controller
             }
 
             // More info
-            $typeUserId=1;
+            $typeUserId=2;
             $datas['role'] = 2;
             $datas['password'] = Hash::make($password = str_random(10));
             $datas['activation_code'] = md5(str_random(30).(time()*32));
@@ -1317,14 +1317,19 @@ class RegisterController extends Controller
             $datas['type_users_id'] = $typeUserId;
             // generate immatriculation user
             $datas['immat'] = $this->generateImmat($role,$type);
-            $datas['latitude'] = $request->lat_1;
-            $datas['longitude'] = $request->long_1;
-            $datas['contact_phone'] = $indicatif.$request->contact_phone;
             $datas['is_seller'] = 1;
 
             try {
                 //Créer localisation
                 $location = Localisation::create($datas);
+                $location->locality=$datas['suburb'];
+                $location->postalCode=$datas['post_code'];
+                $location->country=$datas['country'];
+                $location->area_level_1=$datas['state'];
+                $location->area_level_2=$datas['city'];
+                $location->route=$datas['street_adr'];
+                $location->latitude=$datas['lat_1'];
+                $location->longitude=$datas['long_1'];
                 $location->save();
 
                 // Créer user membre
@@ -1352,7 +1357,7 @@ class RegisterController extends Controller
                     'mobile'=>$indicatif.$datas['mobile'], 
                     'email_adr'=>$datas['email_adr']
                 ]);
-                
+
                 $si2= SellerIndividual::create([
                     'user_id'=>$user->id, 
                     'last_name'=>isset($datas['last_name_2'])?$datas['last_name_2']:'', 
@@ -1458,14 +1463,20 @@ class RegisterController extends Controller
             $datas['type_users_id'] = $typeUserId;
             // generate immatriculation user
             $datas['immat'] = $this->generateImmat($role,$type);
-            $datas['latitude'] = $request->lat;
-            $datas['longitude'] = $request->long;
             $datas['contact_phone'] = $indicatif.$request->contact_phone;
             $datas['is_seller'] = 1;
 
             try {
                 //Créer localisation
                 $location = Localisation::create($datas);
+                $location->locality=$datas['suburb'];
+                $location->postalCode=$datas['post_code'];
+                $location->country=$datas['country'];
+                $location->area_level_1=$datas['state'];
+                $location->area_level_2=$datas['city'];
+                $location->route=$datas['street_adr'];
+                $location->latitude=$datas['lat'];
+                $location->longitude=$datas['long'];
                 $location->save();
 
                 // Créer user membre
@@ -1586,14 +1597,20 @@ class RegisterController extends Controller
             $datas['type_users_id'] = $typeUserId;
             // generate immatriculation user
             $datas['immat'] = $this->generateImmat($role,$type);
-            $datas['latitude'] = $request->lat_1;
-            $datas['longitude'] = $request->long_1;
             $datas['contact_phone'] = $indicatif.$request->contact_phone;
             $datas['is_seller'] = 1;
 
             try {
                 //Créer localisation
                 $location = Localisation::create($datas);
+                $location->locality=$datas['suburb_bs'];
+                $location->postalCode=$datas['post_code_bs'];
+                $location->country=$datas['country_bs'];
+                $location->area_level_1=$datas['state_bs'];
+                $location->area_level_2=$datas['city_bs'];
+                $location->route=$datas['street_adr_bs'];
+                $location->latitude=$datas['lat_3'];
+                $location->longitude=$datas['long_3'];
                 $location->save();
 
                 // Créer user membre

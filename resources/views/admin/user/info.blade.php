@@ -100,11 +100,11 @@
 						</tr>
 						<tr>
 							<th width="45%">@lang('app.form.programme_suburb')</th>
-							<td>{{$user->location->area_level_1}}</td>
+							<td>{{$user->location->locality}}</td>
 						</tr>
 						<tr>
 							<th width="45%">@lang('app.form.programme_ville')</th>
-							<td>{{$user->location->locality}}</td>
+							<td>{{$user->location->area_level_2}}</td>
 						</tr>
 						<tr>
 							<th width="45%">@lang('app.form.programme_adresse')</th>

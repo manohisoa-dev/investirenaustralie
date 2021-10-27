@@ -166,7 +166,7 @@
                                 </li>
 
                                 <li class="text-white font-weight-bold m-40px-l bloc-registration"><i class="fas fa-sign-in-alt"></i> @lang('app.sinscrire') :
-                                    <select id="currency-dropdown" onChange="location.href=''+this.options[this.selectedIndex].value;" class="white-bg-alt border-color-dark-gray border-radius-0 white-color">
+									<select id="currency-dropdown" onChange="location.href=''+this.options[this.selectedIndex].value;" class="white-bg-alt border-color-dark-gray border-radius-0 white-color">
                                         <option class="dark-color" value="#" selected="true" disabled="disabled">@lang('app.as')</option>
                                         <option class="dark-color" value="{{route('register', ['role'=>'member'])}}" @if(isset($role)) {{ trans('app.'.$role)==trans('app.member')?"selected":""  }}@endif>@lang('app.member')</option>
                                         <option class="dark-color" value="{{route('register', ['role'=>'seller'])}}" @if(isset($role)) {{ trans('app.'.$role)==trans('app.seller')?"selected":""  }}@endif>@lang('app.seller')</option>
@@ -529,7 +529,7 @@
                 <div class="modal-content white-bg">
                     <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
                         <h4 class="modal-title white-color text-center">{{ strtoupper(trans('app.message')) }} </h4>
-                        <button type="button" class="close" data-dismiss="modal" onclick="closeModal()" aria-label="Close">
+                        <button type="button" class="close" data-dismiss="modal" onClick="closeModal()" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -551,7 +551,7 @@
                 <div class="modal-content white-bg">
                     <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
                         <h4 class="modal-title white-color text-center">{{ strtoupper(trans('app.txt.submit_contract_signed')) }} </h4>
-                        <button type="button" class="close" data-dismiss="modal" onclick="closeModal()" aria-label="Close">
+                        <button type="button" class="close" data-dismiss="modal" onClick="closeModal()" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -1113,11 +1113,6 @@
     }
   </style>
   
-    {{-- @php
-        $key = env('GMAP_API_KEY');
-        $url = "https://maps.googleapis.com/maps/api/js?key=".$key."&callback=initMap&libraries=places&v=weekly";
-    @endphp
-    <script async defer src={{$url}}></script> --}}
     @stack('script')
 
 
