@@ -10,7 +10,7 @@ class Message extends Model
     protected $fillable = ['id', 'type', 'from_id', 'to_id', 'body', 'attachment', 'seen'];
 
 
-    public static function unreadCount(int $user_id, int $from_id){
+    public static function unreadCount($user_id, $from_id){
         return Message::where('to_id', $user_id)
         ->where('from_id', $from_id)
         ->groupBy('from_id')
@@ -19,7 +19,7 @@ class Message extends Model
         ->first();
     }
     
-    public static function unreadCountAfa(int $user_id){
+    public static function unreadCountAfa($user_id){
         return Message::where('to_id', $user_id)
         ->selectRaw('from_id, COUNT(id) as count')
         ->whereRaw('seen = 0')

@@ -788,7 +788,19 @@
                                       <i class="fas fa-chevron-right"></i>
                                   </div>
                                 </a>
-								<a href="#properties" data-toggle="collapse" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ Request::is('nouveau-programmes') || Request::is('nouveau-produit') ? 'menu-active' : ''}}">
+								@php
+									if(Auth::user()->hasTypeUser(8) || Auth::user()->hasTypeUser(9)){
+										if(App\Models\Product::where('author_id',Auth::user()->id)->count() >= 1){
+											$class_p = 'inactiveLink';
+										}else{
+											$class_p = '';
+										}
+									}else{
+										$class_p = '';
+									}
+								@endphp
+                                
+								<a href="#properties" data-toggle="collapse" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ Request::is('nouveau-programmes') || Request::is('nouveau-produit') ? 'menu-active' : ''}} {{$class_p}}">
 									<div>
 										<i class="fa fa-industry m-10px-r"></i>
 										<span>@lang('app.txt_register_programme')</span>
@@ -882,6 +894,18 @@
                                     </div>
                                 </a>
                               @endif
+
+                                @if (Auth::user()->hasRole(2) && (Auth::user()->hasTypeUser(8) || Auth::user()->hasTypeUser(9)))
+                                    <a href="{{route('seller.contact',['role'=>'admin'])}}" class="{{ Auth::user()->temp()?'inactiveLink':'' }} list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('seller/contact')) ? 'menu-active' : '' }}">
+                                        <div>
+                                            <i class="fa fa-comment m-10px-r"></i>
+                                            <span>@lang('app.btn.contact_admin')</span>
+                                        </div>
+                                        <div>
+                                            <i class="fas fa-chevron-right"></i>
+                                        </div>
+                                    </a>		 
+                                @endif
 
                               <a href="{{route(''.\App\Models\User::find(Auth::id())->roleUser->role_initial.'.mail.list',['filter'=>'inbox'])}}" class="{{ Auth::user()->temp()?'inactiveLink':'' }} list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is(\App\Models\User::find(Auth::id())->roleUser->role_initial.'/mails/inbox')) ? 'menu-active' : '' }}">
                                   <div>

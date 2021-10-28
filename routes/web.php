@@ -343,6 +343,8 @@ Route::prefix('seller')->middleware(["auth","role:2"])->group(function(){
         Route::get('delete/{mail}', 'MailController@delete')->name('seller.mail.delete');
     });
 
+    Route::get('contact/role/{role}', 'SellerController@contact')->name('seller.contact');
+
 });
 
 

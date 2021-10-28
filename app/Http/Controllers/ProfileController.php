@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Session;
 use Auth;
 use Validator;
+use Redirect;
 
 use App\Models\Cart;
 use App\Models\Image;
@@ -119,12 +120,29 @@ class ProfileController extends Controller
             case 5:  //Membre
                 $type=strtolower($request->input('type'));
                 if($type=='person'){
+
+                    // $resp = $this->updateMemberPart($request,$user,$role);
+
+                    // if($resp[0]['status']===false){
+                    //     return Redirect::back()->withErrors($resp[0]['resp'])->withInput();
+                    // }else{
+                    //     $alert =trans('app.txt.alert_success');
+                    // }
+
                     $rules = [
                         'nationality' => 'required|max:100',
                         'first_name' => 'required|max:100',
                         'last_name'  => 'required|max:100',
                     ];
                 }elseif($type==='person_complete'){
+                    // $resp = $this->updateMemberPartComplete($request,$user,$role);
+
+                    // if($resp[0]['status']===false){
+                    //     return Redirect::back()->withErrors($resp[0]['resp'])->withInput();
+                    // }else{
+                    //     $alert =trans('app.txt.alert_success');
+                    // }
+                    
                     $rules = [
                         'country'    => 'required|max:100',
                         'civility'  => 'required|max:3',
@@ -538,6 +556,54 @@ class ProfileController extends Controller
         // Success
         return back()->with('success',trans('app.txt.profil_modified'));
         
+    }
+
+    public function updateMemberPart(Request $request,$user,$role){
+        // Get post datas
+        $datas = $request->all();
+
+        $rules = [
+            'name'     => 'required|max:100',
+            'email'    => 'required|max:100',
+            'language' => 'required|max:100',
+            'image'    => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'first_name' => 'required|max:100',
+            'last_name'  => 'required|max:100',
+            'nationality'  => 'required|max:100',
+        ];
+
+        
+        $validator = Validator::make($datas, $rules);
+        if ($validator->fails()) {
+            return array(['resp'=>$validator,'status'=>false]);
+        }else{
+            // Store image file
+            $datas['image_id'] = 0;
+            if($file=$request->file('image')){
+                $image = Image::storeAndSave($file);
+                $datas['image_id'] = $image->id;
+            }
+
+
+            try {
+                //Créer localisation
+                $location = Localisation::whereId($user->location_id)->update($datas);
+
+                // Créer user membre
+                $user = User::where($user->id)->update($datas);
+
+                // update userinfo
+                $userInfo = Userinfo::where('user_id',$user->id)->update($datas);
+
+            } catch (\Throwable $th) {
+                logger()->error($exception);
+                
+                return back()->with('info', trans('app.txt.editprofil_unable'));
+            }
+
+            return array(['resp'=>$user,'status'=>true]);
+        }
+
     }
 
     /**

@@ -1161,12 +1161,11 @@
 
                                 // set count notification content
                                 for(i=0;i<datasLength;i++){
-                                    var txt = ((datas[i].body).split('</small></p><hr>'));
-                                    var body = $(txt[1]).text();
-                                    var dt = txt[0].split('<p><small>')[1];
+                                    var body = ($(datas[i].body).text());
+                                    var dt = datas[i].created_at;
                                     var userRole = '{{Auth::check()?Auth::user()->roleUser->role_initial:""}}';
                                     var url = origin+'/'+userRole+"/contact/role/"+datas[i].role_initial;
-
+                                    
                                     // push data in notifications array
                                     notifications.push({
                                     href: url,

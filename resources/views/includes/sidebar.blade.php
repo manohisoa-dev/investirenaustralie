@@ -35,10 +35,33 @@
         </div>
         <div class="list-group list-group-flush">
             @forelse($products as $product)
+                @php
+                    $photo_principal = \App\Models\ProductsImage::where('products_images.product_id', '=', $product->id)->where('products_images.is_principal', '=', 1)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+                    $first_photo = \App\Models\ProductsImage::where('products_images.product_id', '=', $product->id)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+                @endphp
+                @if($first_photo)
+                    @if($photo_principal)
+                    <!-- Programme sans principal -->
+                        @php
+                            $img_prod= asset($photo_principal->filepath);
+                        @endphp
+                    @else
+                        <!-- Programme principal -->
+                        @php
+                            $img_prod= asset($first_photo->filepath);
+                        @endphp
+                    @endif
+                @else
+                    <!-- Programme aucun photo -->
+                    @php
+                        $img_prod= asset('images/product.png');
+                    @endphp
+                @endif	
+
             <a href="{{route('product.index',['product'=>$product->slug])}}" class="list-group-item list-group-item-action d-flex p15px-tb">
                 <div>
                     <div class="avatar-50 border-radius-5">
-                        <img src="{{$product->imageUrl()?$product->imageUrl():asset('images/iea.png')}}" title="" alt="" />
+                        <img src="{{$img_prod}}" title="{{$product->title}}" alt="{{$product->title}}" />
                     </div>
                 </div>
                 <div class="p-15px-l">

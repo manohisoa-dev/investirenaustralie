@@ -20,7 +20,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.typemembre')</div>
-                                    <input type="text" name="type" id="type" class="form-control" value="{{$item->type_users_id?App\Models\TypeUser::find($item->type_users_id)->type_user_name:trans('app.txt.noinfo')}}" readonly>
+                                    <input type="text" name="type" id="type" class="form-control" value="{{$item->type_users_id?App\Models\TypeUser::find($item->type_users_id)->type_user_name:''}}" placeholder="{{trans('app.txt.noinfo')}}" readonly>
                                 </div>
                             </div>
                         </div>
@@ -98,7 +98,7 @@
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.nom') </div>
-                                <input type="text" class="form-control" id="last_name" name="last_name" value="{{$item->userinfos->last_name?$item->userinfos->last_name:trans('app.txt.noinfo')}}">
+                                <input type="text" class="form-control" id="last_name" name="last_name" value="{{$item->userinfos->last_name?$item->userinfos->last_name:''}}" placeholder="{{trans('app.txt.noinfo')}}">
                             </div>
                         </div>
                     </div>
@@ -109,7 +109,7 @@
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.prenom') </div>
-                                <input type="text" class="form-control" name="first_name" id="first_name" value="{{$item->userinfos->first_name?$item->userinfos->first_name:trans('app.txt.noinfo')}}">
+                                <input type="text" class="form-control" name="first_name" id="first_name" value="{{$item->userinfos->first_name?$item->userinfos->first_name:''}}" placeholder="{{trans('app.txt.noinfo')}}">
                             </div>
                         </div>
                     </div>
@@ -147,7 +147,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.date_of_birth') </div>
-                                    <input type="text" class="form-control datepickerfrom" placeholder="MM/DD/YYYY" name="date_of_birth" value="{{ old('date_of_birth')?old('date_of_birth'):($item->userinfos?$item->userinfos->date_of_birth:trans('app.txt.noinfo')) }}">
+                                    <input type="text" class="form-control datepickerfrom" placeholder="MM/DD/YYYY" name="date_of_birth" value="{{ old('date_of_birth')?old('date_of_birth'):($item->userinfos?$item->userinfos->date_of_birth:'') }}" placeholder="{{trans('app.txt.noinfo')}}">
                                 </div>
                             </div>
                         </div>
@@ -158,7 +158,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.place_of_birth') </div>
-                                    <input type="text" class="form-control" placeholder="@lang('app.txt.place_of_birth')" name="place_of_birth" value="{{ old('place_of_birth')?old('place_of_birth'):($item->userinfos?$item->userinfos->place_of_birth:trans('app.txt.noinfo')) }}">
+                                    <input type="text" class="form-control" placeholder="@lang('app.txt.place_of_birth')" name="place_of_birth" value="{{ old('place_of_birth')?old('place_of_birth'):($item->userinfos?$item->userinfos->place_of_birth:'') }}" placeholder="{{trans('app.txt.noinfo')}}">
                                 </div>
                             </div>
                         </div>
@@ -303,7 +303,7 @@
                                                 </select>
                                             </div>
                                             <div class="custom-file">
-                                                <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="6" maxlength="9" placeholder="@lang('app.txt.businessphone')" class="form-control m-15px-t" id="orga_phone" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):($num) }}">
+                                                <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="9" maxlength="9" placeholder="@lang('app.txt.businessphone')" class="form-control m-15px-t" id="orga_phone" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):($num) }}">
                                             </div>
                                         </div>
                                     </div>
@@ -351,7 +351,7 @@
                                                 </select>
                                             </div>
                                             <div class="custom-file">
-                                                <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="9" placeholder="@lang('app.txt.businessphone')" class="form-control m-15px-t" id="orga_mobile_phone" name="orga_mobile_phone" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):($num) }}">
+                                                <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="9" maxlength="9" placeholder="@lang('app.txt.businessphone')" class="form-control m-15px-t" id="orga_mobile_phone" name="orga_mobile_phone" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):($num) }}">
                                             </div>
                                         </div>
                                     </div>
@@ -438,7 +438,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.name_building') </div>
-                                        <input type="text" name="building_name" placeholder="@lang('app.txt.name_building')" class="form-control" value="{{$item->location?$item->location->building_name:trans('app.txt.noinfo')}}">
+                                        <input type="text" name="building_name" placeholder="@lang('app.txt.name_building')" class="form-control" value="{{$item->location?$item->location->building_name:''}}" placeholder="{{trans('app.txt.noinfo')}}">
                                     </div>
                                 </div>
                             </div>
@@ -449,7 +449,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.name_of_the_road') </div>
-                                        <input type="text" name="route" value="{{$item->location?$item->location->route:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                        <input type="text" name="route" value="{{$item->location?$item->location->route:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -460,7 +460,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.number_of_the_road')</div>
-                                        <input type="text" name="route_number" value="{{$item->location?$item->location->route_number:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                        <input type="text" name="route_number" value="{{$item->location?$item->location->route_number:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -471,7 +471,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.number_of_rooms')</div>
-                                        <input type="text" name="num_rooms" placeholder="@lang('app.txt.number_of_rooms')" value="{{$item->location?$item->location->num_rooms:trans('app.txt.noinfo')}}" class="form-control">
+                                        <input type="text" name="num_rooms" placeholder="@lang('app.txt.number_of_rooms')" value="{{$item->location?$item->location->num_rooms:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -482,7 +482,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.level')</div>
-                                        <input type="text" name="num_floor" placeholder="@lang('app.txt.floor')" value="{{$item->location?$item->location->num_floor:trans('app.txt.noinfo')}}" class="form-control">
+                                        <input type="text" name="num_floor" placeholder="@lang('app.txt.floor')" value="{{$item->location?$item->location->num_floor:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -493,7 +493,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.suburb')</div>
-                                        <input type="text" name="locality" value="{{$item->location?$item->location->locality:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                        <input type="text" name="locality" value="{{$item->location?$item->location->locality:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -504,7 +504,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.city')</div>
-                                        <input type="text" name="area_level_2" value="{{$item->location?$item->location->area_level_2:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                        <input type="text" name="area_level_2" value="{{$item->location?$item->location->area_level_2:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -515,7 +515,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.codepostal')</div>
-                                        <input type="text" name="postalCode" value="{{$item->location?$item->location->postalCode:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                        <input type="text" name="postalCode" value="{{$item->location?$item->location->postalCode:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -569,7 +569,7 @@
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.postal_box') </div>
-                                            <input type="text" name="adrpost_postal_box" placeholder="@lang('app.txt.postal_box')" class="form-control" value="{{$item->location?$item->location->adrpost_postal_box:trans('app.txt.noinfo')}}">
+                                            <input type="text" name="adrpost_postal_box" placeholder="@lang('app.txt.postal_box')" class="form-control" value="{{$item->location?$item->location->adrpost_postal_box:''}}" placeholder="{{trans('app.txt.noinfo')}}">
                                         </div>
                                     </div>
                                 </div>
@@ -580,7 +580,7 @@
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.suburb') </div>
-                                            <input type="text" name="adrpost_locality" placeholder="@lang('app.txt.suburb')" class="form-control" value="{{$item->location?$item->location->adrpost_locality:trans('app.txt.noinfo')}}">
+                                            <input type="text" name="adrpost_locality" placeholder="@lang('app.txt.suburb')" class="form-control" value="{{$item->location?$item->location->adrpost_locality:''}}" placeholder="{{trans('app.txt.noinfo')}}">
                                         </div>
                                     </div>
                                 </div>
@@ -591,7 +591,7 @@
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.codepostal')</div>
-                                            <input type="text" name="adrpost_postalCode" value="{{$item->location?$item->location->adrpost_postalCode:trans('app.txt.noinfo')}}" class="form-control">
+                                            <input type="text" name="adrpost_postalCode" value="{{$item->location?$item->location->adrpost_postalCode:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -769,7 +769,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.name_building') </div>
-                                        <input type="text" name="building_name" placeholder="@lang('app.txt.name_building')" class="form-control" value="{{$item->location?$item->location->building_name:trans('app.txt.noinfo')}}">
+                                        <input type="text" name="building_name" placeholder="@lang('app.txt.name_building')" class="form-control" value="{{$item->location?$item->location->building_name:''}}" placeholder="{{trans('app.txt.noinfo')}}">
                                     </div>
                                 </div>
                             </div>
@@ -780,7 +780,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.name_of_the_road') </div>
-                                        <input type="text" name="route" value="{{$item->location?$item->location->route:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                        <input type="text" name="route" value="{{$item->location?$item->location->route:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -791,7 +791,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.number_of_the_road')</div>
-                                        <input type="text" name="route_number" value="{{$item->location?$item->location->route_number:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                        <input type="text" name="route_number" value="{{$item->location?$item->location->route_number:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -802,7 +802,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.number_of_rooms')</div>
-                                        <input type="text" name="num_rooms" placeholder="@lang('app.txt.number_of_rooms')" value="{{$item->location?$item->location->num_rooms:trans('app.txt.noinfo')}}" class="form-control">
+                                        <input type="text" name="num_rooms" placeholder="@lang('app.txt.number_of_rooms')" value="{{$item->location?$item->location->num_rooms:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -813,7 +813,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.floor')</div>
-                                        <input type="text" name="num_floor" placeholder="@lang('app.txt.floor')" value="{{$item->location?$item->location->num_floor:trans('app.txt.noinfo')}}" class="form-control">
+                                        <input type="text" name="num_floor" placeholder="@lang('app.txt.floor')" value="{{$item->location?$item->location->num_floor:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -824,7 +824,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.neighborhood_district_borough')</div>
-                                        <input type="text" name="neighborhood" value="{{$item->location?$item->location->neighborhood:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                        <input type="text" name="neighborhood" value="{{$item->location?$item->location->neighborhood:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -835,7 +835,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.city')</div>
-                                        <input type="text" name="locality" value="{{$item->location?$item->location->locality:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                        <input type="text" name="locality" value="{{$item->location?$item->location->locality:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -846,7 +846,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.codepostal')</div>
-                                        <input type="text" name="postalCode" value="{{$item->location?$item->location->postalCode:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                        <input type="text" name="postalCode" value="{{$item->location?$item->location->postalCode:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -857,7 +857,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.etat') (@lang('app.txt.etat.libelle'))</div>
-                                        <input type="text" name="area_level_1" placeholder="@lang('app.txt.etat')" value="{{$item->location?$item->location->area_level_1:trans('app.txt.noinfo')}}" class="form-control">
+                                        <input type="text" name="area_level_1" placeholder="@lang('app.txt.etat')" value="{{$item->location?$item->location->area_level_1:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -900,7 +900,7 @@
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.postal_box') </div>
-                                            <input type="text" name="adrpost_postal_box" placeholder="@lang('app.txt.postal_box')" class="form-control" value="{{$item->location?$item->location->adrpost_postal_box:trans('app.txt.noinfo')}}">
+                                            <input type="text" name="adrpost_postal_box" placeholder="@lang('app.txt.postal_box')" class="form-control" value="{{$item->location?$item->location->adrpost_postal_box:''}}" placeholder="{{trans('app.txt.noinfo')}}">
                                         </div>
                                     </div>
                                 </div>
@@ -911,7 +911,7 @@
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.city') </div>
-                                            <input type="text" name="adrpost_locality" value="{{$item->location?$item->location->adrpost_locality:trans('app.txt.noinfo')}}" class="form-control">
+                                            <input type="text" name="adrpost_locality" value="{{$item->location?$item->location->adrpost_locality:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -922,7 +922,7 @@
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.codepostal')</div>
-                                            <input type="text" name="adrpost_postalCode" value="{{$item->location?$item->location->adrpost_postalCode:trans('app.txt.noinfo')}}" class="form-control">
+                                            <input type="text" name="adrpost_postalCode" value="{{$item->location?$item->location->adrpost_postalCode:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -933,7 +933,7 @@
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.etat') (@lang('app.txt.etat.libelle'))</div>
-                                            <input type="text" name="adrpost_area_level_1" placeholder="@lang('app.txt.etat')" value="{{$item->location?$item->location->adrpost_area_level_1:trans('app.txt.noinfo')}}" class="form-control">
+                                            <input type="text" name="adrpost_area_level_1" placeholder="@lang('app.txt.etat')" value="{{$item->location?$item->location->adrpost_area_level_1:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -1089,7 +1089,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="custom-file">
-                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="15" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="orga_phone" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):($num) }}">
+                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="9" maxlength="9" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="orga_phone" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):($num) }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -1137,7 +1137,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="custom-file">
-                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="15" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="orga_mobile_phone" name="orga_mobile_phone" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):($num) }}">
+                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="9" maxlength="9" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="orga_mobile_phone" name="orga_mobile_phone" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):($num) }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -1181,7 +1181,7 @@
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.name_building') </div>
-                                            <input type="text" name="building_name" placeholder="@lang('app.txt.name_building')" class="form-control" value="{{$item->location?$item->location->building_name:trans('app.txt.noinfo')}}">
+                                            <input type="text" name="building_name" placeholder="@lang('app.txt.name_building')" class="form-control" value="{{$item->location?$item->location->building_name:''}}" placeholder="{{trans('app.txt.noinfo')}}">
                                         </div>
                                     </div>
                                 </div>
@@ -1192,7 +1192,7 @@
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.name_of_the_road') </div>
-                                            <input type="text" name="route" value="{{$item->location?$item->location->route:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                            <input type="text" name="route" value="{{$item->location?$item->location->route:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -1203,7 +1203,7 @@
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.number_of_the_road')</div>
-                                            <input type="text" name="route_number" value="{{$item->location?$item->location->route_number:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                            <input type="text" name="route_number" value="{{$item->location?$item->location->route_number:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -1214,7 +1214,7 @@
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.number_of_rooms')</div>
-                                            <input type="text" name="num_rooms" placeholder="@lang('app.txt.number_of_rooms')" value="{{$item->location?$item->location->num_rooms:trans('app.txt.noinfo')}}" class="form-control">
+                                            <input type="text" name="num_rooms" placeholder="@lang('app.txt.number_of_rooms')" value="{{$item->location?$item->location->num_rooms:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -1225,7 +1225,7 @@
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.level')</div>
-                                            <input type="text" name="num_floor" placeholder="@lang('app.txt.floor')" value="{{$item->location?$item->location->num_floor:trans('app.txt.noinfo')}}" class="form-control">
+                                            <input type="text" name="num_floor" placeholder="@lang('app.txt.floor')" value="{{$item->location?$item->location->num_floor:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -1236,7 +1236,7 @@
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.suburb')</div>
-                                            <input type="text" name="locality" value="{{$item->location?$item->location->locality:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                            <input type="text" name="locality" value="{{$item->location?$item->location->locality:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -1247,7 +1247,7 @@
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.city')</div>
-                                            <input type="text" name="area_level_2" value="{{$item->location?$item->location->area_level_2:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                            <input type="text" name="area_level_2" value="{{$item->location?$item->location->area_level_2:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -1258,7 +1258,7 @@
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.codepostal')</div>
-                                            <input type="text" name="postalCode" value="{{$item->location?$item->location->postalCode:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                            <input type="text" name="postalCode" value="{{$item->location?$item->location->postalCode:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -1312,7 +1312,7 @@
                                             </div>
                                             <div class="media-body p-15px-l lh-normal">
                                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.postal_box') </div>
-                                                <input type="text" name="adrpost_postal_box" placeholder="@lang('app.txt.postal_box')" class="form-control" value="{{$item->location?$item->location->adrpost_postal_box:trans('app.txt.noinfo')}}">
+                                                <input type="text" name="adrpost_postal_box" placeholder="@lang('app.txt.postal_box')" class="form-control" value="{{$item->location?$item->location->adrpost_postal_box:''}}" placeholder="{{trans('app.txt.noinfo')}}">
                                             </div>
                                         </div>
                                     </div>
@@ -1323,7 +1323,7 @@
                                             </div>
                                             <div class="media-body p-15px-l lh-normal">
                                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.suburb') </div>
-                                                <input type="text" name="adrpost_locality" placeholder="@lang('app.txt.suburb')" class="form-control" value="{{$item->location?$item->location->adrpost_locality:trans('app.txt.noinfo')}}">
+                                                <input type="text" name="adrpost_locality" placeholder="@lang('app.txt.suburb')" class="form-control" value="{{$item->location?$item->location->adrpost_locality:''}}" placeholder="{{trans('app.txt.noinfo')}}">
                                             </div>
                                         </div>
                                     </div>
@@ -1334,7 +1334,7 @@
                                             </div>
                                             <div class="media-body p-15px-l lh-normal">
                                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.codepostal')</div>
-                                                <input type="text" name="adrpost_postalCode" value="{{$item->location?$item->location->adrpost_postalCode:trans('app.txt.noinfo')}}" class="form-control">
+                                                <input type="text" name="adrpost_postalCode" value="{{$item->location?$item->location->adrpost_postalCode:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                             </div>
                                         </div>
                                     </div>
@@ -1648,7 +1648,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="custom-file">
-                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="6" maxlength="9" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="contact_phone" name="contact_phone" value="{{ old('contact_phone')?old('contact_phone'):($ct_num) }}">
+                                                    <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="9" maxlength="9" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="contact_phone" name="contact_phone" value="{{ old('contact_phone')?old('contact_phone'):($ct_num) }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -2066,7 +2066,7 @@
                                                 </select>
                                             </div>
                                             <div class="custom-file">
-                                                <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="15" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="orga_phone" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):($num) }}">
+                                                <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="9" maxlength="9" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="orga_phone" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):($num) }}">
                                             </div>
                                         </div>
                                     </div>
@@ -2114,7 +2114,7 @@
                                                 </select>
                                             </div>
                                             <div class="custom-file">
-                                                <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="15" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="orga_mobile_phone" name="orga_mobile_phone" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):($num) }}">
+                                                <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="9" maxlength="9" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="orga_mobile_phone" name="orga_mobile_phone" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):($num) }}">
                                             </div>
                                         </div>
                                     </div>
@@ -2252,7 +2252,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.name_building') </div>
-                                    <input type="text" name="building_name" placeholder="@lang('app.txt.name_building')" class="form-control" value="{{$item->location?$item->location->building_name:trans('app.txt.noinfo')}}">
+                                    <input type="text" name="building_name" placeholder="@lang('app.txt.name_building')" class="form-control" value="{{$item->location?$item->location->building_name:''}}" placeholder="{{trans('app.txt.noinfo')}}">
                                 </div>
                             </div>
                         </div>
@@ -2263,7 +2263,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.name_of_the_road') </div>
-                                    <input type="text" name="route" value="{{$item->location?$item->location->route:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                    <input type="text" name="route" value="{{$item->location?$item->location->route:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                 </div>
                             </div>
                         </div>
@@ -2274,7 +2274,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.number_of_the_road')</div>
-                                    <input type="text" name="route_number" value="{{$item->location?$item->location->route_number:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                    <input type="text" name="route_number" value="{{$item->location?$item->location->route_number:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                 </div>
                             </div>
                         </div>
@@ -2285,7 +2285,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.number_of_rooms')</div>
-                                    <input type="text" name="num_rooms" placeholder="@lang('app.txt.number_of_rooms')" value="{{$item->location?$item->location->num_rooms:trans('app.txt.noinfo')}}" class="form-control">
+                                    <input type="text" name="num_rooms" placeholder="@lang('app.txt.number_of_rooms')" value="{{$item->location?$item->location->num_rooms:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -2296,7 +2296,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.floor')</div>
-                                    <input type="text" name="num_floor" placeholder="@lang('app.txt.floor')" value="{{$item->location?$item->location->num_floor:trans('app.txt.noinfo')}}" class="form-control">
+                                    <input type="text" name="num_floor" placeholder="@lang('app.txt.floor')" value="{{$item->location?$item->location->num_floor:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -2307,7 +2307,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.city')</div>
-                                    <input type="text" name="area_level_2" value="{{$item->location?$item->location->area_level_2:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                    <input type="text" name="area_level_2" value="{{$item->location?$item->location->area_level_2:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                 </div>
                             </div>
                         </div>
@@ -2318,7 +2318,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.codepostal')</div>
-                                    <input type="text" name="postalCode" value="{{$item->location?$item->location->postalCode:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                    <input type="text" name="postalCode" value="{{$item->location?$item->location->postalCode:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                 </div>
                             </div>
                         </div>
@@ -2329,7 +2329,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.etat') (@lang('app.txt.etat.libelle'))</div>
-                                    <input type="text" name="area_level_1" placeholder="@lang('app.txt.etat')" value="{{$item->location?$item->location->area_level_1:trans('app.txt.noinfo')}}" class="form-control">
+                                    <input type="text" name="area_level_1" placeholder="@lang('app.txt.etat')" value="{{$item->location?$item->location->area_level_1:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -2372,7 +2372,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.postal_box') </div>
-                                        <input type="text" name="adrpost_postal_box" placeholder="@lang('app.txt.postal_box')" class="form-control" value="{{$item->location?$item->location->adrpost_postal_box:trans('app.txt.noinfo')}}">
+                                        <input type="text" name="adrpost_postal_box" placeholder="@lang('app.txt.postal_box')" class="form-control" value="{{$item->location?$item->location->adrpost_postal_box:''}}" placeholder="{{trans('app.txt.noinfo')}}">
                                     </div>
                                 </div>
                             </div>
@@ -2383,7 +2383,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.city') </div>
-                                        <input type="text" name="adrpost_area_level_2" value="{{$item->location?$item->location->adrpost_area_level_2:trans('app.txt.noinfo')}}" class="form-control">
+                                        <input type="text" name="adrpost_area_level_2" value="{{$item->location?$item->location->adrpost_area_level_2:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -2394,7 +2394,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.codepostal')</div>
-                                        <input type="text" name="adrpost_postalCode" value="{{$item->location?$item->location->adrpost_postalCode:trans('app.txt.noinfo')}}" class="form-control">
+                                        <input type="text" name="adrpost_postalCode" value="{{$item->location?$item->location->adrpost_postalCode:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -2405,7 +2405,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.etat') (@lang('app.txt.etat.libelle'))</div>
-                                        <input type="text" name="adrpost_area_level_1" placeholder="@lang('app.txt.etat')" value="{{$item->location?$item->location->adrpost_area_level_1:trans('app.txt.noinfo')}}" class="form-control">
+                                        <input type="text" name="adrpost_area_level_1" placeholder="@lang('app.txt.etat')" value="{{$item->location?$item->location->adrpost_area_level_1:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -2465,7 +2465,7 @@
                                             </select>
                                         </div>
                                         <div class="custom-file">
-                                            <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="15" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="orga_phone" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):($num) }}">
+                                            <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="9" maxlength="9" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="orga_phone" name="orga_phone" value="{{ old('orga_phone')?old('orga_phone'):($num) }}">
                                         </div>
                                     </div>
                                 </div>
@@ -2501,7 +2501,7 @@
                                             </select>
                                         </div>
                                         <div class="custom-file">
-                                            <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="15" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="orga_mobile_phone" name="orga_mobile_phone" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):($num) }}">
+                                            <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="9" maxlength="9" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="orga_mobile_phone" name="orga_mobile_phone" value="{{ old('orga_mobile_phone')?old('orga_mobile_phone'):($num) }}">
                                         </div>
                                     </div>
                                 </div>
@@ -2559,7 +2559,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.name_building') </div>
-                                    <input type="text" name="building_name" placeholder="@lang('app.txt.name_building')" class="form-control" value="{{$item->location?$item->location->building_name:trans('app.txt.noinfo')}}">
+                                    <input type="text" name="building_name" placeholder="@lang('app.txt.name_building')" class="form-control" value="{{$item->location?$item->location->building_name:''}}" placeholder="{{trans('app.txt.noinfo')}}">
                                 </div>
                             </div>
                         </div>
@@ -2571,7 +2571,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.name_num_of_the_road') </div>
-                                    <input type="text" value="{{$item->location?$item->location->route:trans('app.txt.noinfo')}}, {{$item->location?$item->location->route_number:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                    <input type="text" value="{{$item->location?$item->location->route:''}}, {{$item->location?$item->location->route_number:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                 </div>
                             </div>
                         </div>
@@ -2582,7 +2582,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.number_of_the_road')</div>
-                                    <input type="text" name="route_number" value="{{$item->location?$item->location->route_number:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                    <input type="text" name="route_number" value="{{$item->location?$item->location->route_number:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                 </div>
                             </div>
                         </div> --}}
@@ -2593,7 +2593,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.number_of_rooms')</div>
-                                    <input type="text" name="num_rooms" placeholder="@lang('app.txt.number_of_rooms')" value="{{$item->location?$item->location->num_rooms:trans('app.txt.noinfo')}}" class="form-control">
+                                    <input type="text" name="num_rooms" placeholder="@lang('app.txt.number_of_rooms')" value="{{$item->location?$item->location->num_rooms:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -2604,7 +2604,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.floor')</div>
-                                    <input type="text" name="num_floor" placeholder="@lang('app.txt.floor')" value="{{$item->location?$item->location->num_floor:trans('app.txt.noinfo')}}" class="form-control">
+                                    <input type="text" name="num_floor" placeholder="@lang('app.txt.floor')" value="{{$item->location?$item->location->num_floor:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -2615,7 +2615,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.city')</div>
-                                    <input type="text" name="locality" value="{{$item->location?$item->location->locality:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                    <input type="text" name="locality" value="{{$item->location?$item->location->locality:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                 </div>
                             </div>
                         </div>
@@ -2626,7 +2626,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.codepostal')</div>
-                                    <input type="text" name="postalCode" value="{{$item->location?$item->location->postalCode:trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                    <input type="text" name="postalCode" value="{{$item->location?$item->location->postalCode:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                 </div>
                             </div>
                         </div>
@@ -2637,7 +2637,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.etat') (@lang('app.txt.etat.libelle'))</div>
-                                    <input type="text" name="area_level_1" placeholder="@lang('app.txt.etat')" value="{{$item->location?$item->location->area_level_1:trans('app.txt.noinfo')}}" class="form-control">
+                                    <input type="text" name="area_level_1" placeholder="@lang('app.txt.etat')" value="{{$item->location?$item->location->area_level_1:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -2680,7 +2680,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.postal_box') </div>
-                                        <input type="text" name="adrpost_postal_box" placeholder="@lang('app.txt.postal_box')" class="form-control" value="{{$item->location?$item->location->adrpost_postal_box:trans('app.txt.noinfo')}}">
+                                        <input type="text" name="adrpost_postal_box" placeholder="@lang('app.txt.postal_box')" class="form-control" value="{{$item->location?$item->location->adrpost_postal_box:''}}" placeholder="{{trans('app.txt.noinfo')}}">
                                     </div>
                                 </div>
                             </div>
@@ -2691,7 +2691,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.city') </div>
-                                        <input type="text" name="adrpost_locality" value="{{$item->location?$item->location->adrpost_locality:trans('app.txt.noinfo')}}" class="form-control">
+                                        <input type="text" name="adrpost_locality" value="{{$item->location?$item->location->adrpost_locality:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -2702,7 +2702,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.codepostal')</div>
-                                        <input type="text" name="adrpost_postalCode" value="{{$item->location?$item->location->adrpost_postalCode:trans('app.txt.noinfo')}}" class="form-control">
+                                        <input type="text" name="adrpost_postalCode" value="{{$item->location?$item->location->adrpost_postalCode:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -2713,7 +2713,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.etat') (@lang('app.txt.etat.libelle'))</div>
-                                        <input type="text" name="adrpost_area_level_1" placeholder="@lang('app.txt.etat')" value="{{$item->location?$item->location->adrpost_area_level_1:trans('app.txt.noinfo')}}" class="form-control">
+                                        <input type="text" name="adrpost_area_level_1" placeholder="@lang('app.txt.etat')" value="{{$item->location?$item->location->adrpost_area_level_1:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -2752,7 +2752,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.streetaddress') </div>
-                                    <input type="text" class="form-control" value="{{$item->location?$item->location->route:trans('app.txt.noinfo')}}" disabled>
+                                    <input type="text" class="form-control" value="{{$item->location?$item->location->route:''}}" placeholder="{{trans('app.txt.noinfo')}}" disabled>
                                 </div>
                             </div>
                         </div>
@@ -2763,7 +2763,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.suburb') </div>
-                                    <input type="text" value="{{$item->location?$item->location->locality:trans('app.txt.noinfo')}}" class="form-control" disabled>
+                                    <input type="text" value="{{$item->location?$item->location->locality:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" disabled>
                                 </div>
                             </div>
                         </div>
@@ -2774,7 +2774,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.etat')</div>
-                                    <input type="text" value="{{$item->location?$item->location->area_level_1:trans('app.txt.noinfo')}}" class="form-control" disabled>
+                                    <input type="text" value="{{$item->location?$item->location->area_level_1:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" disabled>
                                 </div>
                             </div>
                         </div>
@@ -2785,7 +2785,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.codepostal')</div>
-                                    <input type="text" value="{{$item->location?$item->location->postalCode:trans('app.txt.noinfo')}}" class="form-control" disabled>
+                                    <input type="text" value="{{$item->location?$item->location->postalCode:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" disabled>
                                 </div>
                             </div>
                         </div>
@@ -2838,7 +2838,7 @@
                                             </select>
                                         </div>
                                         <div class="custom-file">
-                                            <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="15" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="contact_phone" name="contact_phone" value="{{ old('contact_phone')?old('contact_phone'):($item->userinfos?$num2:'') }}">
+                                            <input type="text" pattern="[0-9]{1}[0-9]{7|8}" minlength="9" maxlength="9" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="contact_phone" name="contact_phone" value="{{ old('contact_phone')?old('contact_phone'):($item->userinfos?$num2:'') }}">
                                         </div>
                                     </div>
                                 </div>
@@ -3006,7 +3006,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.etat') (@lang('app.txt.etat.libelle'))</div>
-                                    <input type="text" name="bank_area_level_1" placeholder="@lang('app.txt.etat')" value="{{$item->location?$item->location->bank_area_level_1:trans('app.txt.noinfo')}}" class="form-control">
+                                    <input type="text" name="bank_area_level_1" placeholder="@lang('app.txt.etat')" value="{{$item->location?$item->location->bank_area_level_1:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -3109,8 +3109,8 @@
                 orga_phone: {
                     required: true,
                     number:true,
-                    minlength:6,
-                    maxlength:15,
+                    minlength:9,
+                    maxlength:9,
                 },
                 orga_website: {
                     required: true,
@@ -3131,8 +3131,8 @@
                 contact_phone: {
                     required: true,
                     number:true,
-                    minlength: 6,
-                    maxlength: 15,
+                    minlength: 9,
+                    maxlength: 9,
                 },
 
                 // afa
@@ -3215,8 +3215,8 @@
                 orga_mobile_phone: {
                     required: true,
                     number:true,
-                    minlength:6,
-                    maxlength:15,
+                    minlength:9,
+                    maxlength:9,
                 },
                 orga_registration_number: {
                     required: true,

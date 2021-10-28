@@ -655,6 +655,7 @@ class RegisterController extends Controller
                 $confirmLinkVar='confirmLink';
                 $confirmLink = url(route('confirm.registration',[$user]));
                 $lang = $user->language;
+                App::setLocale($lang);
                 $this->sendNotificationEmail($user,$lang,$confirmLinkVar,26,'role','',$confirmLink);
 
             } catch (\Throwable $th) {
@@ -769,6 +770,7 @@ class RegisterController extends Controller
                 $confirmLinkVar='confirmLink';
                 $confirmLink = url(route('confirm.registration',[$user]));
                 $lang = $user->language;
+                App::setLocale($lang);
                 $this->sendNotificationEmail($user,$lang,$confirmLinkVar,26,'role','',$confirmLink);
 
             } catch (\Throwable $th) {
@@ -886,6 +888,7 @@ class RegisterController extends Controller
                 $confirmLinkVar='confirmEmailLink';
                 $confirmEmailLink= url(route('confirm.registration.afa.email',[$user]));
                 $lang = $user->language;
+                App::setLocale($lang);
                 $this->sendNotificationEmail($user,$lang,$confirmLinkVar,24,'role','',$confirmEmailLink);
 
             } catch (\Throwable $th) {
@@ -1008,6 +1011,7 @@ class RegisterController extends Controller
                 $confirmLinkVar='confirmEmailLink';
                 $confirmEmailLink= url(route('confirm.registration.apl.email',[$user]));
                 $lang = $user->language;
+                App::setLocale($lang);
                 $this->sendNotificationEmail($user,$lang,$confirmLinkVar,20,'role','',$confirmEmailLink);
 
             } catch (\Throwable $th) {
@@ -1123,6 +1127,7 @@ class RegisterController extends Controller
                 $confirmEmailLink= url(route('confirm.registration',[$user]));
                 $varValue = trans('seller.real_estate_professionals');
                 $lang = 'en';
+                App::setLocale($lang);
                 $this->sendNotificationEmail($user,$lang,$confirmLinkVar,25,'role',$varValue,$confirmEmailLink);
 
             } catch (\Throwable $th) {
@@ -1237,6 +1242,7 @@ class RegisterController extends Controller
                 $confirmEmailLink= url(route('confirm.registration',[$user]));
                 $varValue = trans('seller.non_professional_legal_persons');
                 $lang = 'en';
+                App::setLocale($lang);
                 $this->sendNotificationEmail($user,$lang,$confirmLinkVar,25,'role',$varValue,$confirmEmailLink);
 
             } catch (\Throwable $th) {
@@ -1385,6 +1391,7 @@ class RegisterController extends Controller
                 $confirmEmailLink= url(route('confirm.registration',[$user]));
                 $varValue = trans('seller.non_professional_natural_persons');
                 $lang = 'en';
+                App::setLocale($lang);
                 $this->sendNotificationEmail($user,$lang,$confirmLinkVar,25,'role',$varValue,$confirmEmailLink);
 
             } catch (\Throwable $th) {
@@ -1530,6 +1537,7 @@ class RegisterController extends Controller
                 $confirmEmailLink= url(route('confirm.registration',[$user]));
                 $varValue = trans('seller.seller_by_afa');
                 $lang = 'en';
+                App::setLocale($lang);
                 $this->sendNotificationEmail($user,$lang,$confirmLinkVar,25,'role',$varValue,$confirmEmailLink);
 
             } catch (\Throwable $th) {
@@ -1644,6 +1652,7 @@ class RegisterController extends Controller
                 $confirmEmailLink= url(route('confirm.registration',[$user]));
                 $varValue = trans('seller.seller_by_afa');
                 $lang = 'en';
+                App::setLocale($lang);
                 $this->sendNotificationEmail($user,$lang,$confirmLinkVar,25,'role',$varValue,$confirmEmailLink);
 
             } catch (\Throwable $th) {
@@ -1663,7 +1672,7 @@ class RegisterController extends Controller
     }
 
     public function sendNotificationEmail($user,$lang,$confirmLinkVar,$tempNum,$nomVar,$valVar,$confirmLink){;
-        App::setLocale($lang);
+        // App::setLocale($lang);
         $body = 'template_' . $lang;
         $template = MailsTemplate::where('id', $tempNum)->first();
         if($template){

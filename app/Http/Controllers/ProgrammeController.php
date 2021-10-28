@@ -28,7 +28,6 @@ class ProgrammeController extends Controller {
      */
 
     public function show(Request $request, $slug) {
-
         $products = Product::where('slug', '=', $slug)->get();
 
         if (sizeof($products) != 0) {
@@ -152,7 +151,14 @@ class ProgrammeController extends Controller {
             // ->take($show?(int)$show:$this->recentSize)
             ->get();
 
-        $categories = Category::orderBy('created_at', 'desc')->has('products')->withCount('products')->take($this->recentSize)->get();
+        // $categories = Category::orderBy('created_at', 'desc')->has('products')->withCount('products')->take($this->recentSize)->get();
+
+        $categories = \DB::table('categories as c')
+        ->join('products as p', 'c.id', '=', 'p.category_id')
+        ->select('c.*', \DB::raw("count(p.category_id) as products_count"))
+        ->groupBy('c.id')
+        ->where('p.status','=','published')
+        ->get();
 
         $page2 = Page::where('path', '=', '/products*')->first();
         if ($page2) {

@@ -122,7 +122,7 @@
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_mt_commission')</label>
 									<div class="input-group">
-										<input type="number" class="form-control" min="0" name="rate_commission" id="rate_commission" value="{{ old('rate_commission')?old('rate_commission'):'' }}">
+										<input type="text" class="form-control" name="rate_commission" id="rate_commission" value="{{ old('rate_commission')?old('rate_commission'):'' }}">
 										<div class="input-group-append">
 											<span class="input-group-text">AUD</span>
 										</div>
@@ -206,8 +206,9 @@
 							<div class="form-group">
 								<label for="title">@lang('app.form.programme_etat') *</label>
 								<select class="form-control" name="state_id" id="state_id" style="width:100%">
+									<option value="">@lang('app.txt.choose_state')</option>
 									@foreach(\App\Models\State::all() as $state)
-										<option value="{{$state->id}}">{{$state->content}}</option>
+										<option value="{{$state->id}}" dataname="{{$state->content}}">{{$state->content}}</option>
 									@endforeach
 								</select>
 							</div> 
@@ -341,6 +342,7 @@ function initMap(){
 		var itemSnumber='';
 		var lat = place.geometry.location.lat();
 		var long = place.geometry.location.lng();
+		var itemState = '';
 		
 		$.each(arrAddress, function (i, address_components) {
 			if (address_components.types[0] == "street_number") {
@@ -372,6 +374,10 @@ function initMap(){
 				//console.log("pc:" + address_components.long_name);
 				itemCity = address_components.short_name;
 			}
+			if (address_components.types[0] == "administrative_area_level_1") {
+				//console.log("pc:" + address_components.long_name);
+				itemState = address_components.short_name;
+			}
 			
 			var adresse = itemSnumber + ' ' + itemRoute;
 			$('#display_address').val(adresse);
@@ -380,6 +386,7 @@ function initMap(){
 			$('#suburb').val(itemCity);
 			$('#long').val(long);
 			$('#lat').val(lat);
+			$('#state_id option[dataname="'+itemState+'"]').prop('selected', true);
 		});
 	});
 }
@@ -707,7 +714,8 @@ function initMap(){
 								return true;	
 							}
 						}
-					}
+					},
+					digits: true
 				},
 				prix_min: {
 					required: true
@@ -789,7 +797,8 @@ function initMap(){
 					required: "@lang('app.txt.champobligatoire')"
 				},
 				rate_commission: {
-					required: "@lang('app.txt.champobligatoire')"
+					required: "@lang('app.txt.champobligatoire')",
+					digits: "@lang('app.txt.required_valeur')"
 				},
 				prix_min: {
 					required: "@lang('app.txt.champobligatoire')"

@@ -130,6 +130,12 @@
 			}
 		});
 		
+		
+		$('#modal_form_product').on('hidden.bs.modal', function () { 
+			loadingPage();
+			location.reload();
+		});
+		
 		$("#exterior_area").keyup(function(){
 			var interior = parseInt($("#interior_area").val());
 			var exterior = parseInt($("#exterior_area").val());
@@ -709,6 +715,8 @@
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_suburb')</label>
 									<input name="suburb_product" id="suburb_product" class="form-control" type="text" value="{{$localisation->area_level_1}}" readonly="">
+									<input type="hidden" name="long" id="long" value="{{$localisation->longitude}}" />
+									<input type="hidden" name="lat" id="lat" value="{{$localisation->latitude}}" />
 								</div>
 							</div>
 							<div class="col-lg-3">

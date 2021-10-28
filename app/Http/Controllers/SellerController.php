@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
 use App\Models\Localisation;
 use App\Models\Solicitor;
+use App\Models\Message;
+use App\Models\User;
+use Auth;
 
 class SellerController extends Controller {
     /**
@@ -88,6 +90,53 @@ class SellerController extends Controller {
     {
         Solicitor::where('id', $request->id)->delete();
         return response()->json(['success' => 'true']);
+    }
+
+    public function contact(Request $request, $role) {
+        $action = route('send.message', ['role' => $role]);
+        $getAllMessage = $this->getAllMessage($role);
+        $user_name = Auth::user()->name;
+
+        return view('backend.contact.seller')->with('action', $action)->with('role', $role)->with('user_name', $user_name)->with('title',
+            __('app.contact_' . $role))->with(['data' => $getAllMessage]);
+    }
+
+    public function getAllMessage($role) {
+        $to_id = "";
+
+        switch ($role) {
+            case 'admin':
+                $to_id = 1;
+                break;
+
+            case 'member':
+                $to_id = User::where('id', Auth::user()->id)->first()->afa_id;
+                break;
+
+            default:
+                # code...
+                break;
+        }
+
+        $messages = Message::whereRaw("(to_id = " .
+            Auth::user()->id . " AND from_id = 1 )")->orderBy('created_at', 'ASC')->get();
+
+        $data = [];
+        foreach ($messages as $message) {
+            $data[] = ['id' => $message->id, 'from_id' => $message->from_id, 'from_name' =>
+                User::where('id', $message->from_id)->first()->name, 'to_id' => $message->to_id,
+                'body' => nl2br(e($message->body)), 'created_at' => $message->created_at,
+                'created_at_send' => $message->created_at->diffForHumans(), 'seen' => $message->seen ?
+                trans('app.txt.read') : trans('app.txt.unread'), ];
+        }
+
+
+        // update message showing
+        Message::where('from_id', $to_id)->where('to_id', Auth::user()->id)->update(['seen' =>
+            1]);
+
+
+        return json_encode($data);
     }
 
 }

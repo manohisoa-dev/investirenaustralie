@@ -1511,7 +1511,7 @@ return
 	'admin.product_isole.list_no_valid' => 'Liste des produits autonomes publiés',
 	'btn.show_detail' => 'Afficher détail',
 	'txt.password_do_not_match' => 'Les mots de passe ne correspondent pas !',
-	'txt.regex_mdp' => 'Le mot de passe doit contenir huit caractères au moins, au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial',
+	'txt.regex_mdp' => 'Le mot de passe doit contenir 8 caractères au moins, au moins 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial',
 	'txt.regex_pdf' => 'Fichier non accépté. Veuillez choisir le bon fichier pdf !',
 	'txt.password_error' => 'Erreur du mot de passe !',
 	'txt.name_num_of_the_road' => 'Nom et n° de la voie',
@@ -1555,4 +1555,6 @@ return
     'form.programme_solicitor' => 'Cabinet d&rsquo;avocat',
     'form.programme_firb_pre_approved_program' => 'Programme pré-approuvé FIRB',
     'form.programme_pre_approved_sale' => 'Vente pré-approuvée FIRB',
+    'txt.choose_state' => 'Choisir Etat',
+    'txt.required_valeur' => 'Entrer des valeurs'
 ];

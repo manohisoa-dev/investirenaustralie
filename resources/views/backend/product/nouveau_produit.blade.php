@@ -273,7 +273,7 @@
 							</div>
 						</div>
 						
-						<div class="row">
+						<div class="row" id="bloc_date_residance" style="display:none">
 							<div class="col-lg-6">
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_commencement_dt') *</label>
@@ -329,6 +329,8 @@
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_adresse') *</label>
 									<input name="display_address_product" id="display_address_product" class="form-control" type="text" value="">
+									<input type="hidden" name="long" id="long" />
+									<input type="hidden" name="lat" id="lat" />
 								</div>
 							</div>
 						</div>
@@ -357,9 +359,9 @@
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_etat') *</label>
 									<select class="form-control" name="state_id_product" id="state_id_product" style="width:100%">
-										<option value="">Sélectionner état...</option>
+										<option value="">@lang('app.txt.choose_state')</option>
 										@foreach(\App\Models\State::all() as $state)
-											<option value="{{$state->id}}">{{$state->content}}</option>
+											<option value="{{$state->id}}" dataname="{{$state->content}}">{{$state->content}}</option>
 										@endforeach
 									</select>
 								</div>
@@ -695,15 +697,17 @@
 								</div>
 								<div class="col-md-4">
 									<label for="title">Customer parking *</label>
-									<select class="form-control" name="type_cutomer_parking">
+									<select class="form-control" name="type_cutomer_parking" id="type_cutomer_parking">
 										<option value="">Choisir...</option>
 										<option value="1">Oui</option>
 										<option value="0">Non</option>
 									</select>
 								</div>
 								<div class="col-md-4">
-									<label for="title">Number of parking spots</label>
-									<input type="number" min="0" class="form-control" name="nombre_cutomer_parking" />
+									<div id="NbCustomerParking" style="display:none">
+										<label for="title">Number of parking spots</label>
+										<input type="number" min="0" class="form-control" name="nombre_cutomer_parking" />
+									</div>
 								</div>
 							</div>
 						</div>
@@ -788,13 +792,17 @@ function initMap(){
 
 	google.maps.event.addListener(autocomplete, 'place_changed', function() {
 		var place = autocomplete.getPlace();
-		console.log(place.address_components);
+		//console.log(place.address_components);
 		var arrAddress = place.address_components;
 		var itemRoute='';
-		var itemLocality='';
+		var itemSuburb='';
 		var itemCountry='';
 		var itemPc='';
 		var itemSnumber='';
+		var itemState = '';
+		var itemCity = '';
+		var lat = place.geometry.location.lat();
+		var long = place.geometry.location.lng();
 		
 		$.each(arrAddress, function (i, address_components) {
 			if (address_components.types[0] == "street_number") {
@@ -808,7 +816,7 @@ function initMap(){
 			
 			if (address_components.types[0] == "locality") {
 				//console.log("town:" + address_components.long_name);
-				itemLocality = address_components.long_name;
+				itemSuburb = address_components.long_name;
 			}
 			
 			if (address_components.types[0] == "country") {
@@ -823,10 +831,23 @@ function initMap(){
 				itemPc = address_components.long_name;
 			}
 			
+			if (address_components.types[0] == "administrative_area_level_2") {
+				//console.log("pc:" + address_components.long_name);
+				itemCity = address_components.short_name;
+			}
+			if (address_components.types[0] == "administrative_area_level_1") {
+				//console.log("pc:" + address_components.long_name);
+				itemState = address_components.short_name;
+			}
+			
 			var adresse = itemSnumber + ' ' + itemRoute;
 			$('#display_address_product').val(adresse);
-			$('#ville_product').val(itemLocality);
+			$('#ville_product').val(itemSuburb);
+			$('#suburb_product').val(itemCity);
 			$('#postalCode_product').val(itemPc);
+			$('#long').val(long);
+			$('#lat').val(lat);
+			$('#state_id_product option[dataname="'+itemState+'"]').prop('selected', true);
 		});
 	});
 }
@@ -899,7 +920,6 @@ function initMap(){
 						$('#bloc_fond_doc_produit').hide();
 						$('#bloc_eoi_doc').hide();
 						$('#bloc_lia_doc').hide();
-					
 					}else if(ancienneteBien == 'Neuf' && natureBien == 'Produit isolé'){
 						//$('#info-date-isole').show();
 						$('#info_qte').show();
@@ -929,6 +949,7 @@ function initMap(){
 						$('#bloc_eoi_doc').show();
 						$('#bloc_lia_doc').show();
 					}
+					$('#bloc_date_residance').show();
 				}else if(cat == 2){
 					$('#info_prd_foncier').show();
 					$('#price_simple').show();
@@ -939,6 +960,7 @@ function initMap(){
 					$('#yearConstruct').hide();
 					$('#jardin_info').hide();
 					$('[name="postalCode_product"]').val('').prop("readonly", false);
+					$('#bloc_date_residance').hide();
 				}else if(cat == 3){
 				    //$('#info-date-isole').hide();
 					$('#bloc_fond_doc_produit').show();
@@ -947,6 +969,7 @@ function initMap(){
 					$('#yearConstruct').hide();
 					$('#jardin_info').hide();
 					$('[name="postalCode_product"]').val('').prop("readonly", false);
+					$('#bloc_date_residance').hide();
 				}else if(cat == 4){
 					//$('#info-date-isole').hide();
 					$('#bloc_fond_doc_produit').show();
@@ -955,6 +978,15 @@ function initMap(){
 					$('#yearConstruct').hide();
 					$('#jardin_info').hide();
 					$('[name="postalCode_product"]').val('').prop("readonly", false);
+					$('#bloc_date_residance').hide();
+					$('#type_cutomer_parking').on('change',function(){
+						var parkingType = $(this).val();
+						if(parkingType == 1){
+							$('#NbCustomerParking').show();	
+						}else{
+							$('#NbCustomerParking').hide();	
+						}
+					})
 				}
 				// Always allow going backward even if the current step contains invalid fields!
 				if (currentIndex > newIndex)

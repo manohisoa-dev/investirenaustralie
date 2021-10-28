@@ -51,6 +51,21 @@
 										</div>
 									</div>
 								</div>
+								
+								<div class="row">
+									<div class="col-lg-6">
+										<div class="form-group">
+											<label for="title">@lang('app.form.programme_commencement_dt') *</label>
+											<input type="text" name="commencement_dt" id="commencement_dt" value="{{$product->commencement_dt}}" class="form-control date_month_year" />
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="form-group">
+											<label for="title">@lang('app.form.estimated_delivery_dt') *</label>
+											<input type="text" name="estimated_delvivery_dt" id="estimated_delvivery_dt" class="form-control date_month_year" value="{{$product->estimated_delvivery_dt}}"/>
+										</div>
+									</div>
+								</div>	
 									
 								<div class="row">
 									<div class="col-lg-6">
@@ -63,8 +78,10 @@
 									</div>
 									<div class="col-lg-6">
 										<div class="form-group">
-											<label for="title">@lang('app.form.programme_suburb') *</label>
-											<input name="suburb_product" id="suburb_product" class="form-control" type="text" value="{{$localisation ? $localisation->area_level_1:''}}">
+											<label for="title">@lang('app.form.programme_adresse') *</label>
+											<input name="display_address" id="display_address" class="form-control" type="text" value="{{$product->display_address}}">
+											<input type="hidden" name="long" id="long" value="{{$localisation ? $localisation->longitude:''}}" />
+											<input type="hidden" name="lat" id="lat" value="{{$localisation ? $localisation->latitude:''}}" />
 										</div>
 									</div>
 								</div>
@@ -85,8 +102,8 @@
 								<div class="row">
 									<div class="col-lg-4">
 										<div class="form-group">
-											<label for="title">@lang('app.form.programme_adresse') *</label>
-											<input name="display_address" id="display_address" class="form-control" type="text" value="{{$product->display_address}}">
+											<label for="title">@lang('app.form.programme_suburb') *</label>
+											<input name="suburb_product" id="suburb_product" class="form-control" type="text" value="{{$localisation ? $localisation->area_level_1:''}}">
 										</div>
 									</div>
 									<div class="col-lg-4">
@@ -192,22 +209,7 @@
 											</div>
 										</div>
 									</div>
-									@if($product->ancienneteBien == 'Neuf')
-										<div class="row">
-											<div class="col-lg-6">
-												<div class="form-group">
-													<label for="title">@lang('app.form.produit_dt_db_travaux')</label>
-													<input type="text" class="form-control" name="dt_db_travaux" value="{{$product->dt_db_travaux}}" id="dt_db_travaux" />
-												</div>
-											</div>
-											<div class="col-lg-6">
-												<div class="form-group">
-													<label for="title">@lang('app.form.produit_dt_prevu_livraison')</label>
-													<input type="date" class="form-control" name="dt_prevu_livraison" value="{{$product->dt_prevu_livraison}}" />
-												</div>
-											</div>
-										</div>
-									@endif
+									
 									<div class="row">
 										<div class="col-lg-6">
 											<label for="title">@lang('app.form.product_jardin_space')</label>
@@ -1586,12 +1588,89 @@
 @endsection
 
 @push('script')
+	<style>
+	.ui-datepicker-calendar {
+    	display: none;
+    }
+	</style>
 	<!-- dropzone -->
 	<script src="{{ asset('administrator/js/plugins/dropzone/dropzone.js') }}"></script>
 	<script src="{{asset('administrator/plugins/ckeditor/ckeditor.js')}}"></script>	
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 	<!-- Jquery Validate -->
 	<script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
+	
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2izG_M7K3gP6pFUH5cyzmDjuGpOYfgc4&libraries=places&callback=initMap&channel=GMPSB_addressselection_v1_cABC" async defer></script>
+<!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2izG_M7K3gP6pFUH5cyzmDjuGpOYfgc4&libraries=places&callback=initMap"></script>-->
+	<script>
+	// display_address
+	function initMap(){
+		var autocomplete = new google.maps.places.Autocomplete($("#display_address")[0], {});
+		autocomplete.setComponentRestrictions({'country': ['au']});
+	
+		google.maps.event.addListener(autocomplete, 'place_changed', function() {
+			var place = autocomplete.getPlace();
+			//console.log(place.address_components);
+			var arrAddress = place.address_components;
+			var itemRoute='';
+			var itemSuburb='';
+			var itemCountry='';
+			var itemPc='';
+			var itemSnumber='';
+			var itemState = '';
+			var itemCity = '';
+			var lat = place.geometry.location.lat();
+			var long = place.geometry.location.lng();
+			
+			$.each(arrAddress, function (i, address_components) {
+				if (address_components.types[0] == "street_number") {
+					//console.log("street_number:" + address_components.long_name);
+					itemSnumber = address_components.long_name;
+				}
+				if (address_components.types[0] == "route") {
+					//console.log(i + ": route:" + address_components.long_name);
+					itemRoute = address_components.long_name;
+				}
+				
+				if (address_components.types[0] == "locality") {
+					//console.log("town:" + address_components.long_name);
+					itemSuburb = address_components.long_name;
+				}
+				
+				if (address_components.types[0] == "country") {
+					//document.getElementById("country_code").value = place.address_components[i].short_name;
+					console.log("country:" + address_components.long_name);
+					console.log("country:" + address_components.short_name);
+					itemCountry = address_components.long_name;
+				}
+				
+				if (address_components.types[0] == "postal_code") {
+					//console.log("pc:" + address_components.long_name);
+					itemPc = address_components.long_name;
+				}
+				
+				if (address_components.types[0] == "administrative_area_level_2") {
+					//console.log("pc:" + address_components.long_name);
+					itemCity = address_components.short_name;
+				}
+				if (address_components.types[0] == "administrative_area_level_1") {
+					//console.log("pc:" + address_components.long_name);
+					itemState = address_components.short_name;
+				}
+				
+				var adresse = itemSnumber + ' ' + itemRoute;
+				$('#display_address_product').val(adresse);
+				$('#ville_product').val(itemSuburb);
+				$('#suburb_product').val(itemCity);
+				$('#postalCode_product').val(itemPc);
+				$('#long').val(long);
+				$('#lat').val(lat);
+				$('#state_id_product option[dataname="'+itemState+'"]').prop('selected', true);
+			});
+		});
+	}
+	</script>
+
 	<script>
 	Dropzone.autoDiscover = false;
 	$(document).ready(function(){
@@ -1760,7 +1839,7 @@
 			}
 		});
 		
-		$("#dt_db_travaux").datepicker({
+		$(".date_month_year").datepicker({
 			changeMonth: true,
 			changeYear: true,
 			showButtonPanel: true,
@@ -1769,15 +1848,6 @@
 				var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
 				var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
 				$(this).datepicker('setDate', new Date(year, month, 1));
-			},
-			beforeShow : function(input, inst) {
-				var datestr;
-				if ((datestr = $(this).val()).length > 0) {
-					year = datestr.substring(datestr.length-4, datestr.length);
-					month = jQuery.inArray(datestr.substring(0, datestr.length-5), $(this).datepicker('option', 'monthNamesShort'));
-					$(this).datepicker('option', 'defaultDate', new Date(year, month, 1));
-					$(this).datepicker('setDate', new Date(year, month, 1));
-				}
 			}
 		});
 		

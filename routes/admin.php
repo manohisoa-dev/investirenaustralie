@@ -108,10 +108,10 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::get('user/show/collaborator', 'UserController@showCollaborator')->name('user.show.collaborator');
     Route::get('user/create/collaborator', 'UserController@createCollaborator')->name('user.create.collaborator');
     Route::get('user/show/message', 'UserController@showMessage')->name('user.show.message');
-    Route::get('user/show/seller_real_estate_professionals', 'UserController@seller_real_estate_professionals')->name('user.show.seller_real_estate_professionals');
-    Route::get('user/show/seller_non_professional_legal_persons', 'UserController@seller_non_professional_legal_persons')->name('user.show.seller_non_professional_legal_persons');
-    Route::get('user/show/seller_non_professional_natural_persons', 'UserController@seller_non_professional_natural_persons')->name('user.show.seller_non_professional_natural_persons');
-    Route::get('user/show/seller_by_afa', 'UserController@seller_by_afa')->name('user.show.seller_by_afa');
+    Route::get('user/show/seller/type/seller_real_estate_professionals', 'UserController@seller_real_estate_professionals')->name('user.show.seller_real_estate_professionals');
+    Route::get('user/show/seller/type/seller_non_professional_legal_persons', 'UserController@seller_non_professional_legal_persons')->name('user.show.seller_non_professional_legal_persons');
+    Route::get('user/show/seller/type/seller_non_professional_natural_persons', 'UserController@seller_non_professional_natural_persons')->name('user.show.seller_non_professional_natural_persons');
+    Route::get('user/show/seller/type/seller_by_afa', 'UserController@seller_by_afa')->name('user.show.seller_by_afa');
     
     Route::resource('sale','SaleController');
     Route::get('pay/{sale}/{role}', 'SaleController@pay')->name('sale.pay');
@@ -586,10 +586,10 @@ Route::prefix('collaborator')->namespace('Admin')->as('admin.')->middleware(["au
     Route::resource('country','CountryController');
     Route::resource('state','StateController');
     Route::get('user/show/message', 'UserController@showMessage')->name('collaborator.user.show.message');
-    Route::get('user/show/seller_real_estate_professionals', 'UserController@seller_real_estate_professionals')->name('collaborator.user.show.seller_real_estate_professionals');
-    Route::get('user/show/seller_non_professional_legal_persons', 'UserController@seller_non_professional_legal_persons')->name('collaborator.user.show.seller_non_professional_legal_persons');
-    Route::get('user/show/seller_non_professional_natural_persons', 'UserController@seller_non_professional_natural_persons')->name('collaborator.user.show.seller_non_professional_natural_persons');
-    Route::get('user/show/seller_by_afa', 'UserController@seller_by_afa')->name('collaborator.user.show.seller_by_afa');
+    Route::get('user/show/seller/type/seller_real_estate_professionals', 'UserController@seller_real_estate_professionals')->name('collaborator.user.show.seller_real_estate_professionals');
+    Route::get('user/show/seller/type/seller_non_professional_legal_persons', 'UserController@seller_non_professional_legal_persons')->name('collaborator.user.show.seller_non_professional_legal_persons');
+    Route::get('user/show/seller/type/seller_non_professional_natural_persons', 'UserController@seller_non_professional_natural_persons')->name('collaborator.user.show.seller_non_professional_natural_persons');
+    Route::get('user/show/seller/type/seller_by_afa', 'UserController@seller_by_afa')->name('collaborator.user.show.seller_by_afa');
     // Route::resource('category','CategoryController');
     // Route::get('category/{category}/edit', 'CategoryController@edit')->name('category.edit');
     // Route::put('category/{category}', 'CategoryController@update')->name('category.update');

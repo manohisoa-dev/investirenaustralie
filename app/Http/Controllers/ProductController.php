@@ -473,7 +473,8 @@ class ProductController extends Controller {
         }
     }
 
-    function save_location($country, $suburb, $postalCode, $locality, $route,$longitude = '',$latitude = '') {        
+    function save_location($country, $suburb, $postalCode, $locality, $route, $longitude =
+        '', $latitude = '') {
         $location = new Localisation();
         $location->country = $country;
         $location->area_level_1 = $suburb;
@@ -651,7 +652,7 @@ class ProductController extends Controller {
         }
 
         $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
-            $request->ville, $request->display_address,$request->long,$request->lat);
+            $request->ville, $request->display_address, $request->long, $request->lat);
 
         if ($request->commision == 'Sales commission rate (%)') {
             $taux_commision = $request->sales_rate;
@@ -886,7 +887,7 @@ class ProductController extends Controller {
             }
         } else {
             $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
-                $request->ville, $request->display_address,$request->long,$request->lat);
+                $request->ville, $request->display_address, $request->long, $request->lat);
         }
 
         if ($request->commision == 'Sales commission rate (%)') {
@@ -925,28 +926,18 @@ class ProductController extends Controller {
             $localisation = Localisation::find($product->location_id);
             if ($localisation->route != $request->display_address || $localisation->locality !=
                 $request->ville_product) {
-                $adresse = $request->display_address . ', ' . $request->ville_product . ' ' . $request->postalCode_product .
-                    ', ' . $request->countryId_product;
-                $coordonne_tab = geocodeAddress($adresse);
-                if ($coordonne_tab) {
-                    $latitude = $coordonne_tab['lat'];
-                    $longitude = $coordonne_tab['lng'];
-                } else {
-                    $latitude = '';
-                    $longitude = '';
-                }
-
                 Localisation::where('id', $product->location_id)->update(['area_level_1' => $request->suburb_product,
                     'country' => $request->countryId_product, 'postalCode' => $request->postalCode_product,
                     'locality' => $request->ville_product, 'route' => $request->display_address,
-                    'longitude' => $longitude, 'latitude' => $latitude]);
+                    'longitude' => $request->long, 'latitude' => $request->lat]);
                 $id_location = $product->location_id;
             } else {
                 $id_location = $product->location_id;
             }
         } else {
             $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
-                $request->postalCode_product, $request->ville_product, $request->display_address);
+                $request->postalCode_product, $request->ville_product, $request->display_address,
+                $request->long, $request->lat);
         }
 
         if ($request->commision_product == 'Sales commission rate (%)') {
@@ -1049,7 +1040,7 @@ class ProductController extends Controller {
         $type_id, $cat_programmme_id, $postalCode, $state_id, $programme_id, $location_id,
         $superficie_jardin, $avoir_parking_voie_public, $avoir_piscine, $type_commission,
         $taux_commission, $commencement_dt, $estimated_delvivery_dt, $avoir_bonus, $mt_bonus,
-        $property_detail, $nb_parking_spots, $min_area, $max_area,$programme_firb_pre_approved_program) {
+        $property_detail, $nb_parking_spots, $min_area, $max_area, $programme_firb_pre_approved_program) {
 
         $product = new Product();
         $lastId = Product::latest('id')->first();
@@ -1121,7 +1112,8 @@ class ProductController extends Controller {
 
     public function ajaxSaveProduct(Request $request) {
         $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
-            $request->postalCode_product, $request->ville_product, $request->display_address_product);
+            $request->postalCode_product, $request->ville_product, $request->display_address_product,
+            $request->long, $request->lat);
         $titre_product = $request->title_new_programme . '-' . $request->title_product;
 
         if (isset($request->chk_parking)) {
@@ -1145,7 +1137,7 @@ class ProductController extends Controller {
                     $request->prg_cat_id, $request->postalCode_product, $request->state_id_product,
                     $request->id_programme, $id_location, 0, $avoir_parking, 0, $request->commision_product,
                     $taux_commission, $request->dt_db_travaux, $request->dt_prevu_livraison, $request->bonus_vente,
-                    $request->bonus_amount, '', 0, 0, 0);
+                    $request->bonus_amount, '', 0, 0, 0,'');
             } else {
                 $id_produit = $this->save_new_produit($request->prg_anciennete, $request->prg_nature,
                     $titre_product, $request->file('image'), $request->desc_product, 1, 0, '', 0, 0,
@@ -1375,9 +1367,10 @@ class ProductController extends Controller {
                         $taux_commision_prd, '', '', $request->bonus_vente, $request->bonus_amount, '',
                         0, 0, 0);
                 } else {
-                    //produit isolé
+                    //enregistrement produit autonome de Résidance new
                     $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
-                        $request->postalCode_product, $request->ville_product, $request->display_address_product);
+                        $request->postalCode_product, $request->ville_product, $request->display_address_product,
+                        $request->long, $request->lat);
                     if ($request->commision_product == 'Sales commission rate (%)') {
                         $taux_commision_prd = $request->sales_rate_product;
                     } else {
@@ -1391,8 +1384,8 @@ class ProductController extends Controller {
                         $request->simple_price, 0, 0, 'AUD', $request->status, $request->product_type_id,
                         $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                         -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine, $request->commision_product,
-                        $taux_commision_prd, $request->commencement_dt, $request->estimated_delvivery_dt, $request->bonus_vente, $request->bonus_amount, '',
-                        0, 0, 0,$request->programme_firb_pre_approved_program);
+                        $taux_commision_prd, $request->commencement_dt, $request->estimated_delvivery_dt,
+                        $request->bonus_vente, $request->bonus_amount, '', 0, 0, 0, $request->programme_firb_pre_approved_program);
 
                     //save fond dossier programme
                     if ($request->p_fondDossier) {
@@ -1410,16 +1403,18 @@ class ProductController extends Controller {
                             $this->save_lia_dossier($value, $id_produit);
                         }
                     }
-                    
-                    if($request->dropPhoto){
+
+                    if ($request->dropPhoto) {
                         foreach ($request->dropPhoto as $key => $value) {
                             $this->save_photo_programme($value, $id_produit, 0);
                         }
                     }
                 }
             } else {
+                //save produit autonome catégorie résidence de type old
                 $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
-                    $request->postalCode_product, $request->ville_product, $request->display_address_product);
+                    $request->postalCode_product, $request->ville_product, $request->display_address_product,
+                    $request->long, $request->lat);
                 if ($request->commision_product == 'Sales commission rate (%)') {
                     $taux_commision_prd = $request->sales_rate_product;
                 } else {
@@ -1433,8 +1428,8 @@ class ProductController extends Controller {
                     $request->simple_price, 0, 0, 'AUD', $request->status, $request->product_type_id,
                     $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
                     -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine, $request->commision_product,
-                    $taux_commision_prd, '', '', $request->bonus_vente, $request->bonus_amount, '',
-                    0, 0, 0);
+                    $taux_commision_prd, $request->commencement_dt, $request->estimated_delvivery_dt,
+                    $request->bonus_vente, $request->bonus_amount, '', 0, 0, 0, $request->programme_firb_pre_approved_program);
 
                 //save fond dossier programme
                 if ($request->p_fondDossier) {
@@ -1452,11 +1447,18 @@ class ProductController extends Controller {
                         $this->save_lia_dossier($value, $id_produit);
                     }
                 }
+
+                if ($request->dropPhoto) {
+                    foreach ($request->dropPhoto as $key => $value) {
+                        $this->save_photo_programme($value, $id_produit, 0);
+                    }
+                }
             }
         } elseif ($categorie == 2) {
-            //produit foncier
+            //enregistrement produit autonome de catégorie FONCIER (LAND)
             $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
-                $request->postalCode_product, $request->ville_product, $request->display_address_product);
+                $request->postalCode_product, $request->ville_product, $request->display_address_product,
+                $request->long, $request->lat);
 
             if ($request->commision_product == 'Sales commission rate (%)') {
                 $taux_commision_prd = $request->sales_rate_product;
@@ -1470,7 +1472,7 @@ class ProductController extends Controller {
                 0, 0, 'AUD', $request->status, $request->product_type_id, $request->cat_programmme_id,
                 $request->postalCode_product, $request->state_id_product, -1, $id_location, $request->superficie_jardin,
                 0, 0, $request->commision_product, $taux_commision_prd, '', '', $request->bonus_vente,
-                $request->bonus_amount, '', 0, 0, 0);
+                $request->bonus_amount, '', 0, 0, 0, $request->programme_firb_pre_approved_program);
 
             //save fond dossier programme
             if ($request->p_fondDossier) {
@@ -1488,10 +1490,17 @@ class ProductController extends Controller {
                     $this->save_lia_dossier($value, $id_produit);
                 }
             }
+
+            if ($request->dropPhoto) {
+                foreach ($request->dropPhoto as $key => $value) {
+                    $this->save_photo_programme($value, $id_produit, 0);
+                }
+            }
         } elseif ($categorie == 3) {
             //produit industriel
             $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
-                $request->postalCode_product, $request->ville_product, $request->display_address_product);
+                $request->postalCode_product, $request->ville_product, $request->display_address_product,
+                $request->long, $request->lat);
 
             if ($request->commision_product == 'Sales commission rate (%)') {
                 $taux_commision_prd = $request->sales_rate_product;
@@ -1505,7 +1514,7 @@ class ProductController extends Controller {
                 0, 'AUD', $request->status, $request->product_type_id, $request->cat_programmme_id,
                 $request->postalCode_product, $request->state_id_product, -1, $id_location, $request->superficie_jardin,
                 0, 0, $request->commision_product, $taux_commision_prd, '', '', $request->bonus_vente,
-                $request->bonus_amount, $request->property_detail, 0, 0, 0);
+                $request->bonus_amount, $request->property_detail, 0, 0, 0, $request->programme_firb_pre_approved_program);
 
             //save fond dossier programme
             if ($request->p_fondDossier) {
@@ -1523,10 +1532,16 @@ class ProductController extends Controller {
                     $this->save_lia_dossier($value, $id_produit);
                 }
             }
+            if ($request->dropPhoto) {
+                foreach ($request->dropPhoto as $key => $value) {
+                    $this->save_photo_programme($value, $id_produit, 0);
+                }
+            }
         } elseif ($categorie == 4) {
             //produit commercial
             $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
-                $request->postalCode_product, $request->ville_product, $request->display_address_product);
+                $request->postalCode_product, $request->ville_product, $request->display_address_product,
+                $request->long, $request->lat);
             if ($request->commision_product == 'Sales commission rate (%)') {
                 $taux_commision_prd = $request->sales_rate_product;
             } else {
@@ -1541,7 +1556,7 @@ class ProductController extends Controller {
                 -1, $id_location, $request->superficie_jardin, $request->type_cutomer_parking, 0,
                 $request->commision_product, $taux_commision_prd, '', '', $request->bonus_vente,
                 $request->bonus_amount, $request->property_detail, $request->nombre_cutomer_parking,
-                0, 0);
+                0, 0, $request->programme_firb_pre_approved_program);
 
             //save fond dossier programme
             if ($request->p_fondDossier) {
@@ -1557,6 +1572,12 @@ class ProductController extends Controller {
             if ($request->p_liaDossier) {
                 foreach ($request->p_liaDossier as $key => $value) {
                     $this->save_lia_dossier($value, $id_produit);
+                }
+            }
+
+            if ($request->dropPhoto) {
+                foreach ($request->dropPhoto as $key => $value) {
+                    $this->save_photo_programme($value, $id_produit, 0);
                 }
             }
         }

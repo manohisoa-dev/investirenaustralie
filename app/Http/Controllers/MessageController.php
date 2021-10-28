@@ -99,7 +99,7 @@ class MessageController extends Controller
 
         }else{
             if(isset(Message::unreadCountAfa(Auth::user()->id)->count)){
-            $unreadCount = Message::unreadCountAfa(Auth::user()->id)->count;
+                $unreadCount = Message::unreadCountAfa(Auth::user()->id)->count;
             }
 
             $data = [
@@ -235,7 +235,7 @@ class MessageController extends Controller
     }
 
     public function getUnreadMessageNotification(Request $request, $user_id){
-        
+
         // $unreadCountNotification = Message::unreadCountNotification($user_id)->count;
         $data = Message::unreadMessageNotification($user_id);
             

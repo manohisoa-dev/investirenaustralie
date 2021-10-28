@@ -1275,7 +1275,7 @@ return
     'admin.product_isole.list_no_valid' => 'List of stand-alone products published',
 	'btn.show_detail' => 'Show detail',
 	'txt.password_do_not_match' => 'Passwords do not match!',
-	'txt.regex_mdp' => 'Password must be at least eight characters long, at least one uppercase letter, one lowercase letter, one number and one special character',
+	'txt.regex_mdp' => 'Password must be at least 8 characters long, at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character',
 	'txt.regex_pdf' => 'Fichier non accépté. Veuillez choisir le bon fichier pdf !',
 	'txt.file_sent' => 'File successfully sent !',
 	'txt.password_error' => 'Password error !',
@@ -1321,5 +1321,7 @@ return
     'form.programme_firb_pre_approved_program' => 'FIRB pre-approved program ',
     'form.programme_pre_approved_sale' => 'FIRB pre-approved sale',
 	'form.first_name' => 'First name',
-	'form.last_name' => 'Last name'
+	'form.last_name' => 'Last name',
+    'txt.choose_state' => 'Choose State',
+    'txt.required_valeur' => 'Enter values'
 ];
