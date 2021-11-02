@@ -6810,6 +6810,7 @@ body.body-small .vote-icon {
   border-radius: 50%;
 }
 .open-small-chat-main {
+  margin-bottom: 0.3rem;
   height: 38px;
   width: 38px;
   display: block;
@@ -6834,8 +6835,8 @@ body.body-small .vote-icon {
   right: 75px;
   background: #fff;
   border: 1px solid #e7eaec;
-  width: 230px;
-  height: 320px;
+  width: 300px;
+  height: 340px;
   border-radius: 4px;
 }
 .small-chat-box-main {
@@ -6936,8 +6937,8 @@ body.body-small .vote-icon {
 .small-chat-box .content .chat-message {
   padding: 5px 10px;
   border-radius: 6px;
-  font-size: 11px;
-  line-height: 14px;
+  font-size: 14px;
+  line-height: 20px;
   max-width: 80%;
   background: #f3f3f4;
   margin-bottom: 10px;
@@ -6945,8 +6946,8 @@ body.body-small .vote-icon {
 .small-chat-box-main .content .chat-message {
   padding: 5px 10px;
   border-radius: 6px;
-  font-size: 11px;
-  line-height: 14px;
+  font-size: 14px;
+  line-height: 20px;
   max-width: 80%;
   background: #f3f3f4;
   margin-bottom: 10px;

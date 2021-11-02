@@ -1962,12 +1962,14 @@
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.orga.fix_phone')</div>
                                             <div class="input-group mb-3 col-sm-12">
                                                 <div class="input-group-prepend">
-                                                    <select class="form-control" name="indicatif" id="indicatif">
+                                                    {{--<select class="form-control" name="indicatif" id="indicatif">--}}
                                                         @if (isset($sbaBus->phone) && $sbaBus->phone)
                                                             @php
                                                                 $codetamps = preg_match('#\((.*?)\)#', $sbaBus->phone, $match);
-                                                                $code = $match[1];
-                                                                $num = $sbaBus->phone?explode(')',$sbaBus->phone)[1]:'';
+                                                                $code = isset($match) && count($match) > 0 ? $match[1] : "";
+
+                                                                $numSuffix = explode(')',$sbaBus->phone) ;
+                                                                $num = $sbaBus->phone && count($numSuffix) > 1 ? $numSuffix[1] : '';
                                                             @endphp
                                                         @else
                                                             @php
@@ -1975,7 +1977,7 @@
                                                             @endphp
                                                         @endif
                                                         <option value="+61">(+61)</option>
-                                                    </select>
+                                                    {{--</select>--}}
                                                 </div>
                                                 <div class="custom-file">
                                                     <input type="text" pattern="[0-9]{1}[0-9]{7|14}" minlength="6" maxlength="9" placeholder="61XXXXXXXXXXXXX" class="form-control m-15px-t" id="phone" name="phone" value="{{ old('phone')?old('phone'):($num) }}">
@@ -1997,8 +1999,10 @@
                                                         @if (isset($sbaBus->phone) && $sbaBus->mobile)
                                                             @php
                                                                 $codetamps = preg_match('#\((.*?)\)#', $sbaBus->mobile, $match);
-                                                                $code = $match[1];
-                                                                $num = $sbaBus->mobile?explode(')',$sbaBus->mobile)[1]:'';
+                                                                $code = isset($match) && count($match) > 0 ? $match[1] : "";
+
+                                                                $mobSuffix = explode(')',$sbaBus->mobile) ;
+                                                                $num = $sbaBus->mobile && count($mobSuffix) > 1 ? $mobSuffix[1] : '';
                                                             @endphp
                                                         @else
                                                             @php
