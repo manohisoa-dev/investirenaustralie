@@ -68,11 +68,12 @@ class ProgrammeController extends Controller {
                     $product->location_id)->orderBy('id', 'desc')->get();
 
                 if (Auth::check()) {
-                    if (Auth::user()->role == 1 || Auth::user()->role == 3 || Auth::user()->role == 4) {
+                    if (Auth::user()->role == 1 || Auth::user()->role == 3 || Auth::user()->role ==
+                        4) {
                         $fonDossier = FondsDossier::where('products_fond_dossier.product_id', '=', $product->id)->join('images',
                             'products_fond_dossier.image_id', '=', 'images.id')->select('*',
                             'products_fond_dossier.id as prdFondId')->get();
-                    }else{
+                    } else {
                         $fonDossier = array();
                     }
                 } else {
@@ -83,8 +84,7 @@ class ProgrammeController extends Controller {
                 return view('programme.single')->with('item', $product)->with('location', $product->location)->with('pubs',
                     $pubs)->with('products', $products)->with('apls', $apls)->with('data',
                     json_encode($data))->with('states', $states)->with('locationTypes', $locationTypes)->with('types',
-                    $types)->with('afas', $afas)->with('categories', $categories)->with('dossier',
-                    $fonDossier);
+                    $types)->with('afas', $afas)->with('categories', $categories)->with('dossier', $fonDossier);
             }
         } else {
             abort(404);
@@ -92,7 +92,6 @@ class ProgrammeController extends Controller {
     }
 
     public function all(Request $request, Category $category = null, $cat = null) {
-
         $page = $request->get('page');
         if (empty($page))
             $page = 1;
@@ -109,7 +108,9 @@ class ProgrammeController extends Controller {
         if (!in_array($viewProd, ['grid', 'list']))
             $viewProd = 'list';
 
-        $items = Product::ofStatus('published')->isParent(0)->where('quantity', '>', 0);
+        //$items = Product::ofStatus('published')->isParent(0)->where('quantity', '>', 0);
+        $items = Product::ofStatus('published')->whereIn('parent_id', array(0, -1))->where('quantity',
+            '>', 0);
 
         if ($cat) {
             $cat_id = Category::where('slug', $cat)->first()->id;
@@ -153,12 +154,9 @@ class ProgrammeController extends Controller {
 
         // $categories = Category::orderBy('created_at', 'desc')->has('products')->withCount('products')->take($this->recentSize)->get();
 
-        $categories = \DB::table('categories as c')
-        ->join('products as p', 'c.id', '=', 'p.category_id')
-        ->select('c.*', \DB::raw("count(p.category_id) as products_count"))
-        ->groupBy('c.id')
-        ->where('p.status','=','published')
-        ->get();
+        $categories = \DB::table('categories as c')->join('products as p', 'c.id', '=',
+            'p.category_id')->select('c.*', \DB::raw("count(p.category_id) as products_count"))->groupBy('c.id')->where('p.status',
+            '=', 'published')->get();
 
         $page2 = Page::where('path', '=', '/products*')->first();
         if ($page2) {
@@ -267,28 +265,26 @@ class ProgrammeController extends Controller {
 
 
         $xLine = Parameter::where('name', 'x_line')->first();
-
-
+        //dd($pubs);
         return view('programme.index')->with('items', $items)->with('search', $search)->with('q',
             $q)->with('orderBy', $orderBy)->with('order', $order)->with('viewProd', $viewProd)->with('xLine',
             $xLine)->with('page', $page)->with('pubs', $pubs)->with('products', $products)->with('typesRes',
             $typesRes)->with('typesFonc', $typesFonc)->with('typesInd', $typesInd)->with('typesComm',
             $typesComm)->with('locationTypes', $locationTypes)->with('anciennetes', $anciennetes)->with('agricoles',
             $agricoles)->with('industriels', $industriels)->with('commercials', $commercials)->with('states',
-            $states)->with('category', $cat)->with('min_price_residentiel',
-            $min_price_residentiel)->with('max_price_residentiel', $max_price_residentiel)->with('min_land_area_residentiel',
-            $min_land_area_residentiel)->with('max_land_area_residentiel', $max_land_area_residentiel)->with('min_garage_space_residentiel',
-            $min_garage_space_residentiel)->with('max_garage_space_residentiel', $max_garage_space_residentiel)->with('min_bathrooms_residentiel',
-            $min_bathrooms_residentiel)->with('max_bathrooms_residentiel', $max_bathrooms_residentiel)->with('min_bedrooms_residentiel',
-            $min_bedrooms_residentiel)->with('max_bedrooms_residentiel', $max_bedrooms_residentiel)->with('min_number_of_floors_residentiel',
-            $min_number_of_floors_residentiel)->with('max_number_of_floors_residentiel', $max_number_of_floors_residentiel)->with('min_price_foncier',
-            $min_price_foncier)->with('max_price_foncier', $max_price_foncier)->with('min_land_area_foncier',
-            $min_land_area_foncier)->with('max_land_area_foncier', $max_land_area_foncier)->with('min_price_industriel',
-            $min_price_industriel)->with('max_price_industriel', $max_price_industriel)->with('min_price_commercial',
-            $min_price_commercial)->with('max_price_commercial', $max_price_commercial)->with('min_area_commercial',
-            $min_area_commercial)->with('max_area_commercial', $max_area_commercial)->with('categories',
-            $categories)->with('show', $show)->with('showBy', $showBy)->with(['data' =>
-            json_encode($data)]);
+            $states)->with('category', $cat)->with('min_price_residentiel', $min_price_residentiel)->with('max_price_residentiel',
+            $max_price_residentiel)->with('min_land_area_residentiel', $min_land_area_residentiel)->with('max_land_area_residentiel',
+            $max_land_area_residentiel)->with('min_garage_space_residentiel', $min_garage_space_residentiel)->with('max_garage_space_residentiel',
+            $max_garage_space_residentiel)->with('min_bathrooms_residentiel', $min_bathrooms_residentiel)->with('max_bathrooms_residentiel',
+            $max_bathrooms_residentiel)->with('min_bedrooms_residentiel', $min_bedrooms_residentiel)->with('max_bedrooms_residentiel',
+            $max_bedrooms_residentiel)->with('min_number_of_floors_residentiel', $min_number_of_floors_residentiel)->with('max_number_of_floors_residentiel',
+            $max_number_of_floors_residentiel)->with('min_price_foncier', $min_price_foncier)->with('max_price_foncier',
+            $max_price_foncier)->with('min_land_area_foncier', $min_land_area_foncier)->with('max_land_area_foncier',
+            $max_land_area_foncier)->with('min_price_industriel', $min_price_industriel)->with('max_price_industriel',
+            $max_price_industriel)->with('min_price_commercial', $min_price_commercial)->with('max_price_commercial',
+            $max_price_commercial)->with('min_area_commercial', $min_area_commercial)->with('max_area_commercial',
+            $max_area_commercial)->with('categories', $categories)->with('show', $show)->with('showBy',
+            $showBy)->with(['data' => json_encode($data)]);
     }
 
 

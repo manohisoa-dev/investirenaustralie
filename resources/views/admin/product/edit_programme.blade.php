@@ -503,15 +503,24 @@
 						<tr>
 							<td>{{$key + 1}}</td>
 							<td>
-								@if (@getimagesize($product_lie->imageUrl()))
-									<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{$product_lie->id}}">
-										<img src="{{$product_lie->imageUrl()}}" class="img-responsive" style="height:80px" />
-									</a>
+								@php
+									$photo_principal = \App\Models\ProductsImage::where('products_images.product_id', '=', $product_lie->id)->where('products_images.is_principal', '=', 1)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+									$first_photo = \App\Models\ProductsImage::where('products_images.product_id', '=', $product_lie->id)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+									
+								@endphp
+								@if($first_photo)
+									@if($photo_principal)
+									<!-- Programme sans principal -->
+									<img src="{{asset($photo_principal->filepath)}}" class="img-responsive" style="height:80px" />
+									@else
+									<!-- Programme principal -->
+									<img src="{{asset($first_photo->filepath)}}" class="img-responsive" style="height:80px" />
+									@endif
 								@else
-									<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{$product_lie->id}}">
-										<img class="img-responsive" src="{{asset('img/500x500.jpg')}}" width="80">
-									</a>
-								@endif
+									<!-- Programme aucun photo -->
+									<img class="img-responsive" src="{{asset('images/product.png')}}" width="80">
+								@endif						
+								
 							</td>
 							<td><b>{{ $product_lie->title }}</b><br />{!! $product_lie->excerpt() !!}</td>
 							<td>{{ $product_lie->currency }}&nbsp;{{ number_format($product_lie->min_price, 0, '.', ' ') }}</td>

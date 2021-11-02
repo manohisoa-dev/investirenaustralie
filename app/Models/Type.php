@@ -18,6 +18,8 @@ class Type extends Model {
             ('slug') . '%');
         \Request::input('title') and $query->where('title', 'like', '%' . \Request::input
             ('title') . '%');
+        \Request::input('title_en') and $query->where('title_en', 'like', '%' . \Request::input
+            ('title_en') . '%');
         \Request::input('content') and $query->where('content', \Request::input('content'));
         \Request::input('categories_id') and $query->where('categories_id', 'like', '%' . \Request::input
             ('categories_id') . '%');
@@ -35,6 +37,7 @@ class Type extends Model {
 
     public static function validationRules($attributes = null) {
         $rules = ['title' => 'required|string|max:150'];
+        $rules = ['title_en' => 'required|string|max:150'];
 
         // no list is provided
         if (!$attributes)

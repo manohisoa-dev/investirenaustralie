@@ -1137,7 +1137,7 @@ class ProductController extends Controller {
                     $request->prg_cat_id, $request->postalCode_product, $request->state_id_product,
                     $request->id_programme, $id_location, 0, $avoir_parking, 0, $request->commision_product,
                     $taux_commission, $request->dt_db_travaux, $request->dt_prevu_livraison, $request->bonus_vente,
-                    $request->bonus_amount, '', 0, 0, 0,'');
+                    $request->bonus_amount, '', 0, 0, 0, '');
             } else {
                 $id_produit = $this->save_new_produit($request->prg_anciennete, $request->prg_nature,
                     $titre_product, $request->file('image'), $request->desc_product, 1, 0, '', 0, 0,
@@ -1176,17 +1176,8 @@ class ProductController extends Controller {
             $localisation = Localisation::find($product->location_id);
             if ($localisation->route != $request->display_address_product || $localisation->locality !=
                 $request->ville_product) {
-                $adresse = $request->display_address_product . ', ' . $request->ville_product .
-                    ' ' . $request->postalCode_product . ', ' . $request->countryId_product;
-
-                $coordonne_tab = geocodeAddress($adresse);
-                if ($coordonne_tab) {
-                    $latitude = $coordonne_tab['lat'];
-                    $longitude = $coordonne_tab['lng'];
-                } else {
-                    $latitude = '';
-                    $longitude = '';
-                }
+                $latitude = $request->lat;
+                $longitude = $request->long;
                 Localisation::where('id', $product->location_id)->update(['area_level_1' => $request->suburb_product,
                     'country' => $request->countryId_product, 'postalCode' => $request->postalCode_product,
                     'locality' => $request->ville_product, 'route' => $request->display_address_product,
@@ -1195,7 +1186,8 @@ class ProductController extends Controller {
             }
         } else {
             $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
-                $request->postalCode_product, $request->ville_product, $request->display_address_product);
+                $request->postalCode_product, $request->ville_product, $request->display_address_product,
+                $request->long, $request->lat);
         }
 
         $titre_product = $request->title_product;

@@ -750,6 +750,7 @@ class RegisterController extends Controller
             $datas['longitude'] = $request->long;
             $datas['orga_mobile_phone'] = $indicatif.$request->orga_mobile_phone;
             $datas['orga_phone'] = $indicatif.$request->orga_phone;
+            $datas['contact_phone'] = $indicatif.$request->contact_phone;
 
             try {
                 //Créer localisation
@@ -1637,8 +1638,8 @@ class RegisterController extends Controller
                     'post_code'=>$datas['post_code_bs'], 
                     'state'=>$datas['state_bs'], 
                     'country'=>$datas['country_bs'], 
-                    'phone'=>$datas['phone_bs'], 
-                    'mobile'=>$datas['mobile_bs'], 
+                    'phone'=>$indicatif.$datas['phone_bs'], 
+                    'mobile'=>$indicatif.$datas['mobile_bs'], 
                     'email_adr'=>$datas['email_adr_bs']
                 ]);
 

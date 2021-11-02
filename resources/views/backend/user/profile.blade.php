@@ -963,7 +963,7 @@
                 {{-- If user is SELLER --}}
                 @if ($item->hasRole(2))
                     {{-- Real Estate Professionals AND Non-profesionnal Legal Persons  --}}
-                    @if($item->TypeUser->type_user_name=='Builder' || $item->TypeUser->type_user_name=='Developer')
+                    @if($item->TypeUser->type_user_name=='Builder' || $item->TypeUser->type_user_name=='Developer' || $item->TypeUser->type_user_name=='Organization')
                         <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
                             <h5>@lang('app.txt.businessdetail')</h5>
                             <div class="row">
@@ -1271,8 +1271,10 @@
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.etat')</div>
                                             <select id="administrative_area_level_1" class="form-control" name="area_level_1">
                                                 <option selected disabled>@lang('app.select_state')</option>
+                                                
                                                 @foreach(App\Models\State::all() as $state)
-                                                    <option value="{{ $state->content }}" {{ $item->location?$item->location->area_level_1:''==$state->content?'selected':'' }}>{{ trans('app.txt.'.$state->content) }} ({{ $state->content }})</option>
+                                                    {{($state->content)}}
+                                                    <option value="{{ $state->content }}" {{ ($item->location?$item->location->area_level_1:'ACT')==$state->content?'selected':'' }}>{{ trans('app.txt.'.$state->content) }} ({{ $state->content }})</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -1633,7 +1635,7 @@
                                             <div class="input-group mb-3 col-sm-12">
                                                 <div class="input-group-prepend">
                                                     <select class="form-control" name="indicatif2" id="indicatif2">
-                                                        @if (isset($item->userinfos->orga_phone) && $item->userinfos->contact_phone)
+                                                        @if (isset($item->userinfos->contact_phone))
                                                             @php
                                                                 $codetamps = preg_match('#\((.*?)\)#', $item->userinfos->contact_phone, $match);
                                                                 $code = $match[1];
@@ -2239,7 +2241,6 @@
                     </div>
                 @endif
             @endif
-
             @if($item->hasRole(5) && $item->isPerson() && $item->isComplete())
                 {{-- Physical address --}}
                 <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
@@ -2817,7 +2818,17 @@
                                     <div class="input-group mb-3 col-sm-12">
                                         <div class="input-group-prepend">
                                             <select class="form-control" name="indicatif2" id="indicatif2">
-                                                @if (isset($item->userinfos->orga_phone) && $item->userinfos->contact_phone)
+                                                @if (isset($item->userinfos->orga_phone))
+                                                    @php
+                                                        $codetamps2 = preg_match('#\((.*?)\)#', $item->userinfos->orga_phone, $match2);
+                                                        $code2 = $match2[1];
+                                                        $allCode2 = $match2[0];
+                                                        $num2 = $item->userinfos?explode(')',$item->userinfos->orga_phone)[1]:'';
+                                                    @endphp
+                                                    @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                        <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code2?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
+                                                    @endforeach
+                                                @elseif(isset($item->userinfos->contact_phone))
                                                     @php
                                                         $codetamps2 = preg_match('#\((.*?)\)#', $item->userinfos->contact_phone, $match2);
                                                         $code2 = $match2[1];
@@ -2825,15 +2836,12 @@
                                                         $num2 = $item->userinfos?explode(')',$item->userinfos->contact_phone)[1]:'';
                                                     @endphp
                                                     @foreach (App\Models\Indicatif::all() as $indicatif)
-                                                        <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code2?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
+                                                        <option value="+{{ $indicatif->code }}" {{ $indicatif->code=='61'?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
                                                     @endforeach
                                                 @else
                                                     @php
                                                         $num2="";
                                                     @endphp
-                                                    @foreach (App\Models\Indicatif::all() as $indicatif)
-                                                        <option value="+{{ $indicatif->code }}" {{ $indicatif->code=='61'?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
-                                                    @endforeach
                                                 @endif
                                             </select>
                                         </div>

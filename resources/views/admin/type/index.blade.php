@@ -40,6 +40,7 @@
                     <tr class="header-row">
 						{!!\Nvd\Crud\Html::sortableTh('id','admin.type.index','Id')!!}
 						{!!\Nvd\Crud\Html::sortableTh('title','admin.type.index','Title')!!}
+						{!!\Nvd\Crud\Html::sortableTh('title_en','admin.type.index','Title En')!!}
 						{!!\Nvd\Crud\Html::sortableTh('categories_id','admin.type.index','Catégorie')!!}
 						{!!\Nvd\Crud\Html::sortableTh('author_id','admin.type.index','Author Id')!!}
 						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.type.index','Créer le')!!}
@@ -50,6 +51,7 @@
                         <form class="search-form">
 							<td><input type="text" class="form-control" name="id" value="{{Request::input("id")}}"></td>
 							<td><input type="text" class="form-control" name="title" value="{{Request::input("title")}}"></td>
+							<td><input type="text" class="form-control" name="title_en" value="{{Request::input("title_en")}}"></td>
 							<td>
 								<select class="form-control" name="categories_id">
 									<option value="">Choisir categorie</option>
@@ -70,36 +72,13 @@
                         @forelse ( $records as $index =>$record )
                             <tr>
 								<td>{{ $index + $records->firstItem() }}</td>
-                            	<td>
-                                	<span class="editable"
-                                          data-type="text"
-                                          data-name="title"
-                                          data-value="{{ $record->title }}"
-                                          data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.type.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->title }}</span>
-                                </td>
-                                                                
+                            	<td>{{ $record->title }}</td>
+								<td>{{ $record->title_en }}</td>                     
                                 <td>
-                                     <span class="editable"
-                                          data-type="text"
-                                          data-name="categories_id"
-                                          data-value="{{ $record->categories_id }}"
-                                          data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.type.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->categorie->title }}</span>
                                  </td>
-                                 <td>
-                                     <span class="editable"
-                                          data-type="text"
-                                          data-name="author_id"
-                                          data-value="{{ $record->author->name }}"
-                                          data-pk="{{ $record->{$record->getKeyName()} }}"
-                                          data-url="{{ route('admin.type.index')}}/{{ $record->{$record->getKeyName()} }}"
-                                          >{{ $record->author->name }}</span>
-                                 </td>
-                                 <td>{{ $record->created_at ? $record->created_at->diffForHumans() : '' }}</td>
-                                 <td> {{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}</td>
+                                 <td></td>
+                                 <td></td>
+                                 <td></td>
 								 <td class="actions-cell text-center" width="12%">
 									<form class="form-inline" action="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.type.destroy',$record):route('admin.type.destroy',$record)}}" method="POST">
 										<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.type.edit', $record):route('admin.type.edit', $record)}}" title="Modification" class="btn btn-default btn-circle">

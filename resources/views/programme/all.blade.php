@@ -51,7 +51,7 @@
                 <div class="p-5px-t p-20px-b text-center">
                     <h6>{!! $item->content? Illuminate\Support\Str::limit( (getGTranslateAutoDetectBd('programme',$item)?getGTranslateAutoDetectBd('programme',$item):$item->content), 75) :'' !!}</h6>
                 </div>
-
+				@if($item->parent_id == 0)
                 <div class="font-small p-5px-t p-20px-b text-center border-top-1 border-color-dark-gray">
                     <div class="container text-center">
                         <div class="row mx-auto my-auto">
@@ -132,6 +132,7 @@
                         </div>
                     </div>
                 </div>
+				@endif
             </div>
         </div>
     </div>
@@ -152,16 +153,24 @@
                         <div class="ads-content">
                             <div id="carouselControls" class="carousel slide" data-ride="carousel">
                                 <div class="carousel-inner">
-                                    @forelse (App\Models\Pub::all() as $pub)
+									@php
+										$pubpage = \DB::table('pubs_pages as pp')->select('pp.id as ppId',
+										'pp.page_id as ppPageId', 'pp.pub_id as pubId', 'b.id as pId',
+										'b.title as title', 'b.content as content', 'b.links as links',
+										'b.image_id as image_id', 'im.filename as filename', 'im.filepath as filepath')->leftjoin('pubs as b',
+										'b.id', '=', 'pp.pub_id')->leftjoin('images as im', 'im.id', '=', 'b.image_id')->where('pp.page_id',
+										$page)->inRandomOrder()->offset(0)->limit(1)->get();
+									@endphp
+                                    @forelse ($pubpage as $pub)
                                         <div class="carousel-item @if($loop->first) active @endif">
                                             <div class="pub col-lg-12 col-sm-12">
                                                 <div class="thumb-wrapper">
                                                     <div class="img-box p-10px-b m-15px-b border-bottom-2 border-color-gray">
                                                         @php
-                                                            if(@getimagesize($pub->imageUrl())) {
-                                                                $img_pub=$pub->imageUrl();                            
+                                                            if($pub->filepath) {
+                                                                $img_pub= asset($pub->filepath);                            
                                                             } else {
-                                                                $img_pub=asset('images/pub/iea.png');
+                                                                $img_pub= 'http://placehold.it/250x250';
                                                             }
                                                         @endphp
                                                         <a href="{{ $pub->links }}" target="_blank"><img src="{{$img_pub}}" alt="{{$pub->title}}" class="img-fluid"></a>
