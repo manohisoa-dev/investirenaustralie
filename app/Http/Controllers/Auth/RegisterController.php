@@ -182,6 +182,7 @@ class RegisterController extends Controller
                 return abort(404);
             }
         }elseif($user->hasRole(2)){ // Seller
+            App::setLocale('en');
             if($user->isSlp()){
                 $vars = array(
                     '{role}' => trans('seller.non_professional_legal_persons'),
@@ -198,14 +199,14 @@ class RegisterController extends Controller
             }
             if($user->isSbu()){
                 $vars = array(
-                    '{role}' => trans('seller.rea_estate_professionals'),
+                    '{role}' => trans('seller.real_estate_professionals'),
                     '{confirmLink}' => setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration'))),
                 );
                 $alert =trans('app.txt.alert_success_sbu');
             }
             if($user->isSde()){
                 $vars = array(
-                    '{role}' => trans('seller.rea_estate_professionals'),
+                    '{role}' => trans('seller.real_estate_professionals'),
                     '{confirmLink}' => setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration'))),
                 );
                 $alert =trans('app.txt.alert_success_sde');
@@ -923,7 +924,8 @@ class RegisterController extends Controller
             'orga_license_number'         => 'required|max:100',
             'orga_operation_range' => 'required',
             'orga_presentation' => 'nullable|max:2000',
-            
+            'orga_rep_official_registration' => 'nullable|max:2000',
+
             'route'        => 'required|max:100',
             'route_number'        => 'required',
             'locality'     => 'required|max:100',
@@ -1124,11 +1126,11 @@ class RegisterController extends Controller
                 $userInfo->save();
 
                 // Envoie email
+                $lang = 'en';
+                App::setLocale($lang);
                 $confirmLinkVar='confirmLink';
                 $confirmEmailLink= url(route('confirm.registration',[$user]));
                 $varValue = trans('seller.real_estate_professionals');
-                $lang = 'en';
-                App::setLocale($lang);
                 $this->sendNotificationEmail($user,$lang,$confirmLinkVar,25,'role',$varValue,$confirmEmailLink);
 
             } catch (\Throwable $th) {
@@ -1684,6 +1686,10 @@ class RegisterController extends Controller
             );
             $content = strtr($template->$body, $vars);
             $content = ['title' => '', 'body' => $content];
+
+//            $troublLink = setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration')));
+//            $content = strtr($template->$body, $vars);
+//            $content = ['title' => '', 'body' => $content, 'actionText' => trans('mail.btn.confirm.registration'), 'actionUrl' => $troublLink];
 
             Mail::to($user->email)->send(new MailTemplate($content, $sujet));
             

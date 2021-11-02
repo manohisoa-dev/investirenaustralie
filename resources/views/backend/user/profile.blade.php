@@ -652,9 +652,21 @@
                                         <i class="fas fa-info"></i>
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
-                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.agencyregistrationnumber') </div>
+                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.organizationregistrationnumber') </div>
                                         <input type="text" class="form-control" name="orga_registration_number" id="orga_registration_number" placeholder="@lang('app.txt.agencyregistrationnumber')" value="{{ old('orga_registration_number')?old('orga_registration_number'):(isset($item->userinfos->orga_registration_number)?$item->userinfos->orga_registration_number:'') }}">
                                         <span class="text-danger">{{ $errors->first('orga_registration_number') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 m-10px-tb">
+                                <div class="media">
+                                    <div class="only-icon-20">
+                                        <i class="fas fa-info"></i>
+                                    </div>
+                                    <div class="media-body p-15px-l lh-normal">
+                                        <div class="dark-color m-5px-b font-w-600">@lang('app.txt.organizationrepregistrationofficial') </div>
+                                        <input type="text" class="form-control" name="orga_rep_official_registration" id="orga_rep_official_registration" placeholder="@lang('app.txt.organizationrepregistrationofficial')" value="{{ old('orga_rep_official_registration')?old('orga_rep_official_registration'):(isset($item->userinfos->orga_rep_official_registration)?$item->userinfos->orga_rep_official_registration:'') }}">
+                                        <span class="text-danger">{{ $errors->first('orga_rep_official_registration') }}</span>
                                     </div>
                                 </div>
                             </div>
