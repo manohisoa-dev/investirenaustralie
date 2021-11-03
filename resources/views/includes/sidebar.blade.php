@@ -66,14 +66,29 @@
                 </div>
                 <div class="p-15px-l">
                     <p class="m-0px">{{$product->title}}</p>
-                    <span class="btn btn-price">{{number_format($product->price, 0, '.', ' ')}} $</span>
+					@if($product->parent_id == -1)
+                    	<span class="btn btn-price">AUD {{number_format($product->price, 0, '.', ' ')}}</span>
+					@else
+						<span class="btn btn-price">AUD {{number_format($product->min_price, 0, '.', ' ')}}</span>
+					@endif
                 </div>
             </a>
             <div class="social-icon si-30 theme2nd radius nav justify-content-center p-10px-t" style="padding-bottom: 7px;padding-top: 5px;">
-                <a href="#"><i class="fa fa-arrows-alt"></i></a> @lang('app.num.area', ['num'=>number_format($product->area, 0)])
-                <a href="#"><i class="fa fa-bed"></i></a> @lang('app.num.bed', ['num'=>$product->bedrooms])
-                <a href="#"><i class="fa fa-bath"></i></a> @lang('app.num.bath', ['num'=>$product->bathrooms])
-                <a href="#"><i class="fa fa-car"></i></a> {{$product->garage_spaces?__('app.yes'):__('app.no')}}
+			    
+				@if($product->category_id == 1)
+				<!-- icon produit résidentiel -->
+                <a class="m-15px-r body-color font-w-500" href="#"><i class="fa fa-arrows-alt"></i></a> @lang('app.num.area', ['num'=>number_format($product->total_area, 0)])
+                <a class="body-color font-w-500" href="#"><i class="fa fa-bed"></i></a> @lang('app.num.bed', ['num'=>$product->bedrooms])
+                <a class="body-color font-w-500" href="#"><i class="fa fa-bath"></i></a> @lang('app.num.bath', ['num'=>$product->bathrooms])
+                <a class="body-color font-w-500" href="#"><i class="fa fa-car"></i></a> {{$product->garage_spaces?__('app.yes'):__('app.no')}}
+				@elseif($product->category_id == 2)
+				<a class="m-15px-r body-color font-w-500" href="#"><i class="fa fa-arrows-alt"></i></a> {{$product->area}}&nbsp;{{$product->unite_area}}
+				@elseif($product->category_id == 3)
+				
+				@elseif($product->category_id == 4)
+				
+				@endif
+				
             </div>
             @empty
                 <div class="p-15px-tb text-center">@lang('app.txt.no_product_found')</div>

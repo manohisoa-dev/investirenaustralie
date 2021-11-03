@@ -30,8 +30,10 @@ class Blog extends Model {
         // search results based on user input
         \Request::input('id') and $query->where('id',\Request::input('id'));
         \Request::input('slug') and $query->where('slug','like','%'.\Request::input('slug').'%');
-        \Request::input('title') and $query->where('title','like','%'.\Request::input('title').'%');
-        \Request::input('content') and $query->where('content',\Request::input('content'));
+        \Request::input('title_fr') and $query->where('title_fr','like','%'.\Request::input('title_fr').'%');
+        \Request::input('content_fr') and $query->where('content_fr',\Request::input('content_fr'));
+        \Request::input('title_en') and $query->where('title_en','like','%'.\Request::input('title_en').'%');
+        \Request::input('content_en') and $query->where('content_en',\Request::input('content_en'));
         \Request::input('meta_tag') and $query->where('meta_tag','like','%'.\Request::input('meta_tag').'%');
         \Request::input('meta_description') and $query->where('meta_description','like','%'.\Request::input('meta_description').'%');
         \Request::input('view_count') and $query->where('view_count',\Request::input('view_count'));
@@ -55,9 +57,11 @@ class Blog extends Model {
     public static function validationRules( $attributes = null )
     {
         $rules = [
-            'slug' => 'required|string|max:150',
-            'title' => 'string|max:150',
-            'content' => '',
+            'slug' => 'required|string|max:255',
+            'title_fr' => 'string|max:255',
+            'content_fr' => '',
+            'title_en' => 'string|max:255',
+            'content_en' => '',
             'meta_tag' => 'string|max:191',
             'meta_description' => 'string|max:191',
             'view_count' => 'required',

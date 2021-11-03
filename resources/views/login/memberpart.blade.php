@@ -27,7 +27,6 @@
     }
 </style>
 
-
 <div id="section1" class="p-50px-tb">
     <div id="property-single">
         <div class="container">
@@ -240,11 +239,11 @@
                                         <div class="form-group">
                                             <label for="adrphy_country" class="col-sm-12 control-label">@lang('app.txt.country') *</label>
                                             <div class="col-md-12">
-                                                <select class="form-control" name="adrphy_country" >
+                                                <select class="form-control" name="adrphy_country" id="adrphy_country">
                                                     <option value="" selected disabled>@lang('app.select_country')</option>
                                                     @foreach(App\Models\Country::all() as $country)
                                                         @if($country->prefixPhone)
-                                                            <option value="{{$country->code}}" {{ old('adrphy_country')==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
+                                                            <option value="{{$country->code}}" long="{{$country->content}}" {{ old('adrphy_country')==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
                                                         @endif
                                                     @endforeach
                                                 </select>
@@ -327,7 +326,7 @@
                                     <fieldset class="m-25px-t">
                                         <legend>@lang('app.txt.member_contacts')</legend>
                                         <div class="form-group">
-                                            <label for="orga_phone" class="col-sm-12 control-label">@lang('app.orga.fix_phone') *</label>
+                                            <label for="orga_phone" class="col-sm-12 control-label">@lang('app.orga.fix_phone')</label>
                                             <div class="input-group mb-3 col-sm-12">
                                                 <div class="input-group-prepend">
                                                     <select class="form-control" name="indicatif" id="indicatif">
@@ -416,7 +415,7 @@
 
                                     <div class="form-group">
                                         <div class="col-sm-offset-3 col-sm-12">
-                                            <button type="button" class="pull-left m-btn m-btn-theme m-15px-r" id="btn_cancel_form">@lang('app.btn.abandonner')</button>
+                                            <a type="button" href="{{ route('member.transaction') }}" class="pull-left m-btn m-btn-theme m-15px-r" id="btn_cancel_form">@lang('app.btn.abandonner')</a>
                                             <button type="button" class="m-btn m-btn-theme2nd" id="btn_save"> @lang('app.btn.save') </button>
                                         </div>
                                     </div>
@@ -436,11 +435,7 @@
 
 @push('script')
     {!! NoCaptcha::renderJs() !!}
-    @php
-        $key = env('GMAP_API_KEY');
-        $url = "https://maps.googleapis.com/maps/api/js?key=".$key."&callback=initMap&libraries=places&v=weekly";
-    @endphp
-    <script async defer src={{$url}}></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2izG_M7K3gP6pFUH5cyzmDjuGpOYfgc4&libraries=places&callback=initMap&channel=GMPSB_addressselection_v1_cABC" async defer></script>
     <script src="{{asset('js/myJs.js')}}"></script>
     <!-- Jquery Validate -->
     <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
@@ -752,6 +747,78 @@
             $('#partForm')[0].reset();
         });
     </script>
+
+    {{-- Google map autocomplete --}}
+    <script>
+		function initMap(){
+			var autocomplete = new google.maps.places.Autocomplete($("#route")[0], {});
+			autocomplete.setComponentRestrictions({'country': ['au']});
+				
+			google.maps.event.addListener(autocomplete, 'place_changed', function() {
+				var place = autocomplete.getPlace();
+				var arrAddress = place.address_components;
+				var itemRoute='';
+				var itemSuburb='';
+				var itemCountry='';
+				var itemCity = '';
+				var itemPc='';
+				var itemState='';
+				var itemSnumber='';
+				var lat = place.geometry.location.lat();
+				var long = place.geometry.location.lng();
+	
+				$.each(arrAddress, function (i, address_components) {
+					if (address_components.types[0] == "street_number") {
+						//console.log("street_number:" + address_components.long_name);
+						itemSnumber = address_components.long_name;
+					}
+					if (address_components.types[0] == "route") {
+						//console.log(i + ": route:" + address_components.long_name);
+						itemRoute = address_components.long_name;
+					}
+					
+					if (address_components.types[0] == "locality") {
+						//console.log("town:" + address_components.long_name);
+						itemSuburb = address_components.long_name;
+					}
+					
+					if (address_components.types[0] == "country") {
+						// console.log("country:" + address_components.long_name);
+						itemCountry = address_components.long_name;
+					}
+					
+					if (address_components.types[0] == "postal_code") {
+						//console.log("pc:" + address_components.long_name);
+						itemPc = address_components.long_name;
+					}
+	
+					if (address_components.types[0] == "administrative_area_level_1") {
+						//console.log("pc:" + address_components.long_name);
+						itemState = address_components.short_name;
+					}
+					
+					if (address_components.types[0] == "administrative_area_level_2") {
+						//console.log("pc:" + address_components.long_name);
+						itemCity = address_components.short_name;
+					}
+	
+					$('#route').val(itemRoute);
+					$('#route_number').val(itemSnumber);
+					$('#locality').val(itemSuburb);
+					$('#administrative_area_level_2').val(itemCity);
+					$('#postal_code').val(itemPc);
+					$('#long').val(long);
+					$('#lat').val(lat);
+	
+					var val = itemCountry;
+					$('#adrphy_country option[long="'+val+'"]').prop('selected', true);
+					$('#administrative_area_level_1 option[value="'+itemState+'"]').prop('selected', true);
+	
+				});
+			});
+		}
+    </script>
+    {{-- End google map autocomplete --}}
     
 @endpush
 

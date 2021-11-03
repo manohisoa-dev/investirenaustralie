@@ -68,17 +68,17 @@
 
                     <!-- Show all blog -->
                     @include('ajax.blog.all',['items'=>$items])
-
+					{{$items->links("pagination::bootstrap-4")}}
                 </div>
             </div>
             <div class="col-lg-4 md-m-15px-tb m-35px-t">
                 <div class="card">
                     <p class="text-center" style="font-size: 11px;">@lang('app.txt.advertisement')</p>
-                    @forelse (App\Models\Pub::limit(3)->get() as $item)
+                    @forelse (App\Models\Pub::inRandomOrder()->limit(3)->get() as $item)
                         <div id="ads" class="ads-section col-lg-12 p-15px-tb white-bg">
                             <div class="ads-header col-lg-12 float-left p-5px-t p-20px-l p-10px-b border-top-1 border-color-gray">
                                 <div class="row col-lg-12">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-6">										
                                         <img src="{{ asset('images/ads-logo.png') }}" alt="logo_iea">
                                     </div>
                                     <div class="col-lg-6">
@@ -87,7 +87,13 @@
                                 </div>
                             </div>
                             <div class="ads-content">
-                                <a href="{{ $item->links?$item->links:'#' }}" target="_blank"><img src="{{ asset($item->image?$item->image->filepath:'') }}" alt=""></a>
+                                <a href="{{ $item->links?$item->links:'#' }}" target="_blank">
+									@if($item->image)
+										<a href="{{$item->links}}" target="_blank"><img src="{{ $item->image?asset($item->image->filepath):'' }}" alt="{{$item->title}}"></a>
+									@else
+										<a href="{{$item->links}}" target="_blank"><img src="http://placehold.it/250x250" alt="{{$item->title}}"></a>
+									@endif
+								</a>
                             </div>
                         </div>
                     @empty

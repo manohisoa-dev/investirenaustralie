@@ -139,7 +139,7 @@ class ProgrammeController extends Controller {
 
         $items = $items->orderBy($orderBy, $order);
 
-        $items = $items->paginate($show ? (int)$show : $this->pageSize);
+        $items = $items->paginate($this->pageSize);
 
         if ($request->ajax()) {
             return response()->json(array('html' => view('ajax.product.all', compact('items'))->render

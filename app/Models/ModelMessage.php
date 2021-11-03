@@ -17,8 +17,8 @@ class ModelMessage extends Model {
         // search results based on user input
         \Request::input('id') and $query->where('id',\Request::input('id'));
         \Request::input('titre') and $query->where('titre','like','%'.\Request::input('titre').'%');
-        \Request::input('message_fr') and $query->where('message_fr',\Request::input('message_fr'));
-        \Request::input('message_en') and $query->where('message_en',\Request::input('message_en'));
+        \Request::input('message_fr') and $query->where('message_fr','like','%'.\Request::input('message_fr').'%');
+        \Request::input('message_en') and $query->where('message_en','like','%'.\Request::input('message_en').'%');
         \Request::input('created_at') and $query->where('created_at',\Request::input('created_at'));
         \Request::input('updated_at') and $query->where('updated_at',\Request::input('updated_at'));
         

@@ -56,7 +56,7 @@
                         <a href="javascript:void(0)" onclick="submitMove({{$trans->id}})" class="btn btn-success btn-sm" style="margin-bottom:5px;">{{trans('app.btn.i_move')}}</a>
                         <a href="javascript:void(0)" onclick="submitNoMove({{$trans->id}})" class="btn btn-danger btn-sm">{{trans('app.btn.i_not_moving')}}</a>    
                     @elseif ($trans->status == 5 )
-                        <small style="margin-bottom:5px;">Dossier de Transation reste ouvert pendant 5 jours</small>
+                        <small style="margin-bottom:5px;">Dossier de Transaction reste ouvert pendant 5 jours</small>
                         <a href="javascript:void(0)" onclick="submitMove({{$trans->id}})" class="btn btn-success btn-sm">{{trans('app.btn.i_move')}}</a>
                     @elseif ($trans->status == 6 )
                         @php
@@ -68,10 +68,10 @@
                     @elseif ($trans->status == 8 )
                         <a href="javascript:void(0)" onclick="confirmDossierTrans()" class="btn btn-success btn-sm">{{trans('app.btn.confirm_purchase')}}</a>
                     @elseif ($trans->status == 9 )
-                        <a href="javascript:void(0)" onclick="submitEoi()" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.sent_eoi_finalized')}}</a>
-                    @elseif ($trans->status == 11 )
-                        <small class="badge-warning" style="margin-bottom:5px;padding:10px;">@lang('app.txt.waiting_initial_deposit') </small>
+                        <a href="javascript:void(0)" onclick="submitFile()" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.sent_eoi_finalized')}}</a>
                     @elseif ($trans->status == 12 )
+                        <small class="badge-warning" style="margin-bottom:5px;padding:10px;">@lang('app.txt.waiting_initial_deposit') </small>
+                    @elseif ($trans->status == 13 )
                         <small class="badge-success" style="margin-bottom:5px;padding:10px;">@lang('app.txt.end_of_transaction') </small>
                     @else
                         <a href="javascript:void(0)" class="m-btn m-btn-theme m-btn-sm" disabled>{{$btnText}}</a>
@@ -95,8 +95,11 @@
                     @elseif ($trans->status == 7 )
                         <a href="javascript:void(0)" onclick="completeDossTrans()" class="m-btn m-btn-theme2nd">@lang('app.txt.complete_transaction_file_info')</a>
                     @elseif ($trans->status == 10 )
-                        <a href="javascript:void(0)" onclick="submitEoi()" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.send_finalized_eoi')}}</a>
+                        <a href="javascript:void(0)" onclick="submitFile()" class="btn btn-success btn-sm" style="margin-bottom:5px;">{{trans('app.txt.upload_eoi_finalized')}}</a>
+                        <a href="javascript:void(0)" onclick="resendFile({{$trans->id}})" class="btn btn-warning btn-sm">{{trans('app.txt.resend_eoi_finalized_to_seller')}}</a>    
                     @elseif ($trans->status == 11 )
+                        <a href="javascript:void(0)" onclick="submitEoi()" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.send_finalized_eoi')}}</a>
+                    @elseif ($trans->status == 12 )
                         <a href="javascript:void(0)" onclick="initialDepositConfirm({{$trans->id}})" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.initial_deposit_confirmation')}}</a>
                     @else
                         <a href="javascript:void(0)" class="m-btn m-btn-theme m-btn-sm" disabled>{{$btnText}}</a>
@@ -128,7 +131,7 @@
                                 $filename='"'.strtolower(trans('app.txt.eoi')).'"';
                             }
                             elseif($trans->status==3){
-                                $filename='"'.strtolower(trans('app.txt.conjuction_agreement')).'"';
+                                $filename='"'.strtolower(trans('app.txt.conjunction_agreement')).'"';
                             }elseif($trans->status==4){
                                 $filename='"'.strtolower(trans('app.txt.research_mandate')).'"';
                             }else{
@@ -321,7 +324,7 @@
                 <h4 class="modal-title white-color"> @lang('app.message')<span></span></h4>
             </div>
             <div class="modal-body">
-                <form action="{{ route("afa.dossier.upload_eoi_finalized") }}" id="sellingProcessClearanceForm" method="POST">
+                <form action="{{ route("afa.dossier.send_eoi_finalized") }}" id="sellingProcessClearanceForm" method="POST">
                     {{ csrf_field() }}
                     <input type="hidden" name="doss_id" value="{{$trans->id}}">
                     @php
@@ -333,14 +336,14 @@
                         $lang = 'en';
                         $body = 'template_' . $lang;
                         $sujet_tpl = 'sujet_'.$lang;
-                        $pathLink = url('/uploads/pdf/transaction/').'/'.$trans->eoi_finalize_file_name;
+                        $pathLink = url('/uploads/pdf/transaction/').'/'.$trans->eoi_finalize_file_name_afa;
                         $downloadeoiLink = '<b>'.setLinkDynamic($pathLink,strtoupper(trans('app.txt.eoi_finalized'))).'</b>';
                         $vars = array(
                             '{date}' => Carbon\Carbon::now()->toFormattedDateString(),
-                            '{afa}' => $afa->name,
+                            '{afa}' => $afa?$afa->name:'',
                             '{name}' => $user->isPerson()?$user->userinfos->first_name.' '.$user->userinfos->last_name:$user->userinfos->orga_name,
-                            '{seller}' => $seller->name,
-                            '{sellerparentcompany}' => $seller->userinfos->orga_parent_name,
+                            '{seller}' => $seller?$seller->name:'',
+                            '{sellerparentcompany}' => $seller?$seller->userinfos->orga_parent_name:'',
                             '{title}' => $product->title,
                             '{lottype}' => $trans->lot_type,
                             '{lotlevel}' => $trans->lot_level,
@@ -527,6 +530,49 @@
                 } else {
                     stopLoadingPage();
                     swal("Confirmation de déplacement", "@lang('app.jquery.delete_cancel')", "error");
+                }
+            });
+        }
+
+        function resendFile(id_doss_trans){
+            swal({
+                title: "{{trans('app.txt.resend_eoi_finalized_to_seller')}}",
+                text: "{{trans('app.txt.are_you_sure')}}",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: '#0075B7',
+                confirmButtonText: "@lang('app.yes')",
+                cancelButtonText: "@lang('app.no')",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+            function(isConfirm){	
+                if (isConfirm){
+                    loadingPage();
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        url: '{{ route("afa.dossier.resend_eoi_to_seller") }}',
+                        type: "POST",
+                        dataType: "JSON",
+                        data:{"id_doss_trans": id_doss_trans},
+                        success: function(data)
+                        {
+                            swal("{{trans('app.txt.resend_eoi_finalized_to_seller')}}", "{{trans('app.txt.eoi_finalized_resent')}}", "success");
+                            stopLoadingPage();
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            swal("{{trans('app.txt.resend_eoi_finalized_to_seller')}}", "{{trans('app.txt.resent_error')}}", "error");	
+                            stopLoadingPage();
+                        }
+                    }); 
+                } else {
+                    stopLoadingPage();
+                    swal("{{trans('app.txt.resend_eoi_finalized_to_seller')}}", "{{trans('app.txt.operation_canceled')}}", "warning");
                 }
             });
         }

@@ -150,10 +150,11 @@ if (!function_exists('paginationAdmin')) {
  */
 if (!function_exists('generateSlug')) {
     function generateSlug($text) {
-        $textToLower = strtolower($text);
+        /*$textToLower = strtolower($text);
         $remSpecialChar = preg_replace('/[^ \w-]/', ' ', $textToLower);
         $remDoubleSpace = preg_replace('/\s{2,}/', ' ', $remSpecialChar);
-        return str_replace(' ', '-', $remDoubleSpace);
+        return str_replace(' ', '-', $remDoubleSpace);*/
+        return str_slug($text);
     }
 }
 
@@ -422,10 +423,11 @@ if (!function_exists('setTranslate')) {
 
 if (!function_exists('updateTranslate')) {
     function updateTranslate($tabName, $tab, $content) {
-        $tabId = $tabName . '_id';
-        $ucfirstTabname = Str::ucfirst($tabName);
+        $tabId = $tabName . '_id';        
+        $ucfirstTabname = Str::ucfirst($tabName);        
         $tabNameModel = "App\Models\\" . $ucfirstTabname . "Translation";
-        $detectLang = getGTranslateLangDetect($content);
+        $detectLang = getGTranslateLangDetect(strip_tags($content));
+
         $newContent = "";
         $sourceLang = "";
         $targetLang = "";
@@ -439,8 +441,7 @@ if (!function_exists('updateTranslate')) {
         }
 
         // translate content
-        $newContent = getGTranslate($sourceLang, $targetLang, $content);
-
+        $newContent = getGTranslateAutoDetect($targetLang, strip_tags($content));
         // get list translation for tab id
         $listTrans = $tabNameModel::where($tabId, '=', $tab->id)->get();
 

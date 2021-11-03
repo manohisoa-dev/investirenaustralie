@@ -243,23 +243,78 @@
                       </div>
                       <div class="media-body p-20px-l">
                           <h5 class="m-10px-b">{{isset($item->created_at) ? $item->created_at->diffForHumans() : ''}}</h5>
-                          <p class="m-0px"><span>@lang('app.reference'):</span> {{$item->reference}}</p>
-                          <p class="m-0px"><span>@lang('app.txt.price'):</span>{{$item->price}}</p>
-                          @if(isset($location))
-                            <p class="m-0px"><span>@lang('app.txt.product_location'):</span> {{$location?$location->formatted:'Localisation inconnue'}}</p>
-                            <input type="hidden" id="prod_loc_lat" value="{{ $location->latitude }}">
-                            <input type="hidden" id="prod_loc_long" value="{{ $location->longitude }}">
-                          @endif
-                          <p class="m-0px"><span>@lang('app.txt.area'):</span> {{$item->area}}</p>
-                          <p class="m-0px"><span>@lang('app.txt.carport_spaces'):</span> {{$item->carport_spaces}}</p>
-                          <p class="m-0px"><span>@lang('app.txt.garage_spaces'):</span> {{$item->garage_spaces}}</p>
-                          <p class="m-0px"><span>@lang('app.txt.off_street_spaces'):</span> {{$item->off_street_spaces}}</p>
-                          <p class="m-0px"><span>@lang('app.txt.bathrooms'):</span> {{$item->bathrooms}}</p>
-                          <p class="m-0px"><span>@lang('app.txt.bedrooms'):</span> {{$item->bedrooms}}</p>
-                          <p class="m-0px"><span>@lang('app.txt.ensuite'):</span> {{$item->ensuite}}</p>
-                          <p class="m-0px"><span>@lang('app.txt.land_area'):</span> {{$item->land_area}}</p>
-                          <p class="m-0px"><span>@lang('app.txt.floor_area'):</span> {{$item->floor_area}}</p>
-                          <p class="m-0px"><span>@lang('app.txt.number_of_floors'):</span> {{$item->number_of_floors}}</p>
+						  <table class="table table-bordered">
+						  	<tr>
+								<th><span>@lang('app.reference')</span></th>
+								<td>{{$item->reference}}</td>
+							</tr>
+							<tr>
+								<th><span>@lang('app.txt.price')</span></th>
+								<td>
+								@if($item->parent_id == -1)
+									AUD {{$item->price}}
+								@else
+									AUD {{$item->min_price}}
+								@endif
+								</td>
+							</tr>
+							<tr>
+								<th><span>@lang('app.txt.product_location')</span></th>
+								<td>
+								@if(isset($location))
+									{{  $item->location? (isset($page_id) ? substr(strip_tags($item->location->toString()), 0, 25) : $item->location->toString()) :''}}
+									<input type="hidden" id="prod_loc_lat" value="{{ $location->latitude }}">
+                            		<input type="hidden" id="prod_loc_long" value="{{ $location->longitude }}">
+								@endif
+								</td>
+							</tr>
+							<tr>
+								<th><span>@lang('app.txt.area')</span></th>
+								<td>
+								@if($item->category_id == 1)
+									{{$item->total_area}} m2
+								@elseif($item->category_id == 2)
+									{{$item->area}}&nbsp;{{$item->unite_area}}
+								@endif
+								</td>
+							</tr>
+							<tr>
+								<th><span>@lang('app.txt.carport_spaces')</span></th>
+								<td>{{$item->carport_spaces}}</td>
+							</tr>
+							<tr>
+								<th><span>@lang('app.txt.garage_spaces')</span></th>
+								<td>{{$item->garage_spaces}}</td>
+							</tr>
+							<tr>
+								<th><span>@lang('app.txt.off_street_spaces')</span></th>
+								<td>{{$item->off_street_spaces}}</td>
+							</tr>
+							<tr>
+								<th><span>@lang('app.txt.bathrooms')</span></th>
+								<td>{{$item->bathrooms}}</td>
+							</tr>
+							<tr>
+								<th><span>@lang('app.txt.bedrooms')</span></th>
+								<td>{{$item->bedrooms}}</td>
+							</tr>
+							<tr>
+								<th><span>@lang('app.txt.ensuite')</span></th>
+								<td>{{$item->ensuite}}</td>
+							</tr>
+							<tr>
+								<th><span>@lang('app.txt.land_area')</span></th>
+								<td>{{$item->land_area}}</td>
+							</tr>
+							<tr>
+								<th><span>@lang('app.txt.floor_area')</span></th>
+								<td>{{$item->floor_area}}</td>
+							</tr>
+							<tr>
+								<th><span>@lang('app.txt.number_of_floors')</span></th>
+								<td>{{$item->number_of_floors}}</td>
+							</tr>
+						  </table>
                       </div>
                   </div>
                   <div class="comments-area m-40px-t m-50px-b">
@@ -283,7 +338,7 @@
                   <div class="p-25px-tb m-35px-tb border-top-1 border-bottom-1 border-color-gray">
                       <div class="d-flex justify-content-between align-items-center">
                           <div>
-                              <h5 class="m-0px">@lang('app.app.txt.share')</h5>
+                              <h5 class="m-0px">@lang('app.txt.share')</h5>
                           </div>
                           <div>
                               <div class="nav justify-content-center justify-content-md-end social-icon si-30 gray">
@@ -413,7 +468,7 @@
                   </div>
               </div>
               <div class="m-25px-b">
-                @if(Auth::user()->hasCurrentTransaction()) 
+                @if(Auth::user()->hasCurrentTransaction())
                   <a type="button" id="btnSelectAfa" class="m-btn m-btn-theme2nd col-md-12" disabled href="{{ route("member.select.afa", Auth::user()->getUserCurrentTransaction($item->id)) }}" >{{ strtoupper(trans('app.select_afa')) }}</a>
                 @endif
               </div>
@@ -424,8 +479,16 @@
             @endif
           </div>
           <div class="modal-footer">
-            @if (!Session::has('waiting'))
-              <a type="button" class="pull-left m-btn m-btn-theme" id="btn_cancel" href="javascript:void(0)" data-dismiss="modal">@lang('app.btn.abandonner')</a>
+            @if (!Session::has('waiting') && Auth::check())
+              @if(Auth::user()->hasCurrentTransaction())
+                @if($statusDossTrans==0)
+                  <a type="button" class="pull-left m-btn m-btn-theme" href="{{route('member.transaction')}}" >@lang('app.btn.abandonner')</a>
+                @else
+                  <a type="button" class="pull-left m-btn m-btn-theme" id="btn_cancel" href="javascript:void(0)" data-dismiss="modal">@lang('app.btn.abandonner')</a>
+                @endif
+              @else
+                <a type="button" class="pull-left m-btn m-btn-theme" id="btn_cancel" href="javascript:void(0)" data-dismiss="modal">@lang('app.btn.abandonner')</a>
+              @endif
             @else
               @if (Session::get('waiting')===0)
                 <a type="button" class="m-btn m-btn-theme2nd" href="javascript:void(0)" id="btn_continue_mandat_recherche">@lang('app.btn.continuer')</a>

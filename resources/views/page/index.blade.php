@@ -43,7 +43,7 @@
                                     </div>
                                     <div class="ads-content">
                                         {{-- size 714x298px --}}
-										@if($item->image){
+										@if($item->image)
 											<a href="{{$item->links}}" target="_blank"><img src="{{ $item->image?asset($item->image->filepath):'' }}" alt="{{$item->title}}"></a>
 										@else
 											<a href="{{$item->links}}" target="_blank"><img src="http://placehold.it/250x250" alt="{{$item->title}}"></a>

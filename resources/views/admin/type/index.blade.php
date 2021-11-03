@@ -75,10 +75,13 @@
                             	<td>{{ $record->title }}</td>
 								<td>{{ $record->title_en }}</td>                     
                                 <td>
+									@if($record->categories_id != 0)
+										{{ $record->categorie->title }}
+									  @endif
                                  </td>
-                                 <td></td>
-                                 <td></td>
-                                 <td></td>
+                                 <td>{{ $record->author->name }}</td>
+                                 <td>{{ $record->created_at ? $record->created_at->diffForHumans() : '' }}</td>
+                                 <td> {{ $record->updated_at ? $record->updated_at->diffForHumans() : ''}}</td>
 								 <td class="actions-cell text-center" width="12%">
 									<form class="form-inline" action="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.type.destroy',$record):route('admin.type.destroy',$record)}}" method="POST">
 										<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.type.edit', $record):route('admin.type.edit', $record)}}" title="Modification" class="btn btn-default btn-circle">

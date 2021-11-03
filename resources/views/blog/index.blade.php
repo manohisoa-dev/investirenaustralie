@@ -11,17 +11,22 @@
         } else {
             $img=asset('ulooad/images/blog/iea.png');
         }
+		
+		$lang = \App::getLocale();
+		$slug = 'slug_'.$lang;
+		$title = 'title_'.$lang;
+		$content = 'content_'.$lang;
     @endphp
     <section class="bg-center bg-cover bg-fiexd effect-section" style="background-image: url({{ $img }});">
         <div class="mask dark-g-bg opacity-7"></div>
         <div class="container">
             <div class="row screen-65 justify-content-center align-items-center p-100px-tb">
                 <div class="col-lg-10 text-center m-50px-t">
-                    <h1 class="display-4 white-color m-25px-b">{{ getGTranslateAutoDetect( App::getLocale() ,$item->title) }}</h1>
+                    <h1 class="display-4 white-color m-25px-b">{{ $item->$title }}</h1>
                     <div class="d-flex align-items-center m-25px-t justify-content-center text-left">
                         <div>
                             <div class="avatar-50 border-radius-50">
-                                <img src="{{$item->imageUrl()}}" title="{{$item->title}}" alt="{{$item->title}}">
+                                <img src="{{$item->imageUrl()}}" title="{{$item->$title}}" alt="{{$item->$title}}">
                             </div>
                         </div>
                         <div class="p-15px-l">
@@ -48,7 +53,7 @@
                         <!-- <a class="dark-color font-w-600 m-15px-l" href="#"><i class="far fa-folder-open"></i> Categories</a> -->
                     </div>
 
-                    <div class="text-justify">{!! getGTranslateAutoDetectBd('blog',$item)?getGTranslateAutoDetectBd('blog',$item):$item->content !!}</div>
+                    <div class="text-justify">{!! $item->$content !!}</div>
 
                     <div class="p-25px-tb m-35px-tb border-top-1 border-bottom-1 border-color-gray">
                         <div class="d-flex justify-content-between align-items-center">

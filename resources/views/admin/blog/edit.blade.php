@@ -36,12 +36,20 @@
                     {{ csrf_field() }}
                     {{ method_field("PUT") }}
 					<div class="form-group">
-						<label for="title">@lang('app.admin.title')</label>
-						<input name="title" id="title" class="form-control" type="text" value="{{$blog->title}}">
+						<label for="title">@lang('app.admin.title') Fr</label>
+						<input name="title_fr" class="form-control" type="text" value="{{$blog->title_fr}}">
 					</div> 
 					<div class="form-group">
-						<label for="title">@lang('app.admin.content')</label>
-						<textarea id="ckeditor" class="form-control" name="content" placeholder="@lang('app.admin.content.desc')">{!!$blog->content!!}</textarea>
+						<label for="title">@lang('app.admin.content') Fr</label>
+						<textarea id="ckeditor_fr" class="form-control" name="content_fr" placeholder="@lang('app.admin.content.desc')">{!!$blog->content_fr!!}</textarea>
+					</div>   
+					<div class="form-group">
+						<label for="title">@lang('app.admin.title') En</label>
+						<input name="title_en" class="form-control" type="text" value="{{$blog->title_en}}">
+					</div> 
+					<div class="form-group">
+						<label for="title">@lang('app.admin.content') En</label>
+						<textarea id="ckeditor_en" class="form-control" name="content_en" placeholder="@lang('app.admin.content.desc')">{!!$blog->content_en!!}</textarea>
 					</div>   
 					<div class="form-group">
 						<div class="row">
@@ -110,7 +118,8 @@
 	<script src="{{asset('administrator/plugins/bootstrap-fileupload/js/bootstrap-fileupload.js')}}"></script>
     <script>
         $(document).ready(function(){
-            CKEDITOR.replace('content');
+            CKEDITOR.replace('ckeditor_fr');
+			CKEDITOR.replace('ckeditor_en');
 			$("#category").select2();
 			
 			$('#formBlog').validate({

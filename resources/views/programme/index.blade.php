@@ -160,6 +160,7 @@
                             <div id="infinite-scroll" class="product-data">
                                 @if (sizeOf($items)!==0)
                                     @include('programme.all',['items'=>$items])
+									{{$items->links("pagination::bootstrap-4")}}
                                 @else
                                     <p class="text-center m-100px-l p-100px-l">@lang('app.txt.no_program')</p>
                                 @endif

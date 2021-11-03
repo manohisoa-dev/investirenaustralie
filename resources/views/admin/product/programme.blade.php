@@ -95,78 +95,30 @@
 								@endif								
 								</td>
 								<td>
-									<span
-	
-										class="editable"
-										data-type="text"
-										data-name="title"
-										data-value="{{ $record->title }}"
-										data-pk="{{ $record->{$record->getKeyName()} }}"
-										data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme')}}/{{ $record->{$record->getKeyName()} }}"
-									>
-										{{ $record->title }}
-									</span><br />
-									{!! $record->excerpt() !!}
-									</span>                            
+									{{ $record->title }}       
 								</td>
 								<td>
-									<span
-										class="editable"
-										data-type="text"
-										data-name="title"
-										data-value="{{ $record->category_id }}"
-										data-pk="{{ $record->{$record->getKeyName()} }}"
-										data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme')}}/{{ $record->{$record->getKeyName()} }}"
-									>
-										@if ($record->category) 
+									@if ($record->category) 
 										{{ $record->category->title }}
-										@endif
-									</span>                          
+									@endif                        
 								</td>
 								<td>
 									{{ $record->created_at ? $record->created_at->diffForHumans() : '' }}
 								</td>
 								<td>
-									<span
-										class="editable"
-										data-type="text"
-										data-name="status"
-										data-value="{{ $record->status }}"
-										data-pk="{{ $record->{$record->getKeyName()} }}"
-										data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme')}}/{{ $record->{$record->getKeyName()} }}"
-									>
-										@if($record->status=='published')
-											<span class="label label-success">@lang('app.'.$record->status)</span>
-										@elseif($record->status=='waiting')
-											<span class="label label-danger">@lang('app.'.$record->status)</span>
-										@else
-											<span class="label label-warning">@lang('app.'.$record->status)</span>
-										@endif
-									</span>
+									@if($record->status=='published')
+										<span class="label label-success">@lang('app.'.$record->status)</span>
+									@elseif($record->status=='waiting')
+										<span class="label label-danger">@lang('app.'.$record->status)</span>
+									@else
+										<span class="label label-warning">@lang('app.'.$record->status)</span>
+									@endif
 								</td>
 								<td>
-									<span
-										class="editable"
-										data-type="number"
-										data-name="min_price"
-										data-value="{{ $record->min_price }}"
-										data-pk="{{ $record->{$record->getKeyName()} }}"
-										data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme')}}/{{ $record->{$record->getKeyName()} }}"
-									>
-										{{ $record->min_price }}
-									</span>
+									${{number_format($record->min_price, 0, '.', ' ')}}
 								</td>
 								<td>
-									<span
-										class="editable"
-										data-type="text"
-										data-name="max_price"
-										data-value="{{ $record->max_price }}"
-										data-pk="{{ $record->{$record->getKeyName()} }}"
-										data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme')}}/{{ $record->{$record->getKeyName()} }}"
-									>
-										{{ $record->max_price }}
-									</span>
+									${{number_format($record->max_price, 0, '.', ' ')}}
 								</td>
 								<td>
 									<span

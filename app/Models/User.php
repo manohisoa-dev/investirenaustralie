@@ -1570,13 +1570,13 @@ class User extends Authenticatable {
     }
 
     public function getDossierTransaction() {
-        $dossierTrans = DossierTransaction::where('user_id', $this->id)->where('status','!=',13);
+        $dossierTrans = DossierTransaction::where('user_id', $this->id)->where('status','!=',14);
 
         return $dossierTrans;
     }
     
     public function getDossierTransactionAfa() {
-        $dossierTrans = DossierTransaction::where('afa_id', $this->id)->where('status','!=',13);
+        $dossierTrans = DossierTransaction::where('afa_id', $this->id)->where('status','!=',14);
 
         return $dossierTrans;
     }

@@ -17,6 +17,7 @@ use App\Models\Localisation;
 use App\Models\Comment;
 use App\Models\Badword;
 use Jleon\LaravelPnotify\Notify;
+use App;
 
 class BlogController extends Controller
 {
@@ -47,7 +48,9 @@ class BlogController extends Controller
 
     public function index(Request $request, $slug)
     {
-        $blogs = Blog::where('slug','=', $slug)
+        $lang = App::getLocale();
+        $slug_label = 'slug_'.$lang;
+        $blogs = Blog::where($slug_label,'=', $slug)
             ->withCount('comments')
             ->get();
 
@@ -112,11 +115,12 @@ class BlogController extends Controller
         $show = $request->get('show');
         if(!in_array($show, ['10', '20', '50', '100'])) $show = ' ';
         
+      
         $items = Blog::ofStatus('published')
             ->where('post_type','=', $this->post_type)
             ->orderBy($orderBy, $order)
             ->withCount('comments')
-            ->paginate($show?(int)$show:$this->pageSize);
+            ->paginate($this->pageSize);
         
         if($request->ajax()){
             return response()->json(array(

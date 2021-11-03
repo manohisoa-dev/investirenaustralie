@@ -41,6 +41,10 @@
 						<label for="title">@lang('app.table.type') *</label>
 						<input name="title" id="title" class="form-control" type="text" value="{{$type->title}}">
 					</div>
+					<div class="form-group">
+						<label for="title">@lang('app.table.type') En*</label>
+						<input name="title_en" id="title_en" class="form-control" type="text" value="{{$type->title_en}}">
+					</div>
                     <div class="form-group">
 						<label>@lang('app.select_category') *</label> 
 						<select class="form-control" name="categories_id" id="categories_id">

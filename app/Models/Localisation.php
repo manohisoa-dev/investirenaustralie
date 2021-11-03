@@ -58,7 +58,7 @@ class Localisation extends Model
      */
     public function toString()
     {
-        return $this->formatted.', '. $this->locality.', '. $this->country;
+        return $this->route.', '. $this->locality.', '. $this->country;
     }
     
     /*

@@ -622,7 +622,7 @@ class ProductController extends Controller {
             $titre_programme = $request->title_programme;
         } else {
             $prefix = '';
-            $seller_id = 0;
+            $seller_id = $user->id;
             $titre_programme = $request->title_programme;
 
             $afa_possible = DB::select("SELECT `users`.id as id_afa FROM `users` LEFT JOIN `localizations` ON `users`.`location_id` = `localizations`.`id` WHERE `users`.`role` = 3 and `localizations`.`postalCode` = '$request->postalCode'");

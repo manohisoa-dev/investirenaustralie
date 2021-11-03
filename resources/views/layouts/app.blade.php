@@ -1164,7 +1164,7 @@
                                     var body = ($(datas[i].body).text());
                                     var dt = datas[i].created_at;
                                     var userRole = '{{Auth::check()?Auth::user()->roleUser->role_initial:""}}';
-                                    var url = origin+'/'+userRole+"/contact/role/"+datas[i].role_initial;
+                                    var url = userRole!=='afa'?(origin+'/'+userRole+"/contact/role/"+datas[i].role_initial):(origin+'/'+userRole+"/message/afa/show");
                                     
                                     // push data in notifications array
                                     notifications.push({

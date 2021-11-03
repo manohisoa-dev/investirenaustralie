@@ -55,9 +55,10 @@ class BlogController extends Controller {
             $blog::regenerateMyAvatar($image) ;
             $blog->image_id = $image->id;
         }
-        $slug = $slugOriginal = generateSlug($request->title);
+        $slug_fr = $slugOriginal = generateSlug($request->title_fr);
+        $slug_en = $slugOriginal = generateSlug($request->title_en);
         $i = 1;
-        while(Blog::where('slug', $slug)->exists()){
+        while(Blog::where('slug_fr', $slug_fr)->exists()){
             $slug = $slugOriginal + '-' + $i++;
         }
 
@@ -72,9 +73,12 @@ class BlogController extends Controller {
             }
         }
         
-        $blog->slug = $slug;
-        $blog->title = $request->title;
-        $blog->content = $request->content;
+        $blog->slug_fr = $slug_fr;
+        $blog->slug_en = $slug_en;
+        $blog->title_fr = $request->title_fr;
+        $blog->title_en = $request->title_en;
+        $blog->content_fr = $request->content_fr;
+        $blog->content_en = $request->content_en;
         $blog->meta_tag = $request->meta_tag;
         $blog->meta_description = $request->meta_description;
         $blog->post_type = $this->post_type;
@@ -93,12 +97,7 @@ class BlogController extends Controller {
                 $row->author_id = Auth::user()->id;
                 $row->save();
             }
-        }
-
-        // save translation
-        $detectLang = getGTranslateLangDetect($request->content);
-        $detectLang==='fr'?setTranslate('fr','en',$request->content,'blog',$blog):setTranslate('en','fr',$request->content,'blog',$blog);
-        
+        }        
         //Blog::create($request->all());
 
         # notification
@@ -152,9 +151,10 @@ class BlogController extends Controller {
             $blog->image_id = $image->id;
         }
 
-        $slug = $slugOriginal = generateSlug($request->title);
+        $slug_fr = $slugOriginal = generateSlug($request->title_fr);
+        $slug_en = $slugOriginal = generateSlug($request->title_en);
         $i = 1;
-        while (Blog::where('slug', $slug)->where('id', '<>', $blog->id)->exists()) {
+        while (Blog::where('slug_fr', $slug_fr)->where('id', '<>', $blog->id)->exists()) {
             $slug = $slugOriginal + '-' + $i++;
         }
 
@@ -179,9 +179,12 @@ class BlogController extends Controller {
             }
         }
 
-        $blog->slug = $slug;
-        $blog->title = $request->title;
-        $blog->content = $request->content;
+        $blog->slug_fr = $slug_fr;
+        $blog->slug_en = $slug_en;
+        $blog->title_fr = $request->title_fr;
+        $blog->content_fr = $request->content_fr;
+        $blog->title_en = $request->title_en;
+        $blog->content_en = $request->content_en;
         $blog->meta_tag = $request->meta_tag;
         $blog->meta_description = $request->meta_description;
         $blog->post_type = $this->post_type;
@@ -204,9 +207,6 @@ class BlogController extends Controller {
                 $row->save();
             }
         }
-
-        // update translation
-        updateTranslate('blog',$blog,$request->content);
 
         # notification
         Notify::success('Blog a été mise à jour avec succès');

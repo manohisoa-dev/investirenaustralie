@@ -16,10 +16,10 @@ class MailsTemplate extends Model {
         // search results based on user input
         \Request::input('id') and $query->where('id',\Request::input('id'));
         \Request::input('titre') and $query->where('titre','like','%'.\Request::input('titre').'%');
-        \Request::input('sujet_fr') and $query->where('sujet','like','%'.\Request::input('sujet').'%');
-        \Request::input('template_fr') and $query->where('template','like','%'.\Request::input('template').'%');
-        \Request::input('sujet_en') and $query->where('sujet','like','%'.\Request::input('sujet').'%');
-        \Request::input('template_en') and $query->where('template','like','%'.\Request::input('template').'%');
+        \Request::input('sujet_fr') and $query->where('sujet_fr','like','%'.\Request::input('sujet_fr').'%');
+        \Request::input('template_fr') and $query->where('template_fr','like','%'.\Request::input('template_fr').'%');
+        \Request::input('sujet_en') and $query->where('sujet_en','like','%'.\Request::input('sujet_en').'%');
+        \Request::input('template_en') and $query->where('template_en','like','%'.\Request::input('template_en').'%');
         \Request::input('params') and $query->where('params','like','%'.\Request::input('params').'%');
         \Request::input('created_at') and $query->where('created_at',\Request::input('created_at'));
         \Request::input('updated_at') and $query->where('updated_at',\Request::input('updated_at'));

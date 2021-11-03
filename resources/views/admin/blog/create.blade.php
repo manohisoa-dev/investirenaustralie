@@ -37,12 +37,20 @@
                     {{ csrf_field() }}
                                                         
                     <div class="form-group">
-						<label for="title">@lang('app.admin.title')</label>
-						<input name="title" id="title" class="form-control" type="text">
+						<label for="title">@lang('app.admin.title') Fr</label>
+						<input name="title_fr" id="title_fr" class="form-control" type="text">
 					</div> 
 					<div class="form-group">
-						<label for="title">@lang('app.admin.content')</label>
-						<textarea id="ckeditor" class="form-control" name="content" placeholder="@lang('app.admin.content.desc')"></textarea>
+						<label for="title">@lang('app.admin.content') Fr</label>
+						<textarea id="ckeditor_fr" class="form-control" name="content_fr" placeholder="@lang('app.admin.content.desc')"></textarea>
+					</div>
+					<div class="form-group">
+						<label for="title">@lang('app.admin.title') En</label>
+						<input name="title_en" id="title_en" class="form-control" type="text">
+					</div> 
+					<div class="form-group">
+						<label for="title">@lang('app.admin.content') En</label>
+						<textarea id="ckeditor_en" class="form-control" name="content_en" placeholder="@lang('app.admin.content.desc')"></textarea>
 					</div>
 					<div class="form-group">
 						<div class="row">
@@ -88,11 +96,11 @@
 						<label for="view_order">@lang('app.admin.article_display_order')</label>
 						<input name="view_order" id="view_order" class="form-control" type="number" min="1" max="{{ (App\Models\Blog::max('view_order')+1) }}" value="{{ (App\Models\Blog::max('view_order')+1) }}" placeholder="@lang('app.admin.article_order.desc')">
 					</div>            
-					<div class="hr-line-dashed"></div>
-                    <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-save"></i> @lang('app.btn.save')</button>
+					<div class="hr-line-dashed"></div>                    
 					<a href="{{ Auth::user()->isAdmin() ? route('admin.blog.index') : (Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.blog.index'):route('admin.collaborator.admin.blog.index')) }}" class="btn btn-outline btn-default btn-lg pull-right" type="submit">
 						<i class="fa fa-chevron-circle-left"></i> @lang('app.btn.back')
 					</a>
+					<button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-save"></i> @lang('app.btn.save')</button>
                 </form>
             </div>
         </div>
@@ -105,13 +113,17 @@
 	<script src="{{asset('administrator/plugins/bootstrap-fileupload/js/bootstrap-fileupload.js')}}"></script>
     <script>
         $(document).ready(function(){
-            CKEDITOR.replace( 'content' );
+            CKEDITOR.replace( 'ckeditor_fr' );
+			CKEDITOR.replace( 'ckeditor_en' );
 			$("#category").select2();
 			
 			$('#formBlog').validate({
 			    ignore: [],
 				rules: {
-					title: {
+					title_fr: {
+						required: true
+					},
+					title_en: {
 						required: true
 					},
 					"category[]": {
@@ -122,7 +134,10 @@
 					}
 				},
 				messages: {
-					title: {
+					title_fr: {
+						required: "@lang('app.txt.champobligatoire')"
+					},
+					title_en: {
 						required: "@lang('app.txt.champobligatoire')"
 					},
 					"category[]": {
@@ -136,7 +151,7 @@
 					if(element.parent().hasClass('input-group')){
 						error.insertBefore( element.parent() );
 					}else{
-						error.insertAfter( element );
+						error.insertBefore( element );
 					}
 				},
 			});

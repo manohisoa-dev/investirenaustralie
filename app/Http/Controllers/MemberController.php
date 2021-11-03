@@ -15,6 +15,7 @@ use App\Notifications\AfaConjunctionAgreementMessage;
 use App\Notifications\MemberMandateSearchMessage;
 use App\Notifications\AfaMandateSearchFinalisedMessage;
 use App\Notifications\MemberMandateSearchFinalisedMessage;
+use App\Notifications\MemberMessage;
 
 use App\Models\Order;
 use App\Models\User;
@@ -548,7 +549,8 @@ class MemberController extends Controller {
         $dt = Carbon::now();
         $dtDate = $dt->format('m-d-Y');
         $dtTime = $dt->format('H:i:m');
-        $user= Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name;
+        $user = Auth::user();
+        $user_name= Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name;
         $id_doss_trans = $request->get('id_doss_trans');
 
         if ($request->has('afa')) {
@@ -592,24 +594,44 @@ class MemberController extends Controller {
         }
 
         if (session()->get('link_product')) {
+            $user=Auth::user();
             $linkProduct = session()->get('link_product');
             session()->forget('link_product');
             $downloadCaLink = url("uploads/pdf/ca/CA-".Auth::user()->afa->immat."_".time().".pdf");
-            $uploadCaLink = route('afa.dossier');
+            $uploadCaLink = route('afa.transaction');
             $txtContent = Session()->get('buy_this_product')?'member.waiting_message':'member.gothere.select_afa.waiting_message';
-            $content = trans($txtContent, ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'afa' => Auth::user()->afa->name]);
+            $afa_id=$user->afa_id;
+            
+            // send notification email to member from IEA
+            // $user->notify(new MemberMessage($sujet,$content));
+            // send notification email to member from IEA
+            $afa =User::whereId($afa_id)->first();
+            $template = MailsTemplate::where('id', 49)->get();
+            App::setLocale($user->language);
+            $lang = $user->language;
+            $body = 'template_' . $lang;
+            $sujet_tpl = 'sujet_'.$lang;
+            $vars = array(
+                '{date}' => Carbon::now()->toFormattedDateString(),
+                '{heure}' => Carbon::now()->toTimeString(),
+                '{nom}' => $user->isPerson()?$user->userinfos->first_name.' '.$user->userinfos->last_name:$user->userinfos->orga_name,
+                '{afa}' => $user->afa->name,
+            );
+            $sujet = $template[0]->$sujet_tpl;
+            $contenu = strtr($template[0]->$body, $vars);
+            $content = ['title' => '', 'body' => $contenu];
 
             // send chat message to member from IEA (admin)
-            Message::create(['type'=>'admin','from_id'=>1,'to_id'=>Auth::user()->id,'body'=>$content]);
-            // send notification email to member from IEA
-            Auth::user()->notify(new MemberWaitingMessage(Auth::user()));
+            Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$user->id,'body'=>$contenu]);
+
+            Mail::to($user->email)->send(new MailTemplate($content, $sujet));
 
             // Declenche Conjuction Agreement Module
             App::setLocale('en');
             $this->sendConjuctionAgreementModule(Auth::user()->afa_id,Auth::user()->afa->email,trans('member.gothere.select_afa.ca.message_to_afa', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'immat'=>Auth::user()->immat,'agence' => 'IEA', 'download_ca'=>$downloadCaLink,'upload_ca'=>$uploadCaLink]), $downloadCaLink, $uploadCaLink, $id_doss_trans);
             
             // set language to default
-            App::setLocale(Auth::user()->language);
+            App::setLocale($user->language);
             if($id_doss_trans == 0){
                 return redirect($linkProduct)->with('engagement', trans('member.waiting_message', ['user'=>$user,'date'=>$dtDate,'hour'=>$dtTime,'afa' => Auth::user()->afa->name]))->with('waiting',1);
             }
@@ -657,8 +679,8 @@ class MemberController extends Controller {
         $content = ['title' => '', 'body' => $contenu];
         // $email_to = 'dev4.easydata@gmail.com';
         // Mail::to($email_to)->send(new MailTemplate($content, $sujet));
-
-        $afa->notify(new AfaConjunctionAgreementMessage($sujet,$content));
+        // $afa->notify(new AfaConjunctionAgreementMessage($sujet,$content));
+        Mail::to($afa->email)->send(new MailTemplate($content, $sujet));
     }
 
     public function createCaPdf($name,$id_doss_trans) {

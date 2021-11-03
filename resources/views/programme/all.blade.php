@@ -49,7 +49,7 @@
                 </a>
         
                 <div class="p-5px-t p-20px-b text-center">
-                    <h6>{!! $item->content? Illuminate\Support\Str::limit( (getGTranslateAutoDetectBd('programme',$item)?getGTranslateAutoDetectBd('programme',$item):$item->content), 75) :'' !!}</h6>
+                    <h6>{!! str_limit($item->content, 70, '...') !!}</h6>
                 </div>
 				@if($item->parent_id == 0)
                 <div class="font-small p-5px-t p-20px-b text-center border-top-1 border-color-dark-gray">
@@ -86,7 +86,7 @@
                                                         @endif	
                                                         <a href="{{route('product.index',['product'=>$prod->slug])}}" target="_blank"><img src="{{$img_prod}}" alt="{{$prod->title}}" class="img-fluid"></a>
                                                         {{-- Badge type --}}
-                                                        <span class="type-badge btn-info">{{  getGTranslateAutoDetect( App::getLocale() ,App\Models\Type::find($prod->type_id)->title) }}</span>
+                                                        <span class="type-badge btn-info">{{ App\Models\Type::find($prod->type_id)->title }}</span>
                                                         {{-- Badge new product --}}
                                                         @if ($prod->validated_at > Carbon\Carbon::now()->subDays(App\Models\Parameter::where('name','nb_day_new_prod')->first()->value))
                                                             <span class="notify-badge-prod btn-success">@lang('app.txt.new')</span>
@@ -98,9 +98,10 @@
                                                         @endif
                                                     </div>
                                                     <div class="thumb-content">
-                                                        <p class="item-price"><span>$ {{number_format($prod->price, 0, '.', ' ')}}</span></p>
+                                                        <p class="item-price"><span>AUD {{number_format($prod->min_price, 0, '.', ' ')}}</span></p>
                                                         <div class="star-rating">
                                                             <ul class="list-inline">
+																<a class="m-15px-r body-color font-w-500" href="#"><i class="fa fa-arrows-alt"></i> @lang('app.num.area', ['num'=>number_format($prod->total_area, 0)])</a>
                                                                 <a class="body-color font-w-500" href="#"><i class="fa fa-bed"></i> {{ $prod->bedrooms }}</a>
                                                                 <a class="body-color font-w-500" href="#"><i class="fa fa-bath"></i> {{ $prod->bathrooms }}</a>
                                                                 <a class="body-color font-w-500" href="#"><i class="fa fa-car"></i> {{$prod->garage_spaces?__('app.yes'):__('app.no')}}</a>
@@ -176,7 +177,7 @@
                                                         <a href="{{ $pub->links }}" target="_blank"><img src="{{$img_pub}}" alt="{{$pub->title}}" class="img-fluid"></a>
                                                     </div>
                                                     <div class="thumb-content">
-                                                        <p><span>{{ getGTranslateAutoDetect( App::getLocale() , $pub->title) }}</span></p>
+                                                        <p><span>{{ $pub->title }}</span></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -210,6 +211,9 @@
             @if (($key+1)%(int)($xLine->value) === 0)
                 @php
                     $blogs = App\Models\Blog::ofStatus('published')->where('post_type','=', 'blog')->withCount('comments')->get()->random();
+					$lang = \App::getLocale();
+					$slug = 'slug_'.$lang;
+					$title = 'title_'.$lang;
                 @endphp
                 <div class="col-lg-12 md-m-15px-tb m-25px-b">
                     <div class="m-35px-t">
@@ -236,16 +240,18 @@
                                                             $img=asset('images/blog/iea.png');
                                                         }   
                                                     @endphp
-                                                    <img src="{{$img}}" alt="{{$blogs->title}}" title="{{$blogs->title}}">
+                                                    <img src="{{$img}}" alt="{{$blogs->$title}}" title="{{$blogs->$title}}">
                                                 </a>
                                             </div>
                                             <div class="p-20px">
                                                 <label class="font-small">@lang('app.txt.postepar') : <a href="javascript:void(0)">{{$blogs->author ? $blogs->author->name : ''}}</a> – {{$blogs->created_at ? $blogs->created_at->diffForHumans() : ''}}</label>
-                                                <h5 class="m-10px-b font-w-600"><a title="{{$blogs->title}}" class="dark-color" href="{{route('blog.index',$blogs->slug)}}" target="_blank">{{getGTranslateAutoDetect( App::getLocale() , str_limit($blogs->title, 50, '...'))}}</a></h5>
+                                                <h5 class="m-10px-b font-w-600">
+													<a title="{{$blogs->$title}}" class="dark-color" href="{{route('blog.index',$blogs->$slug)}}" target="_blank">{{str_limit($blogs->$title, 50, '...')}}</a>
+												</h5>
                                                 <div class="nav font-small border-top-1 border-color-dark-gray p-15px-t">
                                                     <a class="m-15px-r body-color font-w-500" href="javascript:void(0)"><i class="fas fa-calendar-alt "></i> {{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $blogs->created_at)->format('d F')}},{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $blogs->created_at)->year }}</a>
                                                     <a class="body-color font-w-500" href="javascript:void(0)"><i class="fas fa-comments"></i> {{$blogs->comments_count}}</a>
-                                                    <a class="body-color font-w-500 ml-auto" href="{{route('blog.index',$blogs->slug)}}" target="_blank">@lang('app.txt.lecture') <i class="fas fa-chevron-right"></i></a>
+                                                    <a class="body-color font-w-500 ml-auto" href="{{route('blog.index',$blogs->$slug)}}" target="_blank">@lang('app.txt.lecture') <i class="fas fa-chevron-right"></i></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -272,6 +278,11 @@
                                 </div>
                                 <div class="ads-content row col-lg-12">
                                     @forelse (App\Models\Blog::ofStatus('published')->where('post_type','=', 'blog')->withCount('comments')->get()->random(2) as $blog)
+									@php
+										$lang = \App::getLocale();
+										$slug = 'slug_'.$lang;
+										$title = 'title_'.$lang;
+									@endphp
                                         <div class="col-md-12 col-lg-6 m-30px-b view-item-blog">
                                             <div class="hover-top card box-shadow-only-hover overflow-hidden">
                                                 <div>
@@ -284,16 +295,18 @@
                                                                 $img=asset('images/blog/iea.png');
                                                             }   
                                                         @endphp
-                                                        <img src="{{$img}}" alt="{{$blog->title}}" title="{{$blog->title}}">
+                                                        <img src="{{$img}}" alt="{{$blog->$title}}" title="{{$blog->$title}}">
                                                     </a>
                                                 </div>
                                                 <div class="p-20px">
                                                     <label class="font-small">@lang('app.txt.postepar') : <a href="javascript:void(0)">{{$blog->author ? $blog->author->name : ''}}</a> – {{$blog->created_at ? $blog->created_at->diffForHumans() : ''}}</label>
-                                                    <h5 class="m-10px-b font-w-600"><a title="{{$blog->title}}" class="dark-color" href="{{route('blog.index',$blog->slug)}}" target="_blank">{{getGTranslateAutoDetect( App::getLocale() , str_limit($blog->title, 50, '...'))}}</a></h5>
+                                                    <h5 class="m-10px-b font-w-600">
+														<a title="{{$blog->$title}}" class="dark-color" href="{{route('blog.index',$blog->$slug)}}" target="_blank">{{str_limit($blog->title, 50, '...')}}</a>
+													</h5>
                                                     <div class="nav font-small border-top-1 border-color-dark-gray p-15px-t">
                                                         <a class="m-15px-r body-color font-w-500" href="javascript:void(0)"><i class="fas fa-calendar-alt "></i> {{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $blog->created_at)->format('d F')}},{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $blog->created_at)->year }}</a>
                                                         <a class="body-color font-w-500" href="javascript:void(0)"><i class="fas fa-comments"></i> {{$blog->comments_count}}</a>
-                                                        <a class="body-color font-w-500 ml-auto" href="{{route('blog.index',$blog->slug)}}" target="_blank">@lang('app.txt.lecture') <i class="fas fa-chevron-right"></i></a>
+                                                        <a class="body-color font-w-500 ml-auto" href="{{route('blog.index',$blog->$slug)}}" target="_blank">@lang('app.txt.lecture') <i class="fas fa-chevron-right"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
