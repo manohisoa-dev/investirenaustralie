@@ -535,6 +535,7 @@ class ProfileController extends Controller
                     'postalCode'=> $datas['postalCode'],
                     'num_rooms'=> $datas['num_rooms'],
                     'num_floor'=> $datas['num_floor'],
+                    'building_name'=> isset($datas['building_name'])?$datas['building_name']:'',
                     'adrpost_postal_box'=> isset($datas['adrpost_postal_box'])?$datas['adrpost_postal_box']:'',
                     'adrpost_locality'=> isset($datas['adrpost_locality'])?$datas['adrpost_locality']:'',
                     'adrpost_area_level_2'=> isset($datas['adrpost_area_level_2'])?$datas['adrpost_area_level_2']:'',
@@ -724,7 +725,8 @@ class ProfileController extends Controller
             'orga_license_number'         => 'required|max:100',
             'orga_operation_range' => 'required',
             'orga_presentation' => 'nullable|max:2000',
-            
+            'orga_rep_official_registration' => 'nullable|max:2000',
+
             'route'        => 'required|max:100',
             'route_number'        => 'required',
             'locality'     => 'required|max:100',
@@ -782,6 +784,9 @@ class ProfileController extends Controller
                 //Créer localisation
                 $locations = [
                     'route'=> $datas['route'],
+                    'building_name'=> $datas['building_name'],
+                    'num_rooms'=> $datas['num_rooms'],
+                    'num_floor'=> $datas['num_floor'],
                     'route_number'=> $datas['route_number'],
                     'locality'=> $datas['locality'],
                     'postalCode'=> $datas['postalCode'],
@@ -811,6 +816,7 @@ class ProfileController extends Controller
                     'contact_email'=> $datas['contact_email'],
                     'orga_name'=> $datas['orga_name'],
                     'orga_registration_number'=> $datas['orga_registration_number'],
+                    'orga_rep_official_registration'=> $datas['orga_rep_official_registration'],
                     'orga_license_number'=> $datas['orga_license_number'],
                     'orga_operation_range'=> $datas['orga_operation_range'],
                     'orga_presentation'=> $datas['orga_presentation'],

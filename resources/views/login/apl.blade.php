@@ -80,6 +80,13 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
+                                                <label for="orga_rep_official_registration" class="col-sm-12 control-label">@lang('app.txt.organizationrepregistrationofficial')</label>
+                                                <div class="col-sm-12">
+                                                    <input type="text" class="form-control" id="orga_rep_official_registration" name="orga_rep_official_registration" placeholder="@lang('app.txt.organizationrepregistrationofficial')" value="{{ old('orga_rep_official_registration')?old('orga_rep_official_registration'):'' }}">
+                                                    <span class="text-danger">{{ $errors->first('orga_rep_official_registration') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
                                                 <label for="orga_type" class="col-sm-12 control-label">@lang('app.txt.type_of_company') *</label>
                                                 <div class="col-sm-12">
                                                     <select class="form-control" id="orga_type" name="orga_type" required>

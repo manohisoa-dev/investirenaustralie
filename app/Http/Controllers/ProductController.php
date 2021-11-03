@@ -884,6 +884,8 @@ class ProductController extends Controller {
                     'locality' => $request->ville, 'route' => $request->display_address, 'longitude' =>
                     $longitude, 'latitude' => $latitude]);
                 $id_location = $product->location_id;
+            }else{
+                $id_location = $request->location_Id ;
             }
         } else {
             $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,

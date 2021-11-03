@@ -187,14 +187,25 @@
 				</div>
 				<div class="col-sm-4 b-r">
 					<table class='table table-borderless'>
-						<tr>
-							<th>@lang('app.txt.business_abn')</th>
-							<td>{{$user->userinfos ?$user->userinfos->orga_abn : ''}}</td>
-						</tr>
-						<tr>
-							<th>@lang('app.txt.business_acn')</th>
-							<td>{{$user->userinfos ?$user->userinfos->orga_acn : ''}}</td>
-						</tr>
+						@if($user->hasRole(4))
+							<tr>
+								<th>@lang('app.txt.organizationregistrationnumber')</th>
+								<td>{{$user->userinfos ?$user->userinfos->orga_registration_number:''}}</td>
+							</tr>
+							<tr>
+								<th>@lang('app.txt.organizationrepregistrationofficial')</th>
+								<td>{{$user->userinfos ?$user->userinfos->orga_rep_official_registration:''}}</td>
+							</tr>
+						@else
+							<tr>
+								<th>@lang('app.txt.business_abn')</th>
+								<td>{{$user->userinfos ?$user->userinfos->orga_abn : ''}}</td>
+							</tr>
+							<tr>
+								<th>@lang('app.txt.business_acn')</th>
+								<td>{{$user->userinfos ?$user->userinfos->orga_acn : ''}}</td>
+							</tr>
+						@endif
 						<tr>
 							<th>@lang('app.txt.real_estate_agent_licence_number')</th>
 							<td>{{$user->userinfos ?$user->userinfos->orga_license_number : ''}}</td>
