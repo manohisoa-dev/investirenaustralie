@@ -166,7 +166,7 @@
                                   </a>
                                 </div>
                             </div>
-                          @elseif($statusDossTrans==7||$statusDossTrans==8||$statusDossTrans==9||$statusDossTrans==10||$statusDossTrans==11)
+                          @elseif($statusDossTrans==7||$statusDossTrans==8||$statusDossTrans==9||$statusDossTrans==10||$statusDossTrans==11||$statusDossTrans==12)
                             <div class="row m-15px-t">
                               <div class="col-sm-6">
                                   <a href="{{route('member.transaction', $item )}}" type="button" id="btn_buy" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12">
