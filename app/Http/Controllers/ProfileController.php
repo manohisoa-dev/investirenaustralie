@@ -901,6 +901,9 @@ class ProfileController extends Controller
                 //Créer localisation
                 $locations = [
                     'route'=> $datas['route'],
+                    'building_name'=> $datas['building_name'],
+                    'num_rooms'=> $datas['num_rooms'],
+                    'num_floor'=> $datas['num_floor'],
                     'route_number'=> $datas['route_number'],
                     'locality'=> $datas['locality'],
                     'postalCode'=> $datas['postalCode'],

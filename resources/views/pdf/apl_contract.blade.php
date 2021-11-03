@@ -108,7 +108,7 @@
     <section class="ca-section-1">
         <div class="pdf-header-p1">
           <h3>CONTRAT DE PARTENARIAT AGENCE PARTENAIRE LOCALE</h3>
-          <h4>({{ $user->name }})</h4>
+          <h4>({{ $user->userinfos->orga_name }})</h4>
         </div>
 
         <div class="pdf-content-p1">
@@ -127,7 +127,7 @@
                 société de droit {{ trans('app.txt.'.$user->userinfos->orga_type) }}<br/>
                 N° Repertoire des entreprises : {{ $user->userinfos->orga_license_number }}<br/>
                 N° Registre du Commerce et des Société : {{ $user->userinfos?$user->userinfos->orga_registration_number:'' }}<br/>
-                Adresse du siège social : {{ $user->location->area_level_1?$user->location->area_level_1:'' }} {{ $user->location->postalCode?$user->location->postalCode:'' }}, {{ $user->location->country?App\Models\Country::where('code',$user->location->country)->first()->content:'' }}<br/>
+                Adresse du siège social : {{ $user->location->area_level_1?$user->location->area_level_1:'' }} {{ $user->location->locality ? $user->location->locality : '' }} {{ $user->location->route ? $user->location->route : '' }}  {{ $user->location->postalCode?$user->location->postalCode:'' }}, {{ $user->location->country?App\Models\Country::where('code',$user->location->country)->first()->content:'' }}<br/>
                 dûment représentée aux présentes par {{ $user->userinfos->contact_name }}<br/>
                 ci-après dénommée "<b>l'APL</b>" ou "<b>APL</b>".
             </p>

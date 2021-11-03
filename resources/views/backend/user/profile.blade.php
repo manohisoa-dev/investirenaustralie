@@ -12,6 +12,7 @@
             <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
                 <h5>@lang('app.txt.logininfo')</h5>
                 <div class="row">
+                    {{-- MEMBRE --}}
                     @if ($item->hasRole(5))
                         <div class="col-md-4 m-10px-tb">
                             <div class="media">
@@ -72,6 +73,9 @@
                 </div>
             </div>
 
+            {{---------------------------------------------------}}
+            {{---------------  MEMBRE PARTICULIER ---------------}}
+            {{---------------------------------------------------}}
             @if($item->hasRole(5) && $item->isPerson())
             <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
             <h5>@lang('member.member_identity')</h5>
@@ -180,7 +184,9 @@
                 </div>
             </div>
             @else
-                {{-- If user is AFA --}}
+                {{---------------------------------------------------}}
+                {{----------------------- AFA -----------------------}}
+                {{---------------------------------------------------}}
                 @if ($item->hasRole(3))
                     <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
                         <h5>@lang('app.txt.businessdetail')</h5>
@@ -232,7 +238,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.business_abn') </div>
-                                        <input type="text" minlength="11" maxlength="11" pattern="[0-9]{1}[0-9]{10}" class="form-control" id="orga_abn" name="orga_abn" placeholder="@lang('app.txt.abn_number')" value="{{ old('orga_abn')?old('orga_abn'):($item->userinfos ?$item->userinfos->orga_abn:'') }}">
+                                        <input type="text" minlength="11" maxlength="11" pattern="[0-9]{1}[0-9]{10}" class="form-control" id="orga_abn" name="orga_abn" placeholder="@lang('app.txt.abn_number')" value="{{ old('orga_abn')?old('orga_abn'):($item->userinfos ?$item->userinfos->orga_abn:'') }}" readonly>
                                         <span class="text-danger">{{ $errors->first('orga_abn') }}</span>
                                     </div>
                                 </div>
@@ -244,7 +250,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.business_acn') </div>
-                                        <input type="text" minlength="9" maxlength="9" pattern="[0-9]{1}[0-9]{8}" class="form-control" id="orga_acn" name="orga_acn" placeholder="@lang('app.txt.acn_number')" value="{{ old('orga_acn')?old('orga_acn'):($item->userinfos ?$item->userinfos->orga_acn:'') }}" >
+                                        <input type="text" minlength="9" maxlength="9" pattern="[0-9]{1}[0-9]{8}" class="form-control" id="orga_acn" name="orga_acn" placeholder="@lang('app.txt.acn_number')" value="{{ old('orga_acn')?old('orga_acn'):($item->userinfos ?$item->userinfos->orga_acn:'') }}" readonly>
                                         <span class="text-danger">{{ $errors->first('orga_acn') }}</span>
                                     </div>
                                 </div>
@@ -529,7 +535,7 @@
                                         <select id="administrative_area_level_1" class="form-control" name="area_level_1">
                                             <option selected disabled>@lang('app.select_state')</option>
                                             @foreach(App\Models\State::all() as $state)
-                                                <option value="{{ $state->content }}" {{ $item->location?$item->location->area_level_1:''==$state->content?'selected':'' }}>{{ trans('app.txt.'.$state->content) }} ({{ $state->content }})</option>
+                                                <option value="{{ $state->content }}" {{ $item->location && ($item->location->area_level_1 == $state->content) ? 'selected' : '' }}>{{ trans('app.txt.'.$state->content) }} ({{ $state->content }})</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -628,8 +634,11 @@
                         </div>
                     </div>
                 @endif
+                {{-- END AFA ---}}
 
-                {{-- If user is APL --}}
+                {{---------------------------------------------------}}
+                {{----------------------- APL -----------------------}}
+                {{---------------------------------------------------}}
                 @if ($item->hasRole(4))
                     <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
                         <h5>@lang('app.txt.agencydetail')</h5>
@@ -971,8 +980,11 @@
                         </div>
                     </div>
                 @endif
+                {{--- END APL --}}
 
-                {{-- If user is SELLER --}}
+                {{---------------------------------------------------}}
+                {{----------------------- SELLER---------------------}}
+                {{---------------------------------------------------}}
                 @if ($item->hasRole(2))
                     {{-- Real Estate Professionals AND Non-profesionnal Legal Persons  --}}
                     @if($item->TypeUser->type_user_name=='Builder' || $item->TypeUser->type_user_name=='Developer' || $item->TypeUser->type_user_name=='Organization')
@@ -2047,8 +2059,11 @@
                         </div>
                     @endif
                 @endif
+                {{---END SELLER ---}}
 
-                {{-- not AFA and APL and Seller --}}
+                {{---------------------------------------------------}}
+                {{------------  not AFA and APL and Seller ----------}}
+                {{---------------------------------------------------}}
                 @if (!$item->hasRole(3) && !$item->hasRole(4) && !$item->hasRole(2))
                     <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
                         <h5>@lang('app.txt.businessdetail')</h5>
@@ -2257,6 +2272,10 @@
                     </div>
                 @endif
             @endif
+
+            {{---------------------------------------------------}}
+            {{------------  MEMBRE PARTICULIER COMPLETE ---------}}
+            {{---------------------------------------------------}}
             @if($item->hasRole(5) && $item->isPerson() && $item->isComplete())
                 {{-- Physical address --}}
                 <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
@@ -2564,6 +2583,9 @@
                 </div>
             @endif
 
+            {{---------------------------------------------------}}
+            {{------------  MEMBRE ORGA COMPLETE ----------------}}
+            {{---------------------------------------------------}}
             @if($item->hasRole(5) && !$item->isPerson() && $item->isComplete())
                 {{-- Physical address --}}
                 <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
@@ -2927,6 +2949,7 @@
             </div>
             @endif --}}
 
+            {{-- Member only --}}
             @if ($item->hasRole(5))
                 <div class="form-group m-25px-tb">
                     <div class="col-sm-offset-3 col-sm-12">
@@ -2975,7 +2998,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.bank') </div>
-                                    <input type="text" class="form-control" name="bank_name" id="bank_name" placeholder="@lang('app.txt.bank')" value="{{old('bank_name')?old('bank_name'):($item->userinfos ?$item->userinfos->bank_iban:'')}}">
+                                    <input type="text" class="form-control" name="bank_name" id="bank_name" placeholder="@lang('app.txt.bank')" value="{{old('bank_name')?old('bank_name'):($item->userinfos ?$item->userinfos->bank_name:'')}}">
                                 </div>
                             </div>
                         </div>
