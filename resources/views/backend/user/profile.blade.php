@@ -1585,8 +1585,10 @@
                                                             @if (isset($snp->phone) && $snp->mobile)
                                                                 @php
                                                                     $codetamps = preg_match('#\((.*?)\)#', $snp->mobile, $match);
-                                                                    $code = $match[1];
-                                                                    $num = $snp->mobile?explode(')',$snp->mobile)[1]:'';
+                                                                    $code = isset($match) && count($match) > 1 ? $match[1] : '';
+
+                                                                    $snpSuffixe = explode(')',$snp->mobile) ;
+                                                                    $num = $snp->phone && count($snpSuffixe) > 1 ? $snpSuffixe[1] : '';
                                                                 @endphp
                                                             @else
                                                                 @php
