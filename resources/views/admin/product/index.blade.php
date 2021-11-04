@@ -100,7 +100,7 @@
 								</td>
 	
 								<td>
-									${{ number_format($record->price, 0, '.', ' ') }}
+									AUD{{ number_format($record->price, 0, '.', ' ') }}
 								</td>
 								<td>
 									{{ $record->created_at ? $record->created_at->diffForHumans() : '' }}

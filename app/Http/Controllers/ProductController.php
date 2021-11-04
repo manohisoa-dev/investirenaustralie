@@ -334,7 +334,31 @@ class ProductController extends Controller {
     }
 
     public function ajaxGetTypeProduitCategorie(Request $request) {
-        $typePrd = Type::where('categories_id', $request->categoryId)->get();
+        $cat = $request->cat;
+        if($cat == 1){
+            //pour les produit autonome
+            if($request->categoryId == 2){
+                $typePrd = Type::where('categories_id', $request->categoryId)->where('is_autonome',1)->get();
+            }else{
+                $typePrd = Type::where('categories_id', $request->categoryId)->get();
+            }            
+        }else{
+            //pour les programme
+            if($request->categoryId == 2){
+                $typePrd = Type::where('categories_id', $request->categoryId)->where('is_autonome',0)->get();
+            }else{
+                $typePrd = Type::where('categories_id', $request->categoryId)->get();
+            }   
+        }
+        
+        $lang = App::getLocale();
+        if($lang == 'en'){
+            $lib_title = 'title_en';
+        }else{
+            $lib_title = 'title';
+        }
+        
+        
         $output = '<option value="">Choisir...</option>';
         foreach ($typePrd as $val) {
             if ($val->id == $request->type_id_active) {
@@ -342,8 +366,7 @@ class ProductController extends Controller {
             } else {
                 $type_active = '';
             }
-            $output .= '<option value="' . $val->id . '" ' . $type_active . '>' .
-                getGTranslateAutoDetect('en', $val->title) . '</option>';
+            $output .= '<option value="' . $val->id . '" ' . $type_active . '>' .$val->$lib_title . '</option>';
         }
         return response()->json($output);
     }

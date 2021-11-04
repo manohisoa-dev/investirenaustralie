@@ -175,6 +175,8 @@
                                                             <label for="street_adr" class="col-sm-12 control-label">@lang('app.txt.streetaddress') *</label>
                                                             <div class="col-sm-12">
                                                                 <input type="text" class="form-control" id="street_adr" name="street_adr" placeholder="@lang('app.txt.streetaddress')" value="{{ old('street_adr')?old('street_adr'):'' }}" required>
+																<input type="hidden" value="{{ old('long')?old('long'):'' }}" name="long" id="long">
+                                                            	<input type="hidden" value="{{ old('lat')?old('lat'):'' }}" name="lat" id="lat">
                                                                 <span class="text-danger">{{ $errors->first('street_adr') }}</span>
                                                             </div>
                                                         </div>
@@ -219,10 +221,6 @@
                                                                 </select>
                                                                 <span class="text-danger">{{ $errors->first('country') }}</span>
                                                             </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <input type="hidden" value="{{ old('long')?old('long'):'' }}" name="long" id="long">
-                                                            <input type="hidden" value="{{ old('lat')?old('lat'):'' }}" name="lat" id="lat">
                                                         </div>
                                                         {{-- <div class="form-group">
                                                             <label for="phone" class="col-sm-12 control-label">@lang('app.txt.phone') *</label>
@@ -278,6 +276,8 @@
                                                             <label for="street_adr_2" class="col-sm-12 control-label">@lang('app.txt.streetaddress')</label>
                                                             <div class="col-sm-12">
                                                                 <input type="text" class="form-control" id="street_adr_2" name="street_adr_2" placeholder="@lang('app.txt.streetaddress')" value="{{ old('street_adr_2')?old('street_adr_2'):'' }}">
+																<input type="hidden" value="{{ old('long_2')?old('long_2'):'' }}" name="long_2" id="long_2">
+                                                            	<input type="hidden" value="{{ old('lat_2')?old('lat_2'):'' }}" name="lat_2" id="lat_2">
                                                                 <span class="text-danger">{{ $errors->first('street_adr_2') }}</span>
                                                             </div>
                                                         </div>
@@ -322,10 +322,6 @@
                                                                 </select>
                                                                 <span class="text-danger">{{ $errors->first('country_2') }}</span>
                                                             </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <input type="hidden" value="{{ old('long_2')?old('long_2'):'' }}" name="long_2" id="long_2">
-                                                            <input type="hidden" value="{{ old('lat_2')?old('lat_2'):'' }}" name="lat_2" id="lat_2">
                                                         </div>
                                                         {{-- <div class="form-group">
                                                             <label for="phone_2" class="col-sm-12 control-label">@lang('app.txt.phone')</label>
@@ -867,6 +863,15 @@
             'g-recaptcha-response': {
                 required: true,
             },
+			long: {
+				required: true,
+			},
+			long_2: {
+				required: true,
+			},
+			long_3: {
+				required: true,
+			}
         },
         messages: {
             name: {
@@ -984,6 +989,15 @@
             'g-recaptcha-response': {
                 required: "@lang('app.txt.champobligatoire')",
             },
+			long: {
+				required: "@lang('app.txt.autocomplete_error')",
+			},
+			long_2: {
+				required: "@lang('app.txt.autocomplete_error')",
+			},
+			long_3: {
+				required: "@lang('app.txt.autocomplete_error')",
+			}
         },
         errorPlacement: function ( error, element ) {
             if(element.parent().hasClass('input-group')){

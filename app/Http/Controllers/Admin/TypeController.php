@@ -38,12 +38,18 @@ class TypeController extends Controller {
      */
     public function store(Request $request) {
         //$this->validate($request, Type::validationRules());
-        $slug = generateSlug($request->title);
+        if($request->is_autonome == 1){
+            $slug = 'a-'.generateSlug($request->title);
+        }else{
+            $slug = generateSlug($request->title);
+        }        
         
         $type = new Type();
         $type->slug = $slug;
         $type->title = $request->title;
+        $type->title_en = $request->title_en;
         $type->categories_id = $request->categories_id;
+        $type->is_autonome = $request->is_autonome;
         $type->author_id = Auth::user()->id;
         $type->save();
 
@@ -88,8 +94,15 @@ class TypeController extends Controller {
         }
 
         $this->validate($request, Type::validationRules());
-
+        
         $type->update($request->all());
+        if($request->is_autonome == 1){
+            $slug = 'a-'.generateSlug($request->title);
+        }else{
+            $slug = generateSlug($request->title);
+        }
+        $type->slug = $slug;
+        $type->save();
 
         # notification
         Notify::success('Type a été mise à jour avec succès');

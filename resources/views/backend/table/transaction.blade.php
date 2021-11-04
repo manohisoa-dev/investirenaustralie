@@ -101,6 +101,8 @@
                         <a href="javascript:void(0)" onclick="submitEoi()" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.send_finalized_eoi')}}</a>
                     @elseif ($trans->status == 12 )
                         <a href="javascript:void(0)" onclick="initialDepositConfirm({{$trans->id}})" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.initial_deposit_confirmation')}}</a>
+                    @elseif ($trans->status == 13 )
+                        <a href="javascript:void(0)" onclick="resendCourielInitialDepositConfirm({{$trans->id}})" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.initial_deposit_confirmation')}}</a>
                     @else
                         <a href="javascript:void(0)" class="m-btn m-btn-theme m-btn-sm" disabled>{{$btnText}}</a>
                     @endif
@@ -879,9 +881,9 @@
             swal({
                 title: "{{ trans('app.txt.initial_deposit_confirmation') }}",
                 text: "{{ trans('app.do_you_confirm') }}",
-                type: "warning",
+                type: "info",
                 showCancelButton: true,
-                confirmButtonColor: '#ff3547',
+                confirmButtonColor: '#0075B7',
                 confirmButtonText: "@lang('app.yes')",
                 cancelButtonText: "@lang('app.no')",
                 closeOnConfirm: true,
@@ -898,6 +900,52 @@
                     });
                     $.ajax({
                         url: '{{ route("afa.dossier.initialDepositConfirm") }}',
+                        type: "POST",
+                        dataType: "JSON",
+                        data:{"doss_id": id_doss_trans},
+                        success: function(data)
+                        {
+                            var msg = data.msg;
+
+                            swal("{{ trans('app.txt.initial_deposit_confirmation') }}", msg, "success");
+                            location.reload();	
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            stopLoadingPage();
+                            swal("{{ trans('app.txt.initial_deposit_confirmation') }}", "{{ trans('app.txt.confirmation_error') }}", "error");	
+                        }
+                    }); 
+                } else {
+                    stopLoadingPage();
+                    swal("{{ trans('app.txt.initial_deposit_confirmation') }}", "@lang('app.jquery.delete_cancel')", "error");
+                }
+            });
+        }
+
+        function resendCourielInitialDepositConfirm(id_doss_trans){
+            swal({
+                title: "{{ trans('app.txt.initial_deposit_confirmation') }}",
+                text: "{{ trans('app.do_you_confirm') }}",
+                type: "info",
+                showCancelButton: true,
+                confirmButtonColor: '#0075B7',
+                confirmButtonText: "@lang('app.yes')",
+                cancelButtonText: "@lang('app.no')",
+                closeOnConfirm: true,
+                closeOnCancel: true
+            },
+            function(isConfirm){
+                loadingPage();
+
+                if (isConfirm){
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        url: '{{ route("afa.dossier.resendCourielInitialDepositConfirm") }}',
                         type: "POST",
                         dataType: "JSON",
                         data:{"doss_id": id_doss_trans},

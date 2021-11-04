@@ -12,6 +12,9 @@ use App\Models\DossierTransaction;
 use App\Models\Message;
 use App\Models\Config;
 use App\Models\Country;
+use App\Models\Order;
+use App\Models\Invoice;
+use App\Models\Reglage;
 use App\Notifications\AfaMandateSearchMessage;
 use App\Notifications\AfaMandateSearchFinalisedMessage;
 use App\Notifications\MemberMandateSearchFinalisedMessage;
@@ -36,6 +39,7 @@ use Auth;
 use App;
 use Session;
 use PDF;
+use NumberFormatter;
 
 
 class DossierController extends Controller
@@ -842,9 +846,6 @@ class DossierController extends Controller
         $dtId = $request->doss_id;
         $user = Auth::user();
 
-        // udpate dossier transaction status
-        DossierTransaction::whereId($dtId)->update(['status'=>12]);
-
         // get template mail and send message and email to afa
         $admin = User::whereId(1)->first();
         $dt = Carbon::now();
@@ -855,7 +856,9 @@ class DossierController extends Controller
         $product = Product::whereId($dossTrans->product_id)->first();
         $NomMembre= $member->isPerson()?$member->userinfos->first_name.' '.$member->userinfos->last_name:$member->userinfos->orga_name;
         $afaId = $member->afa->id;
-        $afa = $member->afa->name;
+        $afaName = $member->afa->name;
+        $afa = User::whereId($member->afa->id)->first();
+        $seller = User::whereId($product->seller_id)->first();
         $title = $product->title;
         $lotLevel = $dossTrans->lot_level;
         $lotType = $dossTrans->lot_type;
@@ -871,7 +874,7 @@ class DossierController extends Controller
         $vars = array(
             '{Date system}' => $dtDate,
             '{Heure system}' => $dtTime,
-            '{Nom AFA}' => $afa,
+            '{Nom AFA}' => $afaName,
             '{NomMembre}' => $NomMembre,
             '{NomProgramme}' => $title,
             '{TypeLot}' => $lotType,
@@ -884,13 +887,265 @@ class DossierController extends Controller
         $contenu = strtr($template[0]->$body, $vars);
         $content = ['title' => '', 'body' => $contenu];
         
-        // message
+        // create pdf var
+        $pdf_template = 'pdf.cpc_invoice_1';
+        $pdfName = 'CPC_INVOICE_FIRST_PAIEMENT_'.$member->immat.time();
+        $pdfNameWithExt = $pdfName.'.pdf';
+        $path = public_path('uploads/pdf/invoices/'.$pdfName.'.pdf');
+        $iiccs = Config::iicc();
+        $app = 'IEA';
+        
+        // // email
+        Mail::to($admin->email)->send(new MailTemplate($content, $sujet));
+
+        // // message
         Message::create(['type'=>'admin','from_id'=>$afaId,'to_id'=>1,'body'=>$contenu]);
 
-        // email
-        Mail::to($admin->email)->send(new MailTemplate($content, $sujet));
+        // update table orders
+        $order = Order::create([
+            'doss_trans_id'=>$dtId,
+            'final_sales_price'=>$dossTrans->final_sales_price,
+            'commission_type'=>$product->commission_type=='Sales commission rate (%)'?'%':'$',
+            'taux_commission'=>$product->commision,
+            'montant_bonus'=>$product->amount_bonus, 
+            'montant_init_deposit'=>$this->calculMontantInitDeposit($dossTrans->final_sales_price,10,0),
+            'date_init_deposit_confirm'=>$dt,
+            'cpc_invoice_first_pmt'=>$pdfNameWithExt,
+        ]);
+
+        // update table invoices
+        $nowY = Carbon::now()->format('y');
+        $invoiceNumPrefix = 'IICC/'.$app.'/'.$nowY.'-';
+        $invoiceNumMax = Invoice::where('order_id',$order->id)->where('invoice_num', 'like', '%'.$invoiceNumPrefix.'%')->orderBy('invoice_num','DESC')->first();
+        if($invoiceNumMax !== null){
+            $invoiceNum = $invoiceNumMax->invoice_num;
+            $explodeInvoiceNum = explode('-',$invoiceNum);
+            $num = $explodeInvoiceNum[1];
+        }else{
+            $num = 0;
+        }
+        $invoice_num = $invoiceNumPrefix . str_pad($num+1, 5, "0", STR_PAD_LEFT);
+        Invoice::create(['order_id'=>$order->id,'invoice_num'=>$invoice_num]);
+
+        // Create invoice first paiement pdf 
+        $iicc= [
+            'iicc_name'=>$iiccs->get_meta('iicc_name'),
+            'iicc_dir'=>$iiccs->get_meta('iicc_dir'),
+        ];
+        $reglage= Reglage::where('code','CRICA')->first();
+        $saleCom=$order->commission_type=='%'?($order->final_sales_price*$order->taux_commission/100):$order->taux_commission;
+        $cpc=$saleCom*$reglage->seuil_value/100;
+        // cpc x 50% to letter
+        $cpcIea=$cpc*50/100;
+        $nbToLetter = new NumberFormatter("en", NumberFormatter::SPELLOUT);
+        $cpcIeaToLetter=$nbToLetter->format($cpcIea);
+        
+        $this->createInvoicePdf($member,$product,$afa,$iicc,$app,$invoice_num,$dossTrans,$seller,$order,$reglage,$cpc,$cpcIea,$cpcIeaToLetter,$pdf_template,$path);
+        
+
+        // udpate dossier transaction status
+        DossierTransaction::whereId($dtId)->update(['status'=>13]);
+
         
         return response()->json(['msg'=>trans('app.txt.initial_deposit_confirmed')]);
+    }
+
+    // Resend couriel initial deposit
+    public function resendCourielInitialDepositConfirm(Request $request){
+        $dtId = $request->doss_id;
+        $user = Auth::user();
+
+        // get template mail and send message and email to afa
+        $admin = User::whereId(1)->first();
+        $dt = Carbon::now();
+        $dtDate = $dt->format('m-d-Y');
+        $dtTime = $dt->format('H:i:m');
+        $dossTrans = DossierTransaction::whereId($dtId)->first();
+        $member = User::whereId($dossTrans->user_id)->first();
+        $product = Product::whereId($dossTrans->product_id)->first();
+        $NomMembre= $member->isPerson()?$member->userinfos->first_name.' '.$member->userinfos->last_name:$member->userinfos->orga_name;
+        $afaId = $member->afa->id;
+        $afaName = $member->afa->name;
+        $afa = User::whereId($member->afa->id)->first();
+        $seller = User::whereId($product->seller_id)->first();
+        $title = $product->title;
+        $lotLevel = $dossTrans->lot_level;
+        $lotType = $dossTrans->lot_type;
+        $lotId = $dossTrans->lot_id;
+        $finalSalesPrice = $dossTrans->final_sales_price;
+        $lia = Config::lia();
+        $lia_name = $lia->get_meta('lia_name')->value;
+        $template = MailsTemplate::where('id', 41)->get();
+        App::setLocale($member->language);
+        $lang = $member->language;
+        $body = 'template_' . $lang;
+        $sujet_tpl = 'sujet_'.$lang;
+        $vars = array(
+            '{Date system}' => $dtDate,
+            '{Heure system}' => $dtTime,
+            '{Nom AFA}' => $afaName,
+            '{NomMembre}' => $NomMembre,
+            '{NomProgramme}' => $title,
+            '{TypeLot}' => $lotType,
+            '{NiveauLot}' => $lotLevel,
+            '{IdentifiantLot}' => $lotId,
+            '{PrixVenteFinal}' => $finalSalesPrice,
+            '{Nom societe gestionnaire portail IEA}' => $lia_name,
+        );
+        $sujet = $template[0]->$sujet_tpl;
+        $contenu = strtr($template[0]->$body, $vars);
+        $content = ['title' => '', 'body' => $contenu];
+        
+        // create pdf var
+        $pdf_template = 'pdf.cpc_invoice_1';
+        $pdfName = 'CPC_INVOICE_FIRST_PAIEMENT_'.$member->immat.time();
+        $pdfNameWithExt = $pdfName.'.pdf';
+        $path = public_path('uploads/pdf/invoices/'.$pdfName.'.pdf');
+        $iiccs = Config::iicc();
+        $app = 'IEA';
+        
+        // // email
+        Mail::to($admin->email)->send(new MailTemplate($content, $sujet));
+
+        // // message
+        Message::create(['type'=>'admin','from_id'=>$afaId,'to_id'=>1,'body'=>$contenu]);
+
+        
+        return response()->json(['msg'=>trans('app.txt.initial_deposit_confirmed')]);
+    }
+
+    // Confirm initial deposit
+    public function secondDepositConfirm(Request $request){
+        $dtId = $request->doss_id;
+        $user = Auth::user();
+
+        // get template mail and send message and email to afa
+        $admin = User::whereId(1)->first();
+        $dt = Carbon::now();
+        $dtDate = $dt->format('m-d-Y');
+        $dtTime = $dt->format('H:i:m');
+        $dossTrans = DossierTransaction::whereId($dtId)->first();
+        $member = User::whereId($dossTrans->user_id)->first();
+        $product = Product::whereId($dossTrans->product_id)->first();
+        $NomMembre= $member->isPerson()?$member->userinfos->first_name.' '.$member->userinfos->last_name:$member->userinfos->orga_name;
+        $afaId = $member->afa->id;
+        $afaName = $member->afa->name;
+        $afa = User::whereId($member->afa->id)->first();
+        $seller = User::whereId($product->seller_id)->first();
+        $title = $product->title;
+        $lotLevel = $dossTrans->lot_level;
+        $lotType = $dossTrans->lot_type;
+        $lotId = $dossTrans->lot_id;
+        $finalSalesPrice = $dossTrans->final_sales_price;
+        $lia = Config::lia();
+        $lia_name = $lia->get_meta('lia_name')->value;
+        $template = MailsTemplate::where('id', 41)->get();
+        App::setLocale($member->language);
+        $lang = $member->language;
+        $body = 'template_' . $lang;
+        $sujet_tpl = 'sujet_'.$lang;
+        $vars = array(
+            '{Date system}' => $dtDate,
+            '{Heure system}' => $dtTime,
+            '{Nom AFA}' => $afaName,
+            '{NomMembre}' => $NomMembre,
+            '{NomProgramme}' => $title,
+            '{TypeLot}' => $lotType,
+            '{NiveauLot}' => $lotLevel,
+            '{IdentifiantLot}' => $lotId,
+            '{PrixVenteFinal}' => $finalSalesPrice,
+            '{Nom societe gestionnaire portail IEA}' => $lia_name,
+        );
+        $sujet = $template[0]->$sujet_tpl;
+        $contenu = strtr($template[0]->$body, $vars);
+        $content = ['title' => '', 'body' => $contenu];
+        
+        // create pdf var
+        $pdf_template = 'pdf.cpc_invoice_2';
+        $pdfName = 'CPC_INVOICE_FIRST_PAIEMENT_'.$member->immat.time();
+        $pdfNameWithExt = $pdfName.'.pdf';
+        $path = public_path('uploads/pdf/invoices/'.$pdfName.'.pdf');
+        $iiccs = Config::iicc();
+        $app = 'IEA';
+        
+        // // email
+        Mail::to($admin->email)->send(new MailTemplate($content, $sujet));
+
+        // // message
+        Message::create(['type'=>'admin','from_id'=>$afaId,'to_id'=>1,'body'=>$contenu]);
+
+        // update table orders
+        $order = Order::create([
+            'doss_trans_id'=>$dtId,
+            'final_sales_price'=>$dossTrans->final_sales_price,
+            'commission_type'=>$product->commission_type=='Sales commission rate (%)'?'%':'$',
+            'taux_commission'=>$product->commision,
+            'montant_bonus'=>$product->amount_bonus, 
+            'date_second_pmt'=>$dt,
+            'montant_second_pmt'=>$this->calculMontantInitDeposit($dossTrans->final_sales_price,10,0),
+            'cpc_invoice_second_pmt'=>$pdfNameWithExt,
+            // 'date_pmt_bonus'=>,
+            // 'cpc_invoice_bonus'=>
+        ]);
+
+        // update table invoices
+        $nowY = Carbon::now()->format('y');
+        $invoiceNumPrefix = 'IICC/'.$app.'/'.$nowY.'-';
+        $invoiceNumMax = Invoice::where('order_id',$order->id)->where('invoice_num', 'like', '%'.$invoiceNumPrefix.'%')->orderBy('invoice_num','DESC')->first();
+        if($invoiceNumMax !== null){
+            $invoiceNum = $invoiceNumMax->invoice_num;
+            $explodeInvoiceNum = explode('-',$invoiceNum);
+            $num = $explodeInvoiceNum[1];
+        }else{
+            $num = 0;
+        }
+        $invoice_num = $invoiceNumPrefix . str_pad($num+1, 5, "0", STR_PAD_LEFT);
+        Invoice::create(['order_id'=>$order->id,'invoice_num'=>$invoice_num]);
+
+        // Create invoice first paiement pdf 
+        $iicc= [
+            'iicc_name'=>$iiccs->get_meta('iicc_name'),
+            'iicc_dir'=>$iiccs->get_meta('iicc_dir'),
+        ];
+        $reglage= Reglage::where('code','CRICA')->first();
+        $saleCom=$order->commission_type=='%'?($order->final_sales_price*$order->taux_commission/100):$order->taux_commission;
+        $cpc=$saleCom*$reglage->seuil_value/100;
+        // cpc x 50% to letter
+        $cpcIea=$cpc*50/100;
+        $nbToLetter = new NumberFormatter("en", NumberFormatter::SPELLOUT);
+        $cpcIeaToLetter=$nbToLetter->format($cpcIea);
+        
+        $this->createSecondInvoicePdf($member,$product,$afa,$iicc,$app,$invoice_num,$dossTrans,$seller,$order,$reglage,$cpc,$cpcIea,$cpcIeaToLetter,$pdf_template,$path);
+        
+
+        // udpate dossier transaction status
+        DossierTransaction::whereId($dtId)->update(['status'=>13]);
+
+        
+        return response()->json(['msg'=>trans('app.txt.initial_deposit_confirmed')]);
+    }
+
+    public function calculMontantInitDeposit($finalPrice,$taux,$taxe){
+        $montant = $finalPrice*($taux/100);
+        if($taxe!=0){
+            $montTaxe = $montant*($taxe/100);
+        }else{
+            $montTaxe = 0;
+        }
+
+        return $montant+$montTaxe;
+    }
+
+    public function createInvoicePdf($member,$product,$afa,$iicc,$app,$invoice_num,$dossTrans,$seller,$order,$reglage,$cpc,$cpcIea,$cpcIeaToLetter,$pdf_template,$path) {
+        $member_name = $member->isPerson()?$member->userinfos->first_name.' '.$member->userinfos->last_name:$member->userinfos->orga_name;
+        
+        return PDF::loadView($pdf_template,['member'=>$member,'member_name'=>$member_name,'product'=>$product,'afa'=>$afa,'iicc'=>$iicc,'reglage'=>$reglage,'cpc'=>$cpc,'cpcIea'=>$cpcIea,'cpcIeaToLetter'=>$cpcIeaToLetter,'app'=>$app,'invoice_num'=>$invoice_num,'dossTrans'=>$dossTrans,'seller'=>$seller,'order'=>$order])->save($path);
+    }
+   
+    public function createSecondInvoicePdf($member,$product,$afa,$iicc,$app,$invoice_num,$dossTrans,$seller,$order,$reglage,$cpc,$cpcIea,$cpcIeaToLetter,$pdf_template,$path) {
+        $member_name = $member->isPerson()?$member->userinfos->first_name.' '.$member->userinfos->last_name:$member->userinfos->orga_name;
+        
+        return PDF::loadView($pdf_template,['member'=>$member,'member_name'=>$member_name,'product'=>$product,'afa'=>$afa,'iicc'=>$iicc,'reglage'=>$reglage,'cpc'=>$cpc,'cpcIea'=>$cpcIea,'cpcIeaToLetter'=>$cpcIeaToLetter,'app'=>$app,'invoice_num'=>$invoice_num,'dossTrans'=>$dossTrans,'seller'=>$seller,'order'=>$order])->save($path);
     }
 
     

@@ -441,7 +441,7 @@ function initMap(){
 			$.ajax({
 			   type:'POST',
 			   url:"{{ route('ajaxGetTypeProduitCategorie') }}",
-			   data: {"_token": "{{ csrf_token() }}","categoryId": category, "type_id_active": 0},
+			   data: {"_token": "{{ csrf_token() }}","categoryId": category, "type_id_active": 0,"cat":0},
 			   success:function(data) {
 				  console.log(data);
 				  $('#type_id').html(data);

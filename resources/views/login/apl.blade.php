@@ -171,6 +171,8 @@
                                                 <label for="route" class="col-sm-12 control-label">@lang('app.txt.name_of_the_road') *</label>
                                                 <div class="col-sm-12">
                                                     <input type="text" class="form-control" id="route" name="route" placeholder="@lang('app.txt.name_of_the_road')" value="{{ old('route')?old('route'):'' }}" required>
+													<input type="hidden" value="{{ old('long')?old('long'):'' }}" name="long" id="long">
+                                                	<input type="hidden" value="{{ old('lat')?old('lat'):'' }}" name="lat" id="lat">
                                                     <span class="text-danger">{{ $errors->first('route') }}</span>
                                                 </div>
                                             </div>
@@ -236,10 +238,6 @@
                                                     </select>
                                                     <span class="text-danger">{{ $errors->first('country') }}</span>
                                                 </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="hidden" value="{{ old('long')?old('long'):'' }}" name="long" id="long">
-                                                <input type="hidden" value="{{ old('lat')?old('lat'):'' }}" name="lat" id="lat">
                                             </div>
                                         </fieldset>
 
@@ -636,6 +634,12 @@
             'g-recaptcha-response': {
                 required: true,
             },
+			long: {
+				 required: true
+			},
+			lat: {
+				 required: true
+			}
         },
         messages: {
             name: {
@@ -727,6 +731,12 @@
             'g-recaptcha-response': {
                 required: "@lang('app.txt.champobligatoire')",
             },
+			long: {
+				 required: "@lang('app.txt.autocomplete_error')",
+			},
+			lat: {
+				 required: "",
+			}
         },
         errorPlacement: function ( error, element ) {
             if(element.parent().hasClass('input-group')){

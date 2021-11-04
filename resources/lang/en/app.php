@@ -1330,4 +1330,5 @@ return
     'txt.choose_state' => 'Choose State',
     'txt.required_valeur' => 'Enter values',
     'txt.share' => 'Share',
+    'txt.autocomplete_error' => 'Please choose a valid address as suggested by google',
 ];

@@ -1979,6 +1979,7 @@ class RegisterController extends Controller
         return response()->json(['response'=>'true']);
     }
 
+    // test affichage contrat
     public function afaContract(){
         return view('pdf.afa_contract',['user'=>User::whereId(361)->first()]);
     }
@@ -1989,6 +1990,7 @@ class RegisterController extends Controller
     public function createContractPdf($user,$pdf_template,$path) {
         return PDF::loadView($pdf_template,['user'=>$user])->save($path);
     }
+    // fin test affichage contrat
 
     // function cron to check delai submit contract (if 7 days delete)
     public function checkContractDelai(){
@@ -2064,6 +2066,8 @@ class RegisterController extends Controller
             $userImmat = $userMax->immat;
             $explodeImmat = explode('-',$userImmat);
             $immatNum = $explodeImmat[1];
+        }else{
+            $immatNum = 0;
         }
 
         return $immatPrefix . str_pad($immatNum+1, 5, "0", STR_PAD_LEFT);

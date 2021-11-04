@@ -313,6 +313,7 @@ Route::prefix('afa')->middleware(["auth","role:3"])->group(function(){
     Route::post('dossier/upload_eoi_finalized', 'DossierController@uploadMemberDossierEoiFinalized')->name('afa.dossier.upload_eoi_finalized');
     Route::post('dossier/send_eoi_finalized', 'DossierController@sendDossierEoiFinalized')->name('afa.dossier.send_eoi_finalized');
     Route::post('dossier/initial_deposit_confirm', 'DossierController@initialDepositConfirm')->name('afa.dossier.initialDepositConfirm');
+    Route::post('dossier/resend_couriel_initial_deposit_confirm', 'DossierController@resendCourielInitialDepositConfirm')->name('afa.dossier.resendCourielInitialDepositConfirm');
     Route::post('dossier/resend_eoi_to_seller', 'DossierController@resendEoiToSeller')->name('afa.dossier.resend_eoi_to_seller');
 
     Route::get('transactions', 'AfaController@transactions')->name('afa.transaction');

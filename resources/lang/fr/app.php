@@ -1561,5 +1561,6 @@ return
     'form.programme_firb_pre_approved_program' => 'Programme pré-approuvé FIRB',
     'form.programme_pre_approved_sale' => 'Vente pré-approuvée FIRB',
     'txt.choose_state' => 'Choisir Etat',
-    'txt.required_valeur' => 'Entrer des valeurs'
+    'txt.required_valeur' => 'Entrer des valeurs',
+    'txt.autocomplete_error' => 'Veuillez choisir une adresse valide selon la suggéstion de google',
 ];

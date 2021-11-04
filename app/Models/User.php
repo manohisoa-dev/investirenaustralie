@@ -920,7 +920,7 @@ class User extends Authenticatable {
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function products() {
-        return $this->hasMany(Product::class, 'seller_id', 'id');
+        return $this->hasMany(Product::class, 'author_id', 'id');
     }
 
     /**

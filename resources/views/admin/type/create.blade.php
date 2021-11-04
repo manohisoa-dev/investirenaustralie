@@ -51,7 +51,14 @@
 								<option value="{{$category->id}}"> {{$category->title}}</option>
 							@endforeach
 						</select>
-					</div>                                                                                    
+					</div>  
+					<div class="form-group">
+						<label>Produit autonome seulement *</label> 
+						<select class="form-control" name="is_autonome" id="is_autonome">
+							<option value="0">NON</option>
+							<option value="1">OUI</option>
+						</select>
+					</div>                                                                                  
                     <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Créer</button>
 
                 </form>

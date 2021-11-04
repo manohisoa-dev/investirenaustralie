@@ -4,26 +4,50 @@
          <th scope="col">@lang('app.table.id') <span class="column-sorter"></span></th>
          <th scope="col">@lang('app.table.photo') <span class="column-sorter"></span></th>
          <th scope="col">@lang('app.table.title')/@lang('app.table.content') <span class="column-sorter"></span></th>
-         <th scope="col">@lang('app.table.price')/@lang('app.table.tma') <span class="column-sorter"></span></th>
+         <th scope="col">@lang('app.table.price')<span class="column-sorter"></span></th>
          <th scope="col">@lang('app.table.date') <span class="column-sorter"></span></th>
          <th scope="col">@lang('app.table.status') <span class="column-sorter"></span></th>
          <th scope="col">@lang('app.table.seller') <span class="column-sorter"></span></th>
          <th scope="col">@lang('app.table.author') <span class="column-sorter"></span></th>
-         <th scope="col">@lang('app.table.actions') </th>
      </tr>
  </thead>
  <tbody>
      @foreach($products as $product)
+	 @if($product->parent_id != 0)
      <tr>
          <td>{{$product->id}}</td>
          <td>
-             <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.show', ['product'=>$product]):route('admin.product.show', ['product'=>$product])}}"><img class="thumb" src="{{$product->imageUrl()}}" width="50"></a>
+             <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.show', ['product'=>$product]):route('admin.product.show', ['product'=>$product])}}">
+			 	
+				@php
+					$photo_principal = \App\Models\ProductsImage::where('products_images.product_id', '=', $product->id)->where('products_images.is_principal', '=', 1)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+					$first_photo = \App\Models\ProductsImage::where('products_images.product_id', '=', $product->id)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+					
+				@endphp
+				@if($first_photo)
+					@if($photo_principal)
+					<!-- Programme sans principal -->
+					<img src="{{asset($photo_principal->filepath)}}" class="thumb" style="height:50px" />
+					@else
+					<!-- Programme principal -->
+					<img src="{{asset($first_photo->filepath)}}" class="thumb" style="height:50px" />
+					@endif
+				@else
+					<!-- Programme aucun photo -->
+					<img class="img-responsive" src="{{asset('images/product.png')}}" width="50px">
+				@endif
+			 </a>
          </td>
          <td>
-             <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.show', ['product'=>$product]):route('admin.product.show', ['product'=>$product])}}">{{$product->title}}</a><br>
-             {{$product->excerpt()}}
+             <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.show', ['product'=>$product]):route('admin.product.show', ['product'=>$product])}}">{{$product->title}}</a>
          </td>
-         <td>{{$product->currency}} {{$product->price}} / {{$product->tma}}</td>
+         <td>
+		 	@if($product->parent_id == -1)
+				AUD {{ number_format($product->price, 0, '.', ' ') }}
+			@else
+				AUD {{ number_format($product->min_price, 0, '.', ' ') }} / AUD {{ number_format($product->max_price, 0, '.', ' ') }}
+			@endif
+		 </td>
          <td>{{$product->created_at->diffForHumans()}}</td>
          <td>
              {{-- <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.list', ['filter'=>$product->status]):route('admin.product.list', ['filter'=>$product->status])}}"> --}}
@@ -45,26 +69,8 @@
              <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show', $product->author):route('admin.user.show', $product->author)}}">{{$product->author->name}}</a>
              @endif
          </td>
-         <td>
-		 <form class="form-inline" action="{{Auth::user()->isAdminDelegate()?route('admin.product.index'):route('admin.product.index')}}/{{$product->id}}" method="POST">
-         @if($product->status=='pinged' || $product->status=='archived')
-            <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.publish', $product):route('admin.product.publish', $product)}}" class="btn btn-default btn-circle" title="@lang('app.btn.publish')"><i class="fa fa-check"></i></a>&nbsp;&nbsp;
-            <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.trash', $product):route('admin.product.trash', $product)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')"><i class="fa fa-trash-o"></i></a>&nbsp;&nbsp;
-         @elseif($product->status=='trashed')
-            <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.restore', $product):route('admin.product.restore', $product)}}" class="btn btn-default btn-circle" title="Restore"><i class="fa fa-window-restore"></i></a>&nbsp;&nbsp;
-         @endif
-         @if($product->status=='published')
-            <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.archive', $product):route('admin.product.archive', $product)}}" class="btn btn-default btn-circle" title="@lang('app.btn.archive')"><i class="fa fa-archive"></i></a>&nbsp;&nbsp;
-            <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.trash', $product):route('admin.product.trash', $product)}}" class="btn btn-default btn-circle" title="@lang('app.btn.trash')"><i class="fa fa-trash-o"></i></a>&nbsp;&nbsp;
-         @endif
-			{{ csrf_field() }}
-			{{ method_field('DELETE') }}
-			<button onclick="return confirm('Vous êtes sur?')"
-				type="submit" class="btn btn-default btn-circle" title="Suppression"><i class="fa fa-times text-danger"></i>
-			</button>
-		 </form>
-         </td>
      </tr>
+	 @endif
      @endforeach
  </tbody>
 </table>
