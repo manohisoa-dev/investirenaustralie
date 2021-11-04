@@ -877,7 +877,7 @@ class ProfileController extends Controller
 
         if(isset($request->orga_parent_name)){
             $rules += [
-                'orga_parent_name'         => 'required|max:100',
+                'orga_parent_name'         => 'max:100',
             ];
         }
 
@@ -1013,7 +1013,7 @@ class ProfileController extends Controller
 
         if(isset($request->orga_parent_name)){
             $rules += [
-                'orga_parent_name'         => 'required|max:100',
+                'orga_parent_name'         => 'max:100',
             ];
         }
 

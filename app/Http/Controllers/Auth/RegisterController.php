@@ -1063,7 +1063,7 @@ class RegisterController extends Controller
             'contact_phone' => 'required|digits_between:9,9|numeric',
             'g-recaptcha-response' => 'required|captcha',
             'type'     => 'required|max:100',
-            'orga_parent_name'         => 'required|max:100',
+            'orga_parent_name'         => 'max:100',
         ];
 
         if($request->postal_address_below){

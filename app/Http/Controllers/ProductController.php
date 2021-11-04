@@ -21,6 +21,7 @@ use App\Models\Firb;
 use App\Models\FondsDossier;
 use App\Models\EoiDossier;
 use App\Models\LiaDossier;
+use App\Models\Solicitor;
 
 use Jleon\LaravelPnotify\Notify;
 use Carbon\Carbon;
@@ -668,6 +669,17 @@ class ProductController extends Controller {
             $request->programme_firb_pre_approved_program, $request->programme_pre_approved_sale,
             $seller_id);
 
+        // save Solicitor info
+        if($request->cabinet_name && $request->cabinet_email && $request->cabinet_phone){
+            $solicitor = new Solicitor();
+            $solicitor->cabinet_name = $request->cabinet_name;
+            $solicitor->cabinet_email = $request->cabinet_email;
+            $solicitor->cabinet_phone = $request->cabinet_phone;
+            $solicitor->vendeur_id = Auth::user()->id;
+            $solicitor->save();
+        }
+
+
         if ($request->dropPhoto) {
             foreach ($request->dropPhoto as $key => $value) {
                 if ($request->radioDrop) {
@@ -841,10 +853,15 @@ class ProductController extends Controller {
             'product_lia.image_id', '=', 'images.id')->select('*',
             'product_lia.id as prdLiaId')->get();
 
+        $solicitor = "" ;
+        if(Auth::user()->isSbaBusiness() || Auth::user()->isSbaIndividual()){
+            $solicitor = Solicitor::where('vendeur_id', Auth::id())->first() ;
+        }
+
         return view('backend.product.edit_programme', ['product' => $product,
             'localisation' => $localisation, 'photos' => $photo, 'eoidossier' => $eoiDossier,
             'liadossier' => $liaDossier, 'product_lies' => $produit_lie, 'title' => __('afa.programme.title'),
-            'dossier' => $fonDossier]);
+            'dossier' => $fonDossier, 'solicitor' => $solicitor]);
     }
 
     public function editProduit(Request $request, Product $product) {
@@ -915,11 +932,21 @@ class ProductController extends Controller {
         $product->programme_pre_approved_sale = $request->programme_pre_approved_sale;
         $product->save();
 
+        // update solicitor info
+        if(isset($request->solicitor_id) && $request->solicitor_id != 0){
+            $solicitor = Solicitor::find($request->solicitor_id) ;
+
+            $solicitor->cabinet_name = $request->cabinet_name ;
+            $solicitor->cabinet_email = $request->cabinet_email ;
+            $solicitor->cabinet_phone= $request->cabinet_phone ;
+            $solicitor->save() ;
+        }
+
         // // update translation
         // updateTranslate('programme',$product,$request->description);
 
         return redirect()->route('edit.programme', $product->id)->with('success',
-            "Produit a été créer avec succès");
+            "Produit mise à jour avec succès");
     }
 
     public function updateProduit(Request $request) {

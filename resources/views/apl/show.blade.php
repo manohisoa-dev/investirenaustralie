@@ -68,7 +68,7 @@
                                                     </div>
                                                 </div>
                                                 
-                                                <li><i class="fas fa-building"></i> @lang('app.txt.businessname') : {{$aplDatas[0]->name?$aplDatas[0]->name:trans('app.txt.noinfo')}}</li>
+                                                <li><i class="fas fa-building"></i> @lang('app.txt.businessname') : {{$aplDatas[0]->userinfos?$aplDatas[0]->userinfos->orga_name:trans('app.txt.noinfo')}}</li>
                                                 <li><i class="fas fa-envelope"></i> @lang('app.txt.businessemail') : {{$aplDatas[0]->userinfos ?$aplDatas[0]->userinfos->orga_email:trans('app.txt.noinfo') }}</li>
                                                 <li><i class="fas fa-phone"></i> @lang('app.txt.businessphone') : {{$aplDatas[0]->userinfos ?$aplDatas[0]->userinfos->orga_phone:trans('app.txt.noinfo') }}</li>
                                                 <li><i class="fas fa-globe"></i> @lang('app.txt.businesswebsite') : {{$aplDatas[0]->userinfos ?$aplDatas[0]->userinfos->orga_website:trans('app.txt.noinfo') }}</li>
