@@ -422,8 +422,32 @@ function initMap(){
 </script>
 
 <script>
+    // fonction qui permet de mettre à jour les types de produits même sy on actualise la page
+    function updateTypeOfProduct(){
+        var catProgrammeId = $('#cat_programmme_id').val() ;
+        if(catProgrammeId.length && catProgrammeId != 0){
+            $.ajax({
+                type:'POST',
+                url:"{{ route('ajaxGetTypeProduitCategorie') }}",
+                data: {"_token": "{{ csrf_token() }}","categoryId": catProgrammeId, "type_id_active": 0},
+                success:function(data) {
+                    console.log(data);
+                    $('#type_id').html(data);
+                    $('#product_type_id').html(data);
+
+                }
+            });
+        }
+    }
 	Dropzone.autoDiscover = false;
 	$(document).ready(function(){
+        var catProgrammeElmt = $('#cat_programmme_id') ;
+
+        if(catProgrammeElmt.length){
+            updateTypeOfProduct() ;
+        }
+
+
 		$.validator.setDefaults({
 			ignore: []
 		});	
@@ -466,18 +490,7 @@ function initMap(){
 		//$("#type_id").select2();
 		
 		$('#cat_programmme_id').on('change', function() {
-			var category = this.value;
-			$.ajax({
-			   type:'POST',
-			   url:"{{ route('ajaxGetTypeProduitCategorie') }}",
-			   data: {"_token": "{{ csrf_token() }}","categoryId": category, "type_id_active": 0},
-			   success:function(data) {
-				  console.log(data);
-				  $('#type_id').html(data);
-				  $('#product_type_id').html(data);
-				  
-			   }
-			});
+            updateTypeOfProduct() ;
 		});
 		
 		$("#fond_dossier").dropzone({
