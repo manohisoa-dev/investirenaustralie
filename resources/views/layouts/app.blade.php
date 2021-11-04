@@ -130,6 +130,9 @@
 @php $socialConfig = \App\Models\Config::social(); @endphp
 
 <body data-spy="scroll" data-target="#navbar-collapse-toggle" data-offset="98">
+    <noscript>
+        <h2>Javascript est désactivé dans votre navigateur web. Certaines fonctionnalités ne fonctionneront pas correctement.</h2>
+    </noscript>
     <!-- Preload -->
     <div id="loading">
         <div class="load-circle"><span class="one"></span></div>

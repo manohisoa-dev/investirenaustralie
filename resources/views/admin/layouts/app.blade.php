@@ -45,7 +45,9 @@
 </head>
 
 <body>
-
+<noscript>
+    <h2>Javascript est désactivé dans votre navigateur web. Certaines fonctionnalités ne fonctionneront pas correctement.</h2>
+</noscript>
 <div id="wrapper">
     <nav class="navbar-default navbar-static-side" role="navigation">
         <div class="sidebar-collapse">
