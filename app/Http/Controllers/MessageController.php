@@ -7,6 +7,7 @@ use Validator;
 use Session;
 use DB;
 use Illuminate\Http\Request;
+use App\Models\Badword;
 use App\Models\Message;
 use App\Models\Order;
 use App\Models\User;
@@ -16,6 +17,7 @@ use App\Models\Localisation;
 use App\Models\Role;
 use App\Notifications\NewMail;
 use App\Notifications\NotifyMessage;
+use JCrowe\BadWordFilter\BadWordFilter;
 
 
 
@@ -45,15 +47,25 @@ class MessageController extends Controller
             //$hasSendCa = Auth::user()->afaHasSendCa($user_id,$to_id)?1:0; // 0: CA not send  1:CA send 
         }
 
+        $wordsToRemove = Badword::pluck('content')->toArray() ;
+        $wordsToRemove = array_flatten($wordsToRemove) ;
+        $filterOptions = array(
+            'strictness' => 'permissive',
+            'also_check' => $wordsToRemove
+        );
+
         $data = [];
         foreach($messages as $message){
+            $filter = new BadWordFilter($filterOptions);
+            $cleanString = $filter->clean($message->body, "#!%^");
+
             $data[] = [
                 'id' => $message->id,
                 'from_id' => $message->from_id,
                 'from_immat' => User::where('id',$message->from_id)->first()->immat,
                 'from_name' => User::where('id',$message->from_id)->first()->name,
                 'to_id' => $message->to_id,
-                'body' => nl2br(e($message->body)),
+                'body' => nl2br(e($cleanString)),
                 'created_at' => $message->created_at,
                 'created_at_send' => $message->created_at->diffForHumans(),
                 'seen' => $message->seen? trans('app.txt.read') : trans('app.txt.unread'),
@@ -125,15 +137,25 @@ class MessageController extends Controller
             //$hasSendCa = Auth::user()->afaHasSendCa($from_id,$to_id)?1:0; // 0: CA not send  1:CA send 
         }
 
+        $wordsToRemove = Badword::pluck('content')->toArray() ;
+        $wordsToRemove = array_flatten($wordsToRemove) ;
+        $filterOptions = array(
+            'strictness' => 'permissive',
+            'also_check' => $wordsToRemove
+        );
+
         $data = [];
         foreach($messages as $message){
+            $filter = new BadWordFilter($filterOptions);
+            $cleanString = $filter->clean($message->body, "#!%^");
+
             $data[] = [
                 'id' => $message->id,
                 'from_id' => $message->from_id,
                 'from_immat' => User::where('id',$message->from_id)->first()->immat,
                 'from_name' => User::where('id',$message->from_id)->first()->name,
                 'to_id' => $message->to_id,
-                'body' => nl2br(e($message->body)),
+                'body' => nl2br(e($cleanString)),
                 'created_at' => $message->created_at,
                 'created_at_send' => $message->created_at->diffForHumans(),
                 'seen' => $message->seen? trans('app.txt.read') : trans('app.txt.unread'),

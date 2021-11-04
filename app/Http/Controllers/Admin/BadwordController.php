@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Jleon\LaravelPnotify\Notify;
 
 class BadwordController extends Controller
@@ -89,7 +90,8 @@ class BadwordController extends Controller
 
         # notification
         Notify::success('Badword a été mise à jour avec succès');
-        return redirect(Auth::user()->isAdmin()?route('admin.badword.index'):route('admin.collaborators.admin.badword.index'));
+        $routeValue = Auth::user()->isAdmin()?route('admin.badword.index'):route('admin.collaborators.admin.badword.index') ;
+        return redirect($routeValue);
     }
 
     /**
