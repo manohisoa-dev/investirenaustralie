@@ -693,7 +693,7 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<div class="col-md-6">
 					<div class="ibox">
 						<div class="ibox-title">
@@ -758,47 +758,47 @@
 									<table class='table table-borderless'>
 										<tr>
 											<th>@lang('app.txt.last_name')</th>
-											<td>{{$user->sellerIndividual()?$user->sellerIndividual()[0]->last_name:trans('app.txt.noinfo')}}</td>
+											<td>{{$user->sellerIndividual() && count($user->sellerIndividual()) > 0?$user->sellerIndividual()[0]->last_name:trans('app.txt.noinfo')}}</td>
 										</tr>
 										<tr>
 											<th>@lang('app.txt.first_name')</th>
-											<td>{{$user->sellerIndividual()?$user->sellerIndividual()[0]->first_name:trans('app.txt.noinfo')}}</td>
+											<td>{{$user->sellerIndividual() && count($user->sellerIndividual()) > 0?$user->sellerIndividual()[0]->first_name:trans('app.txt.noinfo')}}</td>
 										</tr>
 										<tr>
 											<th>@lang('app.txt.date_of_birth')</th>
-											<td>{{$user->sellerIndividual()?$user->sellerIndividual()[0]->date_of_birth:trans('app.txt.noinfo')}}</td>
+											<td>{{$user->sellerIndividual() && count($user->sellerIndividual()) > 0?$user->sellerIndividual()[0]->date_of_birth:trans('app.txt.noinfo')}}</td>
 										</tr>
 										<tr>
 											<th>@lang('app.txt.place_of_birth')</th>
-											<td>{{$user->sellerIndividual()?$user->sellerIndividual()[0]->place_of_birth:trans('app.txt.noinfo')}}</td>
+											<td>{{$user->sellerIndividual() && count($user->sellerIndividual()) > 0?$user->sellerIndividual()[0]->place_of_birth:trans('app.txt.noinfo')}}</td>
 										</tr>
 										<tr>
 											<th>@lang('app.txt.nationality')</th>
-											<td>{{$user->sellerIndividual()?$user->sellerIndividual()[0]->nationality:trans('app.txt.noinfo')}}</td>
+											<td>{{$user->sellerIndividual() && count($user->sellerIndividual()) > 0?$user->sellerIndividual()[0]->nationality:trans('app.txt.noinfo')}}</td>
 										</tr>
 										<tr>
 											<th>@lang('app.txt.streetaddress')</th>
-											<td>{{$user->sellerIndividual()?$user->sellerIndividual()[0]->street_adr:trans('app.txt.noinfo')}}</td>
+											<td>{{$user->sellerIndividual() && count($user->sellerIndividual()) > 0?$user->sellerIndividual()[0]->street_adr:trans('app.txt.noinfo')}}</td>
 										</tr>
 										<tr>
 											<th>@lang('app.txt.suburb')</th>
-											<td>{{$user->sellerIndividual()?$user->sellerIndividual()[0]->suburb:trans('app.txt.noinfo')}}</td>
+											<td>{{$user->sellerIndividual() && count($user->sellerIndividual()) > 0?$user->sellerIndividual()[0]->suburb:trans('app.txt.noinfo')}}</td>
 										</tr>
 										<tr>
 											<th>@lang('app.txt.city')</th>
-											<td>{{$user->sellerIndividual()?$user->sellerIndividual()[0]->city:trans('app.txt.noinfo')}}</td>
+											<td>{{$user->sellerIndividual() && count($user->sellerIndividual()) > 0?$user->sellerIndividual()[0]->city:trans('app.txt.noinfo')}}</td>
 										</tr>
 										<tr>
 											<th>@lang('app.txt.codepostal')</th>
-											<td>{{$user->sellerIndividual()?$user->sellerIndividual()[0]->post_code:trans('app.txt.noinfo')}}</td>
+											<td>{{$user->sellerIndividual() && count($user->sellerIndividual()) > 0?$user->sellerIndividual()[0]->post_code:trans('app.txt.noinfo')}}</td>
 										</tr>
 										<tr>
 											<th>@lang('app.txt.etat') (@lang('app.txt.etat.libelle'))</th>
-											<td>{{$user->sellerIndividual()?$user->sellerIndividual()[0]->state:trans('app.txt.noinfo')}}</td>
+											<td>{{$user->sellerIndividual() && count($user->sellerIndividual()) > 0?$user->sellerIndividual()[0]->state:trans('app.txt.noinfo')}}</td>
 										</tr>
 										<tr>
 											<th>@lang('app.txt.country')</th>
-											<td>{{$user->sellerIndividual()?$user->sellerIndividual()[0]->country:trans('app.txt.noinfo')}}</td>
+											<td>{{$user->sellerIndividual() && count($user->sellerIndividual()) > 0?$user->sellerIndividual()[0]->country:trans('app.txt.noinfo')}}</td>
 										</tr>
 										<tr>
 											<th>@lang('app.txt.mobile_seller',['num'=>1])</th>
@@ -806,7 +806,7 @@
 										</tr>
 										<tr>
 											<th>@lang('app.txt.email')</th>
-											<td>{{$user->sellerIndividual()?$user->sellerIndividual()[0]->email_adr:trans('app.txt.noinfo')}}</td>
+											<td>{{$user->sellerIndividual() && count($user->sellerIndividual()) > 0?$user->sellerIndividual()[0]->email_adr:trans('app.txt.noinfo')}}</td>
 										</tr>
 									</table>
 								</div>
@@ -815,55 +815,55 @@
 									<table class='table table-borderless'>
 										<tr>
 											<th>@lang('app.txt.last_name')</th>
-											<td>{{$user->sellerIndividual()?$user->sellerIndividual()[1]->last_name:trans('app.txt.noinfo')}}</td>
+											<td>{{$user->sellerIndividual() && count($user->sellerIndividual()) > 0?$user->sellerIndividual()[1]->last_name:trans('app.txt.noinfo')}}</td>
 										</tr>
 										<tr>
 											<th>@lang('app.txt.first_name')</th>
-											<td>{{$user->sellerIndividual()?$user->sellerIndividual()[1]->first_name:trans('app.txt.noinfo')}}</td>
+											<td>{{$user->sellerIndividual() && count($user->sellerIndividual()) > 0?$user->sellerIndividual()[1]->first_name:trans('app.txt.noinfo')}}</td>
 										</tr>
 										<tr>
 											<th>@lang('app.txt.date_of_birth')</th>
-											<td>{{$user->sellerIndividual()?$user->sellerIndividual()[1]->date_of_birth:trans('app.txt.noinfo')}}</td>
+											<td>{{$user->sellerIndividual() && count($user->sellerIndividual()) > 0?$user->sellerIndividual()[1]->date_of_birth:trans('app.txt.noinfo')}}</td>
 										</tr>
 										<tr>
 											<th>@lang('app.txt.place_of_birth')</th>
-											<td>{{$user->sellerIndividual()?$user->sellerIndividual()[1]->place_of_birth:trans('app.txt.noinfo')}}</td>
+											<td>{{$user->sellerIndividual() && count($user->sellerIndividual()) > 0?$user->sellerIndividual()[1]->place_of_birth:trans('app.txt.noinfo')}}</td>
 										</tr>
 										<tr>
 											<th>@lang('app.txt.nationality')</th>
-											<td>{{$user->sellerIndividual()?$user->sellerIndividual()[1]->nationality:trans('app.txt.noinfo')}}</td>
+											<td>{{$user->sellerIndividual() && count($user->sellerIndividual()) > 0?$user->sellerIndividual()[1]->nationality:trans('app.txt.noinfo')}}</td>
 										</tr>
 										<tr>
 											<th>@lang('app.txt.streetaddress')</th>
-											<td>{{$user->sellerIndividual()?$user->sellerIndividual()[1]->street_adr:trans('app.txt.noinfo')}}</td>
+											<td>{{$user->sellerIndividual() && count($user->sellerIndividual()) > 0?$user->sellerIndividual()[1]->street_adr:trans('app.txt.noinfo')}}</td>
 										</tr>
 										<tr>
 											<th>@lang('app.txt.suburb')</th>
-											<td>{{$user->sellerIndividual()?$user->sellerIndividual()[1]->suburb:trans('app.txt.noinfo')}}</td>
+											<td>{{$user->sellerIndividual() && count($user->sellerIndividual()) > 0?$user->sellerIndividual()[1]->suburb:trans('app.txt.noinfo')}}</td>
 										</tr>
 										<tr>
 											<th>@lang('app.txt.city')</th>
-											<td>{{$user->sellerIndividual()?$user->sellerIndividual()[1]->city:trans('app.txt.noinfo')}}</td>
+											<td>{{$user->sellerIndividual() && count($user->sellerIndividual()) > 0?$user->sellerIndividual()[1]->city:trans('app.txt.noinfo')}}</td>
 										</tr>
 										<tr>
 											<th>@lang('app.txt.codepostal')</th>
-											<td>{{$user->sellerIndividual()?$user->sellerIndividual()[1]->post_code:trans('app.txt.noinfo')}}</td>
+											<td>{{$user->sellerIndividual() && count($user->sellerIndividual()) > 0?$user->sellerIndividual()[1]->post_code:trans('app.txt.noinfo')}}</td>
 										</tr>
 										<tr>
 											<th>@lang('app.txt.etat') (@lang('app.txt.etat.libelle'))</th>
-											<td>{{$user->sellerIndividual()?$user->sellerIndividual()[1]->state:trans('app.txt.noinfo')}}</td>
+											<td>{{$user->sellerIndividual() && count($user->sellerIndividual()) > 0?$user->sellerIndividual()[1]->state:trans('app.txt.noinfo')}}</td>
 										</tr>
 										<tr>
 											<th>@lang('app.txt.country')</th>
-											<td>{{$user->sellerIndividual()?$user->sellerIndividual()[1]->country:trans('app.txt.noinfo')}}</td>
+											<td>{{$user->sellerIndividual() && count($user->sellerIndividual()) > 0?$user->sellerIndividual()[1]->country:trans('app.txt.noinfo')}}</td>
 										</tr>
 										<tr>
 											<th>@lang('app.txt.mobile_seller',['num'=>2])</th>
-											<td>{{$user->sellerIndividual()?$user->sellerIndividual()[1]->mobile:trans('app.txt.noinfo')}}</td>
+											<td>{{$user->sellerIndividual() && count($user->sellerIndividual()) > 0?$user->sellerIndividual()[1]->mobile:trans('app.txt.noinfo')}}</td>
 										</tr>
 										<tr>
 											<th>@lang('app.txt.email')</th>
-											<td>{{$user->sellerIndividual()?$user->sellerIndividual()[1]->email_adr:trans('app.txt.noinfo')}}</td>
+											<td>{{$user->sellerIndividual() && count($user->sellerIndividual()) > 0?$user->sellerIndividual()[1]->email_adr:trans('app.txt.noinfo')}}</td>
 										</tr>
 									</table>
 								</div>

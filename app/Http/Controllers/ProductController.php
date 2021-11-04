@@ -336,7 +336,7 @@ class ProductController extends Controller {
 
     public function ajaxGetTypeProduitCategorie(Request $request) {
         $typePrd = Type::where('categories_id', $request->categoryId)->get();
-        $output = '<option value="">Choisir...</option>';
+        $output = '<option value="">'.trans('app.form.choix_txt').'...</option>';
         foreach ($typePrd as $val) {
             if ($val->id == $request->type_id_active) {
                 $type_active = 'selected="selected"';
