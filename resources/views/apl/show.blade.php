@@ -15,22 +15,28 @@
           <div class="row col-lg-12 m-30px-t">
               <div class="col-lg-3 m-8px-l">
                     <span class="m-font m-font-theme4rd flex-shrink-0 col-md-12" style="margin-bottom: 20px;">@lang('app.list_apl')</span>
-                    <div class="accordion accordion-05 m-40px-b">
+                    @php
+                        $aplId = 0 ;
+                        if(isset(request()->route()->parameters)){
+                            $aplId = request()->route()->parameters['id'] ;
+                        }
+                    @endphp
+                    <div class="accordion accordion-05 m-40px-b" data-apl-id="{{$aplId}}">
                         @forelse ($lapls_sidebar as $item)
-                        <div class="acco-group white-bg">
-                            <a href="#" class="acco-heading">{{ $item->country }}</a>
-                            <div class="acco-des">
-                                @forelse (App\Models\User::where('location_id','=',$item->id)->get() as $apl)
-                                <p><a href="{{ route('show.apl',['id'=>$apl->id]) }}"><i class="fa fa-map-marker"></i> {{ $apl->name }}</a></p>
-                                @empty
-                                    <p>@lang('app.txt.noinfo')</p>
-                                @endforelse
+                            <div class="acco-group white-bg {{$item->id == $aplId ? "acco-active" : "" }}" data-id="{{$item->id }}">
+                                <a href="#" class="acco-heading">{{ $item->country }}</a>
+                                <div class="acco-des" {{$aplId != 0 && $item->id != $aplId ? 'style="display:none;"' : 'style="display:block;"' }}>
+                                    @forelse (App\Models\User::where('location_id','=',$item->id)->get() as $apl)
+                                    <p><a href="{{ route('show.apl',['id'=>$apl->id]) }}"><i class="fa fa-map-marker"></i> {{ $apl->name }}</a></p>
+                                    @empty
+                                        <p>@lang('app.txt.noinfo')</p>
+                                    @endforelse
+                                </div>
                             </div>
-                        </div>
                         @empty
-                        <div class="acco-group white-bg">
-                            <p><i class="fa fa-map-marker"></i> @lang('app.txt.noinfo')</p>
-                        </div>
+                            <div class="acco-group white-bg">
+                                <p><i class="fa fa-map-marker"></i> @lang('app.txt.noinfo')</p>
+                            </div>
                         @endforelse
                     </div>
                 </div>
@@ -68,7 +74,7 @@
                                                     </div>
                                                 </div>
                                                 
-                                                <li><i class="fas fa-building"></i> @lang('app.txt.businessname') : {{$aplDatas[0]->name?$aplDatas[0]->name:trans('app.txt.noinfo')}}</li>
+                                                <li><i class="fas fa-building"></i> @lang('app.txt.businessname') : {{$aplDatas[0]->userinfos?$aplDatas[0]->userinfos->orga_name:trans('app.txt.noinfo')}}</li>
                                                 <li><i class="fas fa-envelope"></i> @lang('app.txt.businessemail') : {{$aplDatas[0]->userinfos ?$aplDatas[0]->userinfos->orga_email:trans('app.txt.noinfo') }}</li>
                                                 <li><i class="fas fa-phone"></i> @lang('app.txt.businessphone') : {{$aplDatas[0]->userinfos ?$aplDatas[0]->userinfos->orga_phone:trans('app.txt.noinfo') }}</li>
                                                 <li><i class="fas fa-globe"></i> @lang('app.txt.businesswebsite') : {{$aplDatas[0]->userinfos ?$aplDatas[0]->userinfos->orga_website:trans('app.txt.noinfo') }}</li>
@@ -161,6 +167,7 @@
     height: 25rem;
   }
 </style>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2izG_M7K3gP6pFUH5cyzmDjuGpOYfgc4&libraries=places&callback=initMap&channel=GMPSB_addressselection_v1_cABC" async defer></script>
 <script>
     $('#apl-form-modal').submit(function(event){
         if($('#check-confirm-modal').is(":checked"))
@@ -173,6 +180,7 @@
         }
     });
 </script>
+
 <script>
     var _map;
     var _lat = -25.647467468105795;
@@ -205,7 +213,7 @@
         
         _map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: _lat, lng:  _long},
-            zoom: 2
+            zoom: 3
         });
     
         for (var i = 0; i < datas.length; i++) {

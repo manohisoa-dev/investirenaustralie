@@ -339,3 +339,9 @@ a.compose-mail {
   font-size:14px;
   content: url('../images/ico/cocarde.png')
 }
+
+.new-programme-solicitor{
+  margin-left: 1rem;
+  margin-bottom: -1rem;
+  font-size: 18px;
+}

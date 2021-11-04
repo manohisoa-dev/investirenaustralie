@@ -114,9 +114,9 @@
                                                 </div>
                                                 @if (session('seller_class')!=='non_professional_legal_persons')
                                                     <div class="form-group">
-                                                        <label for="orga_parent_name" class="col-sm-12 control-label">@lang('app.txt.businessparentname') *</label>
+                                                        <label for="orga_parent_name" class="col-sm-12 control-label">@lang('app.txt.businessparentname')</label>
                                                         <div class="col-sm-12">
-                                                            <input type="text" class="form-control" id="orga_parent_name" name="orga_parent_name" placeholder="@lang('app.txt.businessparentname.placeholder')" value="{{ old('orga_parent_name')?old('orga_parent_name'):'' }}" required>
+                                                            <input type="text" class="form-control" id="orga_parent_name" name="orga_parent_name" placeholder="@lang('app.txt.businessparentname.placeholder')" value="{{ old('orga_parent_name')?old('orga_parent_name'):'' }}">
                                                             <span class="text-danger">{{ $errors->first('orga_parent_name') }}</span>
                                                         </div>
                                                     </div>
@@ -858,9 +858,9 @@
                 minlength:9,
                 maxlength:9
             },
-            orga_parent_name: {
-                required: true,
-            },
+            // orga_parent_name: {
+            //     required: true,
+            // },
             // orga_email: {
             //     required: true,
             //     email:true,
@@ -1007,9 +1007,9 @@
             orga_abn: {
                 required: "@lang('app.txt.champobligatoire')",
             },
-            orga_parent_name: {
-                required: "@lang('app.txt.champobligatoire')",
-            },
+            //orga_parent_name: {
+            //    required: "@lang('app.txt.champobligatoire')",
+            //},
             orga_phone: {
                 required: "@lang('app.txt.champobligatoire')",
                 le: '@lang("app.txt.value_already_used")'

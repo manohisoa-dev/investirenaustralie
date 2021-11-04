@@ -213,17 +213,46 @@
 								</select>
 							</div> 
 						</div>
-						<div class="col-lg-4">
-							<div class="form-group">
-								<label for="title">@lang('app.form.programme_solicitor')</label>
-								<select class="form-control" name="solicitor_id" id="solicitor_id" style="width:100%">
-									@foreach(\App\Models\Solicitor::where('vendeur_id',Auth::id())->get() as $solicitor)
-										<option value="{{$solicitor->id}}">{{$solicitor->cabinet_name}}</option>
-									@endforeach
-								</select>
-							</div> 
-						</div>
+						{{--<div class="col-lg-4">--}}
+							{{--<div class="form-group">--}}
+								{{--<label for="title">@lang('app.form.programme_solicitor')</label>--}}
+								{{--<select class="form-control" name="solicitor_id" id="solicitor_id" style="width:100%">--}}
+									{{--@foreach(\App\Models\Solicitor::where('vendeur_id',Auth::id())->get() as $solicitor)--}}
+										{{--<option value="{{$solicitor->id}}">{{$solicitor->cabinet_name}}</option>--}}
+									{{--@endforeach--}}
+								{{--</select>--}}
+							{{--</div> --}}
+						{{--</div>--}}
 					</div>
+					@if(Auth::user()->isSbaBusiness() || Auth::user()->isSbaIndividual())
+						<hr>
+						<div class="row">
+							<div class="form-group">
+								<h4 class="new-programme-solicitor">@lang('app.form.programme_solicitor')</h4>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label for="title">Nom du cabinet *</label>
+									<input name="cabinet_name" id="cabinet_name" class="form-control" type="text" value="{{ old('cabinet_name')?old('cabinet_name'):'' }}" required>
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label for="title">Email cabinet *</label>
+									<input name="cabinet_email" id="cabinet_email" class="form-control" type="email" value="{{ old('cabinet_email')?old('cabinet_email'):'' }}" required>
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label for="title">Tel *</label>
+									<input name="cabinet_phone" id="cabinet_phone" class="form-control" type="text" value="{{ old('cabinet_phone')?old('cabinet_phone'):'' }}" required>
+								</div>
+							</div>
+						</div>
+						<hr>
+					@endif
 					
 					<div class="row">
 						<div class="col-lg-6">
@@ -393,8 +422,32 @@ function initMap(){
 </script>
 
 <script>
+    // fonction qui permet de mettre à jour les types de produits même sy on actualise la page
+    function updateTypeOfProduct(){
+        var catProgrammeId = $('#cat_programmme_id').val() ;
+        if(catProgrammeId.length && catProgrammeId != 0){
+            $.ajax({
+                type:'POST',
+                url:"{{ route('ajaxGetTypeProduitCategorie') }}",
+                data: {"_token": "{{ csrf_token() }}","categoryId": catProgrammeId, "type_id_active": 0},
+                success:function(data) {
+                    console.log(data);
+                    $('#type_id').html(data);
+                    $('#product_type_id').html(data);
+
+                }
+            });
+        }
+    }
 	Dropzone.autoDiscover = false;
 	$(document).ready(function(){
+        var catProgrammeElmt = $('#cat_programmme_id') ;
+
+        if(catProgrammeElmt.length){
+            updateTypeOfProduct() ;
+        }
+
+
 		$.validator.setDefaults({
 			ignore: []
 		});	
@@ -437,19 +490,7 @@ function initMap(){
 		//$("#type_id").select2();
 		
 		$('#cat_programmme_id').on('change', function() {
-			var category = this.value;
-			$.ajax({
-			   type:'POST',
-			   url:"{{ route('ajaxGetTypeProduitCategorie') }}",
-			   data: {"_token": "{{ csrf_token() }}","categoryId": category, "type_id_active": 0,"cat":0},
-			   success:function(data) {
-				  console.log(data);
-				  $('#type_id').html(data);
-				  $('#product_type_id').html(data);
-				  
-			   }
-			});
-		});
+			updateTypeOfProduct() ;		});
 		
 		$("#fond_dossier").dropzone({
 			maxFiles: 25, 
