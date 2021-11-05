@@ -653,3 +653,12 @@ if (!function_exists('setLinkDynamic')) {
         return link_to_asset($path_file,$label_link);
     }
 }
+
+if (!function_exists('countryLongName')) {
+    function countryLongName($code)
+    {
+        $ct = App\Models\Country::select('content')->where('code',$code)->first();
+        $content = $ct->content;
+        return $content;
+    }
+}

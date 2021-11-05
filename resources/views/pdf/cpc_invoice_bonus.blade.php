@@ -108,38 +108,38 @@
         </div>
 		<p style="width:100%; text-align:right">IEA, {{Carbon\Carbon::now()->toFormattedDateString()}}</p>
 		
-		<h4>INVOICE N° IICC/{IEA} (ou {IENZ} pour la NZ)/{Année courante système}-{n° de facture incrémenté d'une unité à chaque nouvelle facture}/En</h4>
+		<h4>INVOICE N° {{ $invoice_num }}/En</h4>
 	  <div class="pdf-content-p1">
-			<h4><u>Transaction file reference</u> : {RES/FON/IND/COM–xxxxx}</h4>
-			<h4><u>Subject</u> : purchase of a property in {Nom programme} (ou {Nom Produit Isolé})</h4>
+			<h4><u>Transaction file reference</u> : {{ $dossTrans->numero }}</h4>
+			<h4><u>Subject</u> : purchase of a property in {{ $product->title }}</h4>
 			<table class="table table-bordered">
 				<tr>
-					<td>State : {<em>Nom  Etat</em>}</td>
-					<td>City : {<em>Nom  Ville</em>}</td>
+					<td>State : <em>{{$product->location->area_level_1}}</em></td>
+					<td>City : <em>{{$product->location->locality}}</em></td>
 				</tr>
 				<tr>
-					<td>Buyer : Member {<em>MEM-xxxxx</em>}  - {<em>PrénomMembre</em>} {<em>Nom Membre</em>} / {<em>Nom de l'organisation</em>}</td>
-					<td>Seller : {<em>Nom  Vendeur</em>} (éventuellement {<em>Nom maison  mère</em>})</td>
+					<td>Buyer : Member <em>{{$member->immat}}</em>  - <em>{{$member_name}}</em></td>
+					<td>Seller : <em>{{$seller->name}}</em> (éventuellement  <em>{{$seller->userinfos->orga_parent_name}}</em>)</td>
 				</tr>
 				<tr>
-					<td>Sales price : ${<em>Prix  Vente</em>}</td>
-					<td>Bonus : {Bonus AFA}</td>
+					<td>Sales price : $<em>{{number_format($order->final_sales_price, 2, ',',' ')}}</em></td>
+					<td>Bonus : {{number_format($order->montant_bonus, 2, ',',' ')}}</td>
 				</tr>
 				<tr>
-					<td>Sales bonus distribution key : <em>{Clé Répartition IEA Commission AFA}</em></td>
-					<td><strong>Bonus shareattributable to {<em>Nom  société gestionnaire IEA</em>} : {<em>Bonus  IICC</em>}</strong></td>
+					<td>Sales bonus distribution key : <em>{{$reglage->seuil_value}}{{$reglage->seuil_unite}}</em></td>
+					<td><strong>Bonus share attributable to <em>{{$iicc['iicc_name']->value}}</em> : <em>{{number_format($bonusIicc, 2, ',',' ')}}</em></strong></td>
 				</tr>
 			</table>
 
 			<p>Consequently, in application of our "Investir en Australie" partnership contract,</p>
-			<p>The agency {Nom AFA}</p>
+			<p>The agency {{$afa->name}}</p>
 			<p>owes</p>
-			<p>to {Nom société gestionnaire IEA}, managing company of "Investir en Australie" portal the amount of the "Commission de Présentation de Clentèle" on the bonus :</p>
-			<h4 style="text-align:center">{Bonus IICC} (en toutes lettres) Dollars Australiens ({$Bonus IICC}) (en chiffres précédé du signe $)</h4>
-			<p>For your kind payment within the period of FIFTEEN DAYS (15 days) following the perception by {Nom AFA} of the sales commission due by the seller, please use the link <a href="#"><strong>CPC ON COMMISSION SECOND/LAST PAYMENT</strong></a> included in the accompanying message.</p>
+			<p>to {{$iicc['iicc_name']->value}}, managing company of "Investir en Australie" portal the amount of the "Commission de Présentation de Clentèle" on the bonus :</p>
+			<h4 style="text-align:center">{{ucfirst($bonusIiccToLetter)}} Dollars Australiens ($ {{number_format($bonusIicc, 2, ',',' ')}})</h4>
+			<p>For your kind payment within the period of FIFTEEN DAYS (15 days) following the perception by {{$afa->name}} of the sales commission due by the seller, please use the link <a href="#"><strong>CPC ON COMMISSION SECOND/LAST PAYMENT</strong></a> included in the accompanying message.</p>
 			<p>Awaiting the payment of the above amount, and with ourwarmest congratulations.</p>
-			<p>{Nom gérant société gestionnaire IEA}</p>
-			<p>Director of {Nom société gestionnaire IEA}</p>
+			<p>{{$iicc['iicc_dir']->value}}</p>
+			<p>Director of {{$iicc['iicc_name']->value}}</p>
 			<p><img src="{{asset('images/icc.png')}}" alt="iicc">
 			<p style="text-align:center">
 				 	International Internet Commerce & Consulting Sarl <br>

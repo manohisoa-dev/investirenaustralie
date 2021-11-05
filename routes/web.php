@@ -315,6 +315,9 @@ Route::prefix('afa')->middleware(["auth","role:3"])->group(function(){
     Route::post('dossier/initial_deposit_confirm', 'DossierController@initialDepositConfirm')->name('afa.dossier.initialDepositConfirm');
     Route::post('dossier/resend_couriel_initial_deposit_confirm', 'DossierController@resendCourielInitialDepositConfirm')->name('afa.dossier.resendCourielInitialDepositConfirm');
     Route::post('dossier/resend_eoi_to_seller', 'DossierController@resendEoiToSeller')->name('afa.dossier.resend_eoi_to_seller');
+    Route::post('dossier/cpc_on_commission_first_payement', 'DossierController@setCpcOnCommissionFirstPayment')->name('afa.dossier.setCpcOnCommissionFirstPayment');
+    Route::post('dossier/cpc_on_commission_second_payement', 'DossierController@setCpcOnCommissionSecondPayment')->name('afa.dossier.setCpcOnCommissionSecondPayment');
+    Route::post('dossier/cpc_on_bonus_payment', 'DossierController@setCpcOnBonusPayment')->name('afa.dossier.setCpcOnBonusPayment');
 
     Route::get('transactions', 'AfaController@transactions')->name('afa.transaction');
 });
