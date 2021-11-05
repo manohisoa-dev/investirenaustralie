@@ -1076,6 +1076,16 @@ class ProductController extends Controller {
 
 
         $product->save();
+
+        // update solicitor info
+        if(isset($request->solicitor_id) && $request->solicitor_id != 0){
+            $solicitor = Solicitor::find($request->solicitor_id) ;
+
+            $solicitor->cabinet_name = $request->cabinet_name ;
+            $solicitor->cabinet_email = $request->cabinet_email ;
+            $solicitor->cabinet_phone= $request->cabinet_phone ;
+            $solicitor->save() ;
+        }
         return redirect()->route('mes-produits')->with('success',
             "Produit a été créer avec succès");
     }
@@ -1677,6 +1687,16 @@ class ProductController extends Controller {
                     $this->save_photo_programme($value, $id_produit, 0);
                 }
             }
+        }
+
+        // save Solicitor info
+        if($request->cabinet_name && $request->cabinet_email && $request->cabinet_phone){
+            $solicitor = new Solicitor();
+            $solicitor->cabinet_name = $request->cabinet_name;
+            $solicitor->cabinet_email = $request->cabinet_email;
+            $solicitor->cabinet_phone = $request->cabinet_phone;
+            $solicitor->vendeur_id = Auth::user()->id;
+            $solicitor->save();
         }
 
 

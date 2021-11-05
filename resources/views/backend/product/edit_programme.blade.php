@@ -215,37 +215,35 @@
 										{{--</div> --}}
 									{{--</div>--}}
 								</div>
-								@if(Auth::user()->isSbaBusiness() || Auth::user()->isSbaIndividual() && $solicitor != "")
-									<hr>
-									<div class="row">
+								<hr>
+								<div class="row">
+									<div class="form-group">
+										<h4 class="new-programme-solicitor">@lang('app.form.programme_solicitor')</h4>
+									</div>
+								</div>
+								<input type="hidden" id="solicitor_id" name="solicitor_id" value="{{$solicitor->id}}">
+								<div class="row">
+									<div class="col-lg-4">
 										<div class="form-group">
-											<h4 class="new-programme-solicitor">@lang('app.form.programme_solicitor')</h4>
+											<label for="title">Nom du cabinet *</label>
+											<input name="cabinet_name" id="cabinet_name" class="form-control" type="text" value="{{ old('cabinet_name')?old('cabinet_name'):($solicitor ? $solicitor->cabinet_name : "") }}" required>
 										</div>
 									</div>
-									<input type="hidden" id="solicitor_id" name="solicitor_id" value="{{$solicitor->id}}">
-									<div class="row">
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">Nom du cabinet *</label>
-												<input name="cabinet_name" id="cabinet_name" class="form-control" type="text" value="{{ old('cabinet_name')?old('cabinet_name'):($solicitor ? $solicitor->cabinet_name : "") }}" required>
-											</div>
-										</div>
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">Email cabinet *</label>
-												<input name="cabinet_email" id="cabinet_email" class="form-control" type="email" value="{{ old('cabinet_email')?old('cabinet_email'):($solicitor ? $solicitor->cabinet_email : "") }}" required>
-											</div>
-										</div>
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">Tel *</label>
-												<input name="cabinet_phone" id="cabinet_phone" class="form-control" type="text" value="{{ old('cabinet_phone')?old('cabinet_phone'):($solicitor ? $solicitor->cabinet_phone : "") }}" required>
-											</div>
+									<div class="col-lg-4">
+										<div class="form-group">
+											<label for="title">Email cabinet *</label>
+											<input name="cabinet_email" id="cabinet_email" class="form-control" type="email" value="{{ old('cabinet_email')?old('cabinet_email'):($solicitor ? $solicitor->cabinet_email : "") }}" required>
 										</div>
 									</div>
-									<hr>
-								@endif
-								
+									<div class="col-lg-4">
+										<div class="form-group">
+											<label for="title">Tel *</label>
+											<input name="cabinet_phone" id="cabinet_phone" class="form-control" type="text" value="{{ old('cabinet_phone')?old('cabinet_phone'):($solicitor ? $solicitor->cabinet_phone : "") }}" required>
+										</div>
+									</div>
+								</div>
+								<hr>
+
 								<div class="row">
 									<div class="col-lg-6">
 										<div class="form-group">
