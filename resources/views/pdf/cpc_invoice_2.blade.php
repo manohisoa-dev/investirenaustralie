@@ -150,7 +150,7 @@
 						<table class="table table-bordered">
 							<tr>
 								<td width="50%">Sales commission distribution key : <em>{{$reglage->seuil_value}}{{$reglage->seuil_unite}}</em></td>
-								<td><strong>Total &quot;<em>Commission de  Présentation de Clentèle</em>&quot;<em> - CPC</em>attributable  to <em>{{$iicc['iicc_name']->value}}</em> :  $<em>{{number_format($cpc, 2, ',',' ')}}</em></strong></td>
+								<td><strong>Total &quot;<em>Commission de  Présentation de Clientèle</em>&quot;<em> - CPC</em> attributable  to <em>{{$iicc['iicc_name']->value}}</em> :  $<em>{{number_format($cpc, 2, ',',' ')}}</em></strong></td>
 							</tr>
 						</table>
 					</td>

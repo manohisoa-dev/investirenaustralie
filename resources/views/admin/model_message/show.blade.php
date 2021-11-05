@@ -46,7 +46,7 @@
                     </li>
                     <li class="list-group-item">
                         <h4>Message</h4>
-                        <h5>{!! $modelMessage->message !!}</h5>
+                        <h5>{!! $modelMessage->message_fr !!}</h5>
                     </li>
                     <li class="list-group-item">
                         <h4>Created At</h4>

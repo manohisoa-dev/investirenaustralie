@@ -1563,4 +1563,6 @@ return
     'txt.choose_state' => 'Choisir Etat',
     'txt.required_valeur' => 'Entrer des valeurs',
     'txt.autocomplete_error' => 'Veuillez choisir une adresse valide selon la suggéstion de google',
+	'txt.cpc_on_commission_first_payement' => 'CPC sur commission premier paiement',
+	'txt.cpc_on_commission_second_payement' => 'CPC sur commission deuxième/dernier paiement',
 ];

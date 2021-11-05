@@ -1200,6 +1200,8 @@ return
 	'txt.resent_error' => 'Resent error !',
 	'cancel_registration_confirme' => 'Are you sure you want to cancel ?',
 	'txt.sent_eoi_finalized' => 'Return the finalized Expression Of Interest document',
+	'txt.cpc_on_commission_first_payement' => 'Cpc on commission first payement',
+	'txt.cpc_on_commission_second_payement' => 'Cpc on commission second/last payement',
 
 	'txt.upload_error' => 'Upload error!',
 	'txt.dossier.i_would_like_to_buy_this' => 'I would like to buy this property',

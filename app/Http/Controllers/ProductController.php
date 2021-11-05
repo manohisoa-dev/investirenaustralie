@@ -336,39 +336,41 @@ class ProductController extends Controller {
 
     public function ajaxGetTypeProduitCategorie(Request $request) {
         $cat = $request->cat;
-        if($cat == 1){
+        if ($cat == 1) {
             //pour les produit autonome
-            if($request->categoryId == 2){
-                $typePrd = Type::where('categories_id', $request->categoryId)->where('is_autonome',1)->get();
-            }else{
+            if ($request->categoryId == 2) {
+                $typePrd = Type::where('categories_id', $request->categoryId)->where('is_autonome',
+                    1)->get();
+            } else {
                 $typePrd = Type::where('categories_id', $request->categoryId)->get();
-            }            
-        }else{
+            }
+        } else {
             //pour les programme
-            if($request->categoryId == 2){
-                $typePrd = Type::where('categories_id', $request->categoryId)->where('is_autonome',0)->get();
-            }else{
+            if ($request->categoryId == 2) {
+                $typePrd = Type::where('categories_id', $request->categoryId)->where('is_autonome',
+                    0)->get();
+            } else {
                 $typePrd = Type::where('categories_id', $request->categoryId)->get();
-            }   
+            }
         }
-        
+
         $lang = App::getLocale();
-        if($lang == 'en'){
+        if ($lang == 'en') {
             $lib_title = 'title_en';
-        }else{
+        } else {
             $lib_title = 'title';
         }
-        
-        
 
-        $output = '<option value="">'.trans('app.form.choix_txt').'...</option>';
+
+        $output = '<option value="">' . trans('app.form.choix_txt') . '...</option>';
         foreach ($typePrd as $val) {
             if ($val->id == $request->type_id_active) {
                 $type_active = 'selected="selected"';
             } else {
                 $type_active = '';
             }
-            $output .= '<option value="' . $val->id . '" ' . $type_active . '>' .$val->$lib_title . '</option>';
+            $output .= '<option value="' . $val->id . '" ' . $type_active . '>' . $val->$lib_title .
+                '</option>';
         }
         return response()->json($output);
     }
@@ -498,11 +500,12 @@ class ProductController extends Controller {
         }
     }
 
-    function save_location($country, $suburb, $postalCode, $locality, $route, $longitude =
-        '', $latitude = '') {
+    function save_location($country, $state, $suburb, $postalCode, $locality, $route,
+        $longitude = '', $latitude = '') {
         $location = new Localisation();
         $location->country = $country;
-        $location->area_level_1 = $suburb;
+        $location->area_level_1 = $state;
+        $location->area_level_2 = $suburb;
         $location->postalCode = $postalCode;
         $location->longitude = $longitude;
         $location->latitude = $latitude;
@@ -650,7 +653,7 @@ class ProductController extends Controller {
             $seller_id = $user->id;
             $titre_programme = $request->title_programme;
 
-            $afa_possible = DB::select("SELECT `users`.id as id_afa FROM `users` LEFT JOIN `localizations` ON `users`.`location_id` = `localizations`.`id` WHERE `users`.`role` = 3 and `localizations`.`postalCode` = '$request->postalCode'");
+            $afa_possible = DB::select("SELECT `users`.id as id_afa FROM `users` LEFT JOIN `localizations` ON `users`.`location_id` = `localizations`.`id` WHERE `users`.`role` = 3 and `localizations`.`locality` = '$request->ville'");
             if (count($afa_possible) > 0) {
                 $tab_afa = array();
                 foreach ($afa_possible as $val) {
@@ -676,8 +679,11 @@ class ProductController extends Controller {
 "]);
         }
 
-        $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
-            $request->ville, $request->display_address, $request->long, $request->lat);
+        $state = State::where('id', $request->state_id)->first();
+
+        $id_location = $this->save_location($request->countryId, $state->content, $request->suburb,
+            $request->postalCode, $request->ville, $request->display_address, $request->long,
+            $request->lat);
 
         if ($request->commision == 'Sales commission rate (%)') {
             $taux_commision = $request->sales_rate;
@@ -694,7 +700,7 @@ class ProductController extends Controller {
             $seller_id);
 
         // save Solicitor info
-        if($request->cabinet_name && $request->cabinet_email && $request->cabinet_phone){
+        if ($request->cabinet_name && $request->cabinet_email && $request->cabinet_phone) {
             $solicitor = new Solicitor();
             $solicitor->cabinet_name = $request->cabinet_name;
             $solicitor->cabinet_email = $request->cabinet_email;
@@ -743,8 +749,10 @@ class ProductController extends Controller {
             //envoie email à l'AFA
             $this->send_email_afa_proprietaire_after_creat_produit($id_programme, $id_afa);
         }
-        //envoie message à l'admin
-        $this->sendMessage_admin_after_create_programme($id_programme);
+        if (count($afa_possible) == 0) {
+            //envoie message à l'admin pour lui dire fa tsis AFA
+            $this->sendMessage_admin_after_create_programme($id_programme);
+        }
 
         # notification
         return redirect()->route('mes-programmes')->with('success',
@@ -877,9 +885,9 @@ class ProductController extends Controller {
             'product_lia.image_id', '=', 'images.id')->select('*',
             'product_lia.id as prdLiaId')->get();
 
-        $solicitor = "" ;
-        if(Auth::user()->isSbaBusiness() || Auth::user()->isSbaIndividual()){
-            $solicitor = Solicitor::where('vendeur_id', Auth::id())->first() ;
+        $solicitor = "";
+        if (Auth::user()->isSbaBusiness() || Auth::user()->isSbaIndividual()) {
+            $solicitor = Solicitor::where('vendeur_id', Auth::id())->first();
         }
 
         return view('backend.product.edit_programme', ['product' => $product,
@@ -925,12 +933,14 @@ class ProductController extends Controller {
                     'locality' => $request->ville, 'route' => $request->display_address, 'longitude' =>
                     $longitude, 'latitude' => $latitude]);
                 $id_location = $product->location_id;
-            }else{
-                $id_location = $request->location_Id ;
+            } else {
+                $id_location = $request->location_Id;
             }
         } else {
-            $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
-                $request->ville, $request->display_address, $request->long, $request->lat);
+            $state = State::where('id', $request->state_id)->first();
+            $id_location = $this->save_location($request->countryId, $state->content, $request->suburb,
+                $request->postalCode, $request->ville, $request->display_address, $request->long,
+                $request->lat);
         }
 
         if ($request->commision == 'Sales commission rate (%)') {
@@ -957,20 +967,19 @@ class ProductController extends Controller {
         $product->save();
 
         // update solicitor info
-        if(isset($request->solicitor_id) && $request->solicitor_id != 0){
-            $solicitor = Solicitor::find($request->solicitor_id) ;
+        if (isset($request->solicitor_id) && $request->solicitor_id != 0) {
+            $solicitor = Solicitor::find($request->solicitor_id);
 
-            $solicitor->cabinet_name = $request->cabinet_name ;
-            $solicitor->cabinet_email = $request->cabinet_email ;
-            $solicitor->cabinet_phone= $request->cabinet_phone ;
-            $solicitor->save() ;
+            $solicitor->cabinet_name = $request->cabinet_name;
+            $solicitor->cabinet_email = $request->cabinet_email;
+            $solicitor->cabinet_phone = $request->cabinet_phone;
+            $solicitor->save();
         }
 
         // // update translation
         // updateTranslate('programme',$product,$request->description);
 
         return redirect()->route('edit.programme', $product->id)->with('success',
-
             "Produit mise à jour avec succès");
     }
 
@@ -989,9 +998,10 @@ class ProductController extends Controller {
                 $id_location = $product->location_id;
             }
         } else {
-            $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
-                $request->postalCode_product, $request->ville_product, $request->display_address,
-                $request->long, $request->lat);
+            $state = State::where('id', $request->state_id)->first();
+            $id_location = $this->save_location($request->countryId_product, $state->content,
+                $request->suburb_product, $request->postalCode_product, $request->ville_product,
+                $request->display_address, $request->long, $request->lat);
         }
 
         if ($request->commision_product == 'Sales commission rate (%)') {
@@ -1094,7 +1104,7 @@ class ProductController extends Controller {
         $type_id, $cat_programmme_id, $postalCode, $state_id, $programme_id, $location_id,
         $superficie_jardin, $avoir_parking_voie_public, $avoir_piscine, $type_commission,
         $taux_commission, $commencement_dt, $estimated_delvivery_dt, $avoir_bonus, $mt_bonus,
-        $property_detail, $nb_parking_spots, $min_area, $max_area, $programme_firb_pre_approved_program) {
+        $property_detail, $nb_parking_spots, $min_area, $max_area, $programme_firb_pre_approved_program,$id_afa) {
 
         $product = new Product();
         $lastId = Product::latest('id')->first();
@@ -1156,6 +1166,7 @@ class ProductController extends Controller {
         $product->max_area = $max_area;
         $product->programme_firb_pre_approved = $programme_firb_pre_approved_program;
         $product->validated_at = Carbon::now();
+        $product->afaId_possible = $id_afa;
         $product->save();
 
         // // save translation
@@ -1165,9 +1176,10 @@ class ProductController extends Controller {
     }
 
     public function ajaxSaveProduct(Request $request) {
-        $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
-            $request->postalCode_product, $request->ville_product, $request->display_address_product,
-            $request->long, $request->lat);
+        $state = State::where('id', $request->state_id_product)->first();
+        $id_location = $this->save_location($request->countryId_product, $state->content,
+            $request->suburb_product, $request->postalCode_product, $request->ville_product,
+            $request->display_address_product, $request->long, $request->lat);
         $titre_product = $request->title_new_programme . '-' . $request->title_product;
 
         if (isset($request->chk_parking)) {
@@ -1239,9 +1251,10 @@ class ProductController extends Controller {
                 $id_location = $product->location_id;
             }
         } else {
-            $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
-                $request->postalCode_product, $request->ville_product, $request->display_address_product,
-                $request->long, $request->lat);
+            $state = State::where('id', $request->state_id_product)->first();
+            $id_location = $this->save_location($request->countryId_product, $state->content,
+                $request->suburb_product, $request->postalCode_product, $request->ville_product,
+                $request->display_address_product, $request->long, $request->lat);
         }
 
         $titre_product = $request->title_product;
@@ -1327,9 +1340,38 @@ class ProductController extends Controller {
     }
 
     public function saveProduct(Request $request) {
+        $user = Auth::user();
+        if ($user->isSbaBusiness() || $user->isSbaIndividual()) {
+            $prefix = User::whereId($user->afa_id)->first();
+            $seller_id = $prefix->id;
+            $id_afa_p = $seller_id;
+        } else {
+            $seller_id = $user->id;
+            $afa_possible = DB::select("SELECT `users`.id as id_afa FROM `users` LEFT JOIN `localizations` ON `users`.`location_id` = `localizations`.`id` WHERE `users`.`role` = 3 and `localizations`.`locality` = '$request->ville_product'");
+            if (count($afa_possible) > 0) {
+                $tab_afa = array();
+                foreach ($afa_possible as $val) {
+                    $tab_afa[] = $val->id_afa;
+                }
+                $id_afa_p = implode(', ', $tab_afa);
+            } else {
+                $id_afa_p = 0;
+            }
+        }
+
         $categorie = $request->cat_programmme_id;
         $anciennete = $request->ancienneteBien;
         $nature = '';
+
+        $produit_existe = Product::where('display_address', $request->display_address_product)->where('category_id',
+            $request->cat_programmme_id)->where('type_id', $request->product_type_id)->where('parent_id',
+            -1)->get();
+
+        if (count($produit_existe) > 0) {
+            return back()->withInput()->withErrors(['msg' =>
+                "We're sorry, but it appears that this product has already been registered or is on its way to be registered.\n Your program cannot be registered and your program registration form will be deleted.
+"]);
+        }
 
         if (isset($request->chk_parking)) {
             $avoir_parking = 1;
@@ -1347,9 +1389,11 @@ class ProductController extends Controller {
             //enregistrement categorie résidentiel
             if ($anciennete == 'Neuf') {
                 if ($nature == 'Programme immobilier') {
+                    dd('1');
                     //creation location
-                    $id_location = $this->save_location($request->countryId, $request->suburb, $request->postalCode,
-                        $request->ville, $request->display_address);
+                    $state = State::where('id', $request->state_id_product)->first();
+                    $id_location = $this->save_location($request->countryId, $state->content, $request->suburb,
+                        $request->postalCode, $request->ville, $request->display_address);
                     if ($request->commision == 'Sales commission rate (%)') {
                         $taux_commision = $request->sales_rate;
                     } else {
@@ -1413,10 +1457,13 @@ class ProductController extends Controller {
                         $taux_commision_prd, '', '', $request->bonus_vente, $request->bonus_amount, '',
                         0, 0, 0);
                 } else {
+                    
                     //enregistrement produit autonome de Résidance new
-                    $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
-                        $request->postalCode_product, $request->ville_product, $request->display_address_product,
-                        $request->long, $request->lat);
+                    $state = State::where('id', $request->state_id_product)->first();
+                    dd($state->content);
+                    $id_location = $this->save_location($request->countryId_product, $state->content,
+                        $request->suburb_product, $request->postalCode_product, $request->ville_product,
+                        $request->display_address_product, $request->long, $request->lat);
                     if ($request->commision_product == 'Sales commission rate (%)') {
                         $taux_commision_prd = $request->sales_rate_product;
                     } else {
@@ -1458,9 +1505,10 @@ class ProductController extends Controller {
                 }
             } else {
                 //save produit autonome catégorie résidence de type old
-                $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
-                    $request->postalCode_product, $request->ville_product, $request->display_address_product,
-                    $request->long, $request->lat);
+                $state = State::where('id', $request->state_id_product)->first();
+                $id_location = $this->save_location($request->countryId_product, $state->content,
+                    $request->suburb_product, $request->postalCode_product, $request->ville_product,
+                    $request->display_address_product, $request->long, $request->lat);
                 if ($request->commision_product == 'Sales commission rate (%)') {
                     $taux_commision_prd = $request->sales_rate_product;
                 } else {
@@ -1502,9 +1550,10 @@ class ProductController extends Controller {
             }
         } elseif ($categorie == 2) {
             //enregistrement produit autonome de catégorie FONCIER (LAND)
-            $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
-                $request->postalCode_product, $request->ville_product, $request->display_address_product,
-                $request->long, $request->lat);
+            $state = State::where('id', $request->state_id_product)->first();
+            $id_location = $this->save_location($request->countryId_product, $state->content,
+                $request->suburb_product, $request->postalCode_product, $request->ville_product,
+                $request->display_address_product, $request->long, $request->lat);
 
             if ($request->commision_product == 'Sales commission rate (%)') {
                 $taux_commision_prd = $request->sales_rate_product;
@@ -1544,9 +1593,10 @@ class ProductController extends Controller {
             }
         } elseif ($categorie == 3) {
             //produit industriel
-            $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
-                $request->postalCode_product, $request->ville_product, $request->display_address_product,
-                $request->long, $request->lat);
+            $state = State::where('id', $request->state_id_product)->first();
+            $id_location = $this->save_location($request->countryId_product, $state->content,
+                $request->suburb_product, $request->postalCode_product, $request->ville_product,
+                $request->display_address_product, $request->long, $request->lat);
 
             if ($request->commision_product == 'Sales commission rate (%)') {
                 $taux_commision_prd = $request->sales_rate_product;
@@ -1585,9 +1635,10 @@ class ProductController extends Controller {
             }
         } elseif ($categorie == 4) {
             //produit commercial
-            $id_location = $this->save_location($request->countryId_product, $request->suburb_product,
-                $request->postalCode_product, $request->ville_product, $request->display_address_product,
-                $request->long, $request->lat);
+            $state = State::where('id', $request->state_id_product)->first();
+            $id_location = $this->save_location($request->countryId_product, $state->content,
+                $request->suburb_product, $request->postalCode_product, $request->ville_product,
+                $request->display_address_product, $request->long, $request->lat);
             if ($request->commision_product == 'Sales commission rate (%)') {
                 $taux_commision_prd = $request->sales_rate_product;
             } else {

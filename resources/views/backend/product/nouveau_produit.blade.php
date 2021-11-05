@@ -35,7 +35,7 @@
 									<select class="form-control" name="cat_programmme_id" id="cat_programmme_id">
 										<option value="">@lang('app.form.choix_txt')</option>
 										@foreach(\App\Models\Category::all() as $category)
-											<option value="{{$category->id}}">{{ trans('app.txt.'.$category->title) }}</option>
+											<option value="{{$category->id}}">{{getGTranslateAutoDetect( App::getLocale() ,$category->title)}}</option>
 										@endforeach
 									</select>
 								</div>
