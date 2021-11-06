@@ -1472,6 +1472,28 @@ class User extends Authenticatable {
             '>=', Carbon::now())->get();
     }
 
+    public function currentDateRelationApl() {
+        $res = RelationMembreApl::where('membre_id',$this->id)
+        ->max('dt_debut_relation');
+        
+        if(count($res) > 0){
+            return $res;
+        }
+
+        return '';
+    }
+
+    public function currentRelationApl() {
+        $res = RelationMembreApl::where('membre_id',$this->id)
+        ->orderBy('dt_debut_relation','DESC')->first();
+        
+        if(count($res) > 0){
+            return $res;
+        }
+
+        return '';
+    }
+
     public function isCheckedDossierTransaction($prod_id) {
         $dosTransUser = DossierTransaction::where('user_id', $this->id)->where('product_id',
             $prod_id)->first();
@@ -1570,13 +1592,13 @@ class User extends Authenticatable {
     }
 
     public function getDossierTransaction() {
-        $dossierTrans = DossierTransaction::where('user_id', $this->id)->where('status','!=',14);
+        $dossierTrans = DossierTransaction::where('user_id', $this->id)->where('status','<=',16);
 
         return $dossierTrans;
     }
     
     public function getDossierTransactionAfa() {
-        $dossierTrans = DossierTransaction::where('afa_id', $this->id)->where('status','!=',14);
+        $dossierTrans = DossierTransaction::where('afa_id', $this->id)->where('status','<=',16);
 
         return $dossierTrans;
     }

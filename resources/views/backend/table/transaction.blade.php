@@ -70,8 +70,14 @@
                     @elseif ($trans->status == 9 )
                         <a href="javascript:void(0)" onclick="submitFile()" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.sent_eoi_finalized')}}</a>
                     @elseif ($trans->status == 12 )
-                        <small class="badge-warning" style="margin-bottom:5px;padding:10px;">@lang('app.txt.waiting_initial_deposit') </small>
+                        <small class="text-info" style="margin-bottom:5px;padding:10px;">@lang('app.txt.waiting_initial_deposit') </small>
                     @elseif ($trans->status == 13 )
+                        <small class="text-info" style="margin-bottom:5px;padding:10px;">@lang('app.txt.awaiting_payment_of_the_first_cpc') </small>
+                    @elseif ($trans->status == 14 )
+                        <small class="text-info" style="margin-bottom:5px;padding:10px;">@lang('app.txt.awaiting_payment_of_the_second_cpc') </small>
+                    @elseif ($trans->status == 15 )
+                        <small class="text-info" style="margin-bottom:5px;padding:10px;">@lang('app.txt.awaiting_payment_of_the_bonus_cpc') </small>
+                    @elseif ($trans->status == 16 )
                         <small class="badge-success" style="margin-bottom:5px;padding:10px;">@lang('app.txt.end_of_transaction') </small>
                     @else
                         <a href="javascript:void(0)" class="m-btn m-btn-theme m-btn-sm" disabled>{{$btnText}}</a>
@@ -102,7 +108,14 @@
                     @elseif ($trans->status == 12 )
                         <a href="javascript:void(0)" onclick="initialDepositConfirm({{$trans->id}})" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.initial_deposit_confirmation')}}</a>
                     @elseif ($trans->status == 13 )
-                        <a href="javascript:void(0)" onclick="resendCourielInitialDepositConfirm({{$trans->id}})" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.initial_deposit_confirmation')}}</a>
+                        <a href="javascript:void(0)" onclick="resendCourielInitialDepositConfirm({{$trans->id}})" class="m-btn m-btn-theme2nd m-btn-sm" style="margin-bottom:5px;">{{trans('app.txt.initial_deposit_confirmation')}}</a>
+                        <a href="javascript:void(0)" onclick="setCpcOnCommissionFirstPayment({{$trans->id}})" class="m-btn m-btn-theme4rd m-btn-sm">{{trans('app.txt.cpc_on_commission_first_payement')}}</a>
+                    @elseif ($trans->status == 14 )
+                        <a href="javascript:void(0)" onclick="setCpcOnCommissionSecondPayment({{$trans->id}})" class="m-btn m-btn-theme4rd m-btn-sm">{{trans('app.txt.cpc_on_commission_second_payement')}}</a>
+                    @elseif ($trans->status == 15 )
+                        <a href="javascript:void(0)" onclick="setCpcOnBonusPayment({{$trans->id}})" class="m-btn m-btn-theme4rd m-btn-sm">{{trans('app.txt.cpc_on_bonus_payment')}}</a>
+                    @elseif ($trans->status == 16 )
+                        <small class="badge-success" style="margin-bottom:5px;padding:10px;">@lang('app.txt.end_of_transaction') </small>
                     @else
                         <a href="javascript:void(0)" class="m-btn m-btn-theme m-btn-sm" disabled>{{$btnText}}</a>
                     @endif
@@ -965,6 +978,144 @@
                 } else {
                     stopLoadingPage();
                     swal("{{ trans('app.txt.initial_deposit_confirmation') }}", "@lang('app.jquery.delete_cancel')", "error");
+                }
+            });
+        }
+
+        function setCpcOnCommissionFirstPayment(id_doss_trans){
+            swal({
+                title: "{{ trans('app.txt.cpc_on_commission_first_payement') }}",
+                text: "{{ trans('app.do_you_confirm') }}",
+                type: "info",
+                showCancelButton: true,
+                confirmButtonColor: '#0075B7',
+                confirmButtonText: "@lang('app.yes')",
+                cancelButtonText: "@lang('app.no')",
+                closeOnConfirm: true,
+                closeOnCancel: true
+            },
+            function(isConfirm){
+                loadingPage();
+
+                if (isConfirm){
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        url: '{{ route("afa.dossier.setCpcOnCommissionFirstPayment") }}',
+                        type: "POST",
+                        dataType: "JSON",
+                        data:{"doss_id": id_doss_trans},
+                        success: function(data)
+                        {
+                            var msg = data.msg;
+
+                            swal("{{ trans('app.txt.cpc_on_commission_first_payement') }}", msg, "success");
+                            location.reload();	
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            stopLoadingPage();
+                            swal("{{ trans('app.txt.cpc_on_commission_first_payement') }}", "{{ trans('app.txt.confirmation_error') }}", "error");	
+                        }
+                    }); 
+                } else {
+                    stopLoadingPage();
+                    swal("{{ trans('app.txt.cpc_on_commission_first_payement') }}", "@lang('app.jquery.delete_cancel')", "error");
+                }
+            });
+        }
+
+        function setCpcOnCommissionSecondPayment(id_doss_trans){
+            swal({
+                title: "{{ trans('app.txt.cpc_on_commission_second_payement') }}",
+                text: "{{ trans('app.do_you_confirm') }}",
+                type: "info",
+                showCancelButton: true,
+                confirmButtonColor: '#0075B7',
+                confirmButtonText: "@lang('app.yes')",
+                cancelButtonText: "@lang('app.no')",
+                closeOnConfirm: true,
+                closeOnCancel: true
+            },
+            function(isConfirm){
+                loadingPage();
+
+                if (isConfirm){
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        url: '{{ route("afa.dossier.setCpcOnCommissionSecondPayment") }}',
+                        type: "POST",
+                        dataType: "JSON",
+                        data:{"doss_id": id_doss_trans},
+                        success: function(data)
+                        {
+                            var msg = data.msg;
+
+                            swal("{{ trans('app.txt.cpc_on_commission_second_payement') }}", msg, "success");
+                            location.reload();	
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            stopLoadingPage();
+                            swal("{{ trans('app.txt.cpc_on_commission_second_payement') }}", "{{ trans('app.txt.confirmation_error') }}", "error");	
+                        }
+                    }); 
+                } else {
+                    stopLoadingPage();
+                    swal("{{ trans('app.txt.cpc_on_commission_second_payement') }}", "@lang('app.jquery.delete_cancel')", "error");
+                }
+            });
+        }
+
+        function setCpcOnBonusPayment(id_doss_trans){
+            swal({
+                title: "{{ trans('app.txt.cpc_on_bonus_payment') }}",
+                text: "{{ trans('app.do_you_confirm') }}",
+                type: "info",
+                showCancelButton: true,
+                confirmButtonColor: '#0075B7',
+                confirmButtonText: "@lang('app.yes')",
+                cancelButtonText: "@lang('app.no')",
+                closeOnConfirm: true,
+                closeOnCancel: true
+            },
+            function(isConfirm){
+                loadingPage();
+
+                if (isConfirm){
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        url: '{{ route("afa.dossier.setCpcOnBonusPayment") }}',
+                        type: "POST",
+                        dataType: "JSON",
+                        data:{"doss_id": id_doss_trans},
+                        success: function(data)
+                        {
+                            var msg = data.msg;
+
+                            swal("{{ trans('app.txt.cpc_on_bonus_payment') }}", msg, "success");
+                            location.reload();	
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            stopLoadingPage();
+                            swal("{{ trans('app.txt.cpc_on_bonus_payment') }}", "{{ trans('app.txt.confirmation_error') }}", "error");	
+                        }
+                    }); 
+                } else {
+                    stopLoadingPage();
+                    swal("{{ trans('app.txt.cpc_on_bonus_payment') }}", "@lang('app.jquery.delete_cancel')", "error");
                 }
             });
         }

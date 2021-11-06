@@ -543,6 +543,20 @@ class Product extends Model {
         return false;
     }
 
+    /**
+     * Check if product have bonus
+     *
+     * @return Boolean
+     */
+    public function haveBonus()
+    {
+        if($this->avoir_bonus == 'YES'){
+            return true;
+        }
+
+        return false;
+    }
+
     // Programmes/Products autonomes dont le taux de commission est = ou > au seuil promotionnel
     public function isParticular()
     {

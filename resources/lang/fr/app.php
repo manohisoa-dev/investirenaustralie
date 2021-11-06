@@ -1565,4 +1565,9 @@ return
     'txt.autocomplete_error' => 'Veuillez choisir une adresse valide selon la suggéstion de google',
 	'txt.cpc_on_commission_first_payement' => 'CPC sur commission premier paiement',
 	'txt.cpc_on_commission_second_payement' => 'CPC sur commission deuxième/dernier paiement',
+	'txt.cpc_on_bonus_payment' => 'Cpc sur paiement du bonus',
+	'txt.awaiting_payment_of_the_first_cpc' => 'En attente de paiement du premier commission CPC',
+	'txt.awaiting_payment_of_the_second_cpc' => 'En attente de paiement du second commission CPC',
+	'txt.awaiting_payment_of_the_bonus_cpc' => 'En attente de paiement du bonus CPC',
+	'txt.payment_successfully_completed' => 'Paiement effectué avec succès',
 ];

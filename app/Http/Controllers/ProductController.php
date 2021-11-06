@@ -1467,7 +1467,6 @@ class ProductController extends Controller {
                         $taux_commision_prd, '', '', $request->bonus_vente, $request->bonus_amount, '',
                         0, 0, 0);
                 } else {
-                    
                     //enregistrement produit autonome de Résidance new
                     $state = State::where('id', $request->state_id_product)->first();
                     dd($state->content);
