@@ -184,17 +184,14 @@ class ProfileController extends Controller {
                             }
                         } else {
                             if (strtolower($user->TypeUser->type_user_name) !== 'business') {
-
                                 // Update Seller By Afa Individual
                                 $resp = $this->updateSellerSbaIndividual($request, $user, $role);
-
                                 if ($resp[0]['status'] === false) {
                                     return Redirect::back()->withErrors($resp[0]['resp'])->withInput();
                                 } else {
                                     $alert = trans('app.txt.alert_success');
                                 }
                             } else {
-
                                 // Update Seller By Afa Business
                                 $resp = $this->updateSellerSbaBusiness($request, $user, $role);
 
@@ -638,18 +635,25 @@ class ProfileController extends Controller {
                 User::whereId($user->id)->update($users);
 
                 //Créer localisation
-                $locations = ['route' => $datas['route'], 'building_name' => $datas['building_name'],
-                    'num_rooms' => $datas['num_rooms'], 'num_floor' => $datas['num_floor'],
-                    'route_number' => $datas['route_number'], 'locality' => $datas['locality'],
-                    'postalCode' => $datas['postalCode'], 'area_level_1' => $datas['area_level_1'],
-                    'country' => $datas['country'], 'bank_postal_box' => $datas['bank_postal_box'],
-                    'bank_locality' => $datas['bank_locality'], 'bank_postalCode' => $datas['bank_postalCode'],
-                    'bank_country' => $datas['bank_country'], 'adrpost_postal_box' => isset($datas['adrpost_postal_box']) ?
-                    $datas['adrpost_postal_box'] : '', 'adrpost_locality' => isset($datas['adrpost_locality']) ?
-                    $datas['adrpost_locality'] : '', 'adrpost_postalCode' => isset($datas['adrpost_postalCode']) ?
-                    $datas['adrpost_postalCode'] : '', 'adrpost_area_level_1' => isset($datas['adrpost_area_level_2']) ?
-                    $datas['adrpost_area_level_2'] : '', 'adrpost_country' => isset($datas['adrpost_country']) ?
-                    $datas['adrpost_country'] : '', ];
+                $locations = 
+                    ['route' => $datas['route'], 
+                    'building_name' => $datas['building_name'],
+                    'num_rooms' => $datas['num_rooms'], 
+                    'num_floor' => $datas['num_floor'],
+                    'route_number' => $datas['route_number'], 
+                    'locality' => $datas['locality'],
+                    'postalCode' => $datas['postalCode'], 
+                    'area_level_1' => $datas['area_level_1'],
+                    'area_level_2' => $datas['apl_suburb'],
+                    'country' => $datas['country'], 
+                    'longitude' => $datas['apl_long'],
+                    'latitude' => $datas['apl_lat'],
+                    'neighborhood' => $datas['neighborhood'],
+                    'bank_postal_box' => $datas['bank_postal_box'],
+                    'bank_locality' => $datas['bank_locality'], 
+                    'bank_postalCode' => $datas['bank_postalCode'],
+                    'bank_country' => $datas['bank_country'] ];
+                
                 Localisation::whereId($user->location_id)->update($locations);
 
                 // update userinfo
@@ -735,7 +739,8 @@ class ProfileController extends Controller {
                 //Créer localisation
                 $locations = ['route' => $datas['route'], 'route_number' => $datas['route_number'],
                     'locality' => $datas['locality'], 'area_level_2' => $datas['area_level_2'],
-                    'postalCode' => $datas['postalCode'], 'area_level_1' => $datas['area_level_1'],
+                    'postalCode' => $datas['postalCode'], 'longitude' => $datas['seller_long'],
+                    'latitude' => $datas['seller_lat'], 'area_level_1' => $datas['area_level_1'],
                     'num_rooms' => $datas['num_rooms'], 'num_floor' => $datas['num_floor'],
                     'building_name' => $datas['building_name'], 'country' => $datas['country'],
                     'adrpost_postal_box' => isset($datas['adrpost_postal_box']) ? $datas['adrpost_postal_box'] :
@@ -834,7 +839,8 @@ class ProfileController extends Controller {
                 //Créer localisation
                 $locations = ['route' => $datas['route'], 'route_number' => $datas['route_number'],
                     'locality' => $datas['locality'], 'area_level_2' => $datas['area_level_2'],
-                    'postalCode' => $datas['postalCode'], 'area_level_1' => $datas['area_level_1'],
+                    'postalCode' => $datas['postalCode'], 'longitude' => $datas['seller_long'],
+                    'latitude' => $datas['seller_lat'], 'area_level_1' => $datas['area_level_1'],
                     'num_rooms' => $datas['num_rooms'], 'num_floor' => $datas['num_floor'],
                     'building_name' => $datas['building_name'], 'country' => $datas['country'],
                     'adrpost_postal_box' => isset($datas['adrpost_postal_box']) ? $datas['adrpost_postal_box'] :
@@ -922,9 +928,10 @@ class ProfileController extends Controller {
                 User::whereId($user->id)->update($users);
 
                 //Update localisation
-                $locations = ['locality' => $datas['suburb'], 'postalCode' => $datas['post_code'],
+                $locations = ['locality' => $datas['city'], 'postalCode' => $datas['post_code'],
+                    'longitude' => $datas['snp_personne_long'], 'latitude' => $datas['snp_personne_lat'],
                     'country' => $datas['country'], 'area_level_1' => $datas['state'],
-                    'area_level_1' => $datas['city'], 'route' => $datas['street_adr'], ];
+                    'area_level_2' => $datas['suburb'], 'route' => $datas['street_adr']];
                 Localisation::whereId($user->location_id)->update($locations);
 
                 // update seller individual
@@ -1005,7 +1012,6 @@ class ProfileController extends Controller {
         if ($validator->fails()) {
             return array(['resp' => $validator, 'status' => false]);
         } else {
-
             try {
                 // Store image file
                 $datas['image_id'] = 0;
@@ -1062,10 +1068,10 @@ class ProfileController extends Controller {
                 SellerIndividual::whereId($idSeller2)->update($sellerIndividuals_2);
 
             }
-            catch (\Throwable $th) {
-                logger()->error($exception);
 
-                return back()->with('info', trans('app.txt.editprofil_unable'));
+            catch (\Throwable $exception) {
+                logger()->error($exception);
+                //return back()->with('info', trans('app.txt.editprofil_unable'));
             }
 
             return array(['resp' => $user, 'status' => true]);
@@ -1118,19 +1124,20 @@ class ProfileController extends Controller {
                 Userinfo::where('user_id', $user->id)->update($userinfos);
 
                 //Update localisation
-                $locations = ['locality' => $datas['suburb'], 'postalCode' => $datas['post_code'],
+                $locations = ['locality' => $datas['city'], 'postalCode' => $datas['post_code'],
                     'country' => $datas['country'], 'area_level_1' => $datas['state'],
-                    'area_level_1' => $datas['city'], 'route' => $datas['street_adr'], ];
+                    'area_level_2' => $datas['suburb'], 'route' => $datas['street_adr'], 'longitude' =>
+                    $datas['snp_bus_lon'], 'latitude' => $datas['snp_bus_lat']];                
                 Localisation::whereId($user->location_id)->update($locations);
-
+                
                 // update seller business
                 if (isset($datas['mobile'])) {
                     $datas['mobile'] = '(' . $datas['indicatif3'] . ')' . $datas['mobile'];
                 }
                 if (isset($datas['phone'])) {
-                    $datas['phone'] = '(' . $datas['indicatif'] . ')' . $datas['phone'];
+                    $datas['phone'] = '(' . $datas['indicatif3'] . ')' . $datas['phone'];
                 }
-
+                
                 // Seller #1
                 $idSeller = $datas['id_seller'];
                 $sellerBusiness = ['business_name' => $datas['business_name'], 'business_parent' =>
@@ -1142,9 +1149,8 @@ class ProfileController extends Controller {
 
             }
             catch (\Throwable $th) {
-                logger()->error($exception);
-
-                return back()->with('info', trans('app.txt.editprofil_unable'));
+                //logger()->error($exception);
+                //return back()->with('info', trans('app.txt.editprofil_unable'));
             }
 
             return array(['resp' => $user, 'status' => true]);

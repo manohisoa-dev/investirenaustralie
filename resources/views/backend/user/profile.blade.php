@@ -803,7 +803,10 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.name_of_the_road') </div>
-                                        <input type="text" name="route" value="{{$item->location?$item->location->route:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                        <input type="text" name="route" id="apl_route" value="{{$item->location?$item->location->route:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
+										<input type="hidden" name="apl_lat" id="apl_lat" value="{{$item->location?$item->location->latitude:''}}" />
+										<input type="hidden" name="apl_long" id="apl_long" value="{{$item->location?$item->location->longitude:''}}" />
+										<input type="hidden" name="apl_suburb" id="apl_suburb" value="{{$item->location?$item->location->area_level_2:''}}" />
                                     </div>
                                 </div>
                             </div>
@@ -814,7 +817,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.number_of_the_road')</div>
-                                        <input type="text" name="route_number" value="{{$item->location?$item->location->route_number:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                        <input type="text" name="route_number" id="apl_route_number" value="{{$item->location?$item->location->route_number:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -847,7 +850,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.neighborhood_district_borough')</div>
-                                        <input type="text" name="neighborhood" value="{{$item->location?$item->location->neighborhood:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                        <input type="text" name="neighborhood" value="{{$item->location?$item->location->neighborhood:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -858,7 +861,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.city')</div>
-                                        <input type="text" name="locality" value="{{$item->location?$item->location->locality:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                        <input type="text" name="locality" id="apl_locality" value="{{$item->location?$item->location->locality:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -869,7 +872,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.codepostal')</div>
-                                        <input type="text" name="postalCode" value="{{$item->location?$item->location->postalCode:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                        <input type="text" name="postalCode" id="apl_postalCode" value="{{$item->location?$item->location->postalCode:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -880,7 +883,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.etat') (@lang('app.txt.etat.libelle'))</div>
-                                        <input type="text" name="area_level_1" placeholder="@lang('app.txt.etat')" value="{{$item->location?$item->location->area_level_1:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
+                                        <input type="text" name="area_level_1" id="apl_state" placeholder="@lang('app.txt.etat')" value="{{$item->location?$item->location->area_level_1:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly="">
                                     </div>
                                 </div>
                             </div>
@@ -891,11 +894,11 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.country')</div>
-                                        <select class="form-control" name="country">
+                                        <select class="form-control" name="country" id="apl_country">
                                             <option value="" selected disabled>@lang('app.select_country')</option>
                                             @foreach(App\Models\Country::all() as $country)
                                                 @if($country->prefixPhone)
-                                                    <option value="{{$country->code}}" {{ $item->location->country==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
+                                                    <option value="{{$country->code}}" long="{{$country->content}}" {{ $item->location->country==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
                                                 @endif
                                             @endforeach
                                         </select>
@@ -1219,8 +1222,8 @@
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.name_of_the_road') </div>
                                             <input type="text" name="route" id="route" value="{{$item->location?$item->location->route:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
-											<input type="hidden" name="seller_long" id="seller_long" />
-											<input type="hidden" name="seller_lat" id="seller_lat" />
+											<input type="hidden" name="seller_long" id="seller_long" value="{{$item->location?$item->location->longitude:''}}" />
+											<input type="hidden" name="seller_lat" id="seller_lat" value="{{$item->location?$item->location->latitude:''}}" />
                                         </div>
                                     </div>
                                 </div>
@@ -1479,7 +1482,10 @@
                                             </div>
                                             <div class="media-body p-15px-l lh-normal">
                                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.streetaddress') </div>
-                                                <input type="text" name="street_adr{{$sfx}}" value="{{old('street_adr'.$sfx)?old('street_adr'.$sfx):$snp->street_adr}}" class="form-control">
+                                                <input type="text" name="street_adr{{$sfx}}" id="snp_personne_street{{$sfx}}" value="{{old('street_adr'.$sfx)?old('street_adr'.$sfx):$snp->street_adr}}" class="form-control">
+												
+												<input type="hidden" name="snp_personne_long{{$sfx}}" id="snp_personne_long" value="{{$item->location?$item->location->longitude:''}}" />
+												<input type="hidden" name="snp_personne_lat{{$sfx}}" id="snp_personne_lat" value="{{$item->location?$item->location->latitude:''}}" />
                                             </div>
                                         </div>
                                     </div>
@@ -1490,7 +1496,7 @@
                                             </div>
                                             <div class="media-body p-15px-l lh-normal">
                                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.suburb')</div>
-                                                <input type="text" name="suburb{{$sfx}}" value="{{old('suburb'.$sfx)?old('suburb'.$sfx):$snp->suburb}}" class="form-control">
+                                                <input type="text" name="suburb{{$sfx}}" id="snp_personne_suburb{{$sfx}}" value="{{old('suburb'.$sfx)?old('suburb'.$sfx):$snp->suburb}}" class="form-control" readonly="">
                                             </div>
                                         </div>
                                     </div>
@@ -1501,7 +1507,7 @@
                                             </div>
                                             <div class="media-body p-15px-l lh-normal">
                                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.city')</div>
-                                                <input type="text" name="city{{$sfx}}" value="{{old('city'.$sfx)?old('city'.$sfx):$snp->city}}" class="form-control">
+                                                <input type="text" name="city{{$sfx}}" id="snp_personne_city{{$sfx}}" value="{{old('city'.$sfx)?old('city'.$sfx):$snp->city}}" class="form-control" readonly="">
                                             </div>
                                         </div>
                                     </div>
@@ -1512,7 +1518,7 @@
                                             </div>
                                             <div class="media-body p-15px-l lh-normal">
                                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.codepostal')</div>
-                                                <input type="text" name="post_code{{$sfx}}" value="{{old('post_code'.$sfx)?old('post_code'.$sfx):$snp->post_code}}" class="form-control">
+                                                <input type="text" name="post_code{{$sfx}}" id="snp_personne_cp{{$sfx}}" value="{{old('post_code'.$sfx)?old('post_code'.$sfx):$snp->post_code}}" class="form-control" readonly="">
                                             </div>
                                         </div>
                                     </div>
@@ -1523,7 +1529,7 @@
                                             </div>
                                             <div class="media-body p-15px-l lh-normal">
                                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.etat')</div>
-                                                <input type="text" name="state{{$sfx}}" value="{{old('state'.$sfx)?old('state'.$sfx):$snp->state}}" class="form-control">
+                                                <input type="text" name="state{{$sfx}}" id="snp_personne_state{{$sfx}}" value="{{old('state'.$sfx)?old('state'.$sfx):$snp->state}}" class="form-control" readonly="">
                                             </div>
                                         </div>
                                     </div>
@@ -1534,11 +1540,11 @@
                                             </div>
                                             <div class="media-body p-15px-l lh-normal">
                                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.country')</div>
-                                                <select class="form-control" name="country{{$sfx}}">
+                                                <select class="form-control" name="country{{$sfx}}" id="snp_personne_country{{$sfx}}">
                                                     <option value="" selected disabled>@lang('app.select_country')</option>
                                                     @foreach(App\Models\Country::all() as $country)
                                                         @if($country->prefixPhone)
-                                                            <option value="{{$country->code}}" {{ $snp->country==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
+                                                            <option value="{{$country->code}}" long="{{$country->content}}" {{ $snp->country==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
                                                         @endif
                                                     @endforeach
                                                 </select>
@@ -1919,7 +1925,9 @@
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.streetaddress') </div>
-                                            <input type="text" name="street_adr" value="{{old('street_adr')?old('street_adr'):$sbaBus->street_adr}}" class="form-control">
+                                            <input type="text" name="street_adr" id="snp_bus_street_adr" value="{{old('street_adr')?old('street_adr'):$sbaBus->street_adr}}" class="form-control">
+											<input type="hidden" name="snp_bus_lat" id="snp_bus_lat" value="{{$item->location->latitude}}" />
+											<input type="hidden" name="snp_bus_lon" id="snp_bus_long" value="{{$item->location->longitude}}" />
                                         </div>
                                     </div>
                                 </div>
@@ -1930,7 +1938,7 @@
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.suburb')</div>
-                                            <input type="text" name="suburb" value="{{old('suburb')?old('suburb'):$sbaBus->suburb}}" class="form-control">
+                                            <input type="text" name="suburb" id="snp_business_suburb" value="{{old('suburb')?old('suburb'):$sbaBus->suburb}}" class="form-control" readonly="">
                                         </div>
                                     </div>
                                 </div>
@@ -1941,7 +1949,7 @@
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.city')</div>
-                                            <input type="text" name="city" value="{{old('city')?old('city'):$sbaBus->city}}" class="form-control">
+                                            <input type="text" name="city" id="snp_bus_city" value="{{old('city')?old('city'):$sbaBus->city}}" class="form-control" readonly="">
                                         </div>
                                     </div>
                                 </div>
@@ -1952,7 +1960,7 @@
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.codepostal')</div>
-                                            <input type="text" name="post_code" value="{{old('post_code')?old('post_code'):$sbaBus->post_code}}" class="form-control">
+                                            <input type="text" name="post_code" id="snp_bus_post_code" value="{{old('post_code')?old('post_code'):$sbaBus->post_code}}" class="form-control" readonly="">
                                         </div>
                                     </div>
                                 </div>
@@ -1963,7 +1971,7 @@
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.etat')</div>
-                                            <input type="text" name="state" value="{{old('state')?old('state'):$sbaBus->state}}" class="form-control">
+                                            <input type="text" name="state" id="snp_bus_state" value="{{old('state')?old('state'):$sbaBus->state}}" class="form-control" readonly="">
                                         </div>
                                     </div>
                                 </div>
@@ -1974,11 +1982,11 @@
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.country')</div>
-                                            <select class="form-control" name="country">
+                                            <select class="form-control" name="country" id="snp_bus_country">
                                                 <option value="" selected disabled>@lang('app.select_country')</option>
                                                 @foreach(App\Models\Country::all() as $country)
                                                     @if($country->prefixPhone)
-                                                        <option value="{{$country->code}}" {{ $sbaBus->country==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
+                                                        <option value="{{$country->code}}" long="{{$country->content}}" {{ $sbaBus->country==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
                                                     @endif
                                                 @endforeach
                                             </select>
@@ -3422,8 +3430,13 @@
 				},
 				sba_long: {
 					required: true,
+				},
+                snp_personne_long: {
+					required: true,
+				},
+				snp_bus_lon: {
+					required: true,
 				}
-                
             },
             messages: {
                 orga_name: {
@@ -3596,6 +3609,12 @@
 					required: "@lang('app.txt.autocomplete_error')",
 				},
 				sba_long: {
+					required: "@lang('app.txt.autocomplete_error')",
+				},
+				snp_personne_long: {
+					required: "@lang('app.txt.autocomplete_error')",
+				},
+				snp_bus_lon: {
 					required: "@lang('app.txt.autocomplete_error')",
 				}
             },
@@ -3880,6 +3899,263 @@
 				});
 			});
 			<!-- fin autocomplete SELLER BY AFA -->	
+			<!-- seller non professionnel individuel -->
+			var snp_autocomplete = new google.maps.places.Autocomplete($("#snp_personne_street")[0]);
+			snp_autocomplete.setComponentRestrictions({'country': ['au']});	
+			google.maps.event.addListener(snp_autocomplete, 'place_changed', function() {
+				var place2 = snp_autocomplete.getPlace();
+				var snp_arrAddress = place2.address_components;
+				var snp_itemRoute ='';
+				var snp_itemSuburb ='';
+				var snp_itemCountry ='';
+				var snp_itemCity = '';
+				var snp_itemPc ='';
+				var snp_itemState ='';
+				var snp_itemSnumber ='';	
+				var snp_lat = place2.geometry.location.lat();
+				var snp_long = place2.geometry.location.lng();					
+				//console.log(arrAddress);
+	
+				$.each(snp_arrAddress, function (i, snp_address_components) {
+					if (snp_address_components.types[0] == "street_number") {
+						//console.log("street_number:" + address_components.long_name);
+						snp_itemSnumber = snp_address_components.long_name;
+					}
+					if (snp_address_components.types[0] == "route") {
+						//console.log(i + ": route:" + address_components.long_name);
+						snp_itemRoute = snp_address_components.long_name;
+					}
+					
+					if (snp_address_components.types[0] == "locality") {
+						//console.log("town:" + address_components.long_name);
+						snp_itemSuburb = snp_address_components.long_name;
+					}
+					
+					if (snp_address_components.types[0] == "country") {
+						// console.log("country:" + address_components.long_name);
+						snp_itemCountry = snp_address_components.long_name;
+					}
+					
+					if (snp_address_components.types[0] == "postal_code") {
+						//console.log("pc:" + address_components.long_name);
+						snp_itemPc = snp_address_components.long_name;
+					}
+	
+					if (snp_address_components.types[0] == "administrative_area_level_1") {
+						//console.log("pc:" + address_components.long_name);
+						snp_itemState = snp_address_components.short_name;
+					}
+					
+					if (snp_address_components.types[0] == "administrative_area_level_2") {
+						//console.log("pc:" + address_components.long_name);
+						snp_itemCity = snp_address_components.short_name;
+					}
+	
+					$('#snp_personne_street').val(snp_itemSnumber +' '+ snp_itemRoute );
+					$('#snp_personne_city').val(snp_itemSuburb);
+					$('#snp_personne_suburb').val(snp_itemCity);
+					$('#snp_personne_cp').val(snp_itemPc);
+					$('#snp_personne_state').val(snp_itemState);
+					$('#snp_personne_lat').val(snp_lat);
+					$('#snp_personne_long').val(snp_long);
+	
+					var val3 = snp_itemCountry;
+					$('#snp_personne_country option[long="'+val3+'"]').prop('selected', true);
+				});
+			});
+			
+			var snp_autocomplete1 = new google.maps.places.Autocomplete($("#snp_personne_street_2")[0]);
+			snp_autocomplete1.setComponentRestrictions({'country': ['au']});	
+			google.maps.event.addListener(snp_autocomplete1, 'place_changed', function() {
+				var place3 = snp_autocomplete1.getPlace();
+				var snp_arrAddress1 = place3.address_components;
+				var snp_itemRoute1 ='';
+				var snp_itemSuburb1 ='';
+				var snp_itemCountry1 ='';
+				var snp_itemCity1 = '';
+				var snp_itemPc1 ='';
+				var snp_itemState1 ='';
+				var snp_itemSnumber1 ='';						
+				//console.log(arrAddress);
+	
+				$.each(snp_arrAddress1, function (i, snp_address_components1) {
+					if (snp_address_components1.types[0] == "street_number") {
+						//console.log("street_number:" + address_components.long_name);
+						snp_itemSnumber1 = snp_address_components1.long_name;
+					}
+					if (snp_address_components1.types[0] == "route") {
+						//console.log(i + ": route:" + address_components.long_name);
+						snp_itemRoute1 = snp_address_components1.long_name;
+					}
+					
+					if (snp_address_components1.types[0] == "locality") {
+						//console.log("town:" + address_components.long_name);
+						snp_itemSuburb1 = snp_address_components1.long_name;
+					}
+					
+					if (snp_address_components1.types[0] == "country") {
+						// console.log("country:" + address_components.long_name);
+						snp_itemCountry1 = snp_address_components1.long_name;
+					}
+					
+					if (snp_address_components1.types[0] == "postal_code") {
+						//console.log("pc:" + address_components.long_name);
+						snp_itemPc1 = snp_address_components1.long_name;
+					}
+	
+					if (snp_address_components1.types[0] == "administrative_area_level_1") {
+						//console.log("pc:" + address_components.long_name);
+						snp_itemState1 = snp_address_components1.short_name;
+					}
+					
+					if (snp_address_components1.types[0] == "administrative_area_level_2") {
+						//console.log("pc:" + address_components.long_name);
+						snp_itemCity1 = snp_address_components1.short_name;
+					}
+	
+					$('#snp_personne_street_2').val(snp_itemSnumber1 +' '+ snp_itemRoute1 );
+					$('#snp_personne_city_2').val(snp_itemSuburb1);
+					$('#snp_personne_suburb_2').val(snp_itemCity1);
+					$('#snp_personne_cp_2').val(snp_itemPc1);
+					$('#snp_personne_state_2').val(snp_itemState1);					
+	
+					var val4 = snp_itemCountry1;
+					$('#snp_personne_country_2 option[long="'+val4+'"]').prop('selected', true);
+				});
+			});
+			<!-- fin seller non professionnel individuel -->
+			
+			<!-- seller non professionnel business -->
+			var bus_autocomplete = new google.maps.places.Autocomplete($("#snp_bus_street_adr")[0]);
+			bus_autocomplete.setComponentRestrictions({'country': ['au']});	
+			google.maps.event.addListener(bus_autocomplete, 'place_changed', function() {
+				var place4 = bus_autocomplete.getPlace();
+				var bus_arrAddress = place4.address_components;
+				var bus_itemRoute ='';
+				var bus_itemSuburb ='';
+				var bus_itemCountry ='';
+				var bus_itemCity = '';
+				var bus_itemPc ='';
+				var bus_itemState ='';
+				var bus_itemSnumber ='';	
+				var bus_lat = place4.geometry.location.lat();
+				var bus_long = place4.geometry.location.lng();					
+				//console.log(arrAddress);
+	
+				$.each(bus_arrAddress, function (i, bus_address_components) {
+					if (bus_address_components.types[0] == "street_number") {
+						//console.log("street_number:" + address_components.long_name);
+						bus_itemSnumber = bus_address_components.long_name;
+					}
+					if (bus_address_components.types[0] == "route") {
+						//console.log(i + ": route:" + address_components.long_name);
+						bus_itemRoute = bus_address_components.long_name;
+					}
+					
+					if (bus_address_components.types[0] == "locality") {
+						//console.log("town:" + address_components.long_name);
+						bus_itemSuburb = bus_address_components.long_name;
+					}
+					
+					if (bus_address_components.types[0] == "country") {
+						// console.log("country:" + address_components.long_name);
+						bus_itemCountry = bus_address_components.long_name;
+					}
+					
+					if (bus_address_components.types[0] == "postal_code") {
+						//console.log("pc:" + address_components.long_name);
+						bus_itemPc = bus_address_components.long_name;
+					}
+	
+					if (bus_address_components.types[0] == "administrative_area_level_1") {
+						//console.log("pc:" + address_components.long_name);
+						bus_itemState = bus_address_components.short_name;
+					}
+					
+					if (bus_address_components.types[0] == "administrative_area_level_2") {
+						//console.log("pc:" + address_components.long_name);
+						bus_itemCity = bus_address_components.short_name;
+					}
+	
+					$('#snp_bus_street_adr').val(bus_itemSnumber +' '+ bus_itemRoute );
+					$('#snp_bus_city').val(bus_itemSuburb);
+					$('#snp_business_suburb').val(bus_itemCity);
+					$('#snp_bus_post_code').val(bus_itemPc);
+					$('#snp_bus_state').val(bus_itemState);
+					$('#snp_bus_lat').val(bus_lat);
+					$('#snp_bus_lon').val(bus_long);
+	
+					var val5 = bus_itemCountry;
+					$('#snp_bus_country option[long="'+val5+'"]').prop('selected', true);
+				});
+			});
+			<!-- seller non professionnel business -->
+			
+			<!-- APL -->
+			var apl_autocomplete = new google.maps.places.Autocomplete($("#apl_route")[0]);
+			apl_autocomplete.setComponentRestrictions({'country': ['au']});	
+			google.maps.event.addListener(apl_autocomplete, 'place_changed', function() {
+				var place_apl = apl_autocomplete.getPlace();
+				var apl_arrAddress = place_apl.address_components;
+				var apl_itemRoute ='';
+				var apl_itemSuburb ='';
+				var apl_itemCountry ='';
+				var apl_itemCity = '';
+				var apl_itemPc ='';
+				var apl_itemState ='';
+				var apl_itemSnumber ='';	
+				var apl_lat = place_apl.geometry.location.lat();
+				var apl_long = place_apl.geometry.location.lng();					
+				//console.log(arrAddress);
+	
+				$.each(apl_arrAddress, function (i, apl_address_components) {
+					if (apl_address_components.types[0] == "street_number") {
+						//console.log("street_number:" + address_components.long_name);
+						apl_itemSnumber = apl_address_components.long_name;
+					}
+					if (apl_address_components.types[0] == "route") {
+						//console.log(i + ": route:" + address_components.long_name);
+						apl_itemRoute = apl_address_components.long_name;
+					}
+					
+					if (apl_address_components.types[0] == "locality") {
+						//console.log("town:" + address_components.long_name);
+						apl_itemSuburb = apl_address_components.long_name;
+					}
+					
+					if (apl_address_components.types[0] == "country") {
+						// console.log("country:" + address_components.long_name);
+						apl_itemCountry = apl_address_components.long_name;
+					}
+					
+					if (apl_address_components.types[0] == "postal_code") {
+						//console.log("pc:" + address_components.long_name);
+						apl_itemPc = apl_address_components.long_name;
+					}
+	
+					if (apl_address_components.types[0] == "administrative_area_level_1") {
+						//console.log("pc:" + address_components.long_name);
+						apl_itemState = apl_address_components.short_name;
+					}
+					
+					if (apl_address_components.types[0] == "administrative_area_level_2") {
+						//console.log("pc:" + address_components.long_name);
+						apl_itemCity = apl_address_components.short_name;
+					}
+	
+					$('#apl_route').val(apl_itemRoute );
+					$('#apl_route_number').val(apl_itemSnumber);
+					$('#apl_locality').val(apl_itemSuburb);
+					$('#apl_postalCode').val(apl_itemPc);
+					$('#apl_state').val(apl_itemState);
+					$('#apl_lat').val(apl_lat);
+					$('#apl_long').val(apl_long);					
+					$('#apl_suburb').val(apl_itemCity);
+	
+					$('#apl_country option[long="'+apl_itemCountry+'"]').prop('selected', true);
+				});
+			});
+			<!-- fin APL -->
 		}
     </script>
     {{-- End google map autocomplete --}}
