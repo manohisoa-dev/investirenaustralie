@@ -227,6 +227,191 @@ class IndexController extends Controller
      * @param  Illuminate\Http\Request  $request
      * @return Illuminate\Http\Response
      */
+    public function indexRefonte(Request $request)
+    {
+        // $programme = Product::all()->first();
+        // $text = getTranslate('programme',$programme,App::getLocale());
+        // setTranslate('fr','es',$text,'programme',$programme);
+        $typesRes = Type::orderBy('title', 'asc')
+            ->where('object_type', 'type')
+            ->where('categories_id', 1)
+            ->get();
+
+        $typesFonc = Type::orderBy('title', 'asc')
+            ->where('object_type', 'type')
+            ->where('categories_id', 2)
+            ->get();
+
+        $typesInd = Type::orderBy('title', 'asc')
+            ->where('object_type', 'type')
+            ->where('categories_id', 3)
+            ->get();
+
+        $typesComm = Type::orderBy('title', 'asc')
+            ->where('object_type', 'type')
+            ->where('categories_id', 4)
+            ->get();
+
+        $locationTypes = Type::orderBy('title', 'asc')
+            ->where('object_type', 'location')
+            ->get();
+
+        $anciennetes = Type::orderBy('title', 'asc')
+            ->where('object_type', 'anciennete')
+            ->get();
+
+        $agricoles = Type::orderBy('title', 'asc')
+            ->where('object_type', 'agricole')
+            ->get();
+
+        $industriels = Type::orderBy('title', 'asc')
+            ->where('object_type', 'industriel')
+            ->get();
+
+        $commercials = Type::orderBy('title', 'asc')
+            ->where('object_type', 'commercial')
+            ->get();
+
+        $states = State::orderBy('content', 'asc')
+            ->get();
+
+        $min_price_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->min('price');
+
+        $max_price_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->max('price');
+
+        $min_land_area_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->min('land_area');
+
+        $max_land_area_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->max('land_area');
+
+        $min_garage_space_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->min('garage_spaces');
+
+        $max_garage_space_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->max('garage_spaces');
+
+        $min_bathrooms_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->min('bathrooms');
+
+        $max_bathrooms_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->max('bathrooms');
+
+        $min_bedrooms_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->min('bedrooms');
+
+        $max_bedrooms_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->max('bedrooms');
+
+        $min_number_of_floors_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->min('number_of_floors');
+
+        $max_number_of_floors_residentiel = Product::groupBy('category_id')
+            ->where('category_id','=',1)
+            ->max('number_of_floors');
+
+        $min_price_foncier = Product::groupBy('category_id')
+            ->where('category_id','=',2)
+            ->min('price');
+
+        $max_price_foncier = Product::groupBy('category_id')
+            ->where('category_id','=',2)
+            ->max('price');
+
+        $min_land_area_foncier = Product::groupBy('category_id')
+            ->where('category_id','=',2)
+            ->min('land_area');
+
+        $max_land_area_foncier = Product::groupBy('category_id')
+            ->where('category_id','=',2)
+            ->max('land_area');
+
+        $min_price_industriel = Product::groupBy('category_id')
+            ->where('category_id','=',3)
+            ->min('price');
+
+        $max_price_industriel = Product::groupBy('category_id')
+            ->where('category_id','=',3)
+            ->max('price');
+
+        $min_price_commercial = Product::groupBy('category_id')
+            ->where('category_id','=',4)
+            ->min('price');
+
+        $max_price_commercial = Product::groupBy('category_id')
+            ->where('category_id','=',4)
+            ->max('price');
+
+        $min_area_commercial = Product::groupBy('category_id')
+            ->where('category_id','=',4)
+            ->min('land_area');
+
+        $max_area_commercial = Product::groupBy('category_id')
+            ->where('category_id','=',4)
+            ->max('land_area');
+
+        $page = Page::findOrFail(46);
+        $page->load(['childs', 'childs.pubs', 'pubs']);
+
+        $testimonial = Temoignage::ofStatus('Actif')->orderBy('created_at', 'desc')->take(6)->get();
+
+        return $this->render($request, 1)
+            ->with('states',$states)
+            ->with('locationTypes',$locationTypes)
+            ->with('anciennetes',$anciennetes)
+            ->with('agricoles',$agricoles)
+            ->with('industriels',$industriels)
+            ->with('commercials',$commercials)
+            ->with('min_price_residentiel',$min_price_residentiel)
+            ->with('max_price_residentiel',$max_price_residentiel)
+            ->with('min_land_area_residentiel',$min_land_area_residentiel)
+            ->with('max_land_area_residentiel',$max_land_area_residentiel)
+            ->with('min_garage_space_residentiel',$min_garage_space_residentiel)
+            ->with('max_garage_space_residentiel',$max_garage_space_residentiel)
+            ->with('min_bathrooms_residentiel',$min_bathrooms_residentiel)
+            ->with('max_bathrooms_residentiel',$max_bathrooms_residentiel)
+            ->with('min_bedrooms_residentiel',$min_bedrooms_residentiel)
+            ->with('max_bedrooms_residentiel',$max_bedrooms_residentiel)
+            ->with('min_number_of_floors_residentiel',$min_number_of_floors_residentiel)
+            ->with('max_number_of_floors_residentiel',$max_number_of_floors_residentiel)
+            ->with('min_price_foncier',$min_price_foncier)
+            ->with('max_price_foncier',$max_price_foncier)
+            ->with('min_land_area_foncier',$min_land_area_foncier)
+            ->with('max_land_area_foncier',$max_land_area_foncier)
+            ->with('min_price_industriel',$min_price_industriel)
+            ->with('max_price_industriel',$max_price_industriel)
+            ->with('min_price_commercial',$min_price_commercial)
+            ->with('max_price_commercial',$max_price_commercial)
+            ->with('min_area_commercial',$min_area_commercial)
+            ->with('max_area_commercial',$max_area_commercial)
+            ->with('typesRes',$typesRes)
+            ->with('typesFonc',$typesFonc)
+            ->with('typesInd',$typesInd)
+            ->with('typesComm',$typesComm)
+            ->with('pubs',$page->pubs)
+            ->with('testimonials',$testimonial);
+
+    }
+
+    /**
+     * Show home page
+     *
+     * @param  Illuminate\Http\Request  $request
+     * @return Illuminate\Http\Response
+     */
     public function apl(Request $request)
     {
         $lapls = User::ofRole(4)
