@@ -557,6 +557,20 @@ class Product extends Model {
         return false;
     }
 
+    /**
+     * Check if product is reserved
+     *
+     * @return Boolean
+     */
+    public function isReserved()
+    {
+        if($this->status_res == 1){
+            return true;
+        }
+
+        return false;
+    }
+
     // Programmes/Products autonomes dont le taux de commission est = ou > au seuil promotionnel
     public function isParticular()
     {

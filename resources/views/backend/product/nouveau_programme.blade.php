@@ -823,6 +823,9 @@ function initMap(){
 				},
 				eoiDossier: {
 					required: true
+				},
+				long: {
+					required: true
 				}
 			},
 			messages: {
@@ -889,6 +892,9 @@ function initMap(){
 				},
 				eoiDossier: {
 					required: "@lang('app.txt.champobligatoire')"
+				},
+				long: {
+					required: "@lang('app.txt.autocomplete_error')"
 				}
 			},
 			errorPlacement: function ( error, element ) {

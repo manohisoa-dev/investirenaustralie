@@ -28,7 +28,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="card-body">
+						<div class="card-body">							
 							<form class="form-validation form-padding" action="{{route('updateProgramme')}}" method="post" id="programmeForm" enctype="multipart/form-data">
 								{{ csrf_field() }}
 								<input type="hidden"  name="location_Id" value="{{$product->location_id}}" />  
@@ -166,19 +166,19 @@
 									<div class="col-lg-4">
 										<div class="form-group">
 											<label for="title">@lang('app.form.programme_suburb')</label>
-											<input name="suburb" id="suburb" class="form-control" type="text" value="{{$localisation->area_level_1}}">
+											<input name="suburb" id="suburb" class="form-control" type="text" value="{{$localisation?$localisation->area_level_1:''}}">
 										</div>
 									</div>
 									<div class="col-lg-4">
 										<div class="form-group">
 											<label for="title">@lang('app.form.programme_ville')</label>
-											<input name="ville" id="ville" class="form-control" type="text" value="{{$localisation->locality}}">
+											<input name="ville" id="ville" class="form-control" type="text" value="{{$localisation?$localisation->locality:''}}">
 										</div>  
 									</div>
 									<div class="col-lg-4">
 										<div class="form-group">
 											<label for="title">@lang('app.form.programme_cp') *</label>
-											<input name="postalCode" id="postalCode" class="form-control" type="text" value="{{$localisation->postalCode}}">
+											<input name="postalCode" id="postalCode" class="form-control" type="text" value="{{$localisation?$localisation->postalCode:''}}">
 										</div>
 									</div>
 								</div>
@@ -221,7 +221,7 @@
 										<h4 class="new-programme-solicitor">@lang('app.form.programme_solicitor')</h4>
 									</div>
 								</div>
-								<input type="hidden" id="solicitor_id" name="solicitor_id" value="{{$solicitor->id}}">
+								<input type="hidden" id="solicitor_id" name="solicitor_id" value="{{$solicitor?$solicitor->id:''}}">
 								<div class="row">
 									<div class="col-lg-4">
 										<div class="form-group">
@@ -956,6 +956,9 @@ function initMap(){
 				},
 				chk_firb: {
 					required: true
+				},
+				long:{
+					required: true
 				}
 			},
 			messages: {
@@ -990,6 +993,9 @@ function initMap(){
 				},
 				chk_firb: {
 					required: "@lang('app.txt.champobligatoire')"
+				},
+				long:{
+					required: "@lang('app.txt.autocomplete_error')"
 				}
 			},
 			errorPlacement: function ( error, element ) {

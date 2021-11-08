@@ -258,6 +258,7 @@
 </div>
 
 <!-- Modal to confirm dossier transaction information -->
+@if($trans->status >= 8)
 <div id="confirmDossierTransactionModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-xl">
         <div class="modal-content white-bg">
@@ -330,8 +331,10 @@
         </div>
     </div>
 </div>
+@endif
 
 <!-- Modal to send finalized eoi with afa -->
+@if($trans->status >= 10)
 <div id="sellingProcessClearanceModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-xl">
         <div class="modal-content white-bg">
@@ -386,6 +389,7 @@
         </div>
     </div>
 </div>
+@endif
 
 {{$items->links()}}
 

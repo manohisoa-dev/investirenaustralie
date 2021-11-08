@@ -299,6 +299,11 @@
                     <span class="nav-label">@lang('app.txt.parameter')</span>
                 </a>
             </li>
+			<li>
+                <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.state.index'):route('admin.state.index')}}">
+                    <span class="nav-label">@lang('app.table.lia_dossier')</span>
+                </a>
+            </li>
         </ul>
     </li>
 @endif

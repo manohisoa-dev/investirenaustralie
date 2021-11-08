@@ -202,6 +202,7 @@ Route::middleware(["auth", "role:5"])->group(function(){
 
         Route::get('buy-this-product/{product?}', 'MemberController@buyThisProduct')->name('member.buy.product');
         Route::get('complete_registration/{product?}', 'MemberController@completeRegistration')->name('member.complete_registration');
+        Route::get('buy-this-product-directly/{product?}', 'MemberController@buyThisProductDirectly')->name('member.buy.product.directly');
 
         Route::get('/', 'BackendController@dashboard');
         Route::get('favorites', 'BackendController@favorites');

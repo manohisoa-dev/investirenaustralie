@@ -837,8 +837,15 @@ class DossierController extends Controller
 
         // udpate dossier transaction status
         DossierTransaction::whereId($dtId)->update(['status'=>9]);
+
+        // marked product to reserved
+        $this->productReserved($dossTrans->product_id);
         
         return back()->with('success', trans('app.txt.purchase_confirmed'));
+    }
+
+    public function productReserved($prod_id){
+        return Product::whereId($prod_id)->update(['status_res'=>1]);
     }
 
     // Confirm initial deposit

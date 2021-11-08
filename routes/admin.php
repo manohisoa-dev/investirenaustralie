@@ -33,6 +33,7 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
 
     Route::resource('country','CountryController');
     Route::resource('state','StateController');
+    
 
     Route::resource('category','CategoryController');
     Route::get('category/{category}/edit', 'CategoryController@edit')->name('category.edit');
@@ -246,7 +247,7 @@ Route::prefix('collaborators')->namespace('Admin')->as('admin.')->middleware(["a
     Route::delete('/admin/country/{country}', 'CountryController@destroy')->name('collaborators.admin.country.destroy');
     Route::get('/admin/country/{country}/edit', 'CountryController@edit')->name('collaborators.admin.country.edit');
 
-    // Route::resource('state','StateController');
+    //Route::resource('state','StateController');
     Route::get('/admin/state', 'StateController@index')->name('collaborators.admin.state.index');
     Route::post('/admin/state', 'StateController@store')->name('collaborators.admin.state.store');
     Route::get('/admin/state/create', 'StateController@create')->name('collaborators.admin.state.create');
@@ -584,7 +585,7 @@ Route::prefix('collaborator')->namespace('Admin')->as('admin.')->middleware(["au
     Route::resource('menu','MenuController');
 
     Route::resource('country','CountryController');
-    Route::resource('state','StateController');
+    //Route::resource('state','StateController');
     Route::get('user/show/message', 'UserController@showMessage')->name('collaborator.user.show.message');
     Route::get('user/show/seller/type/seller_real_estate_professionals', 'UserController@seller_real_estate_professionals')->name('collaborator.user.show.seller_real_estate_professionals');
     Route::get('user/show/seller/type/seller_non_professional_legal_persons', 'UserController@seller_non_professional_legal_persons')->name('collaborator.user.show.seller_non_professional_legal_persons');

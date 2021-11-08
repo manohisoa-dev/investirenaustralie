@@ -837,6 +837,56 @@ class MemberController extends Controller {
         abort(404);
     }
 
+
+    /**
+     * By this property not deplacement
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Product
+     * @return \Illuminate\Http\Response
+     */
+    public function buyThisProductDirectly(Request $request,Product $product) {
+        $this->middleware('auth');
+        $this->middleware('role:5');
+        $user = Auth::user();
+
+        if(!Auth::user()->isCheckedDossierTransaction($prod_id)){
+            $this->creationDossierTransaction($product);
+        }
+
+        if(!$user->isComplete()){
+            if(Auth::user()->isPerson()){
+                // Membre particulier
+                if($product){
+                    $prod_id = $product->id;
+                    $prodUrl = url('product/'.$product->slug);
+                    $dt = Carbon::now();
+                    $dtDate = $dt->format('m-d-Y');
+                    $dtTime = $dt->format('H:i:m');
+                    $user= Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name;
+                    $userAuth= Auth::user();
+                    $country = Country::where('code',$userAuth->location->country)->pluck('content')[0];
+                    $linkcompletetrans = url('afa/dossier?action=complete_dossier_transaction_info&ID='.DossierTransaction::getDossierTransactionId($prod_id,$userAuth->id));
+                
+                    Session()->put('complete_registration',true);
+                    return redirect($prodUrl)->with('complete_registration_content', trans('member.tobuy.complete_registration.header', ['date'=>$dtDate, 'hour'=>$dtTime, 'name'=>$user]))->with('complete_registration_message',1);
+                }else{
+                    abort(404);
+                }
+            }else{
+                // Membre organisation
+                // Update dossier transaction
+                // DossierTransaction::where('product_id',$product->id)->with('user_id',Auth::id())->update(['status'=>7]);
+    
+                
+            }
+        }else{
+            return redirect()->route('membre.transaction');
+        }
+        
+        abort(404);
+    }
+
     /**
      * Show complete registration form
      *

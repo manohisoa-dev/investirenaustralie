@@ -1570,4 +1570,5 @@ return
 	'txt.awaiting_payment_of_the_second_cpc' => 'En attente de paiement du second commission CPC',
 	'txt.awaiting_payment_of_the_bonus_cpc' => 'En attente de paiement du bonus CPC',
 	'txt.payment_successfully_completed' => 'Paiement effectué avec succès',
+	'txt.reserved_product' => 'Produit réservé',
 ];

@@ -1207,6 +1207,7 @@ return
 	'txt.awaiting_payment_of_the_second_cpc' => 'Awaiting payment of the second CPC commission',
 	'txt.awaiting_payment_of_the_bonus_cpc' => 'Awaiting payment of the bonus CPC commission',
 	'txt.payment_successfully_completed' => 'Payment successfully completed',
+	'txt.reserved_product' => 'Reserved product',
 	'txt.upload_error' => 'Upload error!',
 	'txt.dossier.i_would_like_to_buy_this' => 'I would like to buy this property',
 	'txt.dossier.i_would_like_to_buy_this.description' => 'Following the sending of the search warrant, to go to the purchase phase you will have to trigger this step by clicking on the button &ldquo;I WOULD LIKE TO BUY THIS PROPERTY&rdquo;',
