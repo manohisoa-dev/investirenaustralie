@@ -180,6 +180,7 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     
     //Route procedure d'Achat
     Route::get('liste_procedure_achat', 'ProcedureAchatController@liste')->name('procedure.liste');
+    Route::resource('mandate','MandateController');
 });
 
 // ROUTE ADMIN DELEGATE
