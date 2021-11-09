@@ -32,6 +32,7 @@ use Mail;
 
 use GuzzleHttp;
 use GuzzleHttp\Client;
+use DB;
 
 class ProductController extends Controller {
     public $viewDir = "admin.product";
@@ -731,26 +732,25 @@ class ProductController extends Controller {
         $product->status = 'published';
         $product->validated_at = Carbon::now();
         $product->save();
-        
-        if($product->seller_id != 0){
+
+        if ($product->seller_id != 0) {
             $id_user_seller_byAfa = $product->author_id;
-            User::whereId($id_user_seller_byAfa)->update(['status'=>'active']);
+            User::whereId($id_user_seller_byAfa)->update(['status' => 'active']);
         }
         //envoie message au vendeur
         $this->send_msg_vendeur_after_validation_produit($product->id);
-        
+
         Notify::success('Le produit a été publié avec succés');
         return back();
     }
-    
-    public function send_msg_vendeur_after_validation_produit($id_produit)
-    {
+
+    public function send_msg_vendeur_after_validation_produit($id_produit) {
         $product = Product::find($id_produit);
         $localisation = Localisation::find($product->location_id);
         $state = State::find($product->state_id);
         $user = User::find($product->author_id);
         $lang = $user->language;
-        $content_lab = 'message_'.$lang;
+        $content_lab = 'message_' . $lang;
         $message = ModelMessage::where('id', 3)->get();
         if (count($message) > 0) {
             $vars = array(
@@ -760,7 +760,7 @@ class ProductController extends Controller {
                 '{Ville}' => $localisation->locality,
                 '{Etat}' => $state->content);
             $contenu = strtr($message[0]->$content_lab, $vars);
-            
+
             $item = new Message();
             $item->type = 'admin';
             $item->from_id = 1;
@@ -943,19 +943,18 @@ class ProductController extends Controller {
         $product = Product::find($request->id_produit);
         Product::where('parent_id', $product->id)->delete(); //suppression programme
         $product->delete();
-        //envoie message au vendeur 
+        //envoie message au vendeur
         $this->envoie_msg_rejet_a_condition_commission($request->id_produit);
         return response()->json(['success' => 'true']);
     }
-    
-    public function envoie_msg_rejet_a_condition_commission($id_produit)
-    {
+
+    public function envoie_msg_rejet_a_condition_commission($id_produit) {
         $product = Product::find($id_produit);
         $localisation = Localisation::find($product->location_id);
         $state = State::find($product->state_id);
         $user = User::find($product->author_id);
         $lang = $user->language;
-        $content_lab = 'message_'.$lang;
+        $content_lab = 'message_' . $lang;
         $message = ModelMessage::where('id', 2)->get();
         if (count($message) > 0) {
             $vars = array(
@@ -965,14 +964,14 @@ class ProductController extends Controller {
                 '{Ville}' => $localisation->locality,
                 '{Etat}' => $state->content);
             $contenu = strtr($message[0]->$content_lab, $vars);
-            
+
             $item = new Message();
             $item->type = 'admin';
             $item->from_id = 1;
             $item->body = $contenu;
             $item->to_id = $user->id;
             $item->save();
-        }        
+        }
     }
 
     public function ajaxChangeIconPhotoActive(Request $request) {
@@ -1149,6 +1148,21 @@ class ProductController extends Controller {
             Product::where('id', $request->id_product)->update(['image_id' => $image_prod->id]);
         }
 
+        return response()->json(['success' => 'true']);
+    }
+
+    public function ajaxRefreshAfa(Request $request) {
+        $produit = Product::where('id', $request->id_produit)->first();
+        $localisation = Localisation::where('id', $produit->location_id)->first();
+        $afa_possible = DB::select("SELECT `users`.id as id_afa FROM `users` LEFT JOIN `localizations` ON `users`.`location_id` = `localizations`.`id` WHERE `users`.`role` = 3 and `localizations`.`locality` = '$localisation->locality'");
+        if (count($afa_possible) > 0) {
+            $tab_afa = array();
+            foreach ($afa_possible as $val) {
+                $tab_afa[] = $val->id_afa;
+            }
+            $id_afa_p = implode(', ', $tab_afa);
+            Product::where('id', $request->id_produit)->update(['afaId_possible' => $id_afa_p]);
+        }
         return response()->json(['success' => 'true']);
     }
 

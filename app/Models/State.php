@@ -48,6 +48,11 @@ class State extends Model {
             $newRules[$attr] = $rules[$attr];
         return $newRules;
     }
+    
+    public function mandat()
+    {
+        return $this->hasMany(Mandate::class, 'state_id');
+    }
 
 }
 

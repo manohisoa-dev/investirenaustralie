@@ -174,19 +174,19 @@
 						<div class="col-lg-4">
 							<div class="form-group">
 								<label for="title">@lang('app.form.programme_suburb') *</label>
-								<input name="suburb" id="suburb" class="form-control" type="text" value="{{ old('suburb')?old('suburb'):'' }}">
+								<input name="suburb" id="suburb" class="form-control" type="text" value="{{ old('suburb')?old('suburb'):'' }}" readonly="">
 							</div>
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
 								<label for="title">@lang('app.form.programme_ville') *</label>
-								<input name="ville" id="ville" class="form-control" type="text" value="{{ old('ville')?old('ville'):'' }}">
+								<input name="ville" id="ville" class="form-control" type="text" value="{{ old('ville')?old('ville'):'' }}" readonly="">
 							</div>  
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
 								<label for="title">@lang('app.form.programme_cp') *</label>
-								<input name="postalCode" id="postalCode" class="form-control" type="text" value="{{ old('postalCode')?old('postalCode'):'' }}">
+								<input name="postalCode" id="postalCode" class="form-control" type="text" value="{{ old('postalCode')?old('postalCode'):'' }}" readonly="">
 							</div>
 						</div>
 					</div>
@@ -205,24 +205,9 @@
 						<div class="col-lg-4">
 							<div class="form-group">
 								<label for="title">@lang('app.form.programme_etat') *</label>
-								<select class="form-control" name="state_id" id="state_id" style="width:100%">
-									<option value="">@lang('app.txt.choose_state')</option>
-									@foreach(\App\Models\State::all() as $state)
-										<option value="{{$state->id}}" dataname="{{$state->content}}">{{$state->content}}</option>
-									@endforeach
-								</select>
+								<input type="text" name="state_id" id="state_id" class="form-control" readonly="" />
 							</div> 
 						</div>
-						{{--<div class="col-lg-4">--}}
-							{{--<div class="form-group">--}}
-								{{--<label for="title">@lang('app.form.programme_solicitor')</label>--}}
-								{{--<select class="form-control" name="solicitor_id" id="solicitor_id" style="width:100%">--}}
-									{{--@foreach(\App\Models\Solicitor::where('vendeur_id',Auth::id())->get() as $solicitor)--}}
-										{{--<option value="{{$solicitor->id}}">{{$solicitor->cabinet_name}}</option>--}}
-									{{--@endforeach--}}
-								{{--</select>--}}
-							{{--</div> --}}
-						{{--</div>--}}
 					</div>
 					<hr>
 					<div class="row">
@@ -230,27 +215,44 @@
 							<h4 class="new-programme-solicitor">@lang('app.form.programme_solicitor')</h4>
 						</div>
 					</div>
-					<div class="row">
-						<div class="col-lg-4">
-							<div class="form-group">
-								<label for="title">Nom du cabinet *</label>
-								<input name="cabinet_name" id="cabinet_name" class="form-control" type="text" value="{{ old('cabinet_name')?old('cabinet_name'):'' }}" required>
-							</div>
-						</div>
-						<div class="col-lg-4">
-							<div class="form-group">
-								<label for="title">Email cabinet *</label>
-								<input name="cabinet_email" id="cabinet_email" class="form-control" type="email" value="{{ old('cabinet_email')?old('cabinet_email'):'' }}" required>
-							</div>
-						</div>
-						<div class="col-lg-4">
-							<div class="form-group">
-								<label for="title">Tel *</label>
-								<input name="cabinet_phone" id="cabinet_phone" class="form-control" type="text" value="{{ old('cabinet_phone')?old('cabinet_phone'):'' }}" required>
+					<div id="solicitorExistant">
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<select class="form-control" name="solicitor_id" id="solicitor_id" style="width:100%">
+										<option value="">@lang('app.form.choix_txt')</option>
+										@foreach($solicitors as $solicitor)
+											<option value="{{$solicitor->id}}">{{$solicitor->cabinet_name}}</option>
+										@endforeach
+										<option value="new">Créer nouveau solicitor</option>
+									</select>
+								</div> 
 							</div>
 						</div>
 					</div>
-						<hr>
+					<div id="newSolicitor" style="display:none">
+						<div class="row">						
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label for="title">Nom du cabinet *</label>
+									<input name="cabinet_name" id="cabinet_name" class="form-control" type="text" value="{{ old('cabinet_name')?old('cabinet_name'):'' }}">
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label for="title">Email cabinet *</label>
+									<input name="cabinet_email" id="cabinet_email" class="form-control" type="email" value="{{ old('cabinet_email')?old('cabinet_email'):'' }}">
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label for="title">Tel *</label>
+									<input name="cabinet_phone" id="cabinet_phone" class="form-control" type="text" value="{{ old('cabinet_phone')?old('cabinet_phone'):'' }}">
+								</div>
+							</div>
+						</div>
+					</div>
+					<hr>
 
 					<div class="row">
 						<div class="col-lg-6">
@@ -302,16 +304,23 @@
 								<div id="template" class="file-row"></div>
 							</div>
 						</div>
-					</div>	
+					</div>
 					
-					<div class="row">
+					<div class="row">						
+						<div class="col-lg-12">
+							<label for="title">@lang('app.table.lia_dossier')</label>
+							<div id="salesMandates"></div>
+						</div>
+					</div>
+					
+					{{--<div class="row">
 						<div class="col-lg-12">
 							<label for="title">@lang('app.table.lia_dossier')</label>
 							<div class="dropzone" id="lia_dossier" multiple>
 								<div id="template" class="file-row"></div>
 							</div>
 						</div>
-					</div>	
+					</div>--}}
 										
 					<div class="row">
 						<div class="col-lg-12" style="margin-top:15px">
@@ -359,7 +368,7 @@ function initMap(){
 
 	google.maps.event.addListener(autocomplete, 'place_changed', function() {
 		var place = autocomplete.getPlace();
-		//console.log(place.address_components);
+		console.log(place.address_components);
 		var arrAddress = place.address_components;
 		var itemRoute='';
 		var itemSuburb='';
@@ -388,8 +397,8 @@ function initMap(){
 			
 			if (address_components.types[0] == "country") {
 				//document.getElementById("country_code").value = place.address_components[i].short_name;
-				console.log("country:" + address_components.long_name);
-				console.log("country:" + address_components.short_name);
+				//console.log("country:" + address_components.long_name);
+				//console.log("country:" + address_components.short_name);
 				itemCountry = address_components.long_name;
 			}
 			
@@ -413,8 +422,21 @@ function initMap(){
 			$('#suburb').val(itemCity);
 			$('#long').val(long);
 			$('#lat').val(lat);
-			$('#state_id option[dataname="'+itemState+'"]').prop('selected', true);
+			$('#state_id').val(itemState);
+			set_mandat_state(itemState,0);
 		});
+	});
+}
+
+function set_mandat_state(state,active)
+{
+	$.ajax({
+		type:'POST',
+		url:"{{ route('ajaxSetMandatState') }}",
+		data: {"_token": "{{ csrf_token() }}","state": state,"Mactive":active},
+		success:function(data) {
+			$('#salesMandates').html(data);
+		}
 	});
 }
 </script>
@@ -455,6 +477,15 @@ function initMap(){
 			var fileName = $(this).val();
 			//replace the "Choose a file" label
 			$(this).next('.custom-file-label').html(fileName);
+		});
+		
+		$('#solicitor_id').on('change',function(){
+			var choix_solicitor = $(this).val();
+			if(choix_solicitor == 'new'){
+				$('#newSolicitor').show();
+			}else{
+				$('#newSolicitor').hide();
+			}
 		});
 		
 		$('#commision').on('change', function() {
@@ -826,6 +857,28 @@ function initMap(){
 				},
 				long: {
 					required: true
+				},
+				sales_mandate:{
+					required: true
+				},
+				solicitor_id: {
+					required: true
+				},
+				cabinet_name: {
+					required: function(element){
+						return $("#solicitor_id").val()=="new";
+					}
+				},
+				cabinet_email: {
+					required: function(element){
+						return $("#solicitor_id").val()=="new";
+					},
+					email:true
+				},
+				cabinet_phone: {
+					required: function(element){
+						return $("#solicitor_id").val()=="new";
+					}
 				}
 			},
 			messages: {
@@ -895,6 +948,21 @@ function initMap(){
 				},
 				long: {
 					required: "@lang('app.txt.autocomplete_error')"
+				},
+				sales_mandate: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				solicitor_id: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				cabinet_name: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				cabinet_email: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				cabinet_phone: {
+					required: "@lang('app.txt.champobligatoire')"
 				}
 			},
 			errorPlacement: function ( error, element ) {

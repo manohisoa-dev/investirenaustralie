@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Mandates - Ajout ')
+@section('title', 'Mandats de vente - Ajout ')
 
 @section('breadcrumb')
 <div class="row wrapper border-bottom white-bg page-heading">
@@ -8,7 +8,7 @@
         <h2>Mandates</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Mandates</a>
+                <a href="#">Mandats de vente</a>
             </li>
             <li class="breadcrumb-item">
                 <a href="{{ route('admin.mandate.index') }}">Listes</a>
@@ -29,21 +29,28 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Ajouter un nouveau Mandate</h5>
+                <h5>Ajouter un nouveau mandat</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-validation form-padding" action="{{ route('admin.mandate.store') }}" method="post">
+                <form class="form-validation form-padding" action="{{ Auth::user()->isAdmin()?route('admin.mandate.store') : (Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.mandate.store'):route('admin.collaborator.admin.mandate.store')) }}" method="post" enctype="multipart/form-data">
 
                     {{ csrf_field() }}
-                                                        
-                    {!! \Nvd\Crud\Form::input('state_id','text')->show() !!}
-                                            
-                    {!! \Nvd\Crud\Form::input('mandate_name','text')->show() !!}
-                                            
-                    {!! \Nvd\Crud\Form::input('mandate_file','text')->show() !!}
-                                                                                                    
-                    {!! \Nvd\Crud\Form::input('deleted_at','text')->show() !!}
-                            
+                    <div class="form-group">
+						<label for="state_id">Etat</label>
+						<select class="form-control" name="state_id" id="state_id" required>
+							@foreach($states as $state)
+								<option value="{{$state->id}}"> {{$state->content}}</option>
+							@endforeach
+						</select>
+					</div>         
+					<div class="form-group">
+						<label for="mandate_name">Libellé</label>
+						<input name="mandate_name" id="mandate_name" class="form-control" type="text" value="" required>
+					</div>          
+					<div class="form-group">
+						<label for="mandate_file">Source</label>
+						<input type="file" name="mandate_file" class="form-control" accept="application/pdf" required/>
+					</div>                            
                     <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Créer</button>
 
                 </form>

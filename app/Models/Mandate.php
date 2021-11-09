@@ -17,7 +17,6 @@ class Mandate extends Model {
         \Request::input('id') and $query->where('id',\Request::input('id'));
         \Request::input('state_id') and $query->where('state_id',\Request::input('state_id'));
         \Request::input('mandate_name') and $query->where('mandate_name','like','%'.\Request::input('mandate_name').'%');
-        \Request::input('mandate_file') and $query->where('mandate_file','like','%'.\Request::input('mandate_file').'%');
         \Request::input('created_at') and $query->where('created_at',\Request::input('created_at'));
         \Request::input('updated_at') and $query->where('updated_at',\Request::input('updated_at'));
         \Request::input('deleted_at') and $query->where('deleted_at',\Request::input('deleted_at'));
@@ -34,8 +33,7 @@ class Mandate extends Model {
         $rules = [
             'state_id' => 'required',
             'mandate_name' => 'required|string|max:255',
-            'mandate_file' => 'required|string|max:255',
-            'deleted_at' => 'required',
+            'images_id' => 'required',
         ];
 
         // no list is provided
@@ -51,6 +49,16 @@ class Mandate extends Model {
         foreach ( $attributes as $attr )
             $newRules[$attr] = $rules[$attr];
         return $newRules;
+    }
+    
+    public function state()
+    {
+        return $this->belongsTo(State::class,'state_id','id');
+    }
+    
+    public function image()
+    {
+        return $this->belongsTo(Image::class, 'images_id', 'id');
     }
 
 }

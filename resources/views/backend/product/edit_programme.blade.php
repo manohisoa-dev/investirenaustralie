@@ -158,27 +158,27 @@
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_adresse') *</label>
 									<input name="display_address" id="display_address" class="form-control" type="text" value="{{$product->display_address}}">
-									<input type="hidden" name="long" id="long" />
-									<input type="hidden" name="lat" id="lat" />
+									<input type="hidden" name="long" id="long" value="{{$localisation?$localisation->longitude:''}}" />
+									<input type="hidden" name="lat" id="lat" value="{{$localisation?$localisation->latitude:''}}" />
 								</div>
 								
 								<div class="row">
 									<div class="col-lg-4">
 										<div class="form-group">
 											<label for="title">@lang('app.form.programme_suburb')</label>
-											<input name="suburb" id="suburb" class="form-control" type="text" value="{{$localisation?$localisation->area_level_1:''}}">
+											<input name="suburb" id="suburb" class="form-control" type="text" value="{{$localisation?$localisation->area_level_2:''}}" readonly="">
 										</div>
 									</div>
 									<div class="col-lg-4">
 										<div class="form-group">
 											<label for="title">@lang('app.form.programme_ville')</label>
-											<input name="ville" id="ville" class="form-control" type="text" value="{{$localisation?$localisation->locality:''}}">
+											<input name="ville" id="ville" class="form-control" type="text" value="{{$localisation?$localisation->locality:''}}" readonly="">
 										</div>  
 									</div>
 									<div class="col-lg-4">
 										<div class="form-group">
 											<label for="title">@lang('app.form.programme_cp') *</label>
-											<input name="postalCode" id="postalCode" class="form-control" type="text" value="{{$localisation?$localisation->postalCode:''}}">
+											<input name="postalCode" id="postalCode" class="form-control" type="text" value="{{$localisation?$localisation->postalCode:''}}" readonly="">
 										</div>
 									</div>
 								</div>
@@ -197,23 +197,9 @@
 									<div class="col-lg-4">
 										<div class="form-group">
 											<label for="title">@lang('app.form.programme_etat') *</label>
-											<select class="form-control" name="state_id" id="state_id" style="width:100%">
-												@foreach(\App\Models\State::all() as $state)
-													<option value="{{$state->id}}" {{$state->id == $product->state_id ? 'selected' : ''}}>{{$state->content}}</option>
-												@endforeach
-											</select>
+											<input type="text" name="state_id" id="state_id" value="{{$localisation?$localisation->area_level_1:''}}" class="form-control" readonly="" />
 										</div> 
 									</div>
-									{{--<div class="col-lg-4">--}}
-										{{--<div class="form-group">--}}
-											{{--<label for="title">@lang('app.form.programme_solicitor')</label>--}}
-											{{--<select class="form-control" name="solicitor_id" id="solicitor_id" style="width:100%">--}}
-												{{--@foreach(\App\Models\Solicitor::where('vendeur_id',Auth::id())->get() as $solicitor)--}}
-													{{--<option value="{{$solicitor->id}}" {{$solicitor->id == $product->solicitor_id ? 'selected' : ''}}>{{$solicitor->cabinet_name}}</option>--}}
-												{{--@endforeach--}}
-											{{--</select>--}}
-										{{--</div> --}}
-									{{--</div>--}}
 								</div>
 								<hr>
 								<div class="row">
@@ -221,24 +207,44 @@
 										<h4 class="new-programme-solicitor">@lang('app.form.programme_solicitor')</h4>
 									</div>
 								</div>
-								<input type="hidden" id="solicitor_id" name="solicitor_id" value="{{$solicitor?$solicitor->id:''}}">
-								<div class="row">
-									<div class="col-lg-4">
-										<div class="form-group">
-											<label for="title">Nom du cabinet *</label>
-											<input name="cabinet_name" id="cabinet_name" class="form-control" type="text" value="{{ old('cabinet_name')?old('cabinet_name'):($solicitor ? $solicitor->cabinet_name : "") }}" required>
+								
+								<div id="solicitorExistant">
+									<div class="row">
+										<div class="col-md-4">
+											<div class="form-group">
+												<select class="form-control" name="solicitor_id" id="solicitor_id" style="width:100%">
+													<option value="">@lang('app.form.choix_txt')</option>
+													@foreach($solicitors as $solicitor)
+														<option value="{{$solicitor->id}}" {{$solicitor->id == $solicitor->id?'selected="selected"':''}}>
+															{{$solicitor->cabinet_name}}
+														</option>
+													@endforeach
+													<option value="new">Créer nouveau solicitor</option>
+												</select>
+											</div> 
 										</div>
 									</div>
-									<div class="col-lg-4">
-										<div class="form-group">
-											<label for="title">Email cabinet *</label>
-											<input name="cabinet_email" id="cabinet_email" class="form-control" type="email" value="{{ old('cabinet_email')?old('cabinet_email'):($solicitor ? $solicitor->cabinet_email : "") }}" required>
+								</div>
+								
+								<div id="newSolicitor" style="display:none">
+									<div class="row">						
+										<div class="col-lg-4">
+											<div class="form-group">
+												<label for="title">Nom du cabinet *</label>
+												<input name="cabinet_name" id="cabinet_name" class="form-control" type="text" value="{{ old('cabinet_name')?old('cabinet_name'):'' }}">
+											</div>
 										</div>
-									</div>
-									<div class="col-lg-4">
-										<div class="form-group">
-											<label for="title">Tel *</label>
-											<input name="cabinet_phone" id="cabinet_phone" class="form-control" type="text" value="{{ old('cabinet_phone')?old('cabinet_phone'):($solicitor ? $solicitor->cabinet_phone : "") }}" required>
+										<div class="col-lg-4">
+											<div class="form-group">
+												<label for="title">Email cabinet *</label>
+												<input name="cabinet_email" id="cabinet_email" class="form-control" type="email" value="{{ old('cabinet_email')?old('cabinet_email'):'' }}">
+											</div>
+										</div>
+										<div class="col-lg-4">
+											<div class="form-group">
+												<label for="title">Tel *</label>
+												<input name="cabinet_phone" id="cabinet_phone" class="form-control" type="text" value="{{ old('cabinet_phone')?old('cabinet_phone'):'' }}">
+											</div>
 										</div>
 									</div>
 								</div>
@@ -329,7 +335,6 @@
 								
 								<div class="row">
 									<div class="col-lg-12">
-										<label for="title">@lang('app.form.programme_fond_dossier')</label>
 										<div class="dropzone" id="fond_dossier" multiple style="margin-bottom:25px">
 											<div id="template" class="file-row"></div>
 										</div>
@@ -382,9 +387,9 @@
 														$filename_eoi = preg_replace('/^(.*)\-\d{8,}\.(gif|jpg|png|pdf)$/', '$1.$2', $filename_eoi);
 													@endphp
 													<label style="text-transform:lowercase">{{str_limit($filename_eoi, 15)}}</label>
-													<a class="pull-right" href="javascript:void(0)" onclick="delete_eoi_dossier({{$dos->prdEoiId}})">
+													{{--<a class="pull-right" href="javascript:void(0)" onclick="delete_eoi_dossier({{$dos->prdEoiId}})">
 														<i class="fa fa-trash"></i>
-													</a>
+													</a>--}}
 													<br>
 													<small>{{$dos->created_at ? $dos->created_at->diffForHumans() : ""}}</small>
 												</div>
@@ -395,13 +400,13 @@
 									 </div>
 								</div>  
 								@endif 
-								<div class="row" style="margin-bottom:15px">
+								{{--<div class="row" style="margin-bottom:15px">
 									<div class="col-lg-12">
 										<div class="dropzone" id="eoi_dossier" multiple style="margin-bottom:25px">
 											<div id="template" class="file-row"></div>
 										</div>
 									</div>
-								</div>  
+								</div> --}} 
 								
 								@if ($photos)
 								<div class="row">						
@@ -448,69 +453,13 @@
 								@if ($liadossier)
 								<div class="row">
 									 <div class="col-lg-12">
-									 <h5 style="font-weight:normal; font-size:17px; color:#718096">@lang('app.table.lia_dossier')</h5>
-									 @foreach ( $liadossier as $dos )
-									 <div class="file-box">
-										<div class="file">
-											@if(setIconFile($dos->filepath) == 'images')
-												<a href="{{asset($dos->filepath)}}" class="fancyboxLink">
-											@elseif(setIconFile($dos->filepath) == 'pdf')
-												<a class="fancybox-pdf" target="_blank" data-fancybox-type="iframe" href="http://docs.google.com/viewer?embedded=true&url={{asset(urlencode($dos->filepath))}}">
-											@else
-												<a href="https://docs.google.com/viewer?url={{asset(urlencode($dos->filepath))}}&embedded=true" class="fancyboxLinkDoc" data-fancybox-type="iframe">
-											@endif								
-												<span class="corner"></span>						
-												@if(setIconFile($dos->filepath) == 'images')
-													<div class="image">
-														<img alt="image" class="img-fluid" src="{{asset($dos->filepath)}}">
-													</div>
-												@endif	
-												@if(setIconFile($dos->filepath) == 'pdf')
-													<div class="icon">
-														<i class="fa fa-file-pdf"></i>
-													</div>
-												@endif	
-												@if(setIconFile($dos->filepath) == 'doc')
-													<div class="icon">
-														<i class="fa fa-file-word-o"></i>
-													</div>
-												@endif
-												@if(setIconFile($dos->filepath) == 'excel')
-													<div class="icon">
-														<i class="fa fa-file-excel-o"></i>
-													</div>
-												@endif	
-												@if(setIconFile($dos->filepath) == 'file')
-													<div class="icon">
-														<i class="fa fa-file"></i>
-													</div>
-												@endif		
-												<div class="file-name">
-													@php
-														$filename_eoi = $dos->filename;
-														$filename_eoi = preg_replace('/^(.*)\-\d{8,}\.(gif|jpg|png|pdf)$/', '$1.$2', $filename_eoi);
-													@endphp
-													<label style="text-transform:lowercase">{{str_limit($filename_eoi, 15)}}</label>
-													<a class="pull-right" href="javascript:void(0)" onclick="delete_lia_dossier({{$dos->prdLiaId}})">
-														<i class="fa fa-trash"></i>
-													</a>
-													<br>
-													<small>{{$dos->created_at ? $dos->created_at->diffForHumans() : ""}}</small>
-												</div>
-											</a>
-										</div>
-									</div>
-									 @endforeach		
+										 <h5 style="font-weight:normal; font-size:17px; color:#718096">@lang('app.table.lia_dossier')</h5>
+										 <input type="hidden" name="mandat_recActive" id="mandat_recActive" value="{{$liadossier?$liadossier[0]->image_id:''}}" />
+										 <input type="hidden" name="id_mandatActive" id="id_mandatActive" value="{{$liadossier?$liadossier[0]->prdLiaId:''}}" />
+										 <div id="salesMandates"></div>
 									 </div>
 								</div>  
 								@endif 
-								<div class="row" style="margin-bottom:15px">
-									<div class="col-lg-12">
-										<div class="dropzone" id="lia_dossier" multiple style="margin-bottom:25px">
-											<div id="template" class="file-row"></div>
-										</div>
-									</div>
-								</div>
 														
 								<div class="row">
 									<div class="col-lg-12" style="margin-top:15px">
@@ -573,6 +522,7 @@ function initMap(){
 		var itemSnumber='';
 		var lat = place.geometry.location.lat();
 		var long = place.geometry.location.lng();
+		var itemState = '';
 		
 		$.each(arrAddress, function (i, address_components) {
 			if (address_components.types[0] == "street_number") {
@@ -591,8 +541,8 @@ function initMap(){
 			
 			if (address_components.types[0] == "country") {
 				//document.getElementById("country_code").value = place.address_components[i].short_name;
-				console.log("country:" + address_components.long_name);
-				console.log("country:" + address_components.short_name);
+				//console.log("country:" + address_components.long_name);
+				//console.log("country:" + address_components.short_name);
 				itemCountry = address_components.long_name;
 			}
 			
@@ -604,6 +554,10 @@ function initMap(){
 				//console.log("pc:" + address_components.long_name);
 				itemCity = address_components.short_name;
 			}
+			if (address_components.types[0] == "administrative_area_level_1") {
+				//console.log("pc:" + address_components.long_name);
+				itemState = address_components.short_name;
+			}
 			
 			var adresse = itemSnumber + ' ' + itemRoute;
 			$('#display_address').val(adresse);
@@ -612,6 +566,8 @@ function initMap(){
 			$('#suburb').val(itemCity);
 			$('#long').val(long);
 			$('#lat').val(lat);
+			$('#state_id').val(itemState);
+			set_mandat_state(itemState,0);
 		});
 	});
 }
@@ -619,7 +575,11 @@ function initMap(){
 
 <script>
 	Dropzone.autoDiscover = false;
-	$(document).ready(function(){					
+	$(document).ready(function(){	
+		var itemState = $('#state_id').val();
+		var mandatActive = $('#mandat_recActive').val();
+		set_mandat_state(itemState,mandatActive);
+						
 		CKEDITOR.replace( 'description' );
 		$("#category_id").select2();
 		$("#type_id").select2();
@@ -644,6 +604,15 @@ function initMap(){
 				var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
 				var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
 				$(this).datepicker('setDate', new Date(year, month, 1));
+			}
+		});
+		
+		$('#solicitor_id').on('change',function(){
+			var choix_solicitor = $(this).val();
+			if(choix_solicitor == 'new'){
+				$('#newSolicitor').show();
+			}else{
+				$('#newSolicitor').hide();
 			}
 		});
 		
@@ -959,6 +928,28 @@ function initMap(){
 				},
 				long:{
 					required: true
+				},
+				solicitor_id: {
+					required: true
+				},
+				cabinet_name: {
+					required: function(element){
+						return $("#solicitor_id").val()=="new";
+					}
+				},
+				cabinet_email: {
+					required: function(element){
+						return $("#solicitor_id").val()=="new";
+					},
+					email:true
+				},
+				cabinet_phone: {
+					required: function(element){
+						return $("#solicitor_id").val()=="new";
+					}
+				},
+				sales_mandate:{
+					required: true
 				}
 			},
 			messages: {
@@ -994,8 +985,23 @@ function initMap(){
 				chk_firb: {
 					required: "@lang('app.txt.champobligatoire')"
 				},
+				solicitor_id: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
 				long:{
 					required: "@lang('app.txt.autocomplete_error')"
+				},
+				cabinet_name: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				cabinet_email: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				cabinet_phone: {
+					required: "@lang('app.txt.champobligatoire')"
+				},
+				sales_mandate: {
+					required: "@lang('app.txt.champobligatoire')"
 				}
 			},
 			errorPlacement: function ( error, element ) {
@@ -1007,6 +1013,18 @@ function initMap(){
 			},
 		});
 	});
+	
+	function set_mandat_state(state,active)
+	{
+		$.ajax({
+			type:'POST',
+			url:"{{ route('ajaxSetMandatState') }}",
+			data: {"_token": "{{ csrf_token() }}","state": state,"Mactive":active},
+			success:function(data) {
+				$('#salesMandates').html(data);
+			}
+		});
+	}
 	
 	function set_type_programme(categorie_id,type_id_active)
 	{

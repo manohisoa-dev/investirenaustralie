@@ -300,7 +300,7 @@
                 </a>
             </li>
 			<li>
-                <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.state.index'):route('admin.state.index')}}">
+                <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.mandate.index'):route('admin.mandate.index')}}">
                     <span class="nav-label">@lang('app.table.lia_dossier')</span>
                 </a>
             </li>

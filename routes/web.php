@@ -51,6 +51,7 @@ Route::get('mes-programmes', 'ProductController@mesProgramme')->name('mes-progra
 Route::get('nouveau-programmes', 'ProductController@nouveauProgrammes')->name('nouveau-programmes');
 Route::post('ajaxGetTypeProduitCategorie', 'ProductController@ajaxGetTypeProduitCategorie')->name('ajaxGetTypeProduitCategorie');
 Route::post('ajaxDropZone', 'ProductController@ajaxDropZone')->name('ajaxDropZone'); 
+Route::post('ajaxSetMandatState', 'ProductController@ajaxSetMandatState')->name('ajaxSetMandatState'); 
 Route::get('ajaxCheckTitreProgramme', 'ProductController@ajaxCheckTitreProgramme')->name('ajaxCheckTitreProgramme');
 Route::get('ajaxCheckAdresse', 'ProductController@ajaxCheckAdresse')->name('ajaxCheckAdresse');
 Route::post('ajaxDropZoneEdit', 'ProductController@ajaxDropZoneEdit')->name('ajaxDropZoneEdit');  
@@ -218,6 +219,7 @@ Route::middleware(["auth", "role:5"])->group(function(){
         Route::get('carts', 'MemberController@carts')->name('member.carts');
         Route::get('orders', 'MemberController@orders')->name('member.orders');
         Route::get('continueTransactions/{idtrans}', 'MemberController@continueTransaction')->name('member.continueTransaction');
+        Route::get('continueTransactionSansDeplacement/{idtrans}', 'MemberController@continueTransactionSansDeplacement')->name('member.continueTransactionSansDeplacement');
         Route::get('transactions', 'MemberController@transactions')->name('member.transaction');
         Route::get('purchases', 'MemberController@purchases')->name('member.purchases');
         Route::get('sale/{sale}', 'SaleController@show')->name('member.cart');

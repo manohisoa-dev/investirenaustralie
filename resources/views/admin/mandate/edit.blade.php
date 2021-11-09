@@ -37,15 +37,22 @@
                     {{ csrf_field() }}
 
                     {{ method_field("PUT") }}
-                                                                                                
-                            {!! \Nvd\Crud\Form::input('state_id','text')->model($mandate)->show() !!}
-                                                                        
-                            {!! \Nvd\Crud\Form::input('mandate_name','text')->model($mandate)->show() !!}
-                                                                        
-                            {!! \Nvd\Crud\Form::input('mandate_file','text')->model($mandate)->show() !!}
-                                                                                                                                                                        
-                            {!! \Nvd\Crud\Form::input('deleted_at','text')->model($mandate)->show() !!}
-                                                
+					<div class="form-group">
+						<label for="state_id">Etat</label>
+						<select class="form-control" name="state_id" id="state_id" required>
+							@foreach($states as $state)
+								<option value="{{$state->id}}" {{$state->id==$mandate->state_id?'selected="selected"':''}}> {{$state->content}}</option>
+							@endforeach
+						</select>
+					</div>         
+					<div class="form-group">
+						<label for="mandate_name">Libellé</label>
+						<input name="mandate_name" id="mandate_name" class="form-control" type="text" value="{{$mandate->mandate_name}}" required>
+					</div>         
+                    <div class="form-group">
+						<label for="mandate_file">Source</label>
+						<input type="file" name="mandate_file" accept="application/pdf" class="form-control"/>
+					</div>                                                
                     <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i> Enregistrer</button>
 
                 </form>

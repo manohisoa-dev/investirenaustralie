@@ -32,6 +32,7 @@ use Mail;
 use App\Models\TemplateModel;
 use App\Models\Message;
 use App\Models\ModelMessage;
+use App\MOdels\Mandate;
 use DB;
 
 class ProductController extends Controller {
@@ -323,15 +324,12 @@ class ProductController extends Controller {
     }
 
     public function nouveauProgrammes() {
-        /*$send = new TemplateModel();
-        $vars = array('{Nom AFA}'=>'Rakoto','{Ville}'=>'Ankadifotsy','{Etat}'=>'Mada','{Nom Programme}'=>'pro 897');
-        $send->sendMailNotification(2,$vars,'dev4.easydata@gmail.com');*/
-
+        $solicitor = Solicitor::where('vendeur_id', Auth::id())->get();
         $lapls = Localisation::select('localizations.*')->join('users',
             'users.location_id', '=', 'localizations.id')->where('users.role', '=', '4')->groupBy('localizations.locality')->get();
 
         return view('backend.product.nouveau_programme')->with('title', __('afa.programme.title'))->with('lapls',
-            $lapls);
+            $lapls)->with('solicitors', $solicitor);
     }
 
     public function ajaxGetTypeProduitCategorie(Request $request) {
@@ -373,6 +371,48 @@ class ProductController extends Controller {
                 '</option>';
         }
         return response()->json($output);
+    }
+
+    public function ajaxSetMandatState(Request $request) {
+        $out = '';
+        if ($request->state) {
+            $state = State::where('content', $request->state)->first();
+            if (count($state)) {
+                $mandates = Mandate::where('state_id', $state->id)->get();
+                if (count($mandates)) {
+                    foreach ($mandates as $mandat) {
+                        if ($request->Mactive == $mandat->images_id) {
+                            $class = 'checked="checked"';
+                        } else {
+                            $class = '';
+                        }
+                        $link = url($mandat->image->filepath);
+                        $out .= '<div class="file-box">';
+                        $out .= '<div class="file">';
+                        $out .= '<span class="corner"></span>';
+                        $out .= '<div class="icon">';
+                        $out .= '<a href="' . $link . '" target="_blank">';
+                        $out .= '<i class="fa fa-file"></i></a>';
+                        $out .= '</div>';
+                        $out .= '<div class="file-name">';
+                        $out .= '<label><input type="radio" value="' . $mandat->images_id .
+                            '" id="sales_mandate" name="sales_mandate" ' . $class . '> ' . $mandat->mandate_name .
+                            '</label>';
+                        $out .= '</div></div></div>';
+                    }
+                } else {
+                    $out .= '<input type="hidden" value="" name="sales_mandate">';
+                    $out .= 'Aucun mandat disponible';
+                }
+            } else {
+                $out .= '<input type="hidden" value="" name="sales_mandate">';
+                $out .= 'Aucun mandat disponible';
+            }
+        } else {
+            $out .= '<input type="hidden" value="" name="sales_mandate">';
+            $out .= 'Aucun mandat disponible';
+        }
+        return response()->json($out);
     }
 
     public function ajaxDropZone(Request $request) {
@@ -679,9 +719,9 @@ class ProductController extends Controller {
 "]);
         }
 
-        $state = State::where('id', $request->state_id)->first();
+        $state = State::where('content', $request->state_id)->first();
 
-        $id_location = $this->save_location($request->countryId, $state->content, $request->suburb,
+        $id_location = $this->save_location($request->countryId, $request->state_id, $request->suburb,
             $request->postalCode, $request->ville, $request->display_address, $request->long,
             $request->lat);
 
@@ -691,23 +731,27 @@ class ProductController extends Controller {
             $taux_commision = $request->rate_commission;
         }
 
+        //test si nouveau solicitor ou pas
+        if ($request->solicitor_id == 'new') {
+            // save Solicitor info
+            if ($request->cabinet_name && $request->cabinet_email && $request->cabinet_phone) {
+                $solicitor = new Solicitor();
+                $solicitor->cabinet_name = $request->cabinet_name;
+                $solicitor->cabinet_email = $request->cabinet_email;
+                $solicitor->cabinet_phone = $request->cabinet_phone;
+                $solicitor->vendeur_id = Auth::user()->id;
+                $solicitor->save();
+                $id_solicitor = $solicitor->id;
+            }
+        } else {
+            $id_solicitor = $request->solicitor_id;
+        }
         $id_programme = $this->save_programme($request->cat_programmme_id, $request->ancienneteBien,
             $request->natureBien, $request->prix_min, $request->prix_max, $request->type_id,
-            $request->display_address, $request->postalCode, $request->state_id, $titre_programme,
-            $request->description, $id_location, '', 'waiting', $request->commision, $taux_commision,
-            $id_afa_p, $request->solicitor_id, $request->commencement_dt, $request->estimated_delvivery_dt,
-            $request->programme_firb_pre_approved_program, $request->programme_pre_approved_sale,
-            $seller_id);
-
-        // save Solicitor info
-        if ($request->cabinet_name && $request->cabinet_email && $request->cabinet_phone) {
-            $solicitor = new Solicitor();
-            $solicitor->cabinet_name = $request->cabinet_name;
-            $solicitor->cabinet_email = $request->cabinet_email;
-            $solicitor->cabinet_phone = $request->cabinet_phone;
-            $solicitor->vendeur_id = Auth::user()->id;
-            $solicitor->save();
-        }
+            $request->display_address, $request->postalCode, $state->id, $titre_programme, $request->description,
+            $id_location, '', 'waiting', $request->commision, $taux_commision, $id_afa_p, $id_solicitor,
+            $request->commencement_dt, $request->estimated_delvivery_dt, $request->programme_firb_pre_approved_program,
+            $request->programme_pre_approved_sale, $seller_id);
 
 
         if ($request->dropPhoto) {
@@ -729,10 +773,13 @@ class ProductController extends Controller {
             $this->save_eoi_dossier($request->eoiDossier, $id_programme);
         }
 
-        if (isset($request->liaDossier)) {
-            foreach ($request->liaDossier as $key => $value) {
-                $this->save_lia_dossier($value, $id_programme);
-            }
+        if (isset($request->sales_mandate)) {
+            //save mandat de recherche
+            $fond_dossier = new LiaDossier();
+            $fond_dossier->product_id = $id_programme;
+            $fond_dossier->image_id = $request->sales_mandate;
+            $fond_dossier->author_id = Auth::user()->id;
+            $fond_dossier->save();
         }
 
         if ($request->fondDossier) {
@@ -885,15 +932,17 @@ class ProductController extends Controller {
             'product_lia.image_id', '=', 'images.id')->select('*',
             'product_lia.id as prdLiaId')->get();
 
-        $solicitor = "";
-        if (Auth::user()->isSbaBusiness() || Auth::user()->isSbaIndividual()) {
-            $solicitor = Solicitor::where('vendeur_id', Auth::id())->first();
-        }
 
+        $solicitor = Solicitor::where('vendeur_id', Auth::id())->get();
+
+        /*$solicitor = "";
+        if (Auth::user()->isSbaBusiness() || Auth::user()->isSbaIndividual()) {
+        $solicitor = Solicitor::where('vendeur_id', Auth::id())->first();
+        }*/
         return view('backend.product.edit_programme', ['product' => $product,
             'localisation' => $localisation, 'photos' => $photo, 'eoidossier' => $eoiDossier,
             'liadossier' => $liaDossier, 'product_lies' => $produit_lie, 'title' => __('afa.programme.title'),
-            'dossier' => $fonDossier, 'solicitor' => $solicitor]);
+            'dossier' => $fonDossier, 'solicitors' => $solicitor]);
     }
 
     public function editProduit(Request $request, Product $product) {
@@ -913,7 +962,6 @@ class ProductController extends Controller {
         $photo = ProductsImage::where('products_images.product_id', '=', $product->id)->join('images',
             'products_images.image_id', '=', 'images.id')->select('*',
             'products_images.id as prdImageId')->get();
-
         return view('backend.product.edit_produit', ['product' => $product,
             'localisation' => $localisation, 'eoidossier' => $eoiDossier, 'dossier' => $fonDossier,
             'liadossier' => $liaDossier, 'photos' => $photo, 'title' => __('afa.programme.title')]);
@@ -921,32 +969,43 @@ class ProductController extends Controller {
 
     public function updateProgramme(Request $request) {
         $product = Product::find($request->id);
+        $state = State::where('content', $request->state_id)->first();
         //modification localisation
         if ($request->location_Id != 0) {
-            $localisation = Localisation::find($product->location_id);
-            if ($localisation->route != $request->display_address || $localisation->locality !=
-                $request->ville) {
-                $longitude = $request->long;
-                $latitude = $request->lat;
-                Localisation::where('id', $product->location_id)->update(['area_level_1' => $request->suburb,
-                    'country' => $request->countryId, 'postalCode' => $request->postalCode,
-                    'locality' => $request->ville, 'route' => $request->display_address, 'longitude' =>
-                    $longitude, 'latitude' => $latitude]);
-                $id_location = $product->location_id;
-            } else {
-                $id_location = $request->location_Id;
-            }
+            $longitude = $request->long;
+            $latitude = $request->lat;
+            Localisation::where('id', $request->location_Id)->update(['area_level_1' => $request->suburb,
+                'country' => $request->countryId, 'area_level_1' => $request->state_id,
+                'area_level_2' => $request->suburb, 'postalCode' => $request->postalCode,
+                'locality' => $request->ville, 'route' => $request->display_address, 'longitude' =>
+                $longitude, 'latitude' => $latitude]);
+            $id_location = $product->location_id;
         } else {
-            $state = State::where('id', $request->state_id)->first();
-            $id_location = $this->save_location($request->countryId, $state->content, $request->suburb,
+            $id_location = $this->save_location($request->countryId, $request->state_id, $request->suburb,
                 $request->postalCode, $request->ville, $request->display_address, $request->long,
                 $request->lat);
         }
-
+        
         if ($request->commision == 'Sales commission rate (%)') {
             $taux_commision = $request->sales_rate;
         } else {
             $taux_commision = $request->rate_commission;
+        }
+
+        //test si nouveau solicitor ou pas
+        if ($request->solicitor_id == 'new') {
+            // save Solicitor info
+            if ($request->cabinet_name && $request->cabinet_email && $request->cabinet_phone) {
+                $solicitor = new Solicitor();
+                $solicitor->cabinet_name = $request->cabinet_name;
+                $solicitor->cabinet_email = $request->cabinet_email;
+                $solicitor->cabinet_phone = $request->cabinet_phone;
+                $solicitor->vendeur_id = Auth::user()->id;
+                $solicitor->save();
+                $id_solicitor = $solicitor->id;
+            }
+        } else {
+            $id_solicitor = $request->solicitor_id;
         }
 
         $slug = generateSlug($request->title_programme);
@@ -964,21 +1023,14 @@ class ProductController extends Controller {
         $product->estimated_delvivery_dt = $request->estimated_delvivery_dt;
         $product->programme_firb_pre_approved = $request->programme_firb_pre_approved_program;
         $product->programme_pre_approved_sale = $request->programme_pre_approved_sale;
+        $product->solicitor_id = $id_solicitor;
+        $product->state_id = $state->id;
         $product->save();
-
-        // update solicitor info
-        if (isset($request->solicitor_id) && $request->solicitor_id != 0) {
-            $solicitor = Solicitor::find($request->solicitor_id);
-
-            $solicitor->cabinet_name = $request->cabinet_name;
-            $solicitor->cabinet_email = $request->cabinet_email;
-            $solicitor->cabinet_phone = $request->cabinet_phone;
-            $solicitor->save();
-        }
-
         // // update translation
         // updateTranslate('programme',$product,$request->description);
-
+        if ($request->mandat_recActive != $request->sales_mandate) {
+            LiaDossier::where('id', $request->id_mandatActive)->update(['image_id' => $request->sales_mandate]);
+        }
         return redirect()->route('edit.programme', $product->id)->with('success',
             "Produit mise à jour avec succès");
     }
@@ -1078,13 +1130,13 @@ class ProductController extends Controller {
         $product->save();
 
         // update solicitor info
-        if(isset($request->solicitor_id) && $request->solicitor_id != 0){
-            $solicitor = Solicitor::find($request->solicitor_id) ;
+        if (isset($request->solicitor_id) && $request->solicitor_id != 0) {
+            $solicitor = Solicitor::find($request->solicitor_id);
 
-            $solicitor->cabinet_name = $request->cabinet_name ;
-            $solicitor->cabinet_email = $request->cabinet_email ;
-            $solicitor->cabinet_phone= $request->cabinet_phone ;
-            $solicitor->save() ;
+            $solicitor->cabinet_name = $request->cabinet_name;
+            $solicitor->cabinet_email = $request->cabinet_email;
+            $solicitor->cabinet_phone = $request->cabinet_phone;
+            $solicitor->save();
         }
         return redirect()->route('mes-produits')->with('success',
             "Produit a été créer avec succès");
@@ -1114,7 +1166,8 @@ class ProductController extends Controller {
         $type_id, $cat_programmme_id, $postalCode, $state_id, $programme_id, $location_id,
         $superficie_jardin, $avoir_parking_voie_public, $avoir_piscine, $type_commission,
         $taux_commission, $commencement_dt, $estimated_delvivery_dt, $avoir_bonus, $mt_bonus,
-        $property_detail, $nb_parking_spots, $min_area, $max_area, $programme_firb_pre_approved_program,$id_afa) {
+        $property_detail, $nb_parking_spots, $min_area, $max_area, $programme_firb_pre_approved_program,
+        $id_afa) {
 
         $product = new Product();
         $lastId = Product::latest('id')->first();
@@ -1689,7 +1742,7 @@ class ProductController extends Controller {
         }
 
         // save Solicitor info
-        if($request->cabinet_name && $request->cabinet_email && $request->cabinet_phone){
+        if ($request->cabinet_name && $request->cabinet_email && $request->cabinet_phone) {
             $solicitor = new Solicitor();
             $solicitor->cabinet_name = $request->cabinet_name;
             $solicitor->cabinet_email = $request->cabinet_email;

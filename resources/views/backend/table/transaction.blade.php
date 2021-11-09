@@ -41,83 +41,168 @@
             <td>{{ $trans->status }}</td>
             <td align="center">
                 @if (Auth::user()->hasRole(5))
-                    @php
-                        if($trans->status==2 || $trans->status==10 || $trans->status==11){
-                            $btnText="En attente";
-                        }else{
-                            $btnText=trans('app.btn.continuer');
-                        }
-                    @endphp
-                    @if ($trans->status == 0 || $trans->status == 1)
-                        <a href="{{route('member.continueTransaction',$trans)}}" class="m-btn m-btn-theme2nd m-btn-sm">{{$btnText}}</a>
-                    @elseif ($trans->status == 3 )
-                        <a href="javascript:void(0)" onclick="submitFile()" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.btn.submit').' Mandate'}}</a>
-                    @elseif ($trans->status == 4 )
-                        <a href="javascript:void(0)" onclick="submitMove({{$trans->id}})" class="btn btn-success btn-sm" style="margin-bottom:5px;">{{trans('app.btn.i_move')}}</a>
-                        <a href="javascript:void(0)" onclick="submitNoMove({{$trans->id}})" class="btn btn-danger btn-sm">{{trans('app.btn.i_not_moving')}}</a>    
-                    @elseif ($trans->status == 5 )
-                        <small style="margin-bottom:5px;">Dossier de Transaction reste ouvert pendant 5 jours</small>
-                        <a href="javascript:void(0)" onclick="submitMove({{$trans->id}})" class="btn btn-success btn-sm">{{trans('app.btn.i_move')}}</a>
-                    @elseif ($trans->status == 6 )
+                    @if (Auth::user()->isMove())
                         @php
-                            $prod=App\Models\Product::whereId($trans->product_id)->first();
+                            if($trans->status==2 || $trans->status==10 || $trans->status==11){
+                                $btnText="En attente";
+                            }else{
+                                $btnText=trans('app.btn.continuer');
+                            }
                         @endphp
-                        <a href="{{url('product').'/'.$prod->slug}}" class="btn btn-success btn-sm">{{trans('app.btn.add_to_cart')}}</a>
-                    @elseif ($trans->status == 7 )
-                        <small style="margin-bottom:5px;">En attente</small>
-                    @elseif ($trans->status == 8 )
-                        <a href="javascript:void(0)" onclick="confirmDossierTrans()" class="btn btn-success btn-sm">{{trans('app.btn.confirm_purchase')}}</a>
-                    @elseif ($trans->status == 9 )
-                        <a href="javascript:void(0)" onclick="submitFile()" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.sent_eoi_finalized')}}</a>
-                    @elseif ($trans->status == 12 )
-                        <small class="text-info" style="margin-bottom:5px;padding:10px;">@lang('app.txt.waiting_initial_deposit') </small>
-                    @elseif ($trans->status == 13 )
-                        <small class="text-info" style="margin-bottom:5px;padding:10px;">@lang('app.txt.awaiting_payment_of_the_first_cpc') </small>
-                    @elseif ($trans->status == 14 )
-                        <small class="text-info" style="margin-bottom:5px;padding:10px;">@lang('app.txt.awaiting_payment_of_the_second_cpc') </small>
-                    @elseif ($trans->status == 15 )
-                        <small class="text-info" style="margin-bottom:5px;padding:10px;">@lang('app.txt.awaiting_payment_of_the_bonus_cpc') </small>
-                    @elseif ($trans->status == 16 )
-                        <small class="badge-success" style="margin-bottom:5px;padding:10px;">@lang('app.txt.end_of_transaction') </small>
+                        @if ($trans->status == 0 || $trans->status == 1)
+                            <a href="{{route('member.continueTransaction',$trans)}}" class="m-btn m-btn-theme2nd m-btn-sm">{{$btnText}}</a>
+                        @elseif ($trans->status == 3 )
+                            <a href="javascript:void(0)" onclick="submitFile()" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.btn.submit').' Mandate'}}</a>
+                        @elseif ($trans->status == 4 )
+                            <a href="javascript:void(0)" onclick="submitMove({{$trans->id}})" class="btn btn-success btn-sm" style="margin-bottom:5px;">{{trans('app.btn.i_move')}}</a>
+                            <a href="javascript:void(0)" onclick="submitNoMove({{$trans->id}})" class="btn btn-danger btn-sm">{{trans('app.btn.i_not_moving')}}</a>    
+                        @elseif ($trans->status == 5 )
+                            <small style="margin-bottom:5px;">Dossier de Transaction reste ouvert pendant 5 jours</small>
+                            <a href="javascript:void(0)" onclick="submitMove({{$trans->id}})" class="btn btn-success btn-sm">{{trans('app.btn.i_move')}}</a>
+                        @elseif ($trans->status == 6 )
+                            @php
+                                $prod=App\Models\Product::whereId($trans->product_id)->first();
+                            @endphp
+                            <a href="{{url('product').'/'.$prod->slug}}" class="btn btn-success btn-sm">{{trans('app.btn.add_to_cart')}}</a>
+                        @elseif ($trans->status == 7 )
+                            <small style="margin-bottom:5px;">En attente</small>
+                        @elseif ($trans->status == 8 )
+                            <a href="javascript:void(0)" onclick="confirmDossierTrans()" class="btn btn-success btn-sm">{{trans('app.btn.confirm_purchase')}}</a>
+                        @elseif ($trans->status == 9 )
+                            <a href="javascript:void(0)" onclick="submitFile()" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.sent_eoi_finalized')}}</a>
+                        @elseif ($trans->status == 12 )
+                            <small class="text-info" style="margin-bottom:5px;padding:10px;">@lang('app.txt.waiting_initial_deposit') </small>
+                        @elseif ($trans->status == 13 )
+                            <small class="text-info" style="margin-bottom:5px;padding:10px;">@lang('app.txt.awaiting_payment_of_the_first_cpc') </small>
+                        @elseif ($trans->status == 14 )
+                            <small class="text-info" style="margin-bottom:5px;padding:10px;">@lang('app.txt.awaiting_payment_of_the_second_cpc') </small>
+                        @elseif ($trans->status == 15 )
+                            <small class="text-info" style="margin-bottom:5px;padding:10px;">@lang('app.txt.awaiting_payment_of_the_bonus_cpc') </small>
+                        @elseif ($trans->status == 16 )
+                            <small class="badge-success" style="margin-bottom:5px;padding:10px;">@lang('app.txt.end_of_transaction') </small>
+                        @else
+                            <a href="javascript:void(0)" class="m-btn m-btn-theme m-btn-sm" disabled>{{$btnText}}</a>
+                        @endif
                     @else
-                        <a href="javascript:void(0)" class="m-btn m-btn-theme m-btn-sm" disabled>{{$btnText}}</a>
+                        @php
+                            if($trans->status==2 || $trans->status==10 || $trans->status==11){
+                                $btnText="En attente";
+                            }else{
+                                $btnText=trans('app.btn.continuer');
+                            }
+                        @endphp
+                        @if ($trans->status == 0)
+                            <a href="{{route('member.continueTransactionSansDeplacement',$trans)}}" class="m-btn m-btn-theme2nd m-btn-sm">{{$btnText}}</a>
+                        @elseif ($trans->status == 1)
+                            <a href="{{route('member.continueTransactionSansDeplacement',$trans)}}" class="m-btn m-btn-theme2nd m-btn-sm">{{$btnText}}</a>
+                        @elseif ($trans->status == 3 )
+                            <a href="javascript:void(0)" onclick="submitFile()" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.btn.submit').' Mandate'}}</a>
+                        @elseif ($trans->status == 4 )
+                            <a href="javascript:void(0)" onclick="submitMove({{$trans->id}})" class="btn btn-success btn-sm" style="margin-bottom:5px;">{{trans('app.btn.i_move')}}</a>
+                            <a href="javascript:void(0)" onclick="submitNoMove({{$trans->id}})" class="btn btn-danger btn-sm">{{trans('app.btn.i_not_moving')}}</a>    
+                        @elseif ($trans->status == 5 )
+                            <small style="margin-bottom:5px;">Dossier de Transaction reste ouvert pendant 5 jours</small>
+                            <a href="javascript:void(0)" onclick="submitMove({{$trans->id}})" class="btn btn-success btn-sm">{{trans('app.btn.i_move')}}</a>
+                        @elseif ($trans->status == 6 )
+                            @php
+                                $prod=App\Models\Product::whereId($trans->product_id)->first();
+                            @endphp
+                            <a href="{{url('product').'/'.$prod->slug}}" class="btn btn-success btn-sm">{{trans('app.btn.add_to_cart')}}</a>
+                        @elseif ($trans->status == 7 )
+                            <small style="margin-bottom:5px;">En attente</small>
+                        @elseif ($trans->status == 8 )
+                            <a href="javascript:void(0)" onclick="confirmDossierTrans()" class="btn btn-success btn-sm">{{trans('app.btn.confirm_purchase')}}</a>
+                        @elseif ($trans->status == 9 )
+                            <a href="javascript:void(0)" onclick="submitFile()" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.sent_eoi_finalized')}}</a>
+                        @elseif ($trans->status == 12 )
+                            <small class="text-info" style="margin-bottom:5px;padding:10px;">@lang('app.txt.waiting_initial_deposit') </small>
+                        @elseif ($trans->status == 13 )
+                            <small class="text-info" style="margin-bottom:5px;padding:10px;">@lang('app.txt.awaiting_payment_of_the_first_cpc') </small>
+                        @elseif ($trans->status == 14 )
+                            <small class="text-info" style="margin-bottom:5px;padding:10px;">@lang('app.txt.awaiting_payment_of_the_second_cpc') </small>
+                        @elseif ($trans->status == 15 )
+                            <small class="text-info" style="margin-bottom:5px;padding:10px;">@lang('app.txt.awaiting_payment_of_the_bonus_cpc') </small>
+                        @elseif ($trans->status == 16 )
+                            <small class="badge-success" style="margin-bottom:5px;padding:10px;">@lang('app.txt.end_of_transaction') </small>
+                        @else
+                            <a href="javascript:void(0)" class="m-btn m-btn-theme m-btn-sm" disabled>{{$btnText}}</a>
+                        @endif
                     @endif
                 @else
-                    @php
-                        if($trans->status==2){
-                            $btnText=trans('app.btn.submit').' CA';
-                        }else{
-                            $btnText="En attente";
-                        }
-                    @endphp
-                    @if ($trans->status == 2)
-                        <a href="javascript:void(0)" onclick="submitFile()" class="m-btn m-btn-theme2nd m-btn-sm">{{$btnText}}</a>
-                    @elseif ($trans->status == 3 || $trans->status == 4 )
-                        <small style="margin-bottom:5px;">En attente</small>
-                    @elseif ($trans->status == 5 )
-                        <small style="margin-bottom:5px;" class="text-danger">Membre ne veut pas se déplacer</small>
-                    @elseif ($trans->status == 6 )
-                        <small style="margin-bottom:5px;" class="text-success">Membre veut se déplacer</small>    
-                    @elseif ($trans->status == 7 )
-                        <a href="javascript:void(0)" onclick="completeDossTrans()" class="m-btn m-btn-theme2nd">@lang('app.txt.complete_transaction_file_info')</a>
-                    @elseif ($trans->status == 10 )
-                        <a href="javascript:void(0)" onclick="submitFile()" class="btn btn-success btn-sm" style="margin-bottom:5px;">{{trans('app.txt.upload_eoi_finalized')}}</a>
-                        <a href="javascript:void(0)" onclick="resendFile({{$trans->id}})" class="btn btn-warning btn-sm">{{trans('app.txt.resend_eoi_finalized_to_seller')}}</a>    
-                    @elseif ($trans->status == 11 )
-                        <a href="javascript:void(0)" onclick="submitEoi()" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.send_finalized_eoi')}}</a>
-                    @elseif ($trans->status == 12 )
-                        <a href="javascript:void(0)" onclick="initialDepositConfirm({{$trans->id}})" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.initial_deposit_confirmation')}}</a>
-                    @elseif ($trans->status == 13 )
-                        <a href="javascript:void(0)" onclick="resendCourielInitialDepositConfirm({{$trans->id}})" class="m-btn m-btn-theme2nd m-btn-sm" style="margin-bottom:5px;">{{trans('app.txt.initial_deposit_confirmation')}}</a>
-                        <a href="javascript:void(0)" onclick="setCpcOnCommissionFirstPayment({{$trans->id}})" class="m-btn m-btn-theme4rd m-btn-sm">{{trans('app.txt.cpc_on_commission_first_payement')}}</a>
-                    @elseif ($trans->status == 14 )
-                        <a href="javascript:void(0)" onclick="setCpcOnCommissionSecondPayment({{$trans->id}})" class="m-btn m-btn-theme4rd m-btn-sm">{{trans('app.txt.cpc_on_commission_second_payement')}}</a>
-                    @elseif ($trans->status == 15 )
-                        <a href="javascript:void(0)" onclick="setCpcOnBonusPayment({{$trans->id}})" class="m-btn m-btn-theme4rd m-btn-sm">{{trans('app.txt.cpc_on_bonus_payment')}}</a>
-                    @elseif ($trans->status == 16 )
-                        <small class="badge-success" style="margin-bottom:5px;padding:10px;">@lang('app.txt.end_of_transaction') </small>
+                    @if (Auth::user()->isMove())
+                        @php
+                            if($trans->status==2){
+                                $btnText=trans('app.btn.submit').' CA';
+                            }else{
+                                $btnText="En attente";
+                            }
+                        @endphp
+                        @if ($trans->status == 2)
+                            <a href="javascript:void(0)" onclick="submitFile()" class="m-btn m-btn-theme2nd m-btn-sm">{{$btnText}}</a>
+                        @elseif ($trans->status == 3 || $trans->status == 4 )
+                            <small style="margin-bottom:5px;">En attente</small>
+                        @elseif ($trans->status == 5 )
+                            <small style="margin-bottom:5px;" class="text-danger">Membre ne veut pas se déplacer</small>
+                        @elseif ($trans->status == 6 )
+                            <small style="margin-bottom:5px;" class="text-success">Membre veut se déplacer</small>    
+                        @elseif ($trans->status == 7 )
+                            <a href="javascript:void(0)" onclick="completeDossTrans()" class="m-btn m-btn-theme2nd">@lang('app.txt.complete_transaction_file_info')</a>
+                        @elseif ($trans->status == 10 )
+                            <a href="javascript:void(0)" onclick="submitFile()" class="btn btn-success btn-sm" style="margin-bottom:5px;">{{trans('app.txt.upload_eoi_finalized')}}</a>
+                            <a href="javascript:void(0)" onclick="resendFile({{$trans->id}})" class="btn btn-warning btn-sm">{{trans('app.txt.resend_eoi_finalized_to_seller')}}</a>    
+                        @elseif ($trans->status == 11 )
+                            <a href="javascript:void(0)" onclick="submitEoi()" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.send_finalized_eoi')}}</a>
+                        @elseif ($trans->status == 12 )
+                            <a href="javascript:void(0)" onclick="initialDepositConfirm({{$trans->id}})" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.initial_deposit_confirmation')}}</a>
+                        @elseif ($trans->status == 13 )
+                            <a href="javascript:void(0)" onclick="resendCourielInitialDepositConfirm({{$trans->id}})" class="m-btn m-btn-theme2nd m-btn-sm" style="margin-bottom:5px;">{{trans('app.txt.initial_deposit_confirmation')}}</a>
+                            <a href="javascript:void(0)" onclick="setCpcOnCommissionFirstPayment({{$trans->id}})" class="m-btn m-btn-theme4rd m-btn-sm">{{trans('app.txt.cpc_on_commission_first_payement')}}</a>
+                        @elseif ($trans->status == 14 )
+                            <a href="javascript:void(0)" onclick="setCpcOnCommissionSecondPayment({{$trans->id}})" class="m-btn m-btn-theme4rd m-btn-sm">{{trans('app.txt.cpc_on_commission_second_payement')}}</a>
+                        @elseif ($trans->status == 15 )
+                            <a href="javascript:void(0)" onclick="setCpcOnBonusPayment({{$trans->id}})" class="m-btn m-btn-theme4rd m-btn-sm">{{trans('app.txt.cpc_on_bonus_payment')}}</a>
+                        @elseif ($trans->status == 16 )
+                            <small class="badge-success" style="margin-bottom:5px;padding:10px;">@lang('app.txt.end_of_transaction') </small>
+                        @else
+                            <a href="javascript:void(0)" class="m-btn m-btn-theme m-btn-sm" disabled>{{$btnText}}</a>
+                        @endif
                     @else
-                        <a href="javascript:void(0)" class="m-btn m-btn-theme m-btn-sm" disabled>{{$btnText}}</a>
+                        @php
+                            if($trans->status==2){
+                                $btnText=trans('app.btn.submit').' CA';
+                            }else{
+                                $btnText="En attente";
+                            }
+                        @endphp
+                        @if ($trans->status == 2)
+                            <a href="javascript:void(0)" onclick="submitFile()" class="m-btn m-btn-theme2nd m-btn-sm">{{$btnText}}</a>
+                        @elseif ($trans->status == 3 || $trans->status == 4 )
+                            <small style="margin-bottom:5px;">En attente</small>
+                        @elseif ($trans->status == 5 )
+                            <small style="margin-bottom:5px;" class="text-danger">Membre ne veut pas se déplacer</small>
+                        @elseif ($trans->status == 6 )
+                            <small style="margin-bottom:5px;" class="text-success">Membre veut se déplacer</small>    
+                        @elseif ($trans->status == 7 )
+                            <a href="javascript:void(0)" onclick="completeDossTrans()" class="m-btn m-btn-theme2nd">@lang('app.txt.complete_transaction_file_info')</a>
+                        @elseif ($trans->status == 10 )
+                            <a href="javascript:void(0)" onclick="submitFile()" class="btn btn-success btn-sm" style="margin-bottom:5px;">{{trans('app.txt.upload_eoi_finalized')}}</a>
+                            <a href="javascript:void(0)" onclick="resendFile({{$trans->id}})" class="btn btn-warning btn-sm">{{trans('app.txt.resend_eoi_finalized_to_seller')}}</a>    
+                        @elseif ($trans->status == 11 )
+                            <a href="javascript:void(0)" onclick="submitEoi()" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.send_finalized_eoi')}}</a>
+                        @elseif ($trans->status == 12 )
+                            <a href="javascript:void(0)" onclick="initialDepositConfirm({{$trans->id}})" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.initial_deposit_confirmation')}}</a>
+                        @elseif ($trans->status == 13 )
+                            <a href="javascript:void(0)" onclick="resendCourielInitialDepositConfirm({{$trans->id}})" class="m-btn m-btn-theme2nd m-btn-sm" style="margin-bottom:5px;">{{trans('app.txt.initial_deposit_confirmation')}}</a>
+                            <a href="javascript:void(0)" onclick="setCpcOnCommissionFirstPayment({{$trans->id}})" class="m-btn m-btn-theme4rd m-btn-sm">{{trans('app.txt.cpc_on_commission_first_payement')}}</a>
+                        @elseif ($trans->status == 14 )
+                            <a href="javascript:void(0)" onclick="setCpcOnCommissionSecondPayment({{$trans->id}})" class="m-btn m-btn-theme4rd m-btn-sm">{{trans('app.txt.cpc_on_commission_second_payement')}}</a>
+                        @elseif ($trans->status == 15 )
+                            <a href="javascript:void(0)" onclick="setCpcOnBonusPayment({{$trans->id}})" class="m-btn m-btn-theme4rd m-btn-sm">{{trans('app.txt.cpc_on_bonus_payment')}}</a>
+                        @elseif ($trans->status == 16 )
+                            <small class="badge-success" style="margin-bottom:5px;padding:10px;">@lang('app.txt.end_of_transaction') </small>
+                        @else
+                            <a href="javascript:void(0)" class="m-btn m-btn-theme m-btn-sm" disabled>{{$btnText}}</a>
+                        @endif
                     @endif
                 @endif
             </td>

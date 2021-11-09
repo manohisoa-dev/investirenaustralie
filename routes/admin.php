@@ -181,6 +181,7 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     //Route procedure d'Achat
     Route::get('liste_procedure_achat', 'ProcedureAchatController@liste')->name('procedure.liste');
     Route::resource('mandate','MandateController');
+    Route::post('ajaxRefreshAfa', 'ProductController@ajaxRefreshAfa')->name('ajaxRefreshAfa'); 
 });
 
 // ROUTE ADMIN DELEGATE
@@ -359,8 +360,8 @@ Route::prefix('collaborators')->namespace('Admin')->as('admin.')->middleware(["a
     Route::post('/admin/ajaxDropPhotoIcon', 'ProductController@ajaxDropPhotoIcon')->name('collaborators.admin.ajaxDropPhotoIcon');  
     Route::post('/admin/ajaxDropFondDossier', 'ProductController@ajaxDropFondDossier')->name('collaborators.admin.ajaxDropFondDossier');
     Route::post('/admin/ajaxDropEoiDossier', 'ProductController@ajaxDropEoiDossier')->name('collaborators.admin.ajaxDropEoiDossier');      
-    Route::post('/admin/ajaxDropProduit', 'ProductController@ajaxDropProduit')->name('collaborators.admin.ajaxDropProduit');  
-    Route::post('/admin/ajaxRejetProduit', 'ProductController@ajaxRejetProduit')->name('collaborators.admin.ajaxRejetProduit');
+    Route::post('/admin/ajaxDropProduit', 'ProductController@ajaxDropProduit')->name('collaborators.admin.ajaxDropProduit');    
+    Route::post('/admin/ajaxRejetProduit', 'ProductController@ajaxRejetProduit')->name('collaborators.admin.ajaxRejetProduit');    
     Route::post('/admin/ajaxChangeIconPhotoActive', 'ProductController@ajaxChangeIconPhotoActive')->name('collaborators.admin.ajaxChangeIconPhotoActive');
     Route::post('/admin/ajaxSaveProduct', 'ProductController@ajaxSaveProduct')->name('collaborators.admin.ajaxSaveProduct');
     Route::post('/admin/ajaxModifProduct', 'ProductController@ajaxModifProduct')->name('collaborators.admin.ajaxModifProduct');
@@ -536,6 +537,16 @@ Route::prefix('collaborators')->namespace('Admin')->as('admin.')->middleware(["a
     Route::get('/admin/message/show/{to_id}', 'MessageController@showContactMessage')->name('collaborators.admin.ajax.show.contact.message');
     Route::post('/admin/message', 'MessageController@sendMessage')->name('collaborators.admin.ajax.send.message');
     Route::get('/admin/message/unread', 'MessageController@getUnreadMessage')->name('collaborators.admin.ajax.get.unread.message');
+    
+    //Route::resource('mandate','MandateController');
+    Route::get('/admin/mandate', 'MandateController@index')->name('collaborators.admin.mandate.index');
+    Route::post('/admin/mandate', 'MandateController@store')->name('collaborators.admin.mandate.store');
+    Route::get('/admin/mandate/create', 'MandateController@create')->name('collaborators.admin.mandate.create');
+    Route::get('/admin/mandate/{page}', 'MandateController@show')->name('collaborators.admin.mandate.show');
+    Route::put('/admin/mandate/{page}', 'MandateController@update')->name('collaborators.admin.mandate.update');
+    Route::delete('/admin/mandate/{page}', 'MandateController@destroy')->name('collaborators.admin.mandate.destroy');
+    Route::get('/admin/mandate/{page}/edit', 'MandateController@edit')->name('collaborators.admin.mandate.edit');
+    Route::post('/admin/ajaxRefreshAfa', 'ProductController@ajaxRefreshAfa')->name('collaborators.admin.ajaxRefreshAfa');
 });
 
 

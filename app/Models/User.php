@@ -1529,7 +1529,7 @@ class User extends Authenticatable {
     }
 
     public function hasCurrentTransaction() {
-        $dosTransUser = DossierTransaction::where('user_id', $this->id)->where('status',
+        $dosTransUser = DossierTransaction::where('user_id', $this->id)->where('status','>=',
             0)->get();
 
         if (sizeof($dosTransUser) !== 0) {
@@ -1589,6 +1589,16 @@ class User extends Authenticatable {
         }
 
         return 0;
+    }
+
+    public function getCurrentDossierTransaction($prod_id) {
+        $dosTransUser = DossierTransaction::where('user_id', $this->id)->where('product_id',$prod_id)->first();
+
+        if (sizeof($dosTransUser) !== 0) {
+            return $dosTransUser;
+        }
+
+        return '';
     }
 
     public function getDossierTransaction() {

@@ -175,10 +175,12 @@ class DossierController extends Controller
 
         $product = Product::whereId($dossTrans->product_id)->first();
         $user = User::whereId($dossTrans->user_id)->first();
+        $member_name = $user->isPerson() ? $user->userinfos->first_name . ' ' . $user->userinfos->last_name : $user->userinfos->orga_name;
 
         // Handle file Upload to uploads/pdf/transaction path
         $file = $request->file('file_ca');
         $path = public_path('uploads/pdf/transaction');
+        
         // store file in public folder
         $filenameWithExt = $file->getClientOriginalName();
         //Get just filename
@@ -222,30 +224,48 @@ class DossierController extends Controller
             DossierTransaction::whereId($idDossTrans)->update(['status'=>4, 'date_mr_finalize'=>Carbon::now(),'mr_finalize_file_name'=>$fileNameToStore]);
 
         }else{
+            // envoyé message à l'afa + lien
+            $user_afa = $user->afa?User::whereId($user->afa->id)->first():'';
 
-            // Send message and email to afa from IEA
-            App::setLocale('en'); //change lang to en
-            $user=Auth::user();
-            $dt = Carbon::now();
-            $dtDate = $dt->format('m-d-Y');
-            $dtTime = $dt->format('H:i:m');
-            $user_name= $user->isPerson()?$user->userinfos->first_name.' '.$user->userinfos->last_name:$user->userinfos->orga_name;
-            $mr_id=$request->mr_id;
-            $mandatesearch= MandatRecherche::whereId($mr_id)->first();
-            $mandatesearchLink= url($mandatesearch->path);
-            $country = $userAuth->location->country;
-            $city=$user->afa->location->locality;
-            $linkcompletetrans = url('afa/dossier?action=complete_dossier_transaction_info&ID='.DossierTransaction::getDossierTransactionId($mandatesearch->product_id,$user->id));
+            // get template mail AFA
+            $template = MailsTemplate::where('id', 30)->get();
+            $lang = 'en';
+            App::setLocale($lang);
+            $body = 'template_' . $lang;
+            $sujet_tpl = 'sujet_' . $lang;
+            $path_link = 'uploads/pdf/transaction/' . $dossTrans->mr_finalize_file_name;
+            $downloadLink = setLinkDynamic($path_link, strtoupper(trans('app.txt.finalized_mandate_form')));
+            $completedtLink = setLinkDynamic(route('afa.transaction'), strtoupper(trans('app.txt.complete_transaction_file_info')));
+            $vars = array(
+                '{date}' => Carbon::now()->toFormattedDateString(),
+                '{heure}' => Carbon::now()->toTimeString(),
+                '{country}' => $product->location->area_level_1,
+                '{name}' => $member_name,
+                '{afa}' => $user->afa->name,
+                '{city}' => $product->location->locality,
+                '{completedtLink}' => $completedtLink,
+                '{mrfinalizedLink}' => $downloadLink,
+                );
+            $sujet = $template[0]->$sujet_tpl;
+            $contenu = strtr($template[0]->$body, $vars);
+            $content = ['title' => '', 'body' => $contenu];
+            Mail::to($user_afa->email)->send(new MailTemplate($content, $sujet));
 
-            // Message from IEA to AFA if Member buy product not moving
-            $content=trans('member.tobuy.mr.message_to_afa', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'country'=>$country,'city'=>$city,'afa' =>$user->afa->name,'mandatesearch'=>$mandatesearchLink]);
-            // send email to afa
-            $user->afa->notify(new AfaMandateSearchFinalisedMessage($user,$linkcompletetrans,$mandatesearchLink));
-            // send email to member
-            App::setLocale($user->language);
-            $user->notify(new MemberMandateSearchFinalisedMessage($user));
-            // send message to member
-            Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$user->id,'body'=>$content]);
+            // get template mail Membre
+            // envoyé message au membre pour avertir qu'il doit préciser avec l'afa les caractéristique du bien acheter
+            $template1 = MailsTemplate::where('id', 31)->get();
+            $lang1 = $user->language;
+            $body1 = 'template_' . $lang1;
+            $sujet_tpl1 = 'sujet_' . $lang1;
+            $sujet1 = $template1[0]->$sujet_tpl1;
+            $contenu1 = strtr($template1[0]->$body1, $vars);
+            $content1 = ['title' => '', 'body' => $contenu1];
+            Mail::to($user->email)->send(new MailTemplate($content1, $sujet1));
+
+            // Update dossier transaction
+            DossierTransaction::whereId($idDossTrans)->update(['status' => 7,
+                'date_complete_profil' => Carbon::now()]);
+
         }
 
         // send message to afa
@@ -311,7 +331,8 @@ class DossierController extends Controller
 
         // Update dossier transaction status
         DossierTransaction::whereId($dossTransId)->update(['eoi_finalize_file_name'=>$fileNameToStore,'date_eoi_finalize'=>Carbon::now(),'status'=>10,'sollicitor_id'=>$sollicitorId]);
-
+        $dossTransMaj=DossierTransaction::whereId($dossTransId)->first();
+        
         // Send Email to notify Sollicitor 
         if($dossTrans->sollicitor_id != 0){
             $sollicitor = Solicitor::whereId($dossTrans->sollicitor_id)->first();
@@ -359,7 +380,7 @@ class DossierController extends Controller
         $body = 'template_' . $lang;
         $sujet_tpl = 'sujet_'.$lang;
         $adrafa = $afa->location->route.', '.$afa->location->locality.' '.$afa->location->postalCode.' '.$afa->location->country;
-        $pathLink = url('/uploads/pdf/transaction/').'/'.$dossTrans->eoi_finalize_file_name;
+        $pathLink = url('/uploads/pdf/transaction/').'/'.$dossTransMaj->eoi_finalize_file_name;
         $downloadeoiLink = setLinkDynamic($pathLink,strtoupper(trans('app.txt.eoi')));
         $vars = array(
             '{date}' => Carbon::now()->toFormattedDateString(),

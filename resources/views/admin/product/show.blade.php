@@ -109,6 +109,9 @@
 										<span class="label label-danger">									
 											Il n'y a pas d'AFA correspondante
 										</span>
+										<a href="javascript:void(0)" onclick="check_afa_existe({{$product->id}})" class="btn btn-danger pull-right">
+											<i class="fa fa-refresh"></i>
+										</a>
 									@else
 										@php
 											$afaposstab = explode(',',$product->afaId_possible);
@@ -120,6 +123,22 @@
 											</span>
 										@endforeach
 									@endif									
+								</dd>
+							</div>
+						</dl>
+						<div class="hr-line-dashed"></div>
+						<dl class="row mb-0">
+							<div class="col-sm-4 text-sm">
+								<dt>Solicitor :</dt>
+							</div>
+							<div class="col-sm-8 text-sm-left">
+								<dd class="mb-1">
+									@php
+										$solicitor = App\Models\Solicitor::where('id',$product->solicitor_id)->get();
+									@endphp
+									{{$solicitor[0]->cabinet_name}}<br />
+									{{$solicitor[0]->cabinet_email}}<br />
+									{{$solicitor[0]->cabinet_phone}}				
 								</dd>
 							</div>
 						</dl>
@@ -576,6 +595,20 @@ function rejet_programme(id_prd)
 			swal("@lang('app.txt.programme')", "@lang('app.jquery.delete_cancel')", "error");
 		}
 	 });
+}
+
+function check_afa_existe(id_prd)
+{
+	$.ajax({
+		url : "{{ Auth::user()->isAdmin()?route('admin.ajaxRefreshAfa'):route('admin.collaborators.admin.ajaxRefreshAfa') }}",
+		type: "POST",
+		dataType: "JSON",
+		data:{"_token": "{{ csrf_token() }}",'id_produit':id_prd},
+		success: function(data)
+		{
+			location.reload();
+		}
+	});
 }
 </script>
 @endsection
