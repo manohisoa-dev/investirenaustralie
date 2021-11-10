@@ -32,7 +32,7 @@ use Mail;
 use App\Models\TemplateModel;
 use App\Models\Message;
 use App\Models\ModelMessage;
-use App\MOdels\Mandate;
+use App\Models\Mandate;
 use DB;
 
 class ProductController extends Controller {
@@ -377,9 +377,9 @@ class ProductController extends Controller {
         $out = '';
         if ($request->state) {
             $state = State::where('content', $request->state)->first();
-            if (count($state)) {
+            if ($state->count()) {
                 $mandates = Mandate::where('state_id', $state->id)->get();
-                if (count($mandates)) {
+                if ($mandates->count()) {
                     foreach ($mandates as $mandat) {
                         if ($request->Mactive == $mandat->images_id) {
                             $class = 'checked="checked"';
