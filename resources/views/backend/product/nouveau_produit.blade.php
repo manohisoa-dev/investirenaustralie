@@ -148,7 +148,7 @@
 								<div class="col-lg-4">
 									<div class="form-group">
 										<label for="title">@lang('app.form.programme_suburb') *</label>
-										<input name="suburb" id="suburb" class="form-control" type="text" value="">
+										<input name="suburb" id="suburb" class="form-control" type="text" value="" readonly="">
 									</div>
 								</div>
 							</div>
@@ -156,13 +156,13 @@
 								<div class="col-lg-3">
 									<div class="form-group">
 										<label for="title">@lang('app.form.programme_ville') *</label>
-										<input name="ville" id="ville" class="form-control" type="text">
+										<input name="ville" id="ville" class="form-control" type="text" readonly="">
 									</div>  
 								</div>
 								<div class="col-lg-3">
 									<div class="form-group">
 										<label for="title">@lang('app.form.programme_cp') *</label>
-										<input name="postalCode" id="postalCode" class="form-control" type="text" value="">
+										<input name="postalCode" id="postalCode" class="form-control" type="text" value="" readonly="">
 									</div>
 								</div>
 								<div class="col-lg-3">
@@ -179,12 +179,7 @@
 									<div id="info_etat">
 										<div class="form-group">
 											<label for="title">@lang('app.form.programme_etat') *</label>
-											<select class="form-control" name="state_id" id="state_id" style="width:100%">
-												<option value="">Sélectionner état...</option>
-												@foreach(\App\Models\State::all() as $state)
-													<option value="{{$state->id}}">{{$state->content}}</option>
-												@endforeach
-											</select>
+											<input type="text" name="state_id" id="state_id" class="form-control" readonly="" />
 										</div>
 									</div>
 								</div>
@@ -286,35 +281,7 @@
 									<input type="text" name="estimated_delvivery_dt" id="estimated_delvivery_dt" class="form-control date_month_year" placeholder="Month/YYYY"/>
 								</div>
 							</div>
-						</div>		
-						
-						<div class="row" id="bloc_fond_doc_produit" style="display:none">
-							<div class="col-lg-12">
-								<h5>@lang('app.form.programme_fond_dossier')</h5>
-								<div class="dropzone" id="p_fond_dossier" multiple style="margin-bottom:25px">
-									<div id="template" class="file-row"></div>
-								</div>
-							</div>
-						</div>
-						
-						<div class="row" id="bloc_eoi_doc" style="display:none">
-							<div class="col-lg-12">
-								<h5>@lang('app.table.eoi_dossier') *</h5>
-								<input type="hidden" name="p_eoiDossier" id="p_eoiDossier" />
-								<div class="dropzone" id="p_eoi_dossier" multiple style="margin-bottom:25px">
-									<div id="template" class="file-row"></div>
-								</div>
-							</div>
-						</div>
-						
-						<div class="row" id="bloc_lia_doc" style="display:none">
-							<div class="col-lg-12">
-								<h5>@lang('app.table.lia_dossier')</h5>
-								<div class="dropzone" id="p_lia_dossier" multiple style="margin-bottom:25px">
-									<div id="template" class="file-row"></div>
-								</div>
-							</div>
-						</div>
+						</div>	
 							
 						<div class="row">
 							<div class="col-lg-6">
@@ -338,13 +305,13 @@
 							<div class="col-lg-6">
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_ville') *</label>
-									<input name="ville_product" id="ville_product" class="form-control" type="text">
+									<input name="ville_product" id="ville_product" class="form-control" type="text" readonly="">
 								</div>  
 							</div>	
 							<div class="col-lg-6">
 								<div class="form-group">
-									<label for="title">@lang('app.form.programme_cp') *</label>
-									<input name="postalCode_product" id="postalCode_product" class="form-control" type="text" value="">
+									<label for="title">@lang('app.form.programme_cp')*</label>
+									<input name="postalCode_product" id="postalCode_product" class="form-control" type="text" readonly="">
 								</div>
 							</div>						
 						</div>
@@ -352,18 +319,13 @@
 							<div class="col-lg-6">
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_suburb') *</label>
-									<input name="suburb_product" id="suburb_product" class="form-control" type="text" value="">
+									<input name="suburb_product" id="suburb_product" class="form-control" type="text" value="" readonly="">
 								</div>
 							</div>
 							<div class="col-lg-6">
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_etat') *</label>
-									<select class="form-control" name="state_id_product" id="state_id_product" style="width:100%">
-										<option value="">@lang('app.txt.choose_state')</option>
-										@foreach(\App\Models\State::all() as $state)
-											<option value="{{$state->id}}" dataname="{{$state->content}}">{{$state->content}}</option>
-										@endforeach
-									</select>
+									<input type="text" name="state_id_product" id="state_id_product" class="form-control" readonly="" />
 								</div>
 							</div>							
 						</div>
@@ -387,6 +349,32 @@
 									</select>
 								</div>
 							</div>	
+						</div>
+						
+						<div class="row" id="bloc_fond_doc_produit" style="display:none">
+							<div class="col-lg-12">
+								<h5>@lang('app.form.programme_fond_dossier')</h5>
+								<div class="dropzone" id="p_fond_dossier" multiple style="margin-bottom:25px">
+									<div id="template" class="file-row"></div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="row" id="bloc_eoi_doc" style="display:none">
+							<div class="col-lg-12">
+								<h5>@lang('app.table.eoi_dossier') *</h5>
+								<input type="hidden" name="p_eoiDossier" id="p_eoiDossier" />
+								<div class="dropzone" id="p_eoi_dossier" multiple style="margin-bottom:25px">
+									<div id="template" class="file-row"></div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="row" id="bloc_lia_doc" style="display:none">
+							<div class="col-lg-12">
+								<h5>@lang('app.table.lia_dossier')</h5>
+								<div id="salesMandates"></div>
+							</div>
 						</div>
 						<!-- commission product -->
 						<div class="row">
@@ -474,9 +462,9 @@
 							</div>			
 						</div>
 						<div class="row">
-							<div class="col-lg-4">
+							<div class="col-lg-6">
 								<div id="firb_pre_approved_sale">
-									<label for="title">@lang('app.form.programme_firb_pre_approved_program') *</label>
+									<label for="title">@lang('app.form.programme_firb_pre_approved_program')*</label>
 									<select class="form-control" name="programme_firb_pre_approved_program" id="programme_firb_pre_approved_program" style="width:100%">
 										<option value="">@lang('app.form.choix_txt')</option>
 										<option value="NO">NO</option>
@@ -485,7 +473,7 @@
 									</select>
 								</div>
 							</div>
-							<div class="col-lg-4">
+							<div class="col-lg-3">
 								<div class="form-group" style="margin-bottom:.5rem;">
 									<label for="title">@lang('app.txt.avoir_bonus')</label>
 									<select class="form-control" name="bonus_vente" id="bonus_vente">
@@ -495,7 +483,7 @@
 									</select>
 								</div>
 							</div>
-							<div class="col-lg-4">
+							<div class="col-lg-3">
 								<div id="montant_bonus_vente" style="display:none">
 									<label for="title">@lang('app.txt.valeur_bonus') *</label>
 									<div class="input-group" style="margin-bottom: .5rem;">
@@ -719,26 +707,44 @@
 								<h4 class="new-programme-solicitor">@lang('app.form.programme_solicitor')</h4>
 							</div>
 						</div>
-						<div class="row">
-							<div class="col-lg-4">
-								<div class="form-group">
-									<label for="title">Nom du cabinet *</label>
-									<input name="cabinet_name" id="cabinet_name" class="form-control" type="text" value="{{ old('cabinet_name')?old('cabinet_name'):'' }}" required>
-								</div>
-							</div>
-							<div class="col-lg-4">
-								<div class="form-group">
-									<label for="title">Email cabinet *</label>
-									<input name="cabinet_email" id="cabinet_email" class="form-control" type="email" value="{{ old('cabinet_email')?old('cabinet_email'):'' }}" required>
-								</div>
-							</div>
-							<div class="col-lg-4">
-								<div class="form-group">
-									<label for="title">Tel *</label>
-									<input name="cabinet_phone" id="cabinet_phone" class="form-control" type="text" value="{{ old('cabinet_phone')?old('cabinet_phone'):'' }}" required>
+						<div id="solicitorExistant">
+							<div class="row">
+								<div class="col-md-4">
+									<div class="form-group">
+										<select class="form-control" name="solicitor_id" id="solicitor_id" style="width:100%">
+											<option value="">@lang('app.form.choix_txt')</option>
+											@foreach($solicitors as $solicitor)
+												<option value="{{$solicitor->id}}">{{$solicitor->cabinet_name}}</option>
+											@endforeach
+											<option value="new">Créer nouveau solicitor</option>
+										</select>
+									</div> 
 								</div>
 							</div>
 						</div>
+						<div id="newSolicitor" style="display:none">
+							<div class="row">						
+								<div class="col-lg-4">
+									<div class="form-group">
+										<label for="title">Nom du cabinet *</label>
+										<input name="cabinet_name" id="cabinet_name" class="form-control" type="text" value="{{ old('cabinet_name')?old('cabinet_name'):'' }}">
+									</div>
+								</div>
+								<div class="col-lg-4">
+									<div class="form-group">
+										<label for="title">Email cabinet *</label>
+										<input name="cabinet_email" id="cabinet_email" class="form-control" type="email" value="{{ old('cabinet_email')?old('cabinet_email'):'' }}">
+									</div>
+								</div>
+								<div class="col-lg-4">
+									<div class="form-group">
+										<label for="title">Tel *</label>
+										<input name="cabinet_phone" id="cabinet_phone" class="form-control" type="text" value="{{ old('cabinet_phone')?old('cabinet_phone'):'' }}">
+									</div>
+								</div>
+							</div>
+						</div>
+						<hr>
 						
 						
 						<div class="row">
@@ -874,8 +880,21 @@ function initMap(){
 			$('#postalCode_product').val(itemPc);
 			$('#long').val(long);
 			$('#lat').val(lat);
-			$('#state_id_product option[dataname="'+itemState+'"]').prop('selected', true);
+			$('#state_id_product').val(itemState);
+			set_mandat_state(itemState,0);
 		});
+	});
+}
+
+function set_mandat_state(state,active)
+{
+	$.ajax({
+		type:'POST',
+		url:"{{ route('ajaxSetMandatState') }}",
+		data: {"_token": "{{ csrf_token() }}","state": state,"Mactive":active},
+		success:function(data) {
+			$('#salesMandates').html(data);
+		}
 	});
 }
 </script>
@@ -911,6 +930,15 @@ function initMap(){
 						$(this).datepicker('setDate', new Date(year, month, 1));
 					}
 				});
+				
+				$('#solicitor_id').on('change',function(){
+					var choix_solicitor = $(this).val();
+					if(choix_solicitor == 'new'){
+						$('#newSolicitor').show();
+					}else{
+						$('#newSolicitor').hide();
+					}
+				});
 		
 				var ancienneteBien = $('#ancienneteBien').val();
 				var natureBien = 'Produit isolé';
@@ -921,7 +949,6 @@ function initMap(){
 						$('[name="product_type_id"]').val($('#type_id').val());
 						$('[name="suburb_product"]').val($('#suburb').val()).prop("readonly", true);
 						$('[name="ville_product"]').val($('#ville').val()).prop("readonly", true);
-						$('[name="postalCode_product"]').val($('#postalCode').val()).prop("readonly", true);
 						$('[name="display_address_product"]').val($('#display_address').val()).prop("readonly", true);
 						$('[name="state_id_product"]').val($('#state_id').val());
 						$('[name="countryId_product"]').val($('#countryId').val()).prop("readonly", true);
@@ -964,7 +991,6 @@ function initMap(){
 					}else if(ancienneteBien == 'Ancien'){
 						$('#title_product').val('');
 						$('[name="year_built"]').val($('#annee_const').val()).prop("readonly", true);
-						$('[name="postalCode_product"]').val($('#postal_code').val()).prop("readonly", true);
 						$('#yearConstruct').show();
 						$('#jardin_info').show();
 						$('#chk_picine').show();
@@ -1464,6 +1490,28 @@ function initMap(){
 					required: true
 				},
 				programme_firb_pre_approved_program: {
+					required: true
+				},
+				solicitor_id: {
+					required: true
+				},
+				cabinet_name: {
+					required: function(element){
+						return $("#solicitor_id").val()=="new";
+					}
+				},
+				cabinet_email: {
+					required: function(element){
+						return $("#solicitor_id").val()=="new";
+					},
+					email:true
+				},
+				cabinet_phone: {
+					required: function(element){
+						return $("#solicitor_id").val()=="new";
+					}
+				},
+				sales_mandate:{
 					required: true
 				}
 			},

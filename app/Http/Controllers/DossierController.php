@@ -332,7 +332,7 @@ class DossierController extends Controller
         // Update dossier transaction status
         DossierTransaction::whereId($dossTransId)->update(['eoi_finalize_file_name'=>$fileNameToStore,'date_eoi_finalize'=>Carbon::now(),'status'=>10,'sollicitor_id'=>$sollicitorId]);
         $dossTransMaj=DossierTransaction::whereId($dossTransId)->first();
-        
+
         // Send Email to notify Sollicitor 
         if($dossTrans->sollicitor_id != 0){
             $sollicitor = Solicitor::whereId($dossTrans->sollicitor_id)->first();
@@ -479,9 +479,6 @@ class DossierController extends Controller
         $dossTrans = DossierTransaction::whereId($dossTransId)->first();
         $product = Product::whereId($dossTrans->product_id)->first();
 
-        // Update dossier transaction
-        DossierTransaction::whereId($dossTransId)->update(['status'=>12]);
-
         // Send Email SELLING PROCESS CLEARANCE to admin
         $admin = User::whereId(1)->first();
         $user = User::whereId($dossTrans->user_id)->first();
@@ -516,10 +513,10 @@ class DossierController extends Controller
 
         // Send Email to member (PROCEDURE DE VENTE TRANSFEREE)
         $nomMembre = $user->isPerson()?$user->userinfos->first_name.' '.$user->userinfos->last_name:$user->userinfos->orga_name;
-        $adrPostAfa = $afa->location->adrpost_locality.' '.$afa->location->adrpost_postalCode.' '.Country::where('code',$afa->location->adrpost_country)->first()->content;
-        $adrPhyAfa = $afa->location->route.', '.$afa->location->locality.' '.$afa->location->postalCode.' '.Country::where('code',$afa->location->country)->first()->content;
-        $adrPostSeller = $seller->location->adrpost_locality.' '.$seller->location->adrpost_postalCode.' '.Country::where('code',$seller->location->adrpost_country)->first()->content;
-        $adrPhySeller = $seller->location->route.', '.$seller->location->locality.' '.$seller->location->postalCode.' '.Country::where('code',$seller->location->country)->first()->content;
+        $adrPostAfa = $afa->location->adrpost_locality.' '.$afa->location->adrpost_postalCode.' '.countryLongName($afa->location->adrpost_country);
+        $adrPhyAfa = $afa->location->route.', '.$afa->location->locality.' '.$afa->location->postalCode.' '.countryLongName($afa->location->country);
+        $adrPostSeller = $seller->location->adrpost_locality.' '.$seller->location->adrpost_postalCode.' '.countryLongName($seller->location->adrpost_country);
+        $adrPhySeller = $seller->location->route.', '.$seller->location->locality.' '.$seller->location->postalCode.' '.countryLongName($seller->location->country);
         $template2 = MailsTemplate::where('id', 38)->get();
         App::setLocale($user->language);
         $lang = App::getLocale();
@@ -560,8 +557,8 @@ class DossierController extends Controller
         $lotType = $dossTrans->lot_type;
         $lotId = $dossTrans->lot_id;
         $finalSalesPrice = $dossTrans->final_sales_price;
-        $adrPostMember = ($user->location!==''?$user->location->adrpost_locality:'').' '.($user->location!==''?$user->location->adrpost_postalCode:'').' '.($user->location!==''?Country::where('code',$user->location->country)->first()->content:'');
-        $adrPhyMember = $user->location->route.', '.$user->location->locality.' '.$user->location->postalCode.' '.Country::where('code',$user->location->country)->first()->content;
+        $adrPostMember = ($user->location!==''?$user->location->adrpost_locality:'').' '.($user->location!==''?$user->location->adrpost_postalCode:'').' '.($user->location!==''? countryLongName($user->location->country):'');
+        $adrPhyMember = $user->location->route.', '.$user->location->locality.' '.$user->location->postalCode.' '.countryLongName($user->location->country);
         $template3 = MailsTemplate::where('id', 39)->get();
         App::setLocale($seller->language);
         $lang = App::getLocale();
@@ -603,8 +600,8 @@ class DossierController extends Controller
         $lia = Config::lia();
         $lia_name = $lia->get_meta('lia_name')->value;
         $template4 = MailsTemplate::where('id', 40)->get();
-        App::setLocale($afa->language);
-        $lang = App::getLocale();
+        $lang = 'en';
+        App::setLocale($lang);
         $body = 'template_' . $lang;
         $sujet_tpl = 'sujet_'.$lang;
         $vars = array(
@@ -639,6 +636,9 @@ class DossierController extends Controller
         $content4 = ['title' => '', 'body' => $contenu4];
         // send email to seller
         Mail::to($afa->email)->send(new MailTemplate($content4, $sujet4));
+
+        // Update dossier transaction
+        DossierTransaction::whereId($dossTransId)->update(['status'=>12]);
 
         return back()->with('success',trans('app.txt.eoi_finalized_sent'));
     }
@@ -1003,7 +1003,7 @@ class DossierController extends Controller
         $sujet_tpl3 = 'sujet_'.$lang3;
         $downloadSecondInvoicePath= url('uploads/pdf/invoices').'/'.$pdfNameWithExt2;
         $downloadSecondInvoiceLink=setLinkDynamic($downloadSecondInvoicePath,str_replace('-', '/', $invoice_num2));
-        $sendSecondCommissionPaiementLink=setLinkDynamic(route('afa.transaction'),strtoupper(trans('app.txt.cpc_on_commission_second_payement')));
+        $sendSecondCommissionPaiementLink=setLinkDynamic(route('afa.transaction'),$product->haveBonus()?strtoupper(trans('app.txt.cpc_on_commission_second_payement')):strtoupper(trans('app.txt.cpc_on_commission_last_payement')));
         $vars3 = array(
             '{Date systeme}' => $dtDate,
             '{Heure systeme}' => $dtTime,
@@ -1155,8 +1155,8 @@ class DossierController extends Controller
         $lia = Config::lia();
         $lia_name = $lia->get_meta('lia_name')->value;
         $template = MailsTemplate::where('id', 41)->get();
-        App::setLocale($member->language);
-        $lang = $member->language;
+        $lang = 'fr';
+        App::setLocale($lang);
         $body = 'template_' . $lang;
         $sujet_tpl = 'sujet_'.$lang;
         $vars = array(
