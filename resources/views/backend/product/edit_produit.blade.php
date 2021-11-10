@@ -1580,28 +1580,48 @@
 										<h4 class="new-programme-solicitor">@lang('app.form.programme_solicitor')</h4>
 									</div>
 								</div>
-								<input type="hidden" id="solicitor_id" name="solicitor_id" value="{{$solicitor->id}}">
-								<div class="row">
-									<div class="col-lg-4">
-										<div class="form-group">
-											<label for="title">Nom du cabinet *</label>
-											<input name="cabinet_name" id="cabinet_name" class="form-control" type="text" value="{{ old('cabinet_name')?old('cabinet_name'):($solicitor ? $solicitor->cabinet_name : "") }}" required>
+								<div id="solicitorExistant">
+									<div class="row">
+										<div class="col-md-4">
+											<div class="form-group">
+												<select class="form-control" name="solicitor_id" id="solicitor_id" style="width:100%">
+													<option value="">@lang('app.form.choix_txt')</option>
+													@foreach($solicitors as $solicitor)
+														<option value="{{$solicitor->id}}" {{$solicitor->id == $solicitor->id?'selected="selected"':''}}>
+															{{$solicitor->cabinet_name}}
+														</option>
+													@endforeach
+													<option value="new">Créer nouveau solicitor</option>
+												</select>
+											</div> 
 										</div>
 									</div>
-									<div class="col-lg-4">
-										<div class="form-group">
-											<label for="title">Email cabinet *</label>
-											<input name="cabinet_email" id="cabinet_email" class="form-control" type="email" value="{{ old('cabinet_email')?old('cabinet_email'):($solicitor ? $solicitor->cabinet_email : "") }}" required>
+								</div>
+								
+								<div id="newSolicitor" style="display:none">
+									<div class="row">						
+										<div class="col-lg-4">
+											<div class="form-group">
+												<label for="title">Nom du cabinet *</label>
+												<input name="cabinet_name" id="cabinet_name" class="form-control" type="text" value="{{ old('cabinet_name')?old('cabinet_name'):'' }}">
+											</div>
 										</div>
-									</div>
-									<div class="col-lg-4">
-										<div class="form-group">
-											<label for="title">Tel *</label>
-											<input name="cabinet_phone" id="cabinet_phone" class="form-control" type="text" value="{{ old('cabinet_phone')?old('cabinet_phone'):($solicitor ? $solicitor->cabinet_phone : "") }}" required>
+										<div class="col-lg-4">
+											<div class="form-group">
+												<label for="title">Email cabinet *</label>
+												<input name="cabinet_email" id="cabinet_email" class="form-control" type="email" value="{{ old('cabinet_email')?old('cabinet_email'):'' }}">
+											</div>
+										</div>
+										<div class="col-lg-4">
+											<div class="form-group">
+												<label for="title">Tel *</label>
+												<input name="cabinet_phone" id="cabinet_phone" class="form-control" type="text" value="{{ old('cabinet_phone')?old('cabinet_phone'):'' }}">
+											</div>
 										</div>
 									</div>
 								</div>
 								<hr>
+								
 								<button type="submit" class="btn btn-primary btn-lg pull-right" style="margin-top:2rem">
 									<i class="fa fa-save"></i> @lang('app.form.product_btn_save')
 								</button>
@@ -1711,6 +1731,15 @@
 				$('#montant_bonus_vente').show();
 			}else{
 				$('#montant_bonus_vente').hide();
+			}
+		});
+		
+		$('#solicitor_id').on('change',function(){
+			var choix_solicitor = $(this).val();
+			if(choix_solicitor == 'new'){
+				$('#newSolicitor').show();
+			}else{
+				$('#newSolicitor').hide();
 			}
 		});
 		
