@@ -136,9 +136,9 @@
 									@php
 										$solicitor = App\Models\Solicitor::where('id',$product->solicitor_id)->get();
 									@endphp
-									{{$solicitor[0]->cabinet_name}}<br />
-									{{$solicitor[0]->cabinet_email}}<br />
-									{{$solicitor[0]->cabinet_phone}}				
+									{{count($solicitor) > 1 ? $solicitor[0]->cabinet_name : ''}}<br />
+									{{count($solicitor) > 1 ? $solicitor[0]->cabinet_email : ''}}<br />
+									{{count($solicitor) > 1 ? $solicitor[0]->cabinet_phone : ''}}
 								</dd>
 							</div>
 						</dl>

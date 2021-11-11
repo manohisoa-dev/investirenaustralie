@@ -174,8 +174,10 @@
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.country') </div>
-                                <select class="form-control" name="country" readonly>
-                                    <option value="{{$item->location->country}}" selected> {{ App\Models\Country::where('code',$item->location->country)->pluck('content')[0] }} ({{$item->location->country}})</option>
+                                <select class="form-control" name="country">
+                                    @foreach(\App\Models\Country::all() as $country)
+                                        <option value="{{$country->code}}" {{$country->code == $item->location->country ? "selected" : ""}}> {{ $country->content }} ({{$country->code}})</option>
+                                    @endforeach
                                 </select>
                                 <span></span>
                             </div>
@@ -214,7 +216,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessname') </div>
-                                        <input type="text" class="form-control" placeholder="@lang('app.txt.businessname')" name="orga_name" id="orga_name" value="{{ old('orga_name')?old('orga_name'):($item->userinfos ?$item->userinfos->orga_name:'')}}">
+                                        <input type="text" class="form-control" placeholder="@lang('app.txt.businessname')" name="orga_name" id="orga_name" value="{{ old('orga_name')?old('orga_name'):($item->userinfos ?$item->userinfos->orga_name:'')}}" readonly>
                                         <span class="text-danger">{{ $errors->first('orga_name') }}</span>
                                     </div>
                                 </div>
@@ -226,7 +228,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businesstradingname') </div>
-                                        <input type="text" class="form-control" placeholder="@lang('app.txt.businesstradingname')" name="orga_trading_name" id="orga_trading_name" value="{{ old('orga_trading_name')?old('orga_trading_name'):($item->userinfos ?$item->userinfos->orga_trading_name:'')}}">
+                                        <input type="text" class="form-control" placeholder="@lang('app.txt.businesstradingname')" name="orga_trading_name" id="orga_trading_name" value="{{ old('orga_trading_name')?old('orga_trading_name'):($item->userinfos ?$item->userinfos->orga_trading_name:'')}}" readonly>
                                         <span class="text-danger">{{ $errors->first('orga_trading_name') }}</span>
                                     </div>
                                 </div>
@@ -652,7 +654,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.agencyname') </div>
-                                        <input type="text" class="form-control" placeholder="@lang('app.txt.agencyname')" name="orga_name" id="orga_name" value="{{ old('orga_name')?old('orga_name'):($item->userinfos ?$item->userinfos->orga_name:'')}}">
+                                        <input type="text" class="form-control" placeholder="@lang('app.txt.agencyname')" name="orga_name" id="orga_name" value="{{ old('orga_name')?old('orga_name'):($item->userinfos ?$item->userinfos->orga_name:'')}}" readonly>
                                         <span class="text-danger">{{ $errors->first('orga_name') }}</span>
                                     </div>
                                 </div>
@@ -664,7 +666,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.organizationregistrationnumber') </div>
-                                        <input type="text" class="form-control" name="orga_registration_number" id="orga_registration_number" placeholder="@lang('app.txt.agencyregistrationnumber')" value="{{ old('orga_registration_number')?old('orga_registration_number'):(isset($item->userinfos->orga_registration_number)?$item->userinfos->orga_registration_number:'') }}">
+                                        <input type="text" class="form-control" name="orga_registration_number" id="orga_registration_number" placeholder="@lang('app.txt.agencyregistrationnumber')" value="{{ old('orga_registration_number')?old('orga_registration_number'):(isset($item->userinfos->orga_registration_number)?$item->userinfos->orga_registration_number:'') }}" readonly>
                                         <span class="text-danger">{{ $errors->first('orga_registration_number') }}</span>
                                     </div>
                                 </div>
@@ -676,7 +678,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.organizationrepregistrationofficial') </div>
-                                        <input type="text" class="form-control" name="orga_rep_official_registration" id="orga_rep_official_registration" placeholder="@lang('app.txt.organizationrepregistrationofficial')" value="{{ old('orga_rep_official_registration')?old('orga_rep_official_registration'):(isset($item->userinfos->orga_rep_official_registration)?$item->userinfos->orga_rep_official_registration:'') }}">
+                                        <input type="text" class="form-control" name="orga_rep_official_registration" id="orga_rep_official_registration" placeholder="@lang('app.txt.organizationrepregistrationofficial')" value="{{ old('orga_rep_official_registration')?old('orga_rep_official_registration'):(isset($item->userinfos->orga_rep_official_registration)?$item->userinfos->orga_rep_official_registration:'') }}" readonly>
                                         <span class="text-danger">{{ $errors->first('orga_rep_official_registration') }}</span>
                                     </div>
                                 </div>
@@ -1020,7 +1022,7 @@
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessname') </div>
-                                            <input type="text" class="form-control" placeholder="@lang('app.txt.businessname')" name="orga_name" id="orga_name" value="{{ old('orga_name')?old('orga_name'):($item->userinfos ?$item->userinfos->orga_name:'')}}">
+                                            <input type="text" class="form-control" placeholder="@lang('app.txt.businessname')" name="orga_name" id="orga_name" value="{{ old('orga_name')?old('orga_name'):($item->userinfos ?$item->userinfos->orga_name:'')}}" readonly>
                                             <span class="text-danger">{{ $errors->first('orga_name') }}</span>
                                         </div>
                                     </div>
@@ -1032,7 +1034,7 @@
                                         </div>
                                         <div class="media-body p-15px-l lh-normal">
                                             <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businesstradingname') </div>
-                                            <input type="text" class="form-control" placeholder="@lang('app.txt.businesstradingname')" name="orga_trading_name" id="orga_trading_name" value="{{ old('orga_trading_name')?old('orga_trading_name'):($item->userinfos ?$item->userinfos->orga_trading_name:'')}}">
+                                            <input type="text" class="form-control" placeholder="@lang('app.txt.businesstradingname')" name="orga_trading_name" id="orga_trading_name" value="{{ old('orga_trading_name')?old('orga_trading_name'):($item->userinfos ?$item->userinfos->orga_trading_name:'')}}" readonly>
                                             <span class="text-danger">{{ $errors->first('orga_trading_name') }}</span>
                                         </div>
                                     </div>
@@ -1069,7 +1071,7 @@
                                             </div>
                                             <div class="media-body p-15px-l lh-normal">
                                                 <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessparentname') </div>
-                                                <input type="text" class="form-control" placeholder="@lang('app.txt.businessparentname')" name="orga_parent_name" id="orga_parent_name" value="{{ old('orga_parent_name')?old('orga_parent_name'):($item->userinfos ?$item->userinfos->orga_parent_name:'')}}">
+                                                <input type="text" class="form-control" placeholder="@lang('app.txt.businessparentname')" name="orga_parent_name" id="orga_parent_name" value="{{ old('orga_parent_name')?old('orga_parent_name'):($item->userinfos ?$item->userinfos->orga_parent_name:'')}}" readonly>
                                                 <span class="text-danger">{{ $errors->first('orga_parent_name') }}</span>
                                             </div>
                                         </div>
@@ -2176,7 +2178,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.businessname') </div>
-                                        <input type="text" class="form-control" placeholder="@lang('app.txt.businessname')" name="orga_name" id="orga_name" value="{{ old('orga_name')?old('orga_name'):($item->userinfos ?$item->userinfos->orga_name:'')}}">
+                                        <input type="text" class="form-control" placeholder="@lang('app.txt.businessname')" name="orga_name" id="orga_name" value="{{ old('orga_name')?old('orga_name'):($item->userinfos ?$item->userinfos->orga_name:'')}}" readonly>
                                         <span class="text-danger">{{ $errors->first('orga_name') }}</span>
                                     </div>
                                 </div>
@@ -2188,7 +2190,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.organizationregistrationnumber') </div>
-                                        <input type="text" class="form-control" name="orga_registration_number" id="orga_registration_number" placeholder="@lang('app.txt.organizationregistrationnumber.input')" value="{{ old('orga_registration_number')?old('orga_registration_number'):(isset($item->userinfos->orga_registration_number)?$item->userinfos->orga_registration_number:'') }}">
+                                        <input type="text" class="form-control" name="orga_registration_number" id="orga_registration_number" placeholder="@lang('app.txt.organizationregistrationnumber.input')" value="{{ old('orga_registration_number')?old('orga_registration_number'):(isset($item->userinfos->orga_registration_number)?$item->userinfos->orga_registration_number:'') }}" readonly>
                                         <span class="text-danger">{{ $errors->first('orga_registration_number') }}</span>
                                     </div>
                                 </div>
@@ -2200,7 +2202,7 @@
                                     </div>
                                     <div class="media-body p-15px-l lh-normal">
                                         <div class="dark-color m-5px-b font-w-600">@lang('app.txt.organizationrepregistrationofficial')</div>
-                                        <input type="text" class="form-control" name="orga_rep_official_registration" placeholder="@lang('app.txt.organizationrepregistrationofficial')" value="{{ old('orga_rep_official_registration')?old('orga_rep_official_registration'):($item->userinfos ?$item->userinfos->orga_rep_official_registration:'')}}">
+                                        <input type="text" class="form-control" name="orga_rep_official_registration" placeholder="@lang('app.txt.organizationrepregistrationofficial')" value="{{ old('orga_rep_official_registration')?old('orga_rep_official_registration'):($item->userinfos ?$item->userinfos->orga_rep_official_registration:'')}}" readonly>
                                         <span class="text-danger">{{ $errors->first('orga_rep_official_registration') }}</span>
                                     </div>
                                 </div>
