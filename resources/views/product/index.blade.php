@@ -513,6 +513,9 @@
           <div class="modal-footer">
             @if (!Session::has('waiting') && Auth::check())
               @if(Auth::user()->hasCurrentTransaction())
+                @php
+                    $statusDossTrans=Auth::user()->getCurrentStatusTransaction($item->id);
+                @endphp
                 @if($statusDossTrans==0)
                   <a type="button" class="pull-left m-btn m-btn-theme" href="{{route('member.transaction')}}" >@lang('app.btn.abandonner')</a>
                 @else

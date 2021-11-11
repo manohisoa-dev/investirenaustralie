@@ -52,6 +52,7 @@
 									</div>
 								</div>
 								
+								@if($product->category_id == 1)
 								<div class="row">
 									<div class="col-lg-6">
 										<div class="form-group">
@@ -66,6 +67,7 @@
 										</div>
 									</div>
 								</div>	
+								@endif
 									
 								<div class="row">
 									<div class="col-lg-6">
@@ -744,101 +746,52 @@
 									<div class="row">
 										 <div class="col-lg-12">
 											 <h5 style="font-weight:normal; font-size:17px; color:#718096">@lang('app.table.lia_dossier')</h5>
-											 @foreach ( $liadossier as $dos )
-											 <div class="file-box">
-												<div class="file">
-													@if(setIconFile($dos->filepath) == 'images')
-														<a href="{{asset($dos->filepath)}}" class="fancyboxLink">
-													@elseif(setIconFile($dos->filepath) == 'pdf')
-														<a class="fancybox-pdf" target="_blank" data-fancybox-type="iframe" href="http://docs.google.com/viewer?embedded=true&url={{asset(urlencode($dos->filepath))}}">
-													@else
-														<a href="https://docs.google.com/viewer?url={{asset(urlencode($dos->filepath))}}&embedded=true" class="fancyboxLinkDoc" data-fancybox-type="iframe">
-													@endif								
-														<span class="corner"></span>						
-														@if(setIconFile($dos->filepath) == 'images')
-															<div class="image">
-																<img alt="image" class="img-fluid" src="{{asset($dos->filepath)}}">
-															</div>
-														@endif	
-														@if(setIconFile($dos->filepath) == 'pdf')
-															<div class="icon">
-																<i class="fa fa-file-pdf"></i>
-															</div>
-														@endif	
-														@if(setIconFile($dos->filepath) == 'doc')
-															<div class="icon">
-																<i class="fa fa-file-word-o"></i>
-															</div>
-														@endif
-														@if(setIconFile($dos->filepath) == 'excel')
-															<div class="icon">
-																<i class="fa fa-file-excel-o"></i>
-															</div>
-														@endif	
-														@if(setIconFile($dos->filepath) == 'file')
-															<div class="icon">
-																<i class="fa fa-file"></i>
-															</div>
-														@endif		
-														<div class="file-name">
-															@php
-																$filename_eoi = $dos->filename;
-																$filename_eoi = preg_replace('/^(.*)\-\d{8,}\.(gif|jpg|png|pdf)$/', '$1.$2', $filename_eoi);
-															@endphp
-															<label style="text-transform:lowercase">{{str_limit($filename_eoi, 15)}}</label>
-															{{--<a class="pull-right" href="javascript:void(0)" onclick="delete_lia_dossier({{$dos->prdLiaId}})">
-																<i class="fa fa-trash"></i>
-															</a>--}}
-															<br>
-															<small>{{$dos->created_at ? $dos->created_at->diffForHumans() : ""}}</small>
-														</div>
-													</a>
-												</div>
-											 </div>
-											 @endforeach		
+											 <input type="hidden" name="mandat_recActive" id="mandat_recActive" value="{{$liadossier?$liadossier[0]->image_id:''}}" />
+											 <input type="hidden" name="id_mandatActive" id="id_mandatActive" value="{{$liadossier?$liadossier[0]->prdLiaId:''}}" />
+											 <div id="salesMandates"></div>
 										 </div>
-									</div>  
+									</div>   
 									@endif 
-									{{--<div class="row" style="margin-bottom:15px">
-										<div class="col-lg-12">
-											<label for="title">@lang('app.table.lia_dossier')</label>
-											<div class="dropzone" id="lia_dossier" multiple style="margin-bottom:25px">
-												<div id="template" class="file-row"></div>
-											</div>
-										</div>
-									</div>--}}
 									<!-- fin lia dossier -->
 									
 									<!-- photo produit -->
-									<div class="row">
-										@if($product->image_id != 0)
-										<div class="col-lg-4">
-											<div class="file-box" style="width:100% !important">
+									@if (count($photos) > 0)
+										<div class="row">
+											<div class="col-lg-12">
+											<h5>@lang('app.table.produit_image')</h5>
+											@foreach ( $photos as $photo )					
+											<div class="file-box">
 												<div class="file">
-													<a href="{{asset($product->imageUrl())}}" target="_blank" class="fancyboxLink">
-														<span class="corner"></span>	
-														@if (@getimagesize($product->imageUrl()))					
-														<div class="image">
-															<img alt="image" class="img-fluid" src="{{$product->imageUrl()}}">
-														</div>
-														@else
-														<div class="image">
-															<img alt="image" class="img-fluid" src="{{asset('img/500x500.jpg')}}">
-														</div>
-														@endif
-													</a>
+													<span class="corner"></span>						
+													<div class="image">
+														<a href="{{asset($photo->filepath)}}" class="fancyboxLink">
+														<img alt="image" class="img-fluid" src="{{asset($photo->filepath)}}">
+														</a>
+													</div>
+													<div class="file-name">
+														<label> 
+															@if($photo->is_principal == 1)
+															<input type="radio" checked="" value="{{$photo->prdImageId}}" name="radioDrop"> @lang('app.dropzone.photoIcon_tex')
+															@else
+															<input type="radio" value="{{$photo->prdImageId}}" name="radioDrop"> @lang('app.dropzone.photoIcon_tex')
+															@endif
+														</label>
+														<a class="pull-right" href="javascript:void(0)" onclick="delete_photo({{$photo->prdImageId}})">
+															<i class="fa fa-trash"></i>
+														</a>
+														<br>
+														<small>{{$photo->created_at ? $photo->created_at->diffForHumans() : ""}}</small>
+													</div>				
 												</div>
-												<div class="file-name">
-													<label>@lang('app.table.produit_image')</label>
-												</div>
+											</div>
+											@endforeach
 											</div>
 										</div>
-										@endif
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.table.produit_image')</label>
-												<input name="image" class="form-control" type="file" accept="image/png, image/jpeg">
-											</div>
+									@endif
+									<div class="row" style="margin-bottom:15px">
+										<div class="col-lg-12">
+											<label for="title">@lang('app.table.produit_image')</label>
+											<div class="dropzone" id="pictures_upload"></div>
 										</div>
 									</div>
 									<!-- fin photo produit -->
@@ -1071,101 +1024,52 @@
 									<div class="row">
 										 <div class="col-lg-12">
 											 <h5 style="font-weight:normal; font-size:17px; color:#718096">@lang('app.table.lia_dossier')</h5>
-											 @foreach ( $liadossier as $dos )
-											 <div class="file-box">
-												<div class="file">
-													@if(setIconFile($dos->filepath) == 'images')
-														<a href="{{asset($dos->filepath)}}" class="fancyboxLink">
-													@elseif(setIconFile($dos->filepath) == 'pdf')
-														<a class="fancybox-pdf" target="_blank" data-fancybox-type="iframe" href="http://docs.google.com/viewer?embedded=true&url={{asset(urlencode($dos->filepath))}}">
-													@else
-														<a href="https://docs.google.com/viewer?url={{asset(urlencode($dos->filepath))}}&embedded=true" class="fancyboxLinkDoc" data-fancybox-type="iframe">
-													@endif								
-														<span class="corner"></span>						
-														@if(setIconFile($dos->filepath) == 'images')
-															<div class="image">
-																<img alt="image" class="img-fluid" src="{{asset($dos->filepath)}}">
-															</div>
-														@endif	
-														@if(setIconFile($dos->filepath) == 'pdf')
-															<div class="icon">
-																<i class="fa fa-file-pdf"></i>
-															</div>
-														@endif	
-														@if(setIconFile($dos->filepath) == 'doc')
-															<div class="icon">
-																<i class="fa fa-file-word-o"></i>
-															</div>
-														@endif
-														@if(setIconFile($dos->filepath) == 'excel')
-															<div class="icon">
-																<i class="fa fa-file-excel-o"></i>
-															</div>
-														@endif	
-														@if(setIconFile($dos->filepath) == 'file')
-															<div class="icon">
-																<i class="fa fa-file"></i>
-															</div>
-														@endif		
-														<div class="file-name">
-															@php
-																$filename_eoi = $dos->filename;
-																$filename_eoi = preg_replace('/^(.*)\-\d{8,}\.(gif|jpg|png|pdf)$/', '$1.$2', $filename_eoi);
-															@endphp
-															<label style="text-transform:lowercase">{{str_limit($filename_eoi, 15)}}</label>
-															<a class="pull-right" href="javascript:void(0)" onclick="delete_lia_dossier({{$dos->prdLiaId}})">
-																<i class="fa fa-trash"></i>
-															</a>
-															<br>
-															<small>{{$dos->created_at ? $dos->created_at->diffForHumans() : ""}}</small>
-														</div>
-													</a>
-												</div>
-											 </div>
-											 @endforeach		
+											 <input type="hidden" name="mandat_recActive" id="mandat_recActive" value="{{$liadossier?$liadossier[0]->image_id:''}}" />
+											 <input type="hidden" name="id_mandatActive" id="id_mandatActive" value="{{$liadossier?$liadossier[0]->prdLiaId:''}}" />
+											 <div id="salesMandates"></div>
 										 </div>
-									</div>  
+									</div>   
 									@endif 
-									<div class="row" style="margin-bottom:15px">
-										<div class="col-lg-12">
-											<label for="title">@lang('app.table.lia_dossier')</label>
-											<div class="dropzone" id="lia_dossier" multiple style="margin-bottom:25px">
-												<div id="template" class="file-row"></div>
-											</div>
-										</div>
-									</div>
 									<!-- fin lia dossier -->
 									
 									<!-- photo produit -->
-									<div class="row">
-										@if($product->image_id != 0)
-										<div class="col-lg-4">
-											<div class="file-box" style="width:100% !important">
+									@if (count($photos) > 0)
+										<div class="row">
+											<div class="col-lg-12">
+											<h5>@lang('app.table.produit_image')</h5>
+											@foreach ( $photos as $photo )					
+											<div class="file-box">
 												<div class="file">
-													<a href="{{asset($product->imageUrl())}}" target="_blank" class="fancyboxLink">
-														<span class="corner"></span>	
-														@if (@getimagesize($product->imageUrl()))					
-														<div class="image">
-															<img alt="image" class="img-fluid" src="{{$product->imageUrl()}}">
-														</div>
-														@else
-														<div class="image">
-															<img alt="image" class="img-fluid" src="{{asset('img/500x500.jpg')}}">
-														</div>
-														@endif
-													</a>
+													<span class="corner"></span>						
+													<div class="image">
+														<a href="{{asset($photo->filepath)}}" class="fancyboxLink">
+														<img alt="image" class="img-fluid" src="{{asset($photo->filepath)}}">
+														</a>
+													</div>
+													<div class="file-name">
+														<label> 
+															@if($photo->is_principal == 1)
+															<input type="radio" checked="" value="{{$photo->prdImageId}}" name="radioDrop"> @lang('app.dropzone.photoIcon_tex')
+															@else
+															<input type="radio" value="{{$photo->prdImageId}}" name="radioDrop"> @lang('app.dropzone.photoIcon_tex')
+															@endif
+														</label>
+														<a class="pull-right" href="javascript:void(0)" onclick="delete_photo({{$photo->prdImageId}})">
+															<i class="fa fa-trash"></i>
+														</a>
+														<br>
+														<small>{{$photo->created_at ? $photo->created_at->diffForHumans() : ""}}</small>
+													</div>				
 												</div>
-												<div class="file-name">
-													<label>@lang('app.table.produit_image')</label>
-												</div>
+											</div>
+											@endforeach
 											</div>
 										</div>
-										@endif
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.table.produit_image')</label>
-												<input name="image" class="form-control" type="file" accept="image/png, image/jpeg">
-											</div>
+									@endif
+									<div class="row" style="margin-bottom:15px">
+										<div class="col-lg-12">
+											<label for="title">@lang('app.table.produit_image')</label>
+											<div class="dropzone" id="pictures_upload"></div>
 										</div>
 									</div>
 									<!-- fin photo produit -->
@@ -1412,101 +1316,52 @@
 									<div class="row">
 										 <div class="col-lg-12">
 											 <h5 style="font-weight:normal; font-size:17px; color:#718096">@lang('app.table.lia_dossier')</h5>
-											 @foreach ( $liadossier as $dos )
-											 <div class="file-box">
-												<div class="file">
-													@if(setIconFile($dos->filepath) == 'images')
-														<a href="{{asset($dos->filepath)}}" class="fancyboxLink">
-													@elseif(setIconFile($dos->filepath) == 'pdf')
-														<a class="fancybox-pdf" target="_blank" data-fancybox-type="iframe" href="http://docs.google.com/viewer?embedded=true&url={{asset(urlencode($dos->filepath))}}">
-													@else
-														<a href="https://docs.google.com/viewer?url={{asset(urlencode($dos->filepath))}}&embedded=true" class="fancyboxLinkDoc" data-fancybox-type="iframe">
-													@endif								
-														<span class="corner"></span>						
-														@if(setIconFile($dos->filepath) == 'images')
-															<div class="image">
-																<img alt="image" class="img-fluid" src="{{asset($dos->filepath)}}">
-															</div>
-														@endif	
-														@if(setIconFile($dos->filepath) == 'pdf')
-															<div class="icon">
-																<i class="fa fa-file-pdf"></i>
-															</div>
-														@endif	
-														@if(setIconFile($dos->filepath) == 'doc')
-															<div class="icon">
-																<i class="fa fa-file-word-o"></i>
-															</div>
-														@endif
-														@if(setIconFile($dos->filepath) == 'excel')
-															<div class="icon">
-																<i class="fa fa-file-excel-o"></i>
-															</div>
-														@endif	
-														@if(setIconFile($dos->filepath) == 'file')
-															<div class="icon">
-																<i class="fa fa-file"></i>
-															</div>
-														@endif		
-														<div class="file-name">
-															@php
-																$filename_eoi = $dos->filename;
-																$filename_eoi = preg_replace('/^(.*)\-\d{8,}\.(gif|jpg|png|pdf)$/', '$1.$2', $filename_eoi);
-															@endphp
-															<label style="text-transform:lowercase">{{str_limit($filename_eoi, 15)}}</label>
-															<a class="pull-right" href="javascript:void(0)" onclick="delete_lia_dossier({{$dos->prdLiaId}})">
-																<i class="fa fa-trash"></i>
-															</a>
-															<br>
-															<small>{{$dos->created_at ? $dos->created_at->diffForHumans() : ""}}</small>
-														</div>
-													</a>
-												</div>
-											 </div>
-											 @endforeach		
+											 <input type="hidden" name="mandat_recActive" id="mandat_recActive" value="{{$liadossier?$liadossier[0]->image_id:''}}" />
+											 <input type="hidden" name="id_mandatActive" id="id_mandatActive" value="{{$liadossier?$liadossier[0]->prdLiaId:''}}" />
+											 <div id="salesMandates"></div>
 										 </div>
-									</div>  
-									@endif 
-									<div class="row" style="margin-bottom:15px">
-										<div class="col-lg-12">
-											<label for="title">@lang('app.table.lia_dossier')</label>
-											<div class="dropzone" id="lia_dossier" multiple style="margin-bottom:25px">
-												<div id="template" class="file-row"></div>
-											</div>
-										</div>
-									</div>
+									</div>   
+									@endif
 									<!-- fin lia dossier -->
 									
 									<!-- photo produit -->
-									<div class="row">
-										@if($product->image_id != 0)
-										<div class="col-lg-4">
-											<div class="file-box" style="width:100% !important">
+									@if (count($photos) > 0)
+										<div class="row">
+											<div class="col-lg-12">
+											<h5>@lang('app.table.produit_image')</h5>
+											@foreach ( $photos as $photo )					
+											<div class="file-box">
 												<div class="file">
-													<a href="{{asset($product->imageUrl())}}" target="_blank" class="fancyboxLink">
-														<span class="corner"></span>	
-														@if (@getimagesize($product->imageUrl()))					
-														<div class="image">
-															<img alt="image" class="img-fluid" src="{{$product->imageUrl()}}">
-														</div>
-														@else
-														<div class="image">
-															<img alt="image" class="img-fluid" src="{{asset('img/500x500.jpg')}}">
-														</div>
-														@endif
-													</a>
+													<span class="corner"></span>						
+													<div class="image">
+														<a href="{{asset($photo->filepath)}}" class="fancyboxLink">
+														<img alt="image" class="img-fluid" src="{{asset($photo->filepath)}}">
+														</a>
+													</div>
+													<div class="file-name">
+														<label> 
+															@if($photo->is_principal == 1)
+															<input type="radio" checked="" value="{{$photo->prdImageId}}" name="radioDrop"> @lang('app.dropzone.photoIcon_tex')
+															@else
+															<input type="radio" value="{{$photo->prdImageId}}" name="radioDrop"> @lang('app.dropzone.photoIcon_tex')
+															@endif
+														</label>
+														<a class="pull-right" href="javascript:void(0)" onclick="delete_photo({{$photo->prdImageId}})">
+															<i class="fa fa-trash"></i>
+														</a>
+														<br>
+														<small>{{$photo->created_at ? $photo->created_at->diffForHumans() : ""}}</small>
+													</div>				
 												</div>
-												<div class="file-name">
-													<label>@lang('app.table.produit_image')</label>
-												</div>
+											</div>
+											@endforeach
 											</div>
 										</div>
-										@endif
-										<div class="col-lg-4">
-											<div class="form-group">
-												<label for="title">@lang('app.table.produit_image')</label>
-												<input name="image" class="form-control" type="file" accept="image/png, image/jpeg">
-											</div>
+									@endif
+									<div class="row" style="margin-bottom:15px">
+										<div class="col-lg-12">
+											<label for="title">@lang('app.table.produit_image')</label>
+											<div class="dropzone" id="pictures_upload"></div>
 										</div>
 									</div>
 									<!-- fin photo produit -->
@@ -1525,7 +1380,7 @@
 												<select class="form-control" name="solicitor_id" id="solicitor_id" style="width:100%">
 													<option value="">@lang('app.form.choix_txt')</option>
 													@foreach($solicitors as $solicitor)
-														<option value="{{$solicitor->id}}" {{$solicitor->id == $solicitor->id?'selected="selected"':''}}>
+														<option value="{{$solicitor->id}}" {{$solicitor->id == $product->solicitor_id?'selected="selected"':''}}>
 															{{$solicitor->cabinet_name}}
 														</option>
 													@endforeach

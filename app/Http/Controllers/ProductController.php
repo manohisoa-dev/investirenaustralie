@@ -1082,8 +1082,6 @@ class ProductController extends Controller {
         $product->slug = $slug;
         $product->title = $request->title;
         $product->content = $request->desc_product;
-        $product->commencement_dt = $request->commencement_dt;
-        $product->estimated_delvivery_dt = $request->estimated_delvivery_dt;
         $product->type_id = $request->type_id;
         $product->display_address = $request->display_address;
         $product->postalCode = $request->postalCode_product;
@@ -1105,6 +1103,8 @@ class ProductController extends Controller {
             $product->total_area = $request->total_area;
             $product->garage_spaces = $request->garage_spaces;
             $product->carport_spaces = $request->carport_spaces;
+            $product->commencement_dt = $request->commencement_dt;
+            $product->estimated_delvivery_dt = $request->estimated_delvivery_dt;
 
             if ($product->ancienneteBien == 'Neuf' && $product->natureBien ==
                 'Programme immobilier') {
@@ -1132,7 +1132,7 @@ class ProductController extends Controller {
             $product->unite_area = $request->unite_surface;
         } elseif ($product->category_id == 3) {
             $product->price = $request->simple_price;
-            $product->display_address = $request->property_detail;
+            $product->property_detail = $request->property_detail;
         } elseif ($product->category_id == 4) {
             $product->price = $request->simple_price;
             $product->area = $request->surface_commercial;
@@ -1455,7 +1455,7 @@ class ProductController extends Controller {
             $avoir_piscine = 0;
         }
 
-        $state = State::where('content', $request->state_id)->first();
+        $state = State::where('content', $request->state_id_product)->first();
         //test si nouveau solicitor ou pas
         if ($request->solicitor_id == 'new') {
             // save Solicitor info

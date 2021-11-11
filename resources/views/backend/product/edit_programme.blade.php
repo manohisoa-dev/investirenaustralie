@@ -215,7 +215,7 @@
 												<select class="form-control" name="solicitor_id" id="solicitor_id" style="width:100%">
 													<option value="">@lang('app.form.choix_txt')</option>
 													@foreach($solicitors as $solicitor)
-														<option value="{{$solicitor->id}}" {{$solicitor->id == $solicitor->id?'selected="selected"':''}}>
+														<option value="{{$solicitor->id}}" {{$solicitor->id == $product->solicitor_id?'selected="selected"':''}}>
 															{{$solicitor->cabinet_name}}
 														</option>
 													@endforeach
