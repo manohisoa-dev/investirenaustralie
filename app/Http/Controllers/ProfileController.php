@@ -225,7 +225,7 @@ class ProfileController extends Controller {
         $rules = ['name' => 'required|max:100', 'email' => 'required|max:100',
             'language' => 'required|max:100', 'image' =>
             'image|mimes:jpeg,png,jpg,gif,svg|max:2048', 'first_name' => 'required|max:100',
-            'last_name' => 'required|max:100', 'nationality' => 'required|max:100', ];
+            'last_name' => 'required|max:100', 'nationality' => 'required|max:100' ];
 
 
         $validator = Validator::make($datas, $rules);
@@ -242,15 +242,19 @@ class ProfileController extends Controller {
 
             try {
                 // Créer user membre
-                $users = ['name' => $datas['name'], 'language' => $datas['language'], 'image_id' =>
+                $userData = ['name' => $datas['name'], 'language' => $datas['language'], 'image_id' =>
                     $datas['image_id'], ];
-                User::whereId($user->id)->update($users);
+                User::whereId($user->id)->update($userData);
 
                 // update userinfo
-                $userinfos = ['first_name' => $datas['first_name'], 'last_name' => $datas['last_name'],
+                $userinfo = ['first_name' => $datas['first_name'], 'last_name' => $datas['last_name'],
                     'nationality' => $datas['nationality'], 'allow_sharing' => $datas['allow_sharing'],
                     'newsletter' => $datas['newsletter'], ];
-                Userinfo::where('user_id', $user->id)->update($userinfos);
+                Userinfo::where('user_id', $user->id)->update($userinfo);
+
+                // update user location
+                $locationData = ['country' => $datas['country']] ;
+                Localisation::whereId($user->location_id)->update($locationData) ;
 
             }
             catch (\Throwable $th) {

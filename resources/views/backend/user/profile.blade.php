@@ -174,8 +174,10 @@
                             </div>
                             <div class="media-body p-15px-l lh-normal">
                                 <div class="dark-color m-5px-b font-w-600">@lang('app.country') </div>
-                                <select class="form-control" name="country" readonly>
-                                    <option value="{{$item->location->country}}" selected> {{ App\Models\Country::where('code',$item->location->country)->pluck('content')[0] }} ({{$item->location->country}})</option>
+                                <select class="form-control" name="country">
+                                    @foreach(\App\Models\Country::all() as $country)
+                                        <option value="{{$country->code}}" {{$country->code == $item->location->country ? "selected" : ""}}> {{ $country->content }} ({{$country->code}})</option>
+                                    @endforeach
                                 </select>
                                 <span></span>
                             </div>
