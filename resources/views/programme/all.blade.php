@@ -57,7 +57,7 @@
                         <div class="row mx-auto my-auto">
                             <div id="myCarousel{{ $i }}" class="carousel slide w-100" data-ride="carousel">
                                 <div class="carousel-inner w-100" role="listbox">
-                                    @forelse (App\Models\Product::where('parent_id','=',$item->id)->orderBy($orderBy,$order)->get() as $prod)
+                                    @forelse (App\Models\Product::where('parent_id','=',$item->id)->where('status','=','published')->orderBy($orderBy,$order)->get() as $prod)
                                         <div class="carousel-item carousel-item-prod @if($loop->first) active @endif">
                                             <div class="{{ $viewProd=='list' ? 'col-lg-4' : 'col-md-12'}} col-sm-12">
                                                 <div class="thumb-wrapper">

@@ -38,7 +38,7 @@
                 @endif
             </td>
             <td>{{ $prod->title }}</td> 
-            <td>{{ $trans->status }}
+            <td>
                 @php
                     $member=App\Models\User::whereId($trans->user_id)->first();
                 @endphp
@@ -60,7 +60,6 @@
                             <span class="badge badge-warning">@lang('app.txt.waiting_for_the_move')</span>
                         @elseif ($trans->status == 7 )
                             <span class="badge badge-info">@lang('app.txt.complete_registration_file')</span>    
-                        {{-- <span class="badge badge-info">@lang('app.txt.mr_send')</span> --}}
                         @elseif ($trans->status == 8 )
                             <span class="badge badge-info">@lang('app.txt.purchase_confirmation')</span>
                         @elseif ($trans->status == 9 )
@@ -137,14 +136,13 @@
                         @elseif ($trans->status == 6 )
                             <span class="badge badge-warning">@lang('app.txt.waiting_for_the_move')</span>
                         @elseif ($trans->status == 7 )
-                            <span class="badge badge-info">@lang('app.txt.complete_transaction_file_information')</span>
-                            {{-- <span class="badge badge-info">@lang('app.txt.mr_send')</span> --}}
+                            <span class="badge badge-info">@lang('app.txt.complete_transaction_file_info')</span>
                         @elseif ($trans->status == 8 )
                             <span class="badge badge-info">@lang('app.txt.complete_transaction_file_information')</span>
                         @elseif ($trans->status == 9 )
                             <span class="badge badge-info">@lang('app.txt.confirmed_purchase')</span>
                         @elseif ($trans->status == 10 )
-                            <span class="badge badge-info">@lang('app.txt.send_finalized_eoi')</span>
+                            <span class="badge badge-info">@lang('app.txt.upload_eoi_finalized')</span>
                         @elseif ($trans->status == 11 )
                             <span class="badge badge-info">@lang('app.txt.eoi_uploaded')</span>
                         @elseif ($trans->status == 12 )
@@ -177,7 +175,7 @@
                         @elseif ($trans->status == 9 )
                             <span class="badge badge-info">@lang('app.txt.confirmed_purchase')</span>
                         @elseif ($trans->status == 10 )
-                            <span class="badge badge-info">@lang('app.txt.send_finalized_eoi')</span>
+                            <span class="badge badge-info">@lang('app.txt.upload_eoi_finalized')</span>
                         @elseif ($trans->status == 11 )
                             <span class="badge badge-info">@lang('app.txt.eoi_uploaded')</span>
                         @elseif ($trans->status == 12 )
@@ -221,7 +219,7 @@
                             <a href="javascript:void(0)" onclick="submitMove({{$trans->id}})" class="btn btn-success btn-sm" style="margin-bottom:5px;">{{trans('app.btn.i_move')}}</a>
                             <a href="javascript:void(0)" onclick="submitNoMove({{$trans->id}})" class="btn btn-danger btn-sm">{{trans('app.btn.i_not_moving')}}</a>    
                         @elseif ($trans->status == 5 )
-                            <small style="margin-bottom:5px;">Dossier de Transaction reste ouvert pendant 5 jours</small>
+                            <small style="margin-bottom:5px;">@lang('app.txt.transaction_file_remains_open_for_5_days')</small>
                             <a href="javascript:void(0)" onclick="submitMove({{$trans->id}})" class="btn btn-success btn-sm">{{trans('app.btn.i_move')}}</a>
                         @elseif ($trans->status == 6 )
                             @php

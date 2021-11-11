@@ -225,7 +225,7 @@
                                 <div id="myCarousel" class="carousel slide w-100" data-ride="carousel">
                                     <div class="carousel-inner w-100" role="listbox">
                                         
-                                        @forelse (App\Models\Product::where('parent_id','=',$item->id)->get() as $prod)
+                                        @forelse (App\Models\Product::where('parent_id','=',$item->id)->where('status','=','published')->get() as $prod)
                                             <div class="carousel-item @if($loop->first) active @endif">
                                                 <div class="col-sm-3 col-md-6 col-lg-4">
                                                     <div class="thumb-wrapper">
@@ -249,7 +249,7 @@
                                                             <a href="{{route('product.index',['product'=>$prod->slug])}}" target="_blank"><img src="{{$img}}" alt="{{$prod->title}}" class="img-fluid"></a>
                                                         </div>
                                                         <div class="thumb-content">
-                                                            <p class="item-price"><span>$ {{number_format($prod->price, 0, '.', ' ')}}</span></p>
+                                                            <p class="item-price"><span>$ {{number_format($prod->min_price, 0, '.', ' ')}}</span></p>
                                                             <div class="star-rating">
                                                                 <ul class="list-inline">
                                                                     <a class="body-color font-w-500" href="#"><i class="fa fa-bed"></i> {{ $prod->bedrooms }}</a>

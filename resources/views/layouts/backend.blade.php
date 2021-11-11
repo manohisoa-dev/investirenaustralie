@@ -580,7 +580,7 @@
                                         <i class="fas fa-chevron-right"></i>
                                     </div>
                                 </a>
-                                <a href="{{route('member.dossier')}}" class="{{ Auth::user()->hasCurrentTransaction()?'theme2nd-bg-alt':'' }} list-group-item list-group-item-action d-flex justify-content-between p15px-tb align-items-center {{ (request()->is('member/dossier')) ? 'menu-active' : '' }}">
+                                {{-- <a href="{{route('member.dossier')}}" class="{{ Auth::user()->hasCurrentTransaction()?'theme2nd-bg-alt':'' }} list-group-item list-group-item-action d-flex justify-content-between p15px-tb align-items-center {{ (request()->is('member/dossier')) ? 'menu-active' : '' }}">
                                     <div>
                                         <i class="fa fa-folder m-10px-r"></i>
                                         @if(Auth::user()->hasCurrentTransaction())
@@ -594,7 +594,7 @@
                                     <div>
                                         <i class="fas fa-chevron-right"></i>
                                     </div>
-                                </a>
+                                </a> --}}
                                 <a href="{{route('member.contact', ['role'=>'admin'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb align-items-center {{ (request()->is('member/contact/role/admin')) ? 'menu-active' : '' }}">
                                     <div>
                                         <i class="far fa-envelope m-10px-r"></i>
@@ -767,7 +767,7 @@
                                     <i class="fas fa-chevron-right"></i>
                                 </div>
                             </a>
-                              <a href="{{route('afa.dossier')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb align-items-center {{ (request()->is('afa/dossier')) ? 'menu-active' : '' }}">
+                              {{-- <a href="{{route('afa.dossier')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb align-items-center {{ (request()->is('afa/dossier')) ? 'menu-active' : '' }}">
                                 <div>
                                     <i class="fa fa-folder m-10px-r"></i>
                                     <span>@lang('app.txt.file')</span>
@@ -775,7 +775,7 @@
                                 <div>
                                     <i class="fas fa-chevron-right"></i>
                                 </div>
-                            </a>
+                            </a> --}}
                             @endif
 
                             @If(Auth::user()->hasRole(2))

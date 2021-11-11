@@ -1244,8 +1244,8 @@ class ProductController extends Controller {
     }
 
     public function ajaxSaveProduct(Request $request) {
-        $state = State::where('id', $request->state_id_product)->first();
-        $id_location = $this->save_location($request->countryId_product, $state->content,
+        $state = State::where('content', $request->state_id_product)->first();
+        $id_location = $this->save_location($request->countryId_product, $request->state_id_product,
             $request->suburb_product, $request->postalCode_product, $request->ville_product,
             $request->display_address_product, $request->long, $request->lat);
         $titre_product = $request->title_new_programme . '-' . $request->title_product;
@@ -1264,23 +1264,24 @@ class ProductController extends Controller {
         if ($request->prg_anciennete && $request->prg_nature) {
             if ($request->prg_cat_id == 1) {
                 $id_produit = $this->save_new_produit($request->prg_anciennete, $request->prg_nature,
-                    $titre_product, $request->file('image'), $request->desc_product, 1, 0, '', $request->interior_area,
-                    $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
-                    $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
-                    0, $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
-                    $request->prg_cat_id, $request->postalCode_product, $request->state_id_product,
-                    $request->id_programme, $id_location, 0, $avoir_parking, 0, $request->commision_product,
-                    $taux_commission, $request->dt_db_travaux, $request->dt_prevu_livraison, $request->bonus_vente,
-                    $request->bonus_amount, '', 0, 0, 0, '');
+                    $titre_product, $request->file('image'), $request->desc_product, $request->quantity,
+                    0, '', $request->interior_area, $request->exterior_area, $request->total_area, $request->carport_spaces,
+                    $request->garage_spaces, $request->bathrooms, $request->bedrooms, $request->ensuite,
+                    0, 1, date('Y'), $request->display_address_product, 0, $request->price, $request->price_max_prd,
+                    'AUD', $request->status, $request->product_type_id, $request->prg_cat_id, $request->postalCode_product,
+                    $state->id, $request->id_programme, $id_location, 0, $avoir_parking, 0, $request->commision_product,
+                    $taux_commission, '', '', $request->bonus_vente, $request->bonus_amount, '', 0,
+                    0, 0, '', $request->idAfa, $request->idSolicitor, $request->idSeller);
             } else {
                 $id_produit = $this->save_new_produit($request->prg_anciennete, $request->prg_nature,
                     $titre_product, $request->file('image'), $request->desc_product, 1, 0, '', 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 1, date('Y'), $request->display_address_product, 0, $request->price,
                     $request->price_max_prd, 'AUD', $request->status, $request->product_type_id, $request->prg_cat_id,
-                    $request->postalCode_product, $request->state_id_product, $request->id_programme,
-                    $id_location, 0, $avoir_parking, 0, $request->commision_product, $taux_commission,
-                    $request->dt_db_travaux, $request->dt_prevu_livraison, $request->bonus_vente, $request->bonus_amount,
-                    '', 0, $request->min_area, $request->max_area);
+                    $request->postalCode_product, $state->id, $request->id_programme, $id_location,
+                    0, $avoir_parking, 0, $request->commision_product, $taux_commission, $request->dt_db_travaux,
+                    $request->dt_prevu_livraison, $request->bonus_vente, $request->bonus_amount, '',
+                    0, $request->min_area, $request->max_area, '', $request->idAfa, $request->idSolicitor,
+                    $request->idSeller);
             }
 
             if ($request->dropPhoto) {
@@ -1305,26 +1306,6 @@ class ProductController extends Controller {
     }
 
     public function ajaxModifProduct(Request $request) {
-        $product = Product::find($request->id_product);
-        if ($request->location_id != 0) {
-            $localisation = Localisation::find($product->location_id);
-            if ($localisation->route != $request->display_address_product || $localisation->locality !=
-                $request->ville_product) {
-                $latitude = $request->lat;
-                $longitude = $request->long;
-                Localisation::where('id', $product->location_id)->update(['area_level_1' => $request->suburb_product,
-                    'country' => $request->countryId_product, 'postalCode' => $request->postalCode_product,
-                    'locality' => $request->ville_product, 'route' => $request->display_address_product,
-                    'longitude' => $longitude, 'latitude' => $latitude]);
-                $id_location = $product->location_id;
-            }
-        } else {
-            $state = State::where('id', $request->state_id_product)->first();
-            $id_location = $this->save_location($request->countryId_product, $state->content,
-                $request->suburb_product, $request->postalCode_product, $request->ville_product,
-                $request->display_address_product, $request->long, $request->lat);
-        }
-
         $titre_product = $request->title_product;
         if (isset($request->chk_parking)) {
             $avoir_parking = 1;
@@ -1353,10 +1334,8 @@ class ProductController extends Controller {
             'year_built' => $request->year_built, 'superficie_jardin' => $request->superficie_jardin,
             'garage_spaces' => $request->garage_spaces, 'carport_spaces' => $request->carport_spaces,
             'avoir_parking_voie_public' => $avoir_parking, 'avoir_piscine' => $avoir_piscine,
-            'location_id' => $id_location, 'commission_type' => $request->commision_product,
-            'commision' => $taux_commission, 'dt_db_travaux' => $request->dt_db_travaux,
-            'dt_prevu_livraison' => $request->dt_prevu_livraison, 'avoir_bonus' => $request->bonus_vente,
-            'amount_bonus' => $request->bonus_amount]);
+            'commission_type' => $request->commision_product, 'commision' => $taux_commission,
+            'avoir_bonus' => $request->bonus_vente, 'amount_bonus' => $request->bonus_amount]);
 
 
         if ($request->dropPhoto) {

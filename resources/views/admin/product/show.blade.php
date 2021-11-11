@@ -133,12 +133,14 @@
 							</div>
 							<div class="col-sm-8 text-sm-left">
 								<dd class="mb-1">
+								@if($product->solicitor_id != 0)
 									@php
 										$solicitor = App\Models\Solicitor::where('id',$product->solicitor_id)->get();
 									@endphp
-									{{count($solicitor) > 1 ? $solicitor[0]->cabinet_name : ''}}<br />
-									{{count($solicitor) > 1 ? $solicitor[0]->cabinet_email : ''}}<br />
-									{{count($solicitor) > 1 ? $solicitor[0]->cabinet_phone : ''}}
+									{{$solicitor? $solicitor[0]->cabinet_name : ''}}<br />
+									{{$solicitor? $solicitor[0]->cabinet_email : ''}}<br />
+									{{$solicitor? $solicitor[0]->cabinet_phone : ''}}
+								@endif
 								</dd>
 							</div>
 						</dl>
@@ -463,6 +465,7 @@
 					</div>
 				</div>
 				@endforeach
+				<div style="clear:both"></div>
 			</div>
 		</div>
 		@if($product->parent_id == 0)
@@ -488,9 +491,11 @@
 							<th>@lang('app.table.status')</th>
 							<th>@lang('app.seller')</th>
 							<th>@lang('app.table.author')</th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
+					@if($product_lies->count())
 					@foreach($product_lies as $key=>$product_lie)
 						<tr>
 							<td>{{$key + 1}}</td>
@@ -513,7 +518,7 @@
 									<img class="img-responsive" src="{{asset('images/product.png')}}" width="80">
 								@endif
 							</td>
-							<td><b>{{ $product_lie->title }}</b><br />{!! $product_lie->excerpt() !!}</td>
+							<td><b>{{ $product_lie->title }}</b></td>
 							<td>{{ $product_lie->currency }}&nbsp;{{ number_format($product_lie->min_price, 0, '.', ' ') }}</td>
 							<td>{{ $product_lie->currency }}&nbsp;{{ number_format($product_lie->max_price, 0, '.', ' ') }}</td>
 							<td>{{ $product_lie->created_at ? $product_lie->created_at->diffForHumans() : '' }}</td>
@@ -530,8 +535,14 @@
 								@endif
 							</td>
 							<td>{{ $product_lie->author->name }}</td>
+							<td>
+								@if($product_lie->status == 'waiting')
+									<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{$product_lie->id}}" class="btn btn-default btn-circle"><i class="fa fa-eye text-info"></i></a>
+								@endif
+							</td>
 						</tr>
 					@endforeach
+					@endif
 					</tbody>
 				</table>
 			</div>

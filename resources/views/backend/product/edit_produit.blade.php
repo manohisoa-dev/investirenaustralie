@@ -1384,7 +1384,7 @@
 															{{$solicitor->cabinet_name}}
 														</option>
 													@endforeach
-													<option value="new">Créer nouveau solicitor</option>
+													<option value="new">@lang('app.txt.new_solicitor')</option>
 												</select>
 											</div> 
 										</div>
@@ -1395,19 +1395,19 @@
 									<div class="row">						
 										<div class="col-lg-4">
 											<div class="form-group">
-												<label for="title">Nom du cabinet *</label>
+												<label for="title">@lang('app.txt.cabinet_name') *</label>
 												<input name="cabinet_name" id="cabinet_name" class="form-control" type="text" value="{{ old('cabinet_name')?old('cabinet_name'):'' }}">
 											</div>
 										</div>
 										<div class="col-lg-4">
 											<div class="form-group">
-												<label for="title">Email cabinet *</label>
+												<label for="title">@lang('app.txt.cabinet_email') *</label>
 												<input name="cabinet_email" id="cabinet_email" class="form-control" type="email" value="{{ old('cabinet_email')?old('cabinet_email'):'' }}">
 											</div>
 										</div>
 										<div class="col-lg-4">
 											<div class="form-group">
-												<label for="title">Tel *</label>
+												<label for="title">@lang('app.txt.cabinet_phone') *</label>
 												<input name="cabinet_phone" id="cabinet_phone" class="form-control" type="text" value="{{ old('cabinet_phone')?old('cabinet_phone'):'' }}">
 											</div>
 										</div>
@@ -1523,6 +1523,10 @@
 		var mandatActive = $('#mandat_recActive').val();
 		set_mandat_state(itemState,mandatActive);
 		set_type_programme($('#cat_programmme_id').val(),{{$product->type_id}});
+		
+		/*$('#product_type_id').on('change', function() {
+			
+		});*/
 		
 		$('#bonus_vente').on('change', function() {
 			var type_bonus = this.value;

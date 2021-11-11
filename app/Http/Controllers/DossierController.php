@@ -15,6 +15,7 @@ use App\Models\Country;
 use App\Models\Order;
 use App\Models\Invoice;
 use App\Models\Reglage;
+use App\Models\Parameter;
 use App\Notifications\AfaMandateSearchMessage;
 use App\Notifications\AfaMandateSearchFinalisedMessage;
 use App\Notifications\MemberMandateSearchFinalisedMessage;
@@ -128,6 +129,7 @@ class DossierController extends Controller
         $downloadMrLink= url('/pdf/form6/form6_').strtolower($user->afa->location->area_level_1).'.pdf';
         $template = MailsTemplate::where('id', 28)->get();
         $lang = $user->language;
+        App::setLocale($lang);
         $body = 'template_' . $lang;
         $sujet_tpl = 'sujet_'.$lang;
         $downloadLink= setLinkDynamic($downloadMrLink,strtoupper(trans('app.txt.mandate_to_search_for_propreties')));
@@ -773,6 +775,12 @@ class DossierController extends Controller
                 '{lotid}' => $lotId,
                 '{lotlevel}' => $lotLevel,
                 '{price}' => $finalSalesPrice,
+                '{checkbox1}' => '',
+                '{checkbox2}' => '',
+                '{checkbox3}' => '',
+                '{checkbox4}' => '',
+                '{checkbox5}' => '',
+                '{checkbox6}' => '',
                 '{confirmLink}' => $confirmLink,
             );
             $sujet = $template[0]->$sujet_tpl;
@@ -1394,16 +1402,6 @@ class DossierController extends Controller
         return response()->json(['msg'=>trans('app.txt.payment_successfully_completed')]);
     }
 
-
-
-    
-
-
-
-
-
-
-
     // update dossier transaction
     public function updateIsCompleteDt(Request $request){
         $isComplete = $request->is_complete;
@@ -1487,6 +1485,24 @@ class DossierController extends Controller
 
         // Save Research Mandate
         return MandatRecherche::create(['file_name'=>$pdfName,'path'=>$path,'product_id'=>$prod_id,'from_id'=>1,'to_id'=>$user->id,'afa_id'=>$user->afa->id]);
+    }
+
+    // Cron
+    public function checkDossierTrans15Days(){
+        $dtNow = Carbon::now();
+        $dossTrans = DossierTransaction::getDossierTransactionWaiting();
+        $nbDay = Parameter::where('name','nb_day_end_dossier_transaction')->first()->value;
+
+        foreach ($dossTrans as $key => $value) {
+            $diffDays = $dtNow->diffInDays($value->created_at);
+
+            if($diffDays>=$nbDay){
+               DossierTransaction::whereId($value->id)->update(['status'=>17]);
+            }    
+            
+        }
+
+        return '';
     }
 
 }
