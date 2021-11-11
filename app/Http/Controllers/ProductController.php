@@ -818,7 +818,7 @@ class ProductController extends Controller {
                 '{Nom du Vendeur}' => $current->name,
                 '{Nom Programme}' => $product->title,
                 '{Ville}' => $localisation->locality,
-                '{Etat}' => $state->content);
+                '{Etat}' => $state ? $state->content : '');
             $contenu = strtr($message[0]->message_fr, $vars);
 
             $item = new Message();
@@ -963,10 +963,11 @@ class ProductController extends Controller {
             'products_images.image_id', '=', 'images.id')->select('*',
             'products_images.id as prdImageId')->get();
         $solicitor = Solicitor::where('vendeur_id', Auth::id())->get();
-        
+
         return view('backend.product.edit_produit', ['product' => $product,
             'localisation' => $localisation, 'eoidossier' => $eoiDossier, 'dossier' => $fonDossier,
-            'liadossier' => $liaDossier, 'photos' => $photo,'solicitors'=>$solicitor, 'title' => __('afa.programme.title')]);
+            'liadossier' => $liaDossier, 'photos' => $photo, 'solicitors' => $solicitor,
+            'title' => __('afa.programme.title')]);
     }
 
     public function updateProgramme(Request $request) {
@@ -976,11 +977,10 @@ class ProductController extends Controller {
         if ($request->location_Id != 0) {
             $longitude = $request->long;
             $latitude = $request->lat;
-            Localisation::where('id', $request->location_Id)->update(['area_level_1' => $request->suburb,
-                'country' => $request->countryId, 'area_level_1' => $request->state_id,
-                'area_level_2' => $request->suburb, 'postalCode' => $request->postalCode,
-                'locality' => $request->ville, 'route' => $request->display_address, 'longitude' =>
-                $longitude, 'latitude' => $latitude]);
+            Localisation::where('id', $request->location_Id)->update(['country' => $request->countryId,
+                'area_level_1' => $request->state_id, 'area_level_2' => $request->suburb,
+                'postalCode' => $request->postalCode, 'locality' => $request->ville, 'route' =>
+                $request->display_address, 'longitude' => $longitude, 'latitude' => $latitude]);
             $id_location = $product->location_id;
         } else {
             $id_location = $this->save_location($request->countryId, $request->state_id, $request->suburb,
@@ -1038,22 +1038,20 @@ class ProductController extends Controller {
     }
 
     public function updateProduit(Request $request) {
+
         $product = Product::find($request->id);
-        if ($product->location_id != 0) {
-            $localisation = Localisation::find($product->location_id);
-            if ($localisation->route != $request->display_address || $localisation->locality !=
-                $request->ville_product) {
-                Localisation::where('id', $product->location_id)->update(['area_level_1' => $request->suburb_product,
-                    'country' => $request->countryId_product, 'postalCode' => $request->postalCode_product,
-                    'locality' => $request->ville_product, 'route' => $request->display_address,
-                    'longitude' => $request->long, 'latitude' => $request->lat]);
-                $id_location = $product->location_id;
-            } else {
-                $id_location = $product->location_id;
-            }
+        $state = State::where('content', $request->state_id)->first();
+
+        if ($request->location_Id != 0) {
+            $longitude = $request->long;
+            $latitude = $request->lat;
+            Localisation::where('id', $request->location_Id)->update(['country' => $request->countryId_product,
+                'area_level_1' => $request->state_id, 'area_level_2' => $request->suburb_product,
+                'postalCode' => $request->postalCode_product, 'locality' => $request->ville_product,
+                'route' => $request->display_address, 'longitude' => $longitude, 'latitude' => $latitude]);
+            $id_location = $product->location_id;
         } else {
-            $state = State::where('id', $request->state_id)->first();
-            $id_location = $this->save_location($request->countryId_product, $state->content,
+            $id_location = $this->save_location($request->countryId_product, $request->state_id,
                 $request->suburb_product, $request->postalCode_product, $request->ville_product,
                 $request->display_address, $request->long, $request->lat);
         }
@@ -1064,24 +1062,38 @@ class ProductController extends Controller {
             $taux_commision = $request->rate_commission_product;
         }
 
+        //test si nouveau solicitor ou pas
+        if ($request->solicitor_id == 'new') {
+            // save Solicitor info
+            if ($request->cabinet_name && $request->cabinet_email && $request->cabinet_phone) {
+                $solicitor = new Solicitor();
+                $solicitor->cabinet_name = $request->cabinet_name;
+                $solicitor->cabinet_email = $request->cabinet_email;
+                $solicitor->cabinet_phone = $request->cabinet_phone;
+                $solicitor->vendeur_id = Auth::user()->id;
+                $solicitor->save();
+                $id_solicitor = $solicitor->id;
+            }
+        } else {
+            $id_solicitor = $request->solicitor_id;
+        }
+
         $slug = $slugOriginal = generateSlug($request->title);
         $product->slug = $slug;
         $product->title = $request->title;
-        if ($request->file('image')) {
-            $file = $request->file('image');
-            $image = Image::storeAndSave($file, 'product');
-            $product->image_id = $image->id;
-        }
         $product->content = $request->desc_product;
+        $product->commencement_dt = $request->commencement_dt;
+        $product->estimated_delvivery_dt = $request->estimated_delvivery_dt;
         $product->type_id = $request->type_id;
         $product->display_address = $request->display_address;
         $product->postalCode = $request->postalCode_product;
-        $product->state_id = $request->state_id;
+        $product->state_id = $state->id;
 
         $product->commission_type = $request->commision_product;
         $product->commision = $taux_commision;
         $product->avoir_bonus = $request->bonus_vente;
         $product->amount_bonus = $request->bonus_amount;
+        $product->solicitor_id = $id_solicitor;
 
         if ($product->category_id == 1) {
             $product->bedrooms = $request->bedrooms;
@@ -1127,19 +1139,8 @@ class ProductController extends Controller {
             $product->avoir_parking_voie_public = $request->type_cutomer_parking;
             $product->nb_parking_spots = $request->nombre_cutomer_parking;
         }
-
-
         $product->save();
 
-        // update solicitor info
-        if (isset($request->solicitor_id) && $request->solicitor_id != 0) {
-            $solicitor = Solicitor::find($request->solicitor_id);
-
-            $solicitor->cabinet_name = $request->cabinet_name;
-            $solicitor->cabinet_email = $request->cabinet_email;
-            $solicitor->cabinet_phone = $request->cabinet_phone;
-            $solicitor->save();
-        }
         return redirect()->route('mes-produits')->with('success',
             "Produit a été créer avec succès");
     }
@@ -1539,10 +1540,10 @@ class ProductController extends Controller {
                         $request->total_area, $request->carport_spaces, $request->garage_spaces, $request->bathrooms,
                         $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
                         0, $request->price, $request->price_max_prd, 'AUD', $request->status, $request->product_type_id,
-                        $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
-                        $id_programme, $id_location, 0, $avoir_parking, 0, $request->commision_product,
+                        $request->cat_programmme_id, $request->postalCode_product, $state ? $state->id :
+                        0, $id_programme, $id_location, 0, $avoir_parking, 0, $request->commision_product,
                         $taux_commision_prd, '', '', $request->bonus_vente, $request->bonus_amount, '',
-                        0, 0, 0,$id_afa_p, $id_solicitor, $seller_id);
+                        0, 0, 0, $id_afa_p, $id_solicitor, $seller_id);
                 } else {
                     //enregistrement produit autonome de Résidance new
 
@@ -1560,11 +1561,11 @@ class ProductController extends Controller {
                         $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
                         $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
                         $request->simple_price, 0, 0, 'AUD', $request->status, $request->product_type_id,
-                        $request->cat_programmme_id, $request->postalCode_product, $request->state_id_product,
-                        -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine, $request->commision_product,
-                        $taux_commision_prd, $request->commencement_dt, $request->estimated_delvivery_dt,
+                        $request->cat_programmme_id, $request->postalCode_product, $state ? $state->id :
+                        0, -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine,
+                        $request->commision_product, $taux_commision_prd, $request->commencement_dt, $request->estimated_delvivery_dt,
                         $request->bonus_vente, $request->bonus_amount, '', 0, 0, 0, $request->programme_firb_pre_approved_program,
-                        $id_afa_p,$id_solicitor, $seller_id);
+                        $id_afa_p, $id_solicitor, $seller_id);
 
                     //save fond dossier programme
                     if ($request->p_fondDossier) {
@@ -1608,11 +1609,11 @@ class ProductController extends Controller {
                     $request->exterior_area, $request->total_area, $request->carport_spaces, $request->garage_spaces,
                     $request->bathrooms, $request->bedrooms, $request->ensuite, 0, 1, date('Y'), $request->display_address_product,
                     $request->simple_price, 0, 0, 'AUD', $request->status, $request->product_type_id,
-                    $request->cat_programmme_id, $request->postalCode_product, $state->id, -1, $id_location,
-                    $request->superficie_jardin, $avoir_parking, $avoir_piscine, $request->commision_product,
-                    $taux_commision_prd, $request->commencement_dt, $request->estimated_delvivery_dt,
+                    $request->cat_programmme_id, $request->postalCode_product, $state ? $state->id :
+                    0, -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine,
+                    $request->commision_product, $taux_commision_prd, $request->commencement_dt, $request->estimated_delvivery_dt,
                     $request->bonus_vente, $request->bonus_amount, '', 0, 0, 0, $request->programme_firb_pre_approved_program,
-                    $id_afa_p,$id_solicitor, $seller_id);
+                    $id_afa_p, $id_solicitor, $seller_id);
 
                 //save fond dossier programme
                 if ($request->p_fondDossier) {
@@ -1656,10 +1657,11 @@ class ProductController extends Controller {
                 $request->file('image'), $request->desc_product, 1, $request->surface_foncier, $request->unite_surface,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, date('Y'), $request->display_address_product, $request->simple_price,
                 0, 0, 'AUD', $request->status, $request->product_type_id, $request->cat_programmme_id,
-                $request->postalCode_product, $state->id, -1, $id_location, $request->superficie_jardin,
-                0, 0, $request->commision_product, $taux_commision_prd, '', '', $request->bonus_vente,
-                $request->bonus_amount, '', 0, 0, 0, $request->programme_firb_pre_approved_program,$id_afa_p,
-                $id_solicitor, $seller_id);
+                $request->postalCode_product, $state ? $state->id : 0, -1, $id_location, $request->superficie_jardin,
+                0, 0, $request->commision_product, $taux_commision_prd, $request->commencement_dt,
+                $request->estimated_delvivery_dt, $request->bonus_vente, $request->bonus_amount,
+                '', 0, 0, 0, $request->programme_firb_pre_approved_program, $id_afa_p, $id_solicitor,
+                $seller_id);
 
             //save fond dossier programme
             if ($request->p_fondDossier) {
@@ -1705,7 +1707,7 @@ class ProductController extends Controller {
                 $request->postalCode_product, $state->id, -1, $id_location, $request->superficie_jardin,
                 0, 0, $request->commision_product, $taux_commision_prd, '', '', $request->bonus_vente,
                 $request->bonus_amount, $request->property_detail, 0, 0, 0, $request->programme_firb_pre_approved_program,
-                $id_afa_p,$id_solicitor, $seller_id);
+                $id_afa_p, $id_solicitor, $seller_id);
 
             //save fond dossier programme
             if ($request->p_fondDossier) {
@@ -1750,8 +1752,8 @@ class ProductController extends Controller {
                 $request->cat_programmme_id, $request->postalCode_product, $state->id, -1, $id_location,
                 $request->superficie_jardin, $request->type_cutomer_parking, 0, $request->commision_product,
                 $taux_commision_prd, '', '', $request->bonus_vente, $request->bonus_amount, $request->property_detail,
-                $request->nombre_cutomer_parking, 0, 0, $request->programme_firb_pre_approved_program,$id_afa_p,
-                $id_solicitor, $seller_id);
+                $request->nombre_cutomer_parking, 0, 0, $request->programme_firb_pre_approved_program,
+                $id_afa_p, $id_solicitor, $seller_id);
 
             //save fond dossier programme
             if ($request->p_fondDossier) {

@@ -845,7 +845,7 @@
 <script>
     function initMap(){
         var autocomplete = new google.maps.places.Autocomplete($("#route")[0], {});
-        autocomplete.setComponentRestrictions({'country': ['au']});
+        //autocomplete.setComponentRestrictions({'country': ['au']});
             
         google.maps.event.addListener(autocomplete, 'place_changed', function() {
             var place = autocomplete.getPlace();
@@ -899,8 +899,11 @@
 
                 $('#route').val(itemRoute);
                 $('#route_number').val(itemSnumber);
-                $('#locality').val(itemSuburb);
-                $('#administrative_area_level_2').val(itemCity);
+                //$('#locality').val(itemSuburb);
+				//$('#locality').val(itemSuburb);
+                //$('#administrative_area_level_2').val(itemCity);
+				$('#administrative_area_level_2').val(itemSuburb);
+				$('#area_level_1').val(itemState);
                 $('#postalCode').val(itemPc);
                 $('#long').val(long);
                 $('#lat').val(lat);

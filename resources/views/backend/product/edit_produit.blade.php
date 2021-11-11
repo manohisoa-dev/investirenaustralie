@@ -89,13 +89,13 @@
 									<div class="col-lg-6">
 										<div class="form-group">
 											<label for="title">@lang('app.form.programme_ville') *</label>
-											<input name="ville_product" id="ville_product" class="form-control" type="text" value="{{$localisation ? $localisation->locality:''}}">
+											<input name="ville_product" id="ville_product" class="form-control" type="text" value="{{$localisation ? $localisation->locality:''}}" readonly="">
 										</div>  
 									</div>
 									<div class="col-lg-6">
 										<div class="form-group">
 											<label for="title">@lang('app.form.programme_cp') *</label>
-											<input name="postalCode_product" id="postalCode_product" class="form-control" type="text" value="{{$product->postalCode}}">
+											<input name="postalCode_product" id="postalCode_product" class="form-control" type="text" value="{{$product->postalCode}}" readonly="">
 										</div>
 									</div>
 								</div>
@@ -103,18 +103,13 @@
 									<div class="col-lg-4">
 										<div class="form-group">
 											<label for="title">@lang('app.form.programme_suburb') *</label>
-											<input name="suburb_product" id="suburb_product" class="form-control" type="text" value="{{$localisation ? $localisation->area_level_1:''}}">
+											<input name="suburb_product" id="suburb_product" class="form-control" type="text" value="{{$localisation ? $localisation->area_level_2:''}}" readonly="">
 										</div>
 									</div>
 									<div class="col-lg-4">
 										<div class="form-group">
 											<label for="title">@lang('app.form.programme_etat') *</label>
-											<select class="form-control" name="state_id" id="state_id" style="width:100%">
-												<option value="">Sélectionner état...</option>
-												@foreach(\App\Models\State::all() as $state)
-													<option value="{{$state->id}}" {{$state->id == $product->state_id ? 'selected' : ''}}>{{$state->content}}</option>
-												@endforeach
-											</select>
+											<input type="text" name="state_id" id="state_id" class="form-control" value="{{$localisation?$localisation->area_level_1:''}}" readonly="" />
 										</div>
 									</div>
 									<div class="col-lg-4">
@@ -464,69 +459,12 @@
 									<div class="row">
 										 <div class="col-lg-12">
 											 <h5 style="font-weight:normal; font-size:17px; color:#718096">@lang('app.table.lia_dossier')</h5>
-											 @foreach ( $liadossier as $dos )
-											 <div class="file-box">
-												<div class="file">
-													@if(setIconFile($dos->filepath) == 'images')
-														<a href="{{asset($dos->filepath)}}" class="fancyboxLink">
-													@elseif(setIconFile($dos->filepath) == 'pdf')
-														<a class="fancybox-pdf" target="_blank" data-fancybox-type="iframe" href="http://docs.google.com/viewer?embedded=true&url={{asset(urlencode($dos->filepath))}}">
-													@else
-														<a href="https://docs.google.com/viewer?url={{asset(urlencode($dos->filepath))}}&embedded=true" class="fancyboxLinkDoc" data-fancybox-type="iframe">
-													@endif								
-														<span class="corner"></span>						
-														@if(setIconFile($dos->filepath) == 'images')
-															<div class="image">
-																<img alt="image" class="img-fluid" src="{{asset($dos->filepath)}}">
-															</div>
-														@endif	
-														@if(setIconFile($dos->filepath) == 'pdf')
-															<div class="icon">
-																<i class="fa fa-file-pdf"></i>
-															</div>
-														@endif	
-														@if(setIconFile($dos->filepath) == 'doc')
-															<div class="icon">
-																<i class="fa fa-file-word-o"></i>
-															</div>
-														@endif
-														@if(setIconFile($dos->filepath) == 'excel')
-															<div class="icon">
-																<i class="fa fa-file-excel-o"></i>
-															</div>
-														@endif	
-														@if(setIconFile($dos->filepath) == 'file')
-															<div class="icon">
-																<i class="fa fa-file"></i>
-															</div>
-														@endif		
-														<div class="file-name">
-															@php
-																$filename_eoi = $dos->filename;
-																$filename_eoi = preg_replace('/^(.*)\-\d{8,}\.(gif|jpg|png|pdf)$/', '$1.$2', $filename_eoi);
-															@endphp
-															<label style="text-transform:lowercase">{{str_limit($filename_eoi, 15)}}</label>
-															<a class="pull-right" href="javascript:void(0)" onclick="delete_lia_dossier({{$dos->prdLiaId}})">
-																<i class="fa fa-trash"></i>
-															</a>
-															<br>
-															<small>{{$dos->created_at ? $dos->created_at->diffForHumans() : ""}}</small>
-														</div>
-													</a>
-												</div>
-											 </div>
-											 @endforeach		
+											 <input type="hidden" name="mandat_recActive" id="mandat_recActive" value="{{$liadossier?$liadossier[0]->image_id:''}}" />
+											 <input type="hidden" name="id_mandatActive" id="id_mandatActive" value="{{$liadossier?$liadossier[0]->prdLiaId:''}}" />
+											 <div id="salesMandates"></div>
 										 </div>
-									</div>  
+									</div>   
 									@endif 
-									<div class="row" style="margin-bottom:15px">
-										<div class="col-lg-12">
-											<label for="title">@lang('app.table.lia_dossier')</label>
-											<div class="dropzone" id="lia_dossier" multiple style="margin-bottom:25px">
-												<div id="template" class="file-row"></div>
-											</div>
-										</div>
-									</div>
 									<!-- fin lia dossier -->
 									<!-- photo produit -->
 									@if (count($photos) > 0)
@@ -848,9 +786,9 @@
 																$filename_eoi = preg_replace('/^(.*)\-\d{8,}\.(gif|jpg|png|pdf)$/', '$1.$2', $filename_eoi);
 															@endphp
 															<label style="text-transform:lowercase">{{str_limit($filename_eoi, 15)}}</label>
-															<a class="pull-right" href="javascript:void(0)" onclick="delete_lia_dossier({{$dos->prdLiaId}})">
+															{{--<a class="pull-right" href="javascript:void(0)" onclick="delete_lia_dossier({{$dos->prdLiaId}})">
 																<i class="fa fa-trash"></i>
-															</a>
+															</a>--}}
 															<br>
 															<small>{{$dos->created_at ? $dos->created_at->diffForHumans() : ""}}</small>
 														</div>
@@ -861,14 +799,14 @@
 										 </div>
 									</div>  
 									@endif 
-									<div class="row" style="margin-bottom:15px">
+									{{--<div class="row" style="margin-bottom:15px">
 										<div class="col-lg-12">
 											<label for="title">@lang('app.table.lia_dossier')</label>
 											<div class="dropzone" id="lia_dossier" multiple style="margin-bottom:25px">
 												<div id="template" class="file-row"></div>
 											</div>
 										</div>
-									</div>
+									</div>--}}
 									<!-- fin lia dossier -->
 									
 									<!-- photo produit -->
@@ -1655,7 +1593,6 @@
 	function initMap(){
 		var autocomplete = new google.maps.places.Autocomplete($("#display_address")[0], {});
 		autocomplete.setComponentRestrictions({'country': ['au']});
-	
 		google.maps.event.addListener(autocomplete, 'place_changed', function() {
 			var place = autocomplete.getPlace();
 			//console.log(place.address_components);
@@ -1713,7 +1650,8 @@
 				$('#postalCode_product').val(itemPc);
 				$('#long').val(long);
 				$('#lat').val(lat);
-				$('#state_id_product option[dataname="'+itemState+'"]').prop('selected', true);
+				$('#state_id').val(itemState);
+				set_mandat_state(itemState,0);
 			});
 		});
 	}
@@ -1725,6 +1663,12 @@
 		CKEDITOR.replace( 'desc_product' );
 		set_type_programme($('#cat_programmme_id').val(),{{$product->type_id}});		
 		$(".fancyboxLink").fancybox();
+		
+		var itemState = $('#state_id').val();
+		var mandatActive = $('#mandat_recActive').val();
+		set_mandat_state(itemState,mandatActive);
+		set_type_programme($('#cat_programmme_id').val(),{{$product->type_id}});
+		
 		$('#bonus_vente').on('change', function() {
 			var type_bonus = this.value;
 			if(type_bonus == 'YES'){
@@ -2057,6 +2001,9 @@
 				},
 				type_cutomer_parking:{
 					required: true
+				},
+				sales_mandate:{
+					required: true
 				}
 			},
 			messages: {
@@ -2122,9 +2069,10 @@
 		$.ajax({
 		   type:'POST',
 		   url:"{{ route('ajaxGetTypeProduitCategorie') }}",
-		   data: {"_token": "{{ csrf_token() }}","categoryId": categorie_id, "type_id_active": type_id_active},
+		   data: {"_token": "{{ csrf_token() }}","categoryId": categorie_id, "type_id_active": type_id_active,"cat":1},
 		   success:function(data) {
-			  $('#type_id').html(data);
+		   	  console.log(data);
+			  //$('#type_id').html(data);
 			  $('#product_type_id').html(data);
 		   }
 		});
@@ -2276,6 +2224,20 @@
 				swal("@lang('app.table.produit_image')", "@lang('app.jquery.delete_cancel')", "error");
 			}
 		 });
+	}
+	
+	function set_mandat_state(state,active)
+	{
+		loadingPage();
+		$.ajax({
+			type:'POST',
+			url:"{{ route('ajaxSetMandatState') }}",
+			data: {"_token": "{{ csrf_token() }}","state": state,"Mactive":active},
+			success:function(data) {
+				$('#salesMandates').html(data);
+				stopLoadingPage();
+			}
+		});
 	}
 	</script>
 @endpush

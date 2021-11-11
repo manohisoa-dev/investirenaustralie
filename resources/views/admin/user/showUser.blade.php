@@ -122,7 +122,7 @@
 							$user_info = \App\Models\Userinfo::where('user_id',$record->uid)->first();
 							if(!empty($user_info)){
 								if($record->hasRole(5)&&$record->isPerson()){
-									$user_name = $user_info->first_name;
+									$user_name = $user_info->last_name;
 								}else{
 									if($user_info->orga_name){
 										$user_name = $user_info->orga_name;

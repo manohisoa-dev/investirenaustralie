@@ -880,7 +880,7 @@
 				var lat = place.geometry.location.lat();
 				var long = place.geometry.location.lng();
 				
-				console.log(arrAddress);
+				//console.log(arrAddress);
 	
 				$.each(arrAddress, function (i, address_components) {
 					if (address_components.types[0] == "street_number") {

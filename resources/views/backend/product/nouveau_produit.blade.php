@@ -822,7 +822,6 @@
 function initMap(){
 	var autocomplete = new google.maps.places.Autocomplete($("#display_address_product")[0], {});
 	autocomplete.setComponentRestrictions({'country': ['au']});
-
 	google.maps.event.addListener(autocomplete, 'place_changed', function() {
 		var place = autocomplete.getPlace();
 		//console.log(place.address_components);

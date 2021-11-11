@@ -1483,7 +1483,6 @@
 <script>
     function initMap(){
         var autocomplete = new google.maps.places.Autocomplete($("#route")[0], {});
-        autocomplete.setComponentRestrictions({'country': ['au']});
         var autocomplete1 = new google.maps.places.Autocomplete($("#street_adr")[0], {});
         var autocomplete2 = new google.maps.places.Autocomplete($("#street_adr_2")[0], {});
 
