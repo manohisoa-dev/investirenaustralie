@@ -56,8 +56,13 @@ class MessageController extends Controller
 
         $data = [];
         foreach($messages as $message){
-            $filter = new BadWordFilter($filterOptions);
-            $cleanString = $filter->clean($message->body, "#!%^");
+            if($message->from_id != 1){
+                $filter = new BadWordFilter($filterOptions);
+                $cleanString = $filter->clean($message->body, "#!%^");
+            }else{
+                $cleanString = $message->body ;
+            }
+
 
             $data[] = [
                 'id' => $message->id,
@@ -146,8 +151,12 @@ class MessageController extends Controller
 
         $data = [];
         foreach($messages as $message){
-            $filter = new BadWordFilter($filterOptions);
-            $cleanString = $filter->clean($message->body, "#!%^");
+            if($message->from_id != 1){
+                $filter = new BadWordFilter($filterOptions);
+                $cleanString = $filter->clean($message->body, "#!%^");
+            }else{
+                $cleanString = $message->body ;
+            }
 
             $data[] = [
                 'id' => $message->id,

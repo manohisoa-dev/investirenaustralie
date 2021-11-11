@@ -416,10 +416,10 @@
                             @endforeach
                         </div>
 						<div style="margin-top:10px">
-							<p style="color:#fff !important">S'inscrire à notre newsletters</p>
+							<p style="color:#fff !important">{{trans('app.txt.inscrirenews')}}</p>
 							<form class="d-flex flex-row m-5px-b p-1 white-bg input-group" id="form_newsletter" method="post">
 								{{ csrf_field() }}
-								<input type="email" name="email_adresse" id="email_adresse" class="form-control border-radius-0 border-0" placeholder="votre adresse email" required>
+								<input type="email" name="email_adresse" id="email_adresse" class="form-control border-radius-0 border-0" placeholder="{{trans('app.txt.your.email')}}" required>
 								<input type="hidden" name="statuts" id="statuts" value="Actif">
 								<button class="m-btn m-btn-theme2nd flex-shrink-0" type="submit">OK</button>
 							</form>
