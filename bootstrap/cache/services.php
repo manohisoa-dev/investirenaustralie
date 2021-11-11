@@ -40,6 +40,7 @@
     36 => 'Dedicated\\GoogleTranslate\\GoogleTranslateProvider',
     37 => 'Barryvdh\\DomPDF\\ServiceProvider',
     38 => 'Anhskohbo\\NoCaptcha\\NoCaptchaServiceProvider',
+    39 => 'JCrowe\\BadWordFilter\\Providers\\BadWordFilterServiceProvider',
   ),
   'eager' => 
   array (
@@ -165,6 +166,7 @@
     'form' => 'Collective\\Html\\HtmlServiceProvider',
     'Collective\\Html\\HtmlBuilder' => 'Collective\\Html\\HtmlServiceProvider',
     'Collective\\Html\\FormBuilder' => 'Collective\\Html\\HtmlServiceProvider',
+    'bad-word-filter' => 'JCrowe\\BadWordFilter\\Providers\\BadWordFilterServiceProvider',
   ),
   'when' => 
   array (
@@ -208,6 +210,9 @@
     array (
     ),
     'Collective\\Html\\HtmlServiceProvider' => 
+    array (
+    ),
+    'JCrowe\\BadWordFilter\\Providers\\BadWordFilterServiceProvider' => 
     array (
     ),
   ),
