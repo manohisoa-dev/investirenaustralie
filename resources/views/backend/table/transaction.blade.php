@@ -75,7 +75,7 @@
                         @elseif ($trans->status == 13 )
                             <small class="text-info" style="margin-bottom:5px;padding:10px;">@lang('app.txt.awaiting_payment_of_the_first_cpc') </small>
                         @elseif ($trans->status == 14 )
-                            <small class="text-info" style="margin-bottom:5px;padding:10px;">@lang('app.txt.awaiting_payment_of_the_second_cpc') </small>
+                            <small class="text-info" style="margin-bottom:5px;padding:10px;">{{ $prod->haveBonus()?('app.txt.awaiting_payment_of_the_second_cpc'):('app.txt.awaiting_payment_of_the_last_cpc') }} </small>
                         @elseif ($trans->status == 15 )
                             <small class="text-info" style="margin-bottom:5px;padding:10px;">@lang('app.txt.awaiting_payment_of_the_bonus_cpc') </small>
                         @elseif ($trans->status == 16 )
@@ -97,17 +97,6 @@
                             <a href="{{route('member.continueTransactionSansDeplacement',$trans)}}" class="m-btn m-btn-theme2nd m-btn-sm">{{$btnText}}</a>
                         @elseif ($trans->status == 3 )
                             <a href="javascript:void(0)" onclick="submitFile()" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.btn.submit').' Mandate'}}</a>
-                        @elseif ($trans->status == 4 )
-                            <a href="javascript:void(0)" onclick="submitMove({{$trans->id}})" class="btn btn-success btn-sm" style="margin-bottom:5px;">{{trans('app.btn.i_move')}}</a>
-                            <a href="javascript:void(0)" onclick="submitNoMove({{$trans->id}})" class="btn btn-danger btn-sm">{{trans('app.btn.i_not_moving')}}</a>    
-                        @elseif ($trans->status == 5 )
-                            <small style="margin-bottom:5px;">Dossier de Transaction reste ouvert pendant 5 jours</small>
-                            <a href="javascript:void(0)" onclick="submitMove({{$trans->id}})" class="btn btn-success btn-sm">{{trans('app.btn.i_move')}}</a>
-                        @elseif ($trans->status == 6 )
-                            @php
-                                $prod=App\Models\Product::whereId($trans->product_id)->first();
-                            @endphp
-                            <a href="{{url('product').'/'.$prod->slug}}" class="btn btn-success btn-sm">{{trans('app.btn.add_to_cart')}}</a>
                         @elseif ($trans->status == 7 )
                             <small style="margin-bottom:5px;">En attente</small>
                         @elseif ($trans->status == 8 )
@@ -119,7 +108,7 @@
                         @elseif ($trans->status == 13 )
                             <small class="text-info" style="margin-bottom:5px;padding:10px;">@lang('app.txt.awaiting_payment_of_the_first_cpc') </small>
                         @elseif ($trans->status == 14 )
-                            <small class="text-info" style="margin-bottom:5px;padding:10px;">@lang('app.txt.awaiting_payment_of_the_second_cpc') </small>
+                            <small class="text-info" style="margin-bottom:5px;padding:10px;">{{$prod->haveBonus()?('app.txt.awaiting_payment_of_the_second_cpc'):('app.txt.awaiting_payment_of_the_last_cpc')}}</small>
                         @elseif ($trans->status == 15 )
                             <small class="text-info" style="margin-bottom:5px;padding:10px;">@lang('app.txt.awaiting_payment_of_the_bonus_cpc') </small>
                         @elseif ($trans->status == 16 )
@@ -158,7 +147,7 @@
                             <a href="javascript:void(0)" onclick="resendCourielInitialDepositConfirm({{$trans->id}})" class="m-btn m-btn-theme2nd m-btn-sm" style="margin-bottom:5px;">{{trans('app.txt.initial_deposit_confirmation')}}</a>
                             <a href="javascript:void(0)" onclick="setCpcOnCommissionFirstPayment({{$trans->id}})" class="m-btn m-btn-theme4rd m-btn-sm">{{trans('app.txt.cpc_on_commission_first_payement')}}</a>
                         @elseif ($trans->status == 14 )
-                            <a href="javascript:void(0)" onclick="setCpcOnCommissionSecondPayment({{$trans->id}})" class="m-btn m-btn-theme4rd m-btn-sm">{{trans('app.txt.cpc_on_commission_second_payement')}}</a>
+                            <a href="javascript:void(0)" onclick="setCpcOnCommissionSecondPayment({{$trans->id}})" class="m-btn m-btn-theme4rd m-btn-sm">{{$prod->haveBonus()?trans('app.txt.cpc_on_commission_second_payement'):trans('app.txt.cpc_on_commission_last_payement')}}</a>
                         @elseif ($trans->status == 15 )
                             <a href="javascript:void(0)" onclick="setCpcOnBonusPayment({{$trans->id}})" class="m-btn m-btn-theme4rd m-btn-sm">{{trans('app.txt.cpc_on_bonus_payment')}}</a>
                         @elseif ($trans->status == 16 )
@@ -195,7 +184,7 @@
                             <a href="javascript:void(0)" onclick="resendCourielInitialDepositConfirm({{$trans->id}})" class="m-btn m-btn-theme2nd m-btn-sm" style="margin-bottom:5px;">{{trans('app.txt.initial_deposit_confirmation')}}</a>
                             <a href="javascript:void(0)" onclick="setCpcOnCommissionFirstPayment({{$trans->id}})" class="m-btn m-btn-theme4rd m-btn-sm">{{trans('app.txt.cpc_on_commission_first_payement')}}</a>
                         @elseif ($trans->status == 14 )
-                            <a href="javascript:void(0)" onclick="setCpcOnCommissionSecondPayment({{$trans->id}})" class="m-btn m-btn-theme4rd m-btn-sm">{{trans('app.txt.cpc_on_commission_second_payement')}}</a>
+                            <a href="javascript:void(0)" onclick="setCpcOnCommissionSecondPayment({{$trans->id}})" class="m-btn m-btn-theme4rd m-btn-sm">{{$prod->haveBonus()?trans('app.txt.cpc_on_commission_second_payement'):trans('app.txt.cpc_on_commission_last_payement')}}</a>
                         @elseif ($trans->status == 15 )
                             <a href="javascript:void(0)" onclick="setCpcOnBonusPayment({{$trans->id}})" class="m-btn m-btn-theme4rd m-btn-sm">{{trans('app.txt.cpc_on_bonus_payment')}}</a>
                         @elseif ($trans->status == 16 )
@@ -227,15 +216,30 @@
                         <input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
                         <input type="hidden" name="id_doss_trans" id="id_doss_trans" value="{{$trans->id}}">
                         @php
-                            if($trans->status==9 || $trans->status==10){
-                                $filename='"'.strtolower(trans('app.txt.eoi')).'"';
-                            }
-                            elseif($trans->status==3){
-                                $filename='"'.strtolower(trans('app.txt.conjunction_agreement')).'"';
-                            }elseif($trans->status==4){
-                                $filename='"'.strtolower(trans('app.txt.research_mandate')).'"';
+                            // avec déplacement
+                            if(Auth::user()->isMove()){
+                                if($trans->status==9 || $trans->status==10){
+                                    $filename='"'.strtolower(trans('app.txt.eoi')).'"';
+                                }
+                                elseif($trans->status==3){
+                                    $filename='"'.strtolower(trans('app.txt.conjunction_agreement')).'"';
+                                }elseif($trans->status==4){
+                                    $filename='"'.strtolower(trans('app.txt.research_mandate')).'"';
+                                }else{
+                                    $filename=strtolower(trans('app.txt.contract'));
+                                }
                             }else{
-                                $filename=strtolower(trans('app.txt.contract'));
+                                // sans déplacement
+                                if($trans->status==9 || $trans->status==10){
+                                    $filename='"'.strtolower(trans('app.txt.eoi')).'"';
+                                }
+                                elseif($trans->status==3){
+                                    $filename='"'.strtolower(trans('app.txt.research_mandate')).'"';
+                                }elseif($trans->status==4){
+                                    $filename='"'.strtolower(trans('app.txt.conjunction_agreement')).'"';
+                                }else{
+                                    $filename=strtolower(trans('app.txt.contract'));
+                                }
                             }
                         @endphp
                         <label for="">@lang('app.txt.please_choose_your_signed_contract',['filename'=>$filename]) *</label>
@@ -647,7 +651,7 @@
                 confirmButtonColor: '#0075B7',
                 confirmButtonText: "@lang('app.yes')",
                 cancelButtonText: "@lang('app.no')",
-                closeOnConfirm: false,
+                closeOnConfirm: true,
                 closeOnCancel: false
             },
             function(isConfirm){	
@@ -1056,7 +1060,7 @@
                             var msg = data.msg;
 
                             swal("{{ trans('app.txt.initial_deposit_confirmation') }}", msg, "success");
-                            location.reload();	
+                            stopLoadingPage();
                         },
                         error: function (jqXHR, textStatus, errorThrown)
                         {

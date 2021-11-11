@@ -318,20 +318,24 @@ if (!function_exists('genMdpAleatoire')) {
 
 if (!function_exists('setIconFile')) {
     function setIconFile($filename) {
-        $mime = mime_content_type($filename);
-        if ($mime == 'image/gif' || $mime == 'image/jpeg' || $mime == 'image/png') {
-            $type = 'images';
-        } elseif ($mime == 'application/pdf') {
-            $type = 'pdf';
-        } elseif ($mime == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-            $type = 'doc';
-        } elseif ($mime == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
-            $type = 'excel';
-        } else {
-            $type = 'file';
-        }
+        if ($filename != '') {
+            $mime = mime_content_type($filename);
+            if ($mime == 'image/gif' || $mime == 'image/jpeg' || $mime == 'image/png') {
+                $type = 'images';
+            } elseif ($mime == 'application/pdf') {
+                $type = 'pdf';
+            } elseif ($mime == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                $type = 'doc';
+            } elseif ($mime == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+                $type = 'excel';
+            } else {
+                $type = 'file';
+            }
 
-        return $type;
+            return $type;
+        }else{
+            return '';   
+        }
     }
 }
 
@@ -423,8 +427,8 @@ if (!function_exists('setTranslate')) {
 
 if (!function_exists('updateTranslate')) {
     function updateTranslate($tabName, $tab, $content) {
-        $tabId = $tabName . '_id';        
-        $ucfirstTabname = Str::ucfirst($tabName);        
+        $tabId = $tabName . '_id';
+        $ucfirstTabname = Str::ucfirst($tabName);
         $tabNameModel = "App\Models\\" . $ucfirstTabname . "Translation";
         $detectLang = getGTranslateLangDetect(strip_tags($content));
 
@@ -595,8 +599,8 @@ if (!function_exists('geocodeAddress')) {
     }
 }
 
-if(!function_exists('storeFile')){
-    function storeFile($file,$path){
+if (!function_exists('storeFile')) {
+    function storeFile($file, $path) {
         // Get filename with the extension
         $filenameWithExt = $file->getClientOriginalName();
         //Get just filename
@@ -604,7 +608,7 @@ if(!function_exists('storeFile')){
         // Get just ext
         $extension = $file->getClientOriginalExtension();
         // Filename to store
-        $fileNameToStore = $filename.'.'.$extension;
+        $fileNameToStore = $filename . '.' . $extension;
         // Upload Image
         $path = $file->move($path, $fileNameToStore);
 
@@ -614,33 +618,27 @@ if(!function_exists('storeFile')){
 
 
 if (!function_exists('imageResizeUrl')) {
-    function imageResizeUrl($path, $width = NULL, $height = NULL,$quality=NULL,$crop=NULL) {
-        if(!$width && !$height) {
+    function imageResizeUrl($path, $width = null, $height = null, $quality = null, $crop = null) {
+        if (!$width && !$height) {
             $url = env('IMAGE_URL') . $path;
         } else {
             $url = url('/') . '/timthumb.php?src=' . env('IMAGE_URL') . $path;
-            if(isset($width)) {
+            if (isset($width)) {
                 $url .= '&w=' . $width;
             }
-            if(isset($height) && $height>0) {
-                $url .= '&h=' .$height;
+            if (isset($height) && $height > 0) {
+                $url .= '&h=' . $height;
             }
-            if(isset($crop))
-            {
-                $url .= "&zc=".$crop;
-            }
-            else
-            {
+            if (isset($crop)) {
+                $url .= "&zc=" . $crop;
+            } else {
                 $url .= "&zc=1";
-        }
-            if(isset($quality))
-            {
-                $url .='&q='.$quality.'&s=1';
-       }
-       else
-       {
-       $url .='&q=95&s=1';
-       }
+            }
+            if (isset($quality)) {
+                $url .= '&q=' . $quality . '&s=1';
+            } else {
+                $url .= '&q=95&s=1';
+            }
         }
 
         return $url;
@@ -648,17 +646,21 @@ if (!function_exists('imageResizeUrl')) {
 }
 
 if (!function_exists('setLinkDynamic')) {
-    function setLinkDynamic($path_file,$label_link)
-    {
-        return link_to_asset($path_file,$label_link);
+    function setLinkDynamic($path_file, $label_link) {
+        return link_to_asset($path_file, $label_link);
     }
 }
 
 if (!function_exists('countryLongName')) {
-    function countryLongName($code)
-    {
-        $ct = App\Models\Country::select('content')->where('code',$code)->first();
-        $content = $ct->content;
+    function countryLongName($code) {
+        $ct = App\Models\Country::select('content')->where('code', $code)->first();
+
+        if ($ct != "") {
+            $content = $ct->content;
+        } else {
+            $content = "";
+        }
+
         return $content;
     }
 }

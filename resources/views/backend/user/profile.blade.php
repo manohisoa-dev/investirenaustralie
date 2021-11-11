@@ -3901,7 +3901,6 @@
 			<!-- fin autocomplete SELLER BY AFA -->	
 			<!-- seller non professionnel individuel -->
 			var snp_autocomplete = new google.maps.places.Autocomplete($("#snp_personne_street")[0]);
-			snp_autocomplete.setComponentRestrictions({'country': ['au']});	
 			google.maps.event.addListener(snp_autocomplete, 'place_changed', function() {
 				var place2 = snp_autocomplete.getPlace();
 				var snp_arrAddress = place2.address_components;
@@ -3965,7 +3964,6 @@
 			});
 			
 			var snp_autocomplete1 = new google.maps.places.Autocomplete($("#snp_personne_street_2")[0]);
-			snp_autocomplete1.setComponentRestrictions({'country': ['au']});	
 			google.maps.event.addListener(snp_autocomplete1, 'place_changed', function() {
 				var place3 = snp_autocomplete1.getPlace();
 				var snp_arrAddress1 = place3.address_components;
@@ -4027,7 +4025,6 @@
 			
 			<!-- seller non professionnel business -->
 			var bus_autocomplete = new google.maps.places.Autocomplete($("#snp_bus_street_adr")[0]);
-			bus_autocomplete.setComponentRestrictions({'country': ['au']});	
 			google.maps.event.addListener(bus_autocomplete, 'place_changed', function() {
 				var place4 = bus_autocomplete.getPlace();
 				var bus_arrAddress = place4.address_components;
@@ -4093,7 +4090,6 @@
 			
 			<!-- APL -->
 			var apl_autocomplete = new google.maps.places.Autocomplete($("#apl_route")[0]);
-			apl_autocomplete.setComponentRestrictions({'country': ['au']});	
 			google.maps.event.addListener(apl_autocomplete, 'place_changed', function() {
 				var place_apl = apl_autocomplete.getPlace();
 				var apl_arrAddress = place_apl.address_components;
