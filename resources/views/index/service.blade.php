@@ -112,7 +112,7 @@
     <!-- End Section -->
 
     <!-- Section produit-->
-    <section class="section white-bg overflow-hidden">
+    <section class="section white-bg overflow-hidden bloc-last-product">
         <div class="container">
             <div class="row md-m-25px-b m-45px-b justify-content-center text-center">
                 <div class="col-lg-8">
