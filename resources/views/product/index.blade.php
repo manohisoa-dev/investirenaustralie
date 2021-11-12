@@ -244,7 +244,7 @@
                       @else
                           {{-- user non connécté Btn activé --}}
                           <div class="row m-15px-t">
-                            @if ($user->isMove())
+                            @if (Auth::user() && Auth::user()->isMove())
                               <div class="col-sm-6">
                                   <a href="{{route('member.buy.product', $item )}}" type="button" id="btn_buy" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12">
                                     <i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')
