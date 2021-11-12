@@ -260,18 +260,23 @@
                                     </a>
                                 </div>
                               @endif
+                              <div class="col-sm-6">
+                                <a href="{{route('member.go.there', $item )}}" id="btn_go_there" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme flex-shrink-0 col-md-12" title="@lang('app.txt.go_to_location')">
+                                  <i class="fa fa-map-marker"></i> @lang('app.btn.go_to_location')
+                                </a>
+                              </div>
                             @else
                               <div class="col-sm-6">
                                   <a href="{{route('member.buy.product.directly', $item )}}" type="button" id="btn_buy" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12">
                                     <i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')
                                   </a>
                               </div>
-                            @endif
-                            <div class="col-sm-6">
+                              <div class="col-sm-6">
                                 <a href="{{route('member.go.there', $item )}}" id="btn_go_there" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme flex-shrink-0 col-md-12" title="@lang('app.txt.go_to_location')">
                                   <i class="fa fa-map-marker"></i> @lang('app.btn.go_to_location')
                                 </a>
                               </div>
+                            @endif
                           </div>
                       @endif
                     @else
