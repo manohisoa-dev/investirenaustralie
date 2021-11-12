@@ -51,6 +51,9 @@ class ProductController extends Controller {
      */
     public function index(Request $request, $slug) {
         $products = Product::where('slug', '=', $slug)->get();
+
+        Product::regenerateAllAvatar() ;
+
         
         if (sizeof($products) != 0) {
             foreach ($products as $key => $product) {

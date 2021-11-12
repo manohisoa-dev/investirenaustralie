@@ -46,25 +46,25 @@
 				<div class="row">
                 	<div class="col-md-6">
 						@if (count($photos) > 0)
-						<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-							<div class="carousel-inner">
-								@for ($i = 0; $i < count($photos); $i++)
-								<div class="carousel-item {{$i == 0?'active':''}}">
-									<img class="d-block w-100" src="{{asset($photos[$i]->filepath)}}" alt="">
+							<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+								<div class="carousel-inner">
+									@for ($i = 0; $i < count($photos); $i++)
+										<div class="carousel-item {{$i == 0?'active':''}}">
+											<img class="d-block w-100" src="{{asset(getImageResizeUrl('product', $photos[$i]->filename, 'large'))}}" alt="">
+										</div>
+									@endfor
 								</div>
-								@endfor
+								<a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+									<span class="sr-only">Previous</span>
+								</a>
+								<a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+									<span class="carousel-control-next-icon" aria-hidden="true"></span>
+									<span class="sr-only">Next</span>
+								</a>
 							</div>
-							<a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-								<span class="sr-only">Previous</span>
-							</a>
-							<a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-								<span class="carousel-control-next-icon" aria-hidden="true"></span>
-								<span class="sr-only">Next</span>
-							</a>
-						</div>
 						@else
-						<img class="img-responsive" src="{{asset('images/product.png')}}" style="width:100%">
+							<img class="img-responsive" src="{{asset('images/product.png')}}" style="width:100%">
 						@endif
 					</div>
 					<div class="col-md-6">
@@ -506,15 +506,15 @@
 								@endphp
 								@if($first_photo)
 									@if($photo_principal)
-									<!-- Programme sans principal -->
-									<img src="{{asset($photo_principal->filepath)}}" class="img-responsive" style="height:80px" />
+										<!-- Programme sans principal -->
+										<img src="{{asset(getImageResizeUrl('product', $photo_principal->filename, 'thumb-mini'))}}" class="img-responsive" />
 									@else
-									<!-- Programme principal -->
-									<img src="{{asset($first_photo->filepath)}}" class="img-responsive" style="height:80px" />
+										<!-- Programme principal -->
+										<img src="{{asset(getImageResizeUrl('product', $first_photo->filename, 'thumb-mini'))}}" class="img-responsive" />
 									@endif
 								@else
 									<!-- Programme aucun photo -->
-									<img class="img-responsive" src="{{asset('images/product.png')}}" width="80">
+									<img class="img-responsive" src="{{asset('images/product.png')}}" width="50">
 								@endif
 							</td>
 							<td><b>{{ $product_lie->title }}</b></td>
