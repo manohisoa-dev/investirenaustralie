@@ -681,7 +681,7 @@ class MemberController extends Controller {
         $content = ['title' => '', 'body' => $contenu];
         
         // send chat message to afa from IEA (admin)
-        Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$afa_id,'body'=>$content]);
+        Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$afa_id,'body'=>$contenu]);
 
         // $email_to = 'dev4.easydata@gmail.com';
         // Mail::to($email_to)->send(new MailTemplate($content, $sujet));
@@ -866,40 +866,44 @@ class MemberController extends Controller {
             $this->creationDossierTransaction($product);
         }
 
-        if(!$user->isComplete()){
-            if(Auth::user()->isPerson()){
-                // Membre particulier
-                if($product){
-                    $prod_id = $product->id;
-                    $userAuth= Auth::user();
-                    $country = Country::where('code',$userAuth->location->country)->pluck('content')[0];
-                    $completeDossierInscriptionLink = setLinkDynamic(route('member.complete_registration',$product),strtoupper(trans('app.txt.complete_my_registration_form')));
-                    $privacyPolicyLink=setLinkDynamic(route('confidentialities'),trans('app.txt.privacy_policy'));
-                    // Get Model message
-                    $message = ModelMessage::where('id', 9)->get();
-                    if (count($message) > 0) {
-                        $vars = array(
-                            '{date}' => $dtDate,
-                            '{heure}' => $dtTime,
-                            '{nomMembre}' => $member_name,
-                            '{completeDossierInscriptionLink}' => $completeDossierInscriptionLink,
-                            '{Politique de Confidentialite Link}' => $privacyPolicyLink);
-                        $contenu = strtr($message[0]->message_fr, $vars);
+        if(!$user->isMove()){
+            if(!$user->isComplete()){
+                if(Auth::user()->isPerson()){
+                    // Membre particulier
+                    if($product){
+                        $prod_id = $product->id;
+                        $userAuth= Auth::user();
+                        $country = Country::where('code',$userAuth->location->country)->pluck('content')[0];
+                        $completeDossierInscriptionLink = setLinkDynamic(route('member.complete_registration',$product),strtoupper(trans('app.txt.complete_my_registration_form')));
+                        $privacyPolicyLink=setLinkDynamic(route('confidentialities'),trans('app.txt.privacy_policy'));
+                        // Get Model message
+                        $message = ModelMessage::where('id', 9)->get();
+                        if (count($message) > 0) {
+                            $vars = array(
+                                '{date}' => $dtDate,
+                                '{heure}' => $dtTime,
+                                '{nomMembre}' => $member_name,
+                                '{completeDossierInscriptionLink}' => $completeDossierInscriptionLink,
+                                '{Politique de Confidentialite Link}' => $privacyPolicyLink);
+                            $contenu = strtr($message[0]->message_fr, $vars);
+                        }
+                    
+                        Session()->put('complete_registration',true);
+                        return redirect($prodUrl)->with('complete_registration_directly_content', $contenu)->with('complete_registration_message',1);
+                    }else{
+                        abort(404);
                     }
-                
-                    Session()->put('complete_registration',true);
-                    return redirect($prodUrl)->with('complete_registration_directly_content', $contenu)->with('complete_registration_message',1);
-                }else{
-                    abort(404);
                 }
+            }else{
+                $dossTrans = $user->getCurrentDossierTransaction($prod_id);
+                
+                if($dossTrans->status == 1){
+                    return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa', ['date'=>$dtDate, 'hour'=>$dtTime, 'name'=>$member_name]))->with('hasAfa',0);
+                }
+    
+                return redirect()->route('member.transaction');
             }
         }else{
-            $dossTrans = $user->getCurrentDossierTransaction($prod_id);
-            
-            if($dossTrans->status == 1){
-                return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa', ['date'=>$dtDate, 'hour'=>$dtTime, 'name'=>$member_name]))->with('hasAfa',0);
-            }
-
             return redirect()->route('member.transaction');
         }
         

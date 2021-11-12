@@ -235,6 +235,7 @@ class Product extends Model {
     {
         $query = Product::query();
         $query->where('parent_id',0);
+        $query->where('status_res',0);
         $query->where('author_id',Auth::id());
         // search results based on user input
         \Request::input('id') and $query->where('id',\Request::input('id'));

@@ -17,7 +17,7 @@
         <div class="container">
             <div class="row screen-65 justify-content-center align-items-center p-100px-tb">
                 <div class="col-lg-10 text-center m-50px-t">
-                    <h1 class="display-4 white-color m-25px-b">{{$item->title}}</h1>
+                    <h1 class="display-4 white-color m-25px-b">{{getGTranslateAutoDetect( App::getLocale() ,$item->title)}}</h1>
                     <div class="d-flex align-items-center m-25px-t justify-content-center text-left">
                         <div class="p-15px-l">
                             <p class="white-color m-0px"><span class="white-color">{{ $item->location ? Illuminate\Support\Str::upper($item->location->locality.' '.$item->location->area_level_2.', '.$item->location->area_level_1.' '.$item->location->postalCode) : '' }}</span></p>
@@ -155,7 +155,20 @@
                             @endphp
                             {{-- user connecté dossier transaction existe --}}
                             @if ($user->isMove())
-                              @if ($statusDossTrans==6)
+                              @if ($statusDossTrans==0)
+                                <div class="row m-15px-t">
+                                  <div class="col-sm-6">
+                                      <a href="{{route('member.buy.product', $item )}}" disabled type="button" id="btn_buy" value="0" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12">
+                                        <i class="fa fa-shopping-cart"></i> @lang('app.btn.add_to_cart')
+                                      </a>
+                                  </div>
+                                  <div class="col-sm-6">
+                                      <a href="{{route('member.transaction')}}" id="btn_go_there" value="1" class="m-btn m-btn-theme flex-shrink-0 col-md-12" title="@lang('app.txt.go_to_location')">
+                                        <i class="fa fa-map-marker"></i> @lang('app.btn.go_to_location')
+                                      </a>
+                                    </div>
+                                </div>
+                              @elseif ($statusDossTrans==6)
                                 <div class="row m-15px-t">
                                   <div class="col-sm-6">
                                       <a href="{{route('member.buy.product', $item )}}" type="button" id="btn_buy" value="{{ Session::has('engagement')?1:0 }}" class="m-btn m-btn-theme4rd flex-shrink-0 col-md-12">
@@ -493,9 +506,9 @@
     </div>
   </div>
 </div>
-
+{{-- {{ dd(session()->has('engagement')) }} --}}
 <!-- Modal for member and afa engagement -->
-@if(Auth::check())
+@if(Auth::check() && session()->has('engagement'))
 <div id="engagementModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-lg">
       <div class="modal-content white-bg">
@@ -651,8 +664,6 @@
       // show engagement modal
       if(eng_go !== undefined || eng_buy !== undefined){
         if(eng_go !== '0' || eng_buy !== '0'){
-          console.log(eng_go);
-          console.log(eng_buy);
           $('#engagementModal').modal('show');
         }
       }

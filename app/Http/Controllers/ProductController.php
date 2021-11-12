@@ -377,7 +377,7 @@ class ProductController extends Controller {
         $out = '';
         if ($request->state) {
             $state = State::where('content', $request->state)->first();
-            if ($state->count()) {
+            if ($state != '') {
                 $mandates = Mandate::where('state_id', $state->id)->get();
                 if ($mandates->count()) {
                     foreach ($mandates as $mandat) {
@@ -1017,22 +1017,33 @@ class ProductController extends Controller {
         $product->min_price = $request->prix_min;
         $product->max_price = $request->prix_max;
         $product->display_address = $request->display_address;
-        $product->type_id = $request->type_id;
+        if ($product->status == 'waiting') {
+            $product->type_id = $request->type_id;
+            $product->commission_type = $request->commision;
+            $product->commision = $taux_commision;
+        }
         $product->location_id = $id_location;
-        $product->commission_type = $request->commision;
-        $product->commision = $taux_commision;
         $product->commencement_dt = $request->commencement_dt;
         $product->estimated_delvivery_dt = $request->estimated_delvivery_dt;
         $product->programme_firb_pre_approved = $request->programme_firb_pre_approved_program;
         $product->programme_pre_approved_sale = $request->programme_pre_approved_sale;
         $product->solicitor_id = $id_solicitor;
-        $product->state_id = $state->id;
+        $product->state_id = $state ? $state->id : 0;
         $product->save();
         // // update translation
         // updateTranslate('programme',$product,$request->description);
         if ($request->mandat_recActive != $request->sales_mandate) {
             LiaDossier::where('id', $request->id_mandatActive)->update(['image_id' => $request->sales_mandate]);
         }
+
+        if ($request->mandat_recActive == '') {
+            $fond_dossier = new LiaDossier();
+            $fond_dossier->product_id = $request->id;
+            $fond_dossier->image_id = $request->sales_mandate;
+            $fond_dossier->author_id = Auth::user()->id;
+            $fond_dossier->save();
+        }
+
         return redirect()->route('edit.programme', $product->id)->with('success',
             "Produit mise à jour avec succès");
     }
@@ -1082,13 +1093,14 @@ class ProductController extends Controller {
         $product->slug = $slug;
         $product->title = $request->title;
         $product->content = $request->desc_product;
-        $product->type_id = $request->type_id;
+        if ($product->status == 'waiting') {
+            $product->type_id = $request->type_id;
+            $product->commission_type = $request->commision_product;
+            $product->commision = $taux_commision;
+        }
         $product->display_address = $request->display_address;
         $product->postalCode = $request->postalCode_product;
-        $product->state_id = $state->id;
-
-        $product->commission_type = $request->commision_product;
-        $product->commision = $taux_commision;
+        $product->state_id = $state?$state->id:0;
         $product->avoir_bonus = $request->bonus_vente;
         $product->amount_bonus = $request->bonus_amount;
         $product->solicitor_id = $id_solicitor;

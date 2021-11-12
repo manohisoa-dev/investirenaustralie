@@ -27,7 +27,7 @@
                 <a href="{{ route('programme.show', ['slug'=>$item->slug]) }}">
                     <div class="transition blog-grid-overlay border-radius-0 {{ $item->isParticular()?'border-particular':'' }}" style="background-image: url({{ $img }});">
                         <div class="blog-gird-info">
-                            <h5>{{ $item->title}}</h5>
+                            <h5>{{getGTranslateAutoDetect( App::getLocale() ,$item->title)}}</h5>
                             <p><span class="white-color">{{ $item->location ? Illuminate\Support\Str::upper($item->location->locality.' '.$item->location->area_level_2.', '.$item->location->area_level_1.' '.$item->location->postalCode) : '' }}</span></p>            
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                         <div class="row mx-auto my-auto">
                             <div id="myCarousel{{ $i }}" class="carousel slide w-100" data-ride="carousel">
                                 <div class="carousel-inner w-100" role="listbox">
-                                    @forelse (App\Models\Product::where('parent_id','=',$item->id)->where('status','=','published')->orderBy($orderBy,$order)->get() as $prod)
+                                    @forelse (App\Models\Product::where('parent_id','=',$item->id)->where('status_res','=',0)->orderBy($orderBy,$order)->get() as $prod)
                                         <div class="carousel-item carousel-item-prod @if($loop->first) active @endif">
                                             <div class="{{ $viewProd=='list' ? 'col-lg-4' : 'col-md-12'}} col-sm-12">
                                                 <div class="thumb-wrapper">
@@ -118,7 +118,7 @@
                                     @endforelse
 
                                 </div>
-                                @if (sizeOf(App\Models\Product::where('parent_id','=',$item->id)->get())>3)
+                                @if (sizeOf(App\Models\Product::where('parent_id','=',$item->id)->where('status_res','=',0)->get())>3)
                                     <a class="carousel-control-prev bg-dark w-auto" href="#myCarousel{{ $i }}" role="button" data-slide="prev">
                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                         <span class="sr-only">Previous</span>

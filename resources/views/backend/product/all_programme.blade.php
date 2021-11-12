@@ -72,6 +72,12 @@
 								<a href="{{route('produit.programme', $record->id)}}" title="@lang('app.table.product_programme')">
 									<i class="fa fa-building"></i>
 								</a>&nbsp;
+								<a href="{{route('edit.programme', $record->id)}}" title="@lang('app.table.btn_title_modification')">
+									<i class="fa fa-edit"></i>
+								</a>&nbsp;
+								<a href="javascript:void(0)" onclick="delete_programme({{$record->id}})" title="@lang('app.table.btn_title_delete')">
+									<i class="fa fa-trash text-danger"></i>
+								</a>
 								@else
 								<a href="{{route('edit.programme', $record->id)}}" title="@lang('app.table.btn_title_modification')">
 									<i class="fa fa-edit"></i>

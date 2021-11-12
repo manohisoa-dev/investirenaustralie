@@ -35,6 +35,8 @@ class PageController extends Controller
             ->with('location')
             ->isProduct()
             ->where('quantity', '>', 0)
+            ->where('status_res', '=', 0)
+            ->where('parent_id', '!=', 0)
             ->orderBy('created_at','desc')
             ->take(6)->get();
         

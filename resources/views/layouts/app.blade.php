@@ -9,7 +9,7 @@
 <!-- CSRF Token -->
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
-<title>{{app_name()}} {{isset($title)?' - '.$title:''}}</title>
+<title>{{app_name()}} {{isset($title)&&$title!='title_fr'&&$title!='title_en'?' - '.$title:''}}</title>
 <!-- Le fav and touch icons -->
 <link rel="shortcut icon" href="{{asset('images/favicon.png')}}">
 <meta name="description" content="{{option('site.meta_desc', 'IEA')}}">
@@ -971,6 +971,7 @@
         $(window).bind('wheel', function(event) {
         if (event.originalEvent.wheelDelta >= 0) {
             if ($(document).scrollTop() <= 100) {
+                console.log('ato');
                 // $('#container-navbar').removeClass('show-navbar-after');
                 $('#container-navbar').removeClass('show-navbar-after');
                 $('#container-navbar').addClass('show-navbar-after-top');    

@@ -9,7 +9,7 @@
 @endcomponent
 <!-- Section -->
 
-<div class="main-slider-wrapper clearfix content corps p-100px-tb">
+<div class="main-slider-wrapper clearfix content corps p-100px-t">
     <div class="container">
         <div class="row">
             <div class="col-md-12">

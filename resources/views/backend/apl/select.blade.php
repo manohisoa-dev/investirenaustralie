@@ -164,7 +164,8 @@
             
             _map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: _lat, lng:  _long},
-                zoom: 3
+                zoom: 3,
+                fullscreenControl: true
             });
             
             _marker = new google.maps.Marker({
@@ -198,8 +199,29 @@
                     $('#title').html(data.title);
                     $('#content').html(data.html);
                     $('#myModal').modal('show'); 
+
+                    onClickListener();
                 });
             }
+        }
+
+        $('#fullscreen').click(function() {
+            $('#map div.gm-style button[class="gm-control-active gm-fullscreen-control"]').trigger('click');
+        });
+
+        function onClickListener() {
+            // Exit Full Screen Mode
+            if (document.fullscreenElement ) {
+            document.exitFullscreen();
+            } else if (document.mozFullScreenElement ) {
+            document.mozCancelFullScreen();
+            } else if (document.webkitFullscreenElement ) {
+            document.webkitExitFullscreen();
+            } else if (document.msFullscreenElement  ) {
+            document.msExitFullscreen();
+            }
+
+            return false;
         }
 
     </script>

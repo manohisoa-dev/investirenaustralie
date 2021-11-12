@@ -73,9 +73,15 @@
 									<div class="col-lg-6">
 										<div class="form-group">
 											<label for="title">@lang('app.input.type') *</label>
+											@if($product->status == 'waiting')
 											<select class="form-control" name="type_id" id="product_type_id" style="width:100%">
 												
 											</select>
+											@else
+											<select class="form-control" name="type_id" id="product_type_id" style="width:100%" disabled="disabled">
+												
+											</select>
+											@endif
 										</div>
 									</div>
 									<div class="col-lg-6">
@@ -136,7 +142,16 @@
 										<div class="col-lg-6">
 											<div class="form-group">
 												<label for="title">@lang('app.form.programme_commission_type')</label>
-												<select class="form-control" name="commision_product" id="commision_product">
+												@php
+													if($product->status == 'waiting'){
+														$class_select = '';
+														$class_input = '';
+													}else{
+														$class_select = 'disabled="disabled"';
+														$class_input = 'readonly=""';
+													}
+												@endphp
+												<select class="form-control" name="commision_product" id="commision_product" {{$class_select}}>
 													<option value="">Choisir...</option>
 													<option value="Sales commission rate (%)" {{$product->commission_type == 'Sales commission rate (%)' ? 'selected' : ''}}>
 														@lang('app.form.programme_commission_option1') (%)
@@ -152,7 +167,7 @@
 												<div class="form-group">
 													<label for="title">@lang('app.form.programme_taux_commission')</label>
 													<div class="input-group m-b">
-														<input type="number" min="0" class="form-control" name="sales_rate_product" id="sales_rate_product">
+														<input type="number" min="0" class="form-control" name="sales_rate_product" id="sales_rate_product" {{$class_input}}>
 														<div class="input-group-append">
 															<span class="input-group-text">%</span>
 														</div>
@@ -163,7 +178,7 @@
 												<div class="form-group">
 													<label for="title">@lang('app.form.programme_mt_commission')</label>
 													<div class="input-group m-b">
-														<input type="number" min="0" class="form-control" name="rate_commission_product" id="rate_commission_product">
+														<input type="number" min="0" class="form-control" name="rate_commission_product" id="rate_commission_product" {{$class_input}}>
 														<div class="input-group-append">
 															<span class="input-group-text">AUD</span>
 														</div>

@@ -66,14 +66,12 @@
 							@endif
 							</td>
 							<td align="center">
-							@if($record->status=='waiting')
 								<a href="{{route('edit.produit', $record->id)}}" class="" title="@lang('app.table.btn_title_modification')">
 									<i class="fa fa-edit"></i>
 								</a>&nbsp;
 								<a href="javascript:void(0)" onclick="delete_product({{$record->id}})" class="" title="@lang('app.table.btn_title_delete')">
 									<i class="fa fa-trash text-danger"></i>
 								</a>
-							@endif
 							</td>
 						</tr>
 					@endforeach

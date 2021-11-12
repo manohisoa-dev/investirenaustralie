@@ -3696,7 +3696,7 @@
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2izG_M7K3gP6pFUH5cyzmDjuGpOYfgc4&libraries=places&callback=initMap&channel=GMPSB_addressselection_v1_cABC" async defer></script>
     <script>
 		function initMap(){			
-			<!-- autocomplete AFA -->	
+			// <!-- autocomplete AFA -->	
 			var afa_autocomplete = new google.maps.places.Autocomplete($("#route")[0]);
 			afa_autocomplete.setComponentRestrictions({'country': ['au']});	
 			google.maps.event.addListener(afa_autocomplete, 'place_changed', function() {
@@ -3773,8 +3773,8 @@
 	
 				});
 			});
-			<!-- Fin autocomplete AFA -->
-			<!-- autocomplete SELLER BY AFA -->	
+			// <!-- Fin autocomplete AFA -->
+			// <!-- autocomplete SELLER BY AFA -->	
 			var sba_autocomplete = new google.maps.places.Autocomplete($("#street_adr")[0]);
 			sba_autocomplete.setComponentRestrictions({'country': ['au']});	
 			google.maps.event.addListener(sba_autocomplete, 'place_changed', function() {

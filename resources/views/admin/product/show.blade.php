@@ -491,7 +491,6 @@
 							<th>@lang('app.table.status')</th>
 							<th>@lang('app.seller')</th>
 							<th>@lang('app.table.author')</th>
-							<th></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -535,11 +534,6 @@
 								@endif
 							</td>
 							<td>{{ $product_lie->author->name }}</td>
-							<td>
-								@if($product_lie->status == 'waiting')
-									<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{$product_lie->id}}" class="btn btn-default btn-circle"><i class="fa fa-eye text-info"></i></a>
-								@endif
-							</td>
 						</tr>
 					@endforeach
 					@endif

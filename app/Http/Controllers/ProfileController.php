@@ -570,7 +570,7 @@ class ProfileController extends Controller {
                     $datas['adrpost_locality'] : '', 'adrpost_postalCode' => isset($datas['adrpost_postalCode']) ?
                     $datas['adrpost_postalCode'] : '', 'adrpost_area_level_1' => isset($datas['adrpost_area_level_2']) ?
                     $datas['adrpost_area_level_2'] : '', 'adrpost_country' => isset($datas['adrpost_country']) ?
-                    $datas['adrpost_country'] : '', ];
+                    $datas['adrpost_country'] : '', 'longitude'=>$datas['afa_long'], 'latitude'=>$datas['afa_lat']];
                 Localisation::whereId($user->location_id)->update($locations);
 
                 // update userinfo
@@ -673,7 +673,10 @@ class ProfileController extends Controller {
                     'bank_postal_box' => $datas['bank_postal_box'],
                     'bank_locality' => $datas['bank_locality'], 
                     'bank_postalCode' => $datas['bank_postalCode'],
-                    'bank_country' => $datas['bank_country'] ];
+                    'bank_country' => $datas['bank_country'],
+                    'longitude'=>$datas['apl_long'],
+                    'latitude'=>$datas['apl_lat']
+                    ];
                 
                 Localisation::whereId($user->location_id)->update($locations);
 
@@ -952,7 +955,8 @@ class ProfileController extends Controller {
                 $locations = ['locality' => $datas['city'], 'postalCode' => $datas['post_code'],
                     'longitude' => $datas['snp_personne_long'], 'latitude' => $datas['snp_personne_lat'],
                     'country' => $datas['country'], 'area_level_1' => $datas['state'],
-                    'area_level_2' => $datas['suburb'], 'route' => $datas['street_adr']];
+                    'area_level_2' => $datas['suburb'], 'route' => $datas['street_adr'],
+                ];
                 Localisation::whereId($user->location_id)->update($locations);
 
                 // update seller individual
