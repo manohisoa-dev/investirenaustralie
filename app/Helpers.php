@@ -664,3 +664,18 @@ if (!function_exists('countryLongName')) {
         return $content;
     }
 }
+
+/**
+ * recuperer page image resize
+ */
+if (!function_exists('getImageResize')) {
+    function getImageResizeUrl($model, $filename, $format){
+        if($model != "" && $filename != "") {
+            $format = $format != "" ? $format : "medium" ;
+            return 'uploads/' . $model . '/' . $model . '-resize/' . $format . '/' . $filename . '';
+        }
+        else{
+            return "" ;
+        }
+    }
+}

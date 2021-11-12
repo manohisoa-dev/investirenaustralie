@@ -6,11 +6,26 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\EoiDossier;
 use App\Models\Parameter;
+use App\Helpers\ImageResizer ;
 
 
 class Product extends Model {
-
+    use ImageResizer;
     use SoftDeletes;
+
+
+    protected static $directory = 'product';
+    protected static $directoryResize = 'product/product-resize';
+
+    protected static $aImageSize = array(
+        'mini'              => [50, 33],
+        'thumb'             => [330, 180],
+        'medium'            => [350, 200],
+        'large'             => [900, 600]
+    );
+
+    protected $table = "products";
+
     public $guarded = ["id","created_at","updated_at"];
     protected $dates = ['deleted_at'];
 
@@ -616,5 +631,8 @@ class Product extends Model {
         return file_exists(public_path('uploads/pdf/transaction/'.$this->productEoi->first()->image->first()->filename));
     }
 
+    public function getImageUrl($imageSizeName = "medium"){
+        return $this->getAvatar($imageSizeName);
+    }
 }
 
