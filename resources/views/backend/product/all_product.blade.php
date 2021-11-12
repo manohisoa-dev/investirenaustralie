@@ -42,14 +42,14 @@
 								@if($first_photo)
 									@if($photo_principal)
 									<!-- Programme sans principal -->
-									<img src="{{asset($photo_principal->filepath)}}" class="img-responsive" style="height:50px" />
+									<img src="{{asset(getImageResizeUrl('product', $photo_principal->filename, 'mini'))}}" class="img-responsive" />
 									@else
 									<!-- Programme principal -->
-									<img src="{{asset($first_photo->filepath)}}" class="img-responsive" style="height:50px" />
+									<img src="{{asset(getImageResizeUrl('product', $first_photo->filename, 'mini'))}}" class="img-responsive"/>
 									@endif
 								@else
 									<!-- Programme aucun photo -->
-									<img class="img-responsive" src="{{asset('images/product.png')}}" style="height:50px">
+									<img class="img-responsive" src="{{asset('images/product.png')}}" style="width:50px">
 								@endif	
 							</td>
 							<td>{{ $record->title }}<br />{{str_limit(strip_tags($record->excerpt()),"100","...")}}</td>

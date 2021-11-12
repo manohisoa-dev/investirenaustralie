@@ -69,13 +69,13 @@
                                                                 $img_prod = "";
                                                                 
                                                                 if(@getimagesize(App\Models\Image::whereId($it->pivot->image_id)->first()->filepath)) {
-                                                                    $img_prod=App\Models\Image::whereId($it->pivot->image_id)->first()->filepath;
+                                                                    $img_prod=App\Models\Image::whereId($it->pivot->image_id)->first()->filename;
                                                                 } else {
                                                                     $img_prod=asset('images/iea.png');
                                                                
                                                                 }
                                                             @endphp
-                                                            <a href="javascript:void(0)"><img src="{{asset($img_prod)}}" alt="{{$it->title}}" class="img-fluid imageresource{{ $key }}"></a>
+                                                            <a href="javascript:void(0)"><img src="{{asset(getImageResizeUrl('product', $img_prod, 'large'))}}" alt="{{$it->title}}" class="img-fluid imageresource{{ $key }}"></a>
                                                         </div>
                                                         <div class="portfolio-info">
                                                             <div class="portfolio-desc">
@@ -240,10 +240,10 @@
                                                             @if($first_photo)
                                                                 @if($photo_principal)
                                                                 <!-- Programme sans principal -->
-                                                                @php $img = asset($photo_principal->filepath) @endphp
+                                                                @php $img = asset(getImageResizeUrl('product', $photo_principal->filename, 'thumb')) @endphp
                                                                 @else
                                                                 <!-- Programme principal -->
-                                                                @php $img = asset($first_photo->filepath) @endphp
+                                                                @php $img = asset(getImageResizeUrl('product', $first_photo->filename, 'thumb')) @endphp
                                                                 @endif
                                                             @else
                                                                 <!-- Programme aucun photo -->

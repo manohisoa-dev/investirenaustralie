@@ -1089,9 +1089,12 @@
 					<h5><i class="fa fa-product-hunt"></i> @lang('app.products')</h5>
 				</div>
 				<div class="ibox-content">
-					@include('admin.table.product',[
-						'products'=>$user->products
-					])
+					<div class="table-responsive">
+						@include('admin.table.product',[
+							'products'=>$user->products
+						])
+					</div>
+
 				</div>
 			</div>
 		</div>
@@ -1102,9 +1105,11 @@
 					<h5><i class="fa fa-calendar"></i> @lang('app.orders')</h5>
 				</div>
 				<div class="ibox-content">
-					@include('admin.table.product',[
-						'products'=>$user->products()->where('products.status', 'ordered')
-					])
+					<div class="table-responsive">
+						@include('admin.table.product',[
+							'products'=>$user->products()->where('products.status', 'ordered')
+						])
+					</div>
 				</div>
 			</div>
 		</div>
@@ -1115,9 +1120,11 @@
 					<h5><i class="fa fa-briefcase"></i> @lang('app.sales')</h5>
 				</div>
 				<div class="ibox-content">
-					@include('admin.table.product',[
-						'products'=>$user->products()->where('products.status', 'paid')
-					])
+					<div class="table-responsive">
+						@include('admin.table.product',[
+							'products'=>$user->products()->where('products.status', 'paid')
+						])
+					</div>
 				</div>
 			</div>
 		</div>

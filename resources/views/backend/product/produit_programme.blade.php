@@ -56,14 +56,14 @@
 											@if($first_photo)
 												@if($photo_principal)
 												<!-- Programme sans principal -->
-												<img src="{{asset($photo_principal->filepath)}}" class="img-responsive" style="height:50px" />
+												<img src="{{asset(getImageResizeUrl('product', $photo_principal->filename, 'mini'))}}" class="img-responsive" />
 												@else
 												<!-- Programme principal -->
-												<img src="{{asset($first_photo->filepath)}}" class="img-responsive" style="height:50px" />
+												<img src="{{asset(getImageResizeUrl('product', $photo_principal->filename, 'mini'))}}" class="img-responsive" />
 												@endif
 											@else
 												<!-- Programme aucun photo -->
-												<img class="img-responsive" src="{{asset('images/product.png')}}" style="height:50px">
+												<img class="img-responsive" src="{{asset('images/product.png')}}" style="width:50px">
 											@endif
 										</td>
 										<td><b>{{ $product_lie->title }}</b></td>
@@ -77,7 +77,7 @@
 											@endif
 										</td>
 										<td class="actions-cell text-center">	
-										@if($product_lie->status=='waiting')							
+										@if($product_lie->status=='waiting' || ($product_lie->status=='published' && $product_lie->status_res=='0'))
 											<a href="javascript:void(0)" onclick="edit_product({{$product_lie->id}})" class="" title="@lang('app.table.btn_title_modification')">
 												<i class="fa fa-edit"></i>
 											</a>&nbsp;

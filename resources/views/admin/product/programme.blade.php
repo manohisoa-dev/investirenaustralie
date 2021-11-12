@@ -95,7 +95,7 @@
 								@endif
 								</td>
 								<td>
-									{{ $record->title }}       
+									{{ $record->title }}
 								</td>
 								<td>
 									@if ($record->category) 
