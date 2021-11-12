@@ -67,16 +67,19 @@
                                                         <div class="portfolio-img">
                                                             @php
                                                                 $img_prod = "";
-                                                                if(@getimagesize(App\Models\Image::whereId($it->pivot->image_id)->first()->filepath)) { 
+                                                                
+                                                                if(@getimagesize(App\Models\Image::whereId($it->pivot->image_id)->first()->filepath)) {
                                                                     $img_prod=App\Models\Image::whereId($it->pivot->image_id)->first()->filepath;
                                                                 } else {
                                                                     $img_prod=asset('images/iea.png');
-                                                                }   
+                                                               
+                                                                }
                                                             @endphp
                                                             <a href="javascript:void(0)"><img src="{{asset($img_prod)}}" alt="{{$it->title}}" class="img-fluid imageresource{{ $key }}"></a>
                                                         </div>
                                                         <div class="portfolio-info">
                                                             <div class="portfolio-desc">
+                                                                
                                                                 <h5><a href="#">{{getGTranslateAutoDetect( App::getLocale() ,$item->title)}}</a></h5>
                                                             </div>
                                                             <a href="javascript:void(0)" value="{{ $key }}" class="gallery-link pop">
@@ -89,7 +92,7 @@
                                                 @if($item->isExclusiveAgency())
                                                     <span class="notify-badge-prod">@lang('app.txt.priority_agency')</span>
                                                 @endif
-                                                
+
                                                 {{-- Cocarde --}}
                                                 @if($item->isParticular())
                                                     <span class="border-particular-cocarde-2"></span>
@@ -97,8 +100,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>    
-                            @endforeach                            
+                                </div>
+                            @endforeach
                             <a class="carousel-control-prev bg-dark w-auto" href="#myCarousel" role="button" data-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                 <span class="sr-only">@lang('app.btn.prev')</span>
@@ -107,7 +110,7 @@
                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                 <span class="sr-only">@lang('app.btn.next')</span>
                             </a>
-                        </div> 
+                        </div>
                     </div>
                     @else
                         <div class="col-md-12 col-sm-12">
@@ -121,7 +124,7 @@
                                                 $img=$item->imageUrl();
                                             } else {
                                                 $img=asset('images/iea.png');
-                                            } 
+                                            }
                                         @endphp
                                         <a href="javascript:void(0)"><img src="{{$img}}" alt="{{$item->title}}" class="img-fluid imageresource0"></a>
                                     </div>
@@ -143,16 +146,16 @@
                     <div class="nav p-25px-b">
                         <p class="h4 dark-color font-w-600">@lang('app.description')</p>
                     </div>
-                    
+
                     <div class="text-justify">{!! $item->content !!}</div><br />
-					
+
 					<!-- fond de dossier -->
 					@if ($dossier)
 					<div class="nav p-25px-b">
 						<p class="h4 dark-color font-w-600">@lang('app.form.programme_fond_dossier') {{Auth::user()->id}}</p>
 					</div>
 					<div>
-					@foreach ($dossier as $dossie )		
+					@foreach ($dossier as $dossie )
 						<div class="file-box">
 							<div class="file">
 								@if(setIconFile($dossie->filepath) == 'images')
@@ -162,17 +165,17 @@
 								@else
 									<a href="https://docs.google.com/viewer?url={{asset(urlencode($dossie->filepath))}}&embedded=true" class="fancyboxLinkDoc" data-fancybox-type="iframe">
 								@endif
-									<span class="corner"></span>	
+									<span class="corner"></span>
 									@if(setIconFile($dossie->filepath) == 'images')
 										<div class="image">
 											<img alt="image" class="img-fluid" src="{{asset($dossie->filepath)}}">
 										</div>
-									@endif	
+									@endif
 									@if(setIconFile($dossie->filepath) == 'pdf')
 										<div class="icon">
 											<i class="fa fa-file-pdf"></i>
 										</div>
-									@endif	
+									@endif
 									@if(setIconFile($dossie->filepath) == 'doc')
 										<div class="icon">
 											<i class="fa fa-file-word"></i>
@@ -182,12 +185,12 @@
 										<div class="icon">
 											<i class="fa fa-file-excel"></i>
 										</div>
-									@endif	
+									@endif
 									@if(setIconFile($dossie->filepath) == 'file')
 										<div class="icon">
 											<i class="fa fa-file"></i>
 										</div>
-									@endif									
+									@endif
 									<div class="file-name">
 										@php
 											$filename = $dossie->filename;
@@ -198,20 +201,20 @@
 								</a>
 							</div>
 						</div>
-					@endforeach	
+					@endforeach
 						<div style="clear:both"></div>
 					</div>
-					@endif 
+					@endif
 					<!-- fond de dossier -->
 
-                    
+
                     <div class="comments-area m-40px-t m-50px-b">
                         <div class="card-body">
                             <p class="h6 m-30px-b">@lang('app.txt.loc_geo')</p>
                             <div id="map"></div>
                         </div>
                     </div>
-                    
+
                     <div class="p-25px-tb m-35px-tb border-top-1 border-bottom-1 border-color-gray">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
@@ -224,7 +227,7 @@
                             <div class="row mx-auto my-auto">
                                 <div id="myCarousel" class="carousel slide w-100" data-ride="carousel">
                                     <div class="carousel-inner w-100" role="listbox">
-                                        
+
                                         @forelse (App\Models\Product::where('parent_id','=',$item->id)->where('status','=','published')->get() as $prod)
                                             <div class="carousel-item @if($loop->first) active @endif">
                                                 <div class="col-sm-3 col-md-6 col-lg-4">
@@ -245,7 +248,7 @@
                                                             @else
                                                                 <!-- Programme aucun photo -->
                                                                 @php $img = asset('images/product.png') @endphp
-                                                            @endif	
+                                                            @endif
                                                             <a href="{{route('product.index',['product'=>$prod->slug])}}" target="_blank"><img src="{{$img}}" alt="{{$prod->title}}" class="img-fluid"></a>
                                                         </div>
                                                         <div class="thumb-content">
@@ -257,7 +260,7 @@
                                                                     <a class="body-color font-w-500" href="#"><i class="fa fa-car"></i> {{$prod->garage_spaces?__('app.yes'):__('app.no')}}</a>
                                                                 </ul>
                                                             </div>
-                                                        </div>						
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -266,7 +269,7 @@
                                                 <p>@lang('app.txt.no_product')</p>
                                             </div>
                                         @endforelse
-    
+
                                     </div>
                                     @if (sizeOf(App\Models\Product::where('parent_id','=',$item->id)->get())>3)
                                         <a class="carousel-control-prev bg-dark w-auto" href="#myCarousel" role="button" data-slide="prev">
@@ -278,7 +281,7 @@
                                             <span class="sr-only">Next</span>
                                         </a>
                                     @endif
-    
+
                                 </div>
                             </div>
                         </div>
@@ -382,7 +385,7 @@
     <script src="{{ asset('js/app.js') }}"></script>
     <script type="text/javascript">
 		$(document).ready(function(){
-			$("a.fancyboxLink").fancybox();			
+			$("a.fancyboxLink").fancybox();
 			$("#fancybox-pdf").fancybox({
 				openEffect  : 'none',
 				closeEffect : 'none',
@@ -446,7 +449,7 @@
           var _inputApl = document.getElementById("apl");
           var _contentApl = document.getElementById("apl-content");
           var _titleApl = document.getElementById("apl-title");
-          
+
           var iconBase = "{{url('')}}";
           var icons = {
             user: {
@@ -465,28 +468,28 @@
               icon: iconBase + '/images/map/product.png'
             }
           };
-          
+
           var data = {!!(isset($data) ? $data : '')!!};
-          
+
           function initMap() {
-              
+
               _map = new google.maps.Map(document.getElementById('map'), {
                   center: {lat: _lat, lng:  _long},
                   zoom: 10
               });
-              
+
               _marker = new google.maps.Marker({
                 position: {lat: _lat, lng: _long},
                 icon: icons['product'].icon,
                 map: _map,
                 title: data.title
               });
-    
+
               _marker.addListener('dragend', function() {
                   var lat = _marker.getPosition().lat();
                   var lng = _marker.getPosition().lng();
               });
-              
+
               _circle = new google.maps.Circle({
                 strokeColor: '#358bbc',
                 strokeOpacity: 0.8,
@@ -497,9 +500,9 @@
                 center: {lat:parseFloat(data.lat), lng:parseFloat(data.lng)},
                 radius: data.area
               });
-          
+
           }
-    
+
       </script>
 @endpush('script')
 

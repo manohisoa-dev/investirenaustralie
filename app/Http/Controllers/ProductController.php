@@ -51,7 +51,7 @@ class ProductController extends Controller {
      */
     public function index(Request $request, $slug) {
         $products = Product::where('slug', '=', $slug)->get();
-
+        
         if (sizeof($products) != 0) {
             foreach ($products as $key => $product) {
 
@@ -624,6 +624,8 @@ class ProductController extends Controller {
         $image_programme->is_principal = $is_principale;
         $image_programme->author_id = Auth::user()->id;
         $image_programme->save();
+
+        Product::regenerateAllAvatar() ;
     }
 
     public function save_fond_dossier($nom_photo, $id_programme) {
@@ -1191,6 +1193,8 @@ class ProductController extends Controller {
             $file = $photo;
             $image = Image::storeAndSave($file, 'product');
             $product->image_id = $image->id;
+
+            Product::regenerateAllAvatar() ;
         }
         $slug = generateSlug($title);
         $product->ancienneteBien = $anciennete;

@@ -10,7 +10,7 @@
             $img=$item->imageUrl();
         } else {
             $img=asset('images/blog/iea.png');
-        }   
+        }
     @endphp
     <section class="bg-center bg-cover bg-fiexd effect-section" style="background-image: url({{ $img }});">
         <div class="mask dark-g-bg opacity-7"></div>
@@ -68,11 +68,12 @@
                                                 <div class="portfolio-img">
                                                   @php
                                                     $img_prod = "";
-                                                      if(@getimagesize(App\Models\Image::whereId($it->pivot->image_id)->first()->filepath)) { 
-                                                        $img_prod=App\Models\Image::whereId($it->pivot->image_id)->first()->filepath;
+                                                      if(@getimagesize(App\Models\Image::whereId($it->pivot->image_id)->first()->filepath)) {
+                                                        //$img_prod=App\Models\Image::whereId($it->pivot->image_id)->first()->filepath;
+                                                        $img_prod = getImageResizeUrl('product', $it->filename, 'large');
                                                       } else {
                                                         $img_prod=asset('images/iea.png');
-                                                      }   
+                                                      }
                                                   @endphp
                                                   <a href="javascript:void(0)"><img src="{{asset($img_prod)}}" alt="{{$it->title}}" class="img-fluid imageresource{{ $key }}"></a>
                                                 </div>
@@ -93,8 +94,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>    
-                          @endforeach                            
+                            </div>
+                          @endforeach
                           <a class="carousel-control-prev bg-dark w-auto" href="#myCarousel" role="button" data-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="sr-only">@lang('app.btn.prev')</span>
@@ -103,7 +104,7 @@
                               <span class="carousel-control-next-icon" aria-hidden="true"></span>
                               <span class="sr-only">@lang('app.btn.next')</span>
                           </a>
-                      </div> 
+                      </div>
                   </div>
                   @else
                     <div class="col-md-12 col-sm-12">
@@ -117,7 +118,7 @@
                                             $img=$item->imageUrl();
                                         } else {
                                             $img=asset('images/iea.png');
-                                        } 
+                                        }
                                     @endphp
                                     <a href="javascript:void(0)"><img src="{{$img}}" alt="{{$item->title}}" class="img-fluid imageresource0"></a>
                                   </div>
@@ -300,7 +301,7 @@
                       </div>
                     @endif
                   </section>
-                  
+
                   <div class="p-25px-tb m-35px-tb border-top-1 border-bottom-1 border-color-gray">
                       <div class="d-flex justify-content-between align-items-center">
                           <div>
@@ -452,8 +453,8 @@
                 <!-- end section products -->
             </div>
         </div>
-    </section>          
-    <!-- End Section -->    
+    </section>
+    <!-- End Section -->
 </main>
 
 <!-- List APL modal -->
@@ -480,11 +481,11 @@
                   @if (sizeOf($apls) !== 0)
                     <div class="pull-left hidden row-confirm-modal" style="margin-bottom: 20px;">
                         <input id="check-confirm-modal" type="checkbox" name="confirm" value="1"><span style="color:red;"> {!!__('member.accept_term_and_condition_apl')!!}</span>
-                        <label>@lang('app.txt.condition_days_apl', ['nbDay'=>App\Models\Parameter::nbDayEndApl()])</label>  
+                        <label>@lang('app.txt.condition_days_apl', ['nbDay'=>App\Models\Parameter::nbDayEndApl()])</label>
                     </div>
                     <div class="col-md-5">
                       <button class="m-btn m-btn-theme" data-dismiss="modal" aria-hidden="true">@lang('app.btn.cancel')</button>
-                    </div> 
+                    </div>
                   @endif
               </div>
           </div>
@@ -518,7 +519,7 @@
           <div class="modal-body">
             {!! Session()->get('engagement') !!}
 
-            @if(Session()->get('hasAfa')==0)  
+            @if(Session()->get('hasAfa')==0)
               <hr>
               <div>
                   <div class="form-group m-25px-t m-50px-b">
@@ -569,7 +570,7 @@
               @if (Session::get('waiting')===0)
                 <a type="button" class="m-btn m-btn-theme2nd" href="javascript:void(0)" id="btn_continue_mandat_recherche">@lang('app.btn.continuer')</a>
               @else
-                <a type="button" class="m-btn m-btn-theme2nd" href="javascript:void(0)" data-dismiss="modal" id="btn_continue">@lang('app.btn.ok')</a>  
+                <a type="button" class="m-btn m-btn-theme2nd" href="javascript:void(0)" data-dismiss="modal" id="btn_continue">@lang('app.btn.ok')</a>
               @endif
             @endif
           </div>
@@ -628,7 +629,7 @@
 </div>
 
 @endsection
-    
+
 @push('script')
     @php
         $key = env('GMAP_API_KEY');
@@ -693,7 +694,7 @@
             success:function(data){
               return location.href="{{route('member.contact', ['role'=>'admin'])}}";
             }
-          }); 
+          });
         });
 
 
@@ -715,7 +716,7 @@
         });
   </script>
   <script>
-      
+
       var _map;
       var _geocoder;
       var _marker;
@@ -745,15 +746,15 @@
           icon: iconBase + '/images/map/product.png'
         }
       };
-      
+
       var data = "{{ (isset($data) ? $data : '') }}";
-      
+
       function initMap() {
           _map = new google.maps.Map(document.getElementById('map'), {
               center: {lat: _lat, lng:  _long},
               zoom: 10
           });
-          
+
           _marker = new google.maps.Marker({
             position: {lat: _lat, lng: _long},
             icon: icons['product'].icon,
@@ -765,7 +766,7 @@
               var lat = _marker.getPosition().lat();
               var lng = _marker.getPosition().lng();
           });
-          
+
           _circle = new google.maps.Circle({
             strokeColor: '#358bbc',
             strokeOpacity: 0.8,
@@ -776,13 +777,13 @@
             center: {lat:parseFloat(data.lat), lng:parseFloat(data.lng)},
             radius: data.area
           });
-      
+
       };
 
   </script>
   <script>
     $('#btn_buy').click(function(){
-      loadingPage();   
+      loadingPage();
     });
   </script>
   <script>

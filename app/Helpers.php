@@ -666,6 +666,21 @@ if (!function_exists('countryLongName')) {
 }
 
 /**
+ * recuperer page image resize
+ */
+if (!function_exists('getImageResize')) {
+    function getImageResizeUrl($model, $filename, $format){
+        if($model != "" && $filename != "") {
+            $format = $format != "" ? $format : "medium" ;
+            return 'uploads/' . $model . '/' . $model . '-resize/' . $format . '/' . $filename . '';
+        }
+        else{
+            return "" ;
+        }
+    }
+}
+
+/**
  * permet de verifier tous les produit sans afa et rechercher dans la table user s'il a de nouveau AFA
  * 
  */
@@ -687,3 +702,4 @@ if (!function_exists('nouvelle_afa_disponible')) {
         }
     }
 }
+

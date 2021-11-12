@@ -13,11 +13,17 @@
                 @endphp
                 @if($first_photo)
                     @if($photo_principal)
-                    <!-- Programme sans principal -->
-                    @php $img = asset($photo_principal->filepath) @endphp
+                        <!-- Programme sans principal -->
+                        @php
+                            //$img = asset($photo_principal->filename)
+                            $img = asset(getImageResizeUrl('product', $photo_principal->filename, 'medium'))
+                        @endphp
                     @else
-                    <!-- Programme principal -->
-                    @php $img = asset($first_photo->filepath) @endphp
+                        <!-- Programme principal -->
+                        @php
+                            //$img = asset($first_photo->filename)
+                            $img = asset(getImageResizeUrl('product', $first_photo->filename, 'medium'))
+                        @endphp
                     @endif
                 @else
                     <!-- Programme aucun photo -->
@@ -68,14 +74,16 @@
                                                         @endphp
                                                         @if($first_photo)
                                                             @if($photo_principal)
-                                                            <!-- Programme sans principal -->
+                                                                <!-- Programme sans principal -->
                                                                 @php
-                                                                    $img_prod= asset($photo_principal->filepath);
+                                                                    //$img = asset($photo_principal->filename)
+                                                                    $img_prod = asset(getImageResizeUrl('product', $photo_principal->filename, 'thumb'))
                                                                 @endphp
                                                             @else
                                                                 <!-- Programme principal -->
                                                                 @php
-                                                                    $img_prod= asset($first_photo->filepath);
+                                                                    //$img = asset($first_photo->filename)
+                                                                    $img_prod = asset(getImageResizeUrl('product', $first_photo->filename, 'thumb'))
                                                                 @endphp
                                                             @endif
                                                         @else

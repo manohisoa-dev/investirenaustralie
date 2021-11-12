@@ -583,3 +583,107 @@ you can use the generic selector below, but it's slower:
 	border-radius: 5px;
 	box-shadow: 2px 2px 15px 0px rgba(0, 0, 0, 0.5);
 }
+/*Progress bar*/
+
+.progressBar {
+	margin-bottom: 26px;
+	margin-bottom: 1.66em;
+	position: relative;
+	
+}
+.progressBar h4 {
+	font-size: 16px;
+	text-transform: none;
+	margin-bottom: 7px;
+	margin-bottom: .33em;
+	color: #2E1437;
+}
+.progressBarcontainer {
+	width: 100%;
+	height: 10px;
+	background: #E1E1E1!important;
+	overflow: hidden;
+	border-radius: 0.3em;
+}
+.progressBarValue {
+	height: 10px;
+	float: left;
+	border-radius: 0.3em;
+	background: -moz-linear-gradient(-45deg, #003555 0%, #00507d 100%);
+	background: -webkit-linear-gradient(-45deg, #e55d87 0%, #5fc3e4 100%);
+	background: linear-gradient(135deg, #ae4435 0%, #00507d 100%);
+}
+
+.speech-bubble {
+	font-size: 0.75em;
+	line-height: 2em;
+	position: absolute;
+	top: -0.60em;
+	text-align: center;
+	min-width: 3em;
+	border-radius: 0.3em;
+	color: white;
+	display: none;
+}
+
+.speech-bubble:after {
+	border: 0.5em solid transparent;
+	content: "";
+	margin-left: -0.5em;
+	position: absolute;
+	bottom: -50%;
+	left: 50%;
+}
+
+.html {
+	left: calc(90% - 1.5em);
+}
+  
+.css{
+	  left: calc(70% - 1.5em);
+}
+
+.javascript{
+	left: calc(60% - 1.5em);
+} 
+
+.react{
+	left: calc(30% - 1.5em);
+}
+
+.jquery{
+	left: calc(40% - 1.5em);
+}
+
+.html,
+.css,
+.javascript,
+.react,
+.jquery {
+	background: #ae4435;
+}
+  
+.html:after {
+	border-top-color: #a487b2;
+}
+
+.css:after{
+	border-top-color:#ae4435;
+}
+
+.javascript:after{
+	border-top-color:#a487b2;
+}
+
+.react:after{
+	border-top-color:#a487b2;
+}
+
+.jquery:after{
+	border-top-color:#a487b2;
+}
+/*End progress bar*/
+.p-45px-tb.p-35px-lr.bg-white.shadow-radius {
+    box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+}
