@@ -200,7 +200,6 @@ return [
         Dedicated\GoogleTranslate\GoogleTranslateProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
-        'JCrowe\BadWordFilter\Providers\BadWordFilterServiceProvider',
     ],
 
     /*
@@ -260,7 +259,6 @@ return [
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'user' => App\Http\Middleware\CheckUser::class,
         'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
-        'BadWordFilter'	  => 'JCrowe\BadWordFilter\Facades\BadWordFilter',
     ],
 
 ];
