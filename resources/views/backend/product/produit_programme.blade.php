@@ -56,17 +56,17 @@
 											@if($first_photo)
 												@if($photo_principal)
 												<!-- Programme sans principal -->
-												<img src="{{asset($photo_principal->filepath)}}" class="img-responsive" style="height:50px" />
+												<img src="{{asset(getImageResizeUrl('product', $photo_principal->filename, 'mini'))}}" class="img-responsive" />
 												@else
 												<!-- Programme principal -->
-												<img src="{{asset($first_photo->filepath)}}" class="img-responsive" style="height:50px" />
+												<img src="{{asset(getImageResizeUrl('product', $photo_principal->filename, 'mini'))}}" class="img-responsive" />
 												@endif
 											@else
 												<!-- Programme aucun photo -->
-												<img class="img-responsive" src="{{asset('images/product.png')}}" style="height:50px">
+												<img class="img-responsive" src="{{asset('images/product.png')}}" style="width:50px">
 											@endif
 										</td>
-										<td><b>{{ $product_lie->title }}</b><br />{!! $product_lie->excerpt() !!}</td>
+										<td><b>{{ $product_lie->title }}</b></td>
 										<td>{{ $product_lie->currency }}&nbsp;{{ number_format($product_lie->min_price, 0, '.', ' ') }}</td>
 										<td>{{ $product_lie->currency }}&nbsp;{{ number_format($product_lie->max_price, 0, '.', ' ') }}</td>
 										<td>
@@ -77,7 +77,7 @@
 											@endif
 										</td>
 										<td class="actions-cell text-center">	
-										@if($product_lie->status=='waiting')							
+										@if($product_lie->status=='waiting' || ($product_lie->status=='published' && $product_lie->status_res=='0'))
 											<a href="javascript:void(0)" onclick="edit_product({{$product_lie->id}})" class="" title="@lang('app.table.btn_title_modification')">
 												<i class="fa fa-edit"></i>
 											</a>&nbsp;
@@ -302,11 +302,11 @@
 				$('#desc_product').val(data.product.content);
 				CKEDITOR.replace( 'desc_product' );
 				$('[name="product_type_id"]').val(data.product.type_id);
-				$('[name="suburb_product"]').val(data.localisation.area_level_1);
+				/*$('[name="suburb_product"]').val(data.localisation.area_level_1);
 				$('[name="ville_product"]').val(data.localisation.locality);
 				$('[name="postalCode_product"]').val(data.product.postalCode);
 				$('[name="display_address_product"]').val(data.product.display_address);
-				$('[name="state_id_product"]').val(data.product.state_id);
+				$('[name="state_id_product"]').val(data.product.state_id);*/
 				$('[name="countryId_product"]').val(data.localisation.country);
 				$('[name="price"]').val(data.product.min_price);
 				$('[name="price_max_prd"]').val(data.product.max_price);
@@ -681,7 +681,10 @@
 						<input type="hidden" name="prg_cat_id" id="prg_cat_id" value="{{$product->category_id}}"/>
 						<input type="hidden" name="id_programme" id="id_programme"/>
 						<input type="hidden" name="id_product" id="id_product" />
-						<input type="hidden" name="id_location_product" id="id_location_product" />
+						<input type="hidden" name="id_location_product" id="id_location_product"/>
+						<input type="hidden" name="idAfa" value="{{$product->afaId_possible}}" />
+						<input type="hidden" name="idSolicitor" value="{{$product->solicitor_id}}" />
+						<input type="hidden" name="idSeller" value="{{$product->seller_id}}" />
 						{{ csrf_field() }}
 						<div class="row">
 							<div class="col-lg-12">
@@ -714,7 +717,7 @@
 							<div class="col-lg-3">
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_suburb')</label>
-									<input name="suburb_product" id="suburb_product" class="form-control" type="text" value="{{$localisation->area_level_1}}" readonly="">
+									<input name="suburb_product" id="suburb_product" class="form-control" type="text" value="{{$localisation->area_level_2}}" readonly="">
 									<input type="hidden" name="long" id="long" value="{{$localisation->longitude}}" />
 									<input type="hidden" name="lat" id="lat" value="{{$localisation->latitude}}" />
 								</div>
@@ -736,18 +739,13 @@
 							<div class="col-lg-4">
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_adresse') *</label>
-									<input name="display_address_product" id="display_address_product" class="form-control" type="text" value="{{$product->display_address}}" readonly="">
+									<input name="display_address_product" id="display_address_product" class="form-control" type="text" value="{{$localisation->route_number}} {{$localisation->locality}}" readonly="">
 								</div>
 							</div>
 							<div class="col-lg-4">
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_etat') *</label>
-									<select class="form-control" name="state_id_product" id="state_id_product" style="width:100%">
-										<option value="">Sélectionner état...</option>
-										@foreach(\App\Models\State::all() as $state)
-											<option value="{{$state->id}}" {{$state->id == $product->state_id ? 'selected' : ''}}>{{$state->content}}</option>
-										@endforeach
-									</select>
+									<input type="text" name="state_id_product" class="form-control" id="state_id_product" value="{{$localisation?$localisation->area_level_1:''}}" readonly="" />
 								</div>
 							</div>
 							<div class="col-lg-4">
@@ -842,20 +840,16 @@
 								</div>
 							</div>
 							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="title">@lang('app.table.status')</label>
-									<select class="form-control" name="status" id="status">
-										<option value="waiting">En attente</option>
-									</select>
-								</div>
-							</div>
-							<div class="col-lg-3">
 								<div id="info_qte">
 									<div class="form-group">
 										<label for="title">@lang('app.form.product_qte')</label>
 										<input name="quantity" id="quantity" class="form-control" type="number" min="0" value="1" min="1">
+										<input type="hidden" name="status" value="waiting" />
 									</div>
 								</div>
+							</div>
+							<div class="col-lg-3">
+								
 							</div>
 						</div>
 						

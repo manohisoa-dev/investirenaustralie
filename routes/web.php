@@ -383,3 +383,6 @@ Route::get('createTemplateCaPdf', 'MemberController@autoCompleteForm6');
 
 Route::get('contact-test', 'ContactFormController@form');
 Route::post('contact-request', 'ContactFormController@contactRequest')->name('contact-request');
+
+// Cron check dossier transaction > 15 Days
+Route::get('check_dossier_trans_15_days', 'DossierController@checkDossierTrans15Days')->name('check_dossier_trans_15_days');

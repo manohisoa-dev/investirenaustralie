@@ -42,14 +42,14 @@
 							@if($first_photo)
 								@if($photo_principal)
 								<!-- Programme sans principal -->
-								<img src="{{asset($photo_principal->filepath)}}" class="img-responsive" style="height:50px" />
+								<img src="{{asset(getImageResizeUrl('product', $photo_principal->filename, 'mini'))}}" class="img-responsive" />
 								@else
 								<!-- Programme principal -->
-								<img src="{{asset($first_photo->filepath)}}" class="img-responsive" style="height:50px" />
+								<img src="{{asset(getImageResizeUrl('product', $first_photo->filename, 'mini'))}}" class="img-responsive"/>
 								@endif
 							@else
 								<!-- Programme aucun photo -->
-								<img class="img-responsive" src="{{asset('images/product.png')}}" style="height:50px">
+								<img class="img-responsive" src="{{asset('images/product.png')}}" style="width:50px">
 							@endif			
 							</td>
 							<td>{{ $record->title }}</td>
@@ -72,6 +72,12 @@
 								<a href="{{route('produit.programme', $record->id)}}" title="@lang('app.table.product_programme')">
 									<i class="fa fa-building"></i>
 								</a>&nbsp;
+								<a href="{{route('edit.programme', $record->id)}}" title="@lang('app.table.btn_title_modification')">
+									<i class="fa fa-edit"></i>
+								</a>&nbsp;
+								<a href="javascript:void(0)" onclick="delete_programme({{$record->id}})" title="@lang('app.table.btn_title_delete')">
+									<i class="fa fa-trash text-danger"></i>
+								</a>
 								@else
 								<a href="{{route('edit.programme', $record->id)}}" title="@lang('app.table.btn_title_modification')">
 									<i class="fa fa-edit"></i>

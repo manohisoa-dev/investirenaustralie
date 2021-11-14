@@ -13,11 +13,17 @@
                 @endphp
                 @if($first_photo)
                     @if($photo_principal)
-                    <!-- Programme sans principal -->
-                    @php $img = asset($photo_principal->filepath) @endphp
+                        <!-- Programme sans principal -->
+                        @php
+                            //$img = asset($photo_principal->filename)
+                            $img = asset(getImageResizeUrl('product', $photo_principal->filename, 'medium'))
+                        @endphp
                     @else
-                    <!-- Programme principal -->
-                    @php $img = asset($first_photo->filepath) @endphp
+                        <!-- Programme principal -->
+                        @php
+                            //$img = asset($first_photo->filename)
+                            $img = asset(getImageResizeUrl('product', $first_photo->filename, 'medium'))
+                        @endphp
                     @endif
                 @else
                     <!-- Programme aucun photo -->
@@ -27,7 +33,7 @@
                 <a href="{{ route('programme.show', ['slug'=>$item->slug]) }}">
                     <div class="transition blog-grid-overlay border-radius-0 {{ $item->isParticular()?'border-particular':'' }}" style="background-image: url({{ $img }});">
                         <div class="blog-gird-info">
-                            <h5>{{ $item->title?getGTranslateAutoDetect( App::getLocale() ,$item->title):'' }}</h5>
+                            <h5>{{getGTranslateAutoDetect( App::getLocale() ,$item->title)}}</h5>
                             <p><span class="white-color">{{ $item->location ? Illuminate\Support\Str::upper($item->location->locality.' '.$item->location->area_level_2.', '.$item->location->area_level_1.' '.$item->location->postalCode) : '' }}</span></p>            
                         </div>
                     </div>
@@ -57,7 +63,7 @@
                         <div class="row mx-auto my-auto">
                             <div id="myCarousel{{ $i }}" class="carousel slide w-100" data-ride="carousel">
                                 <div class="carousel-inner w-100" role="listbox">
-                                    @forelse (App\Models\Product::where('parent_id','=',$item->id)->orderBy($orderBy,$order)->get() as $prod)
+                                    @forelse (App\Models\Product::where('parent_id','=',$item->id)->where('status_res','=',0)->orderBy($orderBy,$order)->get() as $prod)
                                         <div class="carousel-item carousel-item-prod @if($loop->first) active @endif">
                                             <div class="{{ $viewProd=='list' ? 'col-lg-4' : 'col-md-12'}} col-sm-12">
                                                 <div class="thumb-wrapper">
@@ -68,14 +74,16 @@
                                                         @endphp
                                                         @if($first_photo)
                                                             @if($photo_principal)
-                                                            <!-- Programme sans principal -->
+                                                                <!-- Programme sans principal -->
                                                                 @php
-                                                                    $img_prod= asset($photo_principal->filepath);
+                                                                    //$img = asset($photo_principal->filename)
+                                                                    $img_prod = asset(getImageResizeUrl('product', $photo_principal->filename, 'thumb'))
                                                                 @endphp
                                                             @else
                                                                 <!-- Programme principal -->
                                                                 @php
-                                                                    $img_prod= asset($first_photo->filepath);
+                                                                    //$img = asset($first_photo->filename)
+                                                                    $img_prod = asset(getImageResizeUrl('product', $first_photo->filename, 'thumb'))
                                                                 @endphp
                                                             @endif
                                                         @else
@@ -118,7 +126,7 @@
                                     @endforelse
 
                                 </div>
-                                @if (sizeOf(App\Models\Product::where('parent_id','=',$item->id)->get())>3)
+                                @if (sizeOf(App\Models\Product::where('parent_id','=',$item->id)->where('status_res','=',0)->get())>3)
                                     <a class="carousel-control-prev bg-dark w-auto" href="#myCarousel{{ $i }}" role="button" data-slide="prev">
                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                         <span class="sr-only">Previous</span>

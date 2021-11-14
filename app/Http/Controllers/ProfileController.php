@@ -225,7 +225,7 @@ class ProfileController extends Controller {
         $rules = ['name' => 'required|max:100', 'email' => 'required|max:100',
             'language' => 'required|max:100', 'image' =>
             'image|mimes:jpeg,png,jpg,gif,svg|max:2048', 'first_name' => 'required|max:100',
-            'last_name' => 'required|max:100', 'nationality' => 'required|max:100', ];
+            'last_name' => 'required|max:100', 'nationality' => 'required|max:100' ];
 
 
         $validator = Validator::make($datas, $rules);
@@ -242,15 +242,19 @@ class ProfileController extends Controller {
 
             try {
                 // Créer user membre
-                $users = ['name' => $datas['name'], 'language' => $datas['language'], 'image_id' =>
+                $userData = ['name' => $datas['name'], 'language' => $datas['language'], 'image_id' =>
                     $datas['image_id'], ];
-                User::whereId($user->id)->update($users);
+                User::whereId($user->id)->update($userData);
 
                 // update userinfo
-                $userinfos = ['first_name' => $datas['first_name'], 'last_name' => $datas['last_name'],
+                $userinfo = ['first_name' => $datas['first_name'], 'last_name' => $datas['last_name'],
                     'nationality' => $datas['nationality'], 'allow_sharing' => $datas['allow_sharing'],
                     'newsletter' => $datas['newsletter'], ];
-                Userinfo::where('user_id', $user->id)->update($userinfos);
+                Userinfo::where('user_id', $user->id)->update($userinfo);
+
+                // update user location
+                $locationData = ['country' => $datas['country']] ;
+                Localisation::whereId($user->location_id)->update($locationData) ;
 
             }
             catch (\Throwable $th) {
@@ -566,7 +570,7 @@ class ProfileController extends Controller {
                     $datas['adrpost_locality'] : '', 'adrpost_postalCode' => isset($datas['adrpost_postalCode']) ?
                     $datas['adrpost_postalCode'] : '', 'adrpost_area_level_1' => isset($datas['adrpost_area_level_2']) ?
                     $datas['adrpost_area_level_2'] : '', 'adrpost_country' => isset($datas['adrpost_country']) ?
-                    $datas['adrpost_country'] : '', ];
+                    $datas['adrpost_country'] : '', 'longitude'=>$datas['afa_long'], 'latitude'=>$datas['afa_lat']];
                 Localisation::whereId($user->location_id)->update($locations);
 
                 // update userinfo
@@ -669,7 +673,10 @@ class ProfileController extends Controller {
                     'bank_postal_box' => $datas['bank_postal_box'],
                     'bank_locality' => $datas['bank_locality'], 
                     'bank_postalCode' => $datas['bank_postalCode'],
-                    'bank_country' => $datas['bank_country'] ];
+                    'bank_country' => $datas['bank_country'],
+                    'longitude'=>$datas['apl_long'],
+                    'latitude'=>$datas['apl_lat']
+                    ];
                 
                 Localisation::whereId($user->location_id)->update($locations);
 
@@ -948,7 +955,8 @@ class ProfileController extends Controller {
                 $locations = ['locality' => $datas['city'], 'postalCode' => $datas['post_code'],
                     'longitude' => $datas['snp_personne_long'], 'latitude' => $datas['snp_personne_lat'],
                     'country' => $datas['country'], 'area_level_1' => $datas['state'],
-                    'area_level_2' => $datas['suburb'], 'route' => $datas['street_adr']];
+                    'area_level_2' => $datas['suburb'], 'route' => $datas['street_adr'],
+                ];
                 Localisation::whereId($user->location_id)->update($locations);
 
                 // update seller individual

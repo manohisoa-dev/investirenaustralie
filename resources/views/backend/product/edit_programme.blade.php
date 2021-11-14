@@ -56,7 +56,7 @@
 									<label for="title">@lang('app.form.programme_choix_nature') *</label>
 									<select class="form-control" name="natureBien" id="natureBien" disabled="disabled">
 										<option value="@lang('app.txt.real_estate_program')" {{$product->natureBien == 'Programme immobilier' ? 'selected' : ''}}>@lang('app.txt.real_estate_program')</option>
-										<option value="@lang('app.txt.isolated_product')" {{$product->natureBien == 'Produit isol�' ? 'selected' : ''}}>@lang('app.txt.isolated_product')</option>
+										<option value="@lang('app.txt.isolated_product')" {{$product->natureBien == 'Produit isolé' ? 'selected' : ''}}>@lang('app.txt.isolated_product')</option>
 									</select>
 									<input type="hidden" name="natureBien" value="@lang('app.txt.real_estate_program')" />
 								</div>
@@ -91,7 +91,16 @@
 									<div class="col-lg-4">
 										<div class="form-group">
 											<label for="title">@lang('app.form.programme_commission_type')</label>
-											<select class="form-control" name="commision" id="commision">
+											@php
+												if($product->status == 'waiting'){
+													$class_select = '';
+													$class_input = '';
+												}else{
+													$class_select = 'disabled="disabled"';
+													$class_input = 'readonly=""';
+												}
+											@endphp
+											<select class="form-control" name="commision" id="commision" {{$class_select}}>
 												<option value="">Choisir...</option>
 												<option value="Sales commission rate (%)" {{$product->commission_type == 'Sales commission rate (%)' ? 'selected' : ''}}>@lang('app.form.programme_commission_option1') (%)</option>
 												<option value="Fixed commission ($)" {{$product->commission_type == 'Fixed commission ($)' ? 'selected' : ''}}>@lang('app.form.programme_commission_option2') ($)</option>
@@ -103,7 +112,7 @@
 											<div class="form-group">
 												<label for="title">@lang('app.form.programme_taux_commission')</label>
 												<div class="input-group m-b">
-													<input type="number" min="0" class="form-control" name="sales_rate" id="sales_rate">
+													<input type="number" min="0" class="form-control" name="sales_rate" id="sales_rate" {{$class_input}}>
 													<div class="input-group-append">
 														<span class="input-group-text">%</span>
 													</div>
@@ -114,7 +123,7 @@
 											<div class="form-group">
 												<label for="title">@lang('app.form.programme_mt_commission')</label>
 												<div class="input-group m-b">
-													<input type="number" min="0" class="form-control" name="rate_commission" id="rate_commission">
+													<input type="number" min="0" class="form-control" name="rate_commission" id="rate_commission" {{$class_input}}>
 													<div class="input-group-append">
 														<span class="input-group-text">AUD</span>
 													</div>
@@ -148,9 +157,15 @@
 									<div class="col-lg-4">
 										<div class="form-group">
 											<label for="title">@lang('app.form.programme_product_type') *</label>
+											@if($product->status == 'waiting')
 											<select class="form-control" name="type_id" id="type_id" style="width:100%">
 												
 											</select>
+											@else
+											<select class="form-control" name="type_id" id="type_id" style="width:100%" disabled="disabled">
+												
+											</select>
+											@endif
 										</div>
 									</div>
 								</div>
@@ -215,11 +230,11 @@
 												<select class="form-control" name="solicitor_id" id="solicitor_id" style="width:100%">
 													<option value="">@lang('app.form.choix_txt')</option>
 													@foreach($solicitors as $solicitor)
-														<option value="{{$solicitor->id}}" {{$solicitor->id == $solicitor->id?'selected="selected"':''}}>
+														<option value="{{$solicitor->id}}" {{$solicitor->id == $product->solicitor_id?'selected="selected"':''}}>
 															{{$solicitor->cabinet_name}}
 														</option>
 													@endforeach
-													<option value="new">Créer nouveau solicitor</option>
+													<option value="new">@lang('app.txt.new_solicitor')</option>
 												</select>
 											</div> 
 										</div>
@@ -230,19 +245,19 @@
 									<div class="row">						
 										<div class="col-lg-4">
 											<div class="form-group">
-												<label for="title">Nom du cabinet *</label>
+												<label for="title">@lang('app.txt.cabinet_name') *</label>
 												<input name="cabinet_name" id="cabinet_name" class="form-control" type="text" value="{{ old('cabinet_name')?old('cabinet_name'):'' }}">
 											</div>
 										</div>
 										<div class="col-lg-4">
 											<div class="form-group">
-												<label for="title">Email cabinet *</label>
+												<label for="title">@lang('app.txt.cabinet_email') *</label>
 												<input name="cabinet_email" id="cabinet_email" class="form-control" type="email" value="{{ old('cabinet_email')?old('cabinet_email'):'' }}">
 											</div>
 										</div>
 										<div class="col-lg-4">
 											<div class="form-group">
-												<label for="title">Tel *</label>
+												<label for="title">@lang('app.txt.cabinet_phone') *</label>
 												<input name="cabinet_phone" id="cabinet_phone" class="form-control" type="text" value="{{ old('cabinet_phone')?old('cabinet_phone'):'' }}">
 											</div>
 										</div>
@@ -341,7 +356,7 @@
 									</div>
 								</div>
 								
-								@if ($eoidossier)
+								@if ($eoidossier->count() > 0)
 								<div class="row">
 									 <div class="col-lg-12">
 									 <h5 style="font-weight:normal; font-size:17px; color:#718096">@lang('app.table.eoi_dossier')</h5>
@@ -408,7 +423,7 @@
 									</div>
 								</div> --}} 
 								
-								@if ($photos)
+								@if ($photos->count() > 0)
 								<div class="row">						
 									<div class="col-lg-12">		
 									<h5 style="font-weight:normal; font-size:17px; color:#718096">@lang('app.txt.photo_programme')</h5>				
@@ -450,7 +465,7 @@
 									</div>
 								</div>
 								
-								@if ($liadossier)
+								@if ($liadossier->count() > 0)
 								<div class="row">
 									 <div class="col-lg-12">
 										 <h5 style="font-weight:normal; font-size:17px; color:#718096">@lang('app.table.lia_dossier')</h5>
@@ -459,6 +474,13 @@
 										 <div id="salesMandates"></div>
 									 </div>
 								</div>  
+								@else
+								<div class="row">
+									<div class="col-lg-12">
+										<h5 style="font-weight:normal; font-size:17px; color:#718096">@lang('app.table.lia_dossier')</h5>
+										<div id="salesMandates"></div>
+									</div>
+								</div>
 								@endif 
 														
 								<div class="row">
@@ -508,6 +530,7 @@
 // display_address
 function initMap(){
 	var autocomplete = new google.maps.places.Autocomplete($("#display_address")[0], {});
+	autocomplete.setComponentRestrictions({'country': ['au']});
 	google.maps.event.addListener(autocomplete, 'place_changed', function() {
 		var place = autocomplete.getPlace();
 		//console.log(place.address_components);
@@ -580,7 +603,6 @@ function initMap(){
 						
 		CKEDITOR.replace( 'description' );
 		$("#category_id").select2();
-		$("#type_id").select2();
 		$("a.fancyboxLink").fancybox();			
 		$("#fancybox-pdf").fancybox({
 			openEffect  : 'none',
@@ -907,7 +929,7 @@ function initMap(){
 				},
 				title_programme: {
 					required: true,
-					remote: {
+					/*remote: {
 						url: "{{ route('ajaxCheckTitreProgramme') }}",
 						type: "get",
 						data: {
@@ -919,7 +941,7 @@ function initMap(){
 								return $("input[name='title_programme']").val()+'|;|'+$("input[name='title_programme_now']").val();
 							}
 						}
-					}
+					}*/
 				},
 				chk_firb: {
 					required: true

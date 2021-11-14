@@ -98,6 +98,7 @@
           event.preventDefault();
         }
     });
+
 </script>
 <script>
     var _map;
@@ -133,14 +134,14 @@
         
         _map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: _lat, lng:  _long},
-            zoom: 2
+            zoom: 2,
         });
     
         for (var i = 0; i < datas.length; i++) {
             placeMarker(datas[i], );
         }
     }
-    
+
     function placeMarker(data) {
         markers[data.id] = new google.maps.Marker({
             position: {lat:parseFloat(data.lat), lng:parseFloat(data.lng)},

@@ -9,7 +9,7 @@
 <!-- CSRF Token -->
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
-<title>{{app_name()}} {{isset($title)?' - '.$title:''}}</title>
+<title>{{app_name()}} {{isset($title)&&$title!='title_fr'&&$title!='title_en'?' - '.$title:''}}</title>
 <!-- Le fav and touch icons -->
 <link rel="shortcut icon" href="{{asset('images/favicon.png')}}">
 <meta name="description" content="{{option('site.meta_desc', 'IEA')}}">
@@ -416,10 +416,10 @@
                             @endforeach
                         </div>
 						<div style="margin-top:10px">
-							<p style="color:#fff !important">S'inscrire à notre newsletters</p>
+							<p style="color:#fff !important">{{trans('app.txt.inscrirenews')}}</p>
 							<form class="d-flex flex-row m-5px-b p-1 white-bg input-group" id="form_newsletter" method="post">
 								{{ csrf_field() }}
-								<input type="email" name="email_adresse" id="email_adresse" class="form-control border-radius-0 border-0" placeholder="votre adresse email" required>
+								<input type="email" name="email_adresse" id="email_adresse" class="form-control border-radius-0 border-0" placeholder="{{trans('app.txt.your.email')}}" required>
 								<input type="hidden" name="statuts" id="statuts" value="Actif">
 								<button class="m-btn m-btn-theme2nd flex-shrink-0" type="submit">OK</button>
 							</form>
@@ -971,6 +971,7 @@
         $(window).bind('wheel', function(event) {
         if (event.originalEvent.wheelDelta >= 0) {
             if ($(document).scrollTop() <= 100) {
+                console.log('ato');
                 // $('#container-navbar').removeClass('show-navbar-after');
                 $('#container-navbar').removeClass('show-navbar-after');
                 $('#container-navbar').addClass('show-navbar-after-top');    

@@ -38,7 +38,7 @@ class ProgrammeController extends Controller {
                     $product->save();
                 }
 
-                $products = Product::orderBy('created_at', 'desc')->ofStatus('published')->isProduct()->take($this->recentSize)->get();
+                $products = Product::orderBy('created_at', 'desc')->ofStatus('published')->isProduct()->where('status_res',0)->take($this->recentSize)->get();
 
                 $categories = Category::orderBy('created_at', 'desc')->has('products')->withCount('products')->take($this->recentSize)->get();
 
@@ -109,7 +109,7 @@ class ProgrammeController extends Controller {
             $viewProd = 'list';
 
         //$items = Product::ofStatus('published')->isParent(0)->where('quantity', '>', 0);
-        $items = Product::ofStatus('published')->whereIn('parent_id', array(0, -1))->where('quantity',
+        $items = Product::ofStatus('published')->where('status_res',0)->whereIn('parent_id', array(0, -1))->where('quantity',
             '>', 0);
 
         if ($cat) {

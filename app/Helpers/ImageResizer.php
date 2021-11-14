@@ -1,5 +1,6 @@
 <?php
 namespace App\Helpers;
+use App\Models\ProductsImage;
 use Intervention\Image\ImageManagerStatic as Image;
 
 trait ImageResizer{
@@ -35,24 +36,45 @@ trait ImageResizer{
 
     public static function regenerateAllAvatar( ){
         $toRecord = self::all();
-        foreach( $toRecord as $oRecord ){
-            foreach( self::$aImageSize as $imageKey => $imageSize ){
-                $zPhoto = "";
 
-                if( method_exists($oRecord,'getImageRaw') ){
-                    $media = $oRecord->getImageRaw();
-                    if( isset($media->filename) ){
-                        $zPhoto = $media->filename . '.' . $media->extension ;
-                    }
-                }else{
-                    $tmImage = $oRecord->image()->first();
-                    if( count($tmImage) ){
-                        $zPhoto = $tmImage->filename ;
+        foreach( $toRecord as $oRecord ){
+            if($oRecord->table == 'products'){
+                if(count($oRecord->images) > 0){
+//                    echo $oRecord->title .'<br/>' ;
+//                    dump($oRecord->images) ;
+
+                    foreach( self::$aImageSize as $imageKey => $imageSize ){
+                        $zPhoto = "";
+
+                        foreach ($oRecord->images as $imageProduct){
+                            $zPhoto = $imageProduct->filename ;
+
+                            if( $zPhoto ){
+                                self::regenerateAvatarSize($imageKey,$zPhoto);
+                            }
+                        }
                     }
                 }
+            }
+            else {
+                foreach( self::$aImageSize as $imageKey => $imageSize ){
+                    $zPhoto = "";
 
-                if( $zPhoto ){
-                    self::regenerateAvatarSize($imageKey,$zPhoto);
+                    if( method_exists($oRecord,'getImageRaw') ){
+                        $media = $oRecord->getImageRaw();
+                        if( isset($media->filename) ){
+                            $zPhoto = $media->filename . '.' . $media->extension ;
+                        }
+                    }else{
+                        $tmImage = $oRecord->image()->first();
+                        if( count($tmImage) ){
+                            $zPhoto = $tmImage->filename ;
+                        }
+                    }
+
+                    if( $zPhoto ){
+                        self::regenerateAvatarSize($imageKey,$zPhoto);
+                    }
                 }
             }
         }

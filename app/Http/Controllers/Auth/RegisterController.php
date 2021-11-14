@@ -668,6 +668,10 @@ class RegisterController extends Controller
                 if(isset($location)){
                     DB::table('localizations')->where('id', $location->id)->delete();
                 }
+                
+                if(isset($userInfo)){
+                    DB::table('userinfos')->where('id', $userInfo->id)->delete();
+                }
                 return back()->with('info', trans('app.txt.errorcreateuser'));
             }
 
@@ -783,6 +787,9 @@ class RegisterController extends Controller
                 }
                 if(isset($location)){
                     DB::table('localizations')->where('id', $location->id)->delete();
+                }
+                if(isset($userInfo)){
+                    DB::table('userinfos')->where('id', $userInfo->id)->delete();
                 }
                 return back()->with('info', trans('app.txt.errorcreateuser'));
             }
@@ -901,6 +908,9 @@ class RegisterController extends Controller
                 }
                 if(isset($location)){
                     DB::table('localizations')->where('id', $location->id)->delete();
+                }
+                if(isset($userInfo)){
+                    DB::table('userinfos')->where('id', $userInfo->id)->delete();
                 }
                 return back()->with('info', trans('app.txt.errorcreateuser'));
             }
@@ -1026,6 +1036,9 @@ class RegisterController extends Controller
                 if(isset($location)){
                     DB::table('localizations')->where('id', $location->id)->delete();
                 }
+                if(isset($userInfo)){
+                    DB::table('userinfos')->where('id', $userInfo->id)->delete();
+                }
                 return back()->with('info', trans('app.txt.errorcreateuser'));
             }
 
@@ -1142,6 +1155,9 @@ class RegisterController extends Controller
                 if(isset($location)){
                     DB::table('localizations')->where('id', $location->id)->delete();
                 }
+                if(isset($userInfo)){
+                    DB::table('userinfos')->where('id', $userInfo->id)->delete();
+                }
                 return back()->with('info', trans('app.txt.errorcreateuser'));
             }
 
@@ -1256,6 +1272,9 @@ class RegisterController extends Controller
                 }
                 if(isset($location)){
                     DB::table('localizations')->where('id', $location->id)->delete();
+                }
+                if(isset($userInfo)){
+                    DB::table('userinfos')->where('id', $userInfo->id)->delete();
                 }
                 return back()->with('info', trans('app.txt.errorcreateuser'));
             }
@@ -1406,6 +1425,9 @@ class RegisterController extends Controller
                 if(isset($location)){
                     DB::table('localizations')->where('id', $location->id)->delete();
                 }
+                if(isset($userInfo)){
+                    DB::table('userinfos')->where('id', $userInfo->id)->delete();
+                }
                 return back()->with('info', trans('app.txt.errorcreateuser'));
             }
 
@@ -1552,6 +1574,9 @@ class RegisterController extends Controller
                 if(isset($location)){
                     DB::table('localizations')->where('id', $location->id)->delete();
                 }
+                if(isset($userInfo)){
+                    DB::table('userinfos')->where('id', $userInfo->id)->delete();
+                }
                 return back()->with('info', trans('app.txt.errorcreateuser'));
             }
 
@@ -1667,6 +1692,9 @@ class RegisterController extends Controller
                 if(isset($location)){
                     DB::table('localizations')->where('id', $location->id)->delete();
                 }
+                if(isset($userInfo)){
+                    DB::table('userinfos')->where('id', $userInfo->id)->delete();
+                }
                 return back()->with('info', trans('app.txt.errorcreateuser'));
             }
 
@@ -1687,9 +1715,9 @@ class RegisterController extends Controller
             $content = strtr($template->$body, $vars);
             $content = ['title' => '', 'body' => $content];
 
-//            $troublLink = setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration')));
-//            $content = strtr($template->$body, $vars);
-//            $content = ['title' => '', 'body' => $content, 'actionText' => trans('mail.btn.confirm.registration'), 'actionUrl' => $troublLink];
+        //   $troublLink = setLinkDynamic($confirmLink,strtoupper(trans('mail.btn.confirm.registration')));
+        //     $content = strtr($template->$body, $vars);
+        //     $content = ['title' => '', 'body' => $content, 'actionText' => trans('mail.btn.confirm.registration'), 'actionUrl' => $troublLink];
 
             Mail::to($user->email)->send(new MailTemplate($content, $sujet));
             
@@ -1944,7 +1972,7 @@ class RegisterController extends Controller
         $user_role = $user->role===3?'afa':'apl';
         $file = $request->file('file_contract');
         $filenameWithExt = $file->getClientOriginalName();
-//        $url = 'uploads/pdf/registrations/'.$user_role.'/'.$filenameWithExt;
+        // $url = 'uploads/pdf/registrations/'.$user_role.'/'.$filenameWithExt;
         $url = public_path('uploads'.DIRECTORY_SEPARATOR.'pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.$user_role.DIRECTORY_SEPARATOR.$filenameWithExt);
         $path = public_path('uploads'.DIRECTORY_SEPARATOR.'pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.$user_role);
         $download_path = url('uploads'.DIRECTORY_SEPARATOR.'pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.$user_role.DIRECTORY_SEPARATOR.$filenameWithExt);
@@ -1983,6 +2011,7 @@ class RegisterController extends Controller
     public function afaContract(){
         return view('pdf.afa_contract',['user'=>User::whereId(361)->first()]);
     }
+
     public function aplContract(){
         return view('pdf.apl_contract',['user'=>User::whereId(2)->first()]);
     }
@@ -2138,7 +2167,6 @@ class RegisterController extends Controller
             echo "true";
         }
     }
-
 
     /*
     * Load tel code from csv file

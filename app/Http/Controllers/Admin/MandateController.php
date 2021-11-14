@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\MOdels\Mandate;
+use App\Models\Mandate;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Jleon\LaravelPnotify\Notify;
-use App\MOdels\State;
+use App\Models\State;
 use App\Models\Image;
 
 class MandateController extends Controller {

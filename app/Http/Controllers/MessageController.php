@@ -56,8 +56,12 @@ class MessageController extends Controller
 
         $data = [];
         foreach($messages as $message){
-            $filter = new BadWordFilter($filterOptions);
-            $cleanString = $filter->clean($message->body, "#!%^");
+            if($message->from_id != 1){
+                $filter = new BadWordFilter($filterOptions);
+                $cleanString = $filter->clean($message->body, "#!%^");
+            }else{
+                $cleanString = $message->body ;
+            }
 
             $data[] = [
                 'id' => $message->id,
@@ -65,7 +69,7 @@ class MessageController extends Controller
                 'from_immat' => User::where('id',$message->from_id)->first()->immat,
                 'from_name' => User::where('id',$message->from_id)->first()->name,
                 'to_id' => $message->to_id,
-                'body' => nl2br(e($cleanString)),
+                'body' => e(nl2br($cleanString)),
                 'created_at' => $message->created_at,
                 'created_at_send' => $message->created_at->diffForHumans(),
                 'seen' => $message->seen? trans('app.txt.read') : trans('app.txt.unread'),
@@ -146,8 +150,12 @@ class MessageController extends Controller
 
         $data = [];
         foreach($messages as $message){
-            $filter = new BadWordFilter($filterOptions);
-            $cleanString = $filter->clean($message->body, "#!%^");
+            if($message->from_id != 1){
+                $filter = new BadWordFilter($filterOptions);
+                $cleanString = $filter->clean($message->body, "#!%^");
+            }else{
+                $cleanString = $message->body ;
+            }
 
             $data[] = [
                 'id' => $message->id,
@@ -155,7 +163,7 @@ class MessageController extends Controller
                 'from_immat' => User::where('id',$message->from_id)->first()->immat,
                 'from_name' => User::where('id',$message->from_id)->first()->name,
                 'to_id' => $message->to_id,
-                'body' => nl2br(e($cleanString)),
+                'body' => e(nl2br($cleanString)),
                 'created_at' => $message->created_at,
                 'created_at_send' => $message->created_at->diffForHumans(),
                 'seen' => $message->seen? trans('app.txt.read') : trans('app.txt.unread'),

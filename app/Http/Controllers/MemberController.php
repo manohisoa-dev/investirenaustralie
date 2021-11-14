@@ -82,7 +82,7 @@ class MemberController extends Controller {
     
     public function transactions() {
         $items = Auth::user()->getDossierTransaction()->paginate($this->pageSize);
-
+        
         return view('backend.transactions.all')->with('title', __('member.orders'))->with('items', $items);
     }
 
@@ -551,7 +551,7 @@ class MemberController extends Controller {
         $dtDate = $dt->format('m-d-Y');
         $dtTime = $dt->format('H:i:m');
         $user = Auth::user();
-        $user_name= Auth::user()->isPerson()?Auth::user()->name:Auth::user()->userinfos()->first()->orga_name;
+        $user_name= $user->isPerson()?$user->userinfos->first_name.' '.$user->userinfos->last_name:$user->userinfos->orga_name;
         $id_doss_trans = $request->get('id_doss_trans');
 
         if ($request->has('afa')) {
@@ -607,7 +607,11 @@ class MemberController extends Controller {
             // $user->notify(new MemberMessage($sujet,$content));
             // send notification email to member from IEA
             $afa =User::whereId($afa_id)->first();
-            $template = MailsTemplate::where('id', 49)->get();
+            if($user->isMove()){
+                $template = MailsTemplate::where('id', 49)->get();
+            }else{
+                $template = MailsTemplate::where('id', 50)->get();
+            }
             App::setLocale($user->language);
             $lang = $user->language;
             $body = 'template_' . $lang;
@@ -629,7 +633,7 @@ class MemberController extends Controller {
 
             // Declenche Conjuction Agreement Module
             App::setLocale('en');
-            $this->sendConjuctionAgreementModule(Auth::user()->afa_id,Auth::user()->afa->email,trans('member.gothere.select_afa.ca.message_to_afa', ['date'=>$dtDate,'hour'=>$dtTime,'name'=>$user,'immat'=>Auth::user()->immat,'agence' => 'IEA', 'download_ca'=>$downloadCaLink,'upload_ca'=>$uploadCaLink]), $downloadCaLink, $uploadCaLink, $id_doss_trans);
+            $this->sendConjuctionAgreementModule($user->afa_id,$user->afa->email, $downloadCaLink, $uploadCaLink, $id_doss_trans);
             
             // set language to default
             App::setLocale($user->language);
@@ -645,15 +649,12 @@ class MemberController extends Controller {
     }
 
     // Declanche Conjunction Agreement (CA)
-    public function sendConjuctionAgreementModule($afa_id,$afa_mail,$content,$downloadCaLink,$uploadCaLink,$id_doss_trans){
+    public function sendConjuctionAgreementModule($afa_id,$afa_mail,$downloadCaLink,$uploadCaLink,$id_doss_trans){
         $afaId=$afa_id;
 
         // Create CA pdf
         $pdfName=explode('/',$downloadCaLink);
         $this->createCaPdf($pdfName[6],$id_doss_trans);
-        
-        // send chat message to afa from IEA (admin)
-        Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$afa_id,'body'=>$content]);
 
         // send notification email to afa from IEA
         $user=Auth::user();
@@ -678,6 +679,10 @@ class MemberController extends Controller {
         $sujet = $template[0]->$sujet_tpl;
         $contenu = strtr($template[0]->$body, $vars);
         $content = ['title' => '', 'body' => $contenu];
+        
+        // send chat message to afa from IEA (admin)
+        Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$afa_id,'body'=>$contenu]);
+
         // $email_to = 'dev4.easydata@gmail.com';
         // Mail::to($email_to)->send(new MailTemplate($content, $sujet));
         // $afa->notify(new AfaConjunctionAgreementMessage($sujet,$content));
@@ -861,39 +866,44 @@ class MemberController extends Controller {
             $this->creationDossierTransaction($product);
         }
 
-        if(!$user->isComplete()){
-            if(Auth::user()->isPerson()){
-                // Membre particulier
-                if($product){
-                    $prod_id = $product->id;
-                    $userAuth= Auth::user();
-                    $country = Country::where('code',$userAuth->location->country)->pluck('content')[0];
-                    $completeDossierInscriptionLink = setLinkDynamic(route('member.complete_registration',$product),strtoupper(trans('app.txt.complete_my_registration_form')));
-                    $privacyPolicyLink=setLinkDynamic(route('confidentialities'),trans('app.txt.privacy_policy'));
-                    // Get Model message
-                    $message = ModelMessage::where('id', 9)->get();
-                    if (count($message) > 0) {
-                        $vars = array(
-                            '{date}' => $dtDate,
-                            '{heure}' => $dtTime,
-                            '{nomMembre}' => $member_name,
-                            '{completeDossierInscriptionLink}' => $completeDossierInscriptionLink,
-                            '{Politique de Confidentialite Link}' => $privacyPolicyLink);
-                        $contenu = strtr($message[0]->message_fr, $vars);
+        if(!$user->isMove()){
+            if(!$user->isComplete()){
+                if(Auth::user()->isPerson()){
+                    // Membre particulier
+                    if($product){
+                        $prod_id = $product->id;
+                        $userAuth= Auth::user();
+                        $country = Country::where('code',$userAuth->location->country)->pluck('content')[0];
+                        $completeDossierInscriptionLink = setLinkDynamic(route('member.complete_registration',$product),strtoupper(trans('app.txt.complete_my_registration_form')));
+                        $privacyPolicyLink=setLinkDynamic(route('confidentialities'),trans('app.txt.privacy_policy'));
+                        // Get Model message
+                        $message = ModelMessage::where('id', 9)->get();
+                        if (count($message) > 0) {
+                            $vars = array(
+                                '{date}' => $dtDate,
+                                '{heure}' => $dtTime,
+                                '{nomMembre}' => $member_name,
+                                '{completeDossierInscriptionLink}' => $completeDossierInscriptionLink,
+                                '{Politique de Confidentialite Link}' => $privacyPolicyLink);
+                            $contenu = strtr($message[0]->message_fr, $vars);
+                        }
+                    
+                        Session()->put('complete_registration',true);
+                        return redirect($prodUrl)->with('complete_registration_directly_content', $contenu)->with('complete_registration_message',1);
+                    }else{
+                        abort(404);
                     }
-                
-                    Session()->put('complete_registration',true);
-                    return redirect($prodUrl)->with('complete_registration_directly_content', $contenu)->with('complete_registration_message',1);
-                }else{
-                    abort(404);
                 }
+            }else{
+                $dossTrans = $user->getCurrentDossierTransaction($prod_id);
+                
+                if($dossTrans->status == 1){
+                    return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa', ['date'=>$dtDate, 'hour'=>$dtTime, 'name'=>$member_name]))->with('hasAfa',0);
+                }
+    
+                return redirect()->route('member.transaction');
             }
         }else{
-            $dossTrans = $user->getCurrentDossierTransaction($prod_id);
-            if($dossTrans->status == 1){
-                return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa', ['date'=>$dtDate, 'hour'=>$dtTime, 'name'=>$member_name]))->with('hasAfa',0);
-            }
-
             return redirect()->route('member.transaction');
         }
         

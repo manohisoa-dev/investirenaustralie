@@ -7,12 +7,19 @@
 				
 			@endphp
 			@if($first_photo)
+                @if($photo_principal)
+                    <!-- Programme sans principal -->
+                    @php $img_prod = asset(getImageResizeUrl('product', $photo_principal->filename, 'thumb')) @endphp
+                @else
+                    <!-- Programme principal -->
+                    @php $img_prod = asset(getImageResizeUrl('product', $first_photo->filename, 'thumb')) @endphp
+                @endif
 				@if($photo_principal)
-				<!-- Programme sans principal -->
-				<img src="{{asset($photo_principal->filepath)}}" alt="{{$item->title}}" />
+                    <!-- Programme sans principal -->
+                    <img src="{{$img_prod}}" alt="{{$item->title}}" />
 				@else
-				<!-- Programme principal -->
-				<img src="{{asset($first_photo->filepath)}}" alt="{{$item->title}}" />
+                    <!-- Programme principal -->
+                    <img src="{{$img_prod}}" alt="{{$item->title}}" />
 				@endif
 			@else
 				<!-- Programme aucun photo -->

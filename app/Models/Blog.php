@@ -15,6 +15,7 @@ class Blog extends Model {
     protected static $aImageSize = array(
         'mini'              => [25, 25],
         'thumb'             => [50, 37],
+        'scare'             => [350, 300],
         'medium'            => [374, 200],
         'large'             => [598, 418]
     );

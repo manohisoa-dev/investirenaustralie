@@ -1,0 +1,72 @@
+@media  (min-width: 320px) and (max-width: 479px) {
+    .herbyCookieConsent {
+        margin-left: 0 !important;
+        height: 19rem;
+        width: 100% !important;
+    }
+    .herbyCookieConsent .herbyBtn, .herbyBtn2{
+        margin-bottom: 1rem;
+    }
+
+    #btn-connexion{ z-index: 999;}
+    .bloc-registration{z-index: 1;}
+
+    .dropdown-messages{position: absolute !important; left: -10rem !important;}
+
+    .border-particular-cocarde{
+        left: 68% !important;
+        top: 23% !important;
+    }
+
+    .border-particular-cocarde-2{
+        left: 70% !important;
+        top: 47% !important;
+    }
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .light-logo,.dark-logo{width : 6rem;}
+    .carousel{margin-top: 3rem;}
+    #home{height: 16rem;}
+    .mission-content{height: auto!important;}
+
+    .bloc-login-registration {
+        margin-left: -5%;
+        font-size: 1.2rem;
+        padding-top: 0.3rem;
+    }
+    .bloc-login-registration ul {font-size: 1rem; text-align: left!important;}
+    .bloc-registration{margin-top: -1.7rem;}
+
+    .border-particular-cocarde-2{
+        left: 75% !important;
+        top: 55% !important;
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .border-particular-cocarde{
+        left: 87% !important;
+        top: 24% !important;
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .border-particular-cocarde{
+        left: 80%;
+        top: 35% !important;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    
+}

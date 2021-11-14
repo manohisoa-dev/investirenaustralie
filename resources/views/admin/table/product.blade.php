@@ -27,10 +27,10 @@
 				@if($first_photo)
 					@if($photo_principal)
 					<!-- Programme sans principal -->
-					<img src="{{asset($photo_principal->filepath)}}" class="thumb" style="height:50px" />
+					<img src="{{asset(getImageResizeUrl('product', $photo_principal->filename, 'mini'))}}" class="thumb"/>
 					@else
 					<!-- Programme principal -->
-					<img src="{{asset($first_photo->filepath)}}" class="thumb" style="height:50px" />
+					<img src="{{asset(getImageResizeUrl('product', $first_photo->filename, 'mini'))}}" class="thumb"/>
 					@endif
 				@else
 					<!-- Programme aucun photo -->

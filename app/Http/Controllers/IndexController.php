@@ -44,6 +44,7 @@ class IndexController extends Controller
      */
     public function index(Request $request)
     {
+        nouvelle_afa_disponible();
         // $programme = Product::all()->first();
         // $text = getTranslate('programme',$programme,App::getLocale());
         // setTranslate('fr','es',$text,'programme',$programme);

@@ -41,14 +41,16 @@
                 @endphp
                 @if($first_photo)
                     @if($photo_principal)
-                    <!-- Programme sans principal -->
+                        <!-- Programme sans principal -->
                         @php
-                            $img_prod= asset($photo_principal->filepath);
+                            //$img = asset($photo_principal->filename)
+                            $img_prod = asset(getImageResizeUrl('product', $photo_principal->filename, 'mini'))
                         @endphp
                     @else
                         <!-- Programme principal -->
                         @php
-                            $img_prod= asset($first_photo->filepath);
+                            //$img = asset($first_photo->filename)
+                            $img_prod = asset(getImageResizeUrl('product', $first_photo->filename, 'mini'))
                         @endphp
                     @endif
                 @else
@@ -65,7 +67,7 @@
                     </div>
                 </div>
                 <div class="p-15px-l">
-                    <p class="m-0px">{{$product->title}}</p>
+                    <p class="m-0px">{{getGTranslateAutoDetect( App::getLocale() ,$product->title)}}</p>
 					@if($product->parent_id == -1)
                     	<span class="btn btn-price">AUD {{number_format($product->price, 0, '.', ' ')}}</span>
 					@else
@@ -76,7 +78,7 @@
             <div class="social-icon si-30 theme2nd radius nav justify-content-center p-10px-t" style="padding-bottom: 7px;padding-top: 5px;">
 			    
 				@if($product->category_id == 1)
-				<!-- icon produit résidentiel -->
+				<!-- icon produit rï¿½sidentiel -->
                 <a class="m-15px-r body-color font-w-500" href="#"><i class="fa fa-arrows-alt"></i></a> @lang('app.num.area', ['num'=>number_format($product->total_area, 0)])
                 <a class="body-color font-w-500" href="#"><i class="fa fa-bed"></i></a> @lang('app.num.bed', ['num'=>$product->bedrooms])
                 <a class="body-color font-w-500" href="#"><i class="fa fa-bath"></i></a> @lang('app.num.bath', ['num'=>$product->bathrooms])

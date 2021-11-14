@@ -47,4 +47,9 @@ class DossierTransaction extends Model
     public static function getDossierTransactionInfo($prod_id,$user_id){
         return DossierTransaction::where('user_id','=',$user_id)->where('product_id','=',$prod_id)->first();
     }
+    
+    public static function getDossierTransactionWaiting(){
+        return DossierTransaction::where('status','=',5)->get();
+    }
+
 }

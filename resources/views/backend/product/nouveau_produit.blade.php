@@ -342,12 +342,7 @@
 								</div>
 							</div>	
 							<div class="col-lg-6">
-								<div class="form-group">
-									<label for="title">@lang('app.form.product_status')</label>
-									<select class="form-control" name="status" id="status">
-										<option value="waiting">En attente</option>
-									</select>
-								</div>
+								<input type="hidden" name="status" id="status" value="waiting" />
 							</div>	
 						</div>
 						
@@ -641,13 +636,13 @@
 							<div class="row">
 								<div class="col-lg-6">
 									<div class="form-group">
-										<label for="title">Surface *</label>
+										<label for="title">@lang('app.txt.surface_land') *</label>
 										<input type="number" min="0" name="surface_foncier" id="surface_foncier" class="form-control">
 									</div>
 								</div>
 								<div class="col-lg-6">
 									<div class="form-group">
-										<label for="title">Unité de surface *</label>
+										<label for="title">@lang('app.txt.unite_surface_land') *</label>
 										<select class="form-control" name="unite_surface">
 											<option value="m2">m2</option>
 											<option value="Ha">Ha</option>
@@ -675,7 +670,7 @@
 						<div id="info_prd_commercial" style="display:none">
 							<div class="row">
 								<div class="col-md-4">
-									<label for="title">Sales area *</label>
+									<label for="title">@lang('app.txt.surface_vente') *</label>
 									<div class="input-group" style="margin-bottom: .5rem;">
 										<input type="text" name="surface_commercial" id="surface_commercial" class="form-control">
 										<div class="input-group-append">
@@ -684,16 +679,16 @@
 									</div>
 								</div>
 								<div class="col-md-4">
-									<label for="title">Customer parking *</label>
+									<label for="title">@lang('app.txt.client_parking') *</label>
 									<select class="form-control" name="type_cutomer_parking" id="type_cutomer_parking">
-										<option value="">Choisir...</option>
-										<option value="1">Oui</option>
-										<option value="0">Non</option>
+										<option value="">@lang('app.form.choix_txt')...</option>
+										<option value="1">@lang('app.yes')</option>
+										<option value="0">@lang('app.no')</option>
 									</select>
 								</div>
 								<div class="col-md-4">
 									<div id="NbCustomerParking" style="display:none">
-										<label for="title">Number of parking spots</label>
+										<label for="title">@lang('app.number_parking')</label>
 										<input type="number" min="0" class="form-control" name="nombre_cutomer_parking" />
 									</div>
 								</div>
@@ -716,7 +711,7 @@
 											@foreach($solicitors as $solicitor)
 												<option value="{{$solicitor->id}}">{{$solicitor->cabinet_name}}</option>
 											@endforeach
-											<option value="new">Créer nouveau solicitor</option>
+											<option value="new">@lang('app.txt.new_solicitor')</option>
 										</select>
 									</div> 
 								</div>
@@ -726,19 +721,19 @@
 							<div class="row">						
 								<div class="col-lg-4">
 									<div class="form-group">
-										<label for="title">Nom du cabinet *</label>
+										<label for="title">@lang('app.txt.cabinet_name') *</label>
 										<input name="cabinet_name" id="cabinet_name" class="form-control" type="text" value="{{ old('cabinet_name')?old('cabinet_name'):'' }}">
 									</div>
 								</div>
 								<div class="col-lg-4">
 									<div class="form-group">
-										<label for="title">Email cabinet *</label>
+										<label for="title">@lang('app.txt.cabinet_email') *</label>
 										<input name="cabinet_email" id="cabinet_email" class="form-control" type="email" value="{{ old('cabinet_email')?old('cabinet_email'):'' }}">
 									</div>
 								</div>
 								<div class="col-lg-4">
 									<div class="form-group">
-										<label for="title">Tel *</label>
+										<label for="title">@lang('app.txt.cabinet_phone') *</label>
 										<input name="cabinet_phone" id="cabinet_phone" class="form-control" type="text" value="{{ old('cabinet_phone')?old('cabinet_phone'):'' }}">
 									</div>
 								</div>

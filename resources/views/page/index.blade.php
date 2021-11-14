@@ -300,7 +300,7 @@
     </section>
     <!--End Section -->
     <!-- Section produit-->
-    <section class="section gray-bg overflow-hidden">
+    <section class="section gray-bg overflow-hidden bloc-last-product">
         <div class="container">
             <div class="row md-m-25px-b m-45px-b justify-content-center text-center">
                 <div class="col-lg-8">
@@ -335,7 +335,7 @@
 						$title = 'title_'.$lang;
 					@endphp
                     <div class="col-lg-4 m-15px-tb">
-                        <div class="hover-top transition blog-grid-overlay" style="background-image: url({{$blog->imageUrl()}}); ">
+                        <div class="hover-top transition blog-grid-overlay" style="background-image: url({{asset(getImageResizeUrl('blog', $blog->image->filename, 'scare'))}}); ">
                             <div class="blog-gird-info">
                                 <a class="overlay-link" href="{{route('blog.index',$blog->$slug)}}"></a>
                                 <div class="b-meta">
