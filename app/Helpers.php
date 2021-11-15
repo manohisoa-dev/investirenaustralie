@@ -697,7 +697,7 @@ if (!function_exists('nouvelle_afa_disponible')) {
                     $tab_afa[] = $val->id_afa;
                 }
                 $id_afa_p = implode(', ', $tab_afa);
-                App\Models\Product::where('id', $produit->id)->update(['afaId_possible' => $tab_afa]);
+                App\Models\Product::where('id', $produit->id)->update(['afaId_possible' => $id_afa_p]);
             } 
         }
     }
