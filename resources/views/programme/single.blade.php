@@ -72,14 +72,12 @@
                                                                     $img_prod=App\Models\Image::whereId($it->pivot->image_id)->first()->filepath;
                                                                 } else {
                                                                     $img_prod=asset('images/iea.png');
-                                                               
                                                                 }
                                                             @endphp
                                                             <a href="javascript:void(0)"><img src="{{asset($img_prod)}}" alt="{{$it->title}}" class="img-fluid imageresource{{ $key }}"></a>
                                                         </div>
                                                         <div class="portfolio-info">
                                                             <div class="portfolio-desc">
-                                                                
                                                                 <h5><a href="#">{{getGTranslateAutoDetect( App::getLocale() ,$item->title)}}</a></h5>
                                                             </div>
                                                             <a href="javascript:void(0)" value="{{ $key }}" class="gallery-link pop">
