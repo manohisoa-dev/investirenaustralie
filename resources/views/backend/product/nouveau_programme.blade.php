@@ -32,10 +32,9 @@
 					</ul>
 				</div>
 				@if($errors->any())
-				<div class="alert alert-danger alert-dismissable">
-					<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-					{{$errors->first()}}.
-				</div>
+					@foreach ($errors->all() as $error)
+						 <div class="alert alert-danger alert-dismissable">{{$error}}</div>
+					@endforeach
 				@endif
 				<form class="form-validation form-padding" action="{{route('save-programme')}}" method="post" id="programmeForm" enctype="multipart/form-data">
 					{{ csrf_field() }}
@@ -364,7 +363,7 @@
 // display_address
 function initMap(){
 	var autocomplete = new google.maps.places.Autocomplete($("#display_address")[0], {});
-	autocomplete.setComponentRestrictions({'country': ['au']});
+	//autocomplete.setComponentRestrictions({'country': ['au']});
 	google.maps.event.addListener(autocomplete, 'place_changed', function() {
 		var place = autocomplete.getPlace();
 		console.log(place.address_components);

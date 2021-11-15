@@ -39,6 +39,7 @@
 									<div class="col-lg-12">
 										<div class="form-group">
 											<label for="title">@lang('app.form.product_title') *</label>
+											<input name="title_now" id="title" class="form-control" type="hidden" value="{{$product->title}}">
 											<input name="title" id="title" class="form-control" type="text" value="{{$product->title}}">								
 										</div>
 									</div>
@@ -1825,7 +1826,16 @@
 			ignore: ":hidden",
 			rules: {
 				title: {
-					required: true
+					required: true,
+					remote: {
+						url: "{{ route('ajaxCheckTitreProgrammeUpadate') }}",
+						type: "get",
+						data: {
+							datas: function () {
+								return $("input[name='title']").val()+'|;|'+$("input[name='title_now']").val();
+							}
+						}
+					}
 				},
 				type_id: {
 					required: true

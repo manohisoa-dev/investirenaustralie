@@ -929,19 +929,15 @@ function initMap(){
 				},
 				title_programme: {
 					required: true,
-					/*remote: {
-						url: "{{ route('ajaxCheckTitreProgramme') }}",
+					remote: {
+						url: "{{ route('ajaxCheckTitreProgrammeUpadate') }}",
 						type: "get",
 						data: {
-							// title_programme: function () {
-							// 	return $("input[name='title_programme']").val();
-							// }
-
 							datas: function () {
 								return $("input[name='title_programme']").val()+'|;|'+$("input[name='title_programme_now']").val();
 							}
 						}
-					}*/
+					}
 				},
 				chk_firb: {
 					required: true
