@@ -46,25 +46,25 @@
 				<div class="row">
                 	<div class="col-md-6">
 						@if (count($photos) > 0)
-						<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-							<div class="carousel-inner">
-								@for ($i = 0; $i < count($photos); $i++)
-								<div class="carousel-item {{$i == 0?'active':''}}">
-									<img class="d-block w-100" src="{{asset($photos[$i]->filepath)}}" alt="">
+							<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+								<div class="carousel-inner">
+									@for ($i = 0; $i < count($photos); $i++)
+										<div class="carousel-item {{$i == 0?'active':''}}">
+											<img class="d-block w-100" src="{{asset(getImageResizeUrl('product', $photos[$i]->filename, 'large'))}}" alt="">
+										</div>
+									@endfor
 								</div>
-								@endfor
+								<a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+									<span class="sr-only">Previous</span>
+								</a>
+								<a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+									<span class="carousel-control-next-icon" aria-hidden="true"></span>
+									<span class="sr-only">Next</span>
+								</a>
 							</div>
-							<a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-								<span class="sr-only">Previous</span>
-							</a>
-							<a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-								<span class="carousel-control-next-icon" aria-hidden="true"></span>
-								<span class="sr-only">Next</span>
-							</a>
-						</div>
 						@else
-						<img class="img-responsive" src="{{asset('images/product.png')}}" style="width:100%">
+							<img class="img-responsive" src="{{asset('images/product.png')}}" style="width:100%">
 						@endif
 					</div>
 					<div class="col-md-6">
@@ -479,9 +479,10 @@
 				</div>
             </div>
             <div class="ibox-content">
-				<table class="table table-striped grid-view-tbl">
-					<thead>
-                        <tr class="header-row">
+				<div class="table-responsive">
+					<table class="table table-striped grid-view-tbl">
+						<thead>
+						<tr class="header-row">
 							<th>Id</th>
 							<th>@lang('app.table.produit_image')</th>
 							<th>@lang('app.table.produit_titre')</th>
@@ -492,53 +493,58 @@
 							<th>@lang('app.seller')</th>
 							<th>@lang('app.table.author')</th>
 						</tr>
-					</thead>
-					<tbody>
-					@if($product_lies->count())
-					@foreach($product_lies as $key=>$product_lie)
-						<tr>
-							<td>{{$key + 1}}</td>
-							<td>
-								@php
-									$photo_principal = \App\Models\ProductsImage::where('products_images.product_id', '=', $product_lie->id)->where('products_images.is_principal', '=', 1)->join('images', 'products_images.image_id', '=', 'images.id')->first();
-									$first_photo = \App\Models\ProductsImage::where('products_images.product_id', '=', $product_lie->id)->join('images', 'products_images.image_id', '=', 'images.id')->first();
-									
-								@endphp
-								@if($first_photo)
-									@if($photo_principal)
-									<!-- Programme sans principal -->
-									<img src="{{asset($photo_principal->filepath)}}" class="img-responsive" style="height:80px" />
+						</thead>
+						<tbody>
+						@if($product_lies->count())
+							@foreach($product_lies as $key=>$product_lie)
+								<tr>
+									<td>{{$key + 1}}</td>
+									<td>
+									@php
+										$photo_principal = \App\Models\ProductsImage::where('products_images.product_id', '=', $product_lie->id)->where('products_images.is_principal', '=', 1)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+                                        $first_photo = \App\Models\ProductsImage::where('products_images.product_id', '=', $product_lie->id)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+
+									@endphp
+									@if($first_photo)
+										@if($photo_principal)
+											<!-- Programme sans principal -->
+												<img src="{{asset(getImageResizeUrl('product', $photo_principal->filename, 'thumb-mini'))}}" class="img-responsive" />
+										@else
+											<!-- Programme principal -->
+												<img src="{{asset(getImageResizeUrl('product', $first_photo->filename, 'thumb-mini'))}}" class="img-responsive" />
+										@endif
 									@else
-									<!-- Programme principal -->
-									<img src="{{asset($first_photo->filepath)}}" class="img-responsive" style="height:80px" />
-									@endif
-								@else
-									<!-- Programme aucun photo -->
-									<img class="img-responsive" src="{{asset('images/product.png')}}" width="80">
-								@endif
-							</td>
-							<td><b>{{ $product_lie->title }}</b></td>
-							<td>{{ $product_lie->currency }}&nbsp;{{ number_format($product_lie->min_price, 0, '.', ' ') }}</td>
-							<td>{{ $product_lie->currency }}&nbsp;{{ number_format($product_lie->max_price, 0, '.', ' ') }}</td>
-							<td>{{ $product_lie->created_at ? $product_lie->created_at->diffForHumans() : '' }}</td>
-							<td>
-								@if($product_lie->status=='published')
-								<span class="label label-success">@lang('app.'.$product_lie->status)</span>
-								@else
-								<span class="label label-warning">@lang('app.'.$product_lie->status)</span>
-								@endif
-							</td>
-							<td>
-								@if($product_lie->seller_id != 0)
-									{{ $product_lie->seller->name }}
-								@endif
-							</td>
-							<td>{{ $product_lie->author->name }}</td>
-						</tr>
-					@endforeach
-					@endif
-					</tbody>
-				</table>
+										<!-- Programme aucun photo -->
+											<img class="img-responsive" src="{{asset('images/product.png')}}" width="50">
+										@endif
+									</td>
+									<td>
+										<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.show', ['product'=>$product_lie]):route('admin.product.show', ['product'=>$product_lie])}}">
+											<b>{{ $product_lie->title }}</b>
+										</a>
+									</td>
+									<td>{{ $product_lie->currency }}&nbsp;{{ number_format($product_lie->min_price, 0, '.', ' ') }}</td>
+									<td>{{ $product_lie->currency }}&nbsp;{{ number_format($product_lie->max_price, 0, '.', ' ') }}</td>
+									<td>{{ $product_lie->created_at ? $product_lie->created_at->diffForHumans() : '' }}</td>
+									<td>
+										@if($product_lie->status=='published')
+											<span class="label label-success">@lang('app.'.$product_lie->status)</span>
+										@else
+											<span class="label label-warning">@lang('app.'.$product_lie->status)</span>
+										@endif
+									</td>
+									<td>
+										@if($product_lie->seller_id != 0)
+											{{ $product_lie->seller->name }}
+										@endif
+									</td>
+									<td>{{ $product_lie->author->name }}</td>
+								</tr>
+							@endforeach
+						@endif
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 		@endif

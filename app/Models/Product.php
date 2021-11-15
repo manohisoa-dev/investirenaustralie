@@ -19,6 +19,7 @@ class Product extends Model {
 
     protected static $aImageSize = array(
         'mini'              => [50, 33],
+        'thumb-mini'        => [130, 80],
         'thumb'             => [330, 180],
         'medium'            => [350, 200],
         'large'             => [900, 600]
