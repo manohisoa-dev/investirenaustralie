@@ -1056,23 +1056,37 @@ class MemberController extends Controller {
         switch ($doss_trans_status) {
             // dossier transaction créer
             case '0':
-                $completeDossierInscriptionLink = setLinkDynamic(route('member.complete_registration',$prod),strtoupper(trans('app.txt.complete_my_registration_form')));
-                $privacyPolicyLink=setLinkDynamic(route('confidentialities'),trans('app.txt.privacy_policy'));
-                // Get Model message
-                $message = ModelMessage::where('id', 9)->get();
-                if (count($message) > 0) {
-                    $vars = array(
-                        '{date}' => $dtDate,
-                        '{heure}' => $dtTime,
-                        '{nomMembre}' => $member_name,
-                        '{completeDossierInscriptionLink}' => $completeDossierInscriptionLink,
-                        '{Politique de Confidentialite Link}' => $privacyPolicyLink);
-                    $contenu = strtr($message[0]->message_fr, $vars);
-                }
-            
-                Session()->put('complete_registration',true);
-                return redirect($prodUrl)->with('complete_registration_directly_content', $contenu)->with('complete_registration_message',1);
+                if (!$user->isComplete()) {
+                    $completeDossierInscriptionLink = setLinkDynamic(route('member.complete_registration',$prod),strtoupper(trans('app.txt.complete_my_registration_form')));
+                    $privacyPolicyLink=setLinkDynamic(route('confidentialities'),trans('app.txt.privacy_policy'));
+                    // Get Model message
+                    $message = ModelMessage::where('id', 9)->get();
+                    if (count($message) > 0) {
+                        $vars = array(
+                            '{date}' => $dtDate,
+                            '{heure}' => $dtTime,
+                            '{nomMembre}' => $member_name,
+                            '{completeDossierInscriptionLink}' => $completeDossierInscriptionLink,
+                            '{Politique de Confidentialite Link}' => $privacyPolicyLink);
+                        $contenu = strtr($message[0]->message_fr, $vars);
+                    }
+                
+                    Session()->put('complete_registration',true);
+                    return redirect($prodUrl)->with('complete_registration_directly_content', $contenu)->with('complete_registration_message',1);
+                }else{
+                    // Update dossier transaction
+                    DossierTransaction::whereId($idtrans)->update(['status' => 1,
+                    'date_complete_profil' => Carbon::now()]);
 
+                    // get url product to buy
+                    $prodUrl = url('product/'.$prod->slug);
+                    $dt=Carbon::now();
+                    $dtDate = $dt->format('m-d-Y');
+                    $dtTime = $dt->format('H:i:m');
+
+                    return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa', ['date'=>$dtDate, 'hour'=>$dtTime, 'name'=>$member_name]))->with('hasAfa',0);
+                }
+                
                 break;
             // dossier transaction choisir afa
             case '1':

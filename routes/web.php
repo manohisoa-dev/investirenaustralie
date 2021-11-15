@@ -256,6 +256,7 @@ Route::middleware(["auth", "role:5"])->group(function(){
         Route::post('dossier/updateIsCompleteDt', 'DossierController@updateIsCompleteDt')->name('member.dossier.updateIsCompleteDt');
         Route::post('dossier/update_dossier_trans', 'DossierController@updateDossierTrans')->name('member.dossier.update_dossier_trans');
         Route::post('dossier/upload_eoi', 'DossierController@uploadMemberDossierEoi')->name('member.dossier.upload_eoi');
+        Route::get('buy-this-product-continue-transaction/{dosstrans?}', 'DossierController@continueTransaction')->name('member.buy.continueTransaction');
     });
 
 });

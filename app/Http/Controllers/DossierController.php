@@ -1505,4 +1505,70 @@ class DossierController extends Controller
         return '';
     }
 
+    public function continueTransaction($dossTrans_id){
+        $dossTrans=DossierTransaction::whereId($dossTrans_id)->first();
+        $member= User::whereId($dossTrans->user_id)->first();
+        $member_name = $member->isPerson() ? $member->userinfos->first_name . ' ' . $member->userinfos->last_name : $member->userinfos->orga_name;
+        $product= Product::whereId($dossTrans->product_id)->first();
+        $status= $dossTrans->status;
+
+        if ($member->isMove()) {
+            // Avec déplacement
+            switch ($status) {
+                case '6':
+                    // envoyé message à l'afa + lien
+                    $user = $member;
+                    $user_afa = $user->afa?User::whereId($member->afa->id)->first():'';
+
+                    // get template mail AFA
+                    $template = MailsTemplate::where('id', 30)->get();
+                    $lang = 'en';
+                    App::setLocale($lang);
+                    $body = 'template_' . $lang;
+                    $sujet_tpl = 'sujet_' . $lang;
+                    $path_link = 'uploads/pdf/transaction/' . $dossTrans->mr_finalize_file_name;
+                    $downloadLink = setLinkDynamic($path_link, strtoupper(trans('app.txt.finalized_mandate_form')));
+                    $completedtLink = setLinkDynamic(route('afa.transaction'), strtoupper(trans('app.txt.complete_transaction_file_info')));
+                    $vars = array(
+                        '{date}' => Carbon::now()->toFormattedDateString(),
+                        '{heure}' => Carbon::now()->toTimeString(),
+                        '{country}' => $product->location->area_level_1,
+                        '{name}' => $member_name,
+                        '{afa}' => $user->afa->name,
+                        '{city}' => $product->location->locality,
+                        '{completedtLink}' => $completedtLink,
+                        '{mrfinalizedLink}' => $downloadLink,
+                        );
+                    $sujet = $template[0]->$sujet_tpl;
+                    $contenu = strtr($template[0]->$body, $vars);
+                    $content = ['title' => '', 'body' => $contenu];
+                    // $user_afa->notify(new MemberMandateSearchMessage($sujet,$content));
+                    Mail::to($user_afa->email)->send(new MailTemplate($content, $sujet));
+
+                    // get template mail Membre
+                    // envoyé message au membre pour avertir qu'il doit préciser avec l'afa les caractéristique du bien acheter
+                    $template1 = MailsTemplate::where('id', 31)->get();
+                    $lang1 = $user->language;
+                    $body1 = 'template_' . $lang1;
+                    $sujet_tpl1 = 'sujet_' . $lang1;
+                    $sujet1 = $template1[0]->$sujet_tpl1;
+                    $contenu1 = strtr($template1[0]->$body1, $vars);
+                    $content1 = ['title' => '', 'body' => $contenu1];
+                    // $user->notify(new MemberMandateSearchMessage($sujet1,$content1));
+                    Mail::to($user->email)->send(new MailTemplate($content1, $sujet1));
+
+                    // Update dossier transaction
+                    DossierTransaction::whereId($dossTrans->id)->update(['status' => 7,
+                        'date_complete_profil' => Carbon::now()]);
+                    break;
+                
+                default:
+                    abort(404);
+                    break;
+            }
+        }
+
+        return redirect()->route('member.transaction');
+    }
+
 }
