@@ -51,7 +51,7 @@ class ProductController extends Controller {
      */
     public function index(Request $request, $slug) {
         $products = Product::where('slug', '=', $slug)->get();
-        
+
         if (sizeof($products) != 0) {
             foreach ($products as $key => $product) {
 
@@ -427,34 +427,40 @@ class ProductController extends Controller {
     }
 
     public function ajaxCheckTitreProgramme(Request $request) {
-
-        if ($request->get('datas')) {
-            $datas = $request->get('datas');
-            $datasSplit = explode('|;|', $datas);
-            $titre_programme = $datasSplit[0];
-            $titre_programme_now = $datasSplit[1];
-
-            if ($titre_programme_now !== $titre_programme) {
-                $slug = generateSlug($titre_programme);
-                $slug_exist = Product::where('slug', $slug)->get();
-                if (count($slug_exist) > 0) {
-                    echo "false";
-                } else {
-                    echo "true";
-                }
-            } else {
-                echo "true";
-            }
+        $slug = generateSlug($request->title_programme);
+        $slug_exist = Product::where('slug', $slug)->get();
+        if ($slug_exist->count() > 0) {
+            echo "false";
         } else {
-            $slug = generateSlug($request->title_programme);
-            $slug_exist = Product::where('slug', $slug)->get();
-            if (count($slug_exist) > 0) {
-                echo "false";
-            } else {
-                echo "true";
-            }
+            echo "true";
         }
-        /**/
+        /*dd($request->all());
+        if ($request->get('datas')) {
+        $datas = $request->get('datas');
+        $datasSplit = explode('|;|', $datas);
+        $titre_programme = $datasSplit[0];
+        $titre_programme_now = $datasSplit[1];
+
+        if ($titre_programme_now !== $titre_programme) {
+        $slug = generateSlug($titre_programme);
+        $slug_exist = Product::where('slug', $slug)->get();
+        if (count($slug_exist) > 0) {
+        echo "false";
+        } else {
+        echo "true";
+        }
+        } else {
+        echo "true";
+        }
+        } else {
+        $slug = generateSlug($request->title_programme);
+        $slug_exist = Product::where('slug', $slug)->get();
+        if (count($slug_exist) > 0) {
+        echo "false";
+        } else {
+        echo "true";
+        }
+        }*/
     }
 
     public function ajaxCheckAdresse(Request $request) {
@@ -625,7 +631,7 @@ class ProductController extends Controller {
         $image_programme->author_id = Auth::user()->id;
         $image_programme->save();
 
-        Product::regenerateAllAvatar() ;
+        Product::regenerateAllAvatar();
     }
 
     public function save_fond_dossier($nom_photo, $id_programme) {
@@ -1102,7 +1108,7 @@ class ProductController extends Controller {
         }
         $product->display_address = $request->display_address;
         $product->postalCode = $request->postalCode_product;
-        $product->state_id = $state?$state->id:0;
+        $product->state_id = $state ? $state->id : 0;
         $product->avoir_bonus = $request->bonus_vente;
         $product->amount_bonus = $request->bonus_amount;
         $product->solicitor_id = $id_solicitor;
@@ -1194,7 +1200,7 @@ class ProductController extends Controller {
             $image = Image::storeAndSave($file, 'product');
             $product->image_id = $image->id;
 
-            Product::regenerateAllAvatar() ;
+            Product::regenerateAllAvatar();
         }
         $slug = generateSlug($title);
         $product->ancienneteBien = $anciennete;
@@ -1373,12 +1379,29 @@ class ProductController extends Controller {
     }
 
     public function ajaxDropProduit(Request $request) {
+        $produit = Product::where('id', $request->id_produit)->first();
+        $slug = $produit->slug;
+        $dt_now = Carbon::now()->timestamp;
+        $new_slug = generateSlug($slug.$dt_now);
+        
+        Product::where('id', $request->id_produit)->update(['slug' => $new_slug]);
         Product::where('id', $request->id_produit)->delete();
+        
         return response()->json(['success' => 'true']);
     }
 
     public function ajaxDropProgramm(Request $request) {
-        Product::where('id', $request->id_programm)->delete();
+        
+        $programme = Product::where('id', $request->id_programm)->first();
+        if($programme->parent_id == 0){
+            Product::where('parent_id', $programme->id)->delete();
+        }
+        $slug = $programme->slug;
+        $dt_now = Carbon::now()->timestamp;
+        $new_slug = generateSlug($slug.$dt_now);
+        
+        Product::where('id', $request->id_programm)->update(['slug' => $new_slug]);
+        Product::where('id', $request->id_programm)->delete();        
         return response()->json(['success' => 'true']);
     }
 
