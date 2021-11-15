@@ -485,9 +485,6 @@ class ProductController extends Controller {
         } else {
             $this->saveProgramme($request);
         }
-        //dd(count($results));
-        //$this->saveProgramme($request);
-        //return response()->json(['success' => 'false']);
     }
 
     public function send_email_sellerByAfa_after_create_produit($id_produit) {
@@ -741,7 +738,8 @@ class ProductController extends Controller {
             }
 
             $state = State::where('content', $request->state_id)->first();
-            if (count($state) > 0) {
+            
+            if ($state === null) {
                 return back()->withInput()->withErrors(['msg' => "State not found"]);
             }
 
