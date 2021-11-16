@@ -53,6 +53,7 @@ Route::post('ajaxGetTypeProduitCategorie', 'ProductController@ajaxGetTypeProduit
 Route::post('ajaxDropZone', 'ProductController@ajaxDropZone')->name('ajaxDropZone'); 
 Route::post('ajaxSetMandatState', 'ProductController@ajaxSetMandatState')->name('ajaxSetMandatState'); 
 Route::get('ajaxCheckTitreProgramme', 'ProductController@ajaxCheckTitreProgramme')->name('ajaxCheckTitreProgramme');
+Route::get('ajaxCheckTitreProgrammeUpadate', 'ProductController@ajaxCheckTitreProgrammeUpdate')->name('ajaxCheckTitreProgrammeUpadate');
 Route::get('ajaxCheckAdresse', 'ProductController@ajaxCheckAdresse')->name('ajaxCheckAdresse');
 Route::post('ajaxDropZoneEdit', 'ProductController@ajaxDropZoneEdit')->name('ajaxDropZoneEdit');  
 Route::post('AjaxFonDossierEdit', 'ProductController@AjaxFonDossierEdit')->name('AjaxFonDossierEdit'); 

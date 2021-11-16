@@ -434,33 +434,29 @@ class ProductController extends Controller {
         } else {
             echo "true";
         }
-        /*dd($request->all());
-        if ($request->get('datas')) {
-        $datas = $request->get('datas');
-        $datasSplit = explode('|;|', $datas);
-        $titre_programme = $datasSplit[0];
-        $titre_programme_now = $datasSplit[1];
+    }
 
-        if ($titre_programme_now !== $titre_programme) {
-        $slug = generateSlug($titre_programme);
-        $slug_exist = Product::where('slug', $slug)->get();
-        if (count($slug_exist) > 0) {
-        echo "false";
+    public function ajaxCheckTitreProgrammeUpdate(Request $request) {
+        if ($request->get('datas')) {
+            $datas = $request->get('datas');
+            $datasSplit = explode('|;|', $datas);
+            $titre_programme = $datasSplit[0];
+            $titre_programme_now = $datasSplit[1];
+
+            if ($titre_programme_now !== $titre_programme) {
+                $slug = generateSlug($titre_programme);
+                $slug_exist = Product::where('slug', $slug)->get();
+                if ($slug_exist->count() > 0) {
+                    echo "false";
+                } else {
+                    echo "true";
+                }
+            } else {
+                echo "true";
+            }
         } else {
-        echo "true";
+            echo 'ato';
         }
-        } else {
-        echo "true";
-        }
-        } else {
-        $slug = generateSlug($request->title_programme);
-        $slug_exist = Product::where('slug', $slug)->get();
-        if (count($slug_exist) > 0) {
-        echo "false";
-        } else {
-        echo "true";
-        }
-        }*/
     }
 
     public function ajaxCheckAdresse(Request $request) {
@@ -489,9 +485,6 @@ class ProductController extends Controller {
         } else {
             $this->saveProgramme($request);
         }
-        //dd(count($results));
-        //$this->saveProgramme($request);
-        //return response()->json(['success' => 'false']);
     }
 
     public function send_email_sellerByAfa_after_create_produit($id_produit) {
@@ -605,11 +598,6 @@ class ProductController extends Controller {
         $programme->seller_id = $seller_id;
         $programme->save();
 
-        // // save translation
-        $detectLang = getGTranslateLangDetect($content);
-        $detectLang === 'fr' ? setTranslate('fr', 'en', $content, 'programme', $programme) :
-            setTranslate('en', 'fr', $content, 'programme', $programme);
-
         return $programme->id;
     }
 
@@ -631,7 +619,7 @@ class ProductController extends Controller {
         $image_programme->author_id = Auth::user()->id;
         $image_programme->save();
 
-        Product::regenerateAllAvatar();
+        Product::regenerateMyAvatar($image) ;
     }
 
     public function save_fond_dossier($nom_photo, $id_programme) {
@@ -689,129 +677,150 @@ class ProductController extends Controller {
     }
 
     public function saveProgramme(Request $request) {
-        $user = Auth::user();
-        if ($user->isSbaBusiness() || $user->isSbaIndividual()) {
-            $prefix = User::whereId($user->afa_id)->first();
-            $seller_id = $prefix->id;
-            $id_afa_p = $seller_id;
-            //$titre_programme = Auth::user()->property_name . '-' . $request->title_programme;
-            $titre_programme = $request->title_programme;
-        } else {
-            $prefix = '';
-            $seller_id = $user->id;
-            $titre_programme = $request->title_programme;
-
-            $afa_possible = DB::select("SELECT `users`.id as id_afa FROM `users` LEFT JOIN `localizations` ON `users`.`location_id` = `localizations`.`id` WHERE `users`.`role` = 3 and `localizations`.`locality` = '$request->ville'");
-            if (count($afa_possible) > 0) {
-                $tab_afa = array();
-                foreach ($afa_possible as $val) {
-                    $tab_afa[] = $val->id_afa;
-                }
-                $id_afa_p = implode(', ', $tab_afa);
+        try {
+            $datas = $request->All();
+            $rules = ['cat_programmme_id' => 'required', 'title_programme' => 'required',
+                'description' => 'required', 'commencement_dt' => 'required',
+                'estimated_delvivery_dt' => 'required', 'estimated_delvivery_dt' => 'required',
+                'type_id' => 'required', 'display_address' => 'required', 'prix_min' =>
+                'required', 'prix_max' => 'required', 'eoiDossier' => 'required',
+                'sales_mandate' => 'required'];
+            $validator = Validator::make($datas, $rules);
+            if ($validator->fails()) {
+                return back()->withErrors($validator);
+            }
+            $user = Auth::user();
+            if ($user->isSbaBusiness() || $user->isSbaIndividual()) {
+                $prefix = User::whereId($user->afa_id)->first();
+                $seller_id = $prefix->id;
+                $id_afa_p = $seller_id;
+                //$titre_programme = Auth::user()->property_name . '-' . $request->title_programme;
+                $titre_programme = $request->title_programme;
             } else {
-                $id_afa_p = 0;
+                $prefix = '';
+                $seller_id = $user->id;
+                $titre_programme = $request->title_programme;
+
+                $afa_possible = DB::select("SELECT `users`.id as id_afa FROM `users` LEFT JOIN `localizations` ON `users`.`location_id` = `localizations`.`id` WHERE `users`.`role` = 3 and `localizations`.`locality` = '$request->ville'");
+                if (count($afa_possible) > 0) {
+                    $tab_afa = array();
+                    foreach ($afa_possible as $val) {
+                        $tab_afa[] = $val->id_afa;
+                    }
+                    $id_afa_p = implode(', ', $tab_afa);
+                } else {
+                    $id_afa_p = 0;
+                }
             }
-        }
 
-        $anciennete = $request->ancienneteBien;
-        $nature = $request->natureBien;
+            $anciennete = $request->ancienneteBien;
+            $nature = $request->natureBien;
 
-        $programme_existe = Product::where('display_address', $request->display_address)->where('category_id',
-            $request->cat_programmme_id)->where('type_id', $request->type_id)->where('parent_id',
-            0)->get();
+            $programme_existe = Product::where('display_address', $request->display_address)->where('category_id',
+                $request->cat_programmme_id)->where('type_id', $request->type_id)->where('parent_id',
+                0)->get();
 
 
-        if (count($programme_existe) > 0) {
-            return back()->withInput()->withErrors(['msg' =>
-                "We're sorry, but it appears that this program has already been registered or is on its way to be registered.\n Your program cannot be registered and your program registration form will be deleted.
+            if (count($programme_existe) > 0) {
+                return back()->withInput()->withErrors(['msg' =>
+                    "We're sorry, but it appears that this program has already been registered or is on its way to be registered.\n Your program cannot be registered and your program registration form will be deleted.
 "]);
-        }
-
-        $state = State::where('content', $request->state_id)->first();
-
-        $id_location = $this->save_location($request->countryId, $request->state_id, $request->suburb,
-            $request->postalCode, $request->ville, $request->display_address, $request->long,
-            $request->lat);
-
-        if ($request->commision == 'Sales commission rate (%)') {
-            $taux_commision = $request->sales_rate;
-        } else {
-            $taux_commision = $request->rate_commission;
-        }
-
-        //test si nouveau solicitor ou pas
-        if ($request->solicitor_id == 'new') {
-            // save Solicitor info
-            if ($request->cabinet_name && $request->cabinet_email && $request->cabinet_phone) {
-                $solicitor = new Solicitor();
-                $solicitor->cabinet_name = $request->cabinet_name;
-                $solicitor->cabinet_email = $request->cabinet_email;
-                $solicitor->cabinet_phone = $request->cabinet_phone;
-                $solicitor->vendeur_id = Auth::user()->id;
-                $solicitor->save();
-                $id_solicitor = $solicitor->id;
             }
-        } else {
-            $id_solicitor = $request->solicitor_id;
-        }
-        $id_programme = $this->save_programme($request->cat_programmme_id, $request->ancienneteBien,
-            $request->natureBien, $request->prix_min, $request->prix_max, $request->type_id,
-            $request->display_address, $request->postalCode, $state->id, $titre_programme, $request->description,
-            $id_location, '', 'waiting', $request->commision, $taux_commision, $id_afa_p, $id_solicitor,
-            $request->commencement_dt, $request->estimated_delvivery_dt, $request->programme_firb_pre_approved_program,
-            $request->programme_pre_approved_sale, $seller_id);
+
+            $state = State::where('content', $request->state_id)->first();
+
+            if ($state === null) {
+                return back()->withInput()->withErrors(['msg' => "State not found"]);
+            }
+
+            $id_location = $this->save_location($request->countryId, $request->state_id, $request->suburb,
+                $request->postalCode, $request->ville, $request->display_address, $request->long,
+                $request->lat);
+
+            if ($request->commision == 'Sales commission rate (%)') {
+                $taux_commision = $request->sales_rate;
+            } else {
+                $taux_commision = $request->rate_commission;
+            }
+
+            //test si nouveau solicitor ou pas
+            if ($request->solicitor_id == 'new') {
+                // save Solicitor info
+                if ($request->cabinet_name && $request->cabinet_email && $request->cabinet_phone) {
+                    $solicitor = new Solicitor();
+                    $solicitor->cabinet_name = $request->cabinet_name;
+                    $solicitor->cabinet_email = $request->cabinet_email;
+                    $solicitor->cabinet_phone = $request->cabinet_phone;
+                    $solicitor->vendeur_id = Auth::user()->id;
+                    $solicitor->save();
+                    $id_solicitor = $solicitor->id;
+                }
+            } else {
+                $id_solicitor = $request->solicitor_id;
+            }
+            $id_programme = $this->save_programme($request->cat_programmme_id, $request->ancienneteBien,
+                $request->natureBien, $request->prix_min, $request->prix_max, $request->type_id,
+                $request->display_address, $request->postalCode, $state->id, $titre_programme, $request->description,
+                $id_location, '', 'waiting', $request->commision, $taux_commision, $id_afa_p, $id_solicitor,
+                $request->commencement_dt, $request->estimated_delvivery_dt, $request->programme_firb_pre_approved_program,
+                $request->programme_pre_approved_sale, $seller_id);
 
 
-        if ($request->dropPhoto) {
-            foreach ($request->dropPhoto as $key => $value) {
-                if ($request->radioDrop) {
-                    if ($request->radioDrop == $value) {
-                        $is_principal = 1;
+            if ($request->dropPhoto) {
+                foreach ($request->dropPhoto as $key => $value) {
+                    if ($request->radioDrop) {
+                        if ($request->radioDrop == $value) {
+                            $is_principal = 1;
+                        } else {
+                            $is_principal = 0;
+                        }
                     } else {
                         $is_principal = 0;
                     }
-                } else {
-                    $is_principal = 0;
+                    $this->save_photo_programme($value, $id_programme, $is_principal);
                 }
-                $this->save_photo_programme($value, $id_programme, $is_principal);
             }
-        }
 
-        if ($request->eoiDossier) {
-            $this->save_eoi_dossier($request->eoiDossier, $id_programme);
-        }
-
-        if (isset($request->sales_mandate)) {
-            //save mandat de recherche
-            $fond_dossier = new LiaDossier();
-            $fond_dossier->product_id = $id_programme;
-            $fond_dossier->image_id = $request->sales_mandate;
-            $fond_dossier->author_id = Auth::user()->id;
-            $fond_dossier->save();
-        }
-
-        if ($request->fondDossier) {
-            foreach ($request->fondDossier as $key => $value) {
-                $this->save_fond_dossier($value, $id_programme);
+            if ($request->eoiDossier) {
+                $this->save_eoi_dossier($request->eoiDossier, $id_programme);
             }
-        }
-        //test si seller by afa qui crée le progremme
-        if (Auth::user()->hasTypeUser(8) || Auth::user()->hasTypeUser(9)) {
-            //envoie email à l'email à seller by afa
-            $this->send_email_sellerByAfa_after_create_produit($id_programme);
-            //envoie email au propriété
-            $id_afa = Auth::user()->afa_id;
-            //envoie email à l'AFA
-            $this->send_email_afa_proprietaire_after_creat_produit($id_programme, $id_afa);
-        }
-        if (count($afa_possible) == 0) {
-            //envoie message à l'admin pour lui dire fa tsis AFA
-            $this->sendMessage_admin_after_create_programme($id_programme);
-        }
 
-        # notification
-        return redirect()->route('mes-programmes')->with('success',
-            "Produit a été créer avec succès");
+            if (isset($request->sales_mandate)) {
+                //save mandat de recherche
+                $fond_dossier = new LiaDossier();
+                $fond_dossier->product_id = $id_programme;
+                $fond_dossier->image_id = $request->sales_mandate;
+                $fond_dossier->author_id = Auth::user()->id;
+                $fond_dossier->save();
+            }
+
+            if ($request->fondDossier) {
+                foreach ($request->fondDossier as $key => $value) {
+                    $this->save_fond_dossier($value, $id_programme);
+                }
+            }
+            //test si seller by afa qui crée le progremme
+            if (Auth::user()->hasTypeUser(8) || Auth::user()->hasTypeUser(9)) {
+                //envoie email à l'email à seller by afa
+                $this->send_email_sellerByAfa_after_create_produit($id_programme);
+                //envoie email au propriété
+                $id_afa = Auth::user()->afa_id;
+                //envoie email à l'AFA
+                $this->send_email_afa_proprietaire_after_creat_produit($id_programme, $id_afa);
+            }
+            if (count($afa_possible) == 0) {
+                //envoie message à l'admin pour lui dire fa tsis AFA
+                $this->sendMessage_admin_after_create_programme($id_programme);
+            }
+
+            # notification
+            return redirect()->route('mes-programmes')->with('success',
+                "Produit a été créer avec succès");
+        }
+        catch (exception $e) {
+            return back()->withInput()->withErrors(['msg' =>
+                "He has problems saving the item"]);
+        }
     }
 
     public function sendMessage_admin_after_create_programme($id_produit) {
@@ -1200,7 +1209,7 @@ class ProductController extends Controller {
             $image = Image::storeAndSave($file, 'product');
             $product->image_id = $image->id;
 
-            Product::regenerateAllAvatar();
+            Product::regenerateMyAvatar($image) ;
         }
         $slug = generateSlug($title);
         $product->ancienneteBien = $anciennete;
@@ -1259,9 +1268,6 @@ class ProductController extends Controller {
         $product->seller_id = $seller_id;
         $product->save();
 
-        // // save translation
-        // $detectLang = getGTranslateLangDetect($content);
-        // $detectLang==='fr'?setTranslate('fr','en',$content,'programme',$product):setTranslate('en','fr',$content,'programme',$product);
         return $product->id;
     }
 
@@ -1382,26 +1388,26 @@ class ProductController extends Controller {
         $produit = Product::where('id', $request->id_produit)->first();
         $slug = $produit->slug;
         $dt_now = Carbon::now()->timestamp;
-        $new_slug = generateSlug($slug.$dt_now);
-        
+        $new_slug = generateSlug($slug . $dt_now);
+
         Product::where('id', $request->id_produit)->update(['slug' => $new_slug]);
         Product::where('id', $request->id_produit)->delete();
-        
+
         return response()->json(['success' => 'true']);
     }
 
     public function ajaxDropProgramm(Request $request) {
-        
+
         $programme = Product::where('id', $request->id_programm)->first();
-        if($programme->parent_id == 0){
+        if ($programme->parent_id == 0) {
             Product::where('parent_id', $programme->id)->delete();
         }
         $slug = $programme->slug;
         $dt_now = Carbon::now()->timestamp;
-        $new_slug = generateSlug($slug.$dt_now);
-        
+        $new_slug = generateSlug($slug . $dt_now);
+
         Product::where('id', $request->id_programm)->update(['slug' => $new_slug]);
-        Product::where('id', $request->id_programm)->delete();        
+        Product::where('id', $request->id_programm)->delete();
         return response()->json(['success' => 'true']);
     }
 
@@ -1474,6 +1480,9 @@ class ProductController extends Controller {
         }
 
         $state = State::where('content', $request->state_id_product)->first();
+        if ($state === null) {
+            return back()->withInput()->withErrors(['msg' => "State not found"]);
+        }
         //test si nouveau solicitor ou pas
         if ($request->solicitor_id == 'new') {
             // save Solicitor info
