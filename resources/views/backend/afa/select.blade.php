@@ -155,6 +155,9 @@
                 var lat = _marker.getPosition().lat();
                 var lng = _marker.getPosition().lng();
             });
+
+            // show info inwindows
+            infoWindowLocal(_marker,"@lang('app.your_location')");
         
             for (var i = 0; i < datas.length; i++) {
                 placeMarker(datas[i], );
@@ -170,6 +173,9 @@
             });
             
             if(data.type == 3){
+                // show info inwindows
+                infoWindow(markers[data.id],data);
+
                 google.maps.event.addListener(markers[data.id], 'click', function() {
                     $('#afa-modal').attr("value", data.id);
                     $('#title').html(data.title);
@@ -179,6 +185,42 @@
                     onClickListener();
                 });
             }
+        }
+
+        function infoWindow(marker,data){
+            // On crée une infobulle
+            var infowindow1 = new google.maps.InfoWindow({
+                maxWidth: 300, 
+                //On définit le texte à afficher dans l'infoWindow 
+                content: '<b>'+data.immat+'</b><br/>'+data.title+'<br/>'+data.adr
+            });
+
+            //On ajoute un listener d'événement : on écoute le clic sur le marqueur
+            google.maps.event.addListener(marker, 'mouseover', function() {
+                // Ouverture de l'infobulle 
+                infowindow1.open(map, marker);  
+            });  
+
+            // Ouverture de l'infobulle 
+            infowindow1.open(map, marker);  
+        }
+
+        function infoWindowLocal(marker,data){
+            // On crée une infobulle
+            var infowindow1 = new google.maps.InfoWindow({
+                maxWidth: 300, 
+                //On définit le texte à afficher dans l'infoWindow 
+                content: data
+            });
+
+            //On ajoute un listener d'événement : on écoute le clic sur le marqueur
+            google.maps.event.addListener(marker, 'mouseover', function() {
+                // Ouverture de l'infobulle 
+                infowindow1.open(map, marker);  
+            });  
+
+            // Ouverture de l'infobulle 
+            infowindow1.open(map, marker);  
         }
 
         function onClickListener() {
