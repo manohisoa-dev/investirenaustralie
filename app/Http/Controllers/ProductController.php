@@ -562,48 +562,43 @@ class ProductController extends Controller {
         $estimated_delvivery_dt, $programme_firb_pre_approved, $programme_pre_approved_sale,
         $seller_id) {
 
-        try {
-            $slug = generateSlug($title);
-            $programme = new Product();
+        $slug = generateSlug($title);
+        $programme = new Product();
 
-            if ($file = $fond_dossier) {
-                $fond_dossier = Image::storeAndSave($fond_dossier, 'product');
-                $programme->image_fond_dossier_id = $fond_dossier->id;
-            }
-
-            $programme->category_id = $categorie;
-            $programme->ancienneteBien = $ancienete;
-            $programme->natureBien = $nature;
-            $programme->min_price = $prix_min;
-            $programme->max_price = $prix_max;
-            $programme->type_id = $type_id;
-            $programme->display_address = $display_address;
-            $programme->postalCode = $postalCode;
-            $programme->state_id = $state_id;
-            $programme->title = $title;
-            $programme->content = $content;
-            $programme->quantity = 1;
-            $programme->slug = $slug;
-            $programme->location_id = $location_id;
-            $programme->status = $status;
-            $programme->commission_type = $type_commission;
-            $programme->commision = $commission;
-            $programme->author_id = Auth::user()->id;
-            $programme->validated_at = Carbon::now();
-            $programme->afaId_possible = $id_afa;
-            $programme->solicitor_id = $id_solicitor;
-            $programme->commencement_dt = $commencement_dt;
-            $programme->estimated_delvivery_dt = $estimated_delvivery_dt;
-            $programme->programme_firb_pre_approved = $programme_firb_pre_approved;
-            $programme->programme_pre_approved_sale = $programme_pre_approved_sale;
-            $programme->seller_id = $seller_id;
-            $programme->save();
-
-            return $programme->id;
+        if ($file = $fond_dossier) {
+            $fond_dossier = Image::storeAndSave($fond_dossier, 'product');
+            $programme->image_fond_dossier_id = $fond_dossier->id;
         }
-        catch (exception $e) {
-            return $e;
-        }
+
+        $programme->category_id = $categorie;
+        $programme->ancienneteBien = $ancienete;
+        $programme->natureBien = $nature;
+        $programme->min_price = $prix_min;
+        $programme->max_price = $prix_max;
+        $programme->type_id = $type_id;
+        $programme->display_address = $display_address;
+        $programme->postalCode = $postalCode;
+        $programme->state_id = $state_id;
+        $programme->title = $title;
+        $programme->content = $content;
+        $programme->quantity = 1;
+        $programme->slug = $slug;
+        $programme->location_id = $location_id;
+        $programme->status = $status;
+        $programme->commission_type = $type_commission;
+        $programme->commision = $commission;
+        $programme->author_id = Auth::user()->id;
+        $programme->validated_at = Carbon::now();
+        $programme->afaId_possible = $id_afa;
+        $programme->solicitor_id = $id_solicitor;
+        $programme->commencement_dt = $commencement_dt;
+        $programme->estimated_delvivery_dt = $estimated_delvivery_dt;
+        $programme->programme_firb_pre_approved = $programme_firb_pre_approved;
+        $programme->programme_pre_approved_sale = $programme_pre_approved_sale;
+        $programme->seller_id = $seller_id;
+        $programme->save();
+
+        return $programme->id;
     }
 
     public function save_photo_programme($nom_photo, $id_programme, $is_principale) {
@@ -624,7 +619,7 @@ class ProductController extends Controller {
         $image_programme->author_id = Auth::user()->id;
         $image_programme->save();
 
-        Product::regenerateAllAvatar();
+        Product::regenerateMyAvatar($image) ;
     }
 
     public function save_fond_dossier($nom_photo, $id_programme) {
@@ -1214,7 +1209,7 @@ class ProductController extends Controller {
             $image = Image::storeAndSave($file, 'product');
             $product->image_id = $image->id;
 
-            Product::regenerateAllAvatar();
+            Product::regenerateMyAvatar($image) ;
         }
         $slug = generateSlug($title);
         $product->ancienneteBien = $anciennete;
