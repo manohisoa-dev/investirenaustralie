@@ -599,11 +599,6 @@ class ProductController extends Controller {
             $programme->seller_id = $seller_id;
             $programme->save();
 
-            // // save translation
-            $detectLang = getGTranslateLangDetect($content);
-            $detectLang === 'fr' ? setTranslate('fr', 'en', $content, 'programme', $programme) :
-                setTranslate('en', 'fr', $content, 'programme', $programme);
-
             return $programme->id;
         }
         catch (exception $e) {
@@ -738,7 +733,7 @@ class ProductController extends Controller {
             }
 
             $state = State::where('content', $request->state_id)->first();
-            
+
             if ($state === null) {
                 return back()->withInput()->withErrors(['msg' => "State not found"]);
             }
@@ -1278,9 +1273,6 @@ class ProductController extends Controller {
         $product->seller_id = $seller_id;
         $product->save();
 
-        // // save translation
-        // $detectLang = getGTranslateLangDetect($content);
-        // $detectLang==='fr'?setTranslate('fr','en',$content,'programme',$product):setTranslate('en','fr',$content,'programme',$product);
         return $product->id;
     }
 
@@ -1493,6 +1485,9 @@ class ProductController extends Controller {
         }
 
         $state = State::where('content', $request->state_id_product)->first();
+        if ($state === null) {
+            return back()->withInput()->withErrors(['msg' => "State not found"]);
+        }
         //test si nouveau solicitor ou pas
         if ($request->solicitor_id == 'new') {
             // save Solicitor info
