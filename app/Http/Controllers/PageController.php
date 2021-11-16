@@ -39,28 +39,28 @@ class PageController extends Controller
             ->where('parent_id', '!=', 0)
             ->orderBy('created_at','desc')
             ->take(6)->get();
-        
-        $categories = Category::orderBy('created_at', 'desc')
-            ->has('products')
-            ->withCount(['products'])
-            ->take(5)->get();
-        
+            
         $blogs = Blog::ofStatus('published')
-            ->orderBy('created_at', 'desc')
-            ->take(6)->get();
+        ->orderBy('created_at', 'desc')
+        ->take(6)->get();
         
         $page->load(['childs', 'childs.pubs', 'pubs']);
+        
+        // $categories = Category::orderBy('created_at', 'desc')
+        //     ->has('products')
+        //     ->withCount(['products'])
+        //     ->take(5)->get();
 
-        $states = State::all();
+        // $states = State::all();
         
         return view('page.index')
             ->with('item', $page)
             ->with('pubs', $page->pubs)
             ->with('products', $products)
             ->with('blogs', $blogs)
-            ->with('recentProducts', $recentProducts)
-            ->with('categories', $categories)
-            ->with('states', $states);
+            ->with('recentProducts', $recentProducts);
+            // ->with('categories', $categories);
+            // ->with('states', $states);
     }
     
 

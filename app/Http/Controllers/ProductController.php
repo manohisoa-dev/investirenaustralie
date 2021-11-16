@@ -76,7 +76,7 @@ class ProductController extends Controller {
 
                 $data = ['id' => $product->id, 'lat' => $product->location ? $product->location->latitude :
                     0, 'lng' => $product->location ? $product->location->longitude : 0, 'title' => $product->title,
-                    'area' => $product->area, 'type' => 'product', ];
+                    'area' => $product->area, 'type' => 'product','adr' => $product->location?$product->location->route.' '.$product->location->locality.','.$product->location->area_level_2.' '.$product->location->area_level_1:'', ];
 
                 $product->load('images');
 
