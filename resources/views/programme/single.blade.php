@@ -468,6 +468,7 @@
           };
 
           var data = {!!(isset($data) ? $data : '')!!};
+                data=$.parseJSON(data);
 
           function initMap() {
 
@@ -499,7 +500,28 @@
                 radius: data.area
               });
 
+                // show info inwindows
+                infoWindow(_marker,data);
+
           }
+
+          function infoWindow(marker,infos){
+            // On crée une infobulle
+            var infowindow1 = new google.maps.InfoWindow({
+                maxWidth: 300, 
+                //On définit le texte à afficher dans l'infoWindow 
+                content: '<b>'+infos.title+'</b><br/><br/>'+infos.adr,
+            });
+
+            //On ajoute un listener d'événement : on écoute le clic sur le marqueur
+            google.maps.event.addListener(marker, 'mouseover', function() {
+                // Ouverture de l'infobulle 
+                infowindow1.open(map, marker);  
+            });  
+
+            // Ouverture de l'infobulle 
+            infowindow1.open(map, marker);  
+        }
 
       </script>
 @endpush('script')

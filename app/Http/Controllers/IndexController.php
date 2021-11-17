@@ -179,9 +179,6 @@ class IndexController extends Controller
             ->where('category_id','=',4)
             ->max('land_area');
 
-        $page = Page::findOrFail(1);
-        $page->load(['childs', 'childs.pubs', 'pubs']);
-        
         $testimonial = Temoignage::ofStatus('Actif')->orderBy('created_at', 'desc')->take(6)->get();
 
         return $this->render($request, 1)
@@ -217,7 +214,6 @@ class IndexController extends Controller
         ->with('typesFonc',$typesFonc)
         ->with('typesInd',$typesInd)
         ->with('typesComm',$typesComm)
-        ->with('pubs',$page->pubs) 
         ->with('testimonials',$testimonial);
 
     }
@@ -438,9 +434,11 @@ class IndexController extends Controller
             $html = view('user.map')->with('item', $item)->render();
             $data[] = [
               'id' => $item->id,
+              'immat' => $item->immat,
+              'adr' => $item->location?$item->location->route.' '.$item->location->locality.','.$item->location->area_level_2.' '.$item->location->area_level_1:'',
+              'title' => $item->name,
               'lat' => $item->location?$item->location->latitude:0,
               'lng' => $item->location?$item->location->longitude:0,
-              'title' => $item->name,
               'content' => $item->get_meta('orga_description')?$item->get_meta('orga_description')->value:'',
               'type' => $item->role,
               'html' => $html,

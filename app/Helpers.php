@@ -72,6 +72,7 @@ if (!function_exists('option')) {
             $key = $keys[1];
 
             $model = App\Models\Config::where('name', $group)->get()->first();
+            // dd($model);
             if (!$model)
                 return $default;
 

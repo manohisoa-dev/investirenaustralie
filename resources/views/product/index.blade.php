@@ -637,11 +637,7 @@
 @endsection
 
 @push('script')
-    @php
-        $key = env('GMAP_API_KEY');
-        $url = "https://maps.googleapis.com/maps/api/js?key=".$key."&callback=initMap&libraries=places&v=weekly";
-    @endphp
-  <script async defer src={{$url}}></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2izG_M7K3gP6pFUH5cyzmDjuGpOYfgc4&libraries=places&callback=initMap&channel=GMPSB_addressselection_v1_cABC" async defer></script>
   <link rel="stylesheet" href="{{ asset('carousel/style.css') }}">
   <link href="{{ asset('plugin/magnific/magnific-popup.css') }}" rel="stylesheet">
   <script src="{{ asset('carousel/popper.min.js') }}"></script>
@@ -733,7 +729,6 @@
       var _inputApl = document.getElementById("apl");
       var _contentApl = document.getElementById("apl-content");
       var _titleApl = document.getElementById("apl-title");
-      console.log(_lat+' '+_long);
       var iconBase = "{{url('')}}";
       var icons = {
         user: {
@@ -753,7 +748,8 @@
         }
       };
 
-      var data = "{{ (isset($data) ? $data : '') }}";
+      var data = '{!! (isset($data) ? $data : '') !!}';
+          data=$.parseJSON(data);
 
       function initMap() {
           _map = new google.maps.Map(document.getElementById('map'), {
@@ -784,7 +780,28 @@
             radius: data.area
           });
 
+          // show info inwindows
+          infoWindow(_marker,data);
+
       };
+
+      function infoWindow(marker,infos){
+          // On crée une infobulle
+          var infowindow1 = new google.maps.InfoWindow({
+              maxWidth: 300, 
+              //On définit le texte à afficher dans l'infoWindow 
+              content: '<b>'+infos.title+'</b><br/><br/>'+infos.adr,
+          });
+
+          //On ajoute un listener d'événement : on écoute le clic sur le marqueur
+          google.maps.event.addListener(marker, 'mouseover', function() {
+              // Ouverture de l'infobulle 
+              infowindow1.open(map, marker);  
+          });  
+
+          // Ouverture de l'infobulle 
+          infowindow1.open(map, marker);  
+      }
 
   </script>
   <script>

@@ -400,7 +400,7 @@ class MemberController extends Controller {
             $dataTemp = ['id' => $item->id, 'lat' => $item->location ? $item->location->latitude :
                 0, 'lng' => $item->location ? $item->location->longitude : 0, 'title' => $item->name,
                 'content' => $item->get_meta('orga_description') ? $item->get_meta('orga_description')->value :
-                '', 'type' => $item->role, 'html' => $html, ];
+                '', 'type' => $item->role, 'html' => $html,'immat' => $item->immat,'adr' => $item->location?$item->location->route.' '.$item->location->locality.','.$item->location->area_level_2.' '.$item->location->area_level_1:'', ];
 
             $data[] = $dataTemp;
 
@@ -514,7 +514,7 @@ class MemberController extends Controller {
             $dataTemp = ['id' => $item->id, 'lat' => $item->location ? $item->location->latitude :
                 0, 'lng' => $item->location ? $item->location->longitude : 0, 'title' => $item->name,
                 'content' => $item->get_meta('orga_description') ? $item->get_meta('orga_description')->value :
-                '', 'type' => $item->role, 'html' => $html, ];
+                '', 'type' => $item->role, 'html' => $html,'immat' => $item->immat,'adr' => $item->location?$item->location->route.' '.$item->location->locality.','.$item->location->area_level_2.' '.$item->location->area_level_1:'', ];
 
             $data[] = $dataTemp;
 

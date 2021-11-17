@@ -121,11 +121,7 @@
             }
         });
     </script>
-    @php
-        $key = env('GMAP_API_KEY');
-        $url = "https://maps.googleapis.com/maps/api/js?key=".$key."&callback=initMap&libraries=places&v=weekly";
-    @endphp
-    <script async defer src={{$url}}></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2izG_M7K3gP6pFUH5cyzmDjuGpOYfgc4&libraries=places&callback=initMap&channel=GMPSB_addressselection_v1_cABC" async defer></script>
     <script>
         var _map;
         var _geocoder;
@@ -159,7 +155,7 @@
         var datas = {!!$data!!};
         var selected = {!!$selected!!};
         var markers = [];
-        
+    
         function initMap() {
             
             _map = new google.maps.Map(document.getElementById('map'), {
@@ -179,6 +175,9 @@
                 var lat = _marker.getPosition().lat();
                 var lng = _marker.getPosition().lng();
             });
+
+            // show info inwindows
+            infoWindowLocal(_marker,"@lang('app.your_location')");
         
             for (var i = 0; i < datas.length; i++) {
                 placeMarker(datas[i], );
@@ -194,6 +193,9 @@
             });
             
             if(data.type == 4){
+                // show info inwindows
+                infoWindow(markers[data.id],data);
+
                 google.maps.event.addListener(markers[data.id], 'click', function() {
                     $('#apl-modal').attr("value", data.id);
                     $('#title').html(data.title);
@@ -205,9 +207,41 @@
             }
         }
 
-        $('#fullscreen').click(function() {
-            $('#map div.gm-style button[class="gm-control-active gm-fullscreen-control"]').trigger('click');
-        });
+        function infoWindow(marker,data){
+            // On crée une infobulle
+            var infowindow1 = new google.maps.InfoWindow({
+                maxWidth: 300, 
+                //On définit le texte à afficher dans l'infoWindow 
+                content: '<b>'+data.immat+'</b><br/>'+data.title+'<br/>'+data.adr
+            });
+
+            //On ajoute un listener d'événement : on écoute le clic sur le marqueur
+            google.maps.event.addListener(marker, 'mouseover', function() {
+                // Ouverture de l'infobulle 
+                infowindow1.open(map, marker);  
+            });  
+
+            // Ouverture de l'infobulle 
+            infowindow1.open(map, marker);  
+        }
+
+        function infoWindowLocal(marker,data){
+            // On crée une infobulle
+            var infowindow1 = new google.maps.InfoWindow({
+                maxWidth: 300, 
+                //On définit le texte à afficher dans l'infoWindow 
+                content: data
+            });
+
+            //On ajoute un listener d'événement : on écoute le clic sur le marqueur
+            google.maps.event.addListener(marker, 'mouseover', function() {
+                // Ouverture de l'infobulle 
+                infowindow1.open(map, marker);  
+            });  
+
+            // Ouverture de l'infobulle 
+            infowindow1.open(map, marker);  
+        }
 
         function onClickListener() {
             // Exit Full Screen Mode
