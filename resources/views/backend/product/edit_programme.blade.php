@@ -278,14 +278,14 @@
 										</div> 
 									</div>
 									<div class="col-lg-6">
-										<div class="form-group">
+										{{--<div class="form-group">
 											<label for="title">@lang('app.form.programme_pre_approved_sale') *</label>
 											<select class="form-control" name="programme_pre_approved_sale" id="programme_pre_approved_sale" style="width:100%">
 												<option value="">@lang('app.form.choix_txt')</option>
 												<option value="NO" {{$product->programme_pre_approved_sale == 'NO' ? 'selected' : ''}}>NO</option>
 												<option value="YES" {{$product->programme_pre_approved_sale == 'YES' ? 'selected' : ''}}>YES</option>
 											</select>
-										</div> 
+										</div> --}}
 									</div>
 								</div>
 								@if ($dossier)
@@ -486,7 +486,7 @@
 								<div class="row">
 									<div class="col-lg-12" style="margin-top:15px">
 										<label class="chk_firb"> 
-											<input type="checkbox" value="" name="chk_firb"> @lang('app.txt.firb_recommendation')
+											<input type="checkbox" value="" name="chk_firb" checked="checked" disabled="disabled"> @lang('app.txt.firb_recommendation')
 										</label>
 									</div>
 								</div>
@@ -939,9 +939,6 @@ function initMap(){
 						}
 					}
 				},
-				chk_firb: {
-					required: true
-				},
 				long:{
 					required: true
 				},
@@ -997,9 +994,6 @@ function initMap(){
 				title_programme: {
 					required: "@lang('app.txt.champobligatoire')",
 					remote: jQuery.validator.format("{0} @lang('app.form.programme_validate_titre')")
-				},
-				chk_firb: {
-					required: "@lang('app.txt.champobligatoire')"
 				},
 				solicitor_id: {
 					required: "@lang('app.txt.champobligatoire')"

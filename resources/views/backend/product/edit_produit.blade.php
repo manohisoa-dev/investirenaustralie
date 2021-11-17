@@ -200,7 +200,17 @@
 										</div>
 									</div>
 									<div class="row">
-										<div class="col-lg-6">
+										<div class="col-lg-4">
+											<div class="form-group">
+												<label for="title">@lang('app.form.programme_pre_approved_sale') *</label>
+												<select class="form-control" name="programme_pre_approved_sale" id="programme_pre_approved_sale" style="width:100%">
+													<option value="">@lang('app.form.choix_txt')</option>
+													<option value="NO" {{$product->programme_pre_approved_sale == 'NO' ? 'selected' : ''}}>NO</option>
+													<option value="YES" {{$product->programme_pre_approved_sale == 'YES' ? 'selected' : ''}}>YES</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-lg-4">
 											<div class="form-group" style="margin-bottom:.5rem;">
 												<label for="title">@lang('app.txt.avoir_bonus')</label>
 												<select class="form-control" name="bonus_vente" id="bonus_vente">
@@ -210,7 +220,7 @@
 												</select>
 											</div>
 										</div>
-										<div class="col-lg-6">
+										<div class="col-lg-4">
 											<div id="montant_bonus_vente">
 												<label for="title">@lang('app.txt.valeur_bonus') *</label>
 												<div class="input-group" style="margin-bottom: .5rem;">
@@ -220,7 +230,7 @@
 													</div>
 												</div>
 											</div>
-										</div>
+										</div>										
 									</div>
 									
 									<div class="row">
@@ -579,7 +589,17 @@
 										</div>
 									</div>
 									<div class="row">
-										<div class="col-lg-6">
+										<div class="col-lg-4">
+											<div class="form-group">
+												<label for="title">@lang('app.form.programme_pre_approved_sale') *</label>
+												<select class="form-control" name="programme_pre_approved_sale" id="programme_pre_approved_sale" style="width:100%">
+													<option value="">@lang('app.form.choix_txt')</option>
+													<option value="NO" {{$product->programme_pre_approved_sale == 'NO' ? 'selected' : ''}}>NO</option>
+													<option value="YES" {{$product->programme_pre_approved_sale == 'YES' ? 'selected' : ''}}>YES</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-lg-4">
 											<div class="form-group" style="margin-bottom:1.5rem;">
 												<label for="title">@lang('app.txt.avoir_bonus')</label>
 												<select class="form-control" name="bonus_vente" id="bonus_vente">
@@ -589,7 +609,7 @@
 												</select>
 											</div>
 										</div>
-										<div class="col-lg-6">
+										<div class="col-lg-4">
 											<div id="montant_bonus_vente">
 												<label for="title">@lang('app.txt.valeur_bonus') *</label>
 												<div class="input-group" style="margin-bottom: 1.5rem;">
@@ -866,7 +886,17 @@
 										</div>
 									</div>
 									<div class="row">
-										<div class="col-lg-6">
+										<div class="col-lg-4">
+											<div class="form-group">
+												<label for="title">@lang('app.form.programme_pre_approved_sale') *</label>
+												<select class="form-control" name="programme_pre_approved_sale" id="programme_pre_approved_sale" style="width:100%">
+													<option value="">@lang('app.form.choix_txt')</option>
+													<option value="NO" {{$product->programme_pre_approved_sale == 'NO' ? 'selected' : ''}}>NO</option>
+													<option value="YES" {{$product->programme_pre_approved_sale == 'YES' ? 'selected' : ''}}>YES</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-lg-4">
 											<div class="form-group" style="margin-bottom:1.5rem;">
 												<label for="title">@lang('app.txt.avoir_bonus')</label>
 												<select class="form-control" name="bonus_vente" id="bonus_vente">
@@ -876,7 +906,7 @@
 												</select>
 											</div>
 										</div>
-										<div class="col-lg-6">
+										<div class="col-lg-4">
 											<div id="montant_bonus_vente">
 												<label for="title">@lang('app.txt.valeur_bonus') *</label>
 												<div class="input-group" style="margin-bottom: 1.5rem;">
@@ -1143,7 +1173,17 @@
 										</div>
 									</div>
 									<div class="row">
-										<div class="col-lg-6">
+										<div class="col-lg-4">
+											<div class="form-group">
+												<label for="title">@lang('app.form.programme_pre_approved_sale') *</label>
+												<select class="form-control" name="programme_pre_approved_sale" id="programme_pre_approved_sale" style="width:100%">
+													<option value="">@lang('app.form.choix_txt')</option>
+													<option value="NO" {{$product->programme_pre_approved_sale == 'NO' ? 'selected' : ''}}>NO</option>
+													<option value="YES" {{$product->programme_pre_approved_sale == 'YES' ? 'selected' : ''}}>YES</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-lg-4">
 											<div class="form-group" style="margin-bottom:1.5rem;">
 												<label for="title">@lang('app.txt.avoir_bonus')</label>
 												<select class="form-control" name="bonus_vente" id="bonus_vente">
@@ -1153,7 +1193,7 @@
 												</select>
 											</div>
 										</div>
-										<div class="col-lg-6">
+										<div class="col-lg-4">
 											<div id="montant_bonus_vente">
 												<label for="title">@lang('app.txt.valeur_bonus') *</label>
 												<div class="input-group" style="margin-bottom: 1.5rem;">
