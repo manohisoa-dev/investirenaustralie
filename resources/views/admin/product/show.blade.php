@@ -265,8 +265,13 @@
 						<div class="hr-line-dashed"></div>
 						<div class="pull-right">
 						@if($product->status == 'waiting')
+							@if($product->afaId_possible != 0)
 							<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.publish', $record->id):route('admin.product.publish', $product->id)}}" class="btn btn-flat btn-primary">@lang('app.admin.btn_approbation')</a>
 							<a href="javascript:void(0)" onclick="rejet_programme({{$product->id}})" class="btn btn-flat btn-danger">@lang('app.admin.btn_rejet')</a>
+							@else
+							<a href="#" class="btn btn-flat btn-primary disabled">@lang('app.admin.btn_approbation')</a>
+							<a href="javascript:void(0)" onclick="rejet_programme({{$product->id}})" class="btn btn-flat btn-danger">@lang('app.admin.btn_rejet')</a>
+							@endif
 						@else
 							@if($product->parent_id == 0)
 							<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme')}}?status=waiting" class="btn btn-default">@lang('app.btn.return')</a>

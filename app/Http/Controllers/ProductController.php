@@ -76,7 +76,9 @@ class ProductController extends Controller {
 
                 $data = ['id' => $product->id, 'lat' => $product->location ? $product->location->latitude :
                     0, 'lng' => $product->location ? $product->location->longitude : 0, 'title' => $product->title,
-                    'area' => $product->area, 'type' => 'product','adr' => $product->location?$product->location->route.' '.$product->location->locality.','.$product->location->area_level_2.' '.$product->location->area_level_1:'', ];
+                    'area' => $product->area, 'type' => 'product', 'adr' => $product->location ? $product->location->route .
+                    ' ' . $product->location->locality . ',' . $product->location->area_level_2 .
+                    ' ' . $product->location->area_level_1 : '', ];
 
                 $product->load('images');
 
@@ -1007,8 +1009,8 @@ class ProductController extends Controller {
                 $request->postalCode, $request->ville, $request->display_address, $request->long,
                 $request->lat);
         }
-        
-        if($id_location == 0){
+
+        if ($id_location == 0) {
             return back()->withInput()->withErrors(['msg' => "location not provided"]);
         }
 
@@ -1697,8 +1699,7 @@ class ProductController extends Controller {
                 $request->postalCode_product, $state ? $state->id : 0, -1, $id_location, $request->superficie_jardin,
                 0, 0, $request->commision_product, $taux_commision_prd, $request->commencement_dt,
                 $request->estimated_delvivery_dt, $request->bonus_vente, $request->bonus_amount,
-                '', 0, 0, 0, $request->programme_pre_approved_sale, $id_afa_p, $id_solicitor,
-                $seller_id);
+                '', 0, 0, 0, $request->programme_pre_approved_sale, $id_afa_p, $id_solicitor, $seller_id);
 
             //save fond dossier programme
             if ($request->p_fondDossier) {
@@ -1789,8 +1790,52 @@ class ProductController extends Controller {
                 $request->cat_programmme_id, $request->postalCode_product, $state->id, -1, $id_location,
                 $request->superficie_jardin, $request->type_cutomer_parking, 0, $request->commision_product,
                 $taux_commision_prd, '', '', $request->bonus_vente, $request->bonus_amount, $request->property_detail,
-                $request->nombre_cutomer_parking, 0, 0, $request->programme_pre_approved_sale,
-                $id_afa_p, $id_solicitor, $seller_id);
+                $request->nombre_cutomer_parking, 0, 0, $request->programme_pre_approved_sale, $id_afa_p,
+                $id_solicitor, $seller_id);
+
+            //save fond dossier programme
+            if ($request->p_fondDossier) {
+                foreach ($request->p_fondDossier as $key => $value) {
+                    $this->save_fond_dossier($value, $id_produit);
+                }
+            }
+
+            if ($request->p_eoiDossier) {
+                $this->save_eoi_dossier($request->p_eoiDossier, $id_produit);
+            }
+
+            if (isset($request->sales_mandate)) {
+                //save mandat de recherche
+                $fond_dossier = new LiaDossier();
+                $fond_dossier->product_id = $id_produit;
+                $fond_dossier->image_id = $request->sales_mandate;
+                $fond_dossier->author_id = Auth::user()->id;
+                $fond_dossier->save();
+            }
+
+            if ($request->dropPhoto) {
+                foreach ($request->dropPhoto as $key => $value) {
+                    $this->save_photo_programme($value, $id_produit, 0);
+                }
+            }
+        } else {
+            //pour les autres categorie
+            $id_location = $this->save_location($request->countryId_product, $request->state_id_product,
+                $request->suburb_product, $request->postalCode_product, $request->ville_product,
+                $request->display_address_product, $request->long, $request->lat);
+            if ($request->commision_product == 'Sales commission rate (%)') {
+                $taux_commision_prd = $request->sales_rate_product;
+            } else {
+                $taux_commision_prd = $request->rate_commission_product;
+            }
+
+            $id_produit = $this->save_new_produit('', 'Produit isolé', $request->title_product,
+                $request->file('image'), $request->desc_product, 1, 0, '', 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, date('Y'), $request->display_address_product, $request->simple_price, 0,
+                0, 'AUD', $request->status, $request->product_type_id, $request->cat_programmme_id,
+                $request->postalCode_product, $state->id, -1, $id_location, 0, 0, 0, $request->commision_product,
+                $taux_commision_prd, '', '', $request->bonus_vente, $request->bonus_amount, '',
+                0, 0, 0, '', $id_afa_p, $id_solicitor, $seller_id);
 
             //save fond dossier programme
             if ($request->p_fondDossier) {

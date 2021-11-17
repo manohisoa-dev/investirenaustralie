@@ -1033,6 +1033,11 @@ function set_mandat_state(state,active)
 							$('#NbCustomerParking').hide();	
 						}
 					})
+				}else{
+					$('#price_simple').show();
+					$('#bloc_fond_doc_produit').show();
+					$('#bloc_eoi_doc').show();
+					$('#bloc_lia_doc').show();
 				}
 				// Always allow going backward even if the current step contains invalid fields!
 				if (currentIndex > newIndex)

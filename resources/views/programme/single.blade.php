@@ -74,13 +74,15 @@
                                                                     $img_prod=asset('images/iea.png');
                                                                 }
                                                             @endphp
-                                                            <a href="javascript:void(0)"><img src="{{asset(getImageResizeUrl('product', $img_prod, 'large'))}}" alt="{{$it->title}}" class="img-fluid imageresource{{ $key }}"></a>
+                                                            <a href="javascript:void(0)">
+															<img src="{{asset(getImageResizeUrl('product', $img_prod, 'large'))}}" alt="{{$it->title}}" class="img-fluid imageresource{{ $key }}">
+															</a>
                                                         </div>
                                                         <div class="portfolio-info">
                                                             <div class="portfolio-desc">
                                                                 <h5><a href="#">{{$item->title}}</a></h5>
                                                             </div>
-                                                            <a href="javascript:void(0)" value="{{ $key }}" class="gallery-link pop">
+                                                            <a href="{{asset(getImageResizeUrl('product', $img_prod, 'large'))}}" data-fancybox="gallery" class="gallery-link pop">
                                                                 <i class="ti-plus"></i>
                                                             </a>
                                                         </div>
@@ -130,7 +132,7 @@
                                         <div class="portfolio-desc">
                                             <h5><a href="#">{{$item->title}}</a></h5>
                                         </div>
-                                        <a href="javascript:void(0)" value="0" class="gallery-link pop">
+										<a href="{{$img}}" data-fancybox="gallery" class="gallery-link pop">
                                             <i class="ti-plus"></i>
                                         </a>
                                     </div>
@@ -226,7 +228,7 @@
                                 <div id="myCarousel" class="carousel slide w-100" data-ride="carousel">
                                     <div class="carousel-inner w-100" role="listbox">
 
-                                        @forelse (App\Models\Product::where('parent_id','=',$item->id)->where('status','=','published')->get() as $prod)
+                                        @forelse (App\Models\Product::where('parent_id','=',$item->id)->where('status_res','=',0)->get() as $prod)
                                             <div class="carousel-item @if($loop->first) active @endif">
                                                 <div class="col-sm-3 col-md-6 col-lg-4">
                                                     <div class="thumb-wrapper">
@@ -337,6 +339,19 @@
   </div>
   <!-- Fin modal -->
 
+<!-- Creates the bootstrap modal where the image will appear -->
+<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+      <div class="modal-body">
+        <img src="" id="imagepreview" style="width: auto; height: auto;" >
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 
 
@@ -353,6 +368,7 @@
 	@endphp
     <link rel="stylesheet" href="{{ asset('carousel/style.css') }}">
 	<link rel="stylesheet" href="{{ asset('plugin/fancybox/jquery.fancybox.css') }}" type="text/css" media="screen" />
+	<link href="{{ asset('plugin/magnific/magnific-popup.css') }}" rel="stylesheet">
     <style>
         .notify-badge-prod{
             position: absolute;
@@ -394,7 +410,14 @@
 			$("a.fancyboxLinkDoc").fancybox({
 				type: "iframe"
 			});
+			
+			$("a.gallery-link").fancybox({
+				afterClose: function () {
+					parent.location.reload(true);
+				}
+			});
 		});
+		
         $('#btn_comment').click(function(){
             $('#loginModal').modal('show');
         });
@@ -466,9 +489,9 @@
               icon: iconBase + '/images/map/product.png'
             }
           };
-
+		  
           var data = {!!(isset($data) ? $data : '')!!};
-                data=$.parseJSON(data);
+                //data=$.parseJSON(data);
 
           function initMap() {
 
