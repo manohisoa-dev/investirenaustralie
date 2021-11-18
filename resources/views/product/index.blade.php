@@ -638,6 +638,15 @@
 
 @push('script')
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2izG_M7K3gP6pFUH5cyzmDjuGpOYfgc4&libraries=places&callback=initMap&channel=GMPSB_addressselection_v1_cABC" async defer></script>
+	@php
+		if(isset($location) && $location->latitude != '' && $location->longitude != ''){
+			$latitude = $location->latitude;
+			$longitude = $location->longitude;
+		}else{
+			$latitude = -25.647467468105795;
+			$longitude = 146.89921517372136;
+		}
+	@endphp
   <link rel="stylesheet" href="{{ asset('carousel/style.css') }}">
   <link rel="stylesheet" href="{{ asset('plugin/fancybox/jquery.fancybox.css') }}" type="text/css" media="screen" />
   <link href="{{ asset('plugin/magnific/magnific-popup.css') }}" rel="stylesheet">
@@ -731,13 +740,14 @@
       var _geocoder;
       var _marker;
       var _circle;
-      var _lat = parseInt($('#prod_loc_lat').val())?parseInt($('#prod_loc_lat').val()):-25.647467468105795;
-      var _long = parseInt($('#prod_loc_long').val())?parseInt($('#prod_loc_long').val()):146.89921517372136;
+      var _lat = {{$latitude}};
+      var _long = {{$longitude}};
       var _btnSubmit = document.getElementById("submit");
       var _inputApl = document.getElementById("apl");
       var _contentApl = document.getElementById("apl-content");
       var _titleApl = document.getElementById("apl-title");
       var iconBase = "{{url('')}}";
+	  
       var icons = {
         user: {
           icon: iconBase + '/images/map/user.png'

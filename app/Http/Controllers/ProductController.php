@@ -513,6 +513,25 @@ class ProductController extends Controller {
         $email_to = $user->email;
         Mail::to($email_to)->send(new MailTemplate($content, $sujet));
     }
+    
+    public function sendEmail_vendeur($id_produit)
+    {
+        $product = Product::find($id_produit);
+        $user = User::find($product->author_id);
+        
+        $template = MailsTemplate::where('id', 51)->get();
+        $lang = App::getLocale();
+        $body = 'template_' . $lang;
+        $sujet = 'sujet_'.$lang;
+        $vars = array(
+            '{dateSysteme}' => Carbon::now()->toFormattedDateString(),
+            '{heureSysteme}' => Carbon::now()->toTimeString(),
+            '{titre_produit}' => $product->title);
+        $contenu = strtr($template[0]->$body, $vars);
+        $content = ['title' => '', 'body' => $contenu];
+        $email_to = $user->email;
+        Mail::to($email_to)->send(new MailTemplate($content, $sujet));
+    }
 
     public function send_email_afa_proprietaire_after_creat_produit($id_produit, $id_afa) {
         $product = Product::find($id_produit);
@@ -813,6 +832,7 @@ class ProductController extends Controller {
             if (count($afa_possible) == 0) {
                 //envoie message à l'admin pour lui dire fa tsis AFA
                 $this->sendMessage_admin_after_create_programme($id_programme);
+                $this->sendEmail_vendeur($id_programme);
             }
 
             # notification
@@ -1285,9 +1305,10 @@ class ProductController extends Controller {
 
     public function ajaxSaveProduct(Request $request) {
         $state = State::where('content', $request->state_id_product)->first();
-        $id_location = $this->save_location($request->countryId_product, $request->state_id_product,
-            $request->suburb_product, $request->postalCode_product, $request->ville_product,
-            $request->display_address_product, $request->long, $request->lat);
+        /*$id_location = $this->save_location($request->countryId_product, $request->state_id_product,
+        $request->suburb_product, $request->postalCode_product, $request->ville_product,
+        $request->display_address_product, $request->long, $request->lat);*/
+        $id_location = $request->id_location_product;
         $titre_product = $request->title_new_programme . '-' . $request->title_product;
 
         if (isset($request->chk_parking)) {
@@ -1377,10 +1398,27 @@ class ProductController extends Controller {
             'commission_type' => $request->commision_product, 'commision' => $taux_commission,
             'avoir_bonus' => $request->bonus_vente, 'amount_bonus' => $request->bonus_amount]);
 
+        if ($request->is_pricipal) {
+            ProductsImage::where('product_id', $request->id_product)->update(['is_principal' =>
+                0]);
+            ProductsImage::where('image_id', $request->is_pricipal)->update(['is_principal' =>
+                1]);
+        }
 
         if ($request->dropPhoto) {
             foreach ($request->dropPhoto as $key => $value) {
-                $this->save_photo_programme($value, $request->id_product, 0);
+                if ($request->radioDrop) {
+                    if ($request->radioDrop == $value) {
+                        ProductsImage::where('product_id', $request->id_product)->update(['is_principal' =>
+                0]);                        
+                        $is_principal = 1;
+                    } else {
+                        $is_principal = 0;
+                    }
+                } else {
+                    $is_principal = 0;
+                }
+                $this->save_photo_programme($value, $request->id_product, $is_principal);
             }
         }
 
@@ -1876,6 +1914,7 @@ class ProductController extends Controller {
 
         if (count($afa_possible) == 0) {
             //envoie message à l'admin pour lui dire fa tsis AFA
+            $this->sendEmail_vendeur($id_produit);
             $this->sendMessage_admin_after_create_programme($id_produit);
         }
 
