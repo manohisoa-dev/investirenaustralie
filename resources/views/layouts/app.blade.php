@@ -229,7 +229,7 @@
                         <ul class="nav navbar-nav m-auto">
                             <li class="mm-in px-dropdown">
                                 <a href="{{route('programme.all')}}">@lang('app.immobilier')</a>
-                                <i class="fa fa-angle-down px-nav-toggle"></i>
+                                {{--<i class="fa fa-angle-down px-nav-toggle"></i>--}}
                                 <ul class="px-dropdown-menu mm-dorp-in">
                                     {{-- \App\Models\Category::whereId(1)->first()->slug] --}}
                                     <li><a href="{{route('programme.all', \App\Models\Category::find(1))}}">@lang('app.residentiel')</a></li>
@@ -238,7 +238,7 @@
                             </li>
                             <li class="mm-in px-dropdown">
                                 <a href="{{route('programme.all')}}">@lang('app.business')</a>
-                                <i class="fa fa-angle-down px-nav-toggle"></i>
+                                {{--<i class="fa fa-angle-down px-nav-toggle"></i>--}}
                                 <ul class="px-dropdown-menu mm-dorp-in">
                                     <li><a href="{{route('programme.all', \App\Models\Category::find(3))}}">@lang('app.industrial')</a></li>
                                     <li><a href="{{route('programme.all', \App\Models\Category::find(4))}}">@lang('app.commercial')</a></li>
@@ -247,7 +247,7 @@
                             <li><a class="nav-link" href="{{route('services')}}">@lang('app.services')</a></li>
                             <li class="mm-in px-mega">
                                 <a href="javascript:void(0)" title="@lang('app.apls')">@lang('app.txt.apl')</a>
-                                <i class="fa fa-angle-down px-nav-toggle"></i>
+                                {{--<i class="fa fa-angle-down px-nav-toggle"></i>--}}
                                 <div class="px-mega-menu mm-dorp-in">
                                     <div class="row no-gutters">
                                         <div class="col-lg-12">
@@ -283,7 +283,7 @@
                             @if(Auth::check())
                                 <li class="mm-in px-dropdown">
                                     <a href="#home">@lang('app.account')</a>
-                                    <i class="fa fa-angle-down px-nav-toggle"></i>
+                                    {{--<i class="fa fa-angle-down px-nav-toggle"></i>--}}
                                     <ul class="px-dropdown-menu mm-dorp-in">
                                         <li><a href="{{url(\App\Models\User::find(Auth::id())->roleUser->role_initial)}}">@lang('app.dashboard')</a></li>
                                         <li><a href="@if(!Auth::user()->isAdmin() && !Auth::user()->isAdminBlog() && !Auth::user()->isAdminDelegate()) {{ route('profile') }} @else {{ Auth::user()->isAdmin() ? route('admin.profile') : route('admin.collaborator.admin.profile') }} @endif">@lang('app.profile')</a></li>
