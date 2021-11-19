@@ -76,14 +76,17 @@
                     <div class="container">
                         <div class="row align-items-center justify-content-between">
                             <div class="col-lg-6 text-center m-15px-tb">
-                                @forelse ($child->images as $item)
-                                    <img src="{{ asset($item->filepath) }}" title="{{ $item->filename }}" alt="{{ $item->filename }}">
-                                @empty
-                                    <img src="{{ asset('images/page/default.png') }}" title="{{ asset('images/page/default.png') }}" alt="{{ asset('images/page/default.png') }}">
-                                @endforelse
+                                <div class="aos-init aos-animate" data-aos="fade-right">
+                                    {{--@forelse ($child->images as $item)--}}
+                                        {{--<img src="{{ asset($item->filepath) }}" title="{{ $item->filename }}" alt="{{ $item->filename }}">--}}
+                                    {{--@empty--}}
+                                        <img src="{{ asset('img/sydney-img1.png') }}" title="{{ asset('img/sydney-img1.png') }}" alt="{{ asset('') }}">
+                                    {{--@endforelse--}}
+                                </div>
                             </div>
-                            <div class="col-lg-5 m-15px-tb">
-                                <h2 class="h1 m-25px-b">{{$child->title}}</h2>
+
+                            <div class="col-lg-6 m-15px-tb">
+                                <h2 class="h1 m-25px-b title-iea h1 m-25px-b" style="font-size: 2.1rem !important;">{{$child->title}}</h2>
                                 <div class="text-justify">
                                     <p class="m-5px-b">{!!$child->content!!}</p>
                                 </div>
@@ -102,38 +105,38 @@
                     <div class="container">
                         <div class="row md-m-25px-b m-45px-b justify-content-center text-center">
                             <div class="col-lg-8">
-                                <h3 class="h1 m-20px-b p-20px-b theme-after after-50px">{{$child->title}}</h3>
+                                <h3 class="h2 m-20px-b p-20px-b theme-after after-50px">{{$child->title}}</h3>
                             </div>
                         </div>
                         <div class="tab-style-3">
                             <ul class="nav nav-fill nav-tabs box-shadow-lg">
                                 <li class="nav-item">
                                     <a href="#tab3_sec1" data-toggle="tab" class="active">
-                                        <div class="icon"><i class="fa fa-globe"></i></div>
+                                        <div class="icon"><img class="img-step-iea icon-step" src="{{asset("icon/step1.png")}}"></div>
                                         <span>@lang('app.home.step1.title')</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="#tab3_sec2" data-toggle="tab" class="">
-                                        <div class="icon"><i class="fa fa-info"></i></div>
+                                        <div class="icon"><img class="img-step-iea icon-step" src="{{asset("icon/step2.png")}}"></div>
                                         <span>@lang('app.home.step2.title')</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="#tab3_sec3" data-toggle="tab" class="">
-                                        <div class="icon"><i class="fa fa-mouse-pointer"></i></div>
+                                        <div class="icon"><img class="img-step-iea icon-step" src="{{asset("icon/step3.png")}}"></div>
                                         <span>@lang('app.home.step3.title')</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="#tab3_sec4" data-toggle="tab" class="">
-                                        <div class="icon"><i class="icon-tools"></i></div>
+                                        <div class="icon"><img class="img-step-iea icon-step" src="{{asset("icon/step4.png")}}"></div>
                                         <span>@lang('app.home.step4.title')</span>
                                     </a>
                                 </li>
                             </ul>
 
-                            <div class="tab-content">
+                            <div class="tab-content iea-tab">
 
                                 @php
                                     $htmlContent = $child->content;
@@ -155,7 +158,7 @@
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="p-70px-l lg-p-0px-l lg-m-30px-t">
-                                                        <h2 class="h1 m-25px-b" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getTitle)?$getTitle[$i]:'' !!}</h2>
+                                                        <h2 class="h2-small m-25px-b" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getTitle)?$getTitle[$i]:'' !!}</h2>
                                                         <p class="m-5px-b text-justify" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getContent)?$getContent[$i]:trans('app.txt.noinfo') !!}</p>
                                                     </div>
                                                 </div>
@@ -166,7 +169,7 @@
                                             <div class="row align-items-center p-25px-t lg-p-15px-t">
                                                 <div class="col-lg-6">
                                                     <div class="p-70px-r lg-p-0px-r lg-m-30px-t">
-                                                        <h2 class="h1 m-25px-b" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getTitle)?$getTitle[$i]:'' !!}</u></h2>
+                                                        <h2 class="h2-small m-25px-b" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getTitle)?$getTitle[$i]:'' !!}</u></h2>
                                                         <p class="m-5px-b text-justify" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getContent)?$getContent[$i]:trans('app.txt.noinfo') !!}</p>
                                                     </div>
                                                 </div>
@@ -183,7 +186,7 @@
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="p-70px-l lg-p-0px-l lg-m-30px-t">
-                                                        <h2 class="h1 m-25px-b" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getTitle)?$getTitle[$i]:'' !!}</h2>
+                                                        <h2 class="h2-small m-25px-b" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getTitle)?$getTitle[$i]:'' !!}</h2>
                                                         <p class="m-5px-b text-justify" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getContent)?$getContent[$i]:trans('app.txt.noinfo') !!}</p>
                                                     </div>
                                                 </div>
@@ -194,7 +197,7 @@
                                             <div class="row align-items-center p-25px-t lg-p-15px-t">
                                                 <div class="col-lg-6">
                                                     <div class="p-70px-r lg-p-0px-r lg-m-30px-t">
-                                                        <h2 class="h1 m-25px-b" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getTitle)?$getTitle[$i]:'' !!}</h2>
+                                                        <h2 class="h2-small m-25px-b" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getTitle)?$getTitle[$i]:'' !!}</h2>
                                                         <p class="m-5px-b text-jusfify" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getContent)?$getContent[$i]:trans('app.txt.noinfo') !!}</p>
                                                     </div>
                                                 </div>
@@ -218,30 +221,36 @@
                     </div>
                 </section>
             @elseif($child->page_order == 5)
-                <section class="section theme-bg">
+                <section class="section">
                     <div class="container">
-                        <div class="row md-m-25px-b m-45px-b justify-content-center text-center">
-                            <div class="col-lg-8">
-                                <h3 class="h1 white-color m-20px-b p-20px-b white-after after-50px">@lang('app.txt.missionvision')</h3>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 m-15px-tb">
-                                <div style="height:500px;" class="p-50px-tb p-35px-lr box-shadow-hover hover-top hover-rotate white-bg text-center border-radius-5 mission-content">
-                                    <div class="ef-1 icon-80 theme-bg border-radius-50 theme2nd-color d-inline-block m-20px-b hr-rotate-after">
-                                        <i class="white-color fa fa-podcast"></i>
-                                    </div>
-                                    <h5 class="h3 m-10px-b">@lang('app.txt.mission.title')</h5>
-                                    <p class="m-0px text-justify">@lang('app.txt.mission.content')</p>
+                        <div class="row md-m-25px-b m-45px-b">
+                            <div class="col-lg-4 m-15px-tb aos-init aos-animate" data-aos="fade-right">
+                                <div class="p-45px-tb p-35px-lr">
+                                    <h3 class="h1 m-20px-b p-20px-b">@lang('app.txt.missionvision')</h3>
+                                    <p class="m-0px txt-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                    <p class="txt-body" style="padding-top: 10px;padding-left: 10px;"><i class="fa fa-check-circle"></i> Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
+                                    <p class="txt-body" style="padding-left: 10px;"><i class="fa fa-check-circle" style="color: #ae4435;"></i> Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                                 </div>
                             </div>
-                            <div class="col-md-6 m-15px-tb">
-                                <div style="height:500px;" class="p-45px-tb p-35px-lr box-shadow-hover hover-top hover-rotate white-bg text-center border-radius-5">
-                                    <div class="ef-1 icon-80 theme-bg border-radius-50 theme2nd-color d-inline-block m-20px-b hr-rotate-after">
-                                        <i class="white-color fa fa-eye"></i>
-                                    </div>
-                                    <h5 class="h3 m-10px-b">@lang('app.txt.vision.title')</h5>
-                                    <p class="m-0px  text-justify p-50px-tb">@lang('app.txt.vision.content')</p>
+                            <div class="col-lg-4 p-35px-lr contente aos-init aos-animate" data-aos="fade-up">
+                                <div class="content-overlay"></div>
+                                <div class="content-origin">
+                                    <img src="{{asset('img/mission-min.png')}}" style="width:256px; height: auto">
+                                    <h5>@lang('app.txt.mission.title')</h5>
+                                </div>
+                                <div class="content-details fadeIn-bottom">
+                                    <p class="content-text" style="padding-left:20px; padding-right:20px;">@lang('app.txt.mission.content')</p>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 p-35px-lr contente aos-init aos-animate" data-aos="fade-down">
+                                <div class="content-overlay"></div>
+                                <div class="content-origin">
+                                    <img src="{{asset('img/vision-min.png')}}" style="width:256px; height: auto">
+                                    <h5>@lang('app.txt.vision.title')</h5>
+                                </div>
+                                <div class="content-details fadeIn-bottom">
+                                    <p class="content-text" style="padding-left:20px; padding-right:20px;">@lang('app.txt.vision.content')</p>
                                 </div>
                             </div>
                         </div>
@@ -279,20 +288,22 @@
     @endforeach
 
     <!-- Section -->
-    <section class="section">
+    <section class="section youtube-iea">
         <div class="container">
             <div class="row align-items-center justify-content-between">
-                <div class="col-lg-5 m-15px-tb">
-                    <h2 class="h1 m-25px-b">@lang('app.home.youtube.title')</p>
-                    <div class="btn-bar p-15px-t">
-                        <a class="m-btn m-btn-theme2nd m-btn-theme" href="#">@lang('app.btn.view_more')</a>
+                <div class="col-lg-6 m-15px-tb">
+                    <div class="video-box aos-init aos-animate" data-aos="fade-down">
+                        <!-- <iframe class="iframe" height="350" src="https://www.youtube.com/embed/dzHw2RRyk68"></iframe> -->
+                        <img class="box-shadow-iea border-radius-20" src="{{ asset('img/bghead.jpg') }}" title="" alt="">
+                        <a class="video-btn white popup-youtube p-center" href="https://www.youtube.com/watch?v=8FPgOCmX7MM"><span></span></a>
                     </div>
                 </div>
-                <div class="col-lg-6 m-15px-tb">
-                    <div class="video-box">
-                        <!-- <iframe class="iframe" height="350" src="https://www.youtube.com/embed/dzHw2RRyk68"></iframe> -->
-                        <img class="box-shadow border-radius-5" src="{{ asset('images/iea.png') }}" title="" alt="">
-                        <a class="video-btn white popup-youtube p-center" href="https://www.youtube.com/watch?v=8FPgOCmX7MM"><span></span></a>
+
+                <div class="col-lg-5 m-15px-tb aos-init aos-animate" data-aos="fade-right">
+                    <h2 class="h1 m-25px-b text-white bg-title">@lang('app.home.youtube.title')</h2>
+                    <p class="text-white" style="padding-top: 20px; line-height: 1.8;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    <div class="btn-bar p-15px-t aos-init aos-animate" data-aos="fade-up">
+                        <a class="m-btn m-btn-theme btn-white-iea btn-radius-iea" href="#">@lang('app.btn.view_more')</a>
                     </div>
                 </div>
             </div>
@@ -320,7 +331,7 @@
     <!-- End Section -->
     <!-- Section blog-->
     <section id="blog" class="section white-bg">
-        <div class="container">
+        <div class="container-xxl">
             <div class="row justify-content-center sm-m-20px-b m-40px-b">
                 <div class="col-lg-8 text-center">
                     <label class="border-bottom-2 font-w-600 theme-color border-color-theme2nd">@lang('app.txt.our_blogs')</label>
@@ -334,13 +345,14 @@
 						$slug = 'slug_'.$lang;
 						$title = 'title_'.$lang;
 					@endphp
-                    <div class="col-lg-4 m-15px-tb">
-                        <div class="hover-top transition blog-grid-overlay" style="background-image: url({{asset(getImageResizeUrl('blog', $blog->image->filename, 'scare'))}}); ">
+
+                    <div class="col-xl-4 m-15px-tb">
+                        <div class="hover-top transition blog-grid-overlay overlay-iea" style="background-image: url({{asset(getImageResizeUrl('blog', $blog->image->filename, 'scare'))}}); ">
                             <div class="blog-gird-info">
                                 <a class="overlay-link" href="{{route('blog.index',$blog->$slug)}}"></a>
                                 <div class="b-meta">
                                     <span class="date">{{ $blog->created_at ? Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $blog->created_at)->format('d F') : ""}}, {{$blog->created_at ? Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $blog->created_at)->year : ''}}</span>
-                                    <p class="meta">@lang('app.txt.postepar') : {{$blog->author ? $blog->author->name : ''}} – {{$blog->created_at ? $blog->created_at->diffForHumans() : ''}}</label> </p>
+                                    <p class="meta-blog">@lang('app.txt.postepar') : {{$blog->author ? $blog->author->name : ''}} – {{$blog->created_at ? $blog->created_at->diffForHumans() : ''}}</label> </p>
                                 </div>
                                 <h5 style="height: 100px;">{{$blog->$title}}</h5>
                                 <!-- <p>{{ substr(strip_tags($blog->excerpt()),0,0) }} ...</p> -->
@@ -348,7 +360,7 @@
                         </div>
                     </div>
                 @empty
-                    <div class="col-lg-12 text-center"> @lang('app.txt.noinfo') </div>
+                    <div class="col-xl-4 m-15px-tb"> @lang('app.txt.noinfo') </div>
                @endforelse
             </div>
         </div>
