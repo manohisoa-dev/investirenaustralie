@@ -80,7 +80,6 @@ class ProgrammeController extends Controller {
                     $fonDossier = array();
                 }
 
-
                 return view('programme.single')->with('item', $product)->with('location', $product->location)->with('pubs',
                     $pubs)->with('products', $products)->with('apls', $apls)->with('data',
                     json_encode($data))->with('states', $states)->with('locationTypes', $locationTypes)->with('types',

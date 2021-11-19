@@ -459,12 +459,11 @@
 						<div class="row">
 							<div class="col-lg-6">
 								<div id="firb_pre_approved_sale">
-									<label for="title">@lang('app.form.programme_firb_pre_approved_program')*</label>
-									<select class="form-control" name="programme_firb_pre_approved_program" id="programme_firb_pre_approved_program" style="width:100%">
+									<label for="title">@lang('app.form.programme_pre_approved_sale') *</label>
+									<select class="form-control" name="programme_pre_approved_sale" id="programme_pre_approved_sale" style="width:100%">
 										<option value="">@lang('app.form.choix_txt')</option>
 										<option value="NO">NO</option>
-										<option value="YES - 50%">YES - 50%</option>
-										<option value="YES - 100%">YES - 100%</option>
+										<option value="YES">YES</option>
 									</select>
 								</div>
 							</div>
@@ -1034,6 +1033,11 @@ function set_mandat_state(state,active)
 							$('#NbCustomerParking').hide();	
 						}
 					})
+				}else{
+					$('#price_simple').show();
+					$('#bloc_fond_doc_produit').show();
+					$('#bloc_eoi_doc').show();
+					$('#bloc_lia_doc').show();
 				}
 				// Always allow going backward even if the current step contains invalid fields!
 				if (currentIndex > newIndex)
@@ -1483,7 +1487,7 @@ function set_mandat_state(state,active)
 				p_eoiDossier: {
 					required: true
 				},
-				programme_firb_pre_approved_program: {
+				programme_pre_approved_sale: {
 					required: true
 				},
 				solicitor_id: {
@@ -1635,7 +1639,7 @@ function set_mandat_state(state,active)
 				p_eoiDossier: {
 					required: "@lang('app.txt.champobligatoire')"
 				},
-				programme_firb_pre_approved_program: {
+				programme_pre_approved_sale: {
 					required: "@lang('app.txt.champobligatoire')"
 				}
 			},

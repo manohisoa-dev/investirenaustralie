@@ -59,12 +59,12 @@
 												<img src="{{asset(getImageResizeUrl('product', $photo_principal->filename, 'mini'))}}" class="img-responsive" />
 												@else
 												<!-- Programme principal -->
-												<img src="{{asset(getImageResizeUrl('product', $photo_principal->filename, 'mini'))}}" class="img-responsive" />
+												<img src="{{asset(getImageResizeUrl('product', $first_photo->filename, 'mini'))}}" class="img-responsive"/>
 												@endif
 											@else
 												<!-- Programme aucun photo -->
 												<img class="img-responsive" src="{{asset('images/product.png')}}" style="width:50px">
-											@endif
+											@endif	
 										</td>
 										<td><b>{{ $product_lie->title }}</b></td>
 										<td>{{ $product_lie->currency }}&nbsp;{{ number_format($product_lie->min_price, 0, '.', ' ') }}</td>
@@ -153,6 +153,16 @@
 				$('#montant_bonus_vente').hide();
 			}
 		});
+		
+		$('#garage_spaces, #carport_spaces').bind('keyup mouseup', function (){
+			if($('#garage_spaces').val() != 0 || $('#carport_spaces').val() != 0){
+				 console.log('tokony disabled');
+				$("#chk_parking").attr('disabled','disabled');
+			}else{
+				console.log('normal');
+				$("#chk_parking").removeAttr('disabled');
+			}
+		});	
 		
 		<!-- commission product -->			
 		$('#commision_product').on('change', function() {
@@ -289,12 +299,16 @@
 			data:{"_token": "{{ csrf_token() }}",'id_produit':id_produit},
 			success: function(data)
 			{
-			    //console.log(data.photo);
+			    //console.log(data.product);
 				var base_url = "{{asset('/')}}";
 				$.each(data.photo, function( index, value ) {
-					console.log(value.filepath);
+					if(value.is_principal == 1){
+						var class_radio = "checked='checked'"
+					}else{
+						var class_radio = '';
+					}
 				    var photo_p = base_url + value.filepath;
-					$('#photoProduit').append('<div class="file-box"><div class="file"><div class="image"><img alt="image" class="img-fluid" src="'+photo_p+'"></div><div class="file-name"><input type="checkbox" name="photo_trash[]" value="'+value.id+'" /> Supprimer</div></div></div>');
+					$('#photoProduit').append('<div class="file-box"><div class="file"><div class="image"><img alt="image" class="img-fluid" src="'+photo_p+'"></div><div class="file-name"><input type="radio" name="is_pricipal" '+class_radio+' value="'+value.id+'"> @lang('app.dropzone.photoIcon_tex')<br><input type="checkbox" name="photo_trash[]" value="'+value.id+'" /> Supprimer</div></div></div>');
 				});
 				$('#title_new_programme').val($('#title_programme').val());
 				$("#progTitle").text($('#title_programme').val());
@@ -356,7 +370,7 @@
 					dictDefaultMessage: "@lang('app.dropzone.libelle')",
 					url: "{{ route('ajaxDropZone') }}",
 					params: {"_token": "{{ csrf_token() }}"},
-					acceptedFiles: ".jpeg,.jpg,.png,.gif",
+					acceptedFiles: ".jpeg,.jpg,.png,.gif,.pdf",
 					addRemoveLinks: true,
 					timeout: 50000,
 					init:function() {
@@ -408,6 +422,16 @@
 						return _results;
 					}
 				});
+				if(data.product.garage_spaces != 0 || data.product.carport_spaces != 0){
+					$("#chk_parking").attr('disabled','disabled');
+				}else{
+					if(data.product.avoir_parking_voie_public == 1){
+						$('#chk_parking').prop('checked', true);
+					}else{
+						$('#chk_parking').prop('checked', false);
+					}
+				}
+				
 				$('#modal_form_product').modal('show'); 
 				$('.modal-title').text("@lang('app.form.product_edit_title')"); 
 			},
@@ -681,7 +705,7 @@
 						<input type="hidden" name="prg_cat_id" id="prg_cat_id" value="{{$product->category_id}}"/>
 						<input type="hidden" name="id_programme" id="id_programme"/>
 						<input type="hidden" name="id_product" id="id_product" />
-						<input type="hidden" name="id_location_product" id="id_location_product"/>
+						<input type="hidden" name="id_location_product" id="id_location_product" value="{{$localisation->id}}"/>
 						<input type="hidden" name="idAfa" value="{{$product->afaId_possible}}" />
 						<input type="hidden" name="idSolicitor" value="{{$product->solicitor_id}}" />
 						<input type="hidden" name="idSeller" value="{{$product->seller_id}}" />
@@ -764,36 +788,36 @@
 							<div class="col-lg-3">
 								<div class="form-group">
 									<label for="title">@lang('app.form.programme_commission_type')</label>
-									<select class="form-control" name="commision_product" id="commision_product">
-										<option value="">Choisir...</option>
-										<option value="Sales commission rate (%)" {{$product->commission_type == 'Sales commission rate (%)' ? 'selected' : ''}}>@lang('app.form.programme_commission_option1') (%)</option>
-										<option value="Fixed commission ($)" {{$product->commission_type == 'Fixed commission ($)' ? 'selected' : ''}}>@lang('app.form.programme_commission_option2') ($)</option>
-									</select>
+									<input type="text" name="commision_product" class="form-control" value="{{$product->commission_type}}" readonly="" />
 								</div>
 							</div>
+							
 							<div class="col-lg-3">
+								@if($product->commission_type == 'Sales commission rate (%)')
 								<div id="commission_rate_prd" style="display:none">
 									<div class="form-group">
 										<label for="title">@lang('app.form.programme_taux_commission')</label>
 										<div class="input-group m-b">
-											<input type="number" min="0" class="form-control" name="sales_rate_product" id="sales_rate_product">
+											<input type="text" value="{{$product->commision}}" class="form-control" name="sales_rate_product" id="sales_rate_product" readonly="">
 											<div class="input-group-append">
 												<span class="input-group-text">%</span>
 											</div>
 										</div>
 									</div>
 								</div>
+								@else
 								<div id="fixed_commission_prd" style="display:none">
 									<div class="form-group">
 										<label for="title">@lang('app.form.programme_mt_commission')</label>
 										<div class="input-group m-b">
-											<input type="number" min="0" class="form-control" name="rate_commission_product" id="rate_commission_product">
+											<input type="text" value="{{$product->commision}}" class="form-control" name="rate_commission_product" id="rate_commission_product" readonly="">
 											<div class="input-group-append">
 												<span class="input-group-text">AUD</span>
 											</div>
 										</div>
 									</div>
 								</div>
+								@endif
 							</div>
 							<div class="col-lg-3">
 								<div class="form-group">

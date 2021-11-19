@@ -155,61 +155,14 @@
 							@endif
 								
 							</td>
-							<td>
-								<span class="editable"
-								data-type="text"
-								data-name="name"
-								data-value="{{ $record->name }}"
-								data-pk="{{ $record->{$record->getKeyName()} }}"
-								data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
-								>{{ $user_name }}</span>
-							</td>
-							<td>
-								<span class="editable"
-								data-type="text"
-								data-name="country"
-								data-value="{{ $record->country }}"
-								data-pk="{{ $record->{$record->getKeyName()} }}"
-								data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
-								>{{$record->country}}</span>
-							</td>
-							<td>
-								<span class="editable"
-								data-type="text"
-								data-name="locality"
-								data-value="{{ $record->locality }}"
-								data-pk="{{ $record->{$record->getKeyName()} }}"
-								data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
-								>{{$record->locality}}</span>
-							</td>
+							<td>{{ $user_name }}</td>
+							<td>{{$record->country}}</td>
+							<td>{{$record->locality}}</td>
 							
-							<td>
-								<span class="editable"
-								data-type="email"
-								data-name="email"
-								data-value="{{ $record->email }}"
-								data-pk="{{ $record->{$record->getKeyName()} }}"
-								data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
-								>{{ $record->email }}</span>
-							</td>
+							<td>{{ $record->email }}</td>
 							<td>{{$record->created_at->diffForHumans()}}</td>
+							<td>{{$record->roleUser['role_initial']}}</td>
 							<td>
-								<span class="editable"
-								data-type="text"
-								data-name="role"
-								data-value="{{ $record->role }}"
-								data-pk="{{ $record->{$record->getKeyName()} }}"
-								data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
-								><a href=""><span class="label label-warning">{{$record->roleUser['role_initial']}}</span></a></span>
-							</td>
-							<td>
-								<span class="editable"
-								data-type="text"
-								data-name="type_users_id"
-								data-value="{{ $record->type_users_id }}"
-								data-pk="{{ $record->{$record->getKeyName()} }}"
-								data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
-								>
 								@if($record->type_users_id == 2)
 								<a href="">
 									<span class="label label-success">{{$record->typeUser['type_user_name']}}</span>
@@ -219,17 +172,9 @@
 									<span class="label label-primary">{{$record->typeUser['type_user_name']}}</span>
 								</a>
 								@endif
-								</span>
 							</td>
 							<td>
-								<span class="editable"
-								data-type="text"
-								data-name="status"
-								data-value="{{ $record->status }}"
-								data-pk="{{ $record->{$record->getKeyName()} }}"
-								data-url="{{ Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.index'):route('admin.user.index')}}/{{ $record->{$record->getKeyName()} }}"
-								>
-									<a href="#">
+								<a href="#">
 									@if($record->status=='active')
 									<span class="label label-primary">{{$record->status == 'active' ? 'Actif' : ''}}</span>
 									@else
@@ -241,8 +186,7 @@
 											<span class="label label-warning">{{ucfirst($record->status)}}</span>
 										@endif
 									@endif
-									</a>
-								</span>
+								</a>
 							</td>
 							<td>
 							@if (Auth::user()->isAdminDelegate() && $record->role===1)
@@ -262,10 +206,10 @@
 												<i class="fa fa-eye text-info"></i>
 											</a>&nbsp;&nbsp;
 										@endif
-										<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.contact', ['user_id' => $record->uid]):route('admin.user.contact', ['user_id' => $record->uid])}}" class="btn btn-default btn-circle" title="@lang('app.btn.contact')">
+										<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.contact', ['user_id' => $record->uid]):route('admin.user.contact', ['user_id' => $record->uid])}}" class="btn btn-default btn-circle" title="Envoyer un email">
 											<i class="fa fa-envelope" aria-hidden="true"></i>
 										</a>&nbsp;&nbsp;
-										<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show.message', ['user_id' => $record->uid]):route('admin.user.show.message', ['user_id' => $record->uid])}}" class="btn btn-default btn-circle" title="">
+										<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.user.show.message', ['user_id' => $record->uid]):route('admin.user.show.message', ['user_id' => $record->uid])}}" class="btn btn-default btn-circle" title="Tchater avec ce partie prenante">
 											<i class="fa fa-comment	" aria-hidden="true"></i>
 										</a>&nbsp;&nbsp;
 										{{ csrf_field() }}

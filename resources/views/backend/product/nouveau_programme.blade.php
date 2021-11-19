@@ -266,14 +266,14 @@
 							</div> 
 						</div>
 						<div class="col-lg-6">
-							<div class="form-group">
+							{{--<div class="form-group">
 								<label for="title">@lang('app.form.programme_pre_approved_sale') *</label>
 								<select class="form-control" name="programme_pre_approved_sale" id="programme_pre_approved_sale" style="width:100%">
 									<option value="">@lang('app.form.choix_txt')</option>
 									<option value="NO">NO</option>
 									<option value="YES">YES</option>
 								</select>
-							</div> 
+							</div>--}}
 						</div>
 					</div>
 					
@@ -847,9 +847,6 @@ function set_mandat_state(state,active)
 				programme_firb_pre_approved_program: {
 					required: true
 				},
-				programme_pre_approved_sale: {
-					required: true
-				},
 				eoiDossier: {
 					required: true
 				},
@@ -936,9 +933,6 @@ function set_mandat_state(state,active)
 					required: "@lang('app.txt.champobligatoire')"
 				},
 				programme_firb_pre_approved_program: {
-					required: "@lang('app.txt.champobligatoire')"
-				},
-				programme_pre_approved_sale: {
 					required: "@lang('app.txt.champobligatoire')"
 				},
 				eoiDossier: {

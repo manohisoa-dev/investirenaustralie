@@ -81,7 +81,7 @@
                                                     <div class="portfolio-desc">
                                                         <h5><a href="#">{{ $item->title }}</a></h5>
                                                     </div>
-                                                    <a href="javascript:void(0)" value="{{ $key }}" class="gallery-link pop">
+                                                    <a href="{{asset($img_prod)}}" data-fancybox="gallery" class="gallery-link pop">
                                                         <i class="ti-plus"></i>
                                                     </a>
                                                 </div>
@@ -126,7 +126,7 @@
                                       <div class="portfolio-desc">
                                           <h5><a href="#">{{ $item->title }}</a></h5>
                                       </div>
-                                      <a href="javascript:void(0)" value="0" class="gallery-link pop">
+									  <a href="{{asset($img)}}" data-fancybox="gallery" class="gallery-link pop">
                                           <i class="ti-plus"></i>
                                       </a>
                                   </div>
@@ -638,10 +638,21 @@
 
 @push('script')
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2izG_M7K3gP6pFUH5cyzmDjuGpOYfgc4&libraries=places&callback=initMap&channel=GMPSB_addressselection_v1_cABC" async defer></script>
+	@php
+		if(isset($location) && $location->latitude != '' && $location->longitude != ''){
+			$latitude = $location->latitude;
+			$longitude = $location->longitude;
+		}else{
+			$latitude = -25.647467468105795;
+			$longitude = 146.89921517372136;
+		}
+	@endphp
   <link rel="stylesheet" href="{{ asset('carousel/style.css') }}">
+  <link rel="stylesheet" href="{{ asset('plugin/fancybox/jquery.fancybox.css') }}" type="text/css" media="screen" />
   <link href="{{ asset('plugin/magnific/magnific-popup.css') }}" rel="stylesheet">
   <script src="{{ asset('carousel/popper.min.js') }}"></script>
   <script src="{{ asset('carousel/carousel.js') }}"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
   <style>
     #map{
       height: 25rem;
@@ -680,6 +691,12 @@
       if('{{ Session()->get("complete_registration_message") }}' == 1){
         $('#registrationMemberMessageModal').modal('show');
       }
+	  
+	  $("a.gallery-link").fancybox({
+			afterClose: function () {
+				parent.location.reload(true);
+			}
+	  });
 
     });
   </script>
@@ -711,11 +728,11 @@
         });
 
         // Show image product in modal
-        $(".pop").on("click", function() {
+        /*$(".pop").on("click", function() {
           var id = $(this).attr('value');
           $('#imagepreview').attr('src', $('.imageresource'+id).attr('src')); // here asign the image to the modal when the user click the enlarge link
           $('#imagemodal').modal('show'); // imagemodal is the id attribute assigned to the bootstrap modal, then i use the show function
-        });
+        });*/
   </script>
   <script>
 
@@ -723,13 +740,14 @@
       var _geocoder;
       var _marker;
       var _circle;
-      var _lat = parseInt($('#prod_loc_lat').val())?parseInt($('#prod_loc_lat').val()):-25.647467468105795;
-      var _long = parseInt($('#prod_loc_long').val())?parseInt($('#prod_loc_long').val()):146.89921517372136;
+      var _lat = {{$latitude}};
+      var _long = {{$longitude}};
       var _btnSubmit = document.getElementById("submit");
       var _inputApl = document.getElementById("apl");
       var _contentApl = document.getElementById("apl-content");
       var _titleApl = document.getElementById("apl-title");
       var iconBase = "{{url('')}}";
+	  
       var icons = {
         user: {
           icon: iconBase + '/images/map/user.png'

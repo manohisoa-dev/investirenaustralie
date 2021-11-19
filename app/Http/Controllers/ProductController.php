@@ -76,7 +76,9 @@ class ProductController extends Controller {
 
                 $data = ['id' => $product->id, 'lat' => $product->location ? $product->location->latitude :
                     0, 'lng' => $product->location ? $product->location->longitude : 0, 'title' => $product->title,
-                    'area' => $product->area, 'type' => 'product','adr' => $product->location?$product->location->route.' '.$product->location->locality.','.$product->location->area_level_2.' '.$product->location->area_level_1:'', ];
+                    'area' => $product->area, 'type' => 'product', 'adr' => $product->location ? $product->location->route .
+                    ' ' . $product->location->locality . ',' . $product->location->area_level_2 .
+                    ' ' . $product->location->area_level_1 : '', ];
 
                 $product->load('images');
 
@@ -511,6 +513,25 @@ class ProductController extends Controller {
         $email_to = $user->email;
         Mail::to($email_to)->send(new MailTemplate($content, $sujet));
     }
+    
+    public function sendEmail_vendeur($id_produit)
+    {
+        $product = Product::find($id_produit);
+        $user = User::find($product->author_id);
+        
+        $template = MailsTemplate::where('id', 51)->get();
+        $lang = App::getLocale();
+        $body = 'template_' . $lang;
+        $sujet = 'sujet_'.$lang;
+        $vars = array(
+            '{dateSysteme}' => Carbon::now()->toFormattedDateString(),
+            '{heureSysteme}' => Carbon::now()->toTimeString(),
+            '{titre_produit}' => $product->title);
+        $contenu = strtr($template[0]->$body, $vars);
+        $content = ['title' => '', 'body' => $contenu];
+        $email_to = $user->email;
+        Mail::to($email_to)->send(new MailTemplate($content, $sujet));
+    }
 
     public function send_email_afa_proprietaire_after_creat_produit($id_produit, $id_afa) {
         $product = Product::find($id_produit);
@@ -619,7 +640,7 @@ class ProductController extends Controller {
         $image_programme->author_id = Auth::user()->id;
         $image_programme->save();
 
-        Product::regenerateMyAvatar($image) ;
+        Product::regenerateMyAvatar($image);
     }
 
     public function save_fond_dossier($nom_photo, $id_programme) {
@@ -763,7 +784,7 @@ class ProductController extends Controller {
                 $request->display_address, $request->postalCode, $state->id, $titre_programme, $request->description,
                 $id_location, '', 'waiting', $request->commision, $taux_commision, $id_afa_p, $id_solicitor,
                 $request->commencement_dt, $request->estimated_delvivery_dt, $request->programme_firb_pre_approved_program,
-                $request->programme_pre_approved_sale, $seller_id);
+                '', $seller_id);
 
 
             if ($request->dropPhoto) {
@@ -811,6 +832,7 @@ class ProductController extends Controller {
             if (count($afa_possible) == 0) {
                 //envoie message à l'admin pour lui dire fa tsis AFA
                 $this->sendMessage_admin_after_create_programme($id_programme);
+                $this->sendEmail_vendeur($id_programme);
             }
 
             # notification
@@ -990,6 +1012,9 @@ class ProductController extends Controller {
     public function updateProgramme(Request $request) {
         $product = Product::find($request->id);
         $state = State::where('content', $request->state_id)->first();
+        if ($state === null) {
+            return back()->withInput()->withErrors(['msg' => "State not found"]);
+        }
         //modification localisation
         if ($request->location_Id != 0) {
             $longitude = $request->long;
@@ -1003,6 +1028,10 @@ class ProductController extends Controller {
             $id_location = $this->save_location($request->countryId, $request->state_id, $request->suburb,
                 $request->postalCode, $request->ville, $request->display_address, $request->long,
                 $request->lat);
+        }
+
+        if ($id_location == 0) {
+            return back()->withInput()->withErrors(['msg' => "location not provided"]);
         }
 
         if ($request->commision == 'Sales commission rate (%)') {
@@ -1043,7 +1072,7 @@ class ProductController extends Controller {
         $product->commencement_dt = $request->commencement_dt;
         $product->estimated_delvivery_dt = $request->estimated_delvivery_dt;
         $product->programme_firb_pre_approved = $request->programme_firb_pre_approved_program;
-        $product->programme_pre_approved_sale = $request->programme_pre_approved_sale;
+        //$product->programme_pre_approved_sale = $request->programme_pre_approved_sale;
         $product->solicitor_id = $id_solicitor;
         $product->state_id = $state ? $state->id : 0;
         $product->save();
@@ -1069,7 +1098,9 @@ class ProductController extends Controller {
 
         $product = Product::find($request->id);
         $state = State::where('content', $request->state_id)->first();
-
+        if ($state === null) {
+            return back()->withInput()->withErrors(['msg' => "State not found"]);
+        }
         if ($request->location_Id != 0) {
             $longitude = $request->long;
             $latitude = $request->lat;
@@ -1121,6 +1152,7 @@ class ProductController extends Controller {
         $product->avoir_bonus = $request->bonus_vente;
         $product->amount_bonus = $request->bonus_amount;
         $product->solicitor_id = $id_solicitor;
+        $product->programme_pre_approved_sale = $request->programme_pre_approved_sale;
 
         if ($product->category_id == 1) {
             $product->bedrooms = $request->bedrooms;
@@ -1198,7 +1230,7 @@ class ProductController extends Controller {
         $type_id, $cat_programmme_id, $postalCode, $state_id, $programme_id, $location_id,
         $superficie_jardin, $avoir_parking_voie_public, $avoir_piscine, $type_commission,
         $taux_commission, $commencement_dt, $estimated_delvivery_dt, $avoir_bonus, $mt_bonus,
-        $property_detail, $nb_parking_spots, $min_area, $max_area, $programme_firb_pre_approved_program,
+        $property_detail, $nb_parking_spots, $min_area, $max_area, $programme_pre_approved_sale,
         $id_afa, $id_solicitor, $seller_id) {
 
         $product = new Product();
@@ -1209,7 +1241,7 @@ class ProductController extends Controller {
             $image = Image::storeAndSave($file, 'product');
             $product->image_id = $image->id;
 
-            Product::regenerateMyAvatar($image) ;
+            Product::regenerateMyAvatar($image);
         }
         $slug = generateSlug($title);
         $product->ancienneteBien = $anciennete;
@@ -1261,7 +1293,7 @@ class ProductController extends Controller {
         $product->nb_parking_spots = $nb_parking_spots;
         $product->min_area = $min_area;
         $product->max_area = $max_area;
-        $product->programme_firb_pre_approved = $programme_firb_pre_approved_program;
+        $product->programme_pre_approved_sale = $programme_pre_approved_sale;
         $product->validated_at = Carbon::now();
         $product->afaId_possible = $id_afa;
         $product->solicitor_id = $id_solicitor;
@@ -1273,9 +1305,10 @@ class ProductController extends Controller {
 
     public function ajaxSaveProduct(Request $request) {
         $state = State::where('content', $request->state_id_product)->first();
-        $id_location = $this->save_location($request->countryId_product, $request->state_id_product,
-            $request->suburb_product, $request->postalCode_product, $request->ville_product,
-            $request->display_address_product, $request->long, $request->lat);
+        /*$id_location = $this->save_location($request->countryId_product, $request->state_id_product,
+        $request->suburb_product, $request->postalCode_product, $request->ville_product,
+        $request->display_address_product, $request->long, $request->lat);*/
+        $id_location = $request->id_location_product;
         $titre_product = $request->title_new_programme . '-' . $request->title_product;
 
         if (isset($request->chk_parking)) {
@@ -1365,10 +1398,27 @@ class ProductController extends Controller {
             'commission_type' => $request->commision_product, 'commision' => $taux_commission,
             'avoir_bonus' => $request->bonus_vente, 'amount_bonus' => $request->bonus_amount]);
 
+        if ($request->is_pricipal) {
+            ProductsImage::where('product_id', $request->id_product)->update(['is_principal' =>
+                0]);
+            ProductsImage::where('image_id', $request->is_pricipal)->update(['is_principal' =>
+                1]);
+        }
 
         if ($request->dropPhoto) {
             foreach ($request->dropPhoto as $key => $value) {
-                $this->save_photo_programme($value, $request->id_product, 0);
+                if ($request->radioDrop) {
+                    if ($request->radioDrop == $value) {
+                        ProductsImage::where('product_id', $request->id_product)->update(['is_principal' =>
+                0]);                        
+                        $is_principal = 1;
+                    } else {
+                        $is_principal = 0;
+                    }
+                } else {
+                    $is_principal = 0;
+                }
+                $this->save_photo_programme($value, $request->id_product, $is_principal);
             }
         }
 
@@ -1591,7 +1641,7 @@ class ProductController extends Controller {
                         $request->cat_programmme_id, $request->postalCode_product, $state ? $state->id :
                         0, -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine,
                         $request->commision_product, $taux_commision_prd, $request->commencement_dt, $request->estimated_delvivery_dt,
-                        $request->bonus_vente, $request->bonus_amount, '', 0, 0, 0, $request->programme_firb_pre_approved_program,
+                        $request->bonus_vente, $request->bonus_amount, '', 0, 0, 0, $request->programme_pre_approved_sale,
                         $id_afa_p, $id_solicitor, $seller_id);
 
                     //save fond dossier programme
@@ -1639,7 +1689,7 @@ class ProductController extends Controller {
                     $request->cat_programmme_id, $request->postalCode_product, $state ? $state->id :
                     0, -1, $id_location, $request->superficie_jardin, $avoir_parking, $avoir_piscine,
                     $request->commision_product, $taux_commision_prd, $request->commencement_dt, $request->estimated_delvivery_dt,
-                    $request->bonus_vente, $request->bonus_amount, '', 0, 0, 0, $request->programme_firb_pre_approved_program,
+                    $request->bonus_vente, $request->bonus_amount, '', 0, 0, 0, $request->programme_pre_approved_sale,
                     $id_afa_p, $id_solicitor, $seller_id);
 
                 //save fond dossier programme
@@ -1687,8 +1737,7 @@ class ProductController extends Controller {
                 $request->postalCode_product, $state ? $state->id : 0, -1, $id_location, $request->superficie_jardin,
                 0, 0, $request->commision_product, $taux_commision_prd, $request->commencement_dt,
                 $request->estimated_delvivery_dt, $request->bonus_vente, $request->bonus_amount,
-                '', 0, 0, 0, $request->programme_firb_pre_approved_program, $id_afa_p, $id_solicitor,
-                $seller_id);
+                '', 0, 0, 0, $request->programme_pre_approved_sale, $id_afa_p, $id_solicitor, $seller_id);
 
             //save fond dossier programme
             if ($request->p_fondDossier) {
@@ -1733,7 +1782,7 @@ class ProductController extends Controller {
                 0, 'AUD', $request->status, $request->product_type_id, $request->cat_programmme_id,
                 $request->postalCode_product, $state->id, -1, $id_location, $request->superficie_jardin,
                 0, 0, $request->commision_product, $taux_commision_prd, '', '', $request->bonus_vente,
-                $request->bonus_amount, $request->property_detail, 0, 0, 0, $request->programme_firb_pre_approved_program,
+                $request->bonus_amount, $request->property_detail, 0, 0, 0, $request->programme_pre_approved_sale,
                 $id_afa_p, $id_solicitor, $seller_id);
 
             //save fond dossier programme
@@ -1779,8 +1828,52 @@ class ProductController extends Controller {
                 $request->cat_programmme_id, $request->postalCode_product, $state->id, -1, $id_location,
                 $request->superficie_jardin, $request->type_cutomer_parking, 0, $request->commision_product,
                 $taux_commision_prd, '', '', $request->bonus_vente, $request->bonus_amount, $request->property_detail,
-                $request->nombre_cutomer_parking, 0, 0, $request->programme_firb_pre_approved_program,
-                $id_afa_p, $id_solicitor, $seller_id);
+                $request->nombre_cutomer_parking, 0, 0, $request->programme_pre_approved_sale, $id_afa_p,
+                $id_solicitor, $seller_id);
+
+            //save fond dossier programme
+            if ($request->p_fondDossier) {
+                foreach ($request->p_fondDossier as $key => $value) {
+                    $this->save_fond_dossier($value, $id_produit);
+                }
+            }
+
+            if ($request->p_eoiDossier) {
+                $this->save_eoi_dossier($request->p_eoiDossier, $id_produit);
+            }
+
+            if (isset($request->sales_mandate)) {
+                //save mandat de recherche
+                $fond_dossier = new LiaDossier();
+                $fond_dossier->product_id = $id_produit;
+                $fond_dossier->image_id = $request->sales_mandate;
+                $fond_dossier->author_id = Auth::user()->id;
+                $fond_dossier->save();
+            }
+
+            if ($request->dropPhoto) {
+                foreach ($request->dropPhoto as $key => $value) {
+                    $this->save_photo_programme($value, $id_produit, 0);
+                }
+            }
+        } else {
+            //pour les autres categorie
+            $id_location = $this->save_location($request->countryId_product, $request->state_id_product,
+                $request->suburb_product, $request->postalCode_product, $request->ville_product,
+                $request->display_address_product, $request->long, $request->lat);
+            if ($request->commision_product == 'Sales commission rate (%)') {
+                $taux_commision_prd = $request->sales_rate_product;
+            } else {
+                $taux_commision_prd = $request->rate_commission_product;
+            }
+
+            $id_produit = $this->save_new_produit('', 'Produit isolé', $request->title_product,
+                $request->file('image'), $request->desc_product, 1, 0, '', 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, date('Y'), $request->display_address_product, $request->simple_price, 0,
+                0, 'AUD', $request->status, $request->product_type_id, $request->cat_programmme_id,
+                $request->postalCode_product, $state->id, -1, $id_location, 0, 0, 0, $request->commision_product,
+                $taux_commision_prd, '', '', $request->bonus_vente, $request->bonus_amount, '',
+                0, 0, 0, '', $id_afa_p, $id_solicitor, $seller_id);
 
             //save fond dossier programme
             if ($request->p_fondDossier) {
@@ -1821,6 +1914,7 @@ class ProductController extends Controller {
 
         if (count($afa_possible) == 0) {
             //envoie message à l'admin pour lui dire fa tsis AFA
+            $this->sendEmail_vendeur($id_produit);
             $this->sendMessage_admin_after_create_programme($id_produit);
         }
 
