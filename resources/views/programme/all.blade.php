@@ -126,7 +126,7 @@
                                     @endforelse
 
                                 </div>
-                                @if (sizeOf(App\Models\Product::where('parent_id','=',$item->id)->where('status_res','=',0)->get())>3)
+                                @if (sizeOf(App\Models\Product::where('parent_id','=',$item->id)->where('status_res','=',0)->get(['id']))>3)
                                     <a class="carousel-control-prev bg-dark w-auto" href="#myCarousel{{ $i }}" role="button" data-slide="prev">
                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                         <span class="sr-only">Previous</span>

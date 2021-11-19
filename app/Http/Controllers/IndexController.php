@@ -48,43 +48,54 @@ class IndexController extends Controller
         // $programme = Product::all()->first();
         // $text = getTranslate('programme',$programme,App::getLocale());
         // setTranslate('fr','es',$text,'programme',$programme);
-        $typesRes = Type::orderBy('title', 'asc')
+        $typesRes = Type::select('id','title')
+            ->orderBy('title', 'asc')
             ->where('object_type', 'type')
             ->where('categories_id', 1)
             ->get();
         
-        $typesFonc = Type::orderBy('title', 'asc')
+        $typesFonc = Type::select('id','title')
+            ->orderBy('title', 'asc')
             ->where('object_type', 'type')
             ->where('categories_id', 2)
-            ->get();
+            ->get(['id','title']);
 
-        $typesInd = Type::orderBy('title', 'asc')
+            // dd($typesFonc);
+
+        $typesInd = Type::select('id','title')
+            ->orderBy('title', 'asc')
             ->where('object_type', 'type')
             ->where('categories_id', 3)
             ->get();
         
-        $typesComm = Type::orderBy('title', 'asc')
+        $typesComm = Type::select('id','title')
+            ->orderBy('title', 'asc')
             ->where('object_type', 'type')
             ->where('categories_id', 4)
             ->get();
         
-        $locationTypes = Type::orderBy('title', 'asc')
+        $locationTypes = Type::select('id','title')
+            ->orderBy('title', 'asc')
             ->where('object_type', 'location')
             ->get();
 
-        $anciennetes = Type::orderBy('title', 'asc')
+        $anciennetes = Type::select('id','title')
+            ->orderBy('title', 'asc')
             ->where('object_type', 'anciennete')
             ->get();
 
-        $agricoles = Type::orderBy('title', 'asc')
+        $agricoles = Type::select('id','title')
+            ->orderBy('title', 'asc')
             ->where('object_type', 'agricole')
             ->get();
 
-        $industriels = Type::orderBy('title', 'asc')
+        $industriels = Type::select('id','title')
+            ->orderBy('title', 'asc')
             ->where('object_type', 'industriel')
             ->get();
         
-        $commercials = Type::orderBy('title', 'asc')
+        $commercials = Type::select('id','title')
+            ->orderBy('title', 'asc')
             ->where('object_type', 'commercial')
             ->get();
         

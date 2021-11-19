@@ -72,9 +72,10 @@ if (!function_exists('option')) {
             $key = $keys[1];
 
             $model = App\Models\Config::where('name', $group)->get()->first();
-            // dd($model);
-            if (!$model)
+            if (!$model){
+                dd('sdfsdf');
                 return $default;
+            }
 
             $meta = $model->get_meta($key);
             if ($meta)
