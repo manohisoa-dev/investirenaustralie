@@ -745,7 +745,7 @@ class ProductController extends Controller {
             if (count($programme_existe) > 0) {
                 return back()->withInput()->withErrors(['msg' =>
                     "We're sorry, but it appears that this program has already been registered or is on its way to be registered.\n Your program cannot be registered and your program registration form will be deleted.
-"]);
+                "]);
             }
 
             $state = State::where('content', $request->state_id)->first();
@@ -1514,7 +1514,7 @@ class ProductController extends Controller {
         if (count($produit_existe) > 0) {
             return back()->withInput()->withErrors(['msg' =>
                 "We're sorry, but it appears that this product has already been registered or is on its way to be registered.\n Your program cannot be registered and your program registration form will be deleted.
-"]);
+            "]);
         }
 
         if (isset($request->chk_parking)) {
