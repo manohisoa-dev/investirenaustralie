@@ -143,7 +143,7 @@
                                     preg_match('/<div class="home-step">(.*?)<\/div>/s', $htmlContent, $match);
                                     if(count($match) > 0){
                                         preg_match_all( '|<h[^>]+>(.*)</h[^>]+>|iU', $match[1], $titles );
-                                        preg_match_all( '|<p style="text-align:center">(.*)</p>|iU', $match[1], $contents );
+                                        preg_match_all( '|<p>(.*)</p>|iU', $match[1], $contents );
                                     }
                                     $getTitle = isset($titles) && count($titles) ? $titles[1] : [];
                                     $getContent = isset($contents) && count($contents) ? $contents[1] : [];
