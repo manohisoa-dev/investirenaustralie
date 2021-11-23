@@ -1154,7 +1154,10 @@ class ProductController extends Controller {
     public function ajaxRefreshAfa(Request $request) {
         $produit = Product::where('id', $request->id_produit)->first();
         $localisation = Localisation::where('id', $produit->location_id)->first();
-        $afa_possible = DB::select("SELECT `users`.id as id_afa FROM `users` LEFT JOIN `localizations` ON `users`.`location_id` = `localizations`.`id` WHERE `users`.`role` = 3 and `localizations`.`locality` = '$localisation->locality'");
+        $afa_possible = DB::select("select `S`.id as id_afa,  ( FLOOR(6371 * ACOS( COS( RADIANS( '$localisation->latitude' ) ) * COS( RADIANS( localizations.latitude ) ) * COS( 
+RADIANS( localizations.longitude ) - RADIANS( '$localisation->longitude' ) ) + SIN( RADIANS( '$localisation->latitude' ) ) * SIN( RADIANS( 
+localizations.latitude ) ) )) ) distance from `users` as `S` left join `localizations` on `S`.`location_id` = 
+`localizations`.`id` where `S`.`role` = 3 having distance < 155");
         if (count($afa_possible) > 0) {
             $tab_afa = array();
             foreach ($afa_possible as $val) {
