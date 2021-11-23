@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html>
 <head>
     <title>Google reCAPTCHA v2</title>
@@ -76,4 +76,84 @@
     </div>
 </div>
 </body>
-</html>
+</html> --}}
+
+
+@extends('layouts.app')
+
+@section('content')
+
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <div class="card gray-bg">
+                <div class="card-body">
+                    <h4 class="m-30px-b">@lang('app.txt.product_location')</h4>
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+@endsection
+
+@push('script')
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2izG_M7K3gP6pFUH5cyzmDjuGpOYfgc4&libraries=places&callback=initMap&channel=GMPSB_addressselection_v1_cABC" async defer></script>
+	@php
+        $latitude = -25.647467468105795;
+        $longitude = 146.89921517372136;
+	@endphp
+  <script>
+
+      var _map;
+      var _geocoder;
+      var _marker;
+      var _circle;
+      var _lat = {{$latitude}};
+      var _long = {{$longitude}};
+
+
+      function initMap() {
+          _map = new google.maps.Map(document.getElementById('map'), {
+              center: {lat: _lat, lng:  _long},
+              zoom: 10
+          });
+
+          // The map, centered on Central Park
+            const center = {lat: 40.774102, lng: -73.971734};
+            const options = {zoom: 15, scaleControl: true, center: center};
+            map = new google.maps.Map(
+                document.getElementById('map'), options);
+            // Locations of landmarks
+            const dakota = {lat: 40.7767644, lng: -73.9761399};
+            const frick = {lat: 40.771209, lng: -73.9673991};
+            // The markers for The Dakota and The Frick Collection
+            var mk1 = new google.maps.Marker({position: dakota, map: map});
+            var mk2 = new google.maps.Marker({position: frick, map: map});
+
+            initialize();
+      };
+
+      initialize();
+
+      function initialize() {
+            var lat = _lat
+            var lng = _long
+
+            var service = new google.maps.places.PlacesService(map);
+            var pyrmont = {lat: lat, lng: lng};
+            placeResults = service.nearbySearch({
+                location: pyrmont,
+                radius: 1000 // meters
+            }, callback);
+
+    }
+
+      
+
+  </script>
+  
+@endpush

@@ -99,66 +99,6 @@
 							</div>
 						</dl>
 						<div class="hr-line-dashed"></div>
-						<dl class="row mb-0">
-							<div class="col-sm-4 text-sm">
-								<dt>CHOIX AFA :</dt>
-							</div>
-							<div class="col-sm-8 text-sm-left">
-								<dd class="mb-1">
-									@if($product->afaId_possible == 0)
-										<span class="label label-danger">									
-											Il n'y a pas d'AFA correspondante
-										</span>
-										<a href="javascript:void(0)" onclick="check_afa_existe({{$product->id}})" class="btn btn-danger pull-right">
-											<i class="fa fa-refresh"></i>
-										</a>
-									@else
-										@php
-											$afaposstab = explode(',',$product->afaId_possible);
-											$afaposs = App\Models\User::whereIn('id',$afaposstab)->get();
-										@endphp
-										@foreach($afaposs as $afa)
-											<span class="label label-info" style="margin-right: 5px;">
-												{{$afa->name}}
-											</span>
-										@endforeach
-									@endif									
-								</dd>
-							</div>
-						</dl>
-						<div class="hr-line-dashed"></div>
-						<dl class="row mb-0">
-							<div class="col-sm-4 text-sm">
-								<dt>Solicitor :</dt>
-							</div>
-							<div class="col-sm-8 text-sm-left">
-								<dd class="mb-1">
-								@if($product->solicitor_id != 0)
-									@php
-										$solicitor = App\Models\Solicitor::where('id',$product->solicitor_id)->get();
-									@endphp
-									{{$solicitor? $solicitor[0]->cabinet_name : ''}}<br />
-									{{$solicitor? $solicitor[0]->cabinet_email : ''}}<br />
-									{{$solicitor? $solicitor[0]->cabinet_phone : ''}}
-								@endif
-								</dd>
-							</div>
-						</dl>
-						<div class="hr-line-dashed"></div>
-						<dl class="row mb-0">
-							<div class="col-sm-4 text-sm">
-								<dt>@lang('app.form.programme_title'):</dt>
-							</div>
-							<div class="col-sm-8 text-sm-left">
-								<dd class="mb-1">{{$product->title}}</dd>
-							</div>
-						</dl>
-						<dl class="row mb-0">
-							<div class="col-sm-12 text-sm-left">
-								<dd class="mb-1">{!!$product->content!!}</dd>
-							</div>
-						</dl>
-						<div class="hr-line-dashed"></div>
 						@if($product->parent_id == 0)
 						<dl class="row mb-0">
 							<div class="col-sm-4 text-sm">
@@ -262,6 +202,90 @@
 								</div>
 							</dl>
                         </div>
+						<div class="hr-line-dashed"></div>						
+						<dl class="row mb-0">
+							<div class="col-sm-4 text-sm">
+								<dt>CHOIX AFA :</dt>
+							</div>
+							<div class="col-sm-8 text-sm-left">
+								<dd class="mb-1">
+									@if($product->afaId_possible == 0)
+										<span class="label label-danger">									
+											Il n'y a pas d'AFA correspondante
+										</span>
+										<a href="javascript:void(0)" onclick="check_afa_existe({{$product->id}})" class="btn btn-danger pull-right">
+											<i class="fa fa-refresh"></i>
+										</a>
+									@else
+										@php
+											$location_produit = App\Models\Localisation::where('id',$product->location_id)->get();
+											$afaposstab = explode(',',$product->afaId_possible);
+											$afaposs = App\Models\User::whereIn('id',$afaposstab)->get();
+										@endphp
+										<table class="table" class="table table-bordered">
+											<thead>
+												<tr>
+													<th>AFA</th>
+													<th>Ville / Pays</th>
+													<th>Distance</th>
+												</tr>
+											</thead>
+											<tbody>
+											@foreach($afaposs as $afa)
+												@php
+													$location = App\Models\Localisation::where('id',$afa->location_id)->get();
+													$lat_from = $location[0]->latitude;
+													$lng_from = $location[0]->longitude;
+													$lat_to = $location_produit[0]->latitude;
+													$lng_to = $location_produit[0]->longitude;
+													$distance = distance_point($lat_from,$lng_from,$lat_to,$lng_to,"K");
+												@endphp
+												<tr>
+													<td>{{$afa->name}}</td>
+													<td>{{$location[0]->locality}} - {{$location[0]->area_level_1}}</td>
+													<td>
+														{{number_format($distance, 2, '.', ' ')}} KM
+													</td>
+												</tr>
+											@endforeach
+											</tbody>
+										</table>
+									@endif									
+								</dd>
+							</div>
+						</dl>
+						<div class="hr-line-dashed"></div>
+						<dl class="row mb-0">
+							<div class="col-sm-4 text-sm">
+								<dt>Solicitor :</dt>
+							</div>
+							<div class="col-sm-8 text-sm-left">
+								<dd class="mb-1">
+								@if($product->solicitor_id != 0)
+									@php
+										$solicitor = App\Models\Solicitor::where('id',$product->solicitor_id)->get();
+									@endphp
+									{{$solicitor? $solicitor[0]->cabinet_name : ''}}<br />
+									{{$solicitor? $solicitor[0]->cabinet_email : ''}}<br />
+									{{$solicitor? $solicitor[0]->cabinet_phone : ''}}
+								@endif
+								</dd>
+							</div>
+						</dl>
+						<div class="hr-line-dashed"></div>
+						<dl class="row mb-0">
+							<div class="col-sm-4 text-sm">
+								<dt>@lang('app.form.programme_title'):</dt>
+							</div>
+							<div class="col-sm-8 text-sm-left">
+								<dd class="mb-1">{{$product->title}}</dd>
+							</div>
+						</dl>
+						<dl class="row mb-0">
+							<div class="col-sm-12 text-sm-left">
+								<dd class="mb-1">{!!$product->content!!}</dd>
+							</div>
+						</dl>						
 						<div class="hr-line-dashed"></div>
 						<div class="pull-right">
 						@if($product->status == 'waiting')
@@ -604,7 +628,7 @@ function rejet_programme(id_prd)
 				error: function (jqXHR, textStatus, errorThrown)
 				{
 					swal("@lang('app.txt.programme')", "@lang('app.jquery.error_delete')", "error");
-					location.reload();
+					window.location.href = "{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme')}}?status=waiting";
 				}
 			}); 
 		} else {

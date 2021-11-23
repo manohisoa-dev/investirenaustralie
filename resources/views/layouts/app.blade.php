@@ -994,7 +994,6 @@
         $(window).bind('wheel', function(event) {
         if (event.originalEvent.wheelDelta >= 0) {
             if ($(document).scrollTop() <= 100) {
-                console.log('ato');
                 // $('#container-navbar').removeClass('show-navbar-after');
                 $('#container-navbar').removeClass('show-navbar-after');
                 $('#container-navbar').addClass('show-navbar-after-top');    

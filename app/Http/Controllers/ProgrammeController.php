@@ -96,8 +96,10 @@ class ProgrammeController extends Controller {
             $page = 1;
 
         $orderBy = $request->get('orderBy');
-        if (!in_array($orderBy, ['price', 'created_at', 'view_count']))
-            $orderBy = Config::where('name', '=', 'order_by')->first()->content;
+        if (!in_array($orderBy, ['price', 'created_at', 'view_count'])){
+            $orderBy = Config::select('content')->where('name', '=', 'order_by')->first();
+            $orderBy = $orderBy->content;
+        }
 
         $order = $request->get('order');
         if (!in_array($order, ['desc', 'asc']))
@@ -154,7 +156,7 @@ class ProgrammeController extends Controller {
         // $categories = Category::orderBy('created_at', 'desc')->has('products')->withCount('products')->take($this->recentSize)->get();
 
         $categories = \DB::table('categories as c')->join('products as p', 'c.id', '=',
-            'p.category_id')->select('c.*', \DB::raw("count(p.category_id) as products_count"))->groupBy('c.id')->where('p.status',
+            'p.category_id')->select('c.id','c.title', \DB::raw("count(p.category_id) as products_count"))->groupBy('c.id')->where('p.status',
             '=', 'published')->get();
 
         $page2 = Page::where('path', '=', '/products*')->first();
@@ -165,26 +167,26 @@ class ProgrammeController extends Controller {
         }
 
         $typesRes = Type::orderBy('title', 'asc')->where('object_type', 'type')->where('categories_id',
-            1)->get();
+            1)->get(['id','title']);
 
         $typesFonc = Type::orderBy('title', 'asc')->where('object_type', 'type')->where('categories_id',
-            2)->get();
+            2)->get(['id','title']);
 
         $typesInd = Type::orderBy('title', 'asc')->where('object_type', 'type')->where('categories_id',
-            3)->get();
+            3)->get(['id','title']);
 
         $typesComm = Type::orderBy('title', 'asc')->where('object_type', 'type')->where('categories_id',
-            4)->get();
+            4)->get(['id','title']);
 
-        $locationTypes = Type::orderBy('title', 'asc')->where('object_type', 'location')->get();
+        $locationTypes = Type::orderBy('title', 'asc')->where('object_type', 'location')->get(['id','title']);
 
-        $anciennetes = Type::orderBy('title', 'asc')->where('object_type', 'anciennete')->get();
+        $anciennetes = Type::orderBy('title', 'asc')->where('object_type', 'anciennete')->get(['id','title']);
 
-        $agricoles = Type::orderBy('title', 'asc')->where('object_type', 'agricole')->get();
+        $agricoles = Type::orderBy('title', 'asc')->where('object_type', 'agricole')->get(['id','title']);
 
-        $industriels = Type::orderBy('title', 'asc')->where('object_type', 'industriel')->get();
+        $industriels = Type::orderBy('title', 'asc')->where('object_type', 'industriel')->get(['id','title']);
 
-        $commercials = Type::orderBy('title', 'asc')->where('object_type', 'commercial')->get();
+        $commercials = Type::orderBy('title', 'asc')->where('object_type', 'commercial')->get(['id','title']);
 
         $states = State::orderBy('content', 'asc')->get();
 

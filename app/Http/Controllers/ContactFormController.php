@@ -18,22 +18,7 @@ class ContactFormController extends Controller
         \Cookie::queue('namexxx', 'value', '');
 
         \Cookie::queue(\Cookie::forget('namexxx'));
-        $value = \Cookie::get('namexxx');
-
-
-        $latitude = '-35.6587744';
-        $longitude = '149.1766344';
-        $query = User::select(DB::raw('`users`.id as id_afa, ( 6367 * acos( cos( radians(' . $latitude .
-            ') )  cos( radians( latitude ) )  cos( radians( longitude ) - radians(' . $longitude .
-            ') ) + sin( radians(' . $latitude .
-            ') ) * sin( radians( latitude ) ) ) ) AS distance'))
-            ->leftJoin('localizations', 'users.location_id', '=', 'localizations.id')
-            ->where('users.role','=',3)
-            ->having('distance', '<', 250)->orderBy('distance')->get();
-
-        dd($query) ;
-
-        return view('contactform');
+        $value = \Cookie::get('namexxx');        return view('contactform');
     }
 
     public function setCookie(Request $request){

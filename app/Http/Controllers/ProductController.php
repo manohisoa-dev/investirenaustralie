@@ -50,7 +50,7 @@ class ProductController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request, $slug) {
-        $products = Product::where('slug', '=', $slug)->get();
+        $products = Product::where('slug', '=', $slug)->get(['id','area','location_id','view_count','author_id']);
 
         if (sizeof($products) != 0) {
             foreach ($products as $key => $product) {
@@ -60,9 +60,9 @@ class ProductController extends Controller {
                     $product->save();
                 }
 
-                $products = Product::orderBy('created_at', 'desc')->ofStatus('published')->isProduct()->take($this->recentSize)->get();
+                $products = Product::orderBy('created_at', 'desc')->ofStatus('published')->isProduct()->take($this->recentSize)->get(['id','reference','slug','title',]);
 
-                $categories = Category::orderBy('created_at', 'desc')->has('products')->withCount('products')->take($this->recentSize)->get();
+                $categories = Category::orderBy('created_at', 'desc')->has('products')->withCount('products')->take($this->recentSize)->get(['id','title']);
 
                 $page = Page::where('path', '=', '/products*')->first();
 
@@ -82,7 +82,7 @@ class ProductController extends Controller {
 
                 $product->load('images');
 
-                $types = Type::orderBy('title', 'asc')->where('object_type', 'type')->get();
+                $types = Type::orderBy('title', 'asc')->where('object_type', 'type')->get(['id','title']);
 
                 $locationTypes = Type::orderBy('title', 'asc')->where('object_type', 'location')->get();
 
@@ -513,16 +513,15 @@ class ProductController extends Controller {
         $email_to = $user->email;
         Mail::to($email_to)->send(new MailTemplate($content, $sujet));
     }
-    
-    public function sendEmail_vendeur($id_produit)
-    {
+
+    public function sendEmail_vendeur($id_produit) {
         $product = Product::find($id_produit);
         $user = User::find($product->author_id);
-        
+
         $template = MailsTemplate::where('id', 51)->get();
         $lang = App::getLocale();
         $body = 'template_' . $lang;
-        $sujet = 'sujet_'.$lang;
+        $sujet = 'sujet_' . $lang;
         $vars = array(
             '{dateSysteme}' => Carbon::now()->toFormattedDateString(),
             '{heureSysteme}' => Carbon::now()->toTimeString(),
@@ -722,7 +721,10 @@ class ProductController extends Controller {
                 $seller_id = $user->id;
                 $titre_programme = $request->title_programme;
 
-                $afa_possible = DB::select("SELECT `users`.id as id_afa FROM `users` LEFT JOIN `localizations` ON `users`.`location_id` = `localizations`.`id` WHERE `users`.`role` = 3 and `localizations`.`locality` = '$request->ville'");
+                $afa_possible = DB::select("select `S`.id as id_afa,  ( FLOOR(6371 * ACOS( COS( RADIANS( '$request->lat' ) ) * COS( RADIANS( localizations.latitude ) ) * COS( 
+RADIANS( localizations.longitude ) - RADIANS( '$request->long' ) ) + SIN( RADIANS( '$request->lat' ) ) * SIN( RADIANS( 
+localizations.latitude ) ) )) ) distance from `users` as `S` left join `localizations` on `S`.`location_id` = 
+`localizations`.`id` where `S`.`role` = 3 having distance < 155");
                 if (count($afa_possible) > 0) {
                     $tab_afa = array();
                     foreach ($afa_possible as $val) {
@@ -745,7 +747,7 @@ class ProductController extends Controller {
             if (count($programme_existe) > 0) {
                 return back()->withInput()->withErrors(['msg' =>
                     "We're sorry, but it appears that this program has already been registered or is on its way to be registered.\n Your program cannot be registered and your program registration form will be deleted.
-"]);
+                "]);
             }
 
             $state = State::where('content', $request->state_id)->first();
@@ -1410,7 +1412,7 @@ class ProductController extends Controller {
                 if ($request->radioDrop) {
                     if ($request->radioDrop == $value) {
                         ProductsImage::where('product_id', $request->id_product)->update(['is_principal' =>
-                0]);                        
+                            0]);
                         $is_principal = 1;
                     } else {
                         $is_principal = 0;
@@ -1514,7 +1516,7 @@ class ProductController extends Controller {
         if (count($produit_existe) > 0) {
             return back()->withInput()->withErrors(['msg' =>
                 "We're sorry, but it appears that this product has already been registered or is on its way to be registered.\n Your program cannot be registered and your program registration form will be deleted.
-"]);
+            "]);
         }
 
         if (isset($request->chk_parking)) {

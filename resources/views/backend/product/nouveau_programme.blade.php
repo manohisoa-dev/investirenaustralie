@@ -366,7 +366,7 @@ function initMap(){
 	autocomplete.setComponentRestrictions({'country': ['au']});
 	google.maps.event.addListener(autocomplete, 'place_changed', function() {
 		var place = autocomplete.getPlace();
-		console.log(place.address_components);
+		console.log(place.place_id);
 		var arrAddress = place.address_components;
 		var itemRoute='';
 		var itemSuburb='';
@@ -422,6 +422,7 @@ function initMap(){
 			$('#lat').val(lat);
 			$('#state_id').val(itemState);
 			set_mandat_state(itemState,0);
+			
 		});
 	});
 }
