@@ -2,7 +2,7 @@
 <div class="gray-bg">
     <div class="container m-60px-nt">
         <form action="{{route('cg.search')}}" method="get" onclick="myFunction()" id="formFiltre">
-            <div class="white-bg box-shadow-lg p-20px position-relative border-radius-0" >
+            <div class="white-bg box-shadow-lg p-20px position-relative border-radius-iea20 aos-init aos-animate" data-aos="fade-up">
                 <div class="extra-menu">
                     <div class="row">
                         <div class="col-lg-1 m-10px-t m-5px-b">
@@ -15,7 +15,7 @@
                                 {{-- {{csrf_field()}} --}}
                                 <div class="row">
                                     <div class="col-lg-3 m-10px-b">
-                                        <select id="administrative_area_level_1" class="form-control border-radius-0 border-1 m-15px-r col-sm-12 col-md-12" name="state">
+                                        <select id="administrative_area_level_1 border-radius-iea" class="form-control border-radius-iea border-1 m-15px-r col-sm-12 col-md-12" name="state">
                                             <option value="{{isset($q)?$q:''}}" selected readonly>@lang('app.input.etat')</option>
                                             @foreach ($states as $state)
                                                 <option value="{{ $state->content }}">{{ trans('app.txt.'.$state->content) }} ({{ $state->content }})</option>
@@ -23,13 +23,13 @@
                                         </select>
                                     </div>
                                     <div class="col-lg-3 m-10px-b">
-                                        <input type="text" id="administrative_area_level_2" name="city" class="form-control border-radius-0 border-1 m-15px-r" onFocus="geolocate()" placeholder="@lang('app.input.ville')" value="{{isset($q)?$q:''}}">
+                                        <input type="text" id="administrative_area_level_2" name="city" class="form-control border-radius-iea border-1 m-15px-r" onFocus="geolocate()" placeholder="@lang('app.input.ville')" value="{{isset($q)?$q:''}}">
                                     </div>
                                     <div class="col-lg-3 m-10px-b">
-                                        <input type="text" id="locality" name="suburb" class="form-control border-radius-0 border-1 m-60px-r" placeholder="@lang('app.input.suburb')" value="{{isset($q)?$q:''}}">
+                                        <input type="text" id="locality" name="suburb" class="form-control border-radius-iea border-1 m-60px-r" placeholder="@lang('app.input.suburb')" value="{{isset($q)?$q:''}}">
                                     </div>
                                     <div class="col-lg-3">
-                                        <button class="m-btn m-btn-theme2nd" type="submit">@lang('app.input.recherche')</button>
+                                        <button class="m-btn m-btn-theme2nd btn-radius-iea" type="submit">@lang('app.input.recherche')</button>
                                     </div>
                                 </div>
                             </span>

@@ -72,9 +72,10 @@ if (!function_exists('option')) {
             $key = $keys[1];
 
             $model = App\Models\Config::where('name', $group)->get()->first();
-            // dd($model);
-            if (!$model)
+            if (!$model) {
+                dd('sdfsdf');
                 return $default;
+            }
 
             $meta = $model->get_meta($key);
             if ($meta)
@@ -711,7 +712,6 @@ localizations.latitude ) ) )) ) distance from `users` as `S` left join `localiza
     }
 }
 
-
 /**
  * permet de calculer la distance entre 2 points de l'attitude et longitude
  * 
@@ -734,6 +734,42 @@ if (!function_exists('distance_point')) {
             } else {
                 return $miles;
             }
+        }
+    }
+}
+
+if (!function_exists('nouvelle_afa_disponible_2')) {
+    function nouvelle_afa_disponible_2() {
+        try {
+            $produit_sans_afa = App\Models\Product::wherein('afaId_possible', array(0, ''))->get();
+            foreach ($produit_sans_afa as $produit) {
+                $localisation_product = DB::select("SELECT * FROM `localizations` WHERE `id` = $produit->location_id");
+                $ville_product = $localisation_product[0]->locality;
+                $afa_possible = DB::select("SELECT `users`.id as id_afa FROM `users` LEFT JOIN `localizations` ON `users`.`location_id` = `localizations`.`id` WHERE `users`.`role` = 3 and `localizations`.`locality` = '$ville_product'");
+                if (count($afa_possible) > 0) {
+                    $tab_afa = array();
+                    foreach ($afa_possible as $val) {
+                        $tab_afa[] = $val->id_afa;
+                    }
+                    $id_afa_p = implode(', ', $tab_afa);
+                    App\Models\Product::where('id', $produit->id)->update(['afaId_possible' => $id_afa_p]);
+                } else {
+                    $afa_arround = DB::select("SELECT `users`.id as id_afa FROM `users` LEFT JOIN `localizations` ON `users`.`location_id` = `localizations`.`id` WHERE `users`.`role` = 3");
+                    if (count($afa_arround) > 0) {
+                        $tab_afa = array();
+                        foreach ($afa_arround as $val) {
+                            $tab_afa[] = $val->id_afa;
+                        }
+                        $id_afa_p = implode(', ', $tab_afa);
+
+                        dd($id_afa_p);
+                        App\Models\Product::where('id', $produit->id)->update(['afaId_possible' => $id_afa_p]);
+                    }
+                }
+            }
+        }
+        catch (exception $e) {
+            $e->getMessage();
         }
     }
 }

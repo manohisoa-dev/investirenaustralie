@@ -66,7 +66,7 @@
                         </div>
                     @empty
                         <div class="carousel-item active">
-                            <img class="d-block w-100" src="{{ asset('images/slider/default.jpg') }}"
+                            <img class="d-block w-100 bghead" src="{{ asset('images/slider/default.jpg') }}"
                                 alt="@lang('app.txt.au')">
                         </div>
                     @endforelse

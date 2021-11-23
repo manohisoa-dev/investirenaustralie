@@ -940,11 +940,14 @@ class ProductController extends Controller {
     }
 
     public function ajaxRejetProduit(Request $request) {
+        // delete product
         $product = Product::find($request->id_produit);
         Product::where('parent_id', $product->id)->delete(); //suppression programme
         $product->delete();
+
         //envoie message au vendeur
         $this->envoie_msg_rejet_a_condition_commission($request->id_produit);
+
         return response()->json(['success' => 'true']);
     }
 

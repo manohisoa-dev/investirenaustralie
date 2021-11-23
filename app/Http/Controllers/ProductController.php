@@ -50,7 +50,7 @@ class ProductController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request, $slug) {
-        $products = Product::where('slug', '=', $slug)->get();
+        $products = Product::where('slug', '=', $slug)->get(['id','area','location_id','view_count','author_id']);
 
         if (sizeof($products) != 0) {
             foreach ($products as $key => $product) {
@@ -60,9 +60,9 @@ class ProductController extends Controller {
                     $product->save();
                 }
 
-                $products = Product::orderBy('created_at', 'desc')->ofStatus('published')->isProduct()->take($this->recentSize)->get();
+                $products = Product::orderBy('created_at', 'desc')->ofStatus('published')->isProduct()->take($this->recentSize)->get(['id','reference','slug','title',]);
 
-                $categories = Category::orderBy('created_at', 'desc')->has('products')->withCount('products')->take($this->recentSize)->get();
+                $categories = Category::orderBy('created_at', 'desc')->has('products')->withCount('products')->take($this->recentSize)->get(['id','title']);
 
                 $page = Page::where('path', '=', '/products*')->first();
 
@@ -82,7 +82,7 @@ class ProductController extends Controller {
 
                 $product->load('images');
 
-                $types = Type::orderBy('title', 'asc')->where('object_type', 'type')->get();
+                $types = Type::orderBy('title', 'asc')->where('object_type', 'type')->get(['id','title']);
 
                 $locationTypes = Type::orderBy('title', 'asc')->where('object_type', 'location')->get();
 
@@ -747,7 +747,7 @@ localizations.latitude ) ) )) ) distance from `users` as `S` left join `localiza
             if (count($programme_existe) > 0) {
                 return back()->withInput()->withErrors(['msg' =>
                     "We're sorry, but it appears that this program has already been registered or is on its way to be registered.\n Your program cannot be registered and your program registration form will be deleted.
-"]);
+                "]);
             }
 
             $state = State::where('content', $request->state_id)->first();
@@ -1516,7 +1516,7 @@ localizations.latitude ) ) )) ) distance from `users` as `S` left join `localiza
         if (count($produit_existe) > 0) {
             return back()->withInput()->withErrors(['msg' =>
                 "We're sorry, but it appears that this product has already been registered or is on its way to be registered.\n Your program cannot be registered and your program registration form will be deleted.
-"]);
+            "]);
         }
 
         if (isset($request->chk_parking)) {

@@ -47,9 +47,10 @@ background-color: #fafafa;
 }
 
 .site-footer {
-  background: url("/../images/footer-bg.png") bottom center no-repeat !important;
+  /*background: url("/../images/footer-bg.png") bottom center no-repeat !important;*/
   padding: 100px 0 0 0;
   z-index: 9999999;
+  background-size: 80% !important;
 }
 
 #home{

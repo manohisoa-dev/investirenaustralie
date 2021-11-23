@@ -628,7 +628,7 @@ function rejet_programme(id_prd)
 				error: function (jqXHR, textStatus, errorThrown)
 				{
 					swal("@lang('app.txt.programme')", "@lang('app.jquery.error_delete')", "error");
-					location.reload();
+					window.location.href = "{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme')}}?status=waiting";
 				}
 			}); 
 		} else {

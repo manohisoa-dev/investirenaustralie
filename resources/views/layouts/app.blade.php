@@ -21,8 +21,12 @@
 @endphp
 
 <!-- Mombo -->
-{{-- <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"> --}}
-    <!-- plugin CSS -->
+<!-- plugin CSS -->
+<!-- Animate fade animation -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<!-- ANIMATE AOS -->
+<!-- plugin CSS -->
 <link href="{{ asset('plugin/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
 <link href="{{ asset('plugin/font-awesome/css/all.min.css') }}" rel="stylesheet">
 <link href="{{ asset('plugin/et-line/style.css') }}" rel="stylesheet">
@@ -33,6 +37,8 @@
 <link href="{{ asset('style/master.css?v='.$mytime) }}" rel="stylesheet">
 <link href="{{ asset('style/app.css?v='.$mytime) }}" rel="stylesheet">
 <link href="{{ asset('style/responsive.css?v='.$mytime) }}" rel="stylesheet">
+<link href="{{ asset('style/refonte.css?v='.$mytime) }}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/fontawesome.min.css">
 <!-- Fin Mombo -->
 
 <!-- dropzone -->
@@ -134,7 +140,7 @@
         <h2>Javascript est désactivé dans votre navigateur web. Certaines fonctionnalités ne fonctionneront pas correctement.</h2>
     </noscript>
     <!-- Preload -->
-    <div id="loading">
+    <div id="loading" style="display:none;">
         <div class="load-circle"><span class="one"></span></div>
         <input type="hidden" name="page_id" id="page_id" value="{{ isset($item)?$item->id:0 }}">
     </div>
@@ -222,7 +228,7 @@
                         <ul class="nav navbar-nav m-auto">
                             <li class="mm-in px-dropdown">
                                 <a href="{{route('programme.all')}}">@lang('app.immobilier')</a>
-                                <i class="fa fa-angle-down px-nav-toggle"></i>
+                                {{--<i class="fa fa-angle-down px-nav-toggle"></i>--}}
                                 <ul class="px-dropdown-menu mm-dorp-in">
                                     {{-- \App\Models\Category::whereId(1)->first()->slug] --}}
                                     <li><a href="{{route('programme.all', \App\Models\Category::find(1))}}">@lang('app.residentiel')</a></li>
@@ -231,7 +237,7 @@
                             </li>
                             <li class="mm-in px-dropdown">
                                 <a href="{{route('programme.all')}}">@lang('app.business')</a>
-                                <i class="fa fa-angle-down px-nav-toggle"></i>
+                                {{--<i class="fa fa-angle-down px-nav-toggle"></i>--}}
                                 <ul class="px-dropdown-menu mm-dorp-in">
                                     <li><a href="{{route('programme.all', \App\Models\Category::find(3))}}">@lang('app.industrial')</a></li>
                                     <li><a href="{{route('programme.all', \App\Models\Category::find(4))}}">@lang('app.commercial')</a></li>
@@ -240,7 +246,7 @@
                             <li><a class="nav-link" href="{{route('services')}}">@lang('app.services')</a></li>
                             <li class="mm-in px-mega">
                                 <a href="javascript:void(0)" title="@lang('app.apls')">@lang('app.txt.apl')</a>
-                                <i class="fa fa-angle-down px-nav-toggle"></i>
+                                {{--<i class="fa fa-angle-down px-nav-toggle"></i>--}}
                                 <div class="px-mega-menu mm-dorp-in">
                                     <div class="row no-gutters">
                                         <div class="col-lg-12">
@@ -276,7 +282,7 @@
                             @if(Auth::check())
                                 <li class="mm-in px-dropdown">
                                     <a href="#home">@lang('app.account')</a>
-                                    <i class="fa fa-angle-down px-nav-toggle"></i>
+                                    {{--<i class="fa fa-angle-down px-nav-toggle"></i>--}}
                                     <ul class="px-dropdown-menu mm-dorp-in">
                                         <li><a href="{{url(\App\Models\User::find(Auth::id())->roleUser->role_initial)}}">@lang('app.dashboard')</a></li>
                                         <li><a href="@if(!Auth::user()->isAdmin() && !Auth::user()->isAdminBlog() && !Auth::user()->isAdminDelegate()) {{ route('profile') }} @else {{ Auth::user()->isAdmin() ? route('admin.profile') : route('admin.collaborator.admin.profile') }} @endif">@lang('app.profile')</a></li>
@@ -332,9 +338,9 @@
                     </div>
                     <div class="extra-menu d-flex align-items-center">
                         <div class="d-none d-md-block h-btn m-35px-l">
-                            <form class="d-flex flex-row m-5px-b p-1 white-bg input-group" action="{{route('programme.all')}}" method="get">
-                                <input type="text" class="form-control border-radius-0 border-0" placeholder="@lang('app.input.recherche')" name="q" value="{{isset($q)?$q:''}}">
-                                <button class="m-btn m-btn-theme2nd flex-shrink-0" type="submit">@lang('app.input.recherche')</button>
+                            <form class="d-flex flex-row m-5px-b p-1 searchform input-group" action="{{route('programme.all')}}" method="get">
+                                <input type="text" class="form-control border-radius-left" placeholder="@lang('app.input.recherche')" name="q" value="{{isset($q)?$q:''}}">
+                                <button class="m-btn m-btn-theme2nd flex-shrink-0" type="submit"><i class="fa fa-search"></i></button>
                             </form>
                         </div>
                         <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#navbar-collapse-toggle" aria-expanded="false">
@@ -357,7 +363,7 @@
         <iframe id="form_devise" width="175" height="202" id="themoneyconverter-mini" src="https://themoneyconverter.com/MoneyConverter?from=EUR&amp;to=AUD" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" seamless="seamless" __idm_frm__="815"></iframe>
     </div>
 
-    <footer class="grey-bg footer border-top-1 border-color-dark-gray">
+    <footer class="grey-bg-footer footer border-top-1 border-color-dark-gray">
         <div class="footer-top site-footer">
             <div class="container">
                 <div class="row">
@@ -417,7 +423,7 @@
                         </div>
 						<div style="margin-top:10px">
 							<p style="color:#fff !important">{{trans('app.txt.inscrirenews')}}</p>
-							<form class="d-flex flex-row m-5px-b p-1 white-bg input-group" id="form_newsletter" method="post">
+							<form class="d-flex flex-row m-5px-b p-1 white-bg input-group" id="form_newsletter" method="post" style="border-radius: 15px;">
 								{{ csrf_field() }}
 								<input type="email" name="email_adresse" id="email_adresse" class="form-control border-radius-0 border-0" placeholder="{{trans('app.txt.your.email')}}" required>
 								<input type="hidden" name="statuts" id="statuts" value="Actif">
@@ -429,18 +435,35 @@
             </div>
         </div>
 
+        <!-- Footer waves -->
+        <div class="#">
+            <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                 viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+                <defs>
+                    <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+                </defs>
+                <g class="parallax">
+                    <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(43,43,43,0.7)" />
+                    <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(43,43,43,0.5)" />
+                    <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(43,43,43,0.2)" />
+                    <use xlink:href="#gentle-wave" x="48" y="7" fill="rgb(43,43,43,0.1)" />
+                </g>
+            </svg>
+        </div>
+        <!-- End Footer waves -->
+
         <div class="footer-bottom footer-border-light ">
             <div class="container">
                 <div class="col-md-12 text-center" id="apl_list">
                     <ul class="nav justify-content-center justify-content-md-start p-25px-b links-white footer-link-1 font-color-theme4rd">
                         <li style="margin:auto;">
-                            <a href="{{route('apls')}}" style="color:#01E367;font-size: 1.5rem;">@lang('app.apls')</a> :
+                            <a href="{{route('apls')}}" style="color:#ae4435;font-size: 1.5rem;">@lang('app.apls')</a> :
                             @if(getListAplGrpByCountry() !== null)
                                 @forelse(getListAplGrpByCountry() as $apl)
                                     @php
                                         $countryContent = App\Models\Country::where('code',$apl->country)->first()->content;
                                     @endphp
-                                    <a class="country_apl_item" href="javascript:void(0)" value="{{ $apl->country }}" data-country="{{ $countryContent }}" data-toggle="tooltip" data-placement="top" data-html="true" title="<p class='text-center'> {{ trans('app.txt.click_to_show_city') }} {{ $countryContent }}</p>" style="color:#01E367;font-size: 1.5rem;">{{ $countryContent }}</a> @if(!$loop->last) - @endif
+                                    <a class="country_apl_item" href="javascript:void(0)" value="{{ $apl->country }}" data-country="{{ $countryContent }}" data-toggle="tooltip" data-placement="top" data-html="true" title="<p class='text-center'> {{ trans('app.txt.click_to_show_city') }} {{ $countryContent }}</p>" style="color:#ae4435;font-size: 1.5rem;">{{ $countryContent }}</a> @if(!$loop->last) - @endif
                                 @empty
                                     <span style="color:#01E367;font-size: 1.2rem;">@lang('app.txt.noinfo')</span>
                                 @endforelse
@@ -458,7 +481,7 @@
                             </ul>
                         </div>
                         <div class="col-md-6 text-center text-md-right">
-                            <p class="m-0px">{!!trans('app.copyright', ['year'=>date('Y'), 'app'=>trans('app.app_name')])!!}</p>
+                            <p class="m-0px text-white">{!!trans('app.copyright', ['year'=>date('Y'), 'app'=>trans('app.app_name')])!!}</p>
                         </div>
                     </div>
                 </div>
@@ -971,7 +994,6 @@
         $(window).bind('wheel', function(event) {
         if (event.originalEvent.wheelDelta >= 0) {
             if ($(document).scrollTop() <= 100) {
-                console.log('ato');
                 // $('#container-navbar').removeClass('show-navbar-after');
                 $('#container-navbar').removeClass('show-navbar-after');
                 $('#container-navbar').addClass('show-navbar-after-top');    
