@@ -15,7 +15,7 @@
                                 {{-- {{csrf_field()}} --}}
                                 <div class="row">
                                     <div class="col-lg-3 m-10px-b">
-                                        <select id="administrative_area_level_1 border-radius-iea" class="form-control border-radius-iea border-1 m-15px-r col-sm-12 col-md-12" name="state">
+                                        <select id="administrative_area_level_1" class="form-control border-radius-iea border-1 m-15px-r col-sm-12 col-md-12" name="state">
                                             <option value="{{isset($q)?$q:''}}" selected readonly>@lang('app.input.etat')</option>
                                             @foreach ($states as $state)
                                                 <option value="{{ $state->content }}">{{ trans('app.txt.'.$state->content) }} ({{ $state->content }})</option>
@@ -451,11 +451,7 @@
 <!-- End Section -->
 
 @push('script')
-    @php
-        $key = env('GMAP_API_KEY');
-        $url = "https://maps.googleapis.com/maps/api/js?key=".$key."&callback=initMap&libraries=places&v=weekly";
-    @endphp
-    <script async defer src={{$url}}></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2izG_M7K3gP6pFUH5cyzmDjuGpOYfgc4&libraries=places&callback=initMap&channel=GMPSB_addressselection_v1_cABC" async defer></script>
     <script type="text/javascript">
         $('#residentiel').on('show.bs.collapse', function () {
             $('#foncier').collapse('hide');
