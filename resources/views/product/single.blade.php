@@ -1,3 +1,4 @@
+
 <div class="col-sm-12 col-lg-12 m-15px-tb">
     <div class="box-shadow-hover hover-top white-bg our-team-hover-icon border-radius-3">
         <div class="p-10px team-img">
@@ -9,10 +10,10 @@
 			@if($first_photo)
                 @if($photo_principal)
                     <!-- Programme sans principal -->
-                    @php $img_prod = asset(getImageResizeUrl('product', $photo_principal->filename, 'thumb')) @endphp
+                    @php $img_prod = asset(getImageResizeUrl('product', str_replace(' ', '%20', $photo_principal->filename), 'thumb')) @endphp
                 @else
                     <!-- Programme principal -->
-                    @php $img_prod = asset(getImageResizeUrl('product', $first_photo->filename, 'thumb')) @endphp
+                    @php $img_prod = asset(getImageResizeUrl('product', str_replace(' ', '%20', $first_photo->filename), 'thumb')) @endphp
                 @endif
 				@if($photo_principal)
                     <!-- Programme sans principal -->
@@ -33,7 +34,9 @@
                 
             {{  $item->location? (isset($page_id) ? substr(strip_tags($item->location->toString()), 0, 25) : $item->location->toString()) :''}}</small>
             
-            <h6 class="m-10px-b font-w-600"><a class="dark-color" href="{{route('product.index',['product'=>$item->slug])}}">{{$item->title}}</a></h6>
+            <h6 class="m-10px-b font-w-600">
+				<a class="dark-color" href="{{route('product.index',['product'=>$item->slug])}}">{{getGTranslateAutoDetect( App::getLocale() ,$item->title)}}</a>
+			</h6>
 
         </div>
         <div class="font-small p-5px-t p-20px-b text-center border-top-1 border-color-dark-gray">
@@ -50,7 +53,12 @@
 			
 			@endif
         </div>
-        <button type="button" class="m-btn m-btn-theme2nd font-w-500 ml-auto">{{$item->currency}} {{number_format($item->price, 0, '.', ' ')}}</button>
+		@if($item->parent_id == -1)
+		<button type="button" class="m-btn m-btn-theme2nd font-w-500 ml-auto">AUD {{number_format($item->price, 0, '.', ' ')}}</button>
+		@else
+		<button type="button" class="m-btn m-btn-theme2nd font-w-500 ml-auto">AUD {{number_format($item->min_price, 0, '.', ' ')}}</button>
+		@endif
+        
     </div>
 </div>
 

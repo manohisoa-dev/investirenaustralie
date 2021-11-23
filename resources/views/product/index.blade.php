@@ -6,18 +6,25 @@
 <main>
     <!-- Page Title -->
     @php
-        if(@getimagesize($item->imageUrl())) {
-            $img=$item->imageUrl();
-        } else {
-            $img=asset('images/blog/iea.png');
-        }
+		$photo_principal = \App\Models\ProductsImage::where('products_images.product_id', '=', $item->id)->where('products_images.is_principal', '=', 1)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+        $first_photo = \App\Models\ProductsImage::where('products_images.product_id', '=', $item->id)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+		
+		if($first_photo){
+			if($photo_principal){
+				$img = asset(getImageResizeUrl('product', str_replace(' ', '%20', $photo_principal->filename), 'medium'));
+			}else{
+				$img = asset(getImageResizeUrl('product', str_replace(' ', '%20', $first_photo->filename), 'medium'));
+			}
+		}else{
+			$img = asset('images/blog/iea.png');
+		}
     @endphp
     <section class="bg-center bg-cover bg-fiexd effect-section" style="background-image: url({{ $img }});">
         <div class="mask dark-g-bg opacity-7"></div>
         <div class="container">
             <div class="row screen-65 justify-content-center align-items-center p-100px-tb">
                 <div class="col-lg-10 text-center m-50px-t">
-                    <h1 class="display-4 white-color m-25px-b">{{$item->title}}</h1>
+                    <h1 class="display-4 white-color m-25px-b">{{getGTranslateAutoDetect( App::getLocale() ,$item->title)}}</h1>
                     <div class="d-flex align-items-center m-25px-t justify-content-center text-left">
                         <div class="p-15px-l">
                             <p class="white-color m-0px"><span class="white-color">{{ $item->location ? Illuminate\Support\Str::upper($item->location->locality.' '.$item->location->area_level_2.', '.$item->location->area_level_1.' '.$item->location->postalCode) : '' }}</span></p>
@@ -79,7 +86,7 @@
                                                 </div>
                                                 <div class="portfolio-info">
                                                     <div class="portfolio-desc">
-                                                        <h5><a href="#">{{ $item->title }}</a></h5>
+                                                        <h5><a href="#">{{getGTranslateAutoDetect( App::getLocale() ,$item->title)}}</a></h5>
                                                     </div>
                                                     <a href="{{asset($img_prod)}}" data-fancybox="gallery" class="gallery-link pop">
                                                         <i class="ti-plus"></i>
@@ -124,7 +131,7 @@
                                   </div>
                                   <div class="portfolio-info">
                                       <div class="portfolio-desc">
-                                          <h5><a href="#">{{ $item->title }}</a></h5>
+                                          <h5><a href="#">{{getGTranslateAutoDetect( App::getLocale() ,$item->title)}}</a></h5>
                                       </div>
 									  <a href="{{asset($img)}}" data-fancybox="gallery" class="gallery-link pop">
                                           <i class="ti-plus"></i>

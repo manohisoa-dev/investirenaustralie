@@ -16,13 +16,13 @@
                         <!-- Programme sans principal -->
                         @php
                             //$img = asset($photo_principal->filename)
-                            $img = asset(getImageResizeUrl('product', $photo_principal->filename, 'medium'))
+                            $img = asset(getImageResizeUrl('product', str_replace(' ', '%20', $photo_principal->filename), 'medium'))
                         @endphp
                     @else
                         <!-- Programme principal -->
                         @php
                             //$img = asset($first_photo->filename)
-                            $img = asset(getImageResizeUrl('product', $first_photo->filename, 'medium'))
+                            $img = asset(getImageResizeUrl('product', str_replace(' ', '%20', $first_photo->filename), 'medium'))
                         @endphp
                     @endif
                 @else
@@ -33,7 +33,7 @@
                 <a href="{{ route('programme.show', ['slug'=>$item->slug]) }}">
                     <div class="transition blog-grid-overlay border-radius-0 {{ $item->isParticular()?'border-particular':'' }}" style="background-image: url({{ $img }});">
                         <div class="blog-gird-info">
-                            <h5>{{$item->title}}</h5>
+                            <h5>{{getGTranslateAutoDetect( App::getLocale() ,$item->title)}}</h5>
                             <p><span class="white-color">{{ $item->location ? Illuminate\Support\Str::upper($item->location->locality.' '.$item->location->area_level_2.', '.$item->location->area_level_1.' '.$item->location->postalCode) : '' }}</span></p>            
                         </div>
                     </div>
@@ -55,7 +55,7 @@
                 </a>
         
                 <div class="p-5px-t p-20px-b text-center">
-                    <h6>{!! str_limit($item->content, 70, '...') !!}</h6>
+                    <h6>{!! getGTranslateAutoDetect( App::getLocale() ,str_limit($item->content,70)) !!}</h6>
                 </div>
 				@if($item->parent_id == 0)
                 <div class="font-small p-5px-t p-20px-b text-center border-top-1 border-color-dark-gray">
@@ -77,13 +77,13 @@
                                                                 <!-- Programme sans principal -->
                                                                 @php
                                                                     //$img = asset($photo_principal->filename)
-                                                                    $img_prod = asset(getImageResizeUrl('product', $photo_principal->filename, 'thumb'))
+                                                                    $img_prod = asset(getImageResizeUrl('product', str_replace(' ', '%20', $photo_principal->filename), 'thumb'))
                                                                 @endphp
                                                             @else
                                                                 <!-- Programme principal -->
                                                                 @php
                                                                     //$img = asset($first_photo->filename)
-                                                                    $img_prod = asset(getImageResizeUrl('product', $first_photo->filename, 'thumb'))
+                                                                    $img_prod = asset(getImageResizeUrl('product', str_replace(' ', '%20', $first_photo->filename), 'thumb'))
                                                                 @endphp
                                                             @endif
                                                         @else

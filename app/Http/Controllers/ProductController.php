@@ -50,8 +50,7 @@ class ProductController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request, $slug) {
-        $products = Product::where('slug', '=', $slug)->get(['id','area','location_id','view_count','author_id']);
-
+        $products = Product::where('slug', '=', $slug)->get(['id','area','title','location_id','view_count','author_id']);
         if (sizeof($products) != 0) {
             foreach ($products as $key => $product) {
 
@@ -60,7 +59,7 @@ class ProductController extends Controller {
                     $product->save();
                 }
 
-                $products = Product::orderBy('created_at', 'desc')->ofStatus('published')->isProduct()->take($this->recentSize)->get(['id','reference','slug','title',]);
+                $products = Product::orderBy('created_at', 'desc')->ofStatus('published')->isProduct()->take($this->recentSize)->get(['id','reference','slug','title','location_id','min_price','price']);
 
                 $categories = Category::orderBy('created_at', 'desc')->has('products')->withCount('products')->take($this->recentSize)->get(['id','title']);
 

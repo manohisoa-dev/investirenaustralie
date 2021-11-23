@@ -14,7 +14,7 @@
                                     <img src="{{ asset('images/ads-logo.png') }}" alt="logo_iea">
                                 </div>
                                 <div class="col-lg-6">
-                                    <p class="text-right">{{$pub->title}}</p>
+                                    <p class="text-right">{{getGTranslateAutoDetect( App::getLocale() ,$pub->title)}}</p>
                                 </div>
                             </div>
                         </div>
@@ -44,13 +44,13 @@
                         <!-- Programme sans principal -->
                         @php
                             //$img = asset($photo_principal->filename)
-                            $img_prod = asset(getImageResizeUrl('product', $photo_principal->filename, 'mini'))
+                            $img_prod = asset(getImageResizeUrl('product', str_replace(' ', '%20', $photo_principal->filename), 'mini'))
                         @endphp
                     @else
                         <!-- Programme principal -->
                         @php
                             //$img = asset($first_photo->filename)
-                            $img_prod = asset(getImageResizeUrl('product', $first_photo->filename, 'mini'))
+                            $img_prod = asset(getImageResizeUrl('product', str_replace(' ', '%20', $first_photo->filename), 'mini'))
                         @endphp
                     @endif
                 @else
