@@ -513,16 +513,15 @@ class ProductController extends Controller {
         $email_to = $user->email;
         Mail::to($email_to)->send(new MailTemplate($content, $sujet));
     }
-    
-    public function sendEmail_vendeur($id_produit)
-    {
+
+    public function sendEmail_vendeur($id_produit) {
         $product = Product::find($id_produit);
         $user = User::find($product->author_id);
-        
+
         $template = MailsTemplate::where('id', 51)->get();
         $lang = App::getLocale();
         $body = 'template_' . $lang;
-        $sujet = 'sujet_'.$lang;
+        $sujet = 'sujet_' . $lang;
         $vars = array(
             '{dateSysteme}' => Carbon::now()->toFormattedDateString(),
             '{heureSysteme}' => Carbon::now()->toTimeString(),
@@ -722,7 +721,10 @@ class ProductController extends Controller {
                 $seller_id = $user->id;
                 $titre_programme = $request->title_programme;
 
-                $afa_possible = DB::select("SELECT `users`.id as id_afa FROM `users` LEFT JOIN `localizations` ON `users`.`location_id` = `localizations`.`id` WHERE `users`.`role` = 3 and `localizations`.`locality` = '$request->ville'");
+                $afa_possible = DB::select("select `S`.id as id_afa,  ( FLOOR(6371 * ACOS( COS( RADIANS( '$request->lat' ) ) * COS( RADIANS( localizations.latitude ) ) * COS( 
+RADIANS( localizations.longitude ) - RADIANS( '$request->long' ) ) + SIN( RADIANS( '$request->lat' ) ) * SIN( RADIANS( 
+localizations.latitude ) ) )) ) distance from `users` as `S` left join `localizations` on `S`.`location_id` = 
+`localizations`.`id` where `S`.`role` = 3 having distance < 155");
                 if (count($afa_possible) > 0) {
                     $tab_afa = array();
                     foreach ($afa_possible as $val) {
@@ -1410,7 +1412,7 @@ class ProductController extends Controller {
                 if ($request->radioDrop) {
                     if ($request->radioDrop == $value) {
                         ProductsImage::where('product_id', $request->id_product)->update(['is_principal' =>
-                0]);                        
+                            0]);
                         $is_principal = 1;
                     } else {
                         $is_principal = 0;

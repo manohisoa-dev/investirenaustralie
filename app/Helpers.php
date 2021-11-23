@@ -72,7 +72,7 @@ if (!function_exists('option')) {
             $key = $keys[1];
 
             $model = App\Models\Config::where('name', $group)->get()->first();
-            if (!$model){
+            if (!$model) {
                 dd('sdfsdf');
                 return $default;
             }
@@ -692,8 +692,10 @@ if (!function_exists('nouvelle_afa_disponible')) {
             $produit_sans_afa = App\Models\Product::wherein('afaId_possible', array(0, ''))->get();
             foreach ($produit_sans_afa as $produit) {
                 $localisation_product = DB::select("SELECT * FROM `localizations` WHERE `id` = $produit->location_id");
-                $ville_product = $localisation_product[0]->locality;
-                $afa_possible = DB::select("SELECT `users`.id as id_afa FROM `users` LEFT JOIN `localizations` ON `users`.`location_id` = `localizations`.`id` WHERE `users`.`role` = 3 and `localizations`.`locality` = '$ville_product'");
+                $afa_possible = DB::select("select `S`.id as id_afa,  ( FLOOR(6371 * ACOS( COS( RADIANS( '$localisation_product[0]->latitude' ) ) * COS( RADIANS( localizations.latitude ) ) * COS( 
+RADIANS( localizations.longitude ) - RADIANS( '$localisation_product[0]->longitude' ) ) + SIN( RADIANS( '$localisation_product[0]->latitude' ) ) * SIN( RADIANS( 
+localizations.latitude ) ) )) ) distance from `users` as `S` left join `localizations` on `S`.`location_id` = 
+`localizations`.`id` where `S`.`role` = 3 having distance < 155");
                 if (count($afa_possible) > 0) {
                     $tab_afa = array();
                     foreach ($afa_possible as $val) {
@@ -706,6 +708,32 @@ if (!function_exists('nouvelle_afa_disponible')) {
         }
         catch (exception $e) {
             $e->getMessage();
+        }
+    }
+}
+
+/**
+ * permet de calculer la distance entre 2 points de l'attitude et longitude
+ * 
+ */
+if (!function_exists('distance_point')) {
+    function distance_point($lat1, $lon1, $lat2, $lon2, $unit) {
+        $theta = $lon1 - $lon2;
+        $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) + cos(deg2rad($lat1)) * cos(deg2rad
+            ($lat2)) * cos(deg2rad($theta));
+        $dist = acos($dist);
+        $dist = rad2deg($dist);
+        $miles = $dist * 60 * 1.1515;
+        $unit = strtoupper($unit);
+
+        if ($unit == "K") {
+            return ($miles * 1.609344);
+        } else {
+            if ($unit == "N") {
+                return ($miles * 0.8684);
+            } else {
+                return $miles;
+            }
         }
     }
 }
@@ -725,7 +753,7 @@ if (!function_exists('nouvelle_afa_disponible_2')) {
                     }
                     $id_afa_p = implode(', ', $tab_afa);
                     App\Models\Product::where('id', $produit->id)->update(['afaId_possible' => $id_afa_p]);
-                }else{
+                } else {
                     $afa_arround = DB::select("SELECT `users`.id as id_afa FROM `users` LEFT JOIN `localizations` ON `users`.`location_id` = `localizations`.`id` WHERE `users`.`role` = 3");
                     if (count($afa_arround) > 0) {
                         $tab_afa = array();
