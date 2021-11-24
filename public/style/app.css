@@ -354,3 +354,9 @@ a.compose-mail {
   margin-left: auto;
   margin-right: auto;
 }
+
+.txt-body p span {
+  color: #8e989f !important;
+  line-height: 1.8 !important;
+  font-family: "Nunito Sans", sans-serif !important;
+}

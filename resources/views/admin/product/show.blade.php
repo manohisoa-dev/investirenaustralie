@@ -214,7 +214,7 @@
 											Il n'y a pas d'AFA correspondante
 										</span>
 										<a href="javascript:void(0)" onclick="check_afa_existe({{$product->id}})" class="btn btn-danger pull-right">
-											<i class="fa fa-refresh"></i>
+											<small><i class="fa fa-refresh"></i> Rafraichir la liste des AFA</small>
 										</a>
 									@else
 										@php
