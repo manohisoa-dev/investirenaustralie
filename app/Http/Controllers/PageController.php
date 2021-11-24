@@ -42,7 +42,7 @@ class PageController extends Controller
             
         $blogs = Blog::ofStatus('published')
         ->orderBy('created_at', 'desc')
-        ->take(6)->get();
+        ->take(8)->get();
         
         $page->load(['childs', 'childs.pubs', 'pubs']);
         

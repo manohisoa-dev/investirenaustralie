@@ -457,13 +457,13 @@
                 <div class="col-md-12 text-center" id="apl_list">
                     <ul class="nav justify-content-center justify-content-md-start p-25px-b links-white footer-link-1 font-color-theme4rd">
                         <li style="margin:auto;">
-                            <a href="{{route('apls')}}" style="color:#ae4435;font-size: 1.5rem;">@lang('app.apls')</a> :
+                            <a href="{{route('apls')}}" style="color:#01E367;font-size: 1.5rem;">@lang('app.apls')</a> :
                             @if(getListAplGrpByCountry() !== null)
                                 @forelse(getListAplGrpByCountry() as $apl)
                                     @php
                                         $countryContent = App\Models\Country::where('code',$apl->country)->first()->content;
                                     @endphp
-                                    <a class="country_apl_item" href="javascript:void(0)" value="{{ $apl->country }}" data-country="{{ $countryContent }}" data-toggle="tooltip" data-placement="top" data-html="true" title="<p class='text-center'> {{ trans('app.txt.click_to_show_city') }} {{ $countryContent }}</p>" style="color:#ae4435;font-size: 1.5rem;">{{ $countryContent }}</a> @if(!$loop->last) - @endif
+                                    <a class="country_apl_item" href="javascript:void(0)" value="{{ $apl->country }}" data-country="{{ $countryContent }}" data-toggle="tooltip" data-placement="top" data-html="true" title="<p class='text-center'> {{ trans('app.txt.click_to_show_city') }} {{ $countryContent }}</p>" style="color:#01E367;font-size: 1.5rem;">{{ $countryContent }}</a> @if(!$loop->last) - @endif
                                 @empty
                                     <span style="color:#01E367;font-size: 1.2rem;">@lang('app.txt.noinfo')</span>
                                 @endforelse

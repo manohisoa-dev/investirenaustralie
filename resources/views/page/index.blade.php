@@ -87,7 +87,7 @@
 
                             <div class="col-lg-6 m-15px-tb">
                                 <h2 class="h1 m-25px-b title-iea h1 m-25px-b" style="font-size: 2.1rem !important;">{{$child->title}}</h2>
-                                <div class="text-justify">
+                                <div class="text-justify txt-body">
                                     <p class="m-5px-b">{!!$child->content!!}</p>
                                 </div>
                                 @if(Auth::check()&&Auth::user()->isAdmin())
@@ -270,7 +270,7 @@
                             </div>
                             <div class="col-lg-5 m-15px-tb">
                                 <h2 class="h1 m-25px-b">{{$child->title}}</h2>
-                                <div class="text-justify">
+                                <div class="text-justify txt-body">
                                     <p class="m-5px-b">{!!$child->content!!}</p>
                                 </div>
                                 @if(Auth::check()&&Auth::user()->isAdmin())
@@ -346,7 +346,7 @@
 						$title = 'title_'.$lang;
 					@endphp
 
-                    <div class="col-xl-4 m-15px-tb">
+                    <div class="col-xl-3 m-15px-tb">
                         <div class="hover-top transition blog-grid-overlay overlay-iea" style="background-image: url({{asset(getImageResizeUrl('blog', $blog->image->filename, 'scare'))}}); ">
                             <div class="blog-gird-info">
                                 <a class="overlay-link" href="{{route('blog.index',$blog->$slug)}}"></a>
