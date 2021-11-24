@@ -8,7 +8,7 @@
         </a>
         <ul class="dropdown-menu animated fadeInRight m-t-xs">
             <li><a class="dropdown-item" href="{{Auth::user()->isAdmin()?route('admin.profile'):(Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.profile'):route('admin.collaborator.admin.profile'))}}">@lang('app.profile')</a></li>
-            <li><a class="dropdown-item" href="http://iea.easydata.mg/">@lang('app.txt.back_homepage')</a></li>
+            <li><a class="dropdown-item" href="{{URL::to('/')}}">@lang('app.txt.back_homepage')</a></li>
             <li class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="{{ route('logout') }}">{{__('app.logout')}}</a></li>
         </ul>

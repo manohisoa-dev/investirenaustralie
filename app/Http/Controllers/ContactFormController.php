@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Badword;
 use App\Models\User;
+use App\Models\Product;
+use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use JCrowe\BadWordFilter\BadWordFilter;
@@ -18,7 +20,12 @@ class ContactFormController extends Controller
         \Cookie::queue('namexxx', 'value', '');
 
         \Cookie::queue(\Cookie::forget('namexxx'));
-        $value = \Cookie::get('namexxx');        return view('contactform');
+        $value = \Cookie::get('namexxx');    
+
+        Product::regenerateAllAvatar() ;    
+        Blog::regenerateAllAvatar() ;    
+
+        return view('contactform');
     }
 
     public function setCookie(Request $request){
