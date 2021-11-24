@@ -69,6 +69,7 @@
 					$messages = \App\Models\Message::where("to_id", Auth::user()->id)
 					->join('users', 'users.id','=','messages.from_id')
 					->select('messages.*', 'messages.created_at as dt' , 'users.name', 'users.immat', 'users.id as user_id', 'users.role')
+					->where('messages.seen', 0)
 					->orderBy('created_at' , 'DESC')
 					->groupBy('from_id')
 					->get();
