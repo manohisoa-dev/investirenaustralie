@@ -32,7 +32,8 @@
                 {{  $item->location? (isset($page_id) ? substr(strip_tags($item->location->toString()), 0, 25) : $item->location->toString()) :''}}</small>
                 
                 <h6 class="m-10px-b font-w-600">
-					<a class="dark-color" href="{{route('product.index',['product'=>$item->slug])}}">{!! getGTranslateAutoDetect( App::getLocale() ,$item->title) !!}</a>
+					{{-- <a class="dark-color" href="{{route('product.index',['product'=>$item->slug])}}">{!! getGTranslateAutoDetect( App::getLocale() ,$item->title) !!}</a> --}}
+					<a class="dark-color" href="{{route('product.index',['product'=>$item->slug])}}">{!! $item->title !!}</a>
 				</h6>
 
             </div>

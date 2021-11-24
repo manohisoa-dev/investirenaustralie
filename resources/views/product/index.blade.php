@@ -24,7 +24,8 @@
         <div class="container">
             <div class="row screen-65 justify-content-center align-items-center p-100px-tb">
                 <div class="col-lg-10 text-center m-50px-t">
-                    <h1 class="display-4 white-color m-25px-b">{{getGTranslateAutoDetect( App::getLocale() ,$item->title)}}</h1>
+                    {{-- <h1 class="display-4 white-color m-25px-b">{{getGTranslateAutoDetect( App::getLocale() ,$item->title)}}</h1> --}}
+                    <h1 class="display-4 white-color m-25px-b">{{$item->title}}</h1>
                     <div class="d-flex align-items-center m-25px-t justify-content-center text-left">
                         <div class="p-15px-l">
                             <p class="white-color m-0px"><span class="white-color">{{ $item->location ? Illuminate\Support\Str::upper($item->location->locality.' '.$item->location->area_level_2.', '.$item->location->area_level_1.' '.$item->location->postalCode) : '' }}</span></p>
@@ -86,7 +87,8 @@
                                                 </div>
                                                 <div class="portfolio-info">
                                                     <div class="portfolio-desc">
-                                                        <h5><a href="#">{{getGTranslateAutoDetect( App::getLocale() ,$item->title)}}</a></h5>
+                                                        {{-- <h5><a href="#">{{getGTranslateAutoDetect( App::getLocale() ,$item->title)}}</a></h5> --}}
+                                                        <h5><a href="#">{{$item->title}}</a></h5>
                                                     </div>
                                                     <a href="{{asset($img_prod)}}" data-fancybox="gallery" class="gallery-link pop">
                                                         <i class="ti-plus"></i>
@@ -131,7 +133,8 @@
                                   </div>
                                   <div class="portfolio-info">
                                       <div class="portfolio-desc">
-                                          <h5><a href="#">{{getGTranslateAutoDetect( App::getLocale() ,$item->title)}}</a></h5>
+                                          {{-- <h5><a href="#">{{getGTranslateAutoDetect( App::getLocale() ,$item->title)}}</a></h5> --}}
+                                          <h5><a href="#">{{$item->title}}</a></h5>
                                       </div>
 									  <a href="{{asset($img)}}" data-fancybox="gallery" class="gallery-link pop">
                                           <i class="ti-plus"></i>

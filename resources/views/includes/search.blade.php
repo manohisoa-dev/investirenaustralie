@@ -927,8 +927,8 @@
         const place = input!=='locality'?autocomplete.getPlace():autocomplete2.getPlace();
 
         for (const component in componentForm) {
-        document.getElementById(component).value = "";
-        document.getElementById(component).disabled = false;
+            document.getElementById(component).value = "";
+            document.getElementById(component).disabled = false;
         }
 
         // Get each component of the address from the place details,
