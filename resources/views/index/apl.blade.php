@@ -153,7 +153,11 @@
 
         if(data.type == 4){
             // show info inwindows
-            infoWindow(markers[data.id],data);
+            console.log(data);
+            if(data.lat!==null || data.lng!==null){
+              infoWindow(markers[data.id],data);
+            }
+
             
             google.maps.event.addListener(markers[data.id], 'click', function() {
                 $('#apl-modal').attr("value", data.id);
@@ -181,10 +185,10 @@
           maxWidth: 300, 
           //On définit le texte à afficher dans l'infoWindow 
           content: '<b>'+data.immat+'</b><br/>'+data.title+'<br/>'+data.adr});
-        //On ajoute un listener d'événement : on écoute le clic sur le marqueur
-        google.maps.event.addListener(marker, 'mouseover', function() {
-        // Ouverture de l'infobulle 
-        infowindow1.open(map, marker);  
+          //On ajoute un listener d'événement : on écoute le clic sur le marqueur
+          google.maps.event.addListener(marker, 'mouseover', function() {
+          // Ouverture de l'infobulle 
+          infowindow1.open(map, marker);
         });  
 
         // Ouverture de l'infobulle 
