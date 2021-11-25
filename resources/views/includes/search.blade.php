@@ -488,21 +488,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/8.5.1/nouislider.min.js"></script>
 
     <script>
+        var range_all_sliders = {
+            'min': [0],
+            '50%': [10000000,10000000],
+            'max': [10050000]
+        };
+
         // Residential
         // price range slider
         var priceRange = document.getElementById('price-range1');
+        
         noUiSlider.create(priceRange, {
             // start: [{{ $min_price_residentiel?($min_price_residentiel!==$max_price_residentiel?$min_price_residentiel:0):0 }}, 10000000],
             start: [0, 10000000],
-            connect: true,
+            step: 50000,
             tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
-            range: {
-                'min': 0,
-                'max': 10000000
-                // 'min': {{ $min_price_residentiel?($min_price_residentiel!==$max_price_residentiel?$min_price_residentiel:0):0 }},
-                // 'max': {{ $max_price_residentiel?$max_price_residentiel:1 }}
-            },
-                format: wNumb({
+            range: range_all_sliders,
+            format: wNumb({
                 decimals: 0,
                 thousand: '',
                 postfix: '',
@@ -517,7 +519,8 @@
         // When the slider value changes, update the input and span
         priceRange.noUiSlider.on('update', function( values, handle ) {
             if ( handle ) {
-                valueMax.innerHTML = '+ '+new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(values[handle]);
+                val = values[handle]>10000000?'+ '+new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(10000000):new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(values[handle]);
+                valueMax.innerHTML = val;
                 resPriceMax.val(values[handle]);
             } else {
                 valueMin.innerHTML = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(values[handle]);
@@ -531,6 +534,7 @@
         noUiSlider.create(bedrooms, {
             // start:  [{{ $min_bedrooms_residentiel?($min_bedrooms_residentiel!==$max_bedrooms_residentiel?$min_bedrooms_residentiel:0):0 }}, 6],
             start:  [0, 6],
+            step: 1,
             connect: true,
             tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
             range: {
@@ -690,15 +694,10 @@
         noUiSlider.create(prix, {
             // start: [{{ $min_price_foncier?($min_price_foncier!==$max_price_foncier?$min_price_foncier:0):0 }}, 10000000],
             start: [0, 10000000],
-            connect: true,
+            step: 50000,
             tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
-            range: {
-                'min': 0,
-                'max': 10000000
-                // 'min': {{ $min_price_foncier?($min_price_foncier!==$max_price_foncier?$min_price_foncier:0):0 }},
-                // 'max': {{ $max_price_foncier?$max_price_foncier:1 }}
-            },
-                format: wNumb({
+            range: range_all_sliders,
+            format: wNumb({
                 decimals: 0,
                 thousand: '',
                 postfix: '',
@@ -713,7 +712,8 @@
         // When the slider value changes, update the input and span
         prix.noUiSlider.on('update', function( values, handle ) {
             if ( handle ) {
-                prixValueMaxFonc.innerHTML = '+ '+new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(values[handle]);
+                val = values[handle]>10000000?'+ '+new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(10000000):new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(values[handle]);
+                prixValueMaxFonc.innerHTML = val;
                 foncPriceMax.val(values[handle]);
             } else {
                 prixValueMinFonc.innerHTML = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(values[handle]);
@@ -759,15 +759,10 @@
         noUiSlider.create(prixInd, {
             // start: [{{ $min_price_industriel?($min_price_industriel!==$max_price_industriel?$min_price_industriel:0):0 }}, 10000000],
             start: [0, 10000000],
-            connect: true,
+            step: 50000,
             tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
-            range: {
-                'min': 0,
-                'max': 10000000
-                // 'min': {{ $min_price_industriel?($min_price_industriel!==$max_price_industriel?$min_price_industriel:0):0 }},
-                // 'max': {{ $max_price_industriel?$max_price_industriel:1 }}
-            },
-                format: wNumb({
+            range: range_all_sliders,
+            format: wNumb({
                 decimals: 0,
                 thousand: '',
                 postfix: '',
@@ -782,7 +777,8 @@
         // When the slider value changes, update the input and span
         prixInd.noUiSlider.on('update', function( values, handle ) {
             if ( handle ) {
-                prixValueMaxInd.innerHTML = '+ '+new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(values[handle]);
+                val = values[handle]>10000000?'+ '+new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(10000000):new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(values[handle]);
+                prixValueMaxInd.innerHTML = val;
                 indPriceMax.val(values[handle]);
             } else {
                 prixValueMinInd.innerHTML = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(values[handle]);
@@ -798,15 +794,10 @@
         noUiSlider.create(prixComm, {
             // start: [{{ $min_price_commercial?($min_price_commercial!==$max_price_commercial?$min_price_commercial:0):0 }}, {{ $max_price_commercial?$max_price_commercial:1 }}],
             start: [0, 10000000],
-            connect: true,
+            step: 50000,
             tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
-            range: {
-                // 'min': {{ $min_price_commercial?($min_price_commercial!==$max_price_commercial?$min_price_commercial:0):0 }},
-                // 'max': {{ $max_price_commercial?$max_price_commercial:1 }}
-                'min': 0,
-                'max': 10000000
-            },
-                format: wNumb({
+            range: range_all_sliders,
+            format: wNumb({
                 decimals: 0,
                 thousand: '',
                 postfix: '',
@@ -821,7 +812,8 @@
         // When the slider value changes, update the input and span
         prixComm.noUiSlider.on('update', function( values, handle ) {
             if ( handle ) {
-                prixValueMaxCom.innerHTML = '+ '+new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(values[handle]);
+                val = values[handle]>10000000?'+ '+new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(10000000):new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(values[handle]);
+                prixValueMaxCom.innerHTML = val;
                 commPriceMax.val(values[handle]);
             } else {
                 prixValueMinCom.innerHTML = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(values[handle]);
@@ -835,15 +827,17 @@
         noUiSlider.create(areaComm, {
             // start: [{{ $min_area_commercial?($min_area_commercial!==$max_area_commercial?$min_area_commercial:0):0 }}, {{ $max_area_commercial?$max_area_commercial:1 }}],
             start: [0, 200],
+            step: 20,
             connect: true,
             tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
             range: {
-                'min': 0,
-                'max': 200
+                'min': [0],
+                '50%': [200,200],
+                'max': [220]
                 // 'min': {{ $min_area_commercial?($min_area_commercial!==$max_area_commercial?$min_area_commercial:0):0 }},
                 // 'max': {{ $max_area_commercial?$max_area_commercial:1 }}
             },
-                format: wNumb({
+            format: wNumb({
                 decimals: 0,
                 thousand: '',
                 postfix: '',
@@ -858,7 +852,8 @@
         // When the slider value changes, update the input and span
         areaComm.noUiSlider.on('update', function( values, handle ) {
             if ( handle ) {
-             areaValueMax.innerHTML = '+ '+values[handle];
+            val = values[handle]>200?'+ 200':values[handle];
+            areaValueMax.innerHTML = val + ' m²';
              commAreaMax.val(values[handle]);
             } else {
              areaValueMin.innerHTML = values[handle];
