@@ -376,23 +376,28 @@ class SearchController extends Controller
                 case 'residentiel':
                     $items = $items->where('category_id', 1);
 
-                    if($request->typeRes){
+                    if(isset($request->typeRes)){
                         $items = $items->where('type_id', $request->typeRes);
                     }
 
-                    if($request->anciennete){
+                    if(isset($request->anciennete)){
                         $items = $items->where('type_id', $request->typeRes);
                     }
 
-                    if($request->localisation){
+                    if(isset($request->localisation)){
                         $items = $items->where('location_type_id', $request->location_type);
                     }
 
-                    if($request->residentiel_price_min && $request->residentiel_price_max){
-                        $items = $items->whereBetween('price', [$request->residentiel_price_min, $request->residentiel_price_max]);
+                    if(isset($request->residentiel_price_min) && isset($request->residentiel_price_max)){
+                        $price_max = 10000000; //max price 10 000 000 $
+                        if($request->residentiel_price_max>$price_max){
+                            $items = $items->where('price','>', $price_max);
+                        }else{
+                            $items = $items->whereBetween('price', [$request->residentiel_price_min, $request->residentiel_price_max]);
+                        }
                     }
 
-                    if($request->residentiel_bedrooms_min && $request->residentiel_bedrooms_max){
+                    if(isset($request->residentiel_bedrooms_min) && isset($request->residentiel_bedrooms_max)){
                         $items = $items->whereBetween('bedrooms', [$request->residentiel_bedrooms_min, $request->residentiel_bedrooms_max]);
                     }
 
@@ -401,24 +406,29 @@ class SearchController extends Controller
                 case 'foncier':
                     $items = $items->where('category_id', 2);
 
-                    if($request->typeFonc){
+                    if(isset($request->typeFonc)){
                         $items = $items->where('type_id', $request->typeFonc);
                     }
 
-                    if($request->localisationFonc){
+                    if(isset($request->localisationFonc)){
                         $items = $items->where('location_type_id', $request->localisationFonc);
                     }
 
-                    if($request->agricoleFonc){
+                    if(isset($request->agricoleFonc)){
                         $items = $items->where('type_id', $request->agricoleFonc);
                     }
 
-                    if($request->foncier_area_min && $request->foncier_area_max){
+                    if(isset($request->foncier_area_min) && isset($request->foncier_area_max)){
                         $items = $items->whereBetween('land_area', [$request->foncier_area_min, $request->foncier_area_max]);
                     }
 
-                    if($request->foncier_price_min && $request->foncier_price_max){
-                        $items = $items->whereBetween('price', [$request->foncier_price_min, $request->foncier_price_max]);
+                    if(isset($request->foncier_price_min) && isset($request->foncier_price_max)){
+                        $price_max = 10000000; //max price 10 000 000 $
+                        if($request->foncier_price_max>$price_max){
+                            $items = $items->where('price','>', $price_max);
+                        }else{
+                            $items = $items->whereBetween('price', [$request->foncier_price_min, $request->foncier_price_max]);
+                        }
                     }
 
                     break;
@@ -426,16 +436,21 @@ class SearchController extends Controller
                 case 'industriel':
                     $items = $items->where('category_id', 3);
 
-                    if($request->typeInd){
+                    if(isset($request->typeInd)){
                         $items = $items->where('type_id', $request->typeInd);
                     }
 
-                    if($request->typeSectInd){
+                    if(isset($request->typeSectInd)){
                         $items = $items->where('type_id', $request->typeSectInd);
                     }
 
-                    if($request->industriel_price_min && $request->industriel_price_max){
-                        $items = $items->whereBetween('price', [$request->industriel_price_min, $request->industriel_price_max]);
+                    if(isset($request->industriel_price_min) && isset($request->industriel_price_max)){
+                        $price_max = 10000000; //max price 10 000 000 $
+                        if($request->industriel_price_max>$price_max){
+                            $items = $items->where('price','>', $price_max);
+                        }else{
+                            $items = $items->whereBetween('price', [$request->industriel_price_min, $request->industriel_price_max]);
+                        }
                     }
 
                     break;
@@ -443,24 +458,34 @@ class SearchController extends Controller
                 case 'commercial':
                     $items = $items->where('category_id', 4);
 
-                    if($request->typeComm){
+                    if(isset($request->typeComm)){
                         $items = $items->where('type_id', $request->typeComm);
                     }
 
-                    if($request->typeSectComm){
+                    if(isset($request->typeSectComm)){
                         $items = $items->where('type_id', $request->typeSectComm);
                     }
 
-                    if($request->parkingComm){
+                    if(isset($request->parkingComm)){
                         $items = $items->where('carport_spaces', $request->parkingComm);
                     }
 
-                    if($request->commercial_price_min && $request->commercial_price_max){
-                        $items = $items->whereBetween('price', [$request->commercial_price_min, $request->commercial_price_max]);
+                    if(isset($request->commercial_price_min) && isset($request->commercial_price_max)){
+                        $price_max = 10000000; //max price 10 000 000 $
+                        if($request->commercial_price_max>$price_max){
+                            $items = $items->where('price','>', $price_max);
+                        }else{
+                            $items = $items->whereBetween('price', [$request->commercial_price_min, $request->commercial_price_max]);
+                        }
                     }
 
-                    if($request->commercial_area_min && $request->commercial_area_max){
-                        $items = $items->whereBetween('land_area', [$request->commercial_area_min, $request->commercial_area_max]);
+                    if(isset($request->commercial_area_min) && isset($request->commercial_area_max)){
+                        $land_max = 200; //max land: 200 m²
+                        if($request->commercial_area_max>$land_max){
+                            $items = $items->where('land_area','>', $land_max);
+                        }else{
+                            $items = $items->whereBetween('land_area', [$request->commercial_area_min, $request->commercial_area_max]);
+                        }
                     }
 
                     break;
