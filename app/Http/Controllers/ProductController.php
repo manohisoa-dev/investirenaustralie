@@ -1492,7 +1492,11 @@ localizations.latitude ) ) )) ) distance from `users` as `S` left join `localiza
             $id_afa_p = $seller_id;
         } else {
             $seller_id = $user->id;
-            $afa_possible = DB::select("SELECT `users`.id as id_afa FROM `users` LEFT JOIN `localizations` ON `users`.`location_id` = `localizations`.`id` WHERE `users`.`role` = 3 and `localizations`.`locality` = '$request->ville_product'");
+            //$afa_possible = DB::select("SELECT `users`.id as id_afa FROM `users` LEFT JOIN `localizations` ON `users`.`location_id` = `localizations`.`id` WHERE `users`.`role` = 3 and `localizations`.`locality` = '$request->ville_product'");
+            $afa_possible = DB::select("select `S`.id as id_afa,  ( FLOOR(6371 * ACOS( COS( RADIANS( '$request->lat' ) ) * COS( RADIANS( localizations.latitude ) ) * COS( 
+RADIANS( localizations.longitude ) - RADIANS( '$request->long' ) ) + SIN( RADIANS( '$request->lat' ) ) * SIN( RADIANS( 
+localizations.latitude ) ) )) ) distance from `users` as `S` left join `localizations` on `S`.`location_id` = 
+`localizations`.`id` where `S`.`role` = 3 having distance < 155");
             if (count($afa_possible) > 0) {
                 $tab_afa = array();
                 foreach ($afa_possible as $val) {
