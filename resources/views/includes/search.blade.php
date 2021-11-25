@@ -502,6 +502,7 @@
             // start: [{{ $min_price_residentiel?($min_price_residentiel!==$max_price_residentiel?$min_price_residentiel:0):0 }}, 10000000],
             start: [0, 10000000],
             step: 50000,
+            connect: true,
             tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
             range: range_all_sliders,
             format: wNumb({
@@ -695,6 +696,7 @@
             // start: [{{ $min_price_foncier?($min_price_foncier!==$max_price_foncier?$min_price_foncier:0):0 }}, 10000000],
             start: [0, 10000000],
             step: 50000,
+            connect: true,
             tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
             range: range_all_sliders,
             format: wNumb({
@@ -760,6 +762,7 @@
             // start: [{{ $min_price_industriel?($min_price_industriel!==$max_price_industriel?$min_price_industriel:0):0 }}, 10000000],
             start: [0, 10000000],
             step: 50000,
+            connect: true,
             tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
             range: range_all_sliders,
             format: wNumb({
@@ -795,6 +798,7 @@
             // start: [{{ $min_price_commercial?($min_price_commercial!==$max_price_commercial?$min_price_commercial:0):0 }}, {{ $max_price_commercial?$max_price_commercial:1 }}],
             start: [0, 10000000],
             step: 50000,
+            connect: true,
             tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
             range: range_all_sliders,
             format: wNumb({
