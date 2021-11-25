@@ -181,6 +181,7 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     //Route procedure d'Achat
     Route::get('liste_procedure_achat', 'ProcedureAchatController@liste')->name('procedure.liste');
     Route::resource('mandate','MandateController');
+    Route::resource('search-mandate','SearchMandateController');
     Route::post('ajaxRefreshAfa', 'ProductController@ajaxRefreshAfa')->name('ajaxRefreshAfa'); 
 });
 
@@ -546,6 +547,16 @@ Route::prefix('collaborators')->namespace('Admin')->as('admin.')->middleware(["a
     Route::put('/admin/mandate/{page}', 'MandateController@update')->name('collaborators.admin.mandate.update');
     Route::delete('/admin/mandate/{page}', 'MandateController@destroy')->name('collaborators.admin.mandate.destroy');
     Route::get('/admin/mandate/{page}/edit', 'MandateController@edit')->name('collaborators.admin.mandate.edit');
+    
+    //Route::resource('search-mandate','SearchMandateController');
+    Route::get('/admin/search-mandate', 'SearchMandateController@index')->name('collaborators.admin.search-mandate.index');
+    Route::post('/admin/search-mandate', 'SearchMandateController@store')->name('collaborators.admin.search-mandate.store');
+    Route::get('/admin/search-mandate/create', 'SearchMandateController@create')->name('collaborators.admin.search-mandate.create');
+    Route::get('/admin/search-mandate/{page}', 'SearchMandateController@show')->name('collaborators.admin.search-mandate.show');
+    Route::put('/admin/search-mandate/{page}', 'SearchMandateController@update')->name('collaborators.admin.search-mandate.update');
+    Route::delete('/admin/search-mandate/{page}', 'SearchMandateController@destroy')->name('collaborators.admin.search-mandate.destroy');
+    Route::get('/admin/search-mandate/{page}/edit', 'SearchMandateController@edit')->name('collaborators.admin.search-mandate.edit');
+    
     Route::post('/admin/ajaxRefreshAfa', 'ProductController@ajaxRefreshAfa')->name('collaborators.admin.ajaxRefreshAfa');
 });
 

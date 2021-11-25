@@ -40,8 +40,8 @@
 						{!!\Nvd\Crud\Html::sortableTh('state_id','admin.mandate.index','Etat')!!}
 						{!!\Nvd\Crud\Html::sortableTh('mandate_name','admin.mandate.index','Libellé')!!}
 						{!!\Nvd\Crud\Html::sortableTh('mandate_file','admin.mandate.index','Mandat')!!}
-						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.mandate.index','Created At')!!}
-						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.mandate.index','Updated At')!!}
+						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.mandate.index','Crée le')!!}
+						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.mandate.index','Modifiée le')!!}
 						<th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
@@ -63,7 +63,7 @@
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $record->state->content }}</td>
                                 <td>{{ $record->mandate_name }}</td>
-                                <td><a href="{{url($record->image->filepath)}}" target="_blank"><i class="fa fa-fw fa-file-pdf-o"></i></a></td>
+                                <td><a href="{{url($record->image->filepath)}}" target="_blank"><i class="fa fa-fw fa-file-pdf-o"></i> afficher le contenu du pdf</a></td>
                                 <td>{{$record->created_at ? $record->created_at->diffForHumans() : ""}}</td>
                                 <td>{{$record->updated_at ? $record->updated_at->diffForHumans() : ""}}</td>
                                 <td align="center" width="12%">

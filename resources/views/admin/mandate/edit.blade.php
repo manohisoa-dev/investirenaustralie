@@ -32,7 +32,7 @@
                 <h5>Mise à jour Mandate : {{$mandate->state_id}}</h5>
             </div>
             <div class="ibox-content">
-                <form action="{{ route('admin.mandate.index')}}/{{$mandate->id}}" method="post">
+                <form action="{{ route('admin.mandate.index')}}/{{$mandate->id}}" method="post" enctype="multipart/form-data">
 
                     {{ csrf_field() }}
 
