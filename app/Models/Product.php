@@ -636,5 +636,13 @@ class Product extends Model {
     public function getImageUrl($imageSizeName = "medium"){
         return $this->getAvatar($imageSizeName);
     }
+
+    public function isAuthorSeller(){
+        if($this->author_id == $this->seller_id){
+            return true;
+        }
+
+        return false;
+    }
 }
 
