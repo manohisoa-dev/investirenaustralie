@@ -229,7 +229,8 @@ class MessageController extends Controller
     public function getListContactMessage(Request $request){
         $user_id= Auth::user()->id;
 
-        $lists = Message::where("to_id", $user_id)
+        $lists = Message::where("to_id", $user_id) 
+        ->where('seen',0) 
         ->join('users', 'users.id','=','messages.from_id')
         ->select('messages.*', 'messages.created_at as dt' , 'users.name', 'users.immat', 'users.id as user_id', 'users.role')
         ->orderBy('created_at' , 'ASC')
@@ -246,7 +247,6 @@ class MessageController extends Controller
                 'user_role'=> trans('app.'.Role::where('id', $list->role)->first()->role_initial),
             ];
         }
-
         return response()->json($data);
     }
 

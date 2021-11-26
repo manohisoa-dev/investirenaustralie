@@ -18,7 +18,6 @@
 									<thead>
 										<tr>
 											<th>Nom cabinet</th>
-											<th>CP</th>
 											<th>Email</th>
 											<th>Tél</th>
 											<th></th>
@@ -28,7 +27,6 @@
 									@foreach($solicitors as $index =>$record)
 									<tr>
 										<td>{{$record->cabinet_name}}</td>
-										<td>{{$record->cabinet_cp}}</td>
 										<td>{{$record->cabinet_email}}</td>
 										<td>{{$record->cabinet_phone}}</td>
 										<td align="center">
@@ -86,9 +84,6 @@ function save_solicitor()
 				required: true,
 				email: true
 			},
-			cabinet_cp: {
-				required: true
-			},
 			cabinet_phone: {
 				required: true
 			}
@@ -100,9 +95,6 @@ function save_solicitor()
 			cabinet_email: {
 				required: "@lang('app.txt.champobligatoire')",
 				email: "Valide email"
-			},
-			cabinet_cp: {
-				required: "@lang('app.txt.champobligatoire')"
 			},
 			cabinet_phone: {
 				required: "@lang('app.txt.champobligatoire')"
@@ -236,15 +228,15 @@ function delete_solicitor(id)
 						<div class="row">
 							<div class="col-md-6">								
 								<div class="form-group">
-									<label class="control-label">CP *</label>
-									<input type="text" class="form-control" name="cabinet_cp" id="cabinet_cp">
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group">
 									<label class="control-label">Tél *</label>
 									<input type="text" class="form-control" name="cabinet_phone" id="cabinet_phone">
-								</div>
+								</div>								
+							</div>
+							<div class="col-md-6">
+								{{--<div class="form-group">
+									<label class="control-label">CP *</label>
+									<input type="text" class="form-control" name="cabinet_cp" id="cabinet_cp">
+								</div>--}}
 							</div>
 						</div>
 						
