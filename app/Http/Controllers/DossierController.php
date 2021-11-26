@@ -16,6 +16,8 @@ use App\Models\Order;
 use App\Models\Invoice;
 use App\Models\Reglage;
 use App\Models\Parameter;
+use App\Models\SearchMandate;
+use App\Models\State;
 use App\Notifications\AfaMandateSearchMessage;
 use App\Notifications\AfaMandateSearchFinalisedMessage;
 use App\Notifications\MemberMandateSearchFinalisedMessage;
@@ -124,9 +126,13 @@ class DossierController extends Controller
         Message::create(['type'=>'admin','from_id'=>1,'to_id'=>$user->id,'body'=>$content]);
 
         // send notification email to afa from IEA
-        $mdRecherche = MandatRecherche::whereId($mdRchId)->first();
+        $productState = strtolower($product->location->area_level_1);
+        $stateId = State::getIdByContent($productState);
+        $searchMandate = SearchMandate::where('state_id',$stateId)->first();
+        $searchMandateLink = isset($searchMandate)?$searchMandate->image->filepath:'';
+        $downloadMrLink= url($searchMandateLink);
         $uploadMrLink= route('member.transaction');
-        $downloadMrLink= url('/pdf/form6/form6_').strtolower($user->afa->location->area_level_1).'.pdf';
+
         $template = MailsTemplate::where('id', 28)->get();
         $lang = $user->language;
         App::setLocale($lang);
@@ -1461,30 +1467,41 @@ class DossierController extends Controller
     }
 
     public function createForm6Pdf($prod_id,$user) {
-        $pdf_template = 'pdf.form6';
-        $lia = Config::lia();
-        $lia_name = $lia->get_meta('lia_name')->value;
-        $lia_abn = $lia->get_meta('lia_abn')->value;
-        $lia_license = $lia->get_meta('lia_license')->value;
-        $lia_license_expire_date = $lia->get_meta('lia_license_expire_date')->value;
-        $lia_address = $lia->get_meta('lia_address')->value;
-        $lia_mobile = $lia->get_meta('lia_mobile')->value;
-        $lia_email = $lia->get_meta('lia_email')->value;
-        $lia_dir = $lia->get_meta('lia_dir')->value;
-        $lia_dir_license = $lia->get_meta('lia_dir_license')->value;
-        $lia_dir_license_expire_date = $lia->get_meta('lia_dir_license_expire_date')->value;
+        // $pdf_template = 'pdf.form6';
+        // $lia = Config::lia();
+        // $lia_name = $lia->get_meta('lia_name')->value;
+        // $lia_abn = $lia->get_meta('lia_abn')->value;
+        // $lia_license = $lia->get_meta('lia_license')->value;
+        // $lia_license_expire_date = $lia->get_meta('lia_license_expire_date')->value;
+        // $lia_address = $lia->get_meta('lia_address')->value;
+        // $lia_mobile = $lia->get_meta('lia_mobile')->value;
+        // $lia_email = $lia->get_meta('lia_email')->value;
+        // $lia_dir = $lia->get_meta('lia_dir')->value;
+        // $lia_dir_license = $lia->get_meta('lia_dir_license')->value;
+        // $lia_dir_license_expire_date = $lia->get_meta('lia_dir_license_expire_date')->value;
 
-        $iea = ['name'=>$lia_name, 'abn'=>$lia_abn, 'license'=>$lia_license, 'licence_expire_date'=>$lia_license_expire_date, 'address'=>$lia_address, 'mobile'=>$lia_mobile, 'email'=>$lia_email, 'director'=>$lia_dir, 'director_license'=>$lia_dir_license, 'directore_licence_expire_date'=>$lia_dir_license_expire_date];
+        // $iea = ['name'=>$lia_name, 'abn'=>$lia_abn, 'license'=>$lia_license, 'licence_expire_date'=>$lia_license_expire_date, 'address'=>$lia_address, 'mobile'=>$lia_mobile, 'email'=>$lia_email, 'director'=>$lia_dir, 'director_license'=>$lia_dir_license, 'directore_licence_expire_date'=>$lia_dir_license_expire_date];
+        
+        // $pdfName = 'Form6_'.$product->location->area_level_1.'_'.$user->immat."_".time().".pdf";
+        // $path = public_path('uploads/pdf/form6/'.$pdfName);
+
+        // // Save form6 pdf in path
+        // PDF::loadView($pdf_template,['user'=>$user, 'iea'=>$iea, 'product'=>$product])->save($path);
+
         $product = Product::whereId($prod_id)->first();
-
+        $productState = strtolower($product->location->area_level_1);
+        $stateId = State::getIdByContent($productState);
+        $searchMandate = SearchMandate::where('state_id',$stateId)->first();
+        $searchMandateLink = isset($searchMandate)?$searchMandate->image->filepath:'';
+        $fromPath = $searchMandateLink;
         $pdfName = 'Form6_'.$product->location->area_level_1.'_'.$user->immat."_".time().".pdf";
-        $path = public_path('uploads/pdf/form6/'.$pdfName);
+        $toPath = public_path('uploads/pdf/form6/'.$pdfName);
 
         // Save form6 pdf in path
-        PDF::loadView($pdf_template,['user'=>$user, 'iea'=>$iea, 'product'=>$product])->save($path);
+        \File::copy($fromPath, $toPath);
 
         // Save Research Mandate
-        return MandatRecherche::create(['file_name'=>$pdfName,'path'=>$path,'product_id'=>$prod_id,'from_id'=>1,'to_id'=>$user->id,'afa_id'=>$user->afa->id]);
+        return MandatRecherche::create(['file_name'=>$pdfName,'path'=>$toPath,'product_id'=>$prod_id,'from_id'=>1,'to_id'=>$user->id,'afa_id'=>$user->afa->id]);
     }
 
     // Cron

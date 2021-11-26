@@ -54,5 +54,11 @@ class State extends Model {
         return $this->hasMany(Mandate::class, 'state_id');
     }
 
+    public static function getIdByContent($content){
+        $id = State::where('content',$content)->first()->id;
+
+        return $id;
+    }
+
 }
 
