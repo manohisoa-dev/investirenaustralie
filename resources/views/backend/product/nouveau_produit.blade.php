@@ -368,7 +368,7 @@
 						<div class="row" id="bloc_lia_doc" style="display:none">
 							<div class="col-lg-12">
 								<h5>@lang('app.table.lia_dossier')</h5>
-								<div id="salesMandates"></div>
+								<div id="salesMandates"><input type="hidden" name="sales_mandate" value="" /></div>
 							</div>
 						</div>
 						<!-- commission product -->

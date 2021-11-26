@@ -868,7 +868,7 @@
 									<div class="form-group">
 										<label for="title">@lang('app.form.product_qte')</label>
 										<input name="quantity" id="quantity" class="form-control" type="number" min="0" value="1" min="1">
-										<input type="hidden" name="status" value="waiting" />
+										<input type="hidden" name="status" value="published" />
 									</div>
 								</div>
 							</div>

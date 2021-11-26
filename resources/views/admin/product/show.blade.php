@@ -265,9 +265,11 @@
 									@php
 										$solicitor = App\Models\Solicitor::where('id',$product->solicitor_id)->get();
 									@endphp
+									@if(count($solicitor) > 0)
 									{{$solicitor? $solicitor[0]->cabinet_name : ''}}<br />
 									{{$solicitor? $solicitor[0]->cabinet_email : ''}}<br />
 									{{$solicitor? $solicitor[0]->cabinet_phone : ''}}
+									@endif
 								@endif
 								</dd>
 							</div>

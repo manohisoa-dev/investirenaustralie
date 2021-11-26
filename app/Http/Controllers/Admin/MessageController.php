@@ -52,9 +52,12 @@ class MessageController extends Controller {
     }
 
     public function getUnreadMessage(Request $request) {
-        $unreadMessage = Message::unreadMessageMember(1);
-
-        return response()->json(['res' => $unreadMessage]);
+        //$unreadMessage = Message::unreadMessageMember(1);
+        $lists = Message::where("to_id", 1)->join('users', 'users.id', '=',
+            'messages.from_id')->select('messages.*', 'messages.created_at as dt',
+            'users.name', 'users.immat', 'users.id as user_id', 'users.role')->orderBy('created_at',
+            'DESC')->groupBy('from_id')->get();
+        return response()->json(['res' => $lists]);
     }
 
 
@@ -113,7 +116,7 @@ class MessageController extends Controller {
 
         $data = [];
         foreach ($lists as $key => $list) {
-            $data[$key] = ['name' => $list->name, 'immat' => $list->immat, 'dateSend' => $list->created_at->diffForHumans(),
+            $data[$key] = ['name' => $list->name, 'immat' => $list->immat,'msg_id'=>$list->id, 'dateSend' => $list->created_at->diffForHumans(),
                 'user_id' => $list->user_id, 'user_role' => trans('app.' . Role::where('id', $list->role)->first
                 ()->role_initial), ];
         }

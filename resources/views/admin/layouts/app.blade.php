@@ -675,7 +675,7 @@
     });
 
     
-    function userChatBull(user_id,user_immat){
+    function userChatBull(user_id,user_immat,msg_id){
         var bull = '<a id="osc_'+user_id+'" class="open-small-chat" onclick=chatBull("'+user_id+'","'+user_immat+'") href="javascript:void(0)" style="margin-bottom:1px;" title="'+user_immat+'"><i class="fa fa-user"></i></a>';
 
         // Hide chat main content
@@ -743,6 +743,7 @@
             type: "GET",
             dataType: "json",
             success:function(data){
+				//console.log(data);
                 listShowContact = "";
                 listContactArray = new Array();
                 // set total message
@@ -754,7 +755,7 @@
 
                         listShowContact +=  '<li>'+
                             '<div class="dropdown-messages-box">'+
-                                '<a class="dropdown-item float-left" onclick="userChatBull('+data[i].user_id+','+user_immat+')" href="javascript:void(0)" value="'+data[i].user_id+'">'+
+                                '<a class="dropdown-item float-left" onclick="userChatBull('+data[i].user_id+','+user_immat+','+data[i].msg_id+')" href="javascript:void(0)" value="'+data[i].user_id+'">'+
                                     '<img alt="image" class="rounded-circle" src="{{asset("images/iea.png")}}">'+
                                 '</a>'+
                                 '<div class="media-body">'+

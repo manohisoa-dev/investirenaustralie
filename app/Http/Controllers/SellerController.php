@@ -71,7 +71,7 @@ class SellerController extends Controller {
     public function ajaxSaveProduct(Request $request) {
         $solicitor = new Solicitor();
         $solicitor->cabinet_name = $request->cabinet_name;
-        $solicitor->cabinet_cp = $request->cabinet_cp;
+        //$solicitor->cabinet_cp = $request->cabinet_cp;
         $solicitor->cabinet_email = $request->cabinet_email;
         $solicitor->cabinet_phone = $request->cabinet_phone;
         $solicitor->vendeur_id = Auth::user()->id;
@@ -81,7 +81,7 @@ class SellerController extends Controller {
 
     public function ajaxModifSolicitor(Request $request) {
         Solicitor::where('id', $request->id)->update(['cabinet_name' => $request->cabinet_name,
-            'cabinet_cp' => $request->cabinet_cp, 'cabinet_email' => $request->cabinet_email,
+            'cabinet_email' => $request->cabinet_email,
             'cabinet_phone' => $request->cabinet_phone]);
         return response()->json(['success' => 'true']);
     }
