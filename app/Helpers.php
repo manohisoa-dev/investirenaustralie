@@ -695,7 +695,7 @@ if (!function_exists('nouvelle_afa_disponible')) {
                 $afa_possible = DB::select("select `S`.id as id_afa,  ( FLOOR(6371 * ACOS( COS( RADIANS( '$localisation_product[0]->latitude' ) ) * COS( RADIANS( localizations.latitude ) ) * COS( 
 RADIANS( localizations.longitude ) - RADIANS( '$localisation_product[0]->longitude' ) ) + SIN( RADIANS( '$localisation_product[0]->latitude' ) ) * SIN( RADIANS( 
 localizations.latitude ) ) )) ) distance from `users` as `S` left join `localizations` on `S`.`location_id` = 
-`localizations`.`id` where `S`.`role` = 3 having distance < 155");
+`localizations`.`id` where `S`.`role` = 3 and localizations.area_level_1 = '$localisation_product[0]->area_level_1' having distance < 155");
                 if (count($afa_possible) > 0) {
                     $tab_afa = array();
                     foreach ($afa_possible as $val) {

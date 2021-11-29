@@ -53,7 +53,7 @@ class MessageController extends Controller {
 
     public function getUnreadMessage(Request $request) {
         //$unreadMessage = Message::unreadMessageMember(1);
-        $lists = Message::where("to_id", 1)->join('users', 'users.id', '=',
+        $lists = Message::where("to_id", 1)->where('seen',0)->join('users', 'users.id', '=',
             'messages.from_id')->select('messages.*', 'messages.created_at as dt',
             'users.name', 'users.immat', 'users.id as user_id', 'users.role')->orderBy('created_at',
             'DESC')->groupBy('from_id')->get();
@@ -109,7 +109,7 @@ class MessageController extends Controller {
     public function getListContactMessage(Request $request) {
         $user_id = Auth::user()->id;
 
-        $lists = Message::where("to_id", $user_id)->join('users', 'users.id', '=',
+        $lists = Message::where("to_id", $user_id)->where('seen',0)->join('users', 'users.id', '=',
             'messages.from_id')->select('messages.*', 'messages.created_at as dt',
             'users.name', 'users.immat', 'users.id as user_id', 'users.role')->orderBy('created_at',
             'DESC')->groupBy('from_id')->get();
@@ -127,10 +127,17 @@ class MessageController extends Controller {
     public function getUnreadCountMessageContact(Request $request) {
         $user_id = Auth::user()->id;
 
-        $unreadCount = Message::where("to_id", $user_id)->selectRaw('messages.from_id, COUNT(messages.id) as count')->whereRaw('seen = 0')->orderBy('created_at',
-            'ASC')->groupBy('from_id')->get();
+        $unreadCount = Message::where("to_id", $user_id)
+        ->selectRaw('messages.from_id, COUNT(messages.id) as count')
+        ->whereRaw('seen = 0')->orderBy('created_at','ASC')->groupBy('from_id')->get();
 
 
         return response()->json($unreadCount);
+    }
+    
+    public function readMessage(Request $request)
+    {
+        Message::where('id', $request->msg_id)->update(['seen' => 1]);
+        return response()->json(['success' => 'true']);
     }
 }
