@@ -997,7 +997,6 @@ you can use the generic selector below, but it's slower:
 }
 .fancy_service {
     border-radius: 5px;
-    border: 1px solid #f4f8ff;
     box-shadow: 4.871px 34.659px 30px 0px rgba(0, 0, 0, 0.06);
     margin-bottom: 60px;
     padding: 0;
@@ -1033,7 +1032,7 @@ you can use the generic selector below, but it's slower:
     position: relative;
     overflow: hidden;
     z-index: 1;
-    background: #ffffff;
+    background: #ffffffde;
 }
 .fancy_service .fancy-info {
     float: left;
@@ -1045,7 +1044,6 @@ you can use the generic selector below, but it's slower:
     color: #666666;
     margin-bottom: 30px;
     position: relative;
-    display: inline-block;
 }
 .mt-4, .my-4 {
     margin-top: 1.5rem !important;
@@ -1086,11 +1084,9 @@ you can use the generic selector below, but it's slower:
 .row.row-cta {
     border-radius: 20px;
 }
-.col-lg-6.right-cta {
-    background: linear-gradient(-138deg,#c65d4e 0,#ae4435 50%,#873125 100%);
-    padding: 4% 15% 4% 5%;
-    left: 80px;
-    top: -40px;
+.col-lg-12.right-cta {
+    background: linear-gradient(-138deg,#000000c4 0,#000c 50%,#000000c9 100%);
+    padding: 5% 5% 5% 5%;
     border-radius: 20px;
 }
 .laptop-iea{
@@ -1402,3 +1398,11 @@ color pallet Style-2
     font-size:24px;
   }
 }
+
+
+/*PARALLAX VIDEO BG*/
+.demo-table-cell {
+    padding-bottom: 100px;
+    padding-top: 50px;
+}
+/*END CSS PARALLAX VIDEO*/
