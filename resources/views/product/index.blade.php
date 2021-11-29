@@ -442,6 +442,28 @@
                   <div class="m-35px-tb">
                     <a href="{{ url()->previous() }}" class="m-btn m-btn-theme"><i class="fa fa-arrow-left"></i> @lang('app.btn.return')</a>
                   </div>
+
+                  {{-- show declaration --}}
+                  <div class="m-35px-t" style="color:#323232;">
+                      @php
+                          if($item->isAuthorSeller()){
+                              if($item->author->isSnp() || $item->author->isSbaIndividual()){
+                                  $advStat = trans('app.txt.advertisers_statement_pers_owner_prod');
+                              }else{
+                                  $advStat = trans('app.txt.advertisers_statement_org_owner_prod');
+                              }
+                          }else{
+                              if($item->author->isSnp() || $item->author->isSbaIndividual()){
+                                  $advStat = trans('app.txt.advertisers_statement_pers_advertiser_prod');
+                              }else{
+                                  $advStat = trans('app.txt.advertisers_statement_org_advertiser_prod');
+                              }
+                          }
+                      @endphp
+
+                      <small><em>{!!$advStat!!}</em></small>
+                  </div>
+                  {{-- end show declaration --}}
                 </div>
 
                 <!-- Sidebar -->

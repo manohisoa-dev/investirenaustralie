@@ -308,7 +308,7 @@
 					<div class="row">						
 						<div class="col-lg-12">
 							<label for="title">@lang('app.table.lia_dossier')</label>
-							<div id="salesMandates"></div>
+							<div id="salesMandates"><input type="hidden" name="sales_mandate" value="" /></div>
 						</div>
 					</div>
 					

@@ -450,7 +450,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 m-10px-tb">
+                            <div class="col-md-8 m-10px-tb">
                                 <div class="media">
                                     <div class="only-icon-20">
                                         <i class="fas fa-road"></i>
@@ -798,7 +798,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 m-10px-tb">
+                            <div class="col-md-8 m-10px-tb">
                                 <div class="media">
                                     <div class="only-icon-20">
                                         <i class="fas fa-road"></i>
@@ -1216,7 +1216,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4 m-10px-tb">
+                                <div class="col-md-8 m-10px-tb">
                                     <div class="media">
                                         <div class="only-icon-20">
                                             <i class="fas fa-road"></i>
@@ -2310,7 +2310,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 m-10px-tb">
+                        <div class="col-md-8 m-10px-tb">
                             <div class="media">
                                 <div class="only-icon-20">
                                     <i class="fas fa-road"></i>

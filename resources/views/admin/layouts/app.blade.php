@@ -675,9 +675,9 @@
     });
 
     
-    function userChatBull(user_id,user_immat){
+    function userChatBull(user_id,user_immat,msg_id){
         var bull = '<a id="osc_'+user_id+'" class="open-small-chat" onclick=chatBull("'+user_id+'","'+user_immat+'") href="javascript:void(0)" style="margin-bottom:1px;" title="'+user_immat+'"><i class="fa fa-user"></i></a>';
-
+		
         // Hide chat main content
         $('#small-chat-box-main').removeClass('active');
         
@@ -695,6 +695,8 @@
         
         // Set chat content user
         $('#small-chat-box-heading span').html(user_immat);
+		// mettre lu le message
+		makeReadMessage(msg_id);
         showMessageContact(user_id);
         $('#to_id').val(user_id);
     };
@@ -734,6 +736,18 @@
         showMessageContact(id);
         $('#to_id').val(id);
     }
+	
+	function makeReadMessage(msg_id)
+	{
+		$.ajax({
+		   type:'POST',
+		   url:'{{ Auth::user()->isAdmin()?route("admin.ajax.read.message"):route("admin.collaborators.admin.ajax.read.message") }}',
+		   data: {"_token": "{{ csrf_token() }}","msg_id": msg_id},
+		   success:function(data) {
+			  
+		   }
+		});
+	}
 
     function showContact(){
         var showContact = $('#small-chat-box-main-content ul');
@@ -743,6 +757,7 @@
             type: "GET",
             dataType: "json",
             success:function(data){
+				//console.log(data);
                 listShowContact = "";
                 listContactArray = new Array();
                 // set total message
@@ -754,7 +769,7 @@
 
                         listShowContact +=  '<li>'+
                             '<div class="dropdown-messages-box">'+
-                                '<a class="dropdown-item float-left" onclick="userChatBull('+data[i].user_id+','+user_immat+')" href="javascript:void(0)" value="'+data[i].user_id+'">'+
+                                '<a class="dropdown-item float-left" onclick="userChatBull('+data[i].user_id+','+user_immat+','+data[i].msg_id+')" href="javascript:void(0)" value="'+data[i].user_id+'">'+
                                     '<img alt="image" class="rounded-circle" src="{{asset("images/iea.png")}}">'+
                                 '</a>'+
                                 '<div class="media-body">'+
@@ -790,7 +805,7 @@
                 data : datas,
                 dataType: "json",
                 success : function(dt){
-                    
+                    console.log(dt);
                     if(dt.length !== 0)
                     {
                         for(var i=0; i<dt.length; i++){

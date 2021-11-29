@@ -1571,6 +1571,14 @@
 	<script>
 	Dropzone.autoDiscover = false;
 	$(document).ready(function(){
+		if($('#garage_spaces').val() != 0 || $('#carport_spaces').val() != 0){
+			$('#chk_parking').prop('checked', false);
+			$("#chk_parking").attr('disabled','disabled');
+		}else{
+			console.log('normal');
+			$("#chk_parking").removeAttr('disabled');
+		}
+		
 		CKEDITOR.replace( 'desc_product' );
 		set_type_programme($('#cat_programmme_id').val(),{{$product->type_id}});		
 		$(".fancyboxLink").fancybox();
@@ -2163,5 +2171,15 @@
 			}
 		});
 	}
+	
+	$('#garage_spaces, #carport_spaces').bind('keyup mouseup', function (){
+		if($('#garage_spaces').val() != 0 || $('#carport_spaces').val() != 0){
+			$('#chk_parking').prop('checked', false);
+			$("#chk_parking").attr('disabled','disabled');
+		}else{
+			console.log('normal');
+			$("#chk_parking").removeAttr('disabled');
+		}
+	});	
 	</script>
 @endpush

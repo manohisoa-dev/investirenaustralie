@@ -164,6 +164,7 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::get('message/show/{to_id}', 'MessageController@showContactMessage')->name('ajax.show.contact.message');
     Route::post('message', 'MessageController@sendMessage')->name('ajax.send.message');
     Route::get('message/unread', 'MessageController@getUnreadMessage')->name('ajax.get.unread.message');
+    Route::post('message/read', 'MessageController@readMessage')->name('ajax.read.message');
     
     //Route modele message
     Route::resource('model-message','ModelMessageController');
@@ -538,6 +539,7 @@ Route::prefix('collaborators')->namespace('Admin')->as('admin.')->middleware(["a
     Route::get('/admin/message/show/{to_id}', 'MessageController@showContactMessage')->name('collaborators.admin.ajax.show.contact.message');
     Route::post('/admin/message', 'MessageController@sendMessage')->name('collaborators.admin.ajax.send.message');
     Route::get('/admin/message/unread', 'MessageController@getUnreadMessage')->name('collaborators.admin.ajax.get.unread.message');
+    Route::post('/admin/message/read', 'MessageController@readMessage')->name('collaborators.admin.ajax.read.message');
     
     //Route::resource('mandate','MandateController');
     Route::get('/admin/mandate', 'MandateController@index')->name('collaborators.admin.mandate.index');

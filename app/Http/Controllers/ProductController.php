@@ -61,7 +61,8 @@ class ProductController extends Controller {
 
                 $products = Product::orderBy('created_at', 'desc')->ofStatus('published')->isProduct()->take($this->recentSize)->get();
 
-                $categories = Category::orderBy('created_at', 'desc')->has('products')->withCount('products')->take($this->recentSize)->get(['id','title']);
+                $categories = Category::orderBy('created_at', 'desc')->has('products')->withCount('products')->take($this->recentSize)->get(['id',
+                    'title']);
 
                 $page = Page::where('path', '=', '/products*')->first();
 
@@ -81,7 +82,8 @@ class ProductController extends Controller {
 
                 $product->load('images');
 
-                $types = Type::orderBy('title', 'asc')->where('object_type', 'type')->get(['id','title']);
+                $types = Type::orderBy('title', 'asc')->where('object_type', 'type')->get(['id',
+                    'title']);
 
                 $locationTypes = Type::orderBy('title', 'asc')->where('object_type', 'location')->get();
 
@@ -723,7 +725,7 @@ class ProductController extends Controller {
                 $afa_possible = DB::select("select `S`.id as id_afa,  ( FLOOR(6371 * ACOS( COS( RADIANS( '$request->lat' ) ) * COS( RADIANS( localizations.latitude ) ) * COS( 
 RADIANS( localizations.longitude ) - RADIANS( '$request->long' ) ) + SIN( RADIANS( '$request->lat' ) ) * SIN( RADIANS( 
 localizations.latitude ) ) )) ) distance from `users` as `S` left join `localizations` on `S`.`location_id` = 
-`localizations`.`id` where `S`.`role` = 3 having distance < 155");
+`localizations`.`id` where `S`.`role` = 3 and localizations.area_level_1 = '$request->state_id' having distance < 155");
                 if (count($afa_possible) > 0) {
                     $tab_afa = array();
                     foreach ($afa_possible as $val) {
@@ -867,6 +869,14 @@ localizations.latitude ) ) )) ) distance from `users` as `S` left join `localiza
             $item->body = $contenu;
             $item->to_id = 1;
             $item->save();
+
+            $user_admin = User::where('role', '=', 1)->first();
+            if (count($user_admin) > 0) {
+                $sujet = "Nouveau Programme/Produit";
+                $content = ['title' => '', 'body' => $contenu];
+                $email_to = $user_admin->email;
+                Mail::to($email_to)->send(new MailTemplate($content, $sujet));
+            }
         }
     }
 
@@ -1099,9 +1109,9 @@ localizations.latitude ) ) )) ) distance from `users` as `S` left join `localiza
 
         $product = Product::find($request->id);
         $state = State::where('content', $request->state_id)->first();
-        if ($state === null) {
-            return back()->withInput()->withErrors(['msg' => "State not found"]);
-        }
+        /*if ($state === null) {
+        return back()->withInput()->withErrors(['msg' => "State not found"]);
+        }*/
         if ($request->location_Id != 0) {
             $longitude = $request->long;
             $latitude = $request->lat;
@@ -1496,7 +1506,7 @@ localizations.latitude ) ) )) ) distance from `users` as `S` left join `localiza
             $afa_possible = DB::select("select `S`.id as id_afa,  ( FLOOR(6371 * ACOS( COS( RADIANS( '$request->lat' ) ) * COS( RADIANS( localizations.latitude ) ) * COS( 
 RADIANS( localizations.longitude ) - RADIANS( '$request->long' ) ) + SIN( RADIANS( '$request->lat' ) ) * SIN( RADIANS( 
 localizations.latitude ) ) )) ) distance from `users` as `S` left join `localizations` on `S`.`location_id` = 
-`localizations`.`id` where `S`.`role` = 3 having distance < 155");
+`localizations`.`id` where `S`.`role` = 3 and localizations.area_level_1 = '$request->state_id_product' having distance < 155");
             if (count($afa_possible) > 0) {
                 $tab_afa = array();
                 foreach ($afa_possible as $val) {
@@ -1560,7 +1570,9 @@ localizations.latitude ) ) )) ) distance from `users` as `S` left join `localiza
                 if ($nature == 'Programme immobilier') {
                     //creation location
                     $id_location = $this->save_location($request->countryId, $request->state_id_product,
-                        $request->suburb, $request->postalCode, $request->ville, $request->display_address);
+                        $request->suburb, $request->postalCode, $request->ville, $request->display_address,
+                        $request->long, $request->lat);
+
                     if ($request->commision == 'Sales commission rate (%)') {
                         $taux_commision = $request->sales_rate;
                     } else {
