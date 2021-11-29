@@ -299,9 +299,28 @@
                         <a href="{{ url()->previous() }}" class="m-btn m-btn-theme"><i class="fa fa-arrow-left"></i> @lang('app.btn.return')</a>
                     </div>
 
+                    {{-- show declaration --}}
                     <div class="m-35px-t" style="color:#323232;">
-                        <small><em>@lang('app.txt.advertisers_statement')</em></small>
+                        @php
+                            if($item->isAuthorSeller()){
+                                if($item->author->isSnp() || $item->author->isSbaIndividual()){
+                                    $advStat = trans('app.txt.advertisers_statement_pers_owner_prog');
+                                }else{
+                                    $advStat = trans('app.txt.advertisers_statement_org_owner_prog');
+                                }
+                            }else{
+                                if($item->author->isSnp() || $item->author->isSbaIndividual()){
+                                    $advStat = trans('app.txt.advertisers_statement_pers_advertiser_prog');
+                                }else{
+                                    $advStat = trans('app.txt.advertisers_statement_org_advertiser_prog');
+                                }
+                            }
+                        @endphp
+
+                        <small><em>{!!$advStat!!}</em></small>
                     </div>
+                    {{-- end show declaration --}}
+                    
                 </div>
 
                 <!-- Sidebar -->

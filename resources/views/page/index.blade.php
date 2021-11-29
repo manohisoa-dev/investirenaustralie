@@ -143,7 +143,7 @@
                                     preg_match('/<div class="home-step">(.*?)<\/div>/s', $htmlContent, $match);
                                     if(count($match) > 0){
                                         preg_match_all( '|<h[^>]+>(.*)</h[^>]+>|iU', $match[1], $titles );
-                                        preg_match_all( '|<p>(.*)</p>|iU', $match[1], $contents );
+                                        preg_match_all( '/<p[^>]*?>(.*?)<\/p>/s', $match[1], $contents );
                                     }
                                     $getTitle = isset($titles) && count($titles) ? $titles[1] : [];
                                     $getContent = isset($contents) && count($contents) ? $contents[1] : [];
@@ -221,15 +221,26 @@
                     </div>
                 </section>
             @elseif($child->page_order == 5)
+                @php
+                    $htmlContent = $child->content;
+                    preg_match_all('/<p[^>]*?>(.*?)<\/p>/s', $htmlContent, $match);
+                        
+                    if(count($match) > 0){
+                        $p0 = strip_tags($match[0][0]);
+                        $p1 = strip_tags($match[0][1]);
+                        $p2 = strip_tags($match[0][2]);
+                    }
+                @endphp
+
                 <section class="section">
                     <div class="container">
                         <div class="row md-m-25px-b m-45px-b">
                             <div class="col-lg-4 m-15px-tb aos-init aos-animate" data-aos="fade-right">
                                 <div class="p-45px-tb p-35px-lr">
                                     <h3 class="h1 m-20px-b p-20px-b">@lang('app.txt.missionvision')</h3>
-                                    <p class="m-0px txt-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                    <p class="txt-body" style="padding-top: 10px;padding-left: 10px;"><i class="fa fa-check-circle"></i> Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
-                                    <p class="txt-body" style="padding-left: 10px;"><i class="fa fa-check-circle" style="color: #ae4435;"></i> Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                    <p class="m-0px txt-body">{{ str_replace('&nbsp;',' ',$p0) }}</p>
+                                    <p class="txt-body" style="padding-top: 10px;padding-left: 10px;"><i class="fa fa-check-circle"></i> {{ str_replace('&nbsp;',' ',$p1) }}</p>
+                                    <p class="txt-body" style="padding-left: 10px;"><i class="fa fa-check-circle" style="color: #ae4435;"></i> {{ str_replace('&nbsp;',' ',$p2) }}</p>
                                 </div>
                             </div>
                             <div class="col-lg-4 p-35px-lr contente aos-init aos-animate" data-aos="fade-up">
