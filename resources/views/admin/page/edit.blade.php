@@ -71,9 +71,12 @@
 					</div>
 					<div class="form-group">
                         <label for="parent_id">@lang('app.admin.parent')</label>
+						{{-- {{ dd(\App\Models\Page::getListParent()) }} --}}
                         <select name="parent_id" id="parent_id" class="form-control">
-                            @foreach(\App\Models\Page::all() as $item)
-								<option value="{{$item->id}}" {{$page->parent_id == $item->id ? 'selected' : ''}}>{{$item->title}}</option>
+                            @foreach(\App\Models\Page::getListParent() as $item)
+								{{-- @if ($item->language=='fr' && $item->path!='/register/member' && $item->path!='/register/seller' && $item->path!='/register/afa' && $item->path!='/register/apl' && $item->path!='/login' && $item->parent_id==0 && $item->is_pub==0) --}}
+									<option value="{{$item->id}}" {{$page->parent_id == $item->id ? 'selected' : ''}}>{{$item->title}}</option>
+								{{-- @endif --}}
 							@endforeach
                         </select>
                     </div>

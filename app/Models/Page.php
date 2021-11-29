@@ -149,5 +149,25 @@ class Page extends Model {
         return $this->belongsToMany(Image::class, 'page_images');
     }
 
+    public static function getListParent(){
+        $page = Page::where('language','fr')
+        ->where('parent_id',0)
+        ->where('is_pub',0)
+        ->where('path','!=','/register/member')
+        ->where('path','!=','/register/apl')
+        ->where('path','!=','/login')
+        ->where('path','!=','/register/afa')
+        ->where('path','!=','/register/seller')
+        ->get();
+
+        if(sizeof($page)>0){
+            $res=$page;
+        }else{
+            $res='';
+        }
+
+        return $res;
+    }
+
 }
 
