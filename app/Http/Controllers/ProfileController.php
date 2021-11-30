@@ -436,9 +436,9 @@ class ProfileController extends Controller {
             'orga_presentation' => 'nullable|max:2000', 'building_name' => 'nullable',
             // 'route'        => 'required',
             // 'route_number'        => 'required',
-        'locality' => 'required|max:100', 'postalCode' => 'required|max:100',
+            'member_org_postalCode' => 'required|max:100',
             'num_rooms' => 'nullable', 'num_floor' => 'nullable', 'area_level_1' =>
-            'nullable|max:100', 'country' => 'required|max:100', 'contact_name' =>
+            'nullable|max:100', 'member_org_country' => 'required|max:100', 'member_org_routenum' => 'required', 'contact_name' =>
             'required|max:100', 'contact_phone' => 'required|max:100', 'contact_email' =>
             'required|email|max:100', ];
 
@@ -469,15 +469,16 @@ class ProfileController extends Controller {
                 User::whereId($user->id)->update($users);
 
                 //Créer localisation
-                $locations = ['country' => $datas['country'], 'area_level_1' => $datas['area_level_1'],
-                    'postalCode' => $datas['postalCode'], 'num_rooms' => $datas['num_rooms'],
-                    'num_floor' => $datas['num_floor'], 'building_name' => isset($datas['building_name']) ?
+                $locations = ['country' => $datas['member_org_country'], 'area_level_1' => $datas['member_org_area_level_1'], 
+                    'area_level_2' => $datas['member_org_area_level_2'],'postalCode' => $datas['member_org_postalCode'],
+                    'route' => $datas['member_org_route'], 'route_number' => $datas['member_org_route_number'],
+                    'num_rooms' => $datas['num_rooms'], 'num_floor' => $datas['num_floor'], 'building_name' => isset($datas['building_name']) ?
                     $datas['building_name'] : '', 'adrpost_postal_box' => isset($datas['adrpost_postal_box']) ?
                     $datas['adrpost_postal_box'] : '', 'adrpost_locality' => isset($datas['adrpost_locality']) ?
                     $datas['adrpost_locality'] : '', 'adrpost_area_level_2' => isset($datas['adrpost_area_level_2']) ?
                     $datas['adrpost_area_level_2'] : '', 'adrpost_postalCode' => isset($datas['adrpost_postalCode']) ?
                     $datas['adrpost_postalCode'] : '', 'adrpost_country' => isset($datas['adrpost_country']) ?
-                    $datas['adrpost_country'] : '', ];
+                    $datas['adrpost_country'] : '', 'longitude'=>$datas['member_org_long'], 'latitude'=>$datas['member_org_lat'] ];
                 Localisation::whereId($user->location_id)->update($locations);
 
                 // update userinfo
