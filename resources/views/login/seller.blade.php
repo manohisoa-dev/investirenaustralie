@@ -902,7 +902,7 @@
             },
             postalCode: {
                 required: true,
-                number:true
+                number:false
             },
             area_level_1: {
                 required: true,
@@ -929,7 +929,7 @@
                 }
             },
             adrpost_postalCode: {
-                number:true,
+                number:false,
                 required: {
                     depends: function(element) {
                         if($("#mailAddress").is(":visible")){
@@ -1191,7 +1191,7 @@
             },
             post_code: {
                 required: true,
-                number:true
+                number:false
             },
             country: {
                 required: true,
@@ -1239,7 +1239,7 @@
             // },
             post_code_2: {
                 // required: true,
-                number:true
+                number:false
             },
             // country_2: {
             //     required: true,

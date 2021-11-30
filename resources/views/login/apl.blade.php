@@ -556,7 +556,7 @@
             },
             postalCode: {
                 required: true,
-                number:true
+                number:false
             },
             country: {
                 required: true,
@@ -616,7 +616,7 @@
             },
             bank_postalCode: {
                 required: true,
-                number:true,
+                number:false,
             },
             bank_country: {
                 required: true,

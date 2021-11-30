@@ -494,7 +494,7 @@
 
                 postalCode: {
 					required: true,
-                    number:true
+                    number:false
 				},
 
                 adrphy_country: {
@@ -522,7 +522,7 @@
                 },
 
                 adrpost_postalCode: {
-                    number:true,
+                    number:false,
                     required: {
                         depends: function(element) {
                             if($("#mailAddress").is(":visible")){
