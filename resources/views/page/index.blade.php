@@ -87,7 +87,7 @@
 
                             <div class="col-lg-6 m-15px-tb">
                                 <h2 class="h1 m-25px-b title-iea h1 m-25px-b" style="font-size: 2.1rem !important;">{{$child->title}}</h2>
-                                <div class="text-justify txt-body">
+                                <div class="text-justify">
                                     <p class="m-5px-b">{!!$child->content!!}</p>
                                 </div>
                                 @if(Auth::check()&&Auth::user()->isAdmin())
