@@ -1160,7 +1160,7 @@ class ProductController extends Controller {
         $afa_possible = DB::select("select `S`.id as id_afa,  ( FLOOR(6371 * ACOS( COS( RADIANS( '$localisation->latitude' ) ) * COS( RADIANS( localizations.latitude ) ) * COS( 
 RADIANS( localizations.longitude ) - RADIANS( '$localisation->longitude' ) ) + SIN( RADIANS( '$localisation->latitude' ) ) * SIN( RADIANS( 
 localizations.latitude ) ) )) ) distance from `users` as `S` left join `localizations` on `S`.`location_id` = 
-`localizations`.`id` where `S`.`role` = 3 having distance < 155");
+`localizations`.`id` where `S`.`role` = 3 and localizations.area_level_1 = '$localisation->area_level_1' having distance < 155");
         if (count($afa_possible) > 0) {
             $tab_afa = array();
             foreach ($afa_possible as $val) {

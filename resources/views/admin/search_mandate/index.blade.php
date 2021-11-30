@@ -18,7 +18,7 @@
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="title-action">
             <a href="{{ route('admin.search-mandate.create') }}" type="button" class="btn btn-primary btn-block">
-                <i class="fa fa-plus"></i> Ajouter un nouveau Search Mandate            
+                <i class="fa fa-plus"></i> Ajouter un nouveau mandat de recherche
 			</a>
         </div>
     </div>
@@ -31,7 +31,7 @@
 	<div class="col-lg-12">
 		<div class="ibox float-e-margins">
 			<div class="ibox-title">
-				<h5>Search Mandate</h5>
+				<h5>Mandat de Recherche</h5>
 			</div>
 			<div class="ibox-content">
                 <table class="table table-striped grid-view-tbl">
