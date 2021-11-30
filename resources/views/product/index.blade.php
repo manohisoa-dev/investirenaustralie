@@ -412,7 +412,7 @@
                       </div>
                       <ul class="comment-list">
                           <li class="comment">
-                            <p>{!! $item->content !!}</p>
+                            <p>{!! getGTranslateAutoDetect( App::getLocale() ,$item->content) !!}</p>
                           </li>
                       </ul>
                   </div>
