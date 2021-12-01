@@ -67,7 +67,7 @@
                     </div>
                 </div>
                 <div class="p-15px-l">
-                    <p class="m-0px">{{getGTranslateAutoDetect( App::getLocale() ,$product->title)}}</p>
+                    <p class="m-0px">{{$product->title}}</p>
 					@if($product->parent_id == -1)
                     	<span class="btn btn-price">AUD {{number_format($product->price, 0, '.', ' ')}}</span>
 					@else

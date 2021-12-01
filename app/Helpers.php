@@ -673,9 +673,12 @@ if (!function_exists('countryLongName')) {
 if (!function_exists('getImageResize')) {
     function getImageResizeUrl($model, $filename, $format) {
         if ($model != "" && $filename != "") {
-            $format = $format != "" ? $format : "medium";
-            return 'uploads/' . $model . '/' . $model . '-resize/' . $format . '/' . $filename .
-                '';
+            if($format != "" && $format == 'original'){
+                return 'uploads/' . $model . '/' . $filename . '';
+            }else{
+                $format = $format != "" ? $format : "medium";
+                return 'uploads/' . $model . '/' . $model . '-resize/' . $format . '/' . $filename . '';
+            }
         } else {
             return "";
         }

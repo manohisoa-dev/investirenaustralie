@@ -278,7 +278,7 @@ class ProfileController extends Controller {
             'civility' => 'required|max:3', 'last_name' => 'required|max:100', 'first_name' =>
             'required|max:100', 'nationality' => 'required|max:100', 'route' => 'required',
             'route_number' => 'required', 'area_level_2' => 'required|max:100', 'postalCode' =>
-            'required|integer', 'adrphy_country' => 'required', 'orga_phone' =>
+            'required', 'adrphy_country' => 'required', 'orga_phone' =>
             'nullable|digits_between:6,15|numeric', 'orga_mobile_phone' =>
             'required|digits_between:6,15|numeric', 'orga_email' => 'required|email|max:100',
             'orga_fb' => 'nullable|url', 'politic' => 'required', 'g-recaptcha-response' =>
@@ -286,7 +286,7 @@ class ProfileController extends Controller {
 
         if ($request->postal_address_below || $request->adrpost_postal_box) {
             $rules += ['adrpost_postal_box' => 'required|max:100', 'adrpost_area_level_2' =>
-                'nullable|max:100', 'adrpost_postalCode' => 'required|max:100',
+                'nullable|max:100', 'adrpost_postalCode' => 'required',
                 'adrpost_country' => 'required|max:100', ];
         }
 
@@ -436,15 +436,15 @@ class ProfileController extends Controller {
             'orga_presentation' => 'nullable|max:2000', 'building_name' => 'nullable',
             // 'route'        => 'required',
             // 'route_number'        => 'required',
-        'locality' => 'required|max:100', 'postalCode' => 'required|max:100',
+            'member_org_postalCode' => 'required',
             'num_rooms' => 'nullable', 'num_floor' => 'nullable', 'area_level_1' =>
-            'nullable|max:100', 'country' => 'required|max:100', 'contact_name' =>
+            'nullable|max:100', 'member_org_country' => 'required|max:100', 'member_org_routenum' => 'required', 'contact_name' =>
             'required|max:100', 'contact_phone' => 'required|max:100', 'contact_email' =>
             'required|email|max:100', ];
 
         if ($request->adrpost_postal_box) {
             $rules += ['adrpost_postal_box' => 'required|max:100', 'adrpost_locality' =>
-                'required|max:100', 'adrpost_postalCode' => 'required|max:100',
+                'required|max:100', 'adrpost_postalCode' => 'required',
                 'adrpost_area_level_1' => 'nullable|max:100', 'adrpost_country' =>
                 'required|max:100', ];
         }
@@ -469,15 +469,16 @@ class ProfileController extends Controller {
                 User::whereId($user->id)->update($users);
 
                 //Créer localisation
-                $locations = ['country' => $datas['country'], 'area_level_1' => $datas['area_level_1'],
-                    'postalCode' => $datas['postalCode'], 'num_rooms' => $datas['num_rooms'],
-                    'num_floor' => $datas['num_floor'], 'building_name' => isset($datas['building_name']) ?
+                $locations = ['country' => $datas['member_org_country'], 'area_level_1' => $datas['member_org_area_level_1'], 
+                    'area_level_2' => $datas['member_org_area_level_2'],'postalCode' => $datas['member_org_postalCode'],
+                    'route' => $datas['member_org_route'], 'route_number' => $datas['member_org_route_number'],
+                    'num_rooms' => $datas['num_rooms'], 'num_floor' => $datas['num_floor'], 'building_name' => isset($datas['building_name']) ?
                     $datas['building_name'] : '', 'adrpost_postal_box' => isset($datas['adrpost_postal_box']) ?
                     $datas['adrpost_postal_box'] : '', 'adrpost_locality' => isset($datas['adrpost_locality']) ?
                     $datas['adrpost_locality'] : '', 'adrpost_area_level_2' => isset($datas['adrpost_area_level_2']) ?
                     $datas['adrpost_area_level_2'] : '', 'adrpost_postalCode' => isset($datas['adrpost_postalCode']) ?
                     $datas['adrpost_postalCode'] : '', 'adrpost_country' => isset($datas['adrpost_country']) ?
-                    $datas['adrpost_country'] : '', ];
+                    $datas['adrpost_country'] : '', 'longitude'=>$datas['member_org_long'], 'latitude'=>$datas['member_org_lat'] ];
                 Localisation::whereId($user->location_id)->update($locations);
 
                 // update userinfo
@@ -530,14 +531,14 @@ class ProfileController extends Controller {
             'orga_operation_range' => 'required', 'route' => 'required|max:100',
             'afa_route_number' => 'required', 'afa_area_level_2' => 'required|max:100',
             'afa_locality' => 'required|max:100', 'afa_country' => 'required',
-            'afa_area_level_1' => 'required|max:100', 'afa_postalCode' => 'required|integer',
+            'afa_area_level_1' => 'required|max:100', 'afa_postalCode' => 'required',
             'contact_name' => 'required|max:100', 'contact_email' =>
             'required|email|max:100', 'contact_phone' =>
             'required|digits_between:6,15|numeric', ];
 
         if ($request->adrpost_postal_box) {
             $rules += ['adrpost_postal_box' => 'required|max:100', 'adrpost_locality' =>
-                'required|max:100', 'adrpost_postalCode' => 'required|max:100',
+                'required|max:100', 'adrpost_postalCode' => 'required',
                 'adrpost_area_level_1' => 'nullable|max:100', 'adrpost_country' =>
                 'required|max:100', ];
         }
@@ -619,7 +620,7 @@ class ProfileController extends Controller {
             'required', 'orga_presentation' => 'nullable|max:2000',
             'orga_rep_official_registration' => 'nullable|max:2000', 'route' =>
             'required|max:100', 'route_number' => 'required', 'locality' =>
-            'required|max:100', 'postalCode' => 'required|max:100', 'area_level_1' =>
+            'required|max:100', 'postalCode' => 'required', 'area_level_1' =>
             'nullable|max:100', 'country' => 'required|max:100', 'contact_name' =>
             'required|max:100', 'contact_phone' => 'required|digits_between:6,15|numeric',
             'contact_email' => 'required|email|max:100', 'bank_name' => 'required|max:100',
@@ -631,7 +632,7 @@ class ProfileController extends Controller {
 
         if ($request->adrpost_postal_box) {
             $rules += ['adrpost_postal_box' => 'required|max:100', 'adrpost_locality' =>
-                'required|max:100', 'adrpost_postalCode' => 'required|max:100',
+                'required|max:100', 'adrpost_postalCode' => 'required',
                 'adrpost_area_level_1' => 'nullable|max:100', 'adrpost_country' =>
                 'required|max:100', ];
         }
@@ -725,7 +726,7 @@ class ProfileController extends Controller {
             'building_name' => 'nullable', 'route' => 'required|max:100', 'num_rooms' =>
             'nullable', 'num_floor' => 'nullable', 'route_number' => 'required', 'locality' =>
             'required|max:100', 'area_level_2' => 'required|max:100', 'postalCode' =>
-            'required|integer', 'area_level_1' => 'required|max:100', 'country' =>
+            'required', 'area_level_1' => 'required|max:100', 'country' =>
             'required', 'contact_name' => 'required|max:100', 'contact_email' =>
             'required|email|max:100', 'contact_phone' =>
             'required|digits_between:9,9|numeric', ];
@@ -825,7 +826,7 @@ class ProfileController extends Controller {
             'building_name' => 'nullable', 'route' => 'required|max:100', 'num_rooms' =>
             'nullable', 'num_floor' => 'nullable', 'route_number' => 'required', 'locality' =>
             'required|max:100', 'area_level_2' => 'required|max:100', 'postalCode' =>
-            'required|integer', 'area_level_1' => 'required|max:100', 'country' =>
+            'required', 'area_level_1' => 'required|max:100', 'country' =>
             'required', 'contact_name' => 'required|max:100', 'contact_email' =>
             'required|email|max:100', 'contact_phone' =>
             'required|digits_between:9,9|numeric', ];
@@ -836,7 +837,7 @@ class ProfileController extends Controller {
 
         if (isset($request->adrpost_postal_box)) {
             $rules += ['adrpost_postal_box' => 'required|max:100', 'adrpost_locality' =>
-                'required|max:100', 'adrpost_postalCode' => 'required|max:100',
+                'required|max:100', 'adrpost_postalCode' => 'required',
                 'adrpost_area_level_1' => 'nullable|max:100', 'adrpost_country' =>
                 'required|max:100', ];
         }

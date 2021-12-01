@@ -87,7 +87,7 @@
 
                             <div class="col-lg-6 m-15px-tb">
                                 <h2 class="h1 m-25px-b title-iea h1 m-25px-b" style="font-size: 2.1rem !important;">{{$child->title}}</h2>
-                                <div class="text-justify txt-body">
+                                <div class="text-justify">
                                     <p class="m-5px-b">{!!$child->content!!}</p>
                                 </div>
                                 @if(Auth::check()&&Auth::user()->isAdmin())
@@ -100,6 +100,114 @@
                     </div>
                 </section>
                 <!--End Section -->
+
+                @if(request()->getHost() == "iea.easydata.mg")
+                <!-- VIDEO SECTION PARALLAX -->
+                <div class="jarallax" data-jarallax data-jarallax-video="https://youtu.be/WlPUe_yfMVg">
+                    <div class="demo-table">
+                        <div class="demo-table-cell">
+                            <section class="pb-0" id="">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="title-box">
+                                                <h2 style="margin-top: 80px; color: white !important; font-weight: 800 !important;">Comment on peut vous aider ?</h2>
+                                                <p class="" style="color: white !important;">Lorem ipsum dolor sit amet</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6" data-aos="fade-right">
+                                            <div class="fancy_service text-left">
+                                                <div class="bg_img">
+                                                    <img src="img/44.png" alt="fancybox">
+                                                </div>
+                                                <div class="fancy_block">
+                                                    <div class="fancy-info">
+                                                        <h4 class="mt-4 mb-3 title">Membre </h4><h4 style="color: white;">.</h4>
+                                                        <p class="txt-body">Si vous êtes intéressé par une solution d'investissement en Australie.</p>
+                                                        <a href="#">
+                                                            <span class="btn-effect orange-color">
+                                                                S'isncrire
+                                                                <i class="fa fa-plus-circle ml-2" aria-hidden="true"></i>
+                                                            </span>
+                                                        </a>
+                                                    </div>
+                                                    <!-- Blem affichage -->
+                                                    <div class="fancy_img_test"><img src="img/e1-full.jpg" alt="fancybox2"></div>
+                                                    <!-- blem affichage -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6" data-aos="fade-left">
+                                            <div class="fancy_service text-left" style="visibility: visible; animation-name: fadeInUp;">
+                                                <div class="bg_img">
+                                                    <img src="img/44.png" alt="fancybox">
+                                                </div>
+                                                <div class="fancy_block">
+                                                    <div class="fancy-info">
+                                                        <h4 class="mt-4 mb-3 title">Vendeur </h4><h4 style="color: white;">.</h4>
+                                                        <p class="txt-body">Si vous souhaitez proposer aux investisseurs francophones<span id="dots">...</span>
+                                                            <span id="more">internationaux des produits australiens immobiliers résidentiels, fonciers, industriels ou commerciaux.</span>
+
+                                                            <button onclick="voirPlus()" id="myBtn">▼</button></p>
+                                                        <a href="#">
+                                                            <span class="btn-effect orange-color">
+                                                                S'inscrire
+                                                                <i class="fa fa-plus-circle ml-2" aria-hidden="true"></i>
+                                                            </span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="fancy_img_test"><img src="img/e4-full.jpg" alt="fancybox2"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6" data-aos="fade-right">
+                                            <div class="fancy_service text-left" style="visibility: visible; animation-name: fadeInUp;">
+                                                <div class="bg_img">
+                                                    <img src="img/44.png" alt="fancybox">
+                                                </div>
+                                                <div class="fancy_block">
+                                                    <div class="fancy-info">
+                                                        <h4 class="mt-4 mb-3 title">Agence Francophone</h4><h4 class="title">Australienne</h4>
+                                                        <p class="txt-body">AFA si, en tant qu'agence immobilière ou d'affaires australienne,...▼</p>
+                                                        <a href="#">
+                                                            <span class="btn-effect orange-color">
+                                                                S'inscrire
+                                                                <i class="fa fa-plus-circle ml-2" aria-hidden="true"></i>
+                                                            </span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="fancy_img_test"><img src="img/e3-full.jpg" alt="fancybox2"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6" data-aos="fade-left">
+                                            <div class="fancy_service text-left" style="visibility: visible; animation-name: fadeInUp;">
+                                                <div class="bg_img mb-5 mb-lg-0">
+                                                    <img src="img/44.png" alt="fancybox">
+                                                </div>
+                                                <div class="fancy_block">
+                                                    <div class="fancy-info">
+                                                        <h4 class="mt-4 mb-3 title">Agence Partenaire</h4><span></span><h4 class="title">Locale</h4>
+                                                        <p class="txt-body">APL si, en tant qu'agence implantée dans un pays ou territoire francophone,...▼</p>
+                                                        <a href="#">
+                                                            <span class="btn-effect orange-color">
+                                                                S'inscrire
+                                                                <i class="fa fa-plus-circle ml-2" aria-hidden="true"></i>
+                                                            </span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="fancy_img_test"><img src="img/e2-full.jpg" alt="fancybox2"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+                <!-- READ MORE SCRIPT -->
+                @endif
             @elseif($child->page_order == 3)
                 <section id="feature" class="section gray-bg">
                     <div class="container">
@@ -267,7 +375,38 @@
                         </div>
                     </div>
                 </section>
-            @else
+
+                @if(request()->getHost() == "iea.easydata.mg")
+                <!-- VIDEO SECTION PARALLAX 2 -->
+                <div class="jarallax" data-jarallax data-jarallax-video="https://youtu.be/WlPUe_yfMVg">
+                    <div class="demo-table">
+                        <div class="demo-table-cell">
+                            <section id="call-to-action" class="cta-iea" style="margin-top: 80px">
+                                <div class="container laptop-cta">
+                                    <div class="row row-cta">
+                                        <div class="col-lg-12 right-cta" style="margin: auto;">
+                                            <h1 class="text-white" style="text-align: center;">Inscrivez-Vous</h1>
+                                            <p class="txt-body" style="color: #e6e6e6 !important; text-align: center;">Le portail "Investir en Australie" - IEA offre plusieurs opportunités d'inscription. Vous pouvez vous inscrire en qualité de :<br>
+                                                ► "Membre" si vous êtes intéressé par une solution d'investissement en Australie;<br>
+                                                ► "Vendeur" si vous souhaitez proposer aux investisseurs francophones internationaux des produits australiens immobiliers résidentiels, fonciers, industriels ou commerciaux;<br>
+                                                ► "Agence Francophone Australienne" - AFA si, en tant qu'agence immobilière ou d'affaires australienne, vous souhaitez réaliser les opérations de vente correspondantes;<br>
+                                                ► "Agence Partenaire Locale" - APL si, en tant qu'agence implantée dans un pays ou territoire francophone, vous souhaitez proposer vos services à votre clientèle locale concernant des investissements en Australie dans un partenariat avec le système "Investir en Australie".
+                                            </p>
+                                            <div style="margin-top: 20px; text-align: center;" data-aos="fade-up">
+                                                <a class="m-btn m-btn-theme2nd btn-radius-iea" href="#">
+                                                    S'inscrire gratuitement
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+                <!-- END PARALLAX 2-->
+                @endif
+                @else
                 <!-- Section -->
                 <section id="about" class="section gray-bg">
                     <div class="container">

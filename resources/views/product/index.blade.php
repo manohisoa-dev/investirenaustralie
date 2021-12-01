@@ -90,7 +90,7 @@
                                                         {{-- <h5><a href="#">{{getGTranslateAutoDetect( App::getLocale() ,$item->title)}}</a></h5> --}}
                                                         <h5><a href="#">{{$item->title}}</a></h5>
                                                     </div>
-                                                    <a href="{{asset($img_prod)}}" data-fancybox="gallery" class="gallery-link pop">
+                                                    <a href="{{asset(getImageResizeUrl('product', $it->filename, 'original'))}}" data-fancybox="gallery" class="gallery-link pop">
                                                         <i class="ti-plus"></i>
                                                     </a>
                                                 </div>
@@ -412,7 +412,7 @@
                       </div>
                       <ul class="comment-list">
                           <li class="comment">
-                            <p>{!! $item->content !!}</p>
+                            <p>{!! getGTranslateAutoDetect( App::getLocale() ,$item->content) !!}</p>
                           </li>
                       </ul>
                   </div>

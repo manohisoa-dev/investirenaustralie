@@ -592,7 +592,7 @@
                 },
                 postalCode: {
                     required: true,
-                    number:true
+                    number:false
                 },
                 area_level_1: {
                     required: true,

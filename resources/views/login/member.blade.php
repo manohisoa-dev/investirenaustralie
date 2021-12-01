@@ -998,7 +998,7 @@
             },
             postalCode: {
                 required: true,
-                number:true
+                number:false
             },
             country: {
                 required: true,
@@ -1023,7 +1023,7 @@
                 }
             },
             adrpost_postalCode: {
-                number:true,
+                number:false,
                 required: {
                     depends: function(element) {
                         if($("#postalAddress").is(":visible")){

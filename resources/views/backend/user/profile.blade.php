@@ -2628,21 +2628,14 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.name_num_of_the_road') </div>
-                                    <input type="text" value="{{$item->location?$item->location->route:''}}, {{$item->location?$item->location->route_number:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                    <input type="text" name="member_org_routenum" id="member_org_routenum" value="{{$item->location?$item->location->route:''}}, {{$item->location?$item->location->route_number:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
+                                    <input type="hidden" value="{{$item->location?$item->location->route:''}}" name="member_org_route" id="member_org_route">
+                                    <input type="hidden" value="{{$item->location?$item->location->route_number:''}}" name="member_org_route_number" id="member_org_route_number">
+                                    <input type="hidden" value="{{$item->location?$item->location->longitude:''}}" name="member_org_long" id="member_org_long">
+                                    <input type="hidden" value="{{$item->location?$item->location->latitude:''}}" name="member_org_lat" id="member_org_lat">
                                 </div>
                             </div>
                         </div>
-                        {{-- <div class="col-md-4 m-10px-tb">
-                            <div class="media">
-                                <div class="only-icon-20">
-                                    <i class="fas fa-flag"></i>
-                                </div>
-                                <div class="media-body p-15px-l lh-normal">
-                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.number_of_the_road')</div>
-                                    <input type="text" name="route_number" value="{{$item->location?$item->location->route_number:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
-                                </div>
-                            </div>
-                        </div> --}}
                         <div class="col-md-4 m-10px-tb">
                             <div class="media">
                                 <div class="only-icon-20">
@@ -2672,7 +2665,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.city')</div>
-                                    <input type="text" name="locality" value="{{$item->location?$item->location->locality:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                    <input type="text" name="member_org_area_level_2" id="member_org_area_level_2" value="{{$item->location?$item->location->area_level_2:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                 </div>
                             </div>
                         </div>
@@ -2683,7 +2676,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.codepostal')</div>
-                                    <input type="text" name="postalCode" value="{{$item->location?$item->location->postalCode:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
+                                    <input type="text" name="member_org_postalCode" id="member_org_postalCode" value="{{$item->location?$item->location->postalCode:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" readonly>
                                 </div>
                             </div>
                         </div>
@@ -2694,7 +2687,7 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.etat') (@lang('app.txt.etat.libelle'))</div>
-                                    <input type="text" name="area_level_1" placeholder="@lang('app.txt.etat')" value="{{$item->location?$item->location->area_level_1:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
+                                    <input type="text" name="member_org_area_level_1" id="member_org_area_level_1" placeholder="@lang('app.txt.etat')" value="{{$item->location?$item->location->area_level_1:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -2705,11 +2698,11 @@
                                 </div>
                                 <div class="media-body p-15px-l lh-normal">
                                     <div class="dark-color m-5px-b font-w-600">@lang('app.txt.country')</div>
-                                    <select class="form-control" name="country" readonly>
+                                    <select class="form-control" name="member_org_country" id="member_org_country" readonly>
                                         <option value="" selected disabled>@lang('app.select_country')</option>
                                         @foreach(App\Models\Country::all() as $country)
                                             @if($country->prefixPhone)
-                                                <option value="{{$country->code}}" {{ $item->location->country==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
+                                                <option value="{{$country->code}}" long="{{$country->content}}" {{ $item->location->country==$country->code?'selected':'' }}> {{$country->content}} ({{$country->code}})</option>
                                             @endif
                                         @endforeach
                                     </select>
@@ -2799,56 +2792,6 @@
             
             {{-- information contact for APL && Seller (Real Estate Professionals and Non-profesionnal Legal Persons)  --}}
             @if($item->isComplete() && !$item->isPerson() && !$item->isSnp() && !$item->isSbaIndividual() && !$item->isSbaBusiness())
-                {{-- <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
-                    <h5>@lang('app.locality')</h5>
-                    <div class="row">
-                        <div class="col-md-4 m-10px-tb">
-                            <div class="media">
-                                <div class="only-icon-20">
-                                    <i class="fas fa-road"></i>
-                                </div>
-                                <div class="media-body p-15px-l lh-normal">
-                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.streetaddress') </div>
-                                    <input type="text" class="form-control" value="{{$item->location?$item->location->route:''}}" placeholder="{{trans('app.txt.noinfo')}}" disabled>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 m-10px-tb">
-                            <div class="media">
-                                <div class="only-icon-20">
-                                    <i class="fas fa-city"></i>
-                                </div>
-                                <div class="media-body p-15px-l lh-normal">
-                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.suburb') </div>
-                                    <input type="text" value="{{$item->location?$item->location->locality:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" disabled>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 m-10px-tb">
-                            <div class="media">
-                                <div class="only-icon-20">
-                                    <i class="fas fa-flag"></i>
-                                </div>
-                                <div class="media-body p-15px-l lh-normal">
-                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.etat')</div>
-                                    <input type="text" value="{{$item->location?$item->location->area_level_1:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" disabled>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 m-10px-tb">
-                            <div class="media">
-                                <div class="only-icon-20">
-                                    <i class="fas fa-info"></i>
-                                </div>
-                                <div class="media-body p-15px-l lh-normal">
-                                    <div class="dark-color m-5px-b font-w-600">@lang('app.txt.codepostal')</div>
-                                    <input type="text" value="{{$item->location?$item->location->postalCode:''}}" placeholder="{{trans('app.txt.noinfo')}}" class="form-control" disabled>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
-    
                 <div class="border-bottom-1 border-color-dark-gray m-35px-b p-35px-b">
                     <h5>@lang('app.txt.contactinfo')</h5>
                     <div class="row">
@@ -2874,30 +2817,48 @@
                                     <div class="input-group mb-3 col-sm-12">
                                         <div class="input-group-prepend">
                                             <select class="form-control" name="indicatif2" id="indicatif2">
-                                                @if (isset($item->userinfos->orga_phone))
-                                                    @php
-                                                        $codetamps2 = preg_match('#\((.*?)\)#', $item->userinfos->orga_phone, $match2);
-                                                        $code2 = $match2[1];
-                                                        $allCode2 = $match2[0];
-                                                        $num2 = $item->userinfos?explode(')',$item->userinfos->orga_phone)[1]:'';
-                                                    @endphp
-                                                    @foreach (App\Models\Indicatif::all() as $indicatif)
-                                                        <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code2?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
-                                                    @endforeach
-                                                @elseif(isset($item->userinfos->contact_phone))
-                                                    @php
-                                                        $codetamps2 = preg_match('#\((.*?)\)#', $item->userinfos->contact_phone, $match2);
-                                                        $code2 = $match2[1];
-                                                        $allCode2 = $match2[0];
-                                                        $num2 = $item->userinfos?explode(')',$item->userinfos->contact_phone)[1]:'';
-                                                    @endphp
-                                                    @foreach (App\Models\Indicatif::all() as $indicatif)
-                                                        <option value="+{{ $indicatif->code }}" {{ $indicatif->code=='61'?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
-                                                    @endforeach
+                                                @if ($item->hasRole(5) && !$item->isPerson())
+                                                    @if(isset($item->userinfos->contact_phone))
+                                                        @php
+                                                            $codetamps2 = preg_match('#\((.*?)\)#', $item->userinfos->contact_phone, $match2);
+                                                            $code2 = $match2[1];
+                                                            $allCode2 = $match2[0];
+                                                            $num2 = $item->userinfos?explode(')',$item->userinfos->contact_phone)[1]:'';
+                                                        @endphp
+                                                        @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                            <option value="+{{ $indicatif->code }}" {{ $indicatif->code=='61'?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
+                                                        @endforeach
+                                                    @else
+                                                        @php
+                                                            $num2="";
+                                                        @endphp
+                                                    @endif
                                                 @else
-                                                    @php
-                                                        $num2="";
-                                                    @endphp
+                                                    @if (isset($item->userinfos->orga_phone))
+                                                        @php
+                                                            $codetamps2 = preg_match('#\((.*?)\)#', $item->userinfos->orga_phone, $match2);
+                                                            $code2 = $match2[1];
+                                                            $allCode2 = $match2[0];
+                                                            $num2 = $item->userinfos?explode(')',$item->userinfos->orga_phone)[1]:'';
+                                                        @endphp
+                                                        @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                            <option value="+{{ $indicatif->code }}" {{ $indicatif->code==$code2?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
+                                                        @endforeach
+                                                    @elseif(isset($item->userinfos->contact_phone))
+                                                        @php
+                                                            $codetamps2 = preg_match('#\((.*?)\)#', $item->userinfos->contact_phone, $match2);
+                                                            $code2 = $match2[1];
+                                                            $allCode2 = $match2[0];
+                                                            $num2 = $item->userinfos?explode(')',$item->userinfos->contact_phone)[1]:'';
+                                                        @endphp
+                                                        @foreach (App\Models\Indicatif::all() as $indicatif)
+                                                            <option value="+{{ $indicatif->code }}" {{ $indicatif->code=='61'?'selected':'' }}>{{ '(+'.$indicatif->code.')' }} </option>
+                                                        @endforeach
+                                                    @else
+                                                        @php
+                                                            $num2="";
+                                                        @endphp
+                                                    @endif
                                                 @endif
                                             </select>
                                         </div>
@@ -3249,7 +3210,7 @@
                 },
                 bank_postalCode: {
                     required: true,
-                    number:true,
+                    number:false,
                 },
                 bank_country: {
                     required: true,
@@ -3438,7 +3399,11 @@
 				},
 				snp_bus_lon: {
 					required: true,
-				}
+				},
+				member_org_routenum: {
+					required: true,
+				},
+
             },
             messages: {
                 orga_name: {
@@ -3618,7 +3583,10 @@
 				},
 				snp_bus_lon: {
 					required: "@lang('app.txt.autocomplete_error')",
-				}
+				},
+				member_org_routenum: {
+					required: "@lang('app.txt.autocomplete_error')",
+				},
             },
             errorPlacement: function ( error, element ) {
                 if(element.parent().hasClass('input-group')){
@@ -3900,8 +3868,9 @@
 					$('#sba_country_2 option[long="'+val2+'"]').prop('selected', true);
 				});
 			});
-			<!-- fin autocomplete SELLER BY AFA -->	
-			<!-- seller non professionnel individuel -->
+			// <!-- fin autocomplete SELLER BY AFA -->	
+
+			// <!-- seller non professionnel individuel -->
 			var snp_autocomplete = new google.maps.places.Autocomplete($("#snp_personne_street")[0]);
 			google.maps.event.addListener(snp_autocomplete, 'place_changed', function() {
 				var place2 = snp_autocomplete.getPlace();
@@ -4023,9 +3992,9 @@
 					$('#snp_personne_country_2 option[long="'+val4+'"]').prop('selected', true);
 				});
 			});
-			<!-- fin seller non professionnel individuel -->
+			// <!-- fin seller non professionnel individuel -->
 			
-			<!-- seller non professionnel business -->
+			// <!-- seller non professionnel business -->
 			var bus_autocomplete = new google.maps.places.Autocomplete($("#snp_bus_street_adr")[0]);
 			google.maps.event.addListener(bus_autocomplete, 'place_changed', function() {
 				var place4 = bus_autocomplete.getPlace();
@@ -4088,9 +4057,9 @@
 					$('#snp_bus_country option[long="'+val5+'"]').prop('selected', true);
 				});
 			});
-			<!-- seller non professionnel business -->
+			// <!-- seller non professionnel business -->
 			
-			<!-- APL -->
+			// <!-- APL -->
 			var apl_autocomplete = new google.maps.places.Autocomplete($("#apl_route")[0]);
 			google.maps.event.addListener(apl_autocomplete, 'place_changed', function() {
 				var place_apl = apl_autocomplete.getPlace();
@@ -4154,6 +4123,62 @@
 				});
 			});
 			<!-- fin APL -->
+
+            // <!-- autocomplete Member Organization -->	
+			var member_org_autocomplete = new google.maps.places.Autocomplete($("#member_org_routenum")[0]);
+			// member_org_autocomplete.setComponentRestrictions({'country': ['au']});	
+			google.maps.event.addListener(member_org_autocomplete, 'place_changed', function() {
+				var place = member_org_autocomplete.getPlace();
+				var member_org_arrAddress = place.address_components;
+				var member_org_itemRoute='';
+				var member_org_itemCountry='';
+				var member_org_itemCity = '';
+				var member_org_itemPc='';
+				var member_org_itemState='';
+				var member_org_itemSnumber='';
+				var member_org_lat = place.geometry.location.lat();
+				var member_org_long = place.geometry.location.lng();
+				
+				//console.log(arrAddress);
+	
+				$.each(member_org_arrAddress, function (i, address_components) {
+					if (address_components.types[0] == "street_number") {
+						member_org_itemSnumber = address_components.long_name;
+					}
+					if (address_components.types[0] == "route") {
+						member_org_itemRoute = address_components.long_name;
+					}
+					
+					if (address_components.types[0] == "country") {
+						member_org_itemCountry = address_components.long_name;
+					}
+					
+					if (address_components.types[0] == "postal_code") {
+						member_org_itemPc = address_components.long_name;
+					}
+	
+					if (address_components.types[0] == "administrative_area_level_1") {
+						member_org_itemState = address_components.short_name;
+					}
+					
+					if (address_components.types[0] == "administrative_area_level_2") {
+						member_org_itemCity = address_components.short_name;
+					}
+	
+					$('#member_org_routenum').val(member_org_itemRoute+','+member_org_itemSnumber);
+					$('#member_org_route').val(member_org_itemRoute);
+					$('#member_org_route_number').val(member_org_itemSnumber);
+					$('#member_org_area_level_2').val(member_org_itemCity);
+					$('#member_org_postalCode').val(member_org_itemPc);
+					$('#member_org_long').val(member_org_long);
+					$('#member_org_lat').val(member_org_lat);
+	
+					var val = member_org_itemCountry;
+					$('#member_org_country option[long="'+val+'"]').prop('selected', true);
+	
+				});
+			});
+			// <!-- Fin autocomplete AFA -->
 		}
     </script>
     {{-- End google map autocomplete --}}
