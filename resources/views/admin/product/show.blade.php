@@ -90,10 +90,14 @@
 							</div>
 							<div class="col-sm-8 text-sm-left">
 								<dd class="mb-1">
-									@if($product->status=='published')
-									<span class="label label-success">@lang('app.'.$product->status)</span>
+									@if($product->parent_id == 0 || $product->parent_id == -1)
+										@if($product->status=='published')
+										<span class="label label-success">@lang('app.'.$product->status)</span>
+										@else
+										<span class="label label-warning">@lang('app.'.$product->status)</span>
+										@endif
 									@else
-									<span class="label label-warning">@lang('app.'.$product->status)</span>
+										<span class="label label-success">Publié</span>
 									@endif
 								</dd>
 							</div>
@@ -116,13 +120,30 @@
 								<dd class="mb-1">AUD {{ number_format($product->max_price, 0, '.', ' ') }}</dd>
 							</div>
 						</dl>
-						@else
+						@elseif($product->parent_id == -1)
 						<dl class="row mb-0">
 							<div class="col-sm-4 text-sm">
 								<dt>@lang('app.table.price'):</dt>
 							</div>
 							<div class="col-sm-8 text-sm-left">
 								<dd class="mb-1">AUD {{ number_format($product->price, 0, '.', ' ') }}</dd>
+							</div>
+						</dl>
+						@else
+						<dl class="row mb-0">
+							<div class="col-sm-4 text-sm">
+								<dt>@lang('app.form.programme_price_min'):</dt>
+							</div>
+							<div class="col-sm-8 text-sm-left">
+								<dd class="mb-1">AUD {{ number_format($product->min_price, 0, '.', ' ') }}</dd>
+							</div>
+						</dl>
+						<dl class="row mb-0">
+							<div class="col-sm-4 text-sm">
+								<dt>@lang('app.form.programme_price_max'):</dt>
+							</div>
+							<div class="col-sm-8 text-sm-left">
+								<dd class="mb-1">AUD {{ number_format($product->max_price, 0, '.', ' ') }}</dd>
 							</div>
 						</dl>
 						@endif
@@ -290,20 +311,24 @@
 						</dl>						
 						<div class="hr-line-dashed"></div>
 						<div class="pull-right">
-						@if($product->status == 'waiting')
-							@if($product->afaId_possible != 0)
-							<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.publish', $record->id):route('admin.product.publish', $product->id)}}" class="btn btn-flat btn-primary">@lang('app.admin.btn_approbation')</a>
-							<a href="javascript:void(0)" onclick="rejet_programme({{$product->id}})" class="btn btn-flat btn-danger">@lang('app.admin.btn_rejet')</a>
+						@if($product->parent_id == 0 || $product->parent_id == -1)
+							@if($product->status == 'waiting')
+								@if($product->afaId_possible != 0)
+								<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.publish', $record->id):route('admin.product.publish', $product->id)}}" class="btn btn-flat btn-primary">@lang('app.admin.btn_approbation')</a>
+								<a href="javascript:void(0)" onclick="rejet_programme({{$product->id}})" class="btn btn-flat btn-danger">@lang('app.admin.btn_rejet')</a>
+								@else
+								<a href="#" class="btn btn-flat btn-primary disabled">@lang('app.admin.btn_approbation')</a>
+								<a href="javascript:void(0)" onclick="rejet_programme({{$product->id}})" class="btn btn-flat btn-danger">@lang('app.admin.btn_rejet')</a>
+								@endif
 							@else
-							<a href="#" class="btn btn-flat btn-primary disabled">@lang('app.admin.btn_approbation')</a>
-							<a href="javascript:void(0)" onclick="rejet_programme({{$product->id}})" class="btn btn-flat btn-danger">@lang('app.admin.btn_rejet')</a>
+								@if($product->parent_id == 0)
+								<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme')}}?status=waiting" class="btn btn-default">@lang('app.btn.return')</a>
+								@else
+								<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}?status=waiting" class="btn btn-default">@lang('app.btn.return')</a>
+								@endif
 							@endif
 						@else
-							@if($product->parent_id == 0)
-							<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.programme'):route('admin.product.programme')}}?status=waiting" class="btn btn-default">@lang('app.btn.return')</a>
-							@else
-							<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}?status=waiting" class="btn btn-default">@lang('app.btn.return')</a>
-							@endif
+							<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{$product->parent_id}}" class="btn btn-default">@lang('app.btn.return')</a>
 						@endif
 						</div>
 					</div>

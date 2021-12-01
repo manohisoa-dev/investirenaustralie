@@ -130,9 +130,9 @@
 								<td class="actions-cell text-center" width="12%">
 								@if($statusPrd == 'published')
 									<form class="form-inline" action="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{$record->id}}" method="POST">
-										{{-- <a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.product.publish', $record->id):route('admin.product.publish', $record->id)}}" class="btn btn-default btn-circle" title="Détail">
+										<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{$record->id}}" class="btn btn-default btn-circle" title="@lang('app.table.btn_title_detail')">
 											<i class="fa fa-eye"></i>
-										</a>&nbsp;&nbsp; --}}
+										</a>&nbsp;&nbsp;
 										{{--<a href="{{Auth::user()->isAdminDelegate()?route('admin.collaborators.admin.product.index'):route('admin.product.index')}}/{{$record->id}}/edit" class="btn btn-default btn-circle" title="Modification">
 											<i class="fa fa-pencil-square-o"></i>
 										</a>&nbsp;&nbsp;--}}
