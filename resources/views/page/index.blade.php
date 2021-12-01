@@ -102,111 +102,131 @@
                 <!--End Section -->
 
                 @if(request()->getHost() == "iea.easydata.mg")
-                <!-- VIDEO SECTION PARALLAX -->
-                <div class="jarallax" data-jarallax data-jarallax-video="https://youtu.be/WlPUe_yfMVg">
-                    <div class="demo-table">
-                        <div class="demo-table-cell">
-                            <section class="pb-0" id="">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="title-box">
-                                                <h2 style="margin-top: 80px; color: white !important; font-weight: 800 !important;">Comment on peut vous aider ?</h2>
-                                                <p class="" style="color: white !important;">Lorem ipsum dolor sit amet</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6" data-aos="fade-right">
-                                            <div class="fancy_service text-left">
-                                                <div class="bg_img">
-                                                    <img src="img/44.png" alt="fancybox">
+                    <!-- VIDEO SECTION PARALLAX -->
+                    <div class="jarallax" data-jarallax data-jarallax-video="https://youtu.be/WlPUe_yfMVg">
+                        <div class="demo-table">
+                            <div class="demo-table-cell">
+                                <section class="pb-0" id="">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="title-box">
+                                                    <h2 style="margin-top: 80px; color: white !important; font-weight: 800 !important;">
+                                                        Comment on peut vous aider ?</h2>
+                                                    <p class="" style="color: white !important;">Lorem ipsum dolor sit amet</p>
                                                 </div>
-                                                <div class="fancy_block">
-                                                    <div class="fancy-info">
-                                                        <h4 class="mt-4 mb-3 title">Membre </h4><h4 style="color: white;">.</h4>
-                                                        <p class="txt-body">Si vous êtes intéressé par une solution d'investissement en Australie.</p>
-                                                        <a href="#">
+                                            </div>
+                                            {{--<div class="col-lg-6" data-aos="fade-right">--}}
+                                            <div class="col-lg-6">
+                                                <div class="fancy_service text-left">
+                                                    <div class="bg_img">
+                                                        <img src="{{asset('img/44.png')}}" alt="fancybox">
+                                                    </div>
+                                                    <div class="fancy_block">
+                                                        <div class="fancy-info">
+                                                            <h4 class="mt-4 mb-3 title">Membre </h4><h4 style="color: white;">.</h4>
+                                                            <p class="txt-body">Si vous êtes intéressé par une solution d'investissement
+                                                                en Australie.</p>
+                                                            <a href="#">
                                                             <span class="btn-effect orange-color">
                                                                 S'isncrire
-                                                                <i class="fa fa-plus-circle ml-2" aria-hidden="true"></i>
+                                                                <i class="fa fa-plus-circle ml-2"
+                                                                   aria-hidden="true"></i>
                                                             </span>
-                                                        </a>
+                                                            </a>
+                                                        </div>
+                                                        <!-- Blem affichage -->
+                                                        <div class="fancy_img_test"><img src="{{asset('img/e1-full.jpg')}}" alt="fancybox2"></div>
+                                                        <!-- blem affichage -->
                                                     </div>
-                                                    <!-- Blem affichage -->
-                                                    <div class="fancy_img_test"><img src="img/e1-full.jpg" alt="fancybox2"></div>
-                                                    <!-- blem affichage -->
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-lg-6" data-aos="fade-left">
-                                            <div class="fancy_service text-left" style="visibility: visible; animation-name: fadeInUp;">
-                                                <div class="bg_img">
-                                                    <img src="img/44.png" alt="fancybox">
-                                                </div>
-                                                <div class="fancy_block">
-                                                    <div class="fancy-info">
-                                                        <h4 class="mt-4 mb-3 title">Vendeur </h4><h4 style="color: white;">.</h4>
-                                                        <p class="txt-body">Si vous souhaitez proposer aux investisseurs francophones<span id="dots">...</span>
-                                                            <span id="more">internationaux des produits australiens immobiliers résidentiels, fonciers, industriels ou commerciaux.</span>
+                                            {{--<div class="col-lg-6" data-aos="fade-left">--}}
+                                            <div class="col-lg-6">
+                                                <div class="fancy_service text-left"
+                                                     style="visibility: visible; animation-name: fadeInUp;">
+                                                    <div class="bg_img">
+                                                        <img src="{{asset('img/44.png')}}" alt="fancybox">
+                                                    </div>
+                                                    <div class="fancy_block">
+                                                        <div class="fancy-info">
+                                                            <h4 class="mt-4 mb-3 title">Vendeur </h4><h4 style="color: white;">.</h4>
+                                                            <p class="txt-body">Si vous souhaitez proposer aux investisseurs
+                                                                francophones<span id="dots">...</span>
+                                                                <span id="more">internationaux des produits australiens immobiliers résidentiels, fonciers, industriels ou commerciaux.</span>
 
-                                                            <button onclick="voirPlus()" id="myBtn">▼</button></p>
-                                                        <a href="#">
+                                                                <button onclick="voirPlus()" id="myBtn">▼</button>
+                                                            </p>
+                                                            <a href="#">
                                                             <span class="btn-effect orange-color">
                                                                 S'inscrire
-                                                                <i class="fa fa-plus-circle ml-2" aria-hidden="true"></i>
+                                                                <i class="fa fa-plus-circle ml-2"
+                                                                   aria-hidden="true"></i>
                                                             </span>
-                                                        </a>
+                                                            </a>
+                                                        </div>
+                                                        <div class="fancy_img_test"><img src="{{asset('img/e4-full.jpg')}}" alt="fancybox2"></div>
                                                     </div>
-                                                    <div class="fancy_img_test"><img src="img/e4-full.jpg" alt="fancybox2"></div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-lg-6" data-aos="fade-right">
-                                            <div class="fancy_service text-left" style="visibility: visible; animation-name: fadeInUp;">
-                                                <div class="bg_img">
-                                                    <img src="img/44.png" alt="fancybox">
-                                                </div>
-                                                <div class="fancy_block">
-                                                    <div class="fancy-info">
-                                                        <h4 class="mt-4 mb-3 title">Agence Francophone</h4><h4 class="title">Australienne</h4>
-                                                        <p class="txt-body">AFA si, en tant qu'agence immobilière ou d'affaires australienne,...▼</p>
-                                                        <a href="#">
+                                            {{--<div class="col-lg-6" data-aos="fade-right">--}}
+                                            <div class="col-lg-6">
+                                                <div class="fancy_service text-left"
+                                                     style="visibility: visible; animation-name: fadeInUp;">
+                                                    <div class="bg_img">
+                                                        <img src="{{asset('img/44.png')}}" alt="fancybox">
+                                                    </div>
+                                                    <div class="fancy_block">
+                                                        <div class="fancy-info">
+                                                            <h4 class="mt-4 mb-3 title">Agence Francophone</h4><h4 class="title">
+                                                                Australienne</h4>
+                                                            <p class="txt-body">AFA si, en tant qu'agence immobilière ou d'affaires
+                                                                australienne,...▼</p>
+                                                            <a href="#">
                                                             <span class="btn-effect orange-color">
                                                                 S'inscrire
-                                                                <i class="fa fa-plus-circle ml-2" aria-hidden="true"></i>
+                                                                <i class="fa fa-plus-circle ml-2"
+                                                                   aria-hidden="true"></i>
                                                             </span>
-                                                        </a>
+                                                            </a>
+                                                        </div>
+                                                        <div class="fancy_img_test"><img src="{{asset('img/e3-full.jpg')}}" alt="fancybox2"></div>
                                                     </div>
-                                                    <div class="fancy_img_test"><img src="img/e3-full.jpg" alt="fancybox2"></div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-lg-6" data-aos="fade-left">
-                                            <div class="fancy_service text-left" style="visibility: visible; animation-name: fadeInUp;">
-                                                <div class="bg_img mb-5 mb-lg-0">
-                                                    <img src="img/44.png" alt="fancybox">
-                                                </div>
-                                                <div class="fancy_block">
-                                                    <div class="fancy-info">
-                                                        <h4 class="mt-4 mb-3 title">Agence Partenaire</h4><span></span><h4 class="title">Locale</h4>
-                                                        <p class="txt-body">APL si, en tant qu'agence implantée dans un pays ou territoire francophone,...▼</p>
-                                                        <a href="#">
+                                            {{--<div class="col-lg-6" data-aos="fade-left">--}}
+                                            <div class="col-lg-6">
+                                                <div class="fancy_service text-left"
+                                                     style="visibility: visible; animation-name: fadeInUp;">
+                                                    <div class="bg_img mb-5 mb-lg-0">
+                                                        <img src="{{asset('img/44.png')}}" alt="fancybox">
+                                                    </div>
+                                                    <div class="fancy_block">
+                                                        <div class="fancy-info">
+                                                            <h4 class="mt-4 mb-3 title">Agence Partenaire</h4><span></span><h4
+                                                                    class="title">&nbsp;Locale</h4>
+                                                            <p class="txt-body">APL si, en tant qu'agence implantée dans un pays ou
+                                                                territoire francophone,...▼</p>
+                                                            <a href="#">
+                                                                <br>
                                                             <span class="btn-effect orange-color">
                                                                 S'inscrire
-                                                                <i class="fa fa-plus-circle ml-2" aria-hidden="true"></i>
+                                                                <i class="fa fa-plus-circle ml-2"
+                                                                   aria-hidden="true"></i>
                                                             </span>
-                                                        </a>
+                                                            </a>
+                                                        </div>
+                                                        <div class="fancy_img_test"><img src="{{asset('img/e2-full.jpg')}}" alt="fancybox2"></div>
                                                     </div>
-                                                    <div class="fancy_img_test"><img src="img/e2-full.jpg" alt="fancybox2"></div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </section>
+                                </section>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- READ MORE SCRIPT -->
+                    <!-- READ MORE SCRIPT -->
                 @endif
             @elseif($child->page_order == 3)
                 <section id="feature" class="section gray-bg">
@@ -406,7 +426,7 @@
                 </div>
                 <!-- END PARALLAX 2-->
                 @endif
-                @else
+
                 <!-- Section -->
                 <section id="about" class="section gray-bg">
                     <div class="container">
@@ -479,6 +499,202 @@
         </div>
     </section>
     <!-- End Section -->
+    @if(request()->getHost() == "iea.easydata.mg")
+    <!-- Section lorem -->
+    <section class="section white-bg">
+        <div class="container">
+            <div class="row">
+                {{--<div class="col-lg-4" style="margin:auto; " data-aos="fade-up">--}}
+                <div class="col-lg-4" style="margin:auto; ">
+                    <div class="">
+                        <h3 style="margin-bottom: 15px">
+                            Titre Section Chart
+                        </h3>
+                        <p class="txt-body">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                            aliquip ex ea commodo consequat. Ut enim ad minima veniam, quis nostrum exercitationem ullam
+                            corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur ?
+                        </p>
+                        <div style="margin-top: 30px;" data-aos="fade-up">
+                            <a class="m-btn m-btn-theme2nd btn-radius-iea" href="#">
+                                S'inscrire gratuitement
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {{--<div class="col-lg-8" data-aos="fade-down">--}}
+                <div class="col-lg-8">
+                    <div class="p-45px-tb p-35px-lr bg-white shadow-radius">
+                        <div class="eight columns">
+                            <div class="progressBar">
+                                <p>Quia dolor sit amet</p>
+                                <div class="progressBarcontainer">
+                                    <div class="speech-bubble html">90%</div>
+                                    <div class="progressBarValue ht "></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="eight columns">
+                            <div class="progressBar">
+                                <p>Ut enim ad</p>
+                                <div class="progressBarcontainer">
+                                    <div class="speech-bubble react">30%</div>
+                                    <div class="progressBarValue rc"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="eight columns">
+                            <div class="progressBar">
+                                <p>Quis autem vel eum</p>
+                                <div class="progressBarcontainer">
+                                    <div class="speech-bubble javascript">60%</div>
+                                    <div class="progressBarValue js"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="eight columns">
+                            <div class="progressBar">
+                                <p>Sed ut perspiciatis</p>
+                                <div class="progressBarcontainer">
+                                    <div class="speech-bubble jquery">40%</div>
+                                    <div class="progressBarValue jq "></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+    <!-- end Section -->
+
+
+    <!-- Section square -->
+    <section id="iq-feature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="title-box text-center">
+                        <h2>Square Section</h2>
+                        <p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil<br>vel eum
+                            fugiat quo voluptas nulla pariatur?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row pt-4 pr-3 pl-3">
+                <div class="col-lg-3 col-md-6">
+                    <div class="color-palette style-three wow fadeInUp   text-left purple-hover"
+                         style="visibility: visible; animation-name: fadeInUp;">
+                        <div class="media text-center">
+                            <div class="">
+                                <i aria-hidden="true" class="flaticon flaticon-description flicons1 iconcolor"></i>
+                            </div>
+                            <div class="text-center">
+                                <h5 class="color-text mb-2">Lorem ipsum dolor</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="color-palette style-three wow fadeInUp   text-left green-hover"
+                         style="visibility: visible; animation-name: fadeInUp;">
+                        <div class="media text-center">
+                            <div class="">
+                                <i aria-hidden="true" class="flaticon flaticon-trade flicons1 iconcolor1"></i>
+                            </div>
+                            <div class="text-center">
+                                <h5 class="color-text mb-2">Quasi architecto &amp; Beatae</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="color-palette style-three wow fadeInUp   text-left org-hover"
+                         style="visibility: visible; animation-name: fadeInUp;">
+                        <div class="media text-center">
+                            <div class="">
+                                <i aria-hidden="true" class="flaticon flaticon-paper-plane flicons1 iconcolor3"></i>
+                            </div>
+                            <div class="text-center">
+                                <h5 class="color-text mb-2">Neque porro &amp; Quisquam</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="color-palette style-three wow fadeInUp   text-left purple-hover"
+                         style="visibility: visible; animation-name: fadeInUp;">
+                        <div class="media text-center">
+                            <div class="">
+                                <i aria-hidden="true" class="flaticon flaticon-testing flicons1 iconcolor"></i>
+                            </div>
+                            <div class="text-center">
+                                <h5 class="color-text mb-2">Ut enim ad minima</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row pt-4 pr-3 pl-3">
+                <div class="col-lg-3 col-md-6">
+                    <div class="color-palette style-three wow fadeInUp   text-left purple-hover"
+                         style="visibility: visible; animation-name: fadeInUp;">
+                        <div class="media text-center">
+                            <div class="">
+                                <i aria-hidden="true"
+                                   class="flaticon flaticon-technical-support flicons1 iconcolor1"></i>
+                            </div>
+                            <div class="text-center">
+                                <h5 class="color-text mb-2">Perspiciatis &amp; Unde omnis</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="color-palette style-three wow fadeInUp   text-left green-hover"
+                         style="visibility: visible; animation-name: fadeInUp;">
+                        <div class="media text-center">
+                            <div class="">
+                                <i aria-hidden="true" class="flaticon flaticon-network flicons1 iconcolor3"></i>
+                            </div>
+                            <div class="text-center">
+                                <h5 class="color-text mb-2">Duis aute irure dolor</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="color-palette style-three wow fadeInUp   text-left org-hover iconcolor"
+                         style="visibility: visible; animation-name: fadeInUp;">
+                        <div class="media text-center">
+                            <div class="">
+                                <i aria-hidden="true" class="flaticon flaticon-cost flicons1 iconcolor"></i>
+                            </div>
+                            <div class="text-center">
+                                <h5 class="color-text mb-2">Excepteur sint occaecat</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="color-palette style-three wow fadeInUp   text-left purple-hover"
+                         style="visibility: visible; animation-name: fadeInUp;">
+                        <div class="media text-center">
+                            <div class="">
+                                <i aria-hidden="true" class="flaticon flaticon-analysis-2 flicons1 iconcolor1"></i>
+                            </div>
+                            <div class="text-center">
+                                <h5 class="color-text mb-2">Ut enim ad minim</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Section Square -->
+    @endif
     <!-- Section blog-->
     <section id="blog" class="section white-bg">
         <div class="container-xxl">
