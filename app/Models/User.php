@@ -13,7 +13,9 @@ use Session;
 use App\Models\Product;
 use App\Models\SellerIndividual;
 use App\Models\SellerBusiness;
+use App\Models\Message;
 use Illuminate\Support\Facades\DB;
+use Auth;
 
 class User extends Authenticatable {
     use Notifiable;
@@ -1729,5 +1731,24 @@ class User extends Authenticatable {
         return false;
     }
 
+    public function haveAfaToContact(){
+        $user_id= Auth::user()->id;
+
+        $lists = Message::where( "from_id",$user_id )
+        ->where('seen',0) 
+        ->where('type','user') 
+        ->join('users', 'users.id','=','messages.to_id')
+        ->select('messages.*', 'messages.created_at as dt' , 'users.name', 'users.immat', 'users.id as user_id', 'users.role')
+        ->where('users.role',3)
+        ->orderBy('created_at' , 'ASC')
+        ->groupBy('to_id')
+        ->get();
+
+        if(sizeof($lists) > 0){
+            return true;
+        }
+
+        return false;
+    }
 
 }

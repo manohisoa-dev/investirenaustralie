@@ -606,29 +606,29 @@
                                         <i class="fas fa-chevron-right"></i>
                                     </div>
                                 </a>
-                                @if(Auth::user()->hasAfa())
-                                <a href="{{route('member.contact', ['role'=>'afa'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('member/contact/role/afa')) ? 'menu-active' : '' }}">
-                                    <div>
-                                        <i class="far fa-envelope m-10px-r"></i>
-                                        <span>@lang('member.contact_afa')</span>
-                                        <span class="unread-count-afa badge badge-pill badge-primary"></span>
-                                        {{-- {!! isset(App\Models\Message::unreadCount(Auth::user()->id , Auth::user()->afa_id)->count) ? '<span class="badge badge-pilll badge-primary">'.App\Models\Message::unreadCount(Auth::user()->id, Auth::user()->afa_id)->count.'</span>' : '' !!} --}}
-                                    </div>
-                                    <div>
-                                        <i class="fas fa-chevron-right"></i>
-                                    </div>
-                                </a>
+                                @if(Auth::user()->hasRole(5) && Auth::user()->haveAfaToContact())
+                                    <a href="{{route('member.contact', ['role'=>'afa'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('member/contact/role/afa')) ? 'menu-active' : '' }}">
+                                        <div>
+                                            <i class="far fa-envelope m-10px-r"></i>
+                                            <span>@lang('member.contact_afa')</span>
+                                            <span class="unread-count-afa badge badge-pill badge-primary"></span>
+                                            {{-- {!! isset(App\Models\Message::unreadCount(Auth::user()->id , Auth::user()->afa_id)->count) ? '<span class="badge badge-pilll badge-primary">'.App\Models\Message::unreadCount(Auth::user()->id, Auth::user()->afa_id)->count.'</span>' : '' !!} --}}
+                                        </div>
+                                        <div>
+                                            <i class="fas fa-chevron-right"></i>
+                                        </div>
+                                    </a>
                                 @endif
                                 @if(Auth::user()->hasApl())
-                                  <a href="{{route('member.contact', ['role'=>'apl'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('member/contact/role/apl')) ? 'menu-active' : '' }}">
-                                      <div>
-                                          <i class="far fa-envelope m-10px-r"></i>
-                                          <span>@lang('member.contact_apl')</span>
-                                      </div>
-                                      <div>
-                                          <i class="fas fa-chevron-right"></i>
-                                      </div>
-                                  </a>
+                                    <a href="{{route('member.contact', ['role'=>'apl'])}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('member/contact/role/apl')) ? 'menu-active' : '' }}">
+                                        <div>
+                                            <i class="far fa-envelope m-10px-r"></i>
+                                            <span>@lang('member.contact_apl')</span>
+                                        </div>
+                                        <div>
+                                            <i class="fas fa-chevron-right"></i>
+                                        </div>
+                                    </a>
                                 @endif
 								<a href="{{route('member.testimonial')}}" class="list-group-item list-group-item-action d-flex justify-content-between p15px-tb {{ (request()->is('member/testimonial')) ? 'menu-active' : '' }}">
                                     <div>

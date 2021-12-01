@@ -370,6 +370,11 @@ Route::middleware(["auth", "role:5"] || ["auth", "role:3"])->group(function(){
     Route::get('message/all/contact/unread/', 'MessageController@getUnreadCountMessageContact')->name('get.unread.count.message.contact');
     Route::get('message/show/{to_id}', 'MessageController@showContactMessage')->name('show.contact.message');
     Route::post('message/contact', 'MessageController@sendContactMessage')->name('send.contact.message');
+    // Message Member and AFA
+    Route::get('message/list/contact/member/afa', 'MessageController@getListContactMessageMemberAfa')->name('get.list.contact.message.member.afa');
+    Route::get('message/member/afa/show/{to_id}', 'MessageController@showContactMessageMemberAfa')->name('show.contact.message.member.afa');
+    Route::get('message/all/contact/member/afa/unread/', 'MessageController@getUnreadCountMessageContactMemberAfa')->name('get.unread.count.message.contact.member.afa');
+
 });
 
 

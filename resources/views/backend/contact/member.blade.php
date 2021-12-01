@@ -13,25 +13,54 @@
 
                             <form id="formContact" data-form-output="form-output-global" data-form-type="contact" method="post" action="{{$action}}">
                                 {{ csrf_field() }}
-                                <input type="hidden" id="user_id" value="{{ Auth::user()->id }}">
-                                <input type="hidden" id="to_id" value="@if($role==='admin') 1  @elseif($role==='afa'){{Auth::user()->afa_id}}@else {{ Auth::user()->apl_id }} @endif">
+                                <input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}">
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-4">
                                         <div class="panel panel-primary">
-                                            <div class="panel-body p-10px-t p-20px-lr border-top-1 border-left-1 border-bottom-1 border-right-1 border-color-gray">
-                                                <ul class="chat">
-                                                    <div id="show_message"></div>
-                                                </ul>
+                                            <div style="background: #F1F6FD; height:550px;" class="panel-body border-top-1 border-left-1 border-bottom-1 border-right-1 border-color-gray">
+                                                <div id="show_contact"></div>
                                             </div>
-                                            <div class="panel-footer p-25px-t">
-                                                <div class="input-group">
-                                                    <textarea id="content" name="content" class="no-resize-bar form-control" rows="2" placeholder="@lang('app.txt.write_message') ..."></textarea>
-                                                    <span class="input-group-btn">
-                                                        <button class="m-btn m-btn-warning btn-sm" id="btn_send">
-                                                            @lang('app.btn.send')</button>
-                                                    </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="panel panel-primary">
+                                            <div id="panel-show-message-default" {{ !Auth::user()->haveAfaToContact()&&Request::get('afa')?'hidden':'' }}>
+                                                <div class="center chat-body clearfix">
+                                                    <p class="text-center p-50px-t">
+                                                        <div class="p-25px text-center">
+                                                            <div class="avatar-80 border-radius-50 d-inline-block">
+                                                                <img src="{{ asset("images/ico/chat.png") }}" title="" alt="">
+                                                            </div>
+                                                            <h6 class="font-w-500 m-15px-t m-0px"><span class="font-w-700">  </span></h6>
+                                                            <span class="font-small"></span>
+                                                            <div class="p-10px-t">
+                                                                <span class="font-small"><i> {{ trans("app.txt.welcome_your_chat") }} </i></span>
+                                                            </div>
+                                                        </div>
+                                                    </p>
                                                 </div>
-                                                <span id="error_message" class="text-danger"></span>
+                                            </div>
+                                            
+                                            <div id="panel-show-message" {{ !Auth::user()->haveAfaToContact()&&Request::get('afa')?'':'hidden' }}>
+                                                <div class="panel-body p-10px-t p-20px-lr border-top-1 border-left-1 border-bottom-1 border-right-1 border-color-gray">
+                                                    <ul class="chat">
+                                                        <div id="show_message"></div>
+                                                    </ul>
+                                                </div>
+                                                <div class="panel-footer p-25px-t">
+                                                    <div class="input-group">
+                                                        @if ($role === 'afa')
+                                                            <input type="hidden" name="to_id" id="to_id" value="{{ !Auth::user()->haveAfaToContact()&&Request::get('afa')?App\Models\User::where('name',Request::get('afa'))->first()->id:0 }}">
+                                                        @endif
+                                                        <textarea id="content" name="content" class="no-resize-bar form-control" rows="2" placeholder="@lang('app.txt.write_message') ..." {{ !Auth::user()->haveAfaToContact()&&Request::get('afa')?'':'disabled' }}></textarea>
+                                                        <span class="input-group-btn">
+                                                            <button class="m-btn m-btn-warning btn-sm" id="btn_send" {{ !Auth::user()->haveAfaToContact()&&Request::get('afa')?'':'disabled' }}>
+                                                                @lang('app.btn.send')
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                    <span id="error_message" class="text-danger"></span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -94,115 +123,226 @@
 
     </style>
     <script>
+
         $(document).ready(function  (){
             var scroll=$('.panel-body');
+            var listContactArray = new Array();
+            var contact_id = 0;
+            
+            
+                // Show list contact
+                showContact();
 
-            // Show message
-            showMessages();
+                // Show unread message count in left sidebar
+                showUnreadCount();
+
+                // Show message
+                // showMessageContact();
+
+                // Show recent message
+                showRecentMessage();
+
+                // Update show list contact and unread message count
+                setInterval(() => {
+                    showContact();
+                }, 1500);
+
+                setInterval(() => {
+                    showUnreadCount();
+                }, 2500);
+
+                setInterval(() => {
+                    contact_id = $('#to_id').val();
+                    // showContact();
+                    // showUnreadCount();
+                    showMessageContact(contact_id);
+                }, 4500);
+
             
-            // Show recent message
-            showRecentMessage();
-            
-            function showMessages(){
+            $('#show_contact').on('click','.btn-select-contact',function(){
+                var contactId = $(this).attr('value');
+                contact_id = contactId;
+
+                $('#show_message').html('');
+                $('#panel-show-message-default').attr('hidden','hidden');
+                $('#panel-show-message').removeAttr('hidden');
+                $('#formContact #to_id').val(contactId);
+
+                showMessageContact(contact_id);       
+                showRecentMessage();
+            });
+
+
+            function showMessageContact(contact_id){
+                // var contact_id = $('#to_id').val();
+                var datas = {
+                    'contact_id' : contact_id,
+                };
                 var showMessage = $('#show_message');
                 var content= "";
 
-                $.ajax({
-                    url : '{{ route("get.message", ["role"=>$role]) }}',
-                    method : 'get',
-                    dataType : 'json',
-                    success : function(dt){
+                if(contact_id !== '0'){
+                    $.ajax({
+                        url: '{{ route("show.contact.message.member.afa", ["to_id"=>Auth::user()->id]) }}',
+                        type: "GET",
+                        data : datas,
+                        dataType: "json",
+                        success : function(dt){
+                            // Enabled input content and button send message
+                            $('#content').removeAttr('disabled');
+                            $('#btn_send').removeAttr('disabled');
 
-                        if(dt.length !== 0)
-                        {
-                            for(var i=0; i<dt.length; i++){
-                                var fromId = dt[i].from_id;
-                                var fromImmat = dt[i].from_immat;
-                                var fromName = dt[i].from_name;
-                                var chatingName = dt[i].chating_name;
-                                var createdAt = dt[i].created_at;
-                                var createdAtSend = dt[i].created_at_send;
-                                var message = dt[i].body;
-                                var seen = dt[i].seen;
-                                var hasSendCa = dt[i].hasSendCa;
-                                var identity = "";
-                                var msg = $.parseHTML(message);
-                                var msges = "";
+                            if(dt.length !== 0)
+                            {
+                                for(var i=0; i<dt.length; i++){
+                                    var fromId = dt[i].from_id;
+                                    var fromImmat = dt[i].from_immat;
+                                    var fromName = dt[i].from_name;
+                                    var chatingName = dt[i].chating_name;
+                                    var createdAt = dt[i].created_at;
+                                    var createdAtSend = dt[i].created_at_send;
+                                    var message = dt[i].body;
+                                    var seen = dt[i].seen;
+                                    var hasSendCa = dt[i].hasSendCa;
+                                    var identity = "";
+                                    var msg = $.parseHTML(message);
+                                    var msges = "";
 
-                                // Parse message data to html
-                                for(var j=0;j<msg.length;j++){
-                                    msges += msg[j]['data'];
-                                }
+                                    // Parse message data to html
+                                    for(var j=0;j<msg.length;j++){
+                                        msges += msg[j]['data'];
+                                    }
 
-                                if(hasSendCa===0)
-                                    identity = fromImmat; 
-                                else 
-                                    identity = fromImmat+'<br/><small>'+fromName+'</small>';
+                                    if(hasSendCa===0)
+                                       identity = fromImmat; 
+                                    else 
+                                       identity = fromImmat+'<br/><small>'+fromName+'</small>';
 
 
-                                if(dt[i].from_id !== {{ Auth::user()->id }}){
+                                    if(dt[i].from_id !== {{ Auth::user()->id }}){
 
-                                    content += '<li class="left clearfix">'+
-                                            '<span class="chat-img pull-left">'+
-                                                '<img src="http://placehold.it/50/555658/fff&text='+(fromName.charAt(0)).toUpperCase()+'" alt="User Avatar" class="img-circle" />'+
-                                            '</span>'+
-                                            '<div class="chat-body clearfix">'+
-                                                '<div class="header">'+
-                                                    '<strong class="primary-font">'+identity+'</strong> <small class="pull-right text-muted">'+
-                                                    '<span class="glyphicon glyphicon-time"></span><i>'+createdAtSend+', '+seen+'</i></small>'+
-                                                '</div>'+
-                                                '<p class="pull-left p-10px-t">'+
-                                                    msges +
-                                                '</p>'+
-                                            '</div>'+
-                                        '</li>';
-                                }else{
-                                    content += '<li class="right clearfix">'+
-                                            '<span class="chat-img pull-right">'+
-                                                '<img src="http://placehold.it/50/AE4435/fff&text='+(fromName.charAt(0)).toUpperCase()+'" alt="User Avatar" class="img-circle" />'+
-                                            '</span>'+
-                                            '<div class="chat-body clearfix">'+
-                                                '<div class="header">'+
-                                                    '<small class=" text-muted"><span class="glyphicon glyphicon-time"></span><i>'+createdAtSend+', '+seen+'</i></small>'+
-                                                    '<strong class="pull-right primary-font"> {{ Auth::user()->immat }} </strong>'+
-                                                '</div>'+
-                                                '<p class="pull-right p-10px-t">'+
-                                                    message +
-                                                '</p>'+
-                                            '</div>'+
-                                        '</li>';
-                                }
-                                
-                            }
-                        }else{
-                            content = '<li class="center clearfix">'+
-                                            '<div class="chat-body clearfix">'+
-                                                '<p class="text-center p-50px-t">'+
-                                                    '<div class="p-25px text-center">'+
-                                                        '<div class="avatar-80 border-radius-50 d-inline-block">'+
-                                                            '<img src="@if($role!=="admin") @if($role==="apl") {{  Auth::user()->hasApl()?\App\Models\User::find(Auth::user()->apl_id)->imageUrl():'' }} @else {{  Auth::user()->hasAfa()?\App\Models\User::find(Auth::user()->afa_id)->imageUrl():'' }} @endif @else {{ \App\Models\User::where("role",1)->first()->imageUrl() }} @endif" title="" alt="">'+
-                                                        '</div>'+
-                                                        '<h6 class="font-w-500 m-15px-t m-0px"><span class="font-w-700"> @if($role=="admin") {{ App\Models\User::where("id",1)->first()->name }} @elseif($role=="afa") {{ App\Models\User::where("id",Auth::user()->afa_id)->first()->name }} @else {{ App\Models\User::where("id",Auth::user()->apl_id)->first()->name }} @endif </span></h6>'+
-                                                        '<span class="font-small"></span>'+
-                                                        '<div class="p-10px-t">'+
-                                                            '<span class="font-small"><i> {{ trans("app.txt.welcome_chat") }} </i></span>'+
-                                                        '</div>'+
+                                        content += '<li class="left clearfix">'+
+                                                '<span class="chat-img pull-left">'+
+                                                    '<img src="http://placehold.it/50/555658/fff&text='+(fromName.charAt(0)).toUpperCase()+'" alt="User Avatar" class="img-circle" />'+
+                                                '</span>'+
+                                                '<div class="chat-body clearfix">'+
+                                                    '<div class="header">'+
+                                                        '<strong class="primary-font">'+identity+'</strong> <small class="pull-right text-muted">'+
+                                                        '<span class="glyphicon glyphicon-time"></span><i>'+createdAtSend+', '+seen+'</i></small>'+
                                                     '</div>'+
-                                                '</p>'+
-                                            '</div>'+
-                                        '</li>';
-                        }
-                        return showMessage.html(content);
+                                                    '<p class="pull-left p-10px-t">'+
+                                                        msges +
+                                                    '</p>'+
+                                                '</div>'+
+                                            '</li>';
+                                    }else{
+                                        content += '<li class="right clearfix">'+
+                                                '<span class="chat-img pull-right">'+
+                                                    '<img src="http://placehold.it/50/AE4435/fff&text='+(fromName.charAt(0)).toUpperCase()+'" alt="User Avatar" class="img-circle" />'+
+                                                '</span>'+
+                                                '<div class="chat-body clearfix">'+
+                                                    '<div class="header">'+
+                                                        '<small class=" text-muted"><span class="glyphicon glyphicon-time"></span><i>'+createdAtSend+', '+seen+'</i></small>'+
+                                                        '<strong class="pull-right primary-font"> {{ Auth::user()->immat }} </strong>'+
+                                                    '</div>'+
+                                                    '<p class="pull-right p-10px-t">'+
+                                                        message +
+                                                    '</p>'+
+                                                '</div>'+
+                                            '</li>';
+                                    }
+                                    
+                                }
+                            
+                                return showMessage.html(content);
 
+                            }else{
+                                content = '';
+                                if('{{ !Request::get("afa") }}'){
+                                    $('#panel-show-message-default').removeAttr('hidden');
+                                    $('#panel-show-message').attr('hidden','hidden');
+                                    $('#to_id').val('0');
+                                }
+                            }
+
+                            return showMessage.html(content);
+                        }
+                    }); 
+                }
+                
+            }
+            
+
+            function showUnreadCount(){
+
+                $.ajax({
+                    url: '{{ route("get.unread.count.message.contact") }}',
+                    type: "GET",
+                    dataType: "json",
+                    success:function(data){
+                        var unreadCountContactArray = new Array();
+
+                        $.each(data, function(key,val){
+                            unreadCountContactArray.push(val.from_id);
+                        });
+
+                        for(var i=0; i<data.length; i++){ 
+                            var contact_id = data[i].from_id;
+                            var unreadCount = $('#'+contact_id);
+                            
+                            $.each(listContactArray, function(k,v) {
+                                if ($.inArray(v, unreadCountContactArray) !== -1) {
+                                    unreadCount.html(data[i].count);
+                                } else {
+                                    $('#'+v).html('');
+                                }
+                            });
+                        }
+                    },
+                    error:function(e){
+                        console.log(e);
                     }
                 });
 
+                return false;
             }
 
-            // Reload show message
-            setInterval(() => {
-                showMessages()
-            }, 4500);
+            
+            function showContact(){
+                var showContact = $('#show_contact');
+                
+                $.ajax({
+                    url: '{{ route("get.list.contact.message.member.afa") }}',
+                    type: "GET",
+                    dataType: "json",
+                    success:function(data){
+                        listShowContact = "";
+                        listContactArray = new Array();
+
+                        if(data.length !== 0){
+                            for(var i=0; i<data.length; i++){
+                                listContactArray.push(data[i].user_id);
+
+                                listShowContact +=  '<div class="list-group">'+
+                                                    '<a href="javascript:void(0)" value="'+data[i].user_id+'" id="contact-'+data[i].user_id+'" class="btn-select-contact list-group-item list-group-item-action flex-column align-items-start">'+
+                                                        '<div class="d-flex w-100 justify-content-between">'+
+                                                        '<h6 class="mb-1">'+data[i].user_immat+'</h6>'+
+                                                        '<small><span id="'+data[i].user_id+'" class="badge badge-pill badge-primary"></span></small>'+
+                                                        '</div>'+
+                                                        // '<p class="mb-1"></p>'+
+                                                        '<p class="mb-1">'+data[i].user_role+', <small>'+data[i].dateSend+'</small></p>'+
+                                                    '</a>'+
+                                                '</div>';                                  
+                            }
+                        }
+
+                        return showContact.html(listShowContact);
+                    },
+                    error:function(e){
+                        console.log(e);
+                    }
+                });
+            }
 
 
             function showRecentMessage(){
@@ -228,7 +368,7 @@
                 $(this).html(
                     `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
                 );
-
+                        
                 $.ajax({
                     url: '{{ $action }}',
                     type: "POST",
@@ -240,7 +380,7 @@
                         $('#btn_send').html(thisHtml);
 
                         if($.isEmptyObject(data.error)){
-                            $('#formContact')[0].reset();
+                            $('#content').val(' ');
                             console.log(data.success);
                         }else{
                             $('#content').addClass('is-invalid');
@@ -277,7 +417,7 @@
                 $(".print-msg").css('display','block');
                 $(".print-msg").find("ul").append('<li>'+msg+'</li>');
             }
-        });
+        })
         
     </script>    
 @endpush

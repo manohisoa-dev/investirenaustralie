@@ -29,6 +29,7 @@ class ProgrammeController extends Controller {
 
     public function show(Request $request, $slug) {
         $products = Product::where('slug', '=', $slug)->get();
+        nouvelle_afa_disponible();
 
         if (sizeof($products) != 0) {
             foreach ($products as $key => $product) {
@@ -64,8 +65,16 @@ class ProgrammeController extends Controller {
 
                 $states = State::orderBy('content', 'asc')->get();
 
-                $afas = User::where('role', 3)->where('status', 'active')->where('location_id',
-                    $product->location_id)->orderBy('id', 'desc')->get();
+                // get afa possible
+                $afapossArray=[];
+                if(strlen($product->afaId_possible)>0){
+                    $afapossId = explode(',',$product->afaId_possible);
+                    
+                    foreach ($afapossId as $key => $afa) {
+                        array_push($afapossArray,$afa);
+                    }
+                }
+                $afas = User::whereIn('id',$afapossArray)->get();
 
                 if (Auth::check()) {
                     if (Auth::user()->role == 1 || Auth::user()->role == 3 || Auth::user()->role ==

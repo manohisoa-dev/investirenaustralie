@@ -250,6 +250,100 @@ class MessageController extends Controller
         return response()->json($data);
     }
 
+    // contact message member and afa
+    public function getListContactMessageMemberAfa(Request $request){
+        $user_id= Auth::user()->id;
+
+        $lists = Message::where( "from_id",$user_id )
+        ->where('seen',0) 
+        ->where('type','user') 
+        ->join('users', 'users.id','=','messages.to_id')
+        ->select('messages.*', 'messages.created_at as dt' , 'users.name', 'users.immat', 'users.id as user_id', 'users.role')
+        ->where('users.role',3)
+        ->orderBy('created_at' , 'ASC')
+        ->groupBy('to_id')
+        ->get();
+
+        $data = [];
+        foreach ($lists as $key=>$list) {
+            $data[$key] = [
+                'name' => $list->name,
+                'dateSend' => $list->created_at->diffForHumans(),
+                'user_id' => $list->user_id,
+                'user_immat' => $list->immat,
+                'user_role'=> trans('app.'.Role::where('id', $list->role)->first()->role_initial),
+            ];
+        }
+        return response()->json($data);
+    }
+
+    public function showContactMessageMemberAfa(Request $request ,$to_id){
+        $from_id = $request->get('contact_id');
+
+        $messages = Message::whereRaw("(from_id = ".$from_id." AND to_id = $to_id ) OR (to_id = ".$from_id." AND from_id = $to_id )" )
+                            ->orderBy('created_at', 'ASC')
+                            ->get();
+
+                            
+        $wordsToRemove = Badword::pluck('content')->toArray();
+        $wordsToRemoveWithoutP = [];
+        foreach ($wordsToRemove as $key => $value) {
+            preg_match_all( '/<p[^>]*?>(.*?)<\/p>/s', $value, $contents);
+            $wordsToRemoveWithoutP[$key]=$contents[1];
+        }
+        $wordsToRemove=$wordsToRemoveWithoutP;
+        $wordsToRemove = array_flatten($wordsToRemove) ;
+
+        $filterOptions = array(
+            'strictness' => 'permissive',
+            'also_check' => $wordsToRemove
+        );
+        
+        $data = [];
+        foreach($messages as $key=>$message){
+            if($message->from_id != 1){
+                $filter = new BadWordFilter($filterOptions);
+                $cleanString = $filter->clean($message->body, "#!%^");
+            }else{
+                $cleanString = $message->body ;
+            }
+
+            $data[] = [
+                'id' => $message->id,
+                'from_id' => $message->from_id,
+                'from_immat' => User::where('id',$message->from_id)->first()->immat,
+                'from_name' => User::where('id',$message->from_id)->first()->name,
+                'to_id' => $message->to_id,
+                'body' => e(nl2br($cleanString)),
+                'created_at' => $message->created_at,
+                'created_at_send' => $message->created_at->diffForHumans(),
+                'seen' => $message->seen? trans('app.txt.read') : trans('app.txt.unread'),
+            ];
+        }
+
+        
+        // update message showing
+        Message::where('from_id',$from_id)->where('to_id', $to_id)->update(['seen' => 1]);
+        
+
+        return json_encode($data);
+    }
+
+    public function getUnreadCountMessageContactMemberAfa(Request $request){
+        $user_id=Auth::user()->id;
+
+        $unreadCount = Message::where("to_id", $user_id)
+        ->selectRaw('messages.from_id, COUNT(messages.id) as count')
+        ->whereRaw('seen = 0')
+        ->orderBy('created_at' , 'ASC')
+        ->groupBy('from_id')
+        ->get();
+        
+
+        return response()->json($unreadCount);
+    }
+    // !end contact message member and afa
+
     public function getUnreadCountMessageContact(Request $request){
         $user_id=Auth::user()->id;
 
