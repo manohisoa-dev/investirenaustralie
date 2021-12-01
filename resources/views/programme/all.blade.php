@@ -31,7 +31,7 @@
                 @endif	
                 
                 <a href="{{ route('programme.show', ['slug'=>$item->slug]) }}">
-                    <div class="transition blog-grid-overlay border-radius-0 {{ $item->isParticular()?'border-particular':'' }}" style="background-image: url({{ $img }});">
+                    <div class="transition blog-grid-overlay border-radius-0 {{ $item->isParticular()?'border-particular':'' }}" style="background-image: url('{{ $img }}');">
                         <div class="blog-gird-info">
                             {{-- <h5>{{getGTranslateAutoDetect( App::getLocale() ,$item->title)}}</h5> --}}
                             <h5>{{$item->title}}</h5>

@@ -1575,8 +1575,15 @@
 			$('#chk_parking').prop('checked', false);
 			$("#chk_parking").attr('disabled','disabled');
 		}else{
-			console.log('normal');
+			//console.log('normal');
 			$("#chk_parking").removeAttr('disabled');
+		}
+		
+		var typeBonus = $('#bonus_vente').val();
+		if(typeBonus == 'YES'){
+			$('#montant_bonus_vente').show();
+		}else{
+			$('#montant_bonus_vente').hide();
 		}
 		
 		CKEDITOR.replace( 'desc_product' );

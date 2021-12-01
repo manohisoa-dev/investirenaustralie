@@ -19,7 +19,7 @@
 			$img = asset('images/blog/iea.png');
 		}
     @endphp
-    <section class="bg-center bg-cover bg-fiexd effect-section" style="background-image: url({{ $img }});">
+    <section class="bg-center bg-cover bg-fiexd effect-section" style="background-image: url('{{ $img }}');">
         <div class="mask dark-g-bg opacity-7"></div>
         <div class="container">
             <div class="row screen-65 justify-content-center align-items-center p-100px-tb">
@@ -234,7 +234,7 @@
                     <div class="media p-20px">
                         <div class="container text-center">
                             <div class="row mx-auto my-auto">
-                                <div id="myCarousel" class="carousel slide w-100" data-ride="carousel">
+                                <div id="myCarousel1" class="carousel slide w-100" data-ride="carousel">
                                     <div class="carousel-inner w-100" role="listbox">
 
                                         @forelse (App\Models\Product::where('parent_id','=',$item->id)->where('status_res','=',0)->get() as $prod)
@@ -281,11 +281,11 @@
 
                                     </div>
                                     @if (sizeOf(App\Models\Product::where('parent_id','=',$item->id)->get())>3)
-                                        <a class="carousel-control-prev bg-dark w-auto" href="#myCarousel" role="button" data-slide="prev">
+                                        <a class="carousel-control-prev bg-dark w-auto" href="#myCarousel1" role="button" data-slide="prev">
                                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                             <span class="sr-only">Previous</span>
                                         </a>
-                                        <a class="carousel-control-next bg-dark w-auto" href="#myCarousel" role="button" data-slide="next">
+                                        <a class="carousel-control-next bg-dark w-auto" href="#myCarousel1" role="button" data-slide="next">
                                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                             <span class="sr-only">Next</span>
                                         </a>
@@ -444,6 +444,7 @@
 					parent.location.reload(true);
 				}
 			});
+
 		});
 		
         $('#btn_comment').click(function(){
