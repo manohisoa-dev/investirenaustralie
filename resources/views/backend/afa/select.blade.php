@@ -121,8 +121,8 @@
 
         var _lat = -25.647467468105795;
         var _long = 146.89921517372136;
-        var _lat_user = {{Auth::user()->location()?Auth::user()->location->latitude:0}};
-        var _long_user = {{Auth::user()->location()?Auth::user()->location->longitude:0}};
+        var _lat_user = {{Auth::user()->location()? Auth::user()->location->latitude!=''?Auth::user()->location->latitude:0 :0}};
+        var _long_user = {{Auth::user()->location()? Auth::user()->location->latitude!=''?Auth::user()->location->longitude:0 :0}};
         
         var iconBase = "{{url('')}}";
         var icons = {
