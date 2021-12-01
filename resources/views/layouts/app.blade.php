@@ -32,6 +32,7 @@
 <link href="{{ asset('plugin/et-line/style.css') }}" rel="stylesheet">
 <link href="{{ asset('plugin/themify-icons/themify-icons.css') }}" rel="stylesheet">
 <link href="{{ asset('plugin/owl-carousel/css/owl.carousel.min.css') }}" rel="stylesheet">
+<link href="{{ asset('plugin/owl/owl.css') }}" rel="stylesheet">
 <link href="{{ asset('plugin/magnific/magnific-popup.css') }}" rel="stylesheet">
 <!-- theme css -->
 <link href="{{ asset('style/master.css?v='.$mytime) }}" rel="stylesheet">
@@ -354,7 +355,7 @@
     <!-- Header End -->
 
     @yield('content')
-    
+
     @yield('content2')
 
     <div id="mybutton">
@@ -581,13 +582,13 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    
+
                     @php
                         // $user = App\Models\User::whereId(Request::get('id'))->first();
                         // var_dump($user->contract());
                     @endphp
 
-                    <div class="modal-body"> 
+                    <div class="modal-body">
                         <form action="" id="formSendContract" method="get" enctype="multipart/form-data">
                             <div class="form-group ">
                                 <input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
@@ -635,6 +636,8 @@
     <!-- appear -->
     <script src="{{ asset('plugin/appear/jquery.appear.js') }}"></script>
     <!-- end appear -->
+    <script src="{{ asset('js/jarallax-all.js') }}"></script>
+
     <!--bootstrap-->
     <script src="{{ asset('plugin/bootstrap/js/popper.min.js') }}"></script>
     <script src="{{ asset('plugin/bootstrap/js/bootstrap.js') }}"></script>
@@ -649,6 +652,7 @@
     <script src="{{ asset('plugin/cookie/herbyCookie.min.js') }}"></script>
     <!-- end -->
     <!-- carousel js -->
+    <script src="{{ asset('plugin/owl/owl.js') }}"></script>
     <script src="{{ asset('plugin/owl-carousel/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('plugin/counter/jquery.countTo.js') }}"></script>
     <!-- bootstrap-slider.js -->
@@ -692,17 +696,17 @@
             },
         });
 
-        $('#formSendContract').submit(function(e) { 
+        $('#formSendContract').submit(function(e) {
             if ($('#formSendContract').valid()) {
                 e.preventDefault();
                 var fileToUpload = new FormData();
-                
+
                 // Show loading icon
                 loadingPage();
-                
+
                 fileToUpload.append('_token', $( '#csrf_token' ).val() );
                 fileToUpload.append('user_id', $( '#user_id' ).val() );
-                fileToUpload.append('file_contract', $( '#file_contract' )[0].files[0] );                
+                fileToUpload.append('file_contract', $( '#file_contract' )[0].files[0] );
                 $.ajax({
                     url: "{{route('confirm.registration.send.contract')}}",
                     type:"POST",
@@ -721,14 +725,14 @@
                             loadingPage();
 
                             swal({
-                                title: "{{ trans('app.txt.submit_contract_signed') }}", 
-                                text: "{{ trans('app.txt.file_sent') }}", 
+                                title: "{{ trans('app.txt.submit_contract_signed') }}",
+                                text: "{{ trans('app.txt.file_sent') }}",
                                 type: "success"
                                 },
-                                function(){ 
+                                function(){
                                     // hide modal
                                     $('#submitContractModal').modal('hide');
-                                    
+
                                     // go to home page
                                     window.location.href= "{{route('home')}}";
                                 }
@@ -736,11 +740,11 @@
                         }else{
                             if(data.status == 2){
                                 swal({
-                                    title: "{{ trans('app.txt.submit_contract_signed') }}", 
-                                    text: "{{ trans('app.txt.contract_validated') }}", 
+                                    title: "{{ trans('app.txt.submit_contract_signed') }}",
+                                    text: "{{ trans('app.txt.contract_validated') }}",
                                     type: "info"
                                     },
-                                    function(){ 
+                                    function(){
                                         // go to home page
                                         window.location.href= "{{route('home')}}";
                                     }
@@ -748,11 +752,11 @@
                             }
                             else if(data.status == 1){
                                 swal({
-                                    title: "{{ trans('app.txt.submit_contract_signed') }}", 
-                                    text: "{{ trans('app.txt.contract_awaiting_validation') }}", 
+                                    title: "{{ trans('app.txt.submit_contract_signed') }}",
+                                    text: "{{ trans('app.txt.contract_awaiting_validation') }}",
                                     type: "info"
                                     },
-                                    function(){ 
+                                    function(){
                                         // go to home page
                                         window.location.href= "{{route('home')}}";
                                     }
@@ -815,15 +819,15 @@
     {{-- Popup style --}}
     <style>
         a .show-apl-info{
-            position:absolute;       
+            position:absolute;
             margin-top:23px;
             margin-left:-35px;
             color:#ffffff;
             background:rgba(0,0,0,.9);
             padding:15px;
             border-radius:3px;
-            box-shadow:0 0 2px rgba(0,0,0,.5); 
-            transform:scale(0) rotate(-12deg);      
+            box-shadow:0 0 2px rgba(0,0,0,.5);
+            transform:scale(0) rotate(-12deg);
             transition:all .25s;
             opacity:0;
             font-size: 12px;
@@ -831,7 +835,7 @@
 
         a:hover .show-apl-info, a:focus .show-apl-info{
             opacity:1;
-            transform:scale(1) rotate(0);        
+            transform:scale(1) rotate(0);
         }
     </style>
 
@@ -845,7 +849,7 @@
                     $('#memberHasDossierTransactionModal').modal('show');
                 }
             }
-            
+
             // Show notification current transaction initial deposit afa
             if('{{ Request::is("afa") }}'){
                 if('{{ Auth::check() && Auth::user()->hasRole(3) && Auth::user()->hasDossierTransactionInitialDeposit() }}' && !sessionStorage.getItem('notif_trans_afa')){
@@ -883,7 +887,7 @@
             // 1: notificaiton seen
             return sessionStorage.setItem('notif_trans_member', 1);
         });
-        
+
         $('#btnOkNotifTransInitDeposit').click(function(){
             // 1: notificaiton seen
             return sessionStorage.setItem('notif_trans_afa', 1);
@@ -893,7 +897,7 @@
             // 1: notificaiton seen
             return sessionStorage.setItem('notif_trans_member', 1);
         })
-        
+
         $('#btnLogout').click(function(){
             // clear all session js
             return sessionStorage.clear();
@@ -904,12 +908,12 @@
             var countryContent = $(this).attr('data-country');
             var uri = '{{ URL::to("getListAplGrpByCity") }}'+'/'+val;
             var envoi = $.get( uri );
-            
+
             // Reinitalize data in tooltip
             $('.tooltip-inner').html('');
             $('.tooltip-inner').append('<p class="text-center border-bottom-1 border-gray">{{ trans("app.txt.apl_city") }} '+countryContent+'</p>');
             $('.tooltip-inner').append('<div id="city_list"><div class="load-circle"><span class="one"></span></div></div>');
-            
+
             envoi.done( function(data) {
                 $('.tooltip-inner #city_list').html('');
                 $.each(data.res,function(key,value){
@@ -996,9 +1000,9 @@
             if ($(document).scrollTop() <= 100) {
                 // $('#container-navbar').removeClass('show-navbar-after');
                 $('#container-navbar').removeClass('show-navbar-after');
-                $('#container-navbar').addClass('show-navbar-after-top');    
+                $('#container-navbar').addClass('show-navbar-after-top');
             }else{
-                $('#container-navbar').removeClass('show-navbar-after-top');    
+                $('#container-navbar').removeClass('show-navbar-after-top');
                 $('#container-navbar').addClass('show-navbar-after');
             }
             $('#container-navbar').removeClass('show-navbar-hover-after');
@@ -1006,11 +1010,11 @@
         }
         else {
             if(!$(".notification-dropdown-menu").is(":visible")){
-                $('#container-navbar').addClass('show-navbar-hover-after');  
+                $('#container-navbar').addClass('show-navbar-hover-after');
             }
         }
         });
-		
+
 		$('#form_newsletter').on('submit',function(e){
         	e.preventDefault();
 			let email_adresse = $('#email_adresse').val();
@@ -1026,11 +1030,11 @@
 				success:function(data){
 					if(data.reponse == 'OK'){
 						swal({
-							   title: "@lang('app.alert.inscriptionnewsletter.titre')", 
-							   text: "@lang('app.alert.inscriptionnewsletter.success')", 
+							   title: "@lang('app.alert.inscriptionnewsletter.titre')",
+							   text: "@lang('app.alert.inscriptionnewsletter.success')",
 							   type: "success"
 							 },
-						   function(){ 
+						   function(){
 							   location.reload();
 						   }
 						);
@@ -1138,7 +1142,7 @@
       transition:all .6s ease-out;
     }
   </style>
-  
+
     @stack('script')
 
 
@@ -1191,7 +1195,7 @@
                                     var dt = datas[i].created_at;
                                     var userRole = '{{Auth::check()?Auth::user()->roleUser->role_initial:""}}';
                                     var url = userRole!=='afa'?(origin+'/'+userRole+"/contact/role/"+datas[i].role_initial):(origin+'/'+userRole+"/message/afa/show");
-                                    
+
                                     // push data in notifications array
                                     notifications.push({
                                     href: url,
@@ -1209,7 +1213,7 @@
                 }
 
                 return false;
-            }            
+            }
 
             function makeBadge(texte) {
             return "<span class=\"badge badge-default\">" + texte + "</span>";
@@ -1439,11 +1443,11 @@
                 closeOnConfirm: true,
                 closeOnCancel: true
             },
-            function(isConfirm){	
+            function(isConfirm){
             if (isConfirm){
                     loadingPage();
                     sessionStorage.clear();
-                    return window.location.href="{{route('home')}}";    
+                    return window.location.href="{{route('home')}}";
                 }
             });
         }
