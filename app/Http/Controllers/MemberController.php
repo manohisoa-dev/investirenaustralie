@@ -482,8 +482,12 @@ class MemberController extends Controller {
     public function selectAfa(Request $request, $id_doss_trans) {
         $this->middleware('auth');
         $this->middleware('role:5');
-
+        
         $doss_trans = DossierTransaction::whereId($id_doss_trans)->first();
+        
+        // check new afa disponible
+        update_afa_disponible($doss_trans->product_id);
+
         $product=Product::whereId($doss_trans->product_id)->first();
         if($product){
             $prodUrl = url('product/'.$product->slug);
@@ -507,7 +511,16 @@ class MemberController extends Controller {
         if($product->isSellerByAfa()){
             $afas = $product->afa();
         }else{
-            $afas = User::ofRole(3)->isActive()->has('location')->hasPostalCode($postCode)->get(['users.*']);
+            // get afa possible
+            $afapossArray=[];
+            if(strlen($product->afaId_possible)>0){
+                $afapossId = explode(',',$product->afaId_possible);
+                
+                foreach ($afapossId as $key => $afa) {
+                    array_push($afapossArray,$afa);
+                }
+            }
+            $afas = User::whereIn('id',$afapossArray)->get();
         }
 
         $userApl = Auth::user()->apl;

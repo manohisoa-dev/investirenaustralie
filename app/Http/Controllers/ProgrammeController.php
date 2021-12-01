@@ -29,10 +29,12 @@ class ProgrammeController extends Controller {
 
     public function show(Request $request, $slug) {
         $products = Product::where('slug', '=', $slug)->get();
-        nouvelle_afa_disponible();
 
         if (sizeof($products) != 0) {
             foreach ($products as $key => $product) {
+
+                // check new afa disponible
+                update_afa_disponible($product->id);
 
                 if ($product->status == 'published') {
                     $product->view_count++;
