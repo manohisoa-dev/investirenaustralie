@@ -153,7 +153,6 @@
 
         if(data.type == 4){
             // show info inwindows
-            console.log(data);
             if(data.lat!==null || data.lng!==null){
               infoWindow(markers[data.id],data);
             }
