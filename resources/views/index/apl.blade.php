@@ -21,7 +21,7 @@
                         <a href="#" class="acco-heading">{{ $item->country }}</a>
                         <div class="acco-des">
                             @forelse (App\Models\User::where('location_id','=',$item->id)->get() as $apl)
-                            <p><a href="{{ route('show.apl',['id'=>$apl->id]) }}" target="_blank"><i class="fa fa-map-marker"></i> {{ $apl->name }}</a></p>
+                              <p><a href="{{ route('show.apl',['id'=>$apl->id]) }}" target="_blank"><i class="fa fa-map-marker"></i> {{ $apl->userinfos()?$apl->userinfos->orga_name:$apl->name }}</a></p>
                             @empty
                                 <div class="p-15px-tb p-5px-lr text-center">@lang('app.txt.noinfo')</div>
                             @endforelse
