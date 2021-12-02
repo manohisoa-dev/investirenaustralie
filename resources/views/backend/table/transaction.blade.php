@@ -4,8 +4,8 @@
         <tr>
             <th></th>
             <th>@lang('app.products')</th>
-            @if(\Auth::check()&&\Auth::user()->hasRole(4))
-            <th>@lang('app.user')</th>
+            @if(\Auth::check()&&\Auth::user()->hasRole(3))
+            <th>@lang('app.txt.acheteur')</th>
             @endif
             <th>@lang('app.txt.status')</th>
             {{-- @if($sales[0]->status == 'pinged') --}}
@@ -37,7 +37,13 @@
                     <img class="img-responsive" src="{{asset('images/product.png')}}" style="height:50px">
                 @endif
             </td>
-            <td>{{ $prod->title }}</td> 
+            <td>{{ $prod->title }}</td>
+            @if (Auth::check()&&Auth::user()->hasRole(3))
+                <td>
+                    {{ \App\Models\User::whereId($trans->user_id)->first()->name }}<br/>
+                    <small>{{ \App\Models\User::whereId($trans->user_id)->first()->immat }}</small>
+                </td>
+            @endif
             <td>
                 @php
                     $member=App\Models\User::whereId($trans->user_id)->first();
@@ -133,7 +139,9 @@
                     @endif
                 @else
                     @if ($member->isMove())
-                        @if ($trans->status == 2)
+                        @if ($trans->status != 9 && $prod->isReserved())
+                            <span class="badge badge-danger">@lang('app.txt.product_already_reserved')</span>
+                        @elseif ($trans->status == 2)
                             <span class="badge badge-info">@lang('app.txt.transaction_file_create')</span>
                         @elseif ($trans->status == 3)
                             <span class="badge badge-info">@lang('app.txt.ca_send')</span>
@@ -172,7 +180,9 @@
                         @endif 
                        
                     @else
-                        @if ($trans->status == 2)
+                        @if ($trans->status != 9 && $prod->isReserved())
+                            <span class="badge badge-danger">@lang('app.txt.product_already_reserved')</span>
+                        @elseif ($trans->status == 2)
                             <span class="badge badge-info">@lang('app.txt.transaction_file_create')</span>
                         @elseif ($trans->status == 3)
                             <span class="badge badge-info">@lang('app.txt.ca_send')</span>

@@ -1399,4 +1399,5 @@ return
     'txt.surface_vente' => 'Sales area',
     'txt.client_parking' => 'Customer parking',
     'txt.number_parking' => 'Number of parking spots',
+	'txt.acheteur' => 'Buyer',
 ];

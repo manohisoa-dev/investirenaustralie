@@ -1621,4 +1621,5 @@ return
     'txt.number_parking' => 'Nombre de places de parking',
 	'btn.resume' => 'Reprendre',
 	'txt.abandon' => 'Abandonner',
+	'txt.acheteur' => 'Acheteur',
 ];
