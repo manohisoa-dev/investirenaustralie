@@ -35,6 +35,9 @@
             </div>
         </div>
     </div>
+    <div>
+        <a href="{{route('member.transaction')}}" class="m-btn m-btn-theme">@lang('app.btn.cancel')</a>
+    </div>
 </div>
 
 

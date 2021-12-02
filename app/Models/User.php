@@ -1604,7 +1604,7 @@ class User extends Authenticatable {
     }
 
     public function getDossierTransaction() {
-        $dossierTrans = DossierTransaction::where('user_id', $this->id)->where('status','<=',16);
+        $dossierTrans = DossierTransaction::where('user_id', $this->id)->where('status','<=',16)->where('status','>',-2);
 
         return $dossierTrans;
     }

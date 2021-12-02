@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Jleon\LaravelPnotify\Notify;
 use Auth;
 use Validator;
 
@@ -1000,6 +1001,42 @@ class MemberController extends Controller {
         abort(404);
     }
 
+    public function deleteTransaction(Request $request,$idtrans) {
+        $this->middleware('auth');
+        $this->middleware('role:5');
+
+        $doss_trans=DossierTransaction::whereId($idtrans)->first();
+      
+        if ($doss_trans) {   
+            // dossier transaction abandonner
+            $doss_trans_status = $doss_trans->status;
+            
+            DossierTransaction::whereId($idtrans)->update(['status'=>-2, 'deleted_at'=>Carbon::now()]);
+
+            return back();
+        }
+
+        abort(404);
+    }
+    
+    public function abandonTransaction(Request $request,$idtrans) {
+        $this->middleware('auth');
+        $this->middleware('role:5');
+
+        $doss_trans=DossierTransaction::whereId($idtrans)->first();
+      
+        if ($doss_trans) {   
+            // dossier transaction abandonner
+            $doss_trans_status = $doss_trans->status;
+            
+            DossierTransaction::whereId($idtrans)->update(['status'=>-1,'status_end'=>$doss_trans_status]);
+
+            return back();
+        }
+
+        abort(404);
+    }
+
     public function continueTransaction(Request $request,$idtrans) {
         $this->middleware('auth');
         $this->middleware('role:5');
@@ -1010,8 +1047,17 @@ class MemberController extends Controller {
         $user = User::whereId($doss_trans->user_id)->first();
         
         switch ($doss_trans_status) {
-            // dossier transaction créer
+            case '-1':
+                // dossier transaction abandonner
+                $doss_trans_status_end = $doss_trans->status_end;
+                DossierTransaction::whereId($idtrans)->update(['status'=>$doss_trans_status_end,'status_end'=>0]);
+
+                return back();
+                
+                break;
+
             case '0':
+                // dossier transaction créer
                 $dt = Carbon::now();
                 $dtDate = $dt->format('m-d-Y');
                 $dtTime = $dt->format('H:i:m');
@@ -1020,15 +1066,17 @@ class MemberController extends Controller {
                 return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa', ['date'=>$dtDate, 'hour'=>$dtTime, 'name'=>$user->name]))->with('hasAfa',0);
 
                 break;
-            // dossier transaction choisir afa
+
             case '1':
+                // dossier transaction choisir afa
                 $id_dossier_transaction = $user->getUserCurrentTransaction($prod->id);
 
                 return redirect()->route('member.select.afa',$idtrans);
                 
                 break;
-            // dossier transaction AFA selectionner
+
             case '2':
+                // dossier transaction AFA selectionner
                 
                 break;
             case '3':
@@ -1072,8 +1120,18 @@ class MemberController extends Controller {
         $prodUrl = url('product/'.$prod->slug);
         
         switch ($doss_trans_status) {
-            // dossier transaction créer
+            
+            case '-1':
+                // dossier transaction abandonner
+                $doss_trans_status_end = $doss_trans->status_end;
+                DossierTransaction::whereId($idtrans)->update(['status'=>$doss_trans_status_end,'status_end'=>0]);
+
+                return back();
+                
+                break;
+
             case '0':
+                // dossier transaction créer
                 if (!$user->isComplete()) {
                     $completeDossierInscriptionLink = setLinkDynamic(route('member.complete_registration',$prod),strtoupper(trans('app.txt.complete_my_registration_form')));
                     $privacyPolicyLink=setLinkDynamic(route('confidentialities'),trans('app.txt.privacy_policy'));
@@ -1106,8 +1164,9 @@ class MemberController extends Controller {
                 }
                 
                 break;
-            // dossier transaction choisir afa
+
             case '1':
+                // dossier transaction choisir afa
                 $dt = Carbon::now();
                 $dtDate = $dt->format('m-d-Y');
                 $dtTime = $dt->format('H:i:m');
@@ -1115,8 +1174,9 @@ class MemberController extends Controller {
                 return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa', ['date'=>$dtDate, 'hour'=>$dtTime, 'name'=>$user->name]))->with('hasAfa',0);
                 
                 break;
-            // dossier transaction AFA selectionner
+            
             case '2':
+                // dossier transaction AFA selectionner
                 
                 break;
             case '3':

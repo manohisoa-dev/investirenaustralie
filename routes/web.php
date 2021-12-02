@@ -219,6 +219,8 @@ Route::middleware(["auth", "role:5"])->group(function(){
 
         Route::get('carts', 'MemberController@carts')->name('member.carts');
         Route::get('orders', 'MemberController@orders')->name('member.orders');
+        Route::get('deleteTransaction/{idtrans}', 'MemberController@deleteTransaction')->name('member.deleteTransaction');
+        Route::get('abandonTransaction/{idtrans}', 'MemberController@abandonTransaction')->name('member.abandonTransaction');
         Route::get('continueTransactions/{idtrans}', 'MemberController@continueTransaction')->name('member.continueTransaction');
         Route::get('continueTransactionSansDeplacement/{idtrans}', 'MemberController@continueTransactionSansDeplacement')->name('member.continueTransactionSansDeplacement');
         Route::get('transactions', 'MemberController@transactions')->name('member.transaction');

@@ -1561,6 +1561,7 @@ return
 	'txt.advertisers_statement_org_advertiser_prod' => 'Déclaration de l&rsquo;annonceur :<br/>&quot;Nous, annonceur,<br/>* certifions que nous avons le titre légal de disposer de ce produit en tant que:<br/><span class=m-15px-l>o Annonceur légal de ce produit;</span><br/><span class=m-15px-l>o Titulaire d&rsquo;un mandat légal pour vendre ce produit; </span><br/>* certifions la conformité légale de ce produit au regard de la loi australienne sur les investissements directs étrangers appliquée par le Foreign Investment Review Board concernant les propriétés résidentielles, foncières, industrielles ou commerciales.<br/>* dégageons le portail "Investir en Australie" et ses entités directement liées de toute responsabilité pour les conséquences juridiques et financières de la publication sur ledit portail et de la vente de ce produit.&quot;',
     'txt.procedure_achat' => 'Procédure d&rsquo;achat',
     'txt.procedure_achat_encours' => 'Procédure d&rsquo;achat en cours',
+    'txt.procedure_achat_abandonner' => 'Procédure d&rsquo;achat abandonner',
 	'txt.confirmation_error' => 'Confirmation error',
     'txt.status_pending' => 'Inscription en attente',
     'form.programme_commencement_dt' => 'Date de début',
@@ -1581,6 +1582,7 @@ return
 	'txt.awaiting_payment_of_the_bonus_cpc' => 'En attente de paiement du bonus CPC',
 	'txt.payment_successfully_completed' => 'Paiement effectué avec succès',
 	'txt.reserved_product' => 'Produit réservé',
+	'txt.product_already_reserved' => 'Produit déjà réservé',
 	'txt.transaction_file_create' => 'Dossier transaction créer',
 	'txt.complete_registration_file' => 'Dossier d&rsquo;inscription complet',
 	'txt.afa_selectéd' => 'AFA sélectionné',
@@ -1617,4 +1619,6 @@ return
     'txt.surface_vente' => 'Surface de vente',
     'txt.client_parking' => 'Parking client',
     'txt.number_parking' => 'Nombre de places de parking',
+	'btn.resume' => 'Reprendre',
+	'txt.abandon' => 'Abandonner',
 ];
