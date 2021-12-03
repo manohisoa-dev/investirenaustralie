@@ -44,18 +44,35 @@ class ProductController extends Controller {
             $status_prd = 'published';
         }
         $records = Product::allProduitIsole($status_prd);
+
+        // check new afa disponible
+        if(sizeof($records)>0){
+            foreach ($records as $key => $prog) {
+                update_afa_disponible($prog->id);
+            }
+        }
+
         $status = Product::groupBy('status')->pluck('status', 'status');
         return $this->view("index", ['records' => $records, 'status' => $status,
             'statusPrd' => $status_prd]);
     }
 
     public function programme() {
+
         if (isset($_GET['status'])) {
             $status_pro = $_GET['status'];
         } else {
             $status_pro = 'published';
         }
         $records = Product::allProgramme($status_pro);
+
+        // check new afa disponible
+        if(sizeof($records)>0){
+            foreach ($records as $key => $prog) {
+                update_afa_disponible($prog->id);
+            }
+        }
+
         $status = Product::groupBy('status')->pluck('status', 'status');
         return $this->view("programme", ['records' => $records, 'status' => $status,
             'statusPro' => $status_pro]);
