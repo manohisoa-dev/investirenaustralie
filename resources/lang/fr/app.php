@@ -1586,6 +1586,7 @@ return
 	'txt.reserved_product' => 'Produit réservé',
 	'txt.product_already_reserved' => 'Produit déjà réservé',
 	'txt.transaction_file_create' => 'Dossier transaction créer',
+	'txt.transaction_file' => 'Dossier transaction',
 	'txt.complete_registration_file' => 'Dossier d&rsquo;inscription complet',
 	'txt.afa_selectéd' => 'AFA sélectionné',
 	'txt.ca_send' => 'Conjunction Agreement envoyé',
@@ -1624,4 +1625,6 @@ return
 	'btn.resume' => 'Reprendre',
 	'txt.abandon' => 'Abandonner',
 	'txt.acheteur' => 'Acheteur',
+	'txt.invoices' => 'Factures',
+	'txt.added' => 'Ajouté',
 ];

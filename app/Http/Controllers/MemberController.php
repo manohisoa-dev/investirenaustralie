@@ -1261,8 +1261,10 @@ class MemberController extends Controller {
         $prod_id = $prod->id;
         $prod_cat_id = $prod->category_id;
         $numero = $this->generateNumDossier($prod_cat_id);
+        $vendeur = $prod->seller_id;
+        $solicitor = $prod->solicitor_id;
         
-        return DossierTransaction::create(['numero'=>$numero, 'user_id'=>$user_id, 'product_id'=>$prod_id, 'status'=>$status]);
+        return DossierTransaction::create(['numero'=>$numero, 'user_id'=>$user_id, 'product_id'=>$prod_id, 'status'=>$status, 'sollicitor_id'=>$solicitor, 'vendeur_id'=>$vendeur]);
     }
 
     /*

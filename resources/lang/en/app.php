@@ -1364,6 +1364,7 @@ return
 	'txt.share' => 'Share',
     'txt.autocomplete_error' => 'Please choose a valid address as suggested by google',
 	'txt.transaction_file_create' => 'Transaction file create',
+	'txt.transaction_file' => 'Transaction file',
 	'txt.complete_registration_file' => 'Complete registration file',
 	'txt.afa_selectéd' => 'AFA selected',
 	'txt.ca_send' => 'Conjunction agreement sent',
@@ -1402,4 +1403,6 @@ return
 	'txt.acheteur' => 'Buyer',
 	'txt.submit_ca' => 'Submit CA',
 	'txt.submit_eoi' => 'Submit EOI',
+	'txt.invoices' => 'Invoices',
+	'txt.added' => 'Added',
 ];
