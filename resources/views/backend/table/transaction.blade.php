@@ -241,7 +241,7 @@
                             @elseif ($trans->status == 0 || $trans->status == 1)
                                 <a href="{{route('member.continueTransaction',$trans)}}" class="m-btn m-btn-theme2nd m-btn-sm">{{$btnText}}</a>
                             @elseif ($trans->status == 3 )
-                                <a href="javascript:void(0)" onclick="submitFile()" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.btn.submit').' Mandate'}}</a>
+                                <a href="javascript:void(0)" onclick="submitFile(1,{{$trans->status}},{{Auth::user()->role}},{{$trans->id}})" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.btn.submit').' Mandate'}}</a>
                             @elseif ($trans->status == 4 )
                                 <a href="javascript:void(0)" onclick="submitMove({{$trans->id}})" class="btn btn-success btn-sm" style="margin-bottom:5px;">{{trans('app.btn.i_move')}}</a>
                                 <a href="javascript:void(0)" onclick="submitNoMove({{$trans->id}})" class="btn btn-danger btn-sm">{{trans('app.btn.i_not_moving')}}</a>    
@@ -256,9 +256,9 @@
                             @elseif ($trans->status == 7 )
                                 <small style="margin-bottom:5px;">@lang('app.waiting')</small>
                             @elseif ($trans->status == 8 )
-                                <a href="javascript:void(0)" onclick="confirmDossierTrans()" class="btn btn-success btn-sm">{{trans('app.btn.confirm_purchase')}}</a>
+                                <a href="javascript:void(0)" onclick="confirmDossierTrans({{$trans->id}})" class="btn btn-success btn-sm">{{trans('app.btn.confirm_purchase')}}</a>
                             @elseif ($trans->status == 9 )
-                                <a href="javascript:void(0)" onclick="submitFile()" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.sent_eoi_finalized')}}</a>
+                                <a href="javascript:void(0)" onclick="submitFile(1,{{$trans->status}},{{Auth::user()->role}},{{$trans->id}})" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.sent_eoi_finalized')}}</a>
                             @elseif ($trans->status == 12 )
                                 <small class="text-info" style="margin-bottom:5px;padding:10px;">@lang('app.txt.waiting_initial_deposit') </small>
                             @elseif ($trans->status == 13 )
@@ -289,13 +289,13 @@
                             @elseif ($trans->status == 1)
                                 <a href="{{route('member.continueTransactionSansDeplacement',$trans)}}" class="m-btn m-btn-theme2nd m-btn-sm">{{$btnText}}</a>
                             @elseif ($trans->status == 3 )
-                                <a href="javascript:void(0)" onclick="submitFile()" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.btn.submit').' Mandate'}}</a>
+                                <a href="javascript:void(0)" onclick="submitFile(0,{{$trans->status}},{{Auth::user()->role}},{{$trans->id}})" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.btn.submit').' Mandate'}}</a>
                             @elseif ($trans->status == 7 )
                                 <small style="margin-bottom:5px;">@lang('app.waiting')</small>
                             @elseif ($trans->status == 8 )
-                                <a href="javascript:void(0)" onclick="confirmDossierTrans()" class="btn btn-success btn-sm">{{trans('app.btn.confirm_purchase')}}</a>
+                                <a href="javascript:void(0)" onclick="confirmDossierTrans({{$trans->id}})" class="btn btn-success btn-sm">{{trans('app.btn.confirm_purchase')}}</a>
                             @elseif ($trans->status == 9 )
-                                <a href="javascript:void(0)" onclick="submitFile()" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.sent_eoi_finalized')}}</a>
+                                <a href="javascript:void(0)" onclick="submitFile(0,{{$trans->status}},{{Auth::user()->role}},{{$trans->id}})" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.sent_eoi_finalized')}}</a>
                             @elseif ($trans->status == 12 )
                                 <small class="text-info" style="margin-bottom:5px;padding:10px;">@lang('app.txt.waiting_initial_deposit') </small>
                             @elseif ($trans->status == 13 )
@@ -329,7 +329,7 @@
                             }
                         @endphp
                         @if ($trans->status == 2)
-                            <a href="javascript:void(0)" onclick="submitFile()" class="m-btn m-btn-theme2nd m-btn-sm">{{$btnText}}</a>
+                            <a href="javascript:void(0)" onclick="submitFile(1,{{$trans->status}},{{Auth::user()->role}},{{$trans->id}})" class="m-btn m-btn-theme2nd m-btn-sm">{{$btnText}}</a>
                         @elseif ($trans->status == 3 || $trans->status == 4 )
                             <small style="margin-bottom:5px;">@lang('app.waiting')</small>
                         @elseif ($trans->status == 5 )
@@ -339,10 +339,10 @@
                         @elseif ($trans->status == 7 )
                             <a href="javascript:void(0)" onclick="completeDossTrans()" class="m-btn m-btn-theme2nd">@lang('app.txt.complete_transaction_file_info')</a>
                         @elseif ($trans->status == 10 )
-                            <a href="javascript:void(0)" onclick="submitFile()" class="btn btn-success btn-sm" style="margin-bottom:5px;">{{trans('app.txt.upload_eoi_finalized')}}</a>
+                            <a href="javascript:void(0)" onclick="submitFile(1,{{$trans->status}},{{Auth::user()->role}},{{$trans->id}})" class="btn btn-success btn-sm" style="margin-bottom:5px;">{{trans('app.txt.upload_eoi_finalized')}}</a>
                             <a href="javascript:void(0)" onclick="resendFile({{$trans->id}})" class="btn btn-warning btn-sm">{{trans('app.txt.resend_eoi_finalized_to_seller')}}</a>    
                         @elseif ($trans->status == 11 )
-                            <a href="javascript:void(0)" onclick="submitEoi()" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.send_finalized_eoi')}}</a>
+                            <a href="javascript:void(0)" onclick="submitEoi({{$trans->id}})" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.send_finalized_eoi')}}</a>
                         @elseif ($trans->status == 12 )
                             <a href="javascript:void(0)" onclick="initialDepositConfirm({{$trans->id}})" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.initial_deposit_confirmation')}}</a>
                         @elseif ($trans->status == 13 )
@@ -366,7 +366,7 @@
                             }
                         @endphp
                         @if ($trans->status == 2)
-                            <a href="javascript:void(0)" onclick="submitFile()" class="m-btn m-btn-theme2nd m-btn-sm">{{$btnText}}</a>
+                            <a href="javascript:void(0)" onclick="submitFile(0,{{$trans->status}},{{Auth::user()->role}},{{$trans->id}})" class="m-btn m-btn-theme2nd m-btn-sm">{{$btnText}}</a>
                         @elseif ($trans->status == 3 || $trans->status == 4 )
                             <small style="margin-bottom:5px;">@lang('app.waiting')</small>
                         @elseif ($trans->status == 5 )
@@ -376,10 +376,10 @@
                         @elseif ($trans->status == 7 )
                             <a href="javascript:void(0)" onclick="completeDossTrans()" class="m-btn m-btn-theme2nd">@lang('app.txt.complete_transaction_file_info')</a>
                         @elseif ($trans->status == 10 )
-                            <a href="javascript:void(0)" onclick="submitFile()" class="btn btn-success btn-sm" style="margin-bottom:5px;">{{trans('app.txt.upload_eoi_finalized')}}</a>
+                            <a href="javascript:void(0)" onclick="submitFile(0,{{$trans->status}},{{Auth::user()->role}},{{$trans->id}})" class="btn btn-success btn-sm" style="margin-bottom:5px;">{{trans('app.txt.upload_eoi_finalized')}}</a>
                             <a href="javascript:void(0)" onclick="resendFile({{$trans->id}})" class="btn btn-warning btn-sm">{{trans('app.txt.resend_eoi_finalized_to_seller')}}</a>    
                         @elseif ($trans->status == 11 )
-                            <a href="javascript:void(0)" onclick="submitEoi()" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.send_finalized_eoi')}}</a>
+                            <a href="javascript:void(0)" onclick="submitEoi({{$trans->id}})" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.send_finalized_eoi')}}</a>
                         @elseif ($trans->status == 12 )
                             <a href="javascript:void(0)" onclick="initialDepositConfirm({{$trans->id}})" class="m-btn m-btn-theme2nd m-btn-sm">{{trans('app.txt.initial_deposit_confirmation')}}</a>
                         @elseif ($trans->status == 13 )
@@ -401,74 +401,6 @@
         @endforeach
     </tbody>
 </table>
-
-{{-- Upload Modal --}}
-<div id="uploadModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog">
-        <div class="modal-content white-bg">
-            <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
-                <h4 class="modal-title white-color text-center">{{ strtoupper(trans('app.txt.submit_contract_signed')) }} </h4>
-                <button type="button" class="close" data-dismiss="modal" onclick="closeModal()" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body"> 
-                <form action="" id="formUpload" enctype="multipart/form-data">
-                    <div class="form-group ">
-                        <input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
-                        <input type="hidden" name="id_doss_trans" id="id_doss_trans" value="{{$trans->id}}">
-                        @php
-                            // avec déplacement
-                            if(Auth::user()->isMove()){
-                                if($trans->status==9 || $trans->status==10){
-                                    $filename='"'.strtolower(trans('app.txt.eoi')).'"';
-                                }
-                                elseif($trans->status==3){
-                                    $filename='"'.strtolower(trans('app.txt.conjunction_agreement')).'"';
-                                }elseif($trans->status==4){
-                                    $filename='"'.strtolower(trans('app.txt.research_mandate')).'"';
-                                }else{
-                                    $filename=strtolower(trans('app.txt.contract'));
-                                }
-                            }else{
-                                // sans déplacement
-                                if($trans->status==9 || $trans->status==10){
-                                    $filename='"'.strtolower(trans('app.txt.eoi')).'"';
-                                }
-                                elseif($trans->status==3){
-                                    $filename='"'.strtolower(trans('app.txt.research_mandate')).'"';
-                                }elseif($trans->status==4){
-                                    $filename='"'.strtolower(trans('app.txt.conjunction_agreement')).'"';
-                                }else{
-                                    $filename=strtolower(trans('app.txt.contract'));
-                                }
-                            }
-                        @endphp
-                        <label for="">@lang('app.txt.please_choose_your_signed_contract',['filename'=>$filename]) *</label>
-                        <input type="file" required name="file_ca" id="file_ca" accept="application/pdf">
-                    </div>
-                    <hr/>
-                    <div class="input-group">
-                        <a type="button" class="m-btn m-btn-theme m-10px-r" href="javascript:void(0)" data-dismiss="modal">@lang('app.btn.cancel')</a>
-                        @if (Auth::user()->hasRole(5))
-                            @if ($trans->status == 9)
-                                <button type="button" onclick="sendEoi()" class="m-btn m-btn-theme2nd" id="btn_send_contract">@lang('app.btn.send')</button>
-                            @else
-                                <button type="button" onclick="sendMr()" class="m-btn m-btn-theme2nd" id="btn_send_contract">@lang('app.btn.send')</button>
-                            @endif
-                        @else
-                            @if ($trans->status == 10)
-                                <button type="button" onclick="sendEoiFinalized()" class="m-btn m-btn-theme2nd" id="btn_send_contract">@lang('app.btn.send')</button>
-                            @else
-                                <button type="button" onclick="sendCa()" class="m-btn m-btn-theme2nd" id="btn_send_contract">@lang('app.btn.send')</button>
-                            @endif
-                        @endif
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- Modal to complete dossier transaction information -->
 <div id="completeDossierTransactionModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
@@ -548,148 +480,271 @@
     </div>
 </div>
 
-<!-- Modal to confirm dossier transaction information -->
-@if($trans->status >= 8)
-<div id="confirmDossierTransactionModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content white-bg">
-            <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
-                <h4 class="modal-title white-color"> @lang('app.message')<span></span></h4>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route("member.dossier.confirm_dt") }}" id="comfirmInformationDossierTransactionForm" method="POST">
-                    {{ csrf_field() }}
-                    <input type="hidden" name="doss_id" value="{{$trans->id}}">
-                    @php
-                        $dt = Carbon\Carbon::now();
-                        $dtDate = $dt->format('m-d-Y');
-                        $dtTime = $dt->format('H:i:m');
-                        $member = App\Models\User::whereId($trans->user_id)->first();
-                        $user_name= $member->isPerson()?$member->userinfos->first_name.' '.$member->userinfos->last_name:$member->userinfos->orga_name;
-                        $afa = $member->afa->name;
-                        $product = App\Models\Product::whereId($trans->product_id)->first();
-                        $city = $product->location->locality;
-                        $etat = $product->location->area_level_1;
-                        $title = $product->title;
-                        $lotLevel = $trans->lot_level;
-                        $lotType = $trans->lot_type;
-                        $lotId = $trans->lot_id;
-                        $finalSalesPrice = $trans->final_sales_price;
-   
-                        // Send message and notif email to membre after transaction information sent
-                        // get template mail AFA
-                        $template = App\Models\MailsTemplate::where('id', 32)->get();
-                        App::setLocale($member->language);
-                        $lang = $member->language;
-                        $body = 'template_' . $lang;
-                        $sujet_tpl = 'sujet_'.$lang;
-                        $confirmLink = setLinkDynamic(route('member.transaction'),strtoupper(trans('app.btn.confirm_purchase')));
-                        $vars = array(
-                            '{date}' => $dtDate,
-                            '{heure}' => $dtTime,
-                            '{name}' => $user_name,
-                            '{afa}' => $afa,
-                            '{city}' => $city,
-                            '{state}' => $etat,
-                            '{title}' => $title,
-                            '{lottype}' => $lotType,
-                            '{lotid}' => $lotId,
-                            '{lotlevel}' => $lotLevel,
-                            '{price}' => $finalSalesPrice,
-                            '{confirmLink}' => '',
-                            '{checkbox1}' => '<input type="checkbox" name="checkbox1">',
-                            '{checkbox2}' => '<input type="checkbox" name="checkbox2">',
-                            '{checkbox3}' => '<input type="checkbox" name="checkbox3">',
-                            '{checkbox4}' => '<input type="checkbox" name="checkbox4">',
-                            '{checkbox5}' => '<input type="checkbox" name="checkbox5">',
-                            '{checkbox6}' => '<input type="checkbox" name="checkbox6">',
-                        );
-                        $sujet = $template[0]->$sujet_tpl;
-                        $contenu = strtr($template[0]->$body, $vars);
-                    @endphp
-                    
-                    {!! $contenu !!}
-
-                    <div class="float-right m-15px-t">
-                        <button type="reset" class="m-btn m-btn-theme" data-dismiss="modal" id="btn_cancel">@lang("app.btn.cancel")</button> 
-                        <button type="submit" class="m-btn m-btn-theme2nd"  id="btn_save">@lang("app.txt_confirm_btn")</button></div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                @lang('app.form.required')
+@foreach ($items as $item)
+    {{-- Upload Modal --}}
+    <div id="uploadModal_{{$item->id}}" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content white-bg">
+                <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
+                    <h4 class="modal-title white-color text-center"></h4>
+                    <button type="button" class="close" data-dismiss="modal" onclick="closeModal()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body"> 
+                    <form action="" id="formUpload" enctype="multipart/form-data">
+                        <div class="form-group ">
+                            <input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
+                            <input type="hidden" name="id_doss_trans" id="id_doss_trans" value="{{$item->id}}">
+                            <label for="" class="modal-label"></label>
+                            <input type="file" required name="file_ca" id="file_ca" accept="application/pdf">
+                        </div>
+                        <hr/>
+                        <div class="input-group">
+                            <a type="button" class="m-btn m-btn-theme m-10px-r" href="javascript:void(0)" data-dismiss="modal">@lang('app.btn.cancel')</a>
+                            @if (Auth::user()->hasRole(5))
+                                @if ($item->status == 9)
+                                    <button type="button" onclick="sendEoi()" class="m-btn m-btn-theme2nd" id="btn_send_contract">@lang('app.btn.send')</button>
+                                @else
+                                    <button type="button" onclick="sendMr()" class="m-btn m-btn-theme2nd" id="btn_send_contract">@lang('app.btn.send')</button>
+                                @endif
+                            @else
+                                @if ($item->status == 10)
+                                    <button type="button" onclick="sendEoiFinalized()" class="m-btn m-btn-theme2nd" id="btn_send_contract">@lang('app.btn.send')</button>
+                                @else
+                                    <button type="button" onclick="sendCa()" class="m-btn m-btn-theme2nd" id="btn_send_contract">@lang('app.btn.send')</button>
+                                @endif
+                            @endif
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
-@endif
 
-<!-- Modal to send finalized eoi with afa -->
-@if($trans->status >= 10)
-<div id="sellingProcessClearanceModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content white-bg">
-            <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
-                <h4 class="modal-title white-color"> @lang('app.message')<span></span></h4>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route("afa.dossier.send_eoi_finalized") }}" id="sellingProcessClearanceForm" method="POST">
-                    {{ csrf_field() }}
-                    <input type="hidden" name="doss_id" value="{{$trans->id}}">
-                    @php
-                        $user = App\Models\User::whereId($trans->user_id)->first();
-                        $afa = App\Models\User::whereId($trans->afa_id)->first();
-                        $seller = App\Models\User::whereId($product->seller_id)->first();
-                        $template = App\Models\MailsTemplate::where('id', 37)->get();
-                        App::setLocale(Auth::user()->language);
-                        $lang = 'en';
-                        $body = 'template_' . $lang;
-                        $sujet_tpl = 'sujet_'.$lang;
-                        $pathLink = url('/uploads/pdf/transaction/').'/'.$trans->eoi_finalize_file_name_afa;
-                        $downloadeoiLink = '<b>'.setLinkDynamic($pathLink,strtoupper(trans('app.txt.eoi_finalized'))).'</b>';
-                        $vars = array(
-                            '{date}' => Carbon\Carbon::now()->toFormattedDateString(),
-                            '{afa}' => $afa?$afa->name:'',
-                            '{name}' => $user->isPerson()?$user->userinfos->first_name.' '.$user->userinfos->last_name:$user->userinfos->orga_name,
-                            '{seller}' => $seller?$seller->name:'',
-                            '{sellerparentcompany}' => $seller?$seller->userinfos->orga_parent_name:'',
-                            '{title}' => $product->title,
-                            '{lottype}' => $trans->lot_type,
-                            '{lotlevel}' => $trans->lot_level,
-                            '{lotid}' => $trans->lot_id,
-                            '{price}' => $trans->final_sales_price,
-                            '{checkbox}' => '<input type="checkbox" name="confirm_firb" id="confirm_firb">',
-                            '{downloadLink}' => $downloadeoiLink,
-                        );
-                        $sujet = $template[0]->$sujet_tpl;
-                        $contenu = strtr($template[0]->$body, $vars);
-                        $content = ['title' => '', 'body' => $contenu];
-                    @endphp
-                    
-                    {!! $contenu !!}
-
-                    <div class="float-right m-15px-t">
-                        <button type="reset" class="m-btn m-btn-theme" data-dismiss="modal" id="btn_cancel">@lang("app.btn.cancel")</button> 
-                        <button type="submit" class="m-btn m-btn-theme2nd"  id="btn_save">@lang("app.txt_confirm_btn")</button></div>
+    <!-- Modal to confirm dossier transaction information -->
+    @if($item->status >= 8)
+        <div id="confirmDossierTransactionModal_{{$item->id}}" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content white-bg">
+                    <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
+                        <h4 class="modal-title white-color"> @lang('app.message')<span></span></h4>
                     </div>
-                </form>
+                    <div class="modal-body">
+                        <form action="{{ route("member.dossier.confirm_dt") }}" id="comfirmInformationDossierTransactionForm" method="POST">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="doss_id" value="{{$item->id}}">
+                            @php
+                                $dt = Carbon\Carbon::now();
+                                $dtDate = $dt->format('m-d-Y');
+                                $dtTime = $dt->format('H:i:m');
+                                $member = App\Models\User::whereId($item->user_id)->first();
+                                $user_name= $member->isPerson()?$member->userinfos->first_name.' '.$member->userinfos->last_name:$member->userinfos->orga_name;
+                                $afa = $member->afa->name;
+                                $product = App\Models\Product::whereId($item->product_id)->first();
+                                $city = $product->location->locality;
+                                $etat = $product->location->area_level_1;
+                                $title = $product->title;
+                                $lotLevel = $item->lot_level;
+                                $lotType = $item->lot_type;
+                                $lotId = $item->lot_id;
+                                $finalSalesPrice = $item->final_sales_price;
+        
+                                // Send message and notif email to membre after transaction information sent
+                                // get template mail AFA
+                                $template = App\Models\MailsTemplate::where('id', 32)->get();
+                                App::setLocale($member->language);
+                                $lang = $member->language;
+                                $body = 'template_' . $lang;
+                                $sujet_tpl = 'sujet_'.$lang;
+                                $confirmLink = setLinkDynamic(route('member.transaction'),strtoupper(trans('app.btn.confirm_purchase')));
+                                $vars = array(
+                                    '{date}' => $dtDate,
+                                    '{heure}' => $dtTime,
+                                    '{name}' => $user_name,
+                                    '{afa}' => $afa,
+                                    '{city}' => $city,
+                                    '{state}' => $etat,
+                                    '{title}' => $title,
+                                    '{lottype}' => $lotType,
+                                    '{lotid}' => $lotId,
+                                    '{lotlevel}' => $lotLevel,
+                                    '{price}' => $finalSalesPrice,
+                                    '{confirmLink}' => '',
+                                    '{checkbox1}' => '<input type="checkbox" name="checkbox1">',
+                                    '{checkbox2}' => '<input type="checkbox" name="checkbox2">',
+                                    '{checkbox3}' => '<input type="checkbox" name="checkbox3">',
+                                    '{checkbox4}' => '<input type="checkbox" name="checkbox4">',
+                                    '{checkbox5}' => '<input type="checkbox" name="checkbox5">',
+                                    '{checkbox6}' => '<input type="checkbox" name="checkbox6">',
+                                );
+                                $sujet = $template[0]->$sujet_tpl;
+                                $contenu = strtr($template[0]->$body, $vars);
+                            @endphp
+                            
+                            {!! $contenu !!}
+        
+                            <div class="float-right m-15px-t">
+                                <button type="reset" class="m-btn m-btn-theme" data-dismiss="modal" id="btn_cancel">@lang("app.btn.cancel")</button> 
+                                <button type="submit" class="m-btn m-btn-theme2nd"  id="btn_save">@lang("app.txt_confirm_btn")</button></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        @lang('app.form.required')
+                    </div>
+                </div>
             </div>
-            <div class="modal-footer">
-                @lang('app.form.required')
+        </div> 
+    @endif
+    
+    <!-- Modal to send finalized eoi with afa -->
+    @if($item->status >= 10)
+        <div id="sellingProcessClearanceModal_{{$item->id}}" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content white-bg">
+                    <div class="modal-header border-radius-0" style="background-color: #AE4435 !important;">
+                        <h4 class="modal-title white-color"> @lang('app.message')<span></span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route("afa.dossier.send_eoi_finalized") }}" id="sellingProcessClearanceForm" method="POST">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="doss_id" value="{{$item->id}}">
+                            @php
+                                $user = App\Models\User::whereId($item->user_id)->first();
+                                $afa = App\Models\User::whereId($item->afa_id)->first();
+                                $seller = App\Models\User::whereId($product->seller_id)->first();
+                                $template = App\Models\MailsTemplate::where('id', 37)->get();
+                                App::setLocale(Auth::user()->language);
+                                $lang = 'en';
+                                $body = 'template_' . $lang;
+                                $sujet_tpl = 'sujet_'.$lang;
+                                $pathLink = url('/uploads/pdf/transaction/').'/'.$item->eoi_finalize_file_name_afa;
+                                $downloadeoiLink = '<b>'.setLinkDynamic($pathLink,strtoupper(trans('app.txt.eoi_finalized'))).'</b>';
+                                $vars = array(
+                                    '{date}' => Carbon\Carbon::now()->toFormattedDateString(),
+                                    '{afa}' => $afa?$afa->name:'',
+                                    '{name}' => $user->isPerson()?$user->userinfos->first_name.' '.$user->userinfos->last_name:$user->userinfos->orga_name,
+                                    '{seller}' => $seller?$seller->name:'',
+                                    '{sellerparentcompany}' => $seller?$seller->userinfos->orga_parent_name:'',
+                                    '{title}' => $product->title,
+                                    '{lottype}' => $item->lot_type,
+                                    '{lotlevel}' => $item->lot_level,
+                                    '{lotid}' => $item->lot_id,
+                                    '{price}' => $item->final_sales_price,
+                                    '{checkbox}' => '<input type="checkbox" name="confirm_firb" id="confirm_firb">',
+                                    '{downloadLink}' => $downloadeoiLink,
+                                );
+                                $sujet = $template[0]->$sujet_tpl;
+                                $contenu = strtr($template[0]->$body, $vars);
+                                $content = ['title' => '', 'body' => $contenu];
+                            @endphp
+                            
+                            {!! $contenu !!}
+        
+                            <div class="float-right m-15px-t">
+                                <button type="reset" class="m-btn m-btn-theme" data-dismiss="modal" id="btn_cancel">@lang("app.btn.cancel")</button> 
+                                <button type="submit" class="m-btn m-btn-theme2nd"  id="btn_save">@lang("app.txt_confirm_btn")</button></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        @lang('app.form.required')
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-@endif
+    @endif
+@endforeach
 
 {{$items->links()}}
 
 @push('script')
     {!! NoCaptcha::renderJs() !!}
     <script>
-        function submitFile(){
+        function submitFile(move,status,role,dossId){
+            var idModal = '#uploadModal_'+dossId;
+            var idModalTitle = '#uploadModal_'+dossId+' .modal-title';
+            var idModalLabel = '#uploadModal_'+dossId+' .modal-label';
+
+            // role afa
+            if(role == 3){
+                // Is move
+                if(move==1){
+                    switch (status) {
+                        case 2:
+                            $(idModalTitle).html("{{strtoupper(trans('app.txt.submit_ca'))}}");
+                            $(idModalLabel).html("{{trans('app.txt.please_choose_your_signed_contract',['filename'=>strtolower(trans('app.txt.conjunction_agreement'))])}}"+" *");
+                            break;
+                        
+                        case 10:
+                            $(idModalTitle).html("{{strtoupper(trans('app.txt.submit_eoi'))}}");
+                            $(idModalLabel).html("{{trans('app.txt.please_choose_your_signed_contract',['filename'=>strtolower(trans('app.txt.eoi'))])}}"+" *");
+                            break;
+ 
+                        default:
+                            $(idModalTitle).html("{{strtoupper(trans('app.txt.submit_contract_signed'))}}");
+                            $(idModalLabel).html("{{trans('app.txt.please_choose_your_signed_contract',['filename'=>strtolower(trans('app.txt.contract'))])}}"+" *");
+                            break;
+                    }
+                }else{
+                    switch (status) {
+                        case 2:
+                            $(idModalTitle).html("{{strtoupper(trans('app.txt.submit_ca'))}}");
+                            $(idModalLabel).html("skdfklsdflj");
+                            break;
+                        
+                        case 10:
+                            $(idModalTitle).html("{{strtoupper(trans('app.txt.submit_eoi'))}}");
+                            $(idModalLabel).html("{{trans('app.txt.please_choose_your_signed_contract',['filename'=>strtolower(trans('app.txt.eoi'))])}}"+" *");
+                            break;
+                    
+                        default:
+                            $(idModalTitle).html("{{strtoupper(trans('app.txt.submit_contract_signed'))}}");
+                            break;
+                    }
+                }
+            }else{
+                // Is move
+                if(move==1){
+                    switch (status) {
+                        case 3:
+                            $(idModalTitle).html("{{strtoupper(trans('app.txt.submit_a_search_mandate'))}}");
+                            $(idModalLabel).html("{{trans('app.txt.please_choose_your_signed_contract',['filename'=>strtolower(trans('app.txt.research_mandate'))])}}"+" *");
+                            break;
+                        
+                        case 9:
+                            $(idModalTitle).html("{{strtoupper(trans('app.txt.submit_eoi'))}}");
+                            $(idModalLabel).html("{{trans('app.txt.please_choose_your_signed_contract',['filename'=>strtolower(trans('app.txt.eoi'))])}}"+" *");
+                            break;
+ 
+                        default:
+                            $(idModalTitle).html("{{strtoupper(trans('app.txt.submit_contract_signed'))}}");
+                            $(idModalLabel).html("{{trans('app.txt.please_choose_your_signed_contract',['filename'=>strtolower(trans('app.txt.contract'))])}}"+" *");
+                            break;
+                    }
+                }else{
+                    switch (status) {
+                        case 3:
+                            $(idModalTitle).html("{{strtoupper(trans('app.txt.submit_a_search_mandate'))}}");
+                            $(idModalLabel).html("{{trans('app.txt.please_choose_your_signed_contract',['filename'=>strtolower(trans('app.txt.research_mandate'))])}}"+" *");
+                            break;
+                        
+                        case 9:
+                            $(idModalTitle).html("{{strtoupper(trans('app.txt.submit_eoi'))}}");
+                            $(idModalLabel).html("{{trans('app.txt.please_choose_your_signed_contract',['filename'=>strtolower(trans('app.txt.eoi'))])}}"+" *");
+                            break;
+                    
+                        default:
+                            $(idModalTitle).html("{{strtoupper(trans('app.txt.submit_contract_signed'))}}");
+                            break;
+                    }
+                }
+            }
+            
+            
             // show modal upload
-            $('#uploadModal').modal('show');
+            $(idModal).modal('show');
         }
 
         function sendCa(){
@@ -938,8 +993,11 @@
             $('#completeDossierTransactionModal').modal('show');
         }
 
-        function confirmDossierTrans(){
-            $('#confirmDossierTransactionModal').modal('show');
+        function confirmDossierTrans(dossTransId){
+            var dossId = dossTransId;
+            var id = '#confirmDossierTransactionModal_'+dossId;
+            
+            $(id).modal('show');
         }
 
         function sendEoi(){
@@ -1046,8 +1104,10 @@
             });  
         }
 
-        function submitEoi(doss_id){
-            $('#sellingProcessClearanceModal').modal('show');
+        function submitEoi(dossTransId){
+            var dossId = dossTransId;
+            var id = '#sellingProcessClearanceModal_'+dossId;
+            $(id).modal('show');
         }
 
         $(document).ready(function(){

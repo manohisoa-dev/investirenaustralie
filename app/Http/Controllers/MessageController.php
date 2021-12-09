@@ -7,7 +7,7 @@ use Validator;
 use Session;
 use DB;
 use Illuminate\Http\Request;
-use App\Models\Badword;
+use App\Models\BadWord;
 use App\Models\Message;
 use App\Models\Order;
 use App\Models\User;
@@ -47,8 +47,15 @@ class MessageController extends Controller
             //$hasSendCa = Auth::user()->afaHasSendCa($user_id,$to_id)?1:0; // 0: CA not send  1:CA send 
         }
 
-        $wordsToRemove = Badword::pluck('content')->toArray() ;
+        $wordsToRemove = Badword::pluck('content')->toArray();
+        $wordsToRemoveWithoutP = [];
+        foreach ($wordsToRemove as $key => $value) {
+            preg_match_all( '/<p[^>]*?>(.*?)<\/p>/s', $value, $contents);
+            $wordsToRemoveWithoutP[$key]=$contents[1];
+        }
+        $wordsToRemove=$wordsToRemoveWithoutP;
         $wordsToRemove = array_flatten($wordsToRemove) ;
+
         $filterOptions = array(
             'strictness' => 'permissive',
             'also_check' => $wordsToRemove
@@ -141,8 +148,15 @@ class MessageController extends Controller
             //$hasSendCa = Auth::user()->afaHasSendCa($from_id,$to_id)?1:0; // 0: CA not send  1:CA send 
         }
 
-        $wordsToRemove = Badword::pluck('content')->toArray() ;
+        $wordsToRemove = Badword::pluck('content')->toArray();
+        $wordsToRemoveWithoutP = [];
+        foreach ($wordsToRemove as $key => $value) {
+            preg_match_all( '/<p[^>]*?>(.*?)<\/p>/s', $value, $contents);
+            $wordsToRemoveWithoutP[$key]=$contents[1];
+        }
+        $wordsToRemove=$wordsToRemoveWithoutP;
         $wordsToRemove = array_flatten($wordsToRemove) ;
+
         $filterOptions = array(
             'strictness' => 'permissive',
             'also_check' => $wordsToRemove

@@ -137,6 +137,20 @@ class MemberController extends Controller {
             $lafas)->with('apls', $apls)->with('role', $role)->with('user_name', $user_name)->with('title',
             __('app.contact_' . $role))->with(['data' => $getAllMessage]);
     }
+    
+    public function contactAdmin(Request $request) {
+        $role='admin';
+        $action = route('send.message', ['role' => $role]);
+        $apls = User::ofRole(4)->isActive()->get();
+        $user_name = "";
+        $lafas = User::where('role', 3)->where('status', 'active')->where('location_id',
+            Auth::user()->location_id)->orderBy('id', 'desc')->get();
+        $getAllMessage = $this->getAllMessage($role);
+
+        return view('backend.contact.admin')->with('action', $action)->with('lafas',
+            $lafas)->with('apls', $apls)->with('role', $role)->with('user_name', $user_name)->with('title',
+            __('app.contact_' . $role))->with(['data' => $getAllMessage]);
+    }
 
     public function getAllMessage($role) {
         $to_id = "";
@@ -735,7 +749,41 @@ class MemberController extends Controller {
         // Update ca_id dossier transation
         DossierTransaction::whereId($id_doss_trans)->update(['ca_id'=>$ca->id]);
 
-        return PDF::loadView($pdf_template,['user'=>$user, 'iea'=>$iea])->save($path);
+        // Get Model message
+        $message = App\Models\ModelMessage::where('id', 12)->get();
+        $contenu = '';
+        if (count($message) > 0) {
+            $vars = array(
+                '{afaname}' => $user->afa->userinfos()?$user->afa->userinfos->orga_name:$user->afa->name,
+                '{afaorga_name}' => $user->afa->userinfos()?$user->afa->userinfos->orga_name:$user->afa->name,
+                '{afaorga_abn}' => $user->afa->userinfos()?$user->afa->userinfos->orga_abn:'',
+                '{afaarea_level_1}' => $user->afa->location()?$user->afa->location->area_level_1:'',
+                '{afalocality}' => $user->afa->location()?$user->afa->location->locality:'',
+                '{afaroute}' => $user->afa->location()?$user->afa->location->route:'',
+                '{afapostalCode}' => $user->afa->location()?$user->afa->location->postalCode:'',
+                '{afacountry}' => $user->afa->location()?$user->afa->location->country:'',
+                '{afaorga_phone}' => $user->afa->location()?$user->afa->userinfos->phone:'',
+                '{afaorga_fax}' => $user->afa->userinfos()?$user->afa->userinfos->orga_fax:'',
+                '{afaorga_email}' => $user->afa->userinfos()?$user->afa->userinfos->orga_email:'',
+                '{afaorga_license_number}' => $user->afa->userinfos()?$user->afa->userinfos->orga_license_number:'',
+                '{ieaname}' => $iea['name'],
+                '{ieaabn}' => $iea['abn'],
+                '{iealicense}' => $iea['license'],
+                '{iealicence_expire_date}' => $iea['licence_expire_date'],
+                '{ieaaddress}' => $iea['address'],
+                '{ieamobile}' => $iea['mobile'],
+                '{ieaemail}' => $iea['email'],
+                '{ieadirector}' => $iea['director'],
+                '{ieadirector_license}' => $iea['director_license'],
+                '{ieadirectore_licence_expire_date}' => $iea['directore_licence_expire_date'],
+                '{membername}' => $user->userinfos()?$user->userinfos->first_name.' '.$user->userinfos->last_name:$user->name,
+                '{memberimmat}' => $user->immat,
+                '{memberimmat}' => $user->immat,
+            );
+            $contenu = strtr($message[0]->message_fr, $vars);
+        }
+
+        return PDF::loadView($pdf_template,['content'=>$contenu])->save($path);
     }
 
     // Declanche Mandat de Recherche

@@ -126,9 +126,10 @@ Route::middleware('guest')->group(function(){
 
 });
 
-// Vue pdf contract afa et apl
+// Vue pdf contract afa et apl && conunction agreement && invoice
 Route::get('afa-contract', 'Auth\RegisterController@afaContract');
 Route::get('apl-contract', 'Auth\RegisterController@aplContract');
+Route::get('conjunction-agreement', 'Auth\RegisterController@conjunctionAgreement');
 
 Route::middleware(["auth"])->group(function(){
     // Notification
@@ -212,6 +213,7 @@ Route::middleware(["auth", "role:5"])->group(function(){
         Route::get('searches', 'BackendController@searches');
 
         Route::get('contact/role/{role}', 'MemberController@contact')->name('member.contact');
+        Route::get('contact/admin', 'MemberController@contactAdmin')->name('member.contact.admin');
         // Route::post('contact/{role}', 'MemberController@sendMessage')->name('member.send.message');
         // Route::get('contact/{role}/messages', 'MemberController@getAllMessage')->name('member.get.message');
         // Route::get('contact/messages/unread', 'MemberController@getUnreadMessage')->name('member.get.unread.message');

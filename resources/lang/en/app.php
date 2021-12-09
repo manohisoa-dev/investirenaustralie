@@ -1400,4 +1400,6 @@ return
     'txt.client_parking' => 'Customer parking',
     'txt.number_parking' => 'Number of parking spots',
 	'txt.acheteur' => 'Buyer',
+	'txt.submit_ca' => 'Submit CA',
+	'txt.submit_eoi' => 'Submit EOI',
 ];

@@ -65,7 +65,7 @@
 							</td>
 							<td>
 								@if($item->sollicitor_id != 0)
-									{{ sizeOf(\App\Models\Solicitor::whereId($item->sollicitor_id)->pluck('name'))!=0?\App\Models\User::whereId($item->sollicitor_id)->pluck('name')[0]:'-' }}
+									{{ sizeOf(\App\Models\Solicitor::whereId($item->sollicitor_id)->pluck('cabinet_name'))!=0?\App\Models\User::whereId($item->sollicitor_id)->pluck('name')[0]:'-' }}
 								@endif
 							</td>
 							<td>{{$item->status}}</td>
