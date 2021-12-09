@@ -695,10 +695,14 @@ if (!function_exists('nouvelle_afa_disponible')) {
             $produit_sans_afa = App\Models\Product::wherein('afaId_possible', array(0, ''))->get();
             foreach ($produit_sans_afa as $produit) {
                 $localisation_product = DB::select("SELECT * FROM `localizations` WHERE `id` = $produit->location_id");
-                $afa_possible = DB::select("select `S`.id as id_afa,  ( FLOOR(6371 * ACOS( COS( RADIANS( '$localisation_product[0]->latitude' ) ) * COS( RADIANS( localizations.latitude ) ) * COS( 
-RADIANS( localizations.longitude ) - RADIANS( '$localisation_product[0]->longitude' ) ) + SIN( RADIANS( '$localisation_product[0]->latitude' ) ) * SIN( RADIANS( 
-localizations.latitude ) ) )) ) distance from `users` as `S` left join `localizations` on `S`.`location_id` = 
-`localizations`.`id` where `S`.`role` = 3 and localizations.area_level_1 = '$localisation_product[0]->area_level_1' having distance < 155");
+//                 $afa_possible = DB::select("select `S`.id as id_afa,  ( FLOOR(6371 * ACOS( COS( RADIANS( '$localisation_product[0]->latitude' ) ) * COS( RADIANS( localizations.latitude ) ) * COS( 
+// RADIANS( localizations.longitude ) - RADIANS( '$localisation_product[0]->longitude' ) ) + SIN( RADIANS( '$localisation_product[0]->latitude' ) ) * SIN( RADIANS( 
+// localizations.latitude ) ) )) ) distance from `users` as `S` left join `localizations` on `S`.`location_id` = 
+// `localizations`.`id` where `S`.`role` = 3 and localizations.area_level_1 = '$localisation_product[0]->area_level_1' having distance < 155");
+                $afa_possible = DB::select("select S.id as id_afa,  ( FLOOR(6371 * ACOS( COS( RADIANS( ? ) ) * COS( RADIANS( localizations.latitude ) ) 
+                * COS( RADIANS( localizations.longitude ) - RADIANS( ? ) ) + SIN( RADIANS( ? ) ) * SIN( RADIANS( localizations.latitude ) ) )) ) distance 
+                    from users as S left join localizations on S.location_id = localizations.id where S.role = 3 and localizations.area_level_1 = ? 
+                    having distance < 155", [$localisation_product[0]->latitude,$localisation_product[0]->longitude,$localisation_product[0]->latitude,$localisation_product[0]->area_level_1]);    
                 if (count($afa_possible) > 0) {
                     $tab_afa = array();
                     foreach ($afa_possible as $val) {
@@ -708,6 +712,36 @@ localizations.latitude ) ) )) ) distance from `users` as `S` left join `localiza
                     App\Models\Product::where('id', $produit->id)->update(['afaId_possible' => $id_afa_p]);
                 }
             }
+        }
+        catch (exception $e) {
+            $e->getMessage();
+        }
+    }
+}
+
+if (!function_exists('update_afa_disponible')) {
+    function update_afa_disponible($prod_id) {
+        try {
+            $produits = App\Models\Product::whereId($prod_id)->get();
+
+            foreach ($produits as $produit) {
+                $localisation_product = DB::select("SELECT * FROM `localizations` WHERE `id` = $produit->location_id");        
+                
+                $afa_possible = DB::select("select S.id as id_afa,  ( FLOOR(6371 * ACOS( COS( RADIANS( ? ) ) * COS( RADIANS( localizations.latitude ) ) 
+                * COS( RADIANS( localizations.longitude ) - RADIANS( ? ) ) + SIN( RADIANS( ? ) ) * SIN( RADIANS( localizations.latitude ) ) )) ) distance 
+                    from users as S left join localizations on S.location_id = localizations.id where S.role = 3 and localizations.area_level_1 = ? 
+                    having distance < 155", [$localisation_product[0]->latitude,$localisation_product[0]->longitude,$localisation_product[0]->latitude,$localisation_product[0]->area_level_1]);
+
+            if (count($afa_possible) > 0) {
+                    $tab_afa = array();
+                    foreach ($afa_possible as $val) {
+                        $tab_afa[] = $val->id_afa;
+                    }
+                    $id_afa_p = implode(', ', $tab_afa);
+                    App\Models\Product::where('id', $produit->id)->update(['afaId_possible' => $id_afa_p]);
+                }
+            }
+
         }
         catch (exception $e) {
             $e->getMessage();

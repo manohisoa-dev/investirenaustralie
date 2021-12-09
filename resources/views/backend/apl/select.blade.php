@@ -131,6 +131,8 @@
 
         var _lat = -25.647467468105795;
         var _long = 146.89921517372136;
+        var _lat_user = {{Auth::user()->location()?Auth::user()->location->latitude:0}};
+        var _long_user = {{Auth::user()->location()?Auth::user()->location->longitude:0}};
         
         var iconBase = "{{url('')}}";
         var icons = {
@@ -164,20 +166,22 @@
                 fullscreenControl: true
             });
             
-            _marker = new google.maps.Marker({
-            position: {lat: _lat, lng: _long},
-            icon: icons[5].icon,
-            map: _map,
-            title: "@lang('app.your_location')"
-            });
+            if(_lat_user!=0 && _long_user!=0){
+                _marker = new google.maps.Marker({
+                position: {lat: _lat_user, lng: _long_user},
+                icon: icons[5].icon,
+                map: _map,
+                title: "@lang('app.your_location')"
+                });
 
-            _marker.addListener('dragend', function() {
-                var lat = _marker.getPosition().lat();
-                var lng = _marker.getPosition().lng();
-            });
+                _marker.addListener('dragend', function() {
+                    var lat = _marker.getPosition().lat();
+                    var lng = _marker.getPosition().lng();
+                });
 
-            // show info inwindows
-            infoWindowLocal(_marker,"@lang('app.your_location')");
+                // show info inwindows
+                infoWindowLocal(_marker,"@lang('app.your_location')");
+            }
         
             for (var i = 0; i < datas.length; i++) {
                 placeMarker(datas[i], );

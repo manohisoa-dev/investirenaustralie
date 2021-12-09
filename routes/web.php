@@ -126,9 +126,10 @@ Route::middleware('guest')->group(function(){
 
 });
 
-// Vue pdf contract afa et apl
+// Vue pdf contract afa et apl && conunction agreement && invoice
 Route::get('afa-contract', 'Auth\RegisterController@afaContract');
 Route::get('apl-contract', 'Auth\RegisterController@aplContract');
+Route::get('conjunction-agreement', 'Auth\RegisterController@conjunctionAgreement');
 
 Route::middleware(["auth"])->group(function(){
     // Notification
@@ -212,6 +213,7 @@ Route::middleware(["auth", "role:5"])->group(function(){
         Route::get('searches', 'BackendController@searches');
 
         Route::get('contact/role/{role}', 'MemberController@contact')->name('member.contact');
+        Route::get('contact/admin', 'MemberController@contactAdmin')->name('member.contact.admin');
         // Route::post('contact/{role}', 'MemberController@sendMessage')->name('member.send.message');
         // Route::get('contact/{role}/messages', 'MemberController@getAllMessage')->name('member.get.message');
         // Route::get('contact/messages/unread', 'MemberController@getUnreadMessage')->name('member.get.unread.message');
@@ -219,6 +221,8 @@ Route::middleware(["auth", "role:5"])->group(function(){
 
         Route::get('carts', 'MemberController@carts')->name('member.carts');
         Route::get('orders', 'MemberController@orders')->name('member.orders');
+        Route::get('deleteTransaction/{idtrans}', 'MemberController@deleteTransaction')->name('member.deleteTransaction');
+        Route::get('abandonTransaction/{idtrans}', 'MemberController@abandonTransaction')->name('member.abandonTransaction');
         Route::get('continueTransactions/{idtrans}', 'MemberController@continueTransaction')->name('member.continueTransaction');
         Route::get('continueTransactionSansDeplacement/{idtrans}', 'MemberController@continueTransactionSansDeplacement')->name('member.continueTransactionSansDeplacement');
         Route::get('transactions', 'MemberController@transactions')->name('member.transaction');
@@ -370,6 +374,11 @@ Route::middleware(["auth", "role:5"] || ["auth", "role:3"])->group(function(){
     Route::get('message/all/contact/unread/', 'MessageController@getUnreadCountMessageContact')->name('get.unread.count.message.contact');
     Route::get('message/show/{to_id}', 'MessageController@showContactMessage')->name('show.contact.message');
     Route::post('message/contact', 'MessageController@sendContactMessage')->name('send.contact.message');
+    // Message Member and AFA
+    Route::get('message/list/contact/member/afa', 'MessageController@getListContactMessageMemberAfa')->name('get.list.contact.message.member.afa');
+    Route::get('message/member/afa/show/{to_id}', 'MessageController@showContactMessageMemberAfa')->name('show.contact.message.member.afa');
+    Route::get('message/all/contact/member/afa/unread/', 'MessageController@getUnreadCountMessageContactMemberAfa')->name('get.unread.count.message.contact.member.afa');
+
 });
 
 

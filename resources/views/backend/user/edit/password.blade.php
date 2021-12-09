@@ -20,21 +20,21 @@
                         <div class="form-group form-group-old_password">
                             <label class="col-sm-12 control-label" for="old_password">@lang('app.txt.oldpassword') *</label>
                             <div class="col-sm-12">
-                                <input name="old_password" type="password" class="form-control" id="old_password" placeholder="@lang('app.txt.oldpassword')" value="{{ old('old_password')?old('old_password'):(session()->get('default_password')?session()->get('default_password'):'') }}" {{ Auth::user()->useDefaultPassword()?'readonly':'' }} required>
+                                <input name="old_password" type="password" data-toggle="password" class="form-control" id="old_password" placeholder="@lang('app.txt.oldpassword')" value="{{ old('old_password')?old('old_password'):(session()->get('default_password')?session()->get('default_password'):'') }}" {{ Auth::user()->useDefaultPassword()?'readonly':'' }} required>
                                 <span class="text-danger">{{ $errors->has('old_password') ? $errors->first('old_password') : '' }}</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-12 control-label" for="password">@lang('app.txt.newpassword') *</label>
                             <div class="col-sm-12">
-                                <input name="password" type="password" class="form-control" id="password" placeholder="@lang('app.txt.newpassword')" value="{{ old('password')?old('password'):'' }}" required>
+                                <input name="password" type="password" class="form-control" data-toggle="password" id="password" placeholder="@lang('app.txt.newpassword')" value="{{ old('password')?old('password'):'' }}" required>
                                 <span class="text-danger">{{ $errors->has('password') ? $errors->first('password') : '' }}</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-12 control-label" for="password_confirmation">@lang('app.txt.confirmpassword') *</label>
                             <div class="col-sm-12">
-                                <input name="password_confirmation" type="password" class="form-control" id="password_confirmation" placeholder="@lang('app.txt.confirmpassword')" value="{{ old('password_confirmation')?old('password_confirmation'):'' }}" required>
+                                <input name="password_confirmation" type="password" class="form-control" data-toggle="password" id="password_confirmation" placeholder="@lang('app.txt.confirmpassword')" value="{{ old('password_confirmation')?old('password_confirmation'):'' }}" required>
                                 <span class="text-danger">{{ $errors->has('password_confirmation') ? $errors->first('password_confirmation') : '' }}</span>
                             </div>
                         </div>
@@ -52,6 +52,7 @@
 @push('script')
     <!-- Jquery Validate -->
     <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-show-password.min.js') }}"></script>
     <script>
         $(window).on('load',function(){
             $('#use_default_password').val()?$('#old_password').rules("remove"):'';
@@ -115,9 +116,9 @@
             },
             errorPlacement: function ( error, element ) {
                 if(element.parent().hasClass('input-group')){
-                    error.insertBefore( element.parent() );
+                    error.insertAfter( element.parent() );
                 }else{
-                    error.insertAfter( element );
+                    error.insertBefore( element );
                 }
             },
         });

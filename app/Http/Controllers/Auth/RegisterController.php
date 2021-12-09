@@ -176,7 +176,8 @@ class RegisterController extends Controller
                 );
                 $content = strtr($template->$body, $vars);
                 $content = ['title' => '', 'body' => $content];
-                $user->notify(new ConfirmRegistrationMemberMessage($sujet,$content));
+                // $user->notify(new ConfirmRegistrationMemberMessage($sujet,$content));
+                Mail::to($user->email)->send(new MailTemplate($content, $sujet));
                 $alert =trans('app.txt.alert_success');
             }else{
                 return abort(404);
@@ -232,7 +233,8 @@ class RegisterController extends Controller
                 $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
                 $content = strtr($template->$body, $vars);
                 $content = ['title' => '', 'body' => $content];
-                $user->notify(new ConfirmRegistrationSeller($sujet,$content));
+                // $user->notify(new ConfirmRegistrationSeller($sujet,$content));
+                Mail::to($user->email)->send(new MailTemplate($content, $sujet));
             }else{
                 return abort(404);
             }
@@ -251,7 +253,8 @@ class RegisterController extends Controller
                 $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
                 $content = strtr($template->$body, $vars);
                 $content = ['title' => '', 'body' => $content];
-                $user->notify(new ConfirmRegistrationApl($sujet,$content));
+                // $user->notify(new ConfirmRegistrationApl($sujet,$content));
+                Mail::to($user->email)->send(new MailTemplate($content, $sujet));
                 $alert =trans('app.txt.alert_success_afa');
             }else{
                 return abort(404);
@@ -269,7 +272,8 @@ class RegisterController extends Controller
                 $sujet = $lang=='fr'?$template->sujet_fr:$template->sujet_en;
                 $content = strtr($template->$body, $vars);
                 $content = ['title' => '', 'body' => $content];
-                $user->notify(new ConfirmRegistrationApl($sujet,$content));
+                // $user->notify(new ConfirmRegistrationApl($sujet,$content));
+                Mail::to($user->email)->send(new MailTemplate($content, $sujet));
                 $alert =trans('app.txt.alert_success_apl');
             }else{
                 return abort(404);
@@ -1830,7 +1834,8 @@ class RegisterController extends Controller
             return abort(404);
         }
 
-        $user->notify(new ConfirmRegistrationGetContract($sujet,$content));
+        // $user->notify(new ConfirmRegistrationGetContract($sujet,$content));
+        Mail::to($user->email)->send(new MailTemplate($content, $sujet));
 
         return redirect()->route('home')->with('alert_message',trans('mail.sent'));
     }
@@ -1854,11 +1859,30 @@ class RegisterController extends Controller
     public function confirmRegistrationAfaContinueGetContract(User $user)
     {   
         // Create contract pdf to download
+        // $pdf_template = 'pdf.afa_contract';
         $pdf_template = 'pdf.afa_contract';
         $pdfName = 'partenership_contract_australian_francophone_agency_'.strtolower($user->name);
-        $path = public_path('pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.'afa'.DIRECTORY_SEPARATOR).$pdfName.'.pdf';
-        $downloadPath = url('pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.'afa'). DIRECTORY_SEPARATOR . $pdfName.'.pdf';
-        $this->createContractPdf($user,$pdf_template,$path);
+        $path = public_path('pdf/registrations/afa').'/'.$pdfName.'.pdf';
+        $downloadPath = url('pdf/registrations/afa').'/'. $pdfName.'.pdf';
+        // Get Model message
+        $message = App\Models\ModelMessage::where('id', 10)->get();
+        $contenu = "";
+        if (count($message) > 0) {
+            $vars = array(
+                '{name}' => $user->userinfos->orga_name,
+                '{abn}' => $user->userinfos->orga_abn,
+                '{license_number}' => $user->userinfos->orga_license_number,
+                '{locality}' => $user->location->locality?$user->location->locality:'',
+                '{area_level_1}' => $user->location->area_level_1?$user->location->area_level_1:'',
+                '{postalCode}' => $user->location->postalCode?$user->location->postalCode:'',
+                '{country}' => $user->location->country?countryLongName($user->location->country):'',
+                '{nom}' => $user->userinfos->orga_name,
+                '{logo_lia}'=>asset('images/ico/lia.jpg'),
+                '{logo_iicc}'=>asset('images/ico/iicc.jpg'),
+            );
+            $contenu = strtr($message[0]->message_en, $vars);
+        }
+        $this->createContractPdf($user,$pdf_template,$path,$contenu);
 
         App::setLocale($user->language);
         $lang = $user->language;
@@ -1877,10 +1901,10 @@ class RegisterController extends Controller
             return abort(404);
         }
  
-        // \Mail::to($user->id)->send(new MailTemplate($content,$sujet));
-
+        
         //Send afa contract to user
-        $user->notify(new ConfirmRegistrationSubmitContract($sujet,$content));
+        // $user->notify(new ConfirmRegistrationSubmitContract($sujet,$content));
+        Mail::to($user->email)->send(new MailTemplate($content,$sujet));
         
         return redirect()->route('home')->with('alert_message',trans('mail.sent'));
     }
@@ -1906,7 +1930,8 @@ class RegisterController extends Controller
             return abort(404);
         }
 
-        $user->notify(new ConfirmRegistrationGetContract($sujet,$content));
+        // $user->notify(new ConfirmRegistrationGetContract($sujet,$content));
+        Mail::to($user->email)->send(new MailTemplate($content, $sujet));
 
         return redirect()->route('home')->with('alert_message',trans('mail.sent'));
     }
@@ -1932,9 +1957,29 @@ class RegisterController extends Controller
         // Create contract pdf to download
         $pdf_template = 'pdf.apl_contract';
         $pdfName = 'contrat_de_partenariat_agence_partenaire_locale_'.strtolower($user->name);
-        $path = public_path('pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.'apl'.DIRECTORY_SEPARATOR).$pdfName.'.pdf';
-        $downloadPath = url('pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.'apl'). DIRECTORY_SEPARATOR .$pdfName.'.pdf';
-        $this->createContractPdf($user,$pdf_template,$path);
+        $path = public_path('pdf/registrations/apl').'/'.$pdfName.'.pdf';
+        $downloadPath = url('pdf/registrations/apl').'/'.$pdfName.'.pdf';
+        // Get Model message
+        $message = App\Models\ModelMessage::where('id', 11)->get();
+        $contenu = "";
+        if (count($message) > 0) {
+            $vars = array(
+                '{orga_name}' => $user->userinfos->orga_name,
+                '{orga_type}' => trans('app.txt.'.$user->userinfos->orga_type),
+                '{orga_license_number}' => $user->userinfos->orga_license_number,
+                '{orga_registration_number}' => $user->userinfos?$user->userinfos->orga_registration_number:'',
+                '{orga_adresse}' => $user->location->area_level_1?$user->location->area_level_1:'' .' '.$user->location->locality ? $user->location->locality : '' .' '.$user->location->route ? $user->location->route : ''.' '.$user->location->postalCode?$user->location->postalCode:''.' '.$user->location->country? countryLongName($user->location->country):'',
+                '{contact_name}' => $user->userinfos->contact_name,
+                '{name}' => $user->userinfos->orga_name,
+                '{locality}' => $user->location->locality?$user->location->locality:'',
+                '{country}' => $user->location->country?countryLongName($user->location->country):'',
+                '{iea_link}' => setLinkDynamic(route('home'),'investirenaustralie.com'),
+                '{logo_lia}'=>asset('images/ico/lia.jpg'),
+                '{logo_iicc}'=>asset('images/ico/iicc.jpg'),
+            );
+            $contenu = strtr($message[0]->message_fr, $vars);
+        }
+        $this->createContractPdf($user,$pdf_template,$path,$contenu);
 
         $template = MailsTemplate::where('id', 22)->first();
         App::setLocale($user->language);
@@ -1950,7 +1995,8 @@ class RegisterController extends Controller
         $content = ['title' => '', 'body' => $content];
         
         //Send apl contract to user
-        $user->notify(new ConfirmRegistrationSubmitContract($sujet,$content));
+        // $user->notify(new ConfirmRegistrationSubmitContract($sujet,$content));
+        Mail::to($user->email)->send(new MailTemplate($content, $sujet));
         
         return redirect()->route('home')->with('alert_message',trans('mail.sent'));
     }
@@ -1973,9 +2019,9 @@ class RegisterController extends Controller
         $file = $request->file('file_contract');
         $filenameWithExt = $file->getClientOriginalName();
         // $url = 'uploads/pdf/registrations/'.$user_role.'/'.$filenameWithExt;
-        $url = public_path('uploads'.DIRECTORY_SEPARATOR.'pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.$user_role.DIRECTORY_SEPARATOR.$filenameWithExt);
-        $path = public_path('uploads'.DIRECTORY_SEPARATOR.'pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.$user_role);
-        $download_path = url('uploads'.DIRECTORY_SEPARATOR.'pdf'.DIRECTORY_SEPARATOR.'registrations'.DIRECTORY_SEPARATOR.$user_role.DIRECTORY_SEPARATOR.$filenameWithExt);
+        $url = public_path('uploads/pdf/registrations/'.$user_role.'/'.$filenameWithExt);
+        $path = public_path('uploads/pdf/registrations/'.$user_role);
+        $download_path = url('uploads/pdf/registrations/'.$user_role.'/'.$filenameWithExt);
         
         // Save afa contract in db
         if($user->contract()){
@@ -2001,25 +2047,124 @@ class RegisterController extends Controller
         $link = route('home'); //link to verify contract sent
         $content = trans('mail.contract_signed_sent',['name'=>$user->name, 'role'=>strtoupper($user_role), 'link'=>$link, 'txt'=>trans('mail.to_verify')]);
         Message::create(['type'=>'admin','from_id'=>1,'to_id'=>1,'body'=>$content]);
-        $admin->notify(new AdminNotifyMessage($content));
+        // $admin->notify(new AdminNotifyMessage($content));
+        Mail::to($admin->email)->send(new MailTemplate($content, $sujet));
 
         
         return response()->json(['response'=>'true']);
     }
 
-    // test affichage contrat
+    // test affichage contrat, invoice, conjunction agreement
     public function afaContract(){
-        return view('pdf.afa_contract',['user'=>User::whereId(361)->first()]);
+        // return view('pdf.afa_contract',['user'=>User::whereId(158)->first()]);
+     
+
+        // Get Model message
+        $message = App\Models\ModelMessage::where('id', 10)->get();
+
+        if (count($message) > 0) {
+            $vars = array(
+                '{name}' => "sdf",
+                '{abn}' => "sdf",
+                '{license_number}' => "sdf",
+                '{locality}' => "sdf",
+                '{area_level_1}' => "sdf",
+                '{postalCode}' => "sdf",
+                '{country}' => "sdf",
+                '{nom}' => "sdf",
+                '{logo_lia}'=>asset('images/ico/lia.jpg'),
+                '{logo_iicc}'=>asset('images/ico/iicc.jpg'),
+            );
+            $contenu = strtr($message[0]->message_en, $vars);
+        }
+
+        return view('pdf.afa_contract_dynamic',['user'=>User::whereId(158)->first()])->with('content',$contenu);
     }
 
     public function aplContract(){
-        return view('pdf.apl_contract',['user'=>User::whereId(2)->first()]);
+        // return view('pdf.apl_contract',['user'=>User::whereId(2)->first()]);
+
+        // Get Model message
+        $message = App\Models\ModelMessage::where('id', 11)->get();
+
+        if (count($message) > 0) {
+            $vars = array(
+                '{orga_name}' => "sdf",//$user->userinfos->orga_name
+                '{orga_type}' => "sdf",//trans('app.txt.'.$user->userinfos->orga_type)
+                '{orga_license_number}' => "sdf",//$user->userinfos->orga_license_number
+                '{orga_registration_number}' => "sdf",//$user->userinfos?$user->userinfos->orga_registration_number:''
+                '{orga_adresse}' => "sdf",//$user->location->area_level_1?$user->location->area_level_1:'' }} {{ $user->location->locality ? $user->location->locality : '' }} {{ $user->location->route ? $user->location->route : '' }}  {{ $user->location->postalCode?$user->location->postalCode:'' $user->location->country? countryLongName($user->location->country):''
+                '{contact_name}' => "sdf",//$user->userinfos->contact_name
+                '{name}' => "sdf", //$user->name
+                '{locality}' => "sdf",//$user->location->locality?$user->location->locality:''
+                '{country}' => "sdf",//$user->location->country?countryLongName($user->location->country):''
+                '{iea_link}' => setLinkDynamic(route('home'),'investirenaustralie.com'),
+                '{logo_lia}'=>asset('images/ico/lia.jpg'),
+                '{logo_iicc}'=>asset('images/ico/iicc.jpg'),
+            );
+            $contenu = strtr($message[0]->message_fr, $vars);
+        }
+
+        return view('pdf.apl_contract_dynamic',['user'=>User::whereId(2)->first()])->with('content',$contenu);
     }
     
-    public function createContractPdf($user,$pdf_template,$path) {
-        return PDF::loadView($pdf_template,['user'=>$user])->save($path);
+    public function conjunctionAgreement(){
+        $lia = Config::lia();
+        $lia_name = $lia->get_meta('lia_name')->value;
+        $lia_abn = $lia->get_meta('lia_abn')->value;
+        $lia_license = $lia->get_meta('lia_license')->value;
+        $lia_license_expire_date = $lia->get_meta('lia_license_expire_date')->value;
+        $lia_address = $lia->get_meta('lia_address')->value;
+        $lia_mobile = $lia->get_meta('lia_mobile')->value;
+        $lia_email = $lia->get_meta('lia_email')->value;
+        $lia_dir = $lia->get_meta('lia_dir')->value;
+        $lia_dir_license = $lia->get_meta('lia_dir_license')->value;
+        $lia_dir_license_expire_date = $lia->get_meta('lia_dir_license_expire_date')->value;
+        $iea = ['name'=>$lia_name, 'abn'=>$lia_abn, 'license'=>$lia_license, 'licence_expire_date'=>$lia_license_expire_date, 'address'=>$lia_address, 'mobile'=>$lia_mobile, 'email'=>$lia_email, 'director'=>$lia_dir, 'director_license'=>$lia_dir_license, 'directore_licence_expire_date'=>$lia_dir_license_expire_date];
+        $user = User::whereId(16)->first();
+
+        // Get Model message
+        $message = App\Models\ModelMessage::where('id', 12)->get();
+        $contenu = '';
+        if (count($message) > 0) {
+            $vars = array(
+                '{afaname}' => $user->afa->userinfos()?$user->afa->userinfos->orga_name:$user->afa->name,
+                '{afaorga_name}' => $user->afa->userinfos()?$user->afa->userinfos->orga_name:$user->afa->name,
+                '{afaorga_abn}' => $user->afa->userinfos()?$user->afa->userinfos->orga_abn:'',
+                '{afaarea_level_1}' => $user->afa->location()?$user->afa->location->area_level_1:'',
+                '{afalocality}' => $user->afa->location()?$user->afa->location->locality:'',
+                '{afaroute}' => $user->afa->location()?$user->afa->location->route:'',
+                '{afapostalCode}' => $user->afa->location()?$user->afa->location->postalCode:'',
+                '{afacountry}' => $user->afa->location()?$user->afa->location->country:'',
+                '{afaorga_phone}' => $user->afa->location()?$user->afa->userinfos->phone:'',
+                '{afaorga_fax}' => $user->afa->userinfos()?$user->afa->userinfos->orga_fax:'',
+                '{afaorga_email}' => $user->afa->userinfos()?$user->afa->userinfos->orga_email:'',
+                '{afaorga_license_number}' => $user->afa->userinfos()?$user->afa->userinfos->orga_license_number:'',
+                '{ieaname}' => $iea['name'],
+                '{ieaabn}' => $iea['abn'],
+                '{iealicense}' => $iea['license'],
+                '{iealicence_expire_date}' => $iea['licence_expire_date'],
+                '{ieaaddress}' => $iea['address'],
+                '{ieamobile}' => $iea['mobile'],
+                '{ieaemail}' => $iea['email'],
+                '{ieadirector}' => $iea['director'],
+                '{ieadirector_license}' => $iea['director_license'],
+                '{ieadirectore_licence_expire_date}' => $iea['directore_licence_expire_date'],
+                '{membername}' => $user->userinfos()?$user->userinfos->first_name.' '.$user->userinfos->last_name:$user->name,
+                '{memberimmat}' => $user->immat,
+                '{memberimmat}' => $user->immat,
+            );
+            $contenu = strtr($message[0]->message_fr, $vars);
+        }
+        
+        return view('pdf.conjunction_agreement',['content'=>$contenu]);
     }
     // fin test affichage contrat
+    
+    public function createContractPdf($user,$pdf_template,$path,$contenu) {
+
+        return PDF::loadView($pdf_template,['user'=>$user,'content'=>$contenu])->save($path);
+    }
 
     // function cron to check delai submit contract (if 7 days delete)
     public function checkContractDelai(){

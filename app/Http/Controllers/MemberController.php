@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Jleon\LaravelPnotify\Notify;
 use Auth;
 use Validator;
 
@@ -118,9 +119,14 @@ class MemberController extends Controller {
         if (($role == 'apl') && !Auth::user()->apl) {
             return redirect()->route('member.select.apl')->with('error', trans('app.txt.choose_an_apl_before_messaging'));
         }elseif ($role == 'afa') {
-            if (!Auth::user()->hasAfa()){
-                return redirect()->route('member.select.afa')->with('error', trans('app.txt.choose_an_afa_before_messaging'));
-            }
+            // if (!Auth::user()->hasAfa()){
+            //     return redirect()->route('member.select.afa')->with('error', trans('app.txt.choose_an_afa_before_messaging'));
+            // }
+
+            return view('backend.contact.member')->with('action', $action)->with('lafas',
+            $lafas)->with('apls', $apls)->with('role', $role)->with('user_name', $user_name)->with('title',
+            __('app.contact_' . $role))->with(['data' => $getAllMessage]);
+
         }else{
             return view('backend.contact.member')->with('action', $action)->with('lafas',
             $lafas)->with('apls', $apls)->with('role', $role)->with('user_name', $user_name)->with('title',
@@ -128,6 +134,20 @@ class MemberController extends Controller {
         }
 
         return view('backend.contact.member')->with('action', $action)->with('lafas',
+            $lafas)->with('apls', $apls)->with('role', $role)->with('user_name', $user_name)->with('title',
+            __('app.contact_' . $role))->with(['data' => $getAllMessage]);
+    }
+    
+    public function contactAdmin(Request $request) {
+        $role='admin';
+        $action = route('send.message', ['role' => $role]);
+        $apls = User::ofRole(4)->isActive()->get();
+        $user_name = "";
+        $lafas = User::where('role', 3)->where('status', 'active')->where('location_id',
+            Auth::user()->location_id)->orderBy('id', 'desc')->get();
+        $getAllMessage = $this->getAllMessage($role);
+
+        return view('backend.contact.admin')->with('action', $action)->with('lafas',
             $lafas)->with('apls', $apls)->with('role', $role)->with('user_name', $user_name)->with('title',
             __('app.contact_' . $role))->with(['data' => $getAllMessage]);
     }
@@ -477,8 +497,12 @@ class MemberController extends Controller {
     public function selectAfa(Request $request, $id_doss_trans) {
         $this->middleware('auth');
         $this->middleware('role:5');
-
+        
         $doss_trans = DossierTransaction::whereId($id_doss_trans)->first();
+        
+        // check new afa disponible
+        update_afa_disponible($doss_trans->product_id);
+
         $product=Product::whereId($doss_trans->product_id)->first();
         if($product){
             $prodUrl = url('product/'.$product->slug);
@@ -502,7 +526,16 @@ class MemberController extends Controller {
         if($product->isSellerByAfa()){
             $afas = $product->afa();
         }else{
-            $afas = User::ofRole(3)->isActive()->has('location')->hasPostalCode($postCode)->get(['users.*']);
+            // get afa possible
+            $afapossArray=[];
+            if(strlen($product->afaId_possible)>0){
+                $afapossId = explode(',',$product->afaId_possible);
+                
+                foreach ($afapossId as $key => $afa) {
+                    array_push($afapossArray,$afa);
+                }
+            }
+            $afas = User::whereIn('id',$afapossArray)->get();
         }
 
         $userApl = Auth::user()->apl;
@@ -716,7 +749,41 @@ class MemberController extends Controller {
         // Update ca_id dossier transation
         DossierTransaction::whereId($id_doss_trans)->update(['ca_id'=>$ca->id]);
 
-        return PDF::loadView($pdf_template,['user'=>$user, 'iea'=>$iea])->save($path);
+        // Get Model message
+        $message = App\Models\ModelMessage::where('id', 12)->get();
+        $contenu = '';
+        if (count($message) > 0) {
+            $vars = array(
+                '{afaname}' => $user->afa->userinfos()?$user->afa->userinfos->orga_name:$user->afa->name,
+                '{afaorga_name}' => $user->afa->userinfos()?$user->afa->userinfos->orga_name:$user->afa->name,
+                '{afaorga_abn}' => $user->afa->userinfos()?$user->afa->userinfos->orga_abn:'',
+                '{afaarea_level_1}' => $user->afa->location()?$user->afa->location->area_level_1:'',
+                '{afalocality}' => $user->afa->location()?$user->afa->location->locality:'',
+                '{afaroute}' => $user->afa->location()?$user->afa->location->route:'',
+                '{afapostalCode}' => $user->afa->location()?$user->afa->location->postalCode:'',
+                '{afacountry}' => $user->afa->location()?$user->afa->location->country:'',
+                '{afaorga_phone}' => $user->afa->location()?$user->afa->userinfos->phone:'',
+                '{afaorga_fax}' => $user->afa->userinfos()?$user->afa->userinfos->orga_fax:'',
+                '{afaorga_email}' => $user->afa->userinfos()?$user->afa->userinfos->orga_email:'',
+                '{afaorga_license_number}' => $user->afa->userinfos()?$user->afa->userinfos->orga_license_number:'',
+                '{ieaname}' => $iea['name'],
+                '{ieaabn}' => $iea['abn'],
+                '{iealicense}' => $iea['license'],
+                '{iealicence_expire_date}' => $iea['licence_expire_date'],
+                '{ieaaddress}' => $iea['address'],
+                '{ieamobile}' => $iea['mobile'],
+                '{ieaemail}' => $iea['email'],
+                '{ieadirector}' => $iea['director'],
+                '{ieadirector_license}' => $iea['director_license'],
+                '{ieadirectore_licence_expire_date}' => $iea['directore_licence_expire_date'],
+                '{membername}' => $user->userinfos()?$user->userinfos->first_name.' '.$user->userinfos->last_name:$user->name,
+                '{memberimmat}' => $user->immat,
+                '{memberimmat}' => $user->immat,
+            );
+            $contenu = strtr($message[0]->message_fr, $vars);
+        }
+
+        return PDF::loadView($pdf_template,['content'=>$contenu])->save($path);
     }
 
     // Declanche Mandat de Recherche
@@ -982,6 +1049,42 @@ class MemberController extends Controller {
         abort(404);
     }
 
+    public function deleteTransaction(Request $request,$idtrans) {
+        $this->middleware('auth');
+        $this->middleware('role:5');
+
+        $doss_trans=DossierTransaction::whereId($idtrans)->first();
+      
+        if ($doss_trans) {   
+            // dossier transaction abandonner
+            $doss_trans_status = $doss_trans->status;
+            
+            DossierTransaction::whereId($idtrans)->update(['status'=>-2, 'deleted_at'=>Carbon::now()]);
+
+            return back();
+        }
+
+        abort(404);
+    }
+    
+    public function abandonTransaction(Request $request,$idtrans) {
+        $this->middleware('auth');
+        $this->middleware('role:5');
+
+        $doss_trans=DossierTransaction::whereId($idtrans)->first();
+      
+        if ($doss_trans) {   
+            // dossier transaction abandonner
+            $doss_trans_status = $doss_trans->status;
+            
+            DossierTransaction::whereId($idtrans)->update(['status'=>-1,'status_end'=>$doss_trans_status]);
+
+            return back();
+        }
+
+        abort(404);
+    }
+
     public function continueTransaction(Request $request,$idtrans) {
         $this->middleware('auth');
         $this->middleware('role:5');
@@ -992,8 +1095,17 @@ class MemberController extends Controller {
         $user = User::whereId($doss_trans->user_id)->first();
         
         switch ($doss_trans_status) {
-            // dossier transaction créer
+            case '-1':
+                // dossier transaction abandonner
+                $doss_trans_status_end = $doss_trans->status_end;
+                DossierTransaction::whereId($idtrans)->update(['status'=>$doss_trans_status_end,'status_end'=>0]);
+
+                return back();
+                
+                break;
+
             case '0':
+                // dossier transaction créer
                 $dt = Carbon::now();
                 $dtDate = $dt->format('m-d-Y');
                 $dtTime = $dt->format('H:i:m');
@@ -1002,15 +1114,17 @@ class MemberController extends Controller {
                 return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa', ['date'=>$dtDate, 'hour'=>$dtTime, 'name'=>$user->name]))->with('hasAfa',0);
 
                 break;
-            // dossier transaction choisir afa
+
             case '1':
+                // dossier transaction choisir afa
                 $id_dossier_transaction = $user->getUserCurrentTransaction($prod->id);
 
                 return redirect()->route('member.select.afa',$idtrans);
                 
                 break;
-            // dossier transaction AFA selectionner
+
             case '2':
+                // dossier transaction AFA selectionner
                 
                 break;
             case '3':
@@ -1054,8 +1168,18 @@ class MemberController extends Controller {
         $prodUrl = url('product/'.$prod->slug);
         
         switch ($doss_trans_status) {
-            // dossier transaction créer
+            
+            case '-1':
+                // dossier transaction abandonner
+                $doss_trans_status_end = $doss_trans->status_end;
+                DossierTransaction::whereId($idtrans)->update(['status'=>$doss_trans_status_end,'status_end'=>0]);
+
+                return back();
+                
+                break;
+
             case '0':
+                // dossier transaction créer
                 if (!$user->isComplete()) {
                     $completeDossierInscriptionLink = setLinkDynamic(route('member.complete_registration',$prod),strtoupper(trans('app.txt.complete_my_registration_form')));
                     $privacyPolicyLink=setLinkDynamic(route('confidentialities'),trans('app.txt.privacy_policy'));
@@ -1088,8 +1212,9 @@ class MemberController extends Controller {
                 }
                 
                 break;
-            // dossier transaction choisir afa
+
             case '1':
+                // dossier transaction choisir afa
                 $dt = Carbon::now();
                 $dtDate = $dt->format('m-d-Y');
                 $dtTime = $dt->format('H:i:m');
@@ -1097,8 +1222,9 @@ class MemberController extends Controller {
                 return redirect($prodUrl)->with('engagement', trans('member.gothere.select_afa', ['date'=>$dtDate, 'hour'=>$dtTime, 'name'=>$user->name]))->with('hasAfa',0);
                 
                 break;
-            // dossier transaction AFA selectionner
+            
             case '2':
+                // dossier transaction AFA selectionner
                 
                 break;
             case '3':
@@ -1135,8 +1261,10 @@ class MemberController extends Controller {
         $prod_id = $prod->id;
         $prod_cat_id = $prod->category_id;
         $numero = $this->generateNumDossier($prod_cat_id);
+        $vendeur = $prod->seller_id;
+        $solicitor = $prod->solicitor_id;
         
-        return DossierTransaction::create(['numero'=>$numero, 'user_id'=>$user_id, 'product_id'=>$prod_id, 'status'=>$status]);
+        return DossierTransaction::create(['numero'=>$numero, 'user_id'=>$user_id, 'product_id'=>$prod_id, 'status'=>$status, 'sollicitor_id'=>$solicitor, 'vendeur_id'=>$vendeur]);
     }
 
     /*
