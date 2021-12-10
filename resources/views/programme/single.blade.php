@@ -295,6 +295,67 @@
                             </div>
                         </div>
                     </div>
+
+                    {{-- show liste product --}}
+                    @php
+                        $prods = App\Models\Product::where('parent_id','=',$item->id)->where('status_res','=',0)->get();
+                    @endphp
+                    @if(count($prods)>0)
+                        <table class="table m-35px-tb table-bordered">
+                            <thead class="thead-dark">
+                                <tr class="text-center">
+                                    <th>@lang('app.txt.picture')</th>
+                                    <th>@lang('app.txt.title')</th>
+                                    <th>@lang('app.txt.bathrooms')</th>
+                                    <th>@lang('app.table.produit_prix_min')</th>
+                                    <th>@lang('app.table.produit_prix_max')</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($prods as $prod)
+                                    <tr class="text-center">
+                                        <td>
+                                            @php
+                                                $photo_principal = \App\Models\ProductsImage::where('products_images.product_id', '=', $prod->id)->where('products_images.is_principal', '=', 1)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+                                                $first_photo = \App\Models\ProductsImage::where('products_images.product_id', '=', $prod->id)->join('images', 'products_images.image_id', '=', 'images.id')->first();
+                                            @endphp
+                                            @if($first_photo)
+                                                @if($photo_principal)
+                                                <!-- Programme sans principal -->
+                                                @php $img = asset(getImageResizeUrl('product', str_replace(' ', '%20', $photo_principal->filename), 'thumb-mini')) @endphp
+                                                @else
+                                                <!-- Programme principal -->
+                                                @php $img = asset(getImageResizeUrl('product', str_replace(' ', '%20', $first_photo->filename), 'thumb-mini')) @endphp
+                                                @endif
+                                            @else
+                                                <!-- Programme aucun photo -->
+                                                @php $img = asset('images/product.png') @endphp
+                                            @endif
+                                            <a href="{{route('product.index',['product'=>$prod->slug])}}" target="_blank"><img src="{{$img}}" alt="{{$prod->title}}" class="img-fluid"></a>
+                                        </td>
+                                        <td>
+                                            {{$prod->title}}
+                                        </td>
+                                        <td>
+                                            {{ $prod->bedrooms }}
+                                        </td>
+                                        <td>
+                                            $ {{number_format($prod->min_price, 0, '.', ' ')}}
+                                        </td>
+                                        <td>
+                                            $ {{number_format($prod->max_price, 0, '.', ' ')}}
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <p>@lang('app.txt.noinfo')</p>
+                                @endforelse
+                            </thead>
+                        </table>
+                    @else
+                        <p>@lang('app.txt.noinfo')</p>
+                    @endif
+                    {{-- end show liste product --}}
+                    
                     <div>
                         <a href="{{ url()->previous() }}" class="m-btn m-btn-theme"><i class="fa fa-arrow-left"></i> @lang('app.btn.return')</a>
                     </div>
