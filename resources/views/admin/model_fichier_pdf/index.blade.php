@@ -64,8 +64,8 @@
                             <tr>
                                 <td>{{ $index + $records->firstItem() }}</td>
                                 <td>{{ $record->pdf_titre }}</td>
-                                <td>{{ $record->contenu_fr }}</td>
-                                <td>{{ $record->contenu_en }}</td>
+                                <td>{{ str_limit(strip_tags($record->contenu_fr),"100","...") }}</td>
+                                <td>{{ str_limit(strip_tags($record->contenu_en),"100","...") }}</td>
                                 <td>{{ $record->params }}</td>
                                 <td>{{$record->created_at ? $record->created_at->diffForHumans() : ""}}</td>
                                 <td>{{$record->updated_at ? $record->updated_at->diffForHumans() : ""}}</td>

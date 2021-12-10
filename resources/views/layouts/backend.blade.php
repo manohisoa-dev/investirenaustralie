@@ -500,7 +500,7 @@
                                 <span class="font-small">{{ \App\Models\User::find(Auth::id())->roleUser->role_initial }}</span>
                                 <div class="p-10px-t">
                                     @if(App\Models\User::find(Auth::id())->role == 5)
-                                        <a class="m-btn m-btn-sm m-btn-theme-light m-btn-radius" href="{{ route('member.contact', ['role'=>'admin']) }}"><i class="far fa-envelope"></i> @lang('app.txt.sendmessage') </a>
+                                        <a class="m-btn m-btn-sm m-btn-theme-light m-btn-radius" href="{{ route('member.contact.admin') }}"><i class="far fa-envelope"></i> @lang('app.txt.sendmessage') </a>
                                     @endif
 
                                     @if(Auth::user()->hasRole(2) && Auth::user()->temp())

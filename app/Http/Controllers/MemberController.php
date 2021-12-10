@@ -750,7 +750,7 @@ class MemberController extends Controller {
         DossierTransaction::whereId($id_doss_trans)->update(['ca_id'=>$ca->id]);
 
         // Get Model message
-        $message = App\Models\ModelMessage::where('id', 12)->get();
+        $message = ModelFichierPdf::where('id', 3)->get();
         $contenu = '';
         if (count($message) > 0) {
             $vars = array(
@@ -780,7 +780,7 @@ class MemberController extends Controller {
                 '{memberimmat}' => $user->immat,
                 '{memberimmat}' => $user->immat,
             );
-            $contenu = strtr($message[0]->message_fr, $vars);
+            $contenu = strtr($message[0]->contenu_fr, $vars);
         }
 
         return PDF::loadView($pdf_template,['content'=>$contenu])->save($path);
