@@ -52,4 +52,8 @@ class DossierTransaction extends Model
         return DossierTransaction::where('status','=',5)->get();
     }
 
+    public function orders(){
+        return $this->belongsTo(Order::class, 'id', 'doss_trans_id');
+    }
+
 }

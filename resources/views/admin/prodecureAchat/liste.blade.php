@@ -80,7 +80,7 @@
                         if($status==0){
                           echo "<span class='badge badge-info'>".trans('app.txt.transaction_file_create')."</span>";
                         }elseif($status==1){
-                          echo "<span class='badge badge-info'>".trans('app.txt.select_afa')."</span>";
+                          echo "<span class='badge badge-info'>".trans('app.select_afa')."</span>";
                         }elseif($status==2){
                           echo "<span class='badge badge-info'>".trans('app.txt.afa_selectéd')."</span>";
                         }elseif($status==3){
@@ -174,7 +174,7 @@
 
 {{-- Show info modal --}}
 @foreach($items as $item)
-  <div class="modal fade" id="showinfoModal_{{$item->id}}" role="dialog" data-keyboard="false" data-backdrop="static">
+  <div class="modal fade" id="showinfoModal_{{$item->id}}" role="dialog">
     <div class="modal-dialog modal-default modal-lg">
       <div class="modal-content">
           <div class="modal-header">
@@ -193,11 +193,11 @@
                 <h5>Produit :</h5>
                 <p>{{ sizeOf(\App\Models\Product::whereId($item->product_id)->pluck('title'))!=0?\App\Models\Product::whereId($item->product_id)->pluck('title')[0]:'-' }}</p>
                 <h5>Membre acheteur :</h5>
-                <p>{{ sizeOf(\App\Models\User::whereId($item->user_id)->pluck('name'))!=0?\App\Models\User::whereId($item->user_id)->pluck('name')[0]:'-' }}</p>
+                <p>{{ $item->user_id ? sizeOf(\App\Models\User::whereId($item->user_id)->pluck('name'))!=0?\App\Models\User::whereId($item->user_id)->pluck('name')[0]:'-' : '' }}</p>
                 <h5>AFA :</h5>
-                <p>{{ sizeOf(\App\Models\User::whereId($item->afa_id)->first()->userinfos())!=0?\App\Models\User::whereId($item->afa_id)->first()->userinfos->orga_name:'-' }}</p>
+                <p>{{ $item->afa_id!=0 ? sizeOf(\App\Models\User::whereId($item->afa_id)->first()->userinfos())!=0?\App\Models\User::whereId($item->afa_id)->first()->userinfos->orga_name:'-' : '' }}</p>
                 <h5>Vendeur :</h5>
-                <p>{{ sizeOf(\App\Models\User::whereId($item->vendeur_id)->first()->userinfos())!=0?\App\Models\User::whereId($item->vendeur_id)->first()->userinfos->orga_name:'-' }}</p>
+                <p>{{ $item->vendeur_id!=0 ? sizeOf(\App\Models\User::whereId($item->vendeur_id)->first()->userinfos())!=0?\App\Models\User::whereId($item->vendeur_id)->first()->userinfos->orga_name:'-' : '' }}</p>
                 <h5>Cabinet vendeur :</h5>
                 <p>{{ sizeOf(\App\Models\Solicitor::whereId($item->sollicitor_id)->pluck('cabinet_name'))!=0?\App\Models\Solicitor::whereId($item->sollicitor_id)->pluck('cabinet_name')[0]:'-' }}</p>
                 <h5>Statut :</h5>
@@ -212,7 +212,7 @@
                         if($status==0){
                           echo "<span class='badge badge-info'>".trans('app.txt.transaction_file_create')."</span>";
                         }elseif($status==1){
-                          echo "<span class='badge badge-info'>".trans('app.txt.select_afa')."</span>";
+                          echo "<span class='badge badge-info'>".trans('app.select_afa')."</span>";
                         }elseif($status==2){
                           echo "<span class='badge badge-info'>".trans('app.txt.afa_selectéd')."</span>";
                         }elseif($status==3){
@@ -294,141 +294,229 @@
                 <hr>
                 <div class="row m-t-lg">
                   {{-- show conjunction agreement file --}}
-                  @if ($item->ca_id != 0)
-                    @php
-                        $ca=App\Models\ConjunctionAgreement::whereId($item->ca_id)->first();
-                        $ca_file_name=$ca->file_name;
-                        $ca_path=asset($ca->path);
-                        $ca_added=Carbon\Carbon::parse($ca->created_at)->format('M d, Y');
-                    @endphp
-                    <div class="col-md-4">
-                      <div class="file-box">
-                          <div class="file">
-                              <a target="_blank" href="{{$ca_path}}">
-                                  <span class="corner"></span>
-                                  <div class="icon">
-                                      <i class="fa fa-file"></i>
-                                  </div>
-                                  <div class="file-name">
-                                      {{$ca_file_name}}
-                                      <br>
-                                      <small>@lang('app.txt.added'): {{$ca_added}}</small>
-                                  </div>
-                              </a>
-                          </div>
+                  @if($item->ca_id != 0 || $item->mr_id != 0 || $item->mr_finalize_file_name !== "" || $item->eoi_finalize_file_name !== "" || $item->eoi_finalize_file_name_afa !== "")
+                    @if ($item->ca_id != 0)
+                      @php
+                          $ca=App\Models\ConjunctionAgreement::whereId($item->ca_id)->first();
+                          $ca_file_name=$ca->file_name;
+                          $ca_path=asset($ca->path);
+                          $ca_added=Carbon\Carbon::parse($ca->created_at)->format('M d, Y');
+                      @endphp
+                      <div class="col-md-4">
+                        <div class="file-box">
+                            <div class="file">
+                                <a target="_blank" href="{{$ca_path}}">
+                                    <span class="corner"></span>
+                                    <div class="icon">
+                                        <i class="fa fa-file"></i>
+                                    </div>
+                                    <div class="file-name">
+                                        {{$ca_file_name}}
+                                        <br>
+                                        <small>@lang('app.txt.added'): {{$ca_added}}</small>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
                       </div>
-                    </div>
-                  @endif
+                    @endif
 
-                  {{-- show search mandat(form 6) file --}}
-                  @if ($item->mr_id != 0)
-                    @php
-                        $mr=App\Models\MandatRecherche::whereId($item->ca_id)->first();
-                        $mr_file_name=$mr->file_name;
-                        $mr_path=asset('uploads/pdf/form6'.'/'.$mr_file_name);
-                        $mr_added=Carbon\Carbon::parse($mr->created_at)->format('M d, Y');
-                    @endphp
-                    <div class="col-md-4">
-                      <div class="file-box">
-                          <div class="file">
-                              <a target="_blank" href="{{$mr_path}}">
-                                  <span class="corner"></span>
-                                  <div class="icon">
-                                      <i class="fa fa-file"></i>
-                                  </div>
-                                  <div class="file-name">
-                                      {{$mr_file_name}}
-                                      <br>
-                                      <small>@lang('app.txt.added'): {{$mr_added}}</small>
-                                  </div>
-                              </a>
-                          </div>
+                    {{-- show search mandat(form 6) file --}}
+                    @if ($item->mr_id != 0)
+                      @php
+                          $mr=App\Models\MandatRecherche::whereId($item->ca_id)->first();
+                          $mr_file_name=$mr->file_name;
+                          $mr_path=asset('uploads/pdf/form6'.'/'.$mr_file_name);
+                          $mr_added=Carbon\Carbon::parse($mr->created_at)->format('M d, Y');
+                      @endphp
+                      <div class="col-md-4">
+                        <div class="file-box">
+                            <div class="file">
+                                <a target="_blank" href="{{$mr_path}}">
+                                    <span class="corner"></span>
+                                    <div class="icon">
+                                        <i class="fa fa-file"></i>
+                                    </div>
+                                    <div class="file-name">
+                                        {{$mr_file_name}}
+                                        <br>
+                                        <small>@lang('app.txt.added'): {{$mr_added}}</small>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
                       </div>
-                    </div>
-                  @endif
+                    @endif
 
-                  {{-- show mr finalize --}}
-                  @if ($item->mr_finalize_file_name !== "")
-                    @php
-                        $mr_file_name=$item->mr_finalize_file_name;
-                        $mr_path=asset('uploads/pdf/form6'.'/'.$mr_file_name);
-                        $mr_added=Carbon\Carbon::parse($item->date_mr_finalize)->format('M d, Y');
-                    @endphp
-                    <div class="col-md-4">
-                      <div class="file-box">
-                          <div class="file">
-                              <a target="_blank" href="{{$mr_path}}">
-                                  <span class="corner"></span>
-                                  <div class="icon">
-                                      <i class="fa fa-file"></i>
-                                  </div>
-                                  <div class="file-name">
-                                      {{$mr_file_name}}
-                                      <br>
-                                      <small>@lang('app.txt.added'): {{$mr_added}}</small>
-                                  </div>
-                              </a>
-                          </div>
+                    {{-- show mr finalize --}}
+                    @if ($item->mr_finalize_file_name !== "")
+                      @php
+                          $mr_file_name=$item->mr_finalize_file_name;
+                          $mr_path=asset('uploads/pdf/form6'.'/'.$mr_file_name);
+                          $mr_added=Carbon\Carbon::parse($item->date_mr_finalize)->format('M d, Y');
+                      @endphp
+                      <div class="col-md-4">
+                        <div class="file-box">
+                            <div class="file">
+                                <a target="_blank" href="{{$mr_path}}">
+                                    <span class="corner"></span>
+                                    <div class="icon">
+                                        <i class="fa fa-file"></i>
+                                    </div>
+                                    <div class="file-name">
+                                        {{$mr_file_name}}
+                                        <br>
+                                        <small>@lang('app.txt.added'): {{$mr_added}}</small>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
                       </div>
-                    </div>
-                  @endif
+                    @endif
 
-                  {{-- show oei finalize by member file --}}
-                  @if ($item->eoi_finalize_file_name !== "")
-                    @php
-                        $eoi_file_name=$item->eoi_finalize_file_name;
-                        $eoi_path=asset('uploads/pdf/transaction'.'/'.$eoi_file_name);
-                        $eoi_added=Carbon\Carbon::parse($item->date_eoi_finalize)->format('M d, Y');
-                    @endphp
-                    <div class="col-md-4">
-                      <div class="file-box">
-                          <div class="file">
-                              <a target="_blank" href="{{$eoi_path}}">
-                                  <span class="corner"></span>
-                                  <div class="icon">
-                                      <i class="fa fa-file"></i>
-                                  </div>
-                                  <div class="file-name">
-                                      {{$eoi_file_name}}
-                                      <br>
-                                      <small>@lang('app.txt.added'): {{$eoi_added}}</small>
-                                  </div>
-                              </a>
-                          </div>
+                    {{-- show oei finalize by member file --}}
+                    @if ($item->eoi_finalize_file_name !== "")
+                      @php
+                          $eoi_file_name=$item->eoi_finalize_file_name;
+                          $eoi_path=asset('uploads/pdf/transaction'.'/'.$eoi_file_name);
+                          $eoi_added=Carbon\Carbon::parse($item->date_eoi_finalize)->format('M d, Y');
+                      @endphp
+                      <div class="col-md-4">
+                        <div class="file-box">
+                            <div class="file">
+                                <a target="_blank" href="{{$eoi_path}}">
+                                    <span class="corner"></span>
+                                    <div class="icon">
+                                        <i class="fa fa-file"></i>
+                                    </div>
+                                    <div class="file-name">
+                                        {{$eoi_file_name}}
+                                        <br>
+                                        <small>@lang('app.txt.added'): {{$eoi_added}}</small>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
                       </div>
-                    </div>
-                  @endif
+                    @endif
 
-                  {{-- show oei finalize by afa file --}}
-                  @if ($item->eoi_finalize_file_name_afa !== "")
-                    @php
-                        $eoi_file_name=$item->eoi_finalize_file_name_afa;
-                        $eoi_path=asset('uploads/pdf/transaction'.'/'.$eoi_file_name);
-                        $eoi_added=Carbon\Carbon::parse($item->date_eoi_finalize_afa)->format('M d, Y');
-                    @endphp
-                    <div class="col-md-4">
-                      <div class="file-box">
-                          <div class="file">
-                              <a target="_blank" href="{{$eoi_path}}">
-                                  <span class="corner"></span>
-                                  <div class="icon">
-                                      <i class="fa fa-file"></i>
-                                  </div>
-                                  <div class="file-name">
-                                      {{$eoi_file_name}}
-                                      <br>
-                                      <small>@lang('app.txt.added'): {{$eoi_added}}</small>
-                                  </div>
-                              </a>
-                          </div>
+                    {{-- show oei finalize by afa file --}}
+                    @if ($item->eoi_finalize_file_name_afa !== "")
+                      @php
+                          $eoi_file_name=$item->eoi_finalize_file_name_afa;
+                          $eoi_path=asset('uploads/pdf/transaction'.'/'.$eoi_file_name);
+                          $eoi_added=Carbon\Carbon::parse($item->date_eoi_finalize_afa)->format('M d, Y');
+                      @endphp
+                      <div class="col-md-4">
+                        <div class="file-box">
+                            <div class="file">
+                                <a target="_blank" href="{{$eoi_path}}">
+                                    <span class="corner"></span>
+                                    <div class="icon">
+                                        <i class="fa fa-file"></i>
+                                    </div>
+                                    <div class="file-name">
+                                        {{$eoi_file_name}}
+                                        <br>
+                                        <small>@lang('app.txt.added'): {{$eoi_added}}</small>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
                       </div>
-                    </div>
+                    @endif
+                  @else
+                    <p class="white-color-light" style="margin-left: 15px;">@lang('app.txt.noinfo')</p>
                   @endif
                 </div>
 
                 {{-- all invoice --}}
                 <h3><strong>@lang('app.txt.invoices')</strong></h3>
                 <hr>
+                <div class="row m-t-lg">
+
+                  @if (count($item->orders['id'])>0)
+                    {{-- show cpc invoice first file --}}
+                    @if($item->orders['cpc_invoice_first_pmt']!='')
+                      @php
+                          $order_file_name=$item->orders['cpc_invoice_first_pmt'];
+                          $order_path=asset('uploads/pdf/invoices'.'/'.str_replace('/','-',$order_file_name));
+                          $order_added=Carbon\Carbon::parse($item->orders['date_init_deposit_confirm'])->format('M d, Y');
+                      @endphp
+                      <div class="col-md-4">
+                        <div class="file-box">
+                            <div class="file">
+                                <a target="_blank" href="{{$order_path}}">
+                                    <span class="corner"></span>
+                                    <div class="icon">
+                                        <i class="fa fa-file"></i>
+                                    </div>
+                                    <div class="file-name">
+                                        {{$order_file_name}}
+                                        <br>
+                                        <small>@lang('app.txt.added'): {{$order_added}}</small>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                      </div>
+                    @endif
+
+                    {{-- show cpc invoice second file --}}
+                    @if ($item->orders['cpc_invoice_second_pmt'] != "")
+                      @php
+                          $order_file_name=$item->orders['cpc_invoice_second_pmt'];
+                          $order_path=asset('uploads/pdf/invoices'.'/'.str_replace('/','-',$order_file_name));
+                          $order_added=Carbon\Carbon::parse($item->orders['date_second_pmt'])->format('M d, Y');
+                      @endphp
+                      <div class="col-md-4">
+                        <div class="file-box">
+                            <div class="file">
+                                <a target="_blank" href="{{$order_path}}">
+                                    <span class="corner"></span>
+                                    <div class="icon">
+                                        <i class="fa fa-file"></i>
+                                    </div>
+                                    <div class="file-name">
+                                        {{$order_file_name}}
+                                        <br>
+                                        <small>@lang('app.txt.added'): {{$order_added}}</small>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                      </div>
+                    @endif
+
+                    {{-- show cpc invoice bonus file --}}
+                    @if ($item->orders['cpc_invoice_bonus'] != "")
+                      @php
+                          $order_file_name=$item->orders['cpc_invoice_bonus'];
+                          $item->_paths=asset('uploads/pdf/invoices'.'/'.str_replace('/','-',$order_file_name));
+                          $order_added=Carbon\Carbon::parse($item->orders['date_pmt_bonus'])->format('M d, Y');
+                      @endphp
+                      <div class="col-md-4">
+                        <div class="file-box">
+                            <div class="file">
+                                <a target="_blank" href="{{$order_path}}">
+                                    <span class="corner"></span>
+                                    <div class="icon">
+                                        <i class="fa fa-file"></i>
+                                    </div>
+                                    <div class="file-name">
+                                        {{$order_file_name}}
+                                        <br>
+                                        <small>@lang('app.txt.added'): {{$order_added}}</small>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                      </div>
+                    @endif
+                  @else
+                      <p class="white-color-light" style="margin-left: 15px;">@lang('app.txt.noinfo')</p>
+                  @endif
+                </div>
             </div>
           </div>
           <div class="modal-footer">
