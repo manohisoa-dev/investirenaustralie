@@ -287,7 +287,7 @@
                                                 <div class="col-lg-6">
                                                     <div class="p-70px-l lg-p-0px-l lg-m-30px-t">
                                                         <h2 class="h2-small m-25px-b" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getTitle)?$getTitle[$i]:'' !!}</h2>
-                                                        <p class="m-5px-b text-justify" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getContent)?$getContent[$i]:trans('app.txt.noinfo') !!}</p>
+                                                        <p class="m-5px-b" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getContent)?$getContent[$i]:trans('app.txt.noinfo') !!}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -298,7 +298,7 @@
                                                 <div class="col-lg-6">
                                                     <div class="p-70px-r lg-p-0px-r lg-m-30px-t">
                                                         <h2 class="h2-small m-25px-b" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getTitle)?$getTitle[$i]:'' !!}</u></h2>
-                                                        <p class="m-5px-b text-justify" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getContent)?$getContent[$i]:trans('app.txt.noinfo') !!}</p>
+                                                        <p class="m-5px-b" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getContent)?$getContent[$i]:trans('app.txt.noinfo') !!}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6 order-lg-2 order-first text-center">
@@ -315,7 +315,7 @@
                                                 <div class="col-lg-6">
                                                     <div class="p-70px-l lg-p-0px-l lg-m-30px-t">
                                                         <h2 class="h2-small m-25px-b" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getTitle)?$getTitle[$i]:'' !!}</h2>
-                                                        <p class="m-5px-b text-justify" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getContent)?$getContent[$i]:trans('app.txt.noinfo') !!}</p>
+                                                        <p class="m-5px-b" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getContent)?$getContent[$i]:trans('app.txt.noinfo') !!}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -326,7 +326,7 @@
                                                 <div class="col-lg-6">
                                                     <div class="p-70px-r lg-p-0px-r lg-m-30px-t">
                                                         <h2 class="h2-small m-25px-b" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getTitle)?$getTitle[$i]:'' !!}</h2>
-                                                        <p class="m-5px-b text-jusfify" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getContent)?$getContent[$i]:trans('app.txt.noinfo') !!}</p>
+                                                        <p class="m-5px-b" style="overflow-wrap: break-word;">{!! array_key_exists($i,$getContent)?$getContent[$i]:trans('app.txt.noinfo') !!}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6 order-lg-2 order-first text-center">
@@ -350,13 +350,30 @@
                 </section>
             @elseif($child->page_order == 5)
                 @php
+                    $detailMission = trans('app.txt.noinfo');
+                    $detailVision = trans('app.txt.noinfo');
                     $htmlContent = $child->content;
+                    preg_match_all('/<h[^>]*?>(.*?)<\/h[^>]/s', $htmlContent, $title);
                     preg_match_all('/<p[^>]*?>(.*?)<\/p>/s', $htmlContent, $match);
                         
+
+                    if(count($title) > 0){
+                        $t0 = strip_tags($title[0][0]);
+                        $t1 = strip_tags($title[0][1]);
+                    }
+                    
                     if(count($match) > 0){
                         $p0 = strip_tags($match[0][0]);
                         $p1 = strip_tags($match[0][1]);
                         $p2 = strip_tags($match[0][2]);
+                        $p3 = strip_tags($match[0][3]);
+                        $p4 = strip_tags($match[0][4]);
+                        $p5 = strip_tags($match[0][5]);
+                        $p6 = strip_tags($match[0][6]);
+                        $p7 = strip_tags($match[0][7]);
+                        $p8 = strip_tags($match[0][8]);
+                        $detailMission = $p3.' '.$p4.' '.$p5;
+                        $detailVision = $p6.' '.$p7.' '.$p8;
                     }
                 @endphp
 
@@ -366,19 +383,19 @@
                             <div class="col-lg-4 m-15px-tb aos-init aos-animate" data-aos="fade-right">
                                 <div class="p-45px-tb p-35px-lr">
                                     <h3 class="h1 m-20px-b p-20px-b">@lang('app.txt.missionvision')</h3>
-                                    <p class="m-0px txt-body">{{ str_replace('&nbsp;',' ',$p0) }}</p>
-                                    <p class="txt-body" style="padding-top: 10px;padding-left: 10px;"><i class="fa fa-check-circle"></i> {{ str_replace('&nbsp;',' ',$p1) }}</p>
-                                    <p class="txt-body" style="padding-left: 10px;"><i class="fa fa-check-circle" style="color: #ae4435;"></i> {{ str_replace('&nbsp;',' ',$p2) }}</p>
+                                    <p class="m-0px txt-body">{!! str_replace('&nbsp;',' ',$p0) !!}</p>
+                                    <p class="txt-body" style="padding-top: 10px;padding-left: 10px;"><i class="fa fa-check-circle"></i> {!! str_replace('&nbsp;',' ',$p1) !!}</p>
+                                    <p class="txt-body" style="padding-left: 10px;"><i class="fa fa-check-circle" style="color: #ae4435;"></i> {!! str_replace('&nbsp;',' ',$p2) !!}</p>
                                 </div>
                             </div>
                             <div class="col-lg-4 p-35px-lr contente aos-init aos-animate" data-aos="fade-up">
                                 <div class="content-overlay"></div>
                                 <div class="content-origin">
                                     <img src="{{asset('img/mission-min.png')}}" style="width:256px; height: auto">
-                                    <h5>@lang('app.txt.mission.title')</h5>
+                                    <h5>{!! str_replace('&nbsp;',' ',$t0) !!}</h5>
                                 </div>
                                 <div class="content-details fadeIn-bottom">
-                                    <p class="content-text" style="padding-left:20px; padding-right:20px;">@lang('app.txt.mission.content')</p>
+                                    <p class="content-text" style="padding-left:20px; padding-right:20px;">{!!str_replace('&nbsp;',' ',$detailMission)!!}</p>
                                 </div>
                             </div>
 
@@ -386,10 +403,10 @@
                                 <div class="content-overlay"></div>
                                 <div class="content-origin">
                                     <img src="{{asset('img/vision-min.png')}}" style="width:256px; height: auto">
-                                    <h5>@lang('app.txt.vision.title')</h5>
+                                    <h5>{!! str_replace('&nbsp;',' ',$t1) !!}</h5>
                                 </div>
                                 <div class="content-details fadeIn-bottom">
-                                    <p class="content-text" style="padding-left:20px; padding-right:20px;">@lang('app.txt.vision.content')</p>
+                                    <p class="content-text" style="padding-left:20px; padding-right:20px;">{!!str_replace('&nbsp;',' ',$detailVision)!!}</p>
                                 </div>
                             </div>
                         </div>
