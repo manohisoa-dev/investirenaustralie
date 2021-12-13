@@ -352,7 +352,7 @@
                     @if ($item->mr_finalize_file_name !== "")
                       @php
                           $mr_file_name=$item->mr_finalize_file_name;
-                          $mr_path=asset('uploads/pdf/form6'.'/'.$mr_file_name);
+                          $mr_path=asset('uploads/pdf/transaction'.'/'.$mr_file_name);
                           $mr_added=Carbon\Carbon::parse($item->date_mr_finalize)->format('M d, Y');
                       @endphp
                       <div class="col-md-4">
