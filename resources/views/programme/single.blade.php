@@ -306,7 +306,7 @@
                                 <tr class="text-center">
                                     <th>@lang('app.txt.picture')</th>
                                     <th>@lang('app.txt.title')</th>
-                                    <th>@lang('app.txt.bathrooms')</th>
+                                    <th>@lang('app.txt.bedrooms')</th>
                                     <th>@lang('app.table.produit_prix_min')</th>
                                     <th>@lang('app.table.produit_prix_max')</th>
                                 </tr>
