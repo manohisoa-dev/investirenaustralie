@@ -464,7 +464,7 @@
                                     @php
                                         $countryContent = App\Models\Country::where('code',$apl->country)->first()->content;
                                     @endphp
-                                    <a class="country_apl_item" href="javascript:void(0)" value="{{ $apl->country }}" data-country="{{ $countryContent }}" data-toggle="tooltip" data-placement="top" data-html="true" title="<p class='text-center'> {{ trans('app.txt.click_to_show_city') }} {{ $countryContent }}</p>" style="color:#01E367;font-size: 1.5rem;">{{ $countryContent }}</a> @if(!$loop->last) - @endif
+                                    <a class="country_apl_item" href="javascript:void(0)" value="{{ $apl->country }}" data-country="{{ $countryContent }}" rel="tooltip" data-placement="top" data-html="true" title="<p class='text-center'> {{ trans('app.txt.click_to_show_city') }} {{ $countryContent }}</p>" style="color:#01E367;font-size: 1.5rem;">{{ $countryContent }}</a> @if(!$loop->last) - @endif
                                 @empty
                                     <span style="color:#01E367;font-size: 1.2rem;">@lang('app.txt.noinfo')</span>
                                 @endforelse
@@ -842,7 +842,10 @@
     <script type="text/javascript">
         $(function () {
             $('[data-toggle="tooltip"]').tooltip();
-
+			 $('[rel="tooltip"]').tooltip({
+			 	"html": true,
+   				"container": "body"
+			 });
             // Show notification current transaction member
             if('{{ !Request::is("product/*") }}'){
                 if('{{ Auth::check() && Auth::user()->hasCurrentTransaction() }}' && !sessionStorage.getItem('notif_trans_member')){
@@ -917,8 +920,8 @@
             envoi.done( function(data) {
                 $('.tooltip-inner #city_list').html('');
                 $.each(data.res,function(key,value){
-                    ctry=(value.country).replaceAll(' ','_');
-                    loc=(value.locality).replaceAll(' ','_');
+                    var ctry=(value.country).replaceAll(' ','_');
+                    var loc=(value.locality).replaceAll(' ','_');
                     $('.tooltip-inner #city_list').append('<p><a href="javascript:void(0)" onclick=getApl("'+ctry+'","'+loc+'") class="apl_item"><i class="fa fa-building"></i> '+value.locality+'</a></p>');
                 });
             });
