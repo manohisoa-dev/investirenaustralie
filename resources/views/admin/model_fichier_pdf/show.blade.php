@@ -44,11 +44,11 @@
                     </li>
                                         <li class="list-group-item">
                         <h4>Contenu Fr</h4>
-                        <h5>{{$modelFichierPdf->contenu_fr}}</h5>
+                        <h5>{!!$modelFichierPdf->contenu_fr!!}</h5>
                     </li>
                                         <li class="list-group-item">
                         <h4>Contenu En</h4>
-                        <h5>{{$modelFichierPdf->contenu_en}}</h5>
+                        <h5>{!!$modelFichierPdf->contenu_en!!}</h5>
                     </li>
                                         <li class="list-group-item">
                         <h4>Params</h4>

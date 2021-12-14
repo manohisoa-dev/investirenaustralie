@@ -1364,6 +1364,7 @@ return
 	'txt.share' => 'Share',
     'txt.autocomplete_error' => 'Please choose a valid address as suggested by google',
 	'txt.transaction_file_create' => 'Transaction file create',
+	'txt.transaction_file' => 'Transaction file',
 	'txt.complete_registration_file' => 'Complete registration file',
 	'txt.afa_selectéd' => 'AFA selected',
 	'txt.ca_send' => 'Conjunction agreement sent',
@@ -1402,4 +1403,11 @@ return
 	'txt.acheteur' => 'Buyer',
 	'txt.submit_ca' => 'Submit CA',
 	'txt.submit_eoi' => 'Submit EOI',
+	'txt.invoices' => 'Invoices',
+	'txt.added' => 'Added',
+	'page.home.section.chart.title' => 'Titre Section Chart',
+	'page.home.section.chart.content' => 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur ?',
+	'page.home.section.square.title' => 'Titre Section Square',
+	'page.home.section.square.content' => 'Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil vel eum fugiat quo voluptas nulla pariatur?',
+
 ];

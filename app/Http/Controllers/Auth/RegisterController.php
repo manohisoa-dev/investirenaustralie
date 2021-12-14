@@ -45,6 +45,7 @@ use App\Models\Contract;
 use App\Models\Message;
 use App\Models\Config;
 use App\Models\ModelMessage;
+use App\Models\ModelFichierPdf;
 use Carbon\Carbon;
 use Session;
 use Mail;
@@ -1859,13 +1860,12 @@ class RegisterController extends Controller
     public function confirmRegistrationAfaContinueGetContract(User $user)
     {   
         // Create contract pdf to download
-        // $pdf_template = 'pdf.afa_contract';
         $pdf_template = 'pdf.afa_contract';
         $pdfName = 'partenership_contract_australian_francophone_agency_'.strtolower($user->name);
         $path = public_path('pdf/registrations/afa').'/'.$pdfName.'.pdf';
         $downloadPath = url('pdf/registrations/afa').'/'. $pdfName.'.pdf';
         // Get Model message
-        $message = App\Models\ModelMessage::where('id', 10)->get();
+        $message = ModelFichierPdf::where('id', 1)->get();
         $contenu = "";
         if (count($message) > 0) {
             $vars = array(
@@ -1880,7 +1880,7 @@ class RegisterController extends Controller
                 '{logo_lia}'=>asset('images/ico/lia.jpg'),
                 '{logo_iicc}'=>asset('images/ico/iicc.jpg'),
             );
-            $contenu = strtr($message[0]->message_en, $vars);
+            $contenu = strtr($message[0]->contenu_en, $vars);
         }
         $this->createContractPdf($user,$pdf_template,$path,$contenu);
 
@@ -1960,7 +1960,7 @@ class RegisterController extends Controller
         $path = public_path('pdf/registrations/apl').'/'.$pdfName.'.pdf';
         $downloadPath = url('pdf/registrations/apl').'/'.$pdfName.'.pdf';
         // Get Model message
-        $message = App\Models\ModelMessage::where('id', 11)->get();
+        $message = ModelFichierPdf::where('id', 2)->get();
         $contenu = "";
         if (count($message) > 0) {
             $vars = array(
@@ -1977,7 +1977,7 @@ class RegisterController extends Controller
                 '{logo_lia}'=>asset('images/ico/lia.jpg'),
                 '{logo_iicc}'=>asset('images/ico/iicc.jpg'),
             );
-            $contenu = strtr($message[0]->message_fr, $vars);
+            $contenu = strtr($message[0]->contenu_fr, $vars);
         }
         $this->createContractPdf($user,$pdf_template,$path,$contenu);
 
@@ -2060,7 +2060,7 @@ class RegisterController extends Controller
      
 
         // Get Model message
-        $message = App\Models\ModelMessage::where('id', 10)->get();
+        $message = ModelFichierPdf::where('id', 1)->get();
 
         if (count($message) > 0) {
             $vars = array(
@@ -2075,17 +2075,17 @@ class RegisterController extends Controller
                 '{logo_lia}'=>asset('images/ico/lia.jpg'),
                 '{logo_iicc}'=>asset('images/ico/iicc.jpg'),
             );
-            $contenu = strtr($message[0]->message_en, $vars);
+            $contenu = strtr($message[0]->contenu_en, $vars);
         }
 
-        return view('pdf.afa_contract_dynamic',['user'=>User::whereId(158)->first()])->with('content',$contenu);
+        return view('pdf.afa_contract',['user'=>User::whereId(158)->first()])->with('content',$contenu);
     }
 
     public function aplContract(){
         // return view('pdf.apl_contract',['user'=>User::whereId(2)->first()]);
 
         // Get Model message
-        $message = App\Models\ModelMessage::where('id', 11)->get();
+        $message = ModelFichierPdf::where('id', 2)->get();
 
         if (count($message) > 0) {
             $vars = array(
@@ -2102,10 +2102,10 @@ class RegisterController extends Controller
                 '{logo_lia}'=>asset('images/ico/lia.jpg'),
                 '{logo_iicc}'=>asset('images/ico/iicc.jpg'),
             );
-            $contenu = strtr($message[0]->message_fr, $vars);
+            $contenu = strtr($message[0]->contenu_fr, $vars);
         }
 
-        return view('pdf.apl_contract_dynamic',['user'=>User::whereId(2)->first()])->with('content',$contenu);
+        return view('pdf.apl_contract',['user'=>User::whereId(2)->first()])->with('content',$contenu);
     }
     
     public function conjunctionAgreement(){
@@ -2124,7 +2124,7 @@ class RegisterController extends Controller
         $user = User::whereId(16)->first();
 
         // Get Model message
-        $message = App\Models\ModelMessage::where('id', 12)->get();
+        $message = ModelFichierPdf::where('id', 3)->get();
         $contenu = '';
         if (count($message) > 0) {
             $vars = array(
@@ -2154,7 +2154,7 @@ class RegisterController extends Controller
                 '{memberimmat}' => $user->immat,
                 '{memberimmat}' => $user->immat,
             );
-            $contenu = strtr($message[0]->message_fr, $vars);
+            $contenu = strtr($message[0]->contenu_fr, $vars);
         }
         
         return view('pdf.conjunction_agreement',['content'=>$contenu]);

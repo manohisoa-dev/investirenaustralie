@@ -1586,6 +1586,7 @@ return
 	'txt.reserved_product' => 'Produit réservé',
 	'txt.product_already_reserved' => 'Produit déjà réservé',
 	'txt.transaction_file_create' => 'Dossier transaction créer',
+	'txt.transaction_file' => 'Dossier transaction',
 	'txt.complete_registration_file' => 'Dossier d&rsquo;inscription complet',
 	'txt.afa_selectéd' => 'AFA sélectionné',
 	'txt.ca_send' => 'Conjunction Agreement envoyé',
@@ -1624,4 +1625,10 @@ return
 	'btn.resume' => 'Reprendre',
 	'txt.abandon' => 'Abandonner',
 	'txt.acheteur' => 'Acheteur',
+	'txt.invoices' => 'Factures',
+	'txt.added' => 'Ajouté',
+	'page.home.section.chart.title' => 'Titre Section Chart',
+	'page.home.section.chart.content' => 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur ?',
+	'page.home.section.square.title' => 'Titre Section Square',
+	'page.home.section.square.content' => 'Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil vel eum fugiat quo voluptas nulla pariatur?',
 ];

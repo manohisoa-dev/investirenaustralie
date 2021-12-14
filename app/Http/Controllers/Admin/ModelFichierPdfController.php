@@ -117,7 +117,7 @@ class ModelFichierPdfController extends Controller
         $modelFichierPdf->update($request->all());
         ModelFichierPdf::where('id', $modelFichierPdf->id)->update(['params' => $valeur_var]);
         # notification
-        Notify::success('Modèle Message a été mise à jour avec succès');
+        Notify::success('Modèle fichier a été mise à jour avec succès');
         return redirect(route('admin.model-fichier-pdf.index'));
     }
 

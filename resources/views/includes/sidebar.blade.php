@@ -29,7 +29,7 @@
         </div>
     @endif
 
-    <div class="card m-35px-t">
+    {{-- <div class="card m-35px-t">
         <div class="card-header bg-transparent">
             <span class="h5 m-0px font-w-600 dark-color">@lang('app.recent.product')</span>
         </div>
@@ -96,7 +96,7 @@
                 <div class="p-15px-tb text-center">@lang('app.txt.no_product_found')</div>
             @endforelse
         </div>
-    </div>
+    </div> --}}
 
     @if(\Auth::check()&&\Auth::user()->hasRole('member'))
         <div class="card m-35px-t">
@@ -107,7 +107,7 @@
         </div>
     @endif
 
-    <div class="card m-35px-t">
+    {{-- <div class="card m-35px-t">
         <div class="card-header bg-transparent">
             <span class="h5 m-0px font-w-600 dark-color">@lang('app.recent.category')</span>
         </div>
@@ -121,7 +121,7 @@
                 <div>
                     <i class="ti-angle-right"></i>
                 </div>
-            </a>
+            </a> --}}
             {{-- <span class="row justify-content-sm-between align-items-sm-center">
                     <span class="col-sm-6 m-5px-tb dark-color">
                         Business 
@@ -131,10 +131,10 @@
                     </span>
                 </span>
             <span> {{ trans('app.txt.'.$category->title) }} </span><span class="theme2nd-bg p-5px-tb p-10px-lr border-radius-15 white-color small">{{$category->products_count}}<i class="fas fa-arrow-right small m-5px-l"></i></span> --}}
-            @empty
+            {{-- @empty
                 <div class="p-15px-tb col-lg-12 text-center"> @lang('app.txt.noinfo') </div>
             @endforelse
-        </div>
-    </div>
+        </div> 
+    </div> --}}
 
 </div>

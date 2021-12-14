@@ -338,7 +338,7 @@ class DossierController extends Controller
         $path = $file->move($path, $fileNameToStore);
 
         // Update dossier transaction status
-        DossierTransaction::whereId($dossTransId)->update(['eoi_finalize_file_name'=>$fileNameToStore,'date_eoi_finalize'=>Carbon::now(),'status'=>10,'sollicitor_id'=>$sollicitorId]);
+        DossierTransaction::whereId($dossTransId)->update(['eoi_finalize_file_name'=>$fileNameToStore,'date_eoi_finalize'=>Carbon::now(),'status'=>10]);
         $dossTransMaj=DossierTransaction::whereId($dossTransId)->first();
 
         // Send Email to notify Sollicitor 

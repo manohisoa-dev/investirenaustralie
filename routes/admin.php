@@ -168,6 +168,8 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     
     //Route modele message
     Route::resource('model-message','ModelMessageController');
+    //Route model fichier pdf
+    Route::resource('model-fichier-pdf','ModelFichierPdfController');
     //Route template newsletters
     Route::resource('newsletter-template','NewsletterTemplateController');
     //Route inscris newsletters
@@ -489,6 +491,16 @@ Route::prefix('collaborators')->namespace('Admin')->as('admin.')->middleware(["a
     Route::put('/admin/model-message/{firb}', 'ModelMessageController@update')->name('collaborators.admin.model-message.update');
     Route::delete('/admin/model-message/{firb}', 'ModelMessageController@destroy')->name('collaborators.admin.model-message.destroy');
     Route::get('/admin/model-message/{firb}/edit', 'ModelMessageController@edit')->name('collaborators.admin.model-message.edit');
+    
+    //Route::resource('model-fichier-pdf','ModelFichierPdfController');
+    Route::get('/admin/model-fichier-pdf', 'ModelFichierPdfController@index')->name('collaborators.admin.model-fichier-pdf.index');
+    Route::get('/admin/model-fichier-pdf/create', 'ModelFichierPdfController@create')->name('collaborators.admin.model-fichier-pdf.create');
+    Route::post('/admin/model-fichier-pdf', 'ModelFichierPdfController@store')->name('collaborators.admin.model-fichier-pdf.store');
+    Route::get('/admin/model-fichier-pdf/{firb}', 'ModelFichierPdfController@show')->name('collaborators.admin.model-fichier-pdf.show');
+    Route::put('/admin/model-fichier-pdf/{firb}', 'ModelFichierPdfController@update')->name('collaborators.admin.model-fichier-pdf.update');
+    Route::delete('/admin/model-fichier-pdf/{firb}', 'ModelFichierPdfController@destroy')->name('collaborators.admin.model-fichier-pdf.destroy');
+    Route::get('/admin/model-fichier-pdf/{firb}/edit', 'ModelFichierPdfController@edit')->name('collaborators.admin.model-fichier-pdf.edit');
+    
     
     //Route::resource('newsletter-template','NewsletterTemplateController');
     Route::get('/admin/newsletter-template', 'NewsletterTemplateController@index')->name('collaborators.admin.newsletter-template.index');
