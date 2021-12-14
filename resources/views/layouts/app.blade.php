@@ -949,16 +949,15 @@
             envoi.done( function(data) {
                 // set apl items
                 $('#listAplModal .modal-body').html("<h6 class='white-color'>@lang('app.txt.aplfound') : "+data.res.length+"</h6>");
-
                 $.each(data.res,function(key,value){
                     var id= value.id;
                     var uri = '{{ URL::to("get/show/apl") }}'+'/'+id;
                     var envoi = $.get( uri );
                     var nl = "{{ trans('app.txt.noinfo') }}";
                     var aplInfo ="";
-                    var apl_phone = data.infos[key]?data.infos[key]['orga_phone']:nl;
-                    var apl_email = data.infos[key]?data.infos[key]['orga_email']:nl;
-                    var apl_website = data.infos[key]?data.infos[key]['orga_website']:nl;
+                    var apl_phone = data.infos[key]?data.infos[key]['contact_phone']:nl;
+                    var apl_email = data.infos[key]?data.infos[key]['contact_email']:nl;
+                    var apl_website = data.infos[key]?data.infos[key]['orga_website']!==null?data.infos[key]['orga_website']:'-':nl;
                     var apl_orga_name = data.infos[key]['orga_name'];
 
                     aplInfo = '<i class="fa fa-phone"></i> Phone : '+apl_phone+'<br/><i class="fa fa-envelope"></i> Email : '+apl_email+'<br/><i class="fa fa-globe"></i> Site internet : '+apl_website;

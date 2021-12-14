@@ -215,7 +215,6 @@
     {{-- End show pub --}}
     
     {{-- Show blog --}}
-        
         @if ($viewProd === 'list')
             @if (($key+1)%(int)($xLine->value) === 0)
                 @php
@@ -237,26 +236,44 @@
                                     </div>
                                 </div>
                                 <div class="ads-content">
+                                    {{-- show blog --}}
                                     <div class="col-md-12 col-lg-12 m-30px-b view-item-blog">
                                         <div class="hover-top card box-shadow-only-hover overflow-hidden">
-                                            <div>
-                                                {{-- Show blog image --}}
-                                                <a href="{{route('blog.index',$blogs->slug)}}" target="_blank">
-                                                    @php
-                                                        if(@getimagesize($blogs->imageUrl())) {
-                                                            $img=$blogs->imageUrl();
-                                                        } else {
-                                                            $img=asset('images/blog/iea.png');
-                                                        }   
-                                                    @endphp
-                                                    <img src="{{$img}}" alt="{{$blogs->$title}}" title="{{$blogs->$title}}">
-                                                </a>
+                                            <div class="row col-lg-12">
+                                                <div class="col-lg-6 m-15px-t">
+                                                    {{-- show image --}}
+                                                    <a href="{{route('blog.index',$blogs->slug)}}" target="_blank">
+                                                        @php
+                                                            if(@getimagesize($blogs->imageUrl())) {
+                                                                $img=$blogs->imageUrl();
+                                                            } else {
+                                                                $img=asset('images/blog/iea.png');
+                                                            }   
+                                                        @endphp
+                                                        <img src="{{$img}}" alt="{{$blogs->$title}}" title="{{$blogs->$title}}">
+                                                    </a>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="row col-lg-12">
+                                                        <div class="col-lg-12">
+                                                            {{-- show  title --}}
+                                                            <label class="font-small">@lang('app.txt.postepar') : <a href="javascript:void(0)">{{$blogs->author ? $blogs->author->name : ''}}</a> – {{$blogs->created_at ? $blogs->created_at->diffForHumans() : ''}}</label>
+                                                            <h5 class="m-10px-b font-w-600">
+                                                                <a title="{{$blogs->$title}}" class="dark-color" href="{{route('blog.index',$blogs->$slug)}}" target="_blank">{!!$blogs->$title!!}</a>
+                                                            </h5>
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            {{-- show description --}}
+                                                            @php
+                                                                $content = 'content_'.App::getLocale();
+                                                            @endphp
+                                                            {{ str_limit(strip_tags($blogs->$content),"100","...") }}
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
+                                            {{-- blog footer --}}
                                             <div class="p-20px">
-                                                <label class="font-small">@lang('app.txt.postepar') : <a href="javascript:void(0)">{{$blogs->author ? $blogs->author->name : ''}}</a> – {{$blogs->created_at ? $blogs->created_at->diffForHumans() : ''}}</label>
-                                                <h5 class="m-10px-b font-w-600">
-													<a title="{{$blogs->$title}}" class="dark-color" href="{{route('blog.index',$blogs->$slug)}}" target="_blank">{{str_limit($blogs->$title, 50, '...')}}</a>
-												</h5>
                                                 <div class="nav font-small border-top-1 border-color-dark-gray p-15px-t">
                                                     <a class="m-15px-r body-color font-w-500" href="javascript:void(0)"><i class="fas fa-calendar-alt "></i> {{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $blogs->created_at)->format('d F')}},{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $blogs->created_at)->year }}</a>
                                                     <a class="body-color font-w-500" href="javascript:void(0)"><i class="fas fa-comments"></i> {{$blogs->comments_count}}</a>
