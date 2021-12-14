@@ -763,7 +763,7 @@
 
 @push('script')
 {!! NoCaptcha::renderJs() !!}
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2izG_M7K3gP6pFUH5cyzmDjuGpOYfgc4&libraries=places&callback=initMap&channel=GMPSB_addressselection_v1_cABC" async defer></script>
+
 <script src="{{asset('js/myJs.js')}}"></script>
 <!-- Jquery Validate -->
 <script src="{{ asset('administrator/js/plugins/validate/jquery.validate.min.js') }}"></script>
@@ -1480,6 +1480,7 @@
 
 
 {{-- Google map autocomplete --}}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2izG_M7K3gP6pFUH5cyzmDjuGpOYfgc4&libraries=places&callback=initMap&channel=GMPSB_addressselection_v1_cABC" async defer></script>
 <script>
     function initMap(){
         var autocomplete = new google.maps.places.Autocomplete($("#route")[0], {});
@@ -1597,7 +1598,6 @@
 			var itemCity3 = '';
             var lat = place.geometry.location.lat();
             var long = place.geometry.location.lng();
-
             $.each(arrAddress, function (i, address_components) {
                 if (address_components.types[0] == "street_number") {
                     //console.log("street_number:" + address_components.long_name);
