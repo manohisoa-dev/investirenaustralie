@@ -64,7 +64,7 @@
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $record->state->content }}</td>
                                 <td>{{ $record->search_mandate_name }}</td>
-                                <td><a href="{{$record->image?url($record->image->filepath):''}}" target="_blank"><i class="fa fa-fw fa-file-pdf-o"></i> afficher le contenu du pdf</a></td>
+                                <td><a href="{{url($record->image->filepath)}}" target="_blank"><i class="fa fa-fw fa-file-pdf-o"></i> afficher le contenu du pdf</a></td>
                                 <td>{{ $record->created_at }}</td>
                                 <td>{{ $record->updated_at }}</td>
 								<td align="center" width="12%">

@@ -170,6 +170,8 @@ Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware(["auth","ro
     Route::resource('model-message','ModelMessageController');
     //Route model fichier pdf
     Route::resource('model-fichier-pdf','ModelFichierPdfController');
+    //Route vidéo
+    Route::resource('video','VideoController');
     //Route template newsletters
     Route::resource('newsletter-template','NewsletterTemplateController');
     //Route inscris newsletters
@@ -500,6 +502,15 @@ Route::prefix('collaborators')->namespace('Admin')->as('admin.')->middleware(["a
     Route::put('/admin/model-fichier-pdf/{firb}', 'ModelFichierPdfController@update')->name('collaborators.admin.model-fichier-pdf.update');
     Route::delete('/admin/model-fichier-pdf/{firb}', 'ModelFichierPdfController@destroy')->name('collaborators.admin.model-fichier-pdf.destroy');
     Route::get('/admin/model-fichier-pdf/{firb}/edit', 'ModelFichierPdfController@edit')->name('collaborators.admin.model-fichier-pdf.edit');
+    
+    //Route::resource('video','VideoController');
+    Route::get('/admin/video', 'VideoController@index')->name('collaborators.admin.video.index');
+    Route::get('/admin/video/create', 'VideoController@create')->name('collaborators.admin.video.create');
+    Route::post('/admin/video', 'VideoController@store')->name('collaborators.admin.video.store');
+    Route::get('/admin/video/{video}', 'VideoController@show')->name('collaborators.admin.video.show');
+    Route::put('/admin/video/{video}', 'VideoController@update')->name('collaborators.admin.video.update');
+    Route::delete('/admin/video/{video}', 'VideoController@destroy')->name('collaborators.admin.video.destroy');
+    Route::get('/admin/video/{video}/edit', 'VideoController@edit')->name('collaborators.admin.video.edit');
     
     
     //Route::resource('newsletter-template','NewsletterTemplateController');
