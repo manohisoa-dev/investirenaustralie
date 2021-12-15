@@ -178,7 +178,8 @@
                                                     <div class="img-box p-10px-b m-15px-b border-bottom-2 border-color-gray">
                                                         @php
                                                             if($pub->filepath) {
-                                                                $img_pub= asset($pub->filepath);                            
+                                                                $img_pub = asset(getImageResizeUrl('pub', $pub->filename, 'rectangle'));
+                                                                //$img_pub= asset($pub->filepath);
                                                             } else {
                                                                 $img_pub= 'http://placehold.it/250x250';
                                                             }
@@ -240,12 +241,12 @@
                                     <div class="col-md-12 col-lg-12 m-30px-b view-item-blog">
                                         <div class="hover-top card box-shadow-only-hover overflow-hidden">
                                             <div class="row col-lg-12">
-                                                <div class="col-lg-6 m-15px-t">
+                                                <div class="col-lg-4 m-15px-t">
                                                     {{-- show image --}}
                                                     <a href="{{route('blog.index',$blogs->slug)}}" target="_blank">
                                                         @php
                                                             if(@getimagesize($blogs->imageUrl())) {
-                                                                $img=$blogs->imageUrl();
+                                                                $img = asset(getImageResizeUrl('blog', $blogs->image->filename, 'scare'));
                                                             } else {
                                                                 $img=asset('images/blog/iea.png');
                                                             }   
@@ -253,7 +254,7 @@
                                                         <img src="{{$img}}" alt="{{$blogs->$title}}" title="{{$blogs->$title}}">
                                                     </a>
                                                 </div>
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-8">
                                                     <div class="row col-lg-12">
                                                         <div class="col-lg-12">
                                                             {{-- show  title --}}

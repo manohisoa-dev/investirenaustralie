@@ -24,7 +24,7 @@
 		<!-- profil -->
 		<div class="ibox ">
 			<div class="ibox-title">
-				<h5><i class="fa fa-user-circle" aria-hidden="true"></i> Profile</h5>
+				<h5><i class="fa fa-user-circle" aria-hidden="true"></i> Profil</h5>
 				<div class="ibox-tools">
 					<a class="collapse-link">
 						<i class="fa fa-chevron-up"></i>

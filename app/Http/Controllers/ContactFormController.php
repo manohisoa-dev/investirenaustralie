@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Badword;
+use App\Models\Pub;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Blog;
@@ -42,6 +43,8 @@ class ContactFormController extends Controller
 //            $table->timestamps();
 //            $table->softDeletes();
 //        });
+
+        Pub::regenerateAllAvatar() ;
 
         $searchMandates = DB::table('search_mandates')->get();
         dd($searchMandates) ;

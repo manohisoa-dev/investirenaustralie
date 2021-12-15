@@ -11,47 +11,42 @@
 		
 		if($first_photo){
 			if($photo_principal){
-				$img = asset(getImageResizeUrl('product', str_replace(' ', '%20', $photo_principal->filename), 'medium'));
+				$img = asset(getImageResizeUrl('product', str_replace(' ', '%20', $photo_principal->filename), 'large'));
 			}else{
-				$img = asset(getImageResizeUrl('product', str_replace(' ', '%20', $first_photo->filename), 'medium'));
+				$img = asset(getImageResizeUrl('product', str_replace(' ', '%20', $first_photo->filename), 'large'));
 			}
 		}else{
 			$img = asset('images/blog/iea.png');
 		}
     @endphp
     <section class="bg-center bg-cover bg-fiexd effect-section" style="background-image: url('{{ $img }}');">
-        <div class="mask dark-g-bg opacity-7"></div>
+        {{--<div class="mask dark-g-bg opacity-7"></div>--}}
+        <div class=""></div>
         <div class="container">
             <div class="row screen-65 justify-content-center align-items-center p-100px-tb">
                 <div class="col-lg-10 text-center m-50px-t">
                     {{-- <h1 class="display-4 white-color m-25px-b">{{getGTranslateAutoDetect( App::getLocale() ,$item->title)}}</h1> --}}
-                    <h1 class="display-4 white-color m-25px-b">{{$item->title}}</h1>
-                    <div class="d-flex align-items-center m-25px-t justify-content-center text-left">
-                        <div class="p-15px-l">
-                            <p class="white-color m-0px"><span class="white-color">{{ $item->location ? Illuminate\Support\Str::upper($item->location->locality.' '.$item->location->area_level_2.', '.$item->location->area_level_1.' '.$item->location->postalCode) : '' }}</span></p>
-                        </div>
-                    </div>
 
                     <div class="p-25px-t row col-lg-12">
-                        <div class="col-lg-4 col-sm-6">
+                        <div class="col-lg-4 col-sm-6" style="display: none;">
                           <a {{ Auth::check()? (Auth::user()->hasAfa()?'':'disabled') :'' }} href="{{ route('member.contact',['role'=>'afa']) }}" id="contact_afa" value="{{ Session::has('has_afa')?1:0 }}" class="m-btn m-btn-theme2nd dark-color flex-shrink-0 col-md-12"><i class="fa fa-envelope" aria-hidden="true"></i>  @lang('app.btn.contact_afa')</a>
                         </div>
-                        <div class="col-lg-4 col-sm-6">
-                          <a href="{{ route('member.contact', ['role'=>'apl']) }}" class="m-btn m-btn-theme4rd dark-color flex-shrink-0 col-md-12"><i class="fa fa-envelope" aria-hidden="true"></i>  @lang('app.btn.contacter_apl')</a>
-                        </div>
-                        <div class="col-lg-4 col-sm-6">
+                        {{--<div class="col-lg-4 col-sm-6">--}}
+                          {{--<a href="{{ route('member.contact', ['role'=>'apl']) }}" class="m-btn m-btn-theme4rd dark-color flex-shrink-0 col-md-12"><i class="fa fa-envelope" aria-hidden="true"></i>  @lang('app.btn.contacter_apl')</a>--}}
+                        {{--</div>--}}
+                        {{--<div class="col-lg-4 col-sm-6">--}}
 
-                            @if (Auth::check())
-                                @if (isset(App\Models\Label::where('author_id',Auth::id())->where('product_id',$item->id)->where('label','starred')->first()->id))
-                                    <a href="{{route('label.remove', ['id'=>App\Models\Label::where('author_id',Auth::id())->where('product_id',$item->id)->where('label','starred')->first()->id])}}" title="@lang('app.txt.programme_in_favorites')" class="m-btn btn-warning dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>
-                                @else
-                                    <a href="{{route('label.store', ['product'=>$item,'type'=>'starred'])}}" title="@lang('app.txt.programme_favorites')" class="m-btn m-btn-theme5rd dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>
-                                @endif
-                            @else
-                                <a href="{{route('label.store', ['product'=>$item,'type'=>'starred'])}}" title="@lang('app.txt.programme_favorites')" class="m-btn m-btn-theme5rd dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>
-                            @endif
+                            {{--@if (Auth::check())--}}
+                                {{--@if (isset(App\Models\Label::where('author_id',Auth::id())->where('product_id',$item->id)->where('label','starred')->first()->id))--}}
+                                    {{--<a href="{{route('label.remove', ['id'=>App\Models\Label::where('author_id',Auth::id())->where('product_id',$item->id)->where('label','starred')->first()->id])}}" title="@lang('app.txt.programme_in_favorites')" class="m-btn btn-warning dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>--}}
+                                {{--@else--}}
+                                    {{--<a href="{{route('label.store', ['product'=>$item,'type'=>'starred'])}}" title="@lang('app.txt.programme_favorites')" class="m-btn m-btn-theme5rd dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>--}}
+                                {{--@endif--}}
+                            {{--@else--}}
+                                {{--<a href="{{route('label.store', ['product'=>$item,'type'=>'starred'])}}" title="@lang('app.txt.programme_favorites')" class="m-btn m-btn-theme5rd dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>--}}
+                            {{--@endif--}}
 
-                        </div>
+                        {{--</div>--}}
                     </div>
                 </div>
             </div>
@@ -63,6 +58,14 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
+                    <div class="row">
+                        <h1 class="m-30px-l" style="font-size: 2rem;">{{$item->title}}</h1>
+                        <div class="d-flex align-items-center justify-content-center text-left m-5px-b m-15px-l">
+                            <div class="p-15px-l">
+                                <p class="white-color m-0px"><span>{{ $item->location ? Illuminate\Support\Str::upper($item->location->locality.' '.$item->location->area_level_2.', '.$item->location->area_level_1.' '.$item->location->postalCode) : '' }}</span></p>
+                            </div>
+                        </div>
+                    </div>
                   @if(count($item->images))
                   <div id="myCarousel" class="carousel slide w-100" data-ride="carousel">
                       <div class="carousel-inner w-100" role="listbox">

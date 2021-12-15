@@ -16,7 +16,8 @@ class Pub extends Model {
         'mini'              => [25, 25],
         'thumb'             => [50, 50],
         'medium'            => [374, 200],
-        'large'             => [598, 418]
+        'large'             => [598, 418],
+        'rectangle'         => [700, 200]
     );
 
 
