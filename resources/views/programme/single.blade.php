@@ -285,7 +285,7 @@
                         $prods = App\Models\Product::where('parent_id','=',$item->id)->where('status_res','=',0)->get();
                     @endphp
                     @if(count($prods)>0)
-                        <table class="table m-35px-tb table-bordered">
+                        <table class="table m-35px-tb table-bordered" style="widows: 100% !important;">
                             <thead class="thead-dark">
                                 <tr class="text-center">
                                     <th>@lang('app.txt.picture')</th>
