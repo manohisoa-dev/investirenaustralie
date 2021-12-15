@@ -8,48 +8,24 @@
     @php
         $photo_principal = \App\Models\ProductsImage::where('products_images.product_id', '=', $item->id)->where('products_images.is_principal', '=', 1)->join('images', 'products_images.image_id', '=', 'images.id')->first();
         $first_photo = \App\Models\ProductsImage::where('products_images.product_id', '=', $item->id)->join('images', 'products_images.image_id', '=', 'images.id')->first();
-		
+
 		if($first_photo){
 			if($photo_principal){
-				$img = asset(getImageResizeUrl('product', str_replace(' ', '%20', $photo_principal->filename), 'medium'));
+				$img = asset(getImageResizeUrl('product', str_replace(' ', '%20', $photo_principal->filename), 'large'));
 			}else{
-				$img = asset(getImageResizeUrl('product', str_replace(' ', '%20', $first_photo->filename), 'medium'));
+				$img = asset(getImageResizeUrl('product', str_replace(' ', '%20', $first_photo->filename), 'large'));
 			}
 		}else{
 			$img = asset('images/blog/iea.png');
 		}
     @endphp
     <section class="bg-center bg-cover bg-fiexd effect-section" style="background-image: url('{{ $img }}');">
-        <div class="mask dark-g-bg opacity-7"></div>
+        {{--<div class="mask dark-g-bg opacity-7"></div>--}}
+        <div class=""></div>
         <div class="container">
             <div class="row screen-65 justify-content-center align-items-center p-100px-tb">
                 <div class="col-lg-10 text-center m-50px-t">
                     {{-- <h1 class="display-4 white-color m-25px-b">{{getGTranslateAutoDetect( App::getLocale() ,$item->title)}}</h1> --}}
-                    <h1 class="display-4 white-color m-25px-b">{{$item->title}}</h1>
-                    <div class="d-flex align-items-center m-25px-t justify-content-center text-left">
-                        <div class="p-15px-l">
-                            <p class="m-0px" style="color: #ffffff !important;">{{ $item->location ? Illuminate\Support\Str::upper($item->location->locality.' '.$item->location->area_level_2.', '.$item->location->area_level_1.' '.$item->location->postalCode) : '' }}</p>
-                        </div>
-                    </div>
-
-                    <div class="p-25px-t row col-lg-12">
-                        <div class="col-lg-6 col-sm-6">
-                            <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" class="m-btn m-btn-theme2nd dark-color flex-shrink-0 col-md-12"><i class="fa fa-envelope" aria-hidden="true"></i>  @lang('app.btn.contact_afa')</a>
-                        </div>
-                        <div class="col-lg-6 col-sm-6">
-
-                            @if (Auth::user())
-                                @if (isset(App\Models\Label::where('author_id',Auth::id())->where('product_id',$item->id)->where('label','starred')->first()->id))
-                                    <a href="{{route('label.remove', ['id'=>App\Models\Label::where('author_id',Auth::id())->where('product_id',$item->id)->where('label','starred')->first()->id])}}" title="@lang('app.txt.programme_in_favorites')" class="m-btn btn-warning dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>
-                                @else
-                                    <a href="{{route('label.store', ['product'=>$item,'type'=>'starred'])}}" title="@lang('app.txt.programme_favorites')" class="m-btn m-btn-theme5rd dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>
-                                @endif
-                            @else
-                                <a href="{{route('label.store', ['product'=>$item,'type'=>'starred'])}}" title="@lang('app.txt.programme_favorites')" class="m-btn m-btn-theme5rd dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>
-                            @endif
-
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -60,6 +36,14 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
+                    <div class="row">
+                        <h1 class="m-30px-l" style="font-size: 2rem;">{{$item->title}}</h1>
+                        <div class="d-flex align-items-center justify-content-center text-left m-5px-b m-15px-l">
+                            <div class="p-15px-l">
+                                <p class="m-0px">{{ $item->location ? Illuminate\Support\Str::upper($item->location->locality.' '.$item->location->area_level_2.', '.$item->location->area_level_1.' '.$item->location->postalCode) : '' }}</p>
+                            </div>
+                        </div>
+                    </div>
                     {{-- Show progam image --}}
                     @if(count($item->images))
                     <div id="myCarousel" class="carousel slide w-100" data-ride="carousel">
@@ -74,7 +58,7 @@
                                                         <div class="portfolio-img">
                                                             @php
                                                                 $img_prod = "";
-                                                                
+
                                                                 if(@getimagesize(App\Models\Image::whereId($it->pivot->image_id)->first()->filepath)) {
                                                                     $img_prod=App\Models\Image::whereId($it->pivot->image_id)->first()->filename;
                                                                 } else {
@@ -355,7 +339,7 @@
                         <p>@lang('app.txt.noinfo')</p>
                     @endif
                     {{-- end show liste product --}}
-                    
+
                     <div>
                         <a href="{{ url()->previous() }}" class="m-btn m-btn-theme"><i class="fa fa-arrow-left"></i> @lang('app.btn.return')</a>
                     </div>
@@ -381,7 +365,7 @@
                         <small><em>{!!$advStat!!}</em></small>
                     </div>
                     {{-- end show declaration --}}
-                    
+
                 </div>
 
                 <!-- Sidebar -->
@@ -408,7 +392,7 @@
                         <div class="row col-lg-12">
                             @forelse ($afas as $afa)
                                 <div class="col-lg-8"><p id="content" class="white-color"><i class="fa fa-building"></i> {{ $afa->name?$afa->name:'' }}</p></div>
-                                <div class="col-lg-4"><a class="black-color" href="{{route('member.contact', ['role'=>'afa', 'afa'=>$afa->name?$afa->name:''])}}" title="@lang('app.txt.contact_afa') ({{ $afa->name?$afa->name:'' }})"><i class="fa fa-envelope"></i></a></div>
+{{--                                <div class="col-lg-4"><a class="black-color" href="{{route('member.contact', ['role'=>'afa', 'afa'=>$afa->name?$afa->name:''])}}" title="@lang('app.txt.contact_afa') ({{ $afa->name?$afa->name:'' }})"><i class="fa fa-envelope"></i></a></div>--}}
                             @empty
                                 <p>@lang('app.txt.no_afa_in_this_location')</p>
                             @endforelse
@@ -499,7 +483,7 @@
 			$("a.fancyboxLinkDoc").fancybox({
 				type: "iframe"
 			});
-			
+
 			$("a.gallery-link").fancybox({
 				afterClose: function () {
 					parent.location.reload(true);
@@ -507,7 +491,7 @@
 			});
 
 		});
-		
+
         $('#btn_comment').click(function(){
             $('#loginModal').modal('show');
         });
@@ -579,7 +563,7 @@
               icon: iconBase + '/images/map/product.png'
             }
           };
-		  
+
           var data = {!!(isset($data) ? $data : '')!!};
                 //data=$.parseJSON(data);
 
@@ -621,19 +605,19 @@
           function infoWindow(marker,infos){
             // On crée une infobulle
             var infowindow1 = new google.maps.InfoWindow({
-                maxWidth: 300, 
-                //On définit le texte à afficher dans l'infoWindow 
+                maxWidth: 300,
+                //On définit le texte à afficher dans l'infoWindow
                 content: '<b>'+infos.title+'</b><br/><br/>'+infos.adr,
             });
 
             //On ajoute un listener d'événement : on écoute le clic sur le marqueur
             google.maps.event.addListener(marker, 'mouseover', function() {
-                // Ouverture de l'infobulle 
-                infowindow1.open(map, marker);  
-            });  
+                // Ouverture de l'infobulle
+                infowindow1.open(map, marker);
+            });
 
-            // Ouverture de l'infobulle 
-            infowindow1.open(map, marker);  
+            // Ouverture de l'infobulle
+            infowindow1.open(map, marker);
         }
 
       </script>
