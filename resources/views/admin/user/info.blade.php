@@ -29,7 +29,14 @@
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="ibox ">
 		<div class="ibox-title">
-			<h5><i class="fa fa-user-circle" aria-hidden="true"></i> Profile</h5>
+			<h5><i class="fa fa-user-circle" aria-hidden="true"></i>
+				Profil -
+				@if ($user->hasRole(5) && $user->isPerson())
+					{{$user->userinfos ? ucfirst($user->userinfos->last_name) :''}} {{$user->userinfos ? $user->userinfos->first_name :''}}
+				@else
+					{{ucfirst($user->name)}}
+				@endif
+			</h5>
 			<div class="ibox-tools">
 				<a class="collapse-link">
 					<i class="fa fa-chevron-up"></i>
@@ -241,7 +248,7 @@
 				<div class="col-sm-12">
 					<table class='table table-borderless'>
 						<tr>
-							<th>@lang('app.txt.businesspresentation')</th>							
+							<th>@lang('app.txt.businesspresentation')</th>
 						</tr>
 						<tr>
 							<td>{{$user->userinfos ?$user->userinfos->orga_presentation:''}}</td>
@@ -251,7 +258,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="ibox ">
 		<div class="ibox-title">
 			<h5><i class="fa fa-list" aria-hidden="true"></i> @lang('app.txt.office_address')</h5>
@@ -394,7 +401,7 @@
 		</div>
 	</div>
 	@endif
-	
+
 	@if($user->role==5)
 		<!-- info membre organisation-->
 		@if($user->type_users_id == 1)
@@ -447,7 +454,7 @@
 								</table>
 							</div>
 							<div class="col-md-6">
-								<table class='table table-borderless'>									
+								<table class='table table-borderless'>
 									<tr>
 										<th>@lang('app.txt.name_building')</th>
 										<td>{{$user->location->building_name}}</td>
@@ -567,7 +574,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="col-md-12">
 			<div class="ibox">
 				<div class="ibox-title">
@@ -580,7 +587,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="col-md-12">
 			<div class="ibox">
 				<div class="ibox-title">
@@ -593,7 +600,7 @@
 		</div>
 	</div>
 	@endif
-	
+
 	@if($user->role==4)
 	<div class="row">
 		<div class="col-md-12">
@@ -606,7 +613,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="col-md-12">
 			<div class="ibox">
 				<div class="ibox-title">
@@ -619,7 +626,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="col-md-12">
 			<div class="ibox">
 				<div class="ibox-title">
@@ -634,7 +641,7 @@
 		</div>
 	</div>
 	@endif
-	
+
 	@if($user->role==2)
 		@if($user->type_users_id == 3 || $user->type_users_id == 1)
 			<div class="row">
@@ -700,7 +707,7 @@
 							<h5><i class="fa fa-home"></i> @lang('app.txt.office_address')</h5>
 						</div>
 						<div class="ibox-content">
-							<table class='table table-borderless'>									
+							<table class='table table-borderless'>
 								<tr>
 									<th>@lang('app.txt.name_building')</th>
 									<td>{{$user->location->building_name}}</td>
@@ -743,7 +750,7 @@
 				</div>
 			</div>
 		@endif
-		
+
 		@if($user->type_users_id == 2)
 			<div class="row">
 				<div class="col-md-12">
@@ -873,7 +880,7 @@
 				</div>
 			</div>
 		@endif
-		
+
 		<!-- info seller by AFA-->
 		@if($user->type_users_id == 8 || $user->type_users_id == 9)
 		<div class="row">
@@ -903,7 +910,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="col-md-8">
 				<div class="ibox">
 					<div class="ibox-title">
@@ -1098,7 +1105,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="col-md-12">
 			<div class="ibox">
 				<div class="ibox-title">
@@ -1113,7 +1120,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="col-md-12">
 			<div class="ibox">
 				<div class="ibox-title">
@@ -1130,7 +1137,7 @@
 		</div>
 	</div>
 	@endif
-	
+
 	@if($user->role==3)
 	<div class="row">
 		<div class="col-md-12">
@@ -1145,7 +1152,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="col-md-12">
 			<div class="ibox">
 				<div class="ibox-title">

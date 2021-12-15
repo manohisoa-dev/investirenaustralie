@@ -124,7 +124,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="col-md-3">
 			<div class="ibox">
 				<div class="ibox-title">
@@ -185,7 +185,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="col-md-3">
 			<div class="ibox">
 				<div class="ibox-title">
@@ -221,7 +221,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 	</div>
 	@if($user->role==5)
 	<div class="row">
@@ -237,7 +237,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="col-md-12">
 			<div class="ibox">
 				<div class="ibox-title">
@@ -250,7 +250,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="col-md-12">
 			<div class="ibox">
 				<div class="ibox-title">
@@ -263,7 +263,7 @@
 		</div>
 	</div>
 	@endif
-	
+
 	@if($user->role==4)
 	<div class="row">
 		<div class="col-md-12">
@@ -276,7 +276,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="col-md-12">
 			<div class="ibox">
 				<div class="ibox-title">
@@ -289,7 +289,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="col-md-12">
 			<div class="ibox">
 				<div class="ibox-title">
@@ -304,7 +304,7 @@
 		</div>
 	</div>
 	@endif
-	
+
 	@if($user->role==2)
 	<div class="row">
 		<div class="col-md-12">
@@ -319,7 +319,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="col-md-12">
 			<div class="ibox">
 				<div class="ibox-title">
@@ -332,7 +332,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="col-md-12">
 			<div class="ibox">
 				<div class="ibox-title">
@@ -347,7 +347,7 @@
 		</div>
 	</div>
 	@endif
-	
+
 	@if($user->role==3)
 	<div class="row">
 		<div class="col-md-12">
@@ -362,7 +362,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="col-md-12">
 			<div class="ibox">
 				<div class="ibox-title">
