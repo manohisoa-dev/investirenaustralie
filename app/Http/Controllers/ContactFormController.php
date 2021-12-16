@@ -44,8 +44,6 @@ class ContactFormController extends Controller
 //            $table->softDeletes();
 //        });
 
-        Pub::regenerateAllAvatar() ;
-
         $searchMandates = DB::table('search_mandates')->get();
         dd($searchMandates) ;
 

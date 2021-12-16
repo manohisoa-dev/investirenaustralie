@@ -116,6 +116,7 @@
                 element.load();
                 element.play();
             }
+
             document.getElementById('videoPlayer').addEventListener('ended', myHandler, false);
 
             videoPlay(0); // play the video

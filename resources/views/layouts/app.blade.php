@@ -24,7 +24,6 @@
 <!-- plugin CSS -->
 <!-- Animate fade animation -->
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <!-- ANIMATE AOS -->
 <!-- plugin CSS -->
 <link href="{{ asset('plugin/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -39,7 +38,7 @@
 <link href="{{ asset('style/app.css?v='.$mytime) }}" rel="stylesheet">
 <link href="{{ asset('style/responsive.css?v='.$mytime) }}" rel="stylesheet">
 <link href="{{ asset('style/refonte.css?v='.$mytime) }}" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/fontawesome.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
 <!-- Fin Mombo -->
 
 <!-- dropzone -->
@@ -628,8 +627,8 @@
     @endif
 
     <!-- jquery -->
-    <script src="{{ asset('js/jquery-3.0.0.min.js') }}"></script>
-    <script src="{{ asset('js/jquery-migrate-3.0.0.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    
 	<!-- jQuery UI -->
 	<script src="{{ asset('administrator/js/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
     <!-- end jquery -->
@@ -637,6 +636,8 @@
     <script src="{{ asset('plugin/appear/jquery.appear.js') }}"></script>
     <!-- end appear -->
     <script src="{{ asset('js/jarallax-all.js') }}"></script>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <!--bootstrap-->
     <script src="{{ asset('plugin/bootstrap/js/popper.min.js') }}"></script>
@@ -652,8 +653,8 @@
     <script src="{{ asset('plugin/cookie/herbyCookie.min.js') }}"></script>
     <!-- end -->
     <!-- carousel js -->
-    <script src="{{ asset('plugin/owl/owl.js') }}"></script>
-    <script src="{{ asset('plugin/owl-carousel/js/owl.carousel.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script src="{{ asset('plugin/counter/jquery.countTo.js') }}"></script>
     <!-- bootstrap-slider.js -->
     {{-- <script src="{{ asset('js/bootstrap-slider.js') }}"></script> --}}
