@@ -40,8 +40,8 @@
 						{!!\Nvd\Crud\Html::sortableTh('video_titre','admin.video.index','Titre du vidéo')!!}
 						{!!\Nvd\Crud\Html::sortableTh('video_url','admin.video.index','Url')!!}
 						{!!\Nvd\Crud\Html::sortableTh('video_path','admin.video.index','Vidéo')!!}
-						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.video.index','Created At')!!}
-						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.video.index','Updated At')!!}
+						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.video.index','Créer le ')!!}
+						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.video.index','Mise à jour le')!!}
 						<th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">

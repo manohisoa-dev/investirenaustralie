@@ -43,11 +43,11 @@
                         <h5>{{$newsletter->email_adresse}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Created At</h4>
+                        <h4>Créer le </h4>
                         <h5>{{$newsletter->created_at}}</h5>
                     </li>
                                         <li class="list-group-item">
-                        <h4>Updated At</h4>
+                        <h4>Mise à jour le</h4>
                         <h5>{{$newsletter->updated_at}}</h5>
                     </li>
                                     </ul>

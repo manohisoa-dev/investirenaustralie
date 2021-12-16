@@ -41,8 +41,8 @@
 						{!!\Nvd\Crud\Html::sortableTh('contenu_fr','admin.model-fichier-pdf.index','Contenu Fr')!!}
 						{!!\Nvd\Crud\Html::sortableTh('contenu_en','admin.model-fichier-pdf.index','Contenu En')!!}
 						{!!\Nvd\Crud\Html::sortableTh('params','admin.model-fichier-pdf.index','Params')!!}
-						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.model-fichier-pdf.index','Created At')!!}
-						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.model-fichier-pdf.index','Updated At')!!}
+						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.model-fichier-pdf.index','Créer le ')!!}
+						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.model-fichier-pdf.index','Mise à jour le')!!}
 						<th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">
