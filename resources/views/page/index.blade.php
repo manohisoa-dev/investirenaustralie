@@ -101,133 +101,131 @@
                 </section>
                 <!--End Section -->
 
-                @if(request()->getHost() == "iea.easydata.mg")
-                    <!-- VIDEO SECTION PARALLAX -->
-                    <div class="jarallax" data-jarallax data-jarallax-video="https://youtu.be/WlPUe_yfMVg">
-                        <div class="demo-table">
-                            <div class="demo-table-cell">
-                                <section class="pb-0" id="">
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="title-box">
-                                                    <h2 style="margin-top: 80px; color: white !important; font-weight: 800 !important;">
-                                                        Comment on peut vous aider ?</h2>
-                                                    <p class="" style="color: white !important;">Lorem ipsum dolor sit amet</p>
+                <!-- VIDEO SECTION PARALLAX -->
+                <div class="jarallax" data-jarallax data-jarallax-video="https://youtu.be/WlPUe_yfMVg">
+                    <div class="demo-table">
+                        <div class="demo-table-cell">
+                            <section class="pb-0" id="">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="title-box">
+                                                <h2 style="margin-top: 80px; color: white !important; font-weight: 800 !important;">
+                                                    Comment on peut vous aider ?</h2>
+                                                <p class="" style="color: white !important;">Lorem ipsum dolor sit amet</p>
+                                            </div>
+                                        </div>
+                                        {{--<div class="col-lg-6" data-aos="fade-right">--}}
+                                        <div class="col-lg-6">
+                                            <div class="fancy_service text-left">
+                                                <div class="bg_img">
+                                                    <img src="{{asset('img/44.png')}}" alt="fancybox">
+                                                </div>
+                                                <div class="fancy_block">
+                                                    <div class="fancy-info">
+                                                        <h4 class="mt-4 mb-3 title">Membre </h4><h4 style="color: white;">.</h4>
+                                                        <p class="txt-body">Si vous êtes intéressé par une solution d'investissement
+                                                            en Australie.</p>
+                                                        <a href="#">
+                                                        <span class="btn-effect orange-color">
+                                                            S'isncrire
+                                                            <i class="fa fa-plus-circle ml-2"
+                                                               aria-hidden="true"></i>
+                                                        </span>
+                                                        </a>
+                                                    </div>
+                                                    <!-- Blem affichage -->
+                                                    <div class="fancy_img_test"><img src="{{asset('img/e1-full.jpg')}}" alt="fancybox2"></div>
+                                                    <!-- blem affichage -->
                                                 </div>
                                             </div>
-                                            {{--<div class="col-lg-6" data-aos="fade-right">--}}
-                                            <div class="col-lg-6">
-                                                <div class="fancy_service text-left">
-                                                    <div class="bg_img">
-                                                        <img src="{{asset('img/44.png')}}" alt="fancybox">
-                                                    </div>
-                                                    <div class="fancy_block">
-                                                        <div class="fancy-info">
-                                                            <h4 class="mt-4 mb-3 title">Membre </h4><h4 style="color: white;">.</h4>
-                                                            <p class="txt-body">Si vous êtes intéressé par une solution d'investissement
-                                                                en Australie.</p>
-                                                            <a href="#">
-                                                            <span class="btn-effect orange-color">
-                                                                S'isncrire
-                                                                <i class="fa fa-plus-circle ml-2"
-                                                                   aria-hidden="true"></i>
-                                                            </span>
-                                                            </a>
-                                                        </div>
-                                                        <!-- Blem affichage -->
-                                                        <div class="fancy_img_test"><img src="{{asset('img/e1-full.jpg')}}" alt="fancybox2"></div>
-                                                        <!-- blem affichage -->
-                                                    </div>
+                                        </div>
+                                        {{--<div class="col-lg-6" data-aos="fade-left">--}}
+                                        <div class="col-lg-6">
+                                            <div class="fancy_service text-left"
+                                                 style="visibility: visible; animation-name: fadeInUp;">
+                                                <div class="bg_img">
+                                                    <img src="{{asset('img/44.png')}}" alt="fancybox">
                                                 </div>
-                                            </div>
-                                            {{--<div class="col-lg-6" data-aos="fade-left">--}}
-                                            <div class="col-lg-6">
-                                                <div class="fancy_service text-left"
-                                                     style="visibility: visible; animation-name: fadeInUp;">
-                                                    <div class="bg_img">
-                                                        <img src="{{asset('img/44.png')}}" alt="fancybox">
-                                                    </div>
-                                                    <div class="fancy_block">
-                                                        <div class="fancy-info">
-                                                            <h4 class="mt-4 mb-3 title">Vendeur </h4><h4 style="color: white;">.</h4>
-                                                            <p class="txt-body">Si vous souhaitez proposer aux investisseurs
-                                                                francophones<span id="dots">...</span>
-                                                                <span id="more">internationaux des produits australiens immobiliers résidentiels, fonciers, industriels ou commerciaux.</span>
+                                                <div class="fancy_block">
+                                                    <div class="fancy-info">
+                                                        <h4 class="mt-4 mb-3 title">Vendeur </h4><h4 style="color: white;">.</h4>
+                                                        <p class="txt-body">Si vous souhaitez proposer aux investisseurs
+                                                            francophones<span id="dots">...</span>
+                                                            <span id="more">internationaux des produits australiens immobiliers résidentiels, fonciers, industriels ou commerciaux.</span>
 
-                                                                <button onclick="voirPlus()" id="myBtn">▼</button>
-                                                            </p>
-                                                            <a href="#">
-                                                            <span class="btn-effect orange-color">
-                                                                S'inscrire
-                                                                <i class="fa fa-plus-circle ml-2"
-                                                                   aria-hidden="true"></i>
-                                                            </span>
-                                                            </a>
-                                                        </div>
-                                                        <div class="fancy_img_test"><img src="{{asset('img/e4-full.jpg')}}" alt="fancybox2"></div>
+                                                            <button onclick="voirPlus()" id="myBtn">▼</button>
+                                                        </p>
+                                                        <a href="#">
+                                                        <span class="btn-effect orange-color">
+                                                            S'inscrire
+                                                            <i class="fa fa-plus-circle ml-2"
+                                                               aria-hidden="true"></i>
+                                                        </span>
+                                                        </a>
                                                     </div>
+                                                    <div class="fancy_img_test"><img src="{{asset('img/e4-full.jpg')}}" alt="fancybox2"></div>
                                                 </div>
                                             </div>
-                                            {{--<div class="col-lg-6" data-aos="fade-right">--}}
-                                            <div class="col-lg-6">
-                                                <div class="fancy_service text-left"
-                                                     style="visibility: visible; animation-name: fadeInUp;">
-                                                    <div class="bg_img">
-                                                        <img src="{{asset('img/44.png')}}" alt="fancybox">
+                                        </div>
+                                        {{--<div class="col-lg-6" data-aos="fade-right">--}}
+                                        <div class="col-lg-6">
+                                            <div class="fancy_service text-left"
+                                                 style="visibility: visible; animation-name: fadeInUp;">
+                                                <div class="bg_img">
+                                                    <img src="{{asset('img/44.png')}}" alt="fancybox">
+                                                </div>
+                                                <div class="fancy_block">
+                                                    <div class="fancy-info">
+                                                        <h4 class="mt-4 mb-3 title">Agence Francophone</h4><h4 class="title">
+                                                            Australienne</h4>
+                                                        <p class="txt-body">AFA si, en tant qu'agence immobilière ou d'affaires
+                                                            australienne,...▼</p>
+                                                        <a href="#">
+                                                        <span class="btn-effect orange-color">
+                                                            S'inscrire
+                                                            <i class="fa fa-plus-circle ml-2"
+                                                               aria-hidden="true"></i>
+                                                        </span>
+                                                        </a>
                                                     </div>
-                                                    <div class="fancy_block">
-                                                        <div class="fancy-info">
-                                                            <h4 class="mt-4 mb-3 title">Agence Francophone</h4><h4 class="title">
-                                                                Australienne</h4>
-                                                            <p class="txt-body">AFA si, en tant qu'agence immobilière ou d'affaires
-                                                                australienne,...▼</p>
-                                                            <a href="#">
-                                                            <span class="btn-effect orange-color">
-                                                                S'inscrire
-                                                                <i class="fa fa-plus-circle ml-2"
-                                                                   aria-hidden="true"></i>
-                                                            </span>
-                                                            </a>
-                                                        </div>
-                                                        <div class="fancy_img_test"><img src="{{asset('img/e3-full.jpg')}}" alt="fancybox2"></div>
-                                                    </div>
+                                                    <div class="fancy_img_test"><img src="{{asset('img/e3-full.jpg')}}" alt="fancybox2"></div>
                                                 </div>
                                             </div>
-                                            {{--<div class="col-lg-6" data-aos="fade-left">--}}
-                                            <div class="col-lg-6">
-                                                <div class="fancy_service text-left"
-                                                     style="visibility: visible; animation-name: fadeInUp;">
-                                                    <div class="bg_img mb-5 mb-lg-0">
-                                                        <img src="{{asset('img/44.png')}}" alt="fancybox">
+                                        </div>
+                                        {{--<div class="col-lg-6" data-aos="fade-left">--}}
+                                        <div class="col-lg-6">
+                                            <div class="fancy_service text-left"
+                                                 style="visibility: visible; animation-name: fadeInUp;">
+                                                <div class="bg_img mb-5 mb-lg-0">
+                                                    <img src="{{asset('img/44.png')}}" alt="fancybox">
+                                                </div>
+                                                <div class="fancy_block">
+                                                    <div class="fancy-info">
+                                                        <h4 class="mt-4 mb-3 title">Agence Partenaire</h4><span></span><h4
+                                                                class="title">&nbsp;Locale</h4>
+                                                        <p class="txt-body">APL si, en tant qu'agence implantée dans un pays ou
+                                                            territoire francophone,...▼</p>
+                                                        <a href="#">
+                                                            <br>
+                                                        <span class="btn-effect orange-color">
+                                                            S'inscrire
+                                                            <i class="fa fa-plus-circle ml-2"
+                                                               aria-hidden="true"></i>
+                                                        </span>
+                                                        </a>
                                                     </div>
-                                                    <div class="fancy_block">
-                                                        <div class="fancy-info">
-                                                            <h4 class="mt-4 mb-3 title">Agence Partenaire</h4><span></span><h4
-                                                                    class="title">&nbsp;Locale</h4>
-                                                            <p class="txt-body">APL si, en tant qu'agence implantée dans un pays ou
-                                                                territoire francophone,...▼</p>
-                                                            <a href="#">
-                                                                <br>
-                                                            <span class="btn-effect orange-color">
-                                                                S'inscrire
-                                                                <i class="fa fa-plus-circle ml-2"
-                                                                   aria-hidden="true"></i>
-                                                            </span>
-                                                            </a>
-                                                        </div>
-                                                        <div class="fancy_img_test"><img src="{{asset('img/e2-full.jpg')}}" alt="fancybox2"></div>
-                                                    </div>
+                                                    <div class="fancy_img_test"><img src="{{asset('img/e2-full.jpg')}}" alt="fancybox2"></div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </section>
-                            </div>
+                                </div>
+                            </section>
                         </div>
                     </div>
-                    <!-- READ MORE SCRIPT -->
-                @endif
+                </div>
+                <!-- READ MORE SCRIPT -->
             @elseif($child->page_order == 3)
                 <section id="feature" class="section gray-bg">
                     <div class="container">
@@ -413,7 +411,6 @@
                     </div>
                 </section>
 
-                @if(request()->getHost() == "iea.easydata.mg")
                 <!-- VIDEO SECTION PARALLAX 2 -->
                 <div class="jarallax" data-jarallax data-jarallax-video="https://youtu.be/WlPUe_yfMVg">
                     <div class="demo-table">
@@ -442,33 +439,32 @@
                     </div>
                 </div>
                 <!-- END PARALLAX 2-->
-                @endif
 
-                <!-- Section -->
-                <section id="about" class="section gray-bg">
-                    <div class="container">
-                        <div class="row align-items-center justify-content-between">
-                            <div class="col-lg-6 text-center m-15px-tb">
-                                @forelse ($child->images as $item)
-                                    <img src="{{ asset($item->filepath) }}" title="{{ $item->filename }}" alt="{{ $item->filename }}">
-                                @empty
-                                    <img src="{{ asset('images/page/default.png') }}" title="{{ asset('images/page/default.png') }}" alt="{{ asset('images/page/default.png') }}">
-                                @endforelse
-                            </div>
-                            <div class="col-lg-5 m-15px-tb">
-                                <h2 class="h1 m-25px-b">{{$child->title}}</h2>
-                                <div class="text-justify txt-body">
-                                    <p class="m-5px-b">{!!$child->content!!}</p>
-                                </div>
-                                @if(Auth::check()&&Auth::user()->isAdmin())
-                                    <div class="btn-bar p-15px-t">
-                                        <a class="m-btn-theme" href="{{route('admin.page.update',$child)}}"><i class="icon-edit"></i> @lang('app.btn.edit')</a>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                {{--<!-- Section -->--}}
+                {{--<section id="about" class="section gray-bg test">--}}
+                    {{--<div class="container">--}}
+                        {{--<div class="row align-items-center justify-content-between">--}}
+                            {{--<div class="col-lg-6 text-center m-15px-tb">--}}
+                                {{--@forelse ($child->images as $item)--}}
+                                    {{--<img src="{{ asset($item->filepath) }}" title="{{ $item->filename }}" alt="{{ $item->filename }}">--}}
+                                {{--@empty--}}
+                                    {{--<img src="{{ asset('images/page/default.png') }}" title="{{ asset('images/page/default.png') }}" alt="{{ asset('images/page/default.png') }}">--}}
+                                {{--@endforelse--}}
+                            {{--</div>--}}
+                            {{--<div class="col-lg-5 m-15px-tb">--}}
+                                {{--<h2 class="h1 m-25px-b">{{$child->title}}</h2>--}}
+                                {{--<div class="text-justify txt-body">--}}
+                                    {{--<p class="m-5px-b">{!!$child->content!!}</p>--}}
+                                {{--</div>--}}
+                                {{--@if(Auth::check()&&Auth::user()->isAdmin())--}}
+                                    {{--<div class="btn-bar p-15px-t">--}}
+                                        {{--<a class="m-btn-theme" href="{{route('admin.page.update',$child)}}"><i class="icon-edit"></i> @lang('app.btn.edit')</a>--}}
+                                    {{--</div>--}}
+                                {{--@endif--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</section>--}}
                 <!--End Section -->
             @endif
         @endif
@@ -516,7 +512,6 @@
         </div>
     </section>
     <!-- End Section -->
-    @if(request()->getHost() == "iea.easydata.mg")
     <!-- Section lorem -->
     <section class="section white-bg">
         <div class="container">
@@ -525,11 +520,10 @@
                 <div class="col-lg-4" style="margin:auto; ">
                     <div class="">
                         <h3 style="margin-bottom: 15px">
-                            Titre Section Chart
+                            @lang('app.page.home.section.chart.title')
                         </h3>
-                        <p class="txt-body">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                            aliquip ex ea commodo consequat. Ut enim ad minima veniam, quis nostrum exercitationem ullam
-                            corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur ?
+                        <p class="txt-body">
+                        	@lang('app.page.home.section.chart.content')
                         </p>
                         <div style="margin-top: 30px;" data-aos="fade-up">
                             <a class="m-btn m-btn-theme2nd btn-radius-iea" href="#">
@@ -593,9 +587,12 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="title-box text-center">
-                        <h2>Square Section</h2>
-                        <p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil<br>vel eum
-                            fugiat quo voluptas nulla pariatur?</p>
+                        <h2>
+                        	@lang('app.page.home.section.square.title')
+                        </h2>
+                        <p>
+                        	@lang('app.page.home.section.square.content')
+                        </p>
                     </div>
                 </div>
             </div>
@@ -711,7 +708,6 @@
         </div>
     </section>
     <!-- End Section Square -->
-    @endif
     <!-- Section blog-->
     <section id="blog" class="section white-bg">
         <div class="container-xxl">
