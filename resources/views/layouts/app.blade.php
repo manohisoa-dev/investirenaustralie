@@ -628,7 +628,7 @@
 
     <!-- jquery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    
+
 	<!-- jQuery UI -->
 	<script src="{{ asset('administrator/js/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
     <!-- end jquery -->

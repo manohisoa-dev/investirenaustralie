@@ -415,7 +415,7 @@
 .contente .content-overlay {
     background: linear-gradient(45deg, rgba(174,68,53,1), rgba(255,74,45,1));
     position: absolute;
-    height: 99%;
+    height: 100%;
     width: 100%;
     left: 0;
     top: 0;
@@ -647,7 +647,7 @@
     text-align: center;
 }
 .fancy_service {
-    border-radius: 5px;
+    border-radius: 20px;
     border: 1px solid #f4f8ff;
     box-shadow: 4.871px 34.659px 30px 0px rgba(0, 0, 0, 0.06);
     margin-bottom: 60px;
