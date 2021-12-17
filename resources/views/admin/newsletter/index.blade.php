@@ -42,8 +42,8 @@
 						{!!\Nvd\Crud\Html::sortableTh('id','admin.newsletter.index','Id')!!}
 						{!!\Nvd\Crud\Html::sortableTh('email_adresse','admin.newsletter.index','Email Adresse')!!}
 						{!!\Nvd\Crud\Html::sortableTh('statuts','admin.newsletter-template.index','Statut')!!}
-						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.newsletter.index','Created At')!!}
-						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.newsletter.index','Updated At')!!}
+						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.newsletter.index','Créer le ')!!}
+						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.newsletter.index','Mise à jour le')!!}
 						<th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">

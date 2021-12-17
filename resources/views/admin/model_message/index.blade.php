@@ -42,8 +42,8 @@
 						{!!\Nvd\Crud\Html::sortableTh('message_fr','admin.model-message.index','Message Fr')!!}
 						{!!\Nvd\Crud\Html::sortableTh('message_en','admin.model-message.index','Message En')!!}
 						{!!\Nvd\Crud\Html::sortableTh('params','admin.model-message.index','Params')!!}
-						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.model-message.index','Created At')!!}
-						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.model-message.index','Updated At')!!}
+						{!!\Nvd\Crud\Html::sortableTh('created_at','admin.model-message.index','Créer le ')!!}
+						{!!\Nvd\Crud\Html::sortableTh('updated_at','admin.model-message.index','Mise à jour le')!!}
 						<th><a href="javascript:void(0)">Actions</a></th>
                     </tr>
                     <tr class="search-row">

@@ -1,6 +1,6 @@
 
 <div class="col-lg-4 md-m-15px-tb">
-    @if (!Request::is('programmes/residentiel'))
+    @if (!Request::is('programmes/*') && !Request::is('programmes'))
         {{-- FAVORIS --}}
         @if (Auth::user())
             @if (isset(App\Models\Label::where('author_id',Auth::id())->where('product_id',$item->id)->where('label','starred')->first()->id))
@@ -12,7 +12,6 @@
             <a href="{{route('label.store', ['product'=>$item,'type'=>'starred'])}}" title="@lang('app.txt.programme_favorites')" class="m-btn m-btn-theme5rd dark-color flex-shrink-0 col-md-12"><i class="fa fa-star" aria-hidden="true"></i>  @lang('app.btn.star')</a>
         @endif
         <br><br>
-
         {{-- CONTACT AFA --}}
         <a {{ Auth::check()? (Auth::user()->hasAfa()?'':'disabled') :'' }} href="javascript:void(0)" data-toggle="modal" data-target="#myModal" class="m-btn m-btn-theme2nd dark-color flex-shrink-0 col-md-12"><i class="fa fa-envelope" aria-hidden="true"></i>  @lang('app.btn.contact_afa')</a>
         <br><br>

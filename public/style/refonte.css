@@ -415,7 +415,7 @@
 .contente .content-overlay {
     background: linear-gradient(45deg, rgba(174,68,53,1), rgba(255,74,45,1));
     position: absolute;
-    height: 99%;
+    height: 100%;
     width: 100%;
     left: 0;
     top: 0;
@@ -472,7 +472,7 @@
 }
 
 .bg-title:before{
-    content: url("http://iea.easydata.mg/public/refonte/img/points.png");
+    content: url("https://pretest.investirenaustralie.com/public/refonte/img/points.png");
     position: absolute;
     display: flex;
     top: -20px;
@@ -483,7 +483,7 @@
 }
 
 .youtube-iea{
-    background: url("http://iea.easydata.mg/public/refonte/img/bg-iea-white.jpg");
+    background: url("https://pretest.investirenaustralie.com/public/refonte/img/bg-iea-white.jpg");
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
@@ -647,7 +647,7 @@
     text-align: center;
 }
 .fancy_service {
-    border-radius: 5px;
+    border-radius: 20px;
     border: 1px solid #f4f8ff;
     box-shadow: 4.871px 34.659px 30px 0px rgba(0, 0, 0, 0.06);
     margin-bottom: 60px;
