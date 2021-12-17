@@ -24,7 +24,6 @@
 <!-- plugin CSS -->
 <!-- Animate fade animation -->
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <!-- ANIMATE AOS -->
 <!-- plugin CSS -->
 <link href="{{ asset('plugin/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -628,8 +627,9 @@
     @endif
 
     <!-- jquery -->
-    <script src="{{ asset('js/jquery-3.0.0.min.js') }}"></script>
-    <script src="{{ asset('js/jquery-migrate-3.0.0.min.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    {{--    <script src="https://code.jquery.com/jquery-migrate-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+	<script src="{{ asset('js/jquery-migrate-3.0.0.min.js') }}"></script>--}}
 	<!-- jQuery UI -->
 	<script src="{{ asset('administrator/js/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
     <!-- end jquery -->
@@ -638,12 +638,14 @@
     <!-- end appear -->
     <script src="{{ asset('js/jarallax-all.js') }}"></script>
 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
     <!--bootstrap-->
     <script src="{{ asset('plugin/bootstrap/js/popper.min.js') }}"></script>
     <script src="{{ asset('plugin/bootstrap/js/bootstrap.js') }}"></script>
     <!--end bootstrap-->
     <!-- working form -->
-    <script src="{{ asset('plugin/mail/js/form.min.js') }}"></script>
+    {{--<script src="{{ asset('plugin/mail/js/form.min.js') }}"></script>--}}
     <script src="{{ asset('plugin/mail/js/script.js') }}"></script>
     <!-- custom js -->
     <script src="{{ asset('js/custom.js?v='.$mytime) }}"></script>
@@ -652,8 +654,8 @@
     <script src="{{ asset('plugin/cookie/herbyCookie.min.js') }}"></script>
     <!-- end -->
     <!-- carousel js -->
-    <script src="{{ asset('plugin/owl/owl.js') }}"></script>
-    <script src="{{ asset('plugin/owl-carousel/js/owl.carousel.min.js') }}"></script>
+    {{--<script src="{{ asset('plugin/owl/owl.js') }}"></script>--}}
+    {{--<script src="{{ asset('plugin/owl-carousel/js/owl.carousel.min.js') }}"></script>--}}
     <script src="{{ asset('plugin/counter/jquery.countTo.js') }}"></script>
     <!-- bootstrap-slider.js -->
     {{-- <script src="{{ asset('js/bootstrap-slider.js') }}"></script> --}}

@@ -904,7 +904,14 @@
 							</tr>
 							<tr>
 								<th>@lang('app.txt.name_of_property_to_be_sold')</th>
-								<td>{{$user->property_name}}</td>
+								<td>
+									@php
+										$prd_sigle = $user->products;
+									@endphp
+									@if($prd_sigle->count() > 0)
+										{{$prd_sigle[0]->title}}
+									@endif
+								</td>
 							</tr>
 						</table>
 					</div>

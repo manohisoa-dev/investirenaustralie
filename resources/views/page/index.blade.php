@@ -415,6 +415,12 @@
 
                 @if(request()->getHost() == "iea.easydata.mg")
                 <!-- VIDEO SECTION PARALLAX 2 -->
+				@if (!empty(App\Models\Video::where('id',1)->first()))
+					$video_ajax = App\Models\Video::where('id',1)->first();
+					$video_url = $video_ajax->video_url;
+				@else
+					$video_url = 'https://youtu.be/WlPUe_yfMVg';
+				@endif
                 <div class="jarallax" data-jarallax data-jarallax-video="https://youtu.be/WlPUe_yfMVg">
                     <div class="demo-table">
                         <div class="demo-table-cell">
@@ -482,7 +488,15 @@
                     <div class="video-box aos-init aos-animate" data-aos="fade-down">
                         <!-- <iframe class="iframe" height="350" src="https://www.youtube.com/embed/dzHw2RRyk68"></iframe> -->
                         <img class="box-shadow-iea border-radius-20" src="{{ asset('img/bghead.jpg') }}" title="" alt="">
-                        <a class="video-btn white popup-youtube p-center" href="https://www.youtube.com/watch?v=8FPgOCmX7MM"><span></span></a>
+						@if (!empty(App\Models\Video::where('id',2)->first()))
+							@php
+								$video = App\Models\Video::where('id',2)->first();
+							@endphp							
+							<a class="video-btn white popup-youtube p-center" href="{{$video->video_url}}"><span></span></a>
+						@else
+							<a class="video-btn white popup-youtube p-center" href="https://www.youtube.com/embed/8FPgOCmX7MM"><span></span></a>
+						@endif
+                        
                     </div>
                 </div>
 
